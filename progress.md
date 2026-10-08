@@ -60,6 +60,7 @@ Update it in the same commit as the work it describes.
   - [x] Overview view (`home-overview`) and the `common-controls` section strategy, golden-tested (20/20 with section and full expansion)
   - [ ] `home-media-players`, `home-other-devices` views
   - [ ] Native rendering of the cards these views use. Basic heading and area cards exist; still to do: home-summary, repairs, updates, discovered-devices, shortcut, empty-state, picture-entity, markdown header, and the sidebar
+    - [x] UI polish for the initial tile, heading and compact area renderers: shared HA-token card surface, active/unavailable treatment, and safe dynamic MDI icons
   - [x] View navigation like upstream: tabs only for non-subviews, `navigate` actions open subviews, back arrow plus system back
   - [x] Visibility conditions: all types (state, numeric_state, and/or/not, user, location, time, screen, view_columns, legacy), with upstream's tests ported. Section and card visibility in rendering; `view_columns` uses upstream's sections column formula
 - [x] List dashboards (`lovelace/dashboards/list`)
@@ -135,6 +136,13 @@ Update it in the same commit as the work it describes.
 - Dependency lockfiles are global, so avoid adding new libraries to `:app`/`:automotive` (merge conflicts).
 
 ## Handover notes
+
+### 2026-10-08: Astra UI track
+- Polished the initial native tile, heading and compact area renderers and split them into focused files under `dashboard/ui/cards/`.
+- Added a safe `mdi:*` name-to-vector renderer using the existing MDI Compose dependency. Unknown names render no icon rather than failing.
+- Kept derivation in `:dashboard-core`: UI continues to read tile/area display models from `derivedStateOf`; no dashboard data or ViewModel files changed.
+- Verified with `:dashboard:ktlintFormat` and `:dashboard:compileDebugKotlin` on JDK 21.
+- Next UI work: render the remaining generated-home card types as their core display models become available, then add isolated interaction and screenshot coverage for meaningful card states.
 
 ### 2026-10-08: session 1, later (Opus)
 - Done: generic raw WS API in `:common`, `:dashboard-core`, `:dashboard` vertical slice (tile card plus placeholders), local test HA container. `:app:assembleMinimalDebug` builds.
