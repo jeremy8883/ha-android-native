@@ -46,6 +46,7 @@ internal fun DashboardCard(
         CARD_MEDIA_CONTROL -> MediaControlCard(card, hass, interactions, cardModifier)
         CARD_EMPTY_STATE -> EmptyStateCard(card, interactions, modifier)
         CARD_SHORTCUT -> ShortcutCard(card, hass, cardModifier)
+        CARD_PICTURE_ENTITY -> PictureEntityCard(card, hass, interactions, modifier)
         CARD_HOME_SUMMARY -> InfoTileCard(card, hass, cardModifier) { homeSummaryModel(it) }
         CARD_REPAIRS -> InfoTileCard(card, hass, cardModifier) { repairsModel(it) }
         CARD_UPDATES -> InfoTileCard(card, hass, cardModifier) { updatesModel(it) }
@@ -62,6 +63,7 @@ private const val CARD_ENTITIES = "entities"
 private const val CARD_MEDIA_CONTROL = "media-control"
 private const val CARD_EMPTY_STATE = "empty-state"
 private const val CARD_SHORTCUT = "shortcut"
+private const val CARD_PICTURE_ENTITY = "picture-entity"
 private const val CARD_REPAIRS = "repairs"
 private const val CARD_UPDATES = "updates"
 private const val CARD_DISCOVERED_DEVICES = "discovered-devices"

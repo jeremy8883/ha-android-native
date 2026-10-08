@@ -56,6 +56,7 @@ import io.homeassistant.companion.android.dashboard.model.ViewConfig
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardCard
 import io.homeassistant.companion.android.dashboard.ui.cards.LocalConditionContext
+import io.homeassistant.companion.android.dashboard.ui.cards.LocalServerUrl
 import java.time.ZonedDateTime
 
 @Composable
@@ -72,18 +73,21 @@ internal fun DashboardScreen(viewModel: DashboardViewModel) {
     val snackbar = remember { SnackbarHostState() }
     DashboardEffects(viewModel.events, snackbar, viewModel::onConfirmed, viewModel::onCodeEntered)
 
-    DashboardScreenContent(
-        uiState = uiState,
-        dashboards = dashboards,
-        selectedDashboard = selectedDashboard,
-        hass = hass,
-        now = now,
-        onSelectDashboard = viewModel::onSelectDashboard,
-        onSelectTab = viewModel::onSelectTab,
-        interactions = remember(viewModel) { CardInteractions(viewModel::onGesture, viewModel::onAction) },
-        onBack = { viewModel.onBack() },
-        snackbar = snackbar,
-    )
+    val serverUrl by viewModel.serverUrl.collectAsStateWithLifecycle()
+    CompositionLocalProvider(LocalServerUrl provides serverUrl) {
+        DashboardScreenContent(
+            uiState = uiState,
+            dashboards = dashboards,
+            selectedDashboard = selectedDashboard,
+            hass = hass,
+            now = now,
+            onSelectDashboard = viewModel::onSelectDashboard,
+            onSelectTab = viewModel::onSelectTab,
+            interactions = remember(viewModel) { CardInteractions(viewModel::onGesture, viewModel::onAction) },
+            onBack = { viewModel.onBack() },
+            snackbar = snackbar,
+        )
+    }
 }
 
 @Composable

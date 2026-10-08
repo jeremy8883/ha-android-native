@@ -52,6 +52,7 @@ data class HassConfig(
  * @property repairsIssues active, non-ignored repair issues; `null` while loading
  * @property discoveredFlows config flows started by discovery; `null` while loading
  * @property templates the latest rendering of the templates cards asked for (`render_template`)
+ * @property cameraImages signed snapshot paths of the cameras cards show, by entity id
  */
 data class HassSnapshot(
     val states: EntityStates,
@@ -65,4 +66,5 @@ data class HassSnapshot(
     val repairsIssues: List<JsonObject>? = null,
     val discoveredFlows: List<JsonObject>? = null,
     val templates: Map<TemplateRequest, TemplateResult> = emptyMap(),
+    val cameraImages: Map<String, String> = emptyMap(),
 )

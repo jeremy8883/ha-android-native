@@ -178,7 +178,7 @@
             {
               "type": "markdown",
               "title": "Status",
-              "content": "**{{ states('sensor.lights_on') }}** lights on.\n\nHouse mode: *{{ states('input_select.house_mode') }}*\n\n- Living room: {{ states('sensor.living_room_temperature') }} °C"
+              "content": "**{{ states('sensor.lights_on') }}** lights on.\n\nHouse mode: *{{ states('input_select.house_mode') }}*\n\n- Living room: {{ states('sensor.living_room_temperature') }} \u00b0C"
             },
             {
               "type": "conditional",
@@ -209,6 +209,24 @@
               "type": "custom:fake-card",
               "entity": "light.kitchen_lights",
               "some_option": 42
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Cameras"
+            },
+            {
+              "type": "picture-entity",
+              "entity": "camera.demo_camera"
+            },
+            {
+              "type": "picture-entity",
+              "entity": "camera.demo_camera_png",
+              "show_state": false
             }
           ]
         }

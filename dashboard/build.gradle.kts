@@ -18,6 +18,7 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.markdown.renderer.m3)
+    implementation(libs.coil.compose)
 
     testImplementation(libs.turbine)
     testImplementation(libs.mockk)

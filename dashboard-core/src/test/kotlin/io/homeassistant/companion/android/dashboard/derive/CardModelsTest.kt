@@ -91,3 +91,26 @@ class ShortcutModelTest {
         assertEquals(Triple("Garden", "mdi:flower", DisplayColor.Theme("green")), Triple(explicit.label, explicit.icon, explicit.color))
     }
 }
+
+class PictureEntityModelTest {
+    private val hass = GoldenFixture("test-instance").hass
+
+    @Test
+    fun `Given a camera card when deriving it then it waits for a signed snapshot and asks for one`() {
+        val card = CardConfig(json("""{"type": "picture-entity", "entity": "camera.demo_camera", "show_state": false}"""))
+        assertEquals(setOf("camera.demo_camera"), hass.cameraSnapshotEntities(listOf(card)))
+        assertNull(hass.pictureEntityModel(card)?.image)
+        val signed = hass.copy(cameraImages = mapOf("camera.demo_camera" to "/api/camera_proxy/camera.demo_camera?authSig=x"))
+        val model = signed.pictureEntityModel(card)!!
+        assertEquals("/api/camera_proxy/camera.demo_camera?authSig=x", model.image)
+        assertNull(model.state)
+        assertTrue(model.actions.tap)
+    }
+
+    @Test
+    fun `Given a picture card for a non-camera entity when deriving it then the configured image is used`() {
+        val card = CardConfig(json("""{"type": "picture-entity", "entity": "light.kitchen_lights", "image": "/local/kitchen.png"}"""))
+        assertEquals("/local/kitchen.png", hass.pictureEntityModel(card)?.image)
+        assertEquals(emptySet<String>(), hass.cameraSnapshotEntities(listOf(card)))
+    }
+}

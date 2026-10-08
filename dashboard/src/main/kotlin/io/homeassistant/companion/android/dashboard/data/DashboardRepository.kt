@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard.data
 
 import io.homeassistant.companion.android.common.data.servers.ServerManager
+import io.homeassistant.companion.android.common.data.servers.UrlState
 import io.homeassistant.companion.android.common.data.servers.webSocketRepositoryOrNull
 import io.homeassistant.companion.android.common.data.websocket.RawWebSocketResponse
 import io.homeassistant.companion.android.common.data.websocket.WebSocketRepository
@@ -41,6 +42,7 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.runningFold
@@ -211,6 +213,30 @@ class DashboardRepository @Inject constructor(private val serverManager: ServerM
             },
         )
     }
+
+    /**
+     * The URL the active server is reached at right now (it changes between home and away networks), without a
+     * trailing slash; `null` while there is no safe URL. Server paths such as entity pictures are resolved
+     * against it, like the frontend's `hassUrl`.
+     */
+    fun serverUrl(): Flow<String?> = flow {
+        emitAll(
+            serverManager.connectionStateProvider().urlFlow().map { state ->
+                (state as? UrlState.HasUrl)?.url?.toString()?.removeSuffix("/")
+            },
+        )
+    }
+
+    /**
+     * A signed path to the latest snapshot of [cameraEntityId] (`auth/sign_path` for `/api/camera_proxy/...`),
+     * as the frontend's `fetchThumbnailUrl` gets it. `null` when it can't be signed.
+     */
+    suspend fun cameraSnapshotPath(cameraEntityId: String): String? = (
+        serverManager.webSocketRepositoryOrNull()?.result(
+            "auth/sign_path",
+            mapOf("path" to "/api/camera_proxy/$cameraEntityId"),
+        ) as? JsonObject
+        )?.string("path")
 
     /** User, server config and panels, or `null` when no connection can be made. */
     suspend fun serverInfo(): ServerInfo? {

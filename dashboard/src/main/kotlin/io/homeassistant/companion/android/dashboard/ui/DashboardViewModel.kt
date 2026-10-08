@@ -10,6 +10,7 @@ import io.homeassistant.companion.android.dashboard.data.DashboardConfigResult
 import io.homeassistant.companion.android.dashboard.data.DashboardRepository
 import io.homeassistant.companion.android.dashboard.derive.TemplateRequest
 import io.homeassistant.companion.android.dashboard.derive.TemplateResult
+import io.homeassistant.companion.android.dashboard.derive.cameraSnapshotEntities
 import io.homeassistant.companion.android.dashboard.derive.templateRequests
 import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
 import io.homeassistant.companion.android.dashboard.entity.HassConfig
@@ -211,15 +212,50 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
             }
         }
 
+    /** Signed snapshot paths of the cameras the shown view's cards show, refreshed like the frontend's `hui-image`. */
+    private val cameraImages: Flow<Map<String, String>> = uiState
+        .combine(structureInputs) { state, inputs ->
+            val content = state as? DashboardUiState.Content
+            inputs.hass.cameraSnapshotEntities(content?.groups?.flatMap { it.cards }.orEmpty())
+        }
+        .distinctUntilChanged()
+        .flatMapLatest { cameras ->
+            if (cameras.isEmpty()) {
+                flowOf(emptyMap())
+            } else {
+                flow {
+                    while (true) {
+                        emit(
+                            cameras.mapNotNull { camera ->
+                                repository.cameraSnapshotPath(camera)?.let { camera to it }
+                            }.toMap(),
+                        )
+                        delay(CAMERA_REFRESH)
+                    }
+                }
+            }
+        }
+        .onStart { emit(emptyMap()) }
+
+    /** The URL server paths (pictures, snapshots) are loaded from. */
+    val serverUrl: StateFlow<String?> = repository.serverUrl()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
+
     /** The latest snapshot for cards: structure inputs with live entity states and collections. */
     val hass: StateFlow<HassSnapshot?> = combine(
         structureInputs,
         entityStates.filterNotNull(),
         repairsIssues,
         discoveredFlows,
-        templates,
-    ) { inputs, states, repairs, flows, rendered ->
-        inputs.hass.copy(states = states, repairsIssues = repairs, discoveredFlows = flows, templates = rendered)
+        combine(templates, cameraImages, ::Pair),
+    ) { inputs, states, repairs, flows, (rendered, cameras) ->
+        inputs.hass.copy(
+            states = states,
+            repairsIssues = repairs,
+            discoveredFlows = flows,
+            templates = rendered,
+            cameraImages = cameras,
+        )
     }.flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
 
@@ -377,6 +413,9 @@ private fun DashboardConfig.toContent(inputs: StructureInputs, stack: List<Strin
 
 private val STOP_TIMEOUT = 5.seconds.inWholeMilliseconds
 private val CLOCK_TICK = 15.seconds
+
+/** How often camera snapshots are refreshed (`UPDATE_INTERVAL` of src/panels/lovelace/components/hui-image.ts). */
+private val CAMERA_REFRESH = 10.seconds
 
 /** The language of the bundled frontend strings; server translations are fetched in the same language. */
 private const val BUNDLED_LANGUAGE = "en"
