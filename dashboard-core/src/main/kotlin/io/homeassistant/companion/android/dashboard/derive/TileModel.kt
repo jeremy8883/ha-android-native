@@ -2,13 +2,15 @@ package io.homeassistant.companion.android.dashboard.derive
 
 import io.homeassistant.companion.android.dashboard.entity.EntityStates
 import io.homeassistant.companion.android.dashboard.model.CardConfig
+import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.string
 
 /** Display-ready content of a tile card. */
 data class TileModel(
     val entityId: String,
     val name: String,
-    val state: String,
+    /** The state text, or `null` when the card hides it (`hide_state`). */
+    val state: String?,
     val unit: String?,
     val icon: String?,
     val active: Boolean,
@@ -25,11 +27,12 @@ data class TileModel(
 fun tileModel(card: CardConfig, states: EntityStates): TileModel? {
     val entityId = card.entity ?: return null
     val entity = states[entityId] ?: return null
+    val hideState = card.json.boolean("hide_state") == true
     return TileModel(
         entityId = entityId,
         name = card.json.string("name") ?: entity.attributes.string("friendly_name") ?: entityId,
-        state = entity.state,
-        unit = entity.attributes.string("unit_of_measurement"),
+        state = entity.state.takeUnless { hideState },
+        unit = entity.attributes.string("unit_of_measurement").takeUnless { hideState },
         icon = card.json.string("icon") ?: entity.attributes.string("icon"),
         active = entity.isActive(),
         available = entity.state != STATE_UNAVAILABLE,

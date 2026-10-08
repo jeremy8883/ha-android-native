@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.homeassistant.companion.android.dashboard.data.DashboardConfigResult
 import io.homeassistant.companion.android.dashboard.data.DashboardRepository
-import io.homeassistant.companion.android.dashboard.entity.EntityStates
 import io.homeassistant.companion.android.dashboard.entity.HassConfig
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.JsonTranslations
@@ -15,9 +14,10 @@ import io.homeassistant.companion.android.dashboard.layout.cardGroups
 import io.homeassistant.companion.android.dashboard.model.DashboardConfig
 import io.homeassistant.companion.android.dashboard.model.DashboardInfo
 import io.homeassistant.companion.android.dashboard.model.string
+import io.homeassistant.companion.android.dashboard.strategy.StrategyData
+import io.homeassistant.companion.android.dashboard.strategy.expandView
 import io.homeassistant.companion.android.dashboard.strategy.home.HomeDashboardConfig
 import io.homeassistant.companion.android.dashboard.strategy.home.homeDashboard
-import io.homeassistant.companion.android.dashboard.strategy.resolveStrategyView
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.update
 import kotlinx.serialization.json.JsonObject
 
 /** What the dashboard screen shows. */
@@ -49,20 +50,28 @@ sealed interface DashboardUiState {
     data class Error(val message: String?) : DashboardUiState
 
     /**
-     * @property groups the selected view's cards, or `null` when that view's strategy is not ported yet
+     * @property tabs the top-level views; subviews are only reached through navigation, as upstream
+     * @property selectedTab index in [tabs] of the shown view or of the view a subview was opened from
+     * @property isSubview whether the shown view is a subview, which shows a back button instead of tabs
+     * @property groups the shown view's cards, or `null` when its strategy is not ported yet
      */
     data class Content(
         val title: String?,
-        val viewTitles: List<String?>,
-        val selectedView: Int,
+        val tabs: List<ViewTab>,
+        val selectedTab: Int,
+        val isSubview: Boolean,
+        val subviewTitle: String?,
+        val viewPath: String,
         val groups: List<CardGroup>?,
     ) : DashboardUiState
 }
 
+/** A top-level view, selected by [path] (or its index when it has none). */
+data class ViewTab(val title: String?, val icon: String?, val path: String)
+
 /**
- * Raw state: the selected dashboard and view, the stored config, the registries and server details, and the
- * entity states. The dashboard structure (including generated dashboards) is derived from these, and entity
- * states are exposed separately so each card derives only what it shows.
+ * Raw state: the selected dashboard, the stack of opened view paths, the stored config, the registries and server
+ * details, and the entity states. The dashboard structure (including generated dashboards) is derived from these.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
@@ -70,19 +79,18 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
 
     /** `null` is the default dashboard. */
     private val selectedDashboard = MutableStateFlow<String?>(null)
-    private val selectedView = MutableStateFlow(0)
+
+    /** Opened views, last is shown. Empty shows the first view. */
+    private val viewStack = MutableStateFlow<List<String>>(emptyList())
 
     val dashboards: StateFlow<List<DashboardInfo>> = flow { emit(repository.dashboards()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), emptyList())
 
     val selectedDashboardUrlPath: StateFlow<String?> = selectedDashboard
 
-    /** `null` until the first snapshot of all states has arrived. */
-    private val loadedEntityStates: StateFlow<EntityStates?> = repository.entityStates()
+    private val entityStates = repository.entityStates()
         .flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
-
-    val entityStates: StateFlow<EntityStates?> = loadedEntityStates
 
     // Reading the bundled resource touches disk, so never on the main thread
     private val localize: Flow<Localize> = flow { emit(JsonTranslations.bundled() ?: Localize { "" }) }
@@ -92,13 +100,16 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
      * The data the dashboard structure is derived from. Like upstream, structure is regenerated when registries
      * change, not on state changes, so the states are those at the time of the registry update.
      */
-    private val structureSnapshot: Flow<StructureInputs> = combine(
+    private val structureInputs: Flow<StructureInputs> = combine(
         repository.registries(),
-        flow { emit(repository.serverInfo()) },
+        flow {
+            val serverInfo = repository.serverInfo()
+            emit(serverInfo to repository.strategyData(serverInfo?.config?.components.orEmpty()))
+        },
         flow { emit(repository.homeSystemData()) },
-        loadedEntityStates.filterNotNull().take(1),
+        entityStates.filterNotNull().take(1),
         localize,
-    ) { registries, serverInfo, homeSettings, states, localize ->
+    ) { registries, (serverInfo, strategyData), homeSettings, states, localize ->
         StructureInputs(
             hass = HassSnapshot(
                 states = states,
@@ -108,57 +119,97 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
                 panels = serverInfo?.panels.orEmpty(),
                 localize = localize,
             ),
+            strategyData = strategyData,
             homeSettings = homeSettings,
         )
     }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), replay = 1)
 
+    /** The latest snapshot for cards: structure inputs with live entity states. */
+    val hass: StateFlow<HassSnapshot?> = combine(structureInputs, entityStates.filterNotNull()) { inputs, states ->
+        inputs.hass.copy(states = states)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
+
     val uiState: StateFlow<DashboardUiState> = selectedDashboard
         .flatMapLatest { urlPath ->
-            repository.dashboardConfig(urlPath).combine(structureSnapshot) { result, inputs ->
+            repository.dashboardConfig(urlPath).combine(structureInputs) { result, inputs ->
                 Triple(urlPath, result, inputs)
             }
         }
-        .combine(selectedView) { (urlPath, result, inputs), viewIndex -> result.toUiState(urlPath, inputs, viewIndex) }
+        .combine(viewStack) { (urlPath, result, inputs), stack -> result.toUiState(urlPath, inputs, stack) }
         .flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), DashboardUiState.Loading)
 
     fun onSelectDashboard(urlPath: String?) {
-        selectedView.value = 0
+        viewStack.value = emptyList()
         selectedDashboard.value = urlPath
     }
 
-    fun onSelectView(index: Int) {
-        selectedView.value = index
+    fun onSelectTab(path: String) {
+        viewStack.value = listOf(path)
+    }
+
+    /**
+     * Follow a `navigate` action. Paths without a leading slash are views of the current dashboard, as in the
+     * frontend; other panels are not available natively yet and are ignored.
+     */
+    fun onNavigate(navigationPath: String) {
+        if (navigationPath.startsWith("/")) return
+        val path = navigationPath.substringBefore('?')
+        viewStack.update { it + path }
+    }
+
+    /** @return whether a view was closed; the first view is implicit, so an empty stack shows it */
+    fun onBack(): Boolean {
+        if (viewStack.value.isEmpty()) return false
+        viewStack.update { it.dropLast(1) }
+        return true
     }
 }
 
-private data class StructureInputs(val hass: HassSnapshot, val homeSettings: JsonObject?)
+private data class StructureInputs(
+    val hass: HassSnapshot,
+    val strategyData: StrategyData,
+    val homeSettings: JsonObject?,
+)
 
 private fun DashboardConfigResult.toUiState(
     urlPath: String?,
     inputs: StructureInputs,
-    viewIndex: Int,
+    stack: List<String>,
 ): DashboardUiState = when (this) {
     is DashboardConfigResult.Error -> DashboardUiState.Error(message)
     // Without a stored default dashboard the frontend shows the generated home dashboard (/home)
     DashboardConfigResult.NotFound -> if (urlPath == null) {
         DashboardConfig(inputs.hass.homeDashboard(HomeDashboardConfig.fromSystemData(inputs.homeSettings)))
-            .toContent(inputs.hass, viewIndex)
+            .toContent(inputs, stack)
     } else {
         DashboardUiState.NotFound
     }
-    is DashboardConfigResult.Loaded -> config.toContent(inputs.hass, viewIndex)
+    is DashboardConfigResult.Loaded -> config.toContent(inputs, stack)
 }
 
-private fun DashboardConfig.toContent(hass: HassSnapshot, viewIndex: Int): DashboardUiState {
+private fun DashboardConfig.toContent(inputs: StructureInputs, stack: List<String>): DashboardUiState {
     if (isStrategy) return DashboardUiState.UnsupportedStrategy(strategy?.string("type"))
-    // A config change can remove views, so clamp instead of keeping a stale index
-    val index = viewIndex.coerceIn(0, (views.size - 1).coerceAtLeast(0))
+    val views = views
+
+    // A view is addressed by its path, or by its index when it has none (as frontend URLs do)
+    fun pathOf(index: Int) = views[index].path ?: index.toString()
+    fun indexOf(path: String) = views.indices.firstOrNull { pathOf(it) == path }
+
+    // Drop paths a config change removed, falling back to the first view
+    val shownIndex = stack.lastOrNull()?.let(::indexOf) ?: 0
+    val shown = views.getOrNull(shownIndex)
+    val tabIndices = views.indices.filter { !views[it].subview }
+    val tabIndex = stack.mapNotNull(::indexOf).lastOrNull { it in tabIndices } ?: tabIndices.firstOrNull() ?: 0
+
     return DashboardUiState.Content(
         title = title,
-        viewTitles = views.map { it.title ?: it.path },
-        selectedView = index,
-        groups = views.getOrNull(index)?.let { hass.resolveStrategyView(it) }?.let(::cardGroups)
+        tabs = tabIndices.map { ViewTab(views[it].title, views[it].icon, pathOf(it)) },
+        selectedTab = tabIndices.indexOf(tabIndex).coerceAtLeast(0),
+        isSubview = shown?.subview == true,
+        subviewTitle = shown?.title,
+        viewPath = if (shown != null) pathOf(shownIndex) else "",
+        groups = shown?.let { inputs.hass.expandView(it, inputs.strategyData) }?.let(::cardGroups)
             ?: if (views.isEmpty()) emptyList() else null,
     )
 }

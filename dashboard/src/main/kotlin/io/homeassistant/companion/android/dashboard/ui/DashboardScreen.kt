@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
@@ -19,6 +19,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -30,7 +32,7 @@ import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.HAThemeForPreview
 import io.homeassistant.companion.android.dashboard.R
-import io.homeassistant.companion.android.dashboard.entity.EntityStates
+import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.layout.CardGroup
 import io.homeassistant.companion.android.dashboard.model.DashboardInfo
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardCard
@@ -41,15 +43,20 @@ internal fun DashboardScreen(viewModel: DashboardViewModel) {
     val dashboards by viewModel.dashboards.collectAsStateWithLifecycle()
     val selectedDashboard by viewModel.selectedDashboardUrlPath.collectAsStateWithLifecycle()
     // Passed down as State so that only the cards whose derived content changes recompose
-    val entityStates = viewModel.entityStates.collectAsStateWithLifecycle()
+    val hass = viewModel.hass.collectAsStateWithLifecycle()
+
+    val content = uiState as? DashboardUiState.Content
+    BackHandler(enabled = content?.isSubview == true) { viewModel.onBack() }
 
     DashboardScreenContent(
         uiState = uiState,
         dashboards = dashboards,
         selectedDashboard = selectedDashboard,
-        entityStates = entityStates,
+        hass = hass,
         onSelectDashboard = viewModel::onSelectDashboard,
-        onSelectView = viewModel::onSelectView,
+        onSelectTab = viewModel::onSelectTab,
+        onNavigate = viewModel::onNavigate,
+        onBack = { viewModel.onBack() },
     )
 }
 
@@ -58,19 +65,30 @@ internal fun DashboardScreenContent(
     uiState: DashboardUiState,
     dashboards: List<DashboardInfo>,
     selectedDashboard: String?,
-    entityStates: State<EntityStates?>,
+    hass: State<HassSnapshot?>,
     onSelectDashboard: (String?) -> Unit,
-    onSelectView: (Int) -> Unit,
+    onSelectTab: (String) -> Unit,
+    onNavigate: (String) -> Unit,
+    onBack: () -> Unit,
 ) {
+    val content = uiState as? DashboardUiState.Content
     Scaffold(
         topBar = {
-            HATopBar(title = {
-                Text((uiState as? DashboardUiState.Content)?.title ?: stringResource(R.string.native_dashboard_title))
-            })
+            HATopBar(
+                title = {
+                    Text(
+                        when {
+                            content?.isSubview == true -> content.subviewTitle.orEmpty()
+                            else -> content?.title ?: stringResource(R.string.native_dashboard_title)
+                        },
+                    )
+                },
+                onBackClick = if (content?.isSubview == true) onBack else null,
+            )
         },
     ) { padding ->
         Column(Modifier.padding(padding).fillMaxSize()) {
-            DashboardPicker(dashboards, selectedDashboard, onSelectDashboard)
+            if (content?.isSubview != true) DashboardPicker(dashboards, selectedDashboard, onSelectDashboard)
             when (uiState) {
                 DashboardUiState.Loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     HALoading()
@@ -82,7 +100,7 @@ internal fun DashboardScreenContent(
                 is DashboardUiState.UnsupportedStrategy -> Message(
                     stringResource(R.string.native_dashboard_unsupported_strategy, uiState.type.orEmpty()),
                 )
-                is DashboardUiState.Content -> DashboardView(uiState, entityStates, onSelectView)
+                is DashboardUiState.Content -> DashboardView(uiState, hass, onSelectTab, onNavigate)
             }
         }
     }
@@ -114,17 +132,19 @@ private fun DashboardPicker(dashboards: List<DashboardInfo>, selected: String?, 
 @Composable
 private fun DashboardView(
     content: DashboardUiState.Content,
-    entityStates: State<EntityStates?>,
-    onSelectView: (Int) -> Unit,
+    hass: State<HassSnapshot?>,
+    onSelectTab: (String) -> Unit,
+    onNavigate: (String) -> Unit,
 ) {
     Column {
-        if (content.viewTitles.size > 1) {
-            PrimaryScrollableTabRow(selectedTabIndex = content.selectedView) {
-                content.viewTitles.forEachIndexed { index, title ->
+        // As upstream, the tab bar only appears with several top-level views
+        if (!content.isSubview && content.tabs.size > 1) {
+            PrimaryScrollableTabRow(selectedTabIndex = content.selectedTab) {
+                content.tabs.forEachIndexed { index, tab ->
                     Tab(
-                        selected = index == content.selectedView,
-                        onClick = { onSelectView(index) },
-                        text = { Text(title ?: (index + 1).toString()) },
+                        selected = index == content.selectedTab,
+                        onClick = { onSelectTab(tab.path) },
+                        text = { Text(tab.title ?: tab.path) },
                     )
                 }
             }
@@ -132,21 +152,22 @@ private fun DashboardView(
         if (content.groups == null) {
             Message(stringResource(R.string.native_dashboard_unsupported_view))
         } else {
-            CardGroups(content.groups, entityStates)
+            // A fresh list per view, so each view starts scrolled to the top
+            key(content.viewPath) { CardGroups(content.groups, hass, onNavigate) }
         }
     }
 }
 
 @Composable
-private fun CardGroups(groups: List<CardGroup>, entityStates: State<EntityStates?>) {
+private fun CardGroups(groups: List<CardGroup>, hass: State<HassSnapshot?>, onNavigate: (String) -> Unit) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(HADimens.SPACE4),
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
     ) {
-        itemsIndexed(groups) { _, group ->
+        items(groups) { group ->
             Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
-                group.cards.forEach { card -> DashboardCard(card, entityStates, Modifier.fillMaxWidth()) }
+                group.cards.forEach { card -> DashboardCard(card, hass, onNavigate, Modifier.fillMaxWidth()) }
             }
         }
     }
@@ -165,9 +186,11 @@ private fun DashboardScreenNotFoundPreview() {
             uiState = DashboardUiState.NotFound,
             dashboards = listOf(DashboardInfo("dashboard-test", "Test", "storage", requireAdmin = false)),
             selectedDashboard = null,
-            entityStates = androidx.compose.runtime.mutableStateOf(null),
+            hass = mutableStateOf(null),
             onSelectDashboard = {},
-            onSelectView = {},
+            onSelectTab = {},
+            onNavigate = {},
+            onBack = {},
         )
     }
 }

@@ -3,6 +3,13 @@ package io.homeassistant.companion.android.dashboard.entity
 /** Looks up a frontend translation by key, for example `panel.light`. Returns "" when unknown. */
 fun interface Localize {
     operator fun invoke(key: String): String
+
+    /**
+     * The translation with `{name}` placeholders replaced by [args]. Only simple arguments are supported, not
+     * full ICU MessageFormat (plurals, selects).
+     */
+    operator fun invoke(key: String, args: Map<String, String>): String =
+        args.entries.fold(invoke(key)) { message, (name, value) -> message.replace("{$name}", value) }
 }
 
 /** The current user, from `auth/current_user`. */

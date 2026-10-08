@@ -57,9 +57,11 @@ Update it in the same commit as the work it describes.
 - [ ] Port the `home` dashboard strategy (pure fn: states + registries → config), needed when no stored dashboard exists
   - [x] Dashboard level (`homeDashboard`) and area views (`homeAreaView`), plus helpers. **Golden-tested** against the real frontend output (14/14, admin and non-admin)
   - [x] Wired into the app: the default dashboard falls back to the generated home dashboard on `config_not_found`
-  - [ ] Overview view (`home-overview`: area cards, summaries, `common-controls` section strategy)
+  - [x] Overview view (`home-overview`) and the `common-controls` section strategy, golden-tested (20/20 with section and full expansion)
   - [ ] `home-media-players`, `home-other-devices` views
-  - [ ] Native rendering of heading, area, empty-state and `picture-entity` cards used by these views
+  - [ ] Native rendering of the cards these views use. Basic heading and area cards exist; still to do: home-summary, repairs, updates, discovered-devices, shortcut, empty-state, picture-entity, markdown header, and the sidebar
+  - [x] View navigation like upstream: tabs only for non-subviews, `navigate` actions open subviews, back arrow plus system back
+  - [ ] **Visibility conditions** (e.g. `view_columns`: on phones the Favorites heading and sidebar are hidden and the mobile summaries are shown)
 - [x] List dashboards (`lovelace/dashboards/list`)
 - [x] Load dashboard config (`lovelace/config`)
 - [x] Parse config, preserving unknown fields

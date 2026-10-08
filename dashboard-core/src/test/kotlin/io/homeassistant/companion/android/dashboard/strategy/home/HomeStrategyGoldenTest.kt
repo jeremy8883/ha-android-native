@@ -16,6 +16,9 @@ import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
+import io.homeassistant.companion.android.dashboard.strategy.StrategyData
+import io.homeassistant.companion.android.dashboard.strategy.commonControlsSection
+import io.homeassistant.companion.android.dashboard.strategy.expandView
 import io.homeassistant.companion.android.dashboard.strategy.resolveStrategyView
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -56,6 +59,31 @@ class HomeStrategyGoldenTest {
             }
     }
 
+    @TestFactory
+    fun `Given captured server data when generating the overview then view, section and expansion match the frontend`(): List<DynamicTest> = VARIANTS.flatMap { variant ->
+        val fixture = Fixture(variant)
+        val overview = ViewConfig(fixture.json("outputs/dashboard.json").objects("views").first { it.string("path") == "overview" })
+        listOf(
+            DynamicTest.dynamicTest("$variant view") {
+                assertJsonEquals(
+                    fixture.json("outputs/views/overview.json"),
+                    fixture.hass.resolveStrategyView(overview, fixture.strategyData)?.json,
+                )
+            },
+            DynamicTest.dynamicTest("$variant common-controls section") {
+                val section = fixture.json("outputs/sections/overview/0-common-controls.json")
+                val input = section.obj("input")!!
+                val generated = fixture.hass.commonControlsSection(input.obj("strategy")!!, fixture.strategyData.commonControls)
+                // The captured output is merged like generateLovelaceSectionStrategy: {...base, ...generated}
+                assertJsonEquals(section.obj("output"), JsonObject(input.filterKeys { it != "strategy" } + generated))
+            },
+            DynamicTest.dynamicTest("$variant expanded") {
+                val expected = fixture.json("outputs/expanded.json").objects("views").first { it.string("path") == "overview" }
+                assertJsonEquals(expected, fixture.hass.expandView(overview, fixture.strategyData)?.json)
+            },
+        )
+    }
+
     private class Fixture(variant: String) {
         private val root = "/fixtures/home/$variant/"
 
@@ -64,6 +92,19 @@ class HomeStrategyGoldenTest {
         ).jsonObject
 
         private fun wsResult(name: String): JsonElement = checkNotNull(json("ws/$name.json")["result"]) { "No result in $name" }
+
+        /** Answers to the WebSocket calls the strategies made while the frontend generated them. */
+        val strategyData: StrategyData = run {
+            val calls = Json.parseToJsonElement(
+                checkNotNull(javaClass.getResourceAsStream(root + "ws/strategy-calls.json")).reader().readText(),
+            ).jsonArray.map { it.jsonObject }
+            fun result(type: String) = calls.firstOrNull { it.obj("request")?.string("type") == type }?.get("result")
+            StrategyData(
+                energyPrefs = result("energy/get_prefs") as? JsonObject,
+                commonControls = (result("usage_prediction/common_control") as? JsonObject)
+                    ?.get("entities")?.jsonArray?.mapNotNull { it.stringOrNull },
+            )
+        }
 
         val homeSystemData: JsonObject? = wsResult("frontend-get_system_data-home").jsonObject.obj("value")
 
@@ -89,7 +130,7 @@ class HomeStrategyGoldenTest {
                     state = config.string("state"),
                     recoveryMode = config.boolean("recovery_mode") == true,
                     version = config.string("version"),
-                    components = emptySet(),
+                    components = config["components"]?.jsonArray?.mapNotNull { it.stringOrNull }?.toSet().orEmpty(),
                 ),
                 panels = wsResult("get_panels").jsonObject.keys,
                 // The capture records the flat bundle strings the strategies used

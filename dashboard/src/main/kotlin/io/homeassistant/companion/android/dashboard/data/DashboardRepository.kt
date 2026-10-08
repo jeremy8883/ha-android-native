@@ -22,6 +22,7 @@ import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.parseDashboards
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
+import io.homeassistant.companion.android.dashboard.strategy.StrategyData
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
 import kotlinx.coroutines.FlowPreview
@@ -146,6 +147,23 @@ class DashboardRepository @Inject constructor(private val serverManager: ServerM
                 )
             } ?: HassConfig.UNKNOWN,
             panels = panels?.keys.orEmpty(),
+        )
+    }
+
+    /**
+     * Data that upstream strategies fetch while generating, fetched only for loaded integrations as upstream does.
+     */
+    suspend fun strategyData(components: Set<String>): StrategyData {
+        val webSocket = serverManager.webSocketRepositoryOrNull() ?: return StrategyData.NONE
+        return StrategyData(
+            // Errors (prefs not configured) mean no energy data, as upstream swallows them
+            energyPrefs = if ("energy" in components) webSocket.result("energy/get_prefs") as? JsonObject else null,
+            commonControls = if ("usage_prediction" in components) {
+                (webSocket.result("usage_prediction/common_control") as? JsonObject)
+                    ?.array("entities")?.mapNotNull { it.stringOrNull }
+            } else {
+                null
+            },
         )
     }
 

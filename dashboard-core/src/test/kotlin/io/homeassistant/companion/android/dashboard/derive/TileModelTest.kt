@@ -39,6 +39,13 @@ class TileModelTest {
     }
 
     @Test
+    fun `Given tile with hide_state when derived then state and unit are hidden`() {
+        val tile = tileModel(CardConfig(json("""{"type": "tile", "entity": "sensor.temp", "hide_state": true}""")), states)
+        assertNull(tile?.state)
+        assertNull(tile?.unit)
+    }
+
+    @Test
     fun `Given tile for missing entity when derived then it is null`() {
         assertNull(tileModel(CardConfig(json("""{"type": "tile", "entity": "light.gone"}""")), states))
         assertNull(tileModel(CardConfig(json("""{"type": "tile"}""")), states))
