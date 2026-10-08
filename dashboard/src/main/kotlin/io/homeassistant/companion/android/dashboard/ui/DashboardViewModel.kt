@@ -84,7 +84,9 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
 
     val entityStates: StateFlow<EntityStates?> = loadedEntityStates
 
-    private val localize: Localize = JsonTranslations.bundled() ?: Localize { "" }
+    // Reading the bundled resource touches disk, so never on the main thread
+    private val localize: Flow<Localize> = flow { emit(JsonTranslations.bundled() ?: Localize { "" }) }
+        .flowOn(Dispatchers.IO)
 
     /**
      * The data the dashboard structure is derived from. Like upstream, structure is regenerated when registries
@@ -95,7 +97,8 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         flow { emit(repository.serverInfo()) },
         flow { emit(repository.homeSystemData()) },
         loadedEntityStates.filterNotNull().take(1),
-    ) { registries, serverInfo, homeSettings, states ->
+        localize,
+    ) { registries, serverInfo, homeSettings, states, localize ->
         StructureInputs(
             hass = HassSnapshot(
                 states = states,
