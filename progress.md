@@ -124,6 +124,11 @@ Update it in the same commit as the work it describes.
 
 ## Handover notes
 
+### 2026-10-08: session 1, later (Opus)
+- Done: generic raw WS API in `:common`, `:dashboard-core`, `:dashboard` vertical slice (tile card plus placeholders), local test HA container. `:app:assembleMinimalDebug` builds.
+- **Not yet verified on a device.** The headless emulator (36.4.10) segfaults on this host. To try the slice: install the minimal debug APK, onboard to `http://10.0.2.2:8124` (emulator) or the host IP (dev/dev), then open the "Native dashboard" launcher entry and pick "dashboard-test".
+- Next: verify the slice; unit-test `DashboardRepository` with a fake WebSocket; then the home strategy (architecture.md §8 step 3).
+
 ### 2026-10-08: session 1 (Opus)
 - Done: fork, investigation docs, `docs/architecture.md`, read-only probe tool.
 - Next: Step 2 foundation (modules + generic WS patch in `:common`), then the vertical slice per architecture.md §8.
