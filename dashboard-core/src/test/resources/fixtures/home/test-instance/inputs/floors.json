@@ -1,0 +1,29 @@
+{
+  "ground_floor": {
+    "aliases": [],
+    "created_at": 1791433963.239815,
+    "floor_id": "ground_floor",
+    "icon": "mdi:home-floor-0",
+    "level": 0,
+    "name": "Ground floor",
+    "modified_at": 1791433963.239824
+  },
+  "first_floor": {
+    "aliases": [],
+    "created_at": 1791433963.269485,
+    "floor_id": "first_floor",
+    "icon": "mdi:home-floor-1",
+    "level": 1,
+    "name": "First floor",
+    "modified_at": 1791433963.269493
+  },
+  "outside": {
+    "aliases": [],
+    "created_at": 1791433963.271243,
+    "floor_id": "outside",
+    "icon": "mdi:tree",
+    "level": null,
+    "name": "Outside",
+    "modified_at": 1791433963.271246
+  }
+}

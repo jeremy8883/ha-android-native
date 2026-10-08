@@ -1,0 +1,76 @@
+{
+  "input": {
+    "strategy": {
+      "type": "common-controls",
+      "limit": 8,
+      "include_entities": [
+        "light.living_room_rgbww_lights",
+        "climate.heatpump",
+        "lock.front_door_deadbolt"
+      ],
+      "hide_empty": true,
+      "heading": {
+        "type": "heading",
+        "heading": "Favorites",
+        "heading_style": "title",
+        "visibility": [
+          {
+            "condition": "view_columns",
+            "min": 2
+          }
+        ],
+        "grid_options": {
+          "rows": "auto"
+        }
+      }
+    },
+    "column_span": 3
+  },
+  "output": {
+    "column_span": 3,
+    "type": "grid",
+    "cards": [
+      {
+        "type": "heading",
+        "heading": "Favorites",
+        "heading_style": "title",
+        "visibility": [
+          {
+            "condition": "view_columns",
+            "min": 2
+          }
+        ],
+        "grid_options": {
+          "rows": "auto"
+        }
+      },
+      {
+        "type": "tile",
+        "entity": "light.living_room_rgbww_lights",
+        "state_content": [
+          "state",
+          "area_name"
+        ],
+        "show_entity_picture": true
+      },
+      {
+        "type": "tile",
+        "entity": "climate.heatpump",
+        "state_content": [
+          "state",
+          "area_name"
+        ],
+        "show_entity_picture": true
+      },
+      {
+        "type": "tile",
+        "entity": "lock.front_door_deadbolt",
+        "state_content": [
+          "state",
+          "area_name"
+        ],
+        "show_entity_picture": true
+      }
+    ]
+  }
+}

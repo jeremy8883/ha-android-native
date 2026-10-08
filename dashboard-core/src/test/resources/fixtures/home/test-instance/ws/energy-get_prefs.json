@@ -1,0 +1,10 @@
+{
+  "request": {
+    "type": "energy/get_prefs",
+    "id": 68
+  },
+  "error": {
+    "code": "not_found",
+    "message": "No prefs"
+  }
+}

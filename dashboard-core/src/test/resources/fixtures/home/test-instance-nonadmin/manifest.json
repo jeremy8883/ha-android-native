@@ -1,0 +1,315 @@
+{
+  "description": "Golden fixtures for the HA frontend `home` dashboard strategy, captured by tools/golden/capture.mjs",
+  "variant": "nonadmin",
+  "source": {
+    "url": "http://localhost:8124",
+    "note": "local podman test instance tools/test-ha (demo integration + seeded registries)"
+  },
+  "ha_version": "2026.7.4",
+  "frontend_version": "20260624.6",
+  "capture_date": "2026-10-08T05:25:49.209Z",
+  "user": {
+    "name": "Golden Viewer",
+    "is_admin": false
+  },
+  "language": "en",
+  "frozen": {
+    "states": {
+      "fields": [
+        "last_changed",
+        "last_updated",
+        "last_reported"
+      ],
+      "value": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    "applies_to": [
+      "inputs/states.json",
+      "ws/get_states.json"
+    ]
+  },
+  "generate": {
+    "dashboard": "customElements.get(\"home-dashboard-strategy\").generate(strategy, hass), merged as {...base, ...generated}",
+    "views": "customElements.get(`${view.strategy.type}-view-strategy`).generate(view.strategy, hass), merged as {...viewWithoutStrategy, ...generated}",
+    "sections": "customElements.get(`${section.strategy.type}-section-strategy`).generate(section.strategy, hass), merged as {...sectionWithoutStrategy, ...generated}",
+    "hass": "document.querySelector('home-assistant').hass (one snapshot), wrapped in a Proxy that records callWS/localize"
+  },
+  "cross_checks": [
+    {
+      "what": "dashboard == ha-panel-home._lovelace.config",
+      "ok": true
+    },
+    {
+      "what": "view overview == hui-view._config (+type)",
+      "ok": true
+    },
+    {
+      "what": "section overview#0 == hui-section._config (+type)",
+      "ok": true
+    },
+    {
+      "what": "view areas-living_room == hui-view._config (+type)",
+      "ok": true
+    },
+    {
+      "what": "view areas-kitchen == hui-view._config (+type)",
+      "ok": true
+    },
+    {
+      "what": "view areas-bedroom == hui-view._config (+type)",
+      "ok": false
+    },
+    {
+      "what": "view areas-garage == hui-view._config (+type)",
+      "ok": false
+    },
+    {
+      "what": "view areas-office == hui-view._config (+type)",
+      "ok": true
+    },
+    {
+      "what": "view areas-garden == hui-view._config (+type)",
+      "ok": false
+    },
+    {
+      "what": "view media-players == hui-view._config (+type)",
+      "ok": true
+    },
+    {
+      "what": "view other-devices == hui-view._config (+type)",
+      "ok": true
+    }
+  ],
+  "problems": [],
+  "files": [
+    {
+      "path": "inputs/areas.json",
+      "bytes": 1946,
+      "sha256": "9074f071b499d5eb713d72c1f760cefdbac746437e0f3e0d463be47547a75c89"
+    },
+    {
+      "path": "inputs/config.json",
+      "bytes": 4097,
+      "sha256": "9175b9ad2f66e015ef6f23cd7a58cd2d2a1ce29108c478c6aac48409b5fd7268"
+    },
+    {
+      "path": "inputs/devices.json",
+      "bytes": 54006,
+      "sha256": "c725d5570fe37d085c50f82037cba8a50e92ccde311f9e2c8e4aa45cdc00e528"
+    },
+    {
+      "path": "inputs/entities.json",
+      "bytes": 27971,
+      "sha256": "e123ad7eb7ab0e4f7c553097c216d781070615206f812ad2091025fb4fb252e2"
+    },
+    {
+      "path": "inputs/floors.json",
+      "bytes": 658,
+      "sha256": "d8020b38e7dc1bf889b770b9729676f0348cbcb1f7ab0b4b0e12bdbfa2419c31"
+    },
+    {
+      "path": "inputs/hass_misc.json",
+      "bytes": 182,
+      "sha256": "e230b7f229e85ffc31ce0686697445d75f5df8a8179451f6f7f7af2315cf1b7f"
+    },
+    {
+      "path": "inputs/home-system-data.json",
+      "bytes": 126,
+      "sha256": "3088e407614d494e243a91ff00af2f287da1ac2d90b547ec406b5397497d2681"
+    },
+    {
+      "path": "inputs/language.json",
+      "bytes": 5,
+      "sha256": "44a17cac19a0a99b9620a56e1ae58f505ee6d6fcd9e8febf55e976d0a44a9b4f"
+    },
+    {
+      "path": "inputs/locale.json",
+      "bytes": 167,
+      "sha256": "fc5daf0fafaf488c85bab31fad214987a5aa5b9ba508cf2953d78170fb6c6f78"
+    },
+    {
+      "path": "inputs/localize.json",
+      "bytes": 1492,
+      "sha256": "23c720fe90a7018f057d78e23e31aa2b15969efbf6c0a620e4fcac6bbd745ba7"
+    },
+    {
+      "path": "inputs/panels.json",
+      "bytes": 4660,
+      "sha256": "a8411b5ff87d4253bfd49461a35e52397784cc111fd711546f17fd4b1be55355"
+    },
+    {
+      "path": "inputs/selectedLanguage.json",
+      "bytes": 5,
+      "sha256": "44a17cac19a0a99b9620a56e1ae58f505ee6d6fcd9e8febf55e976d0a44a9b4f"
+    },
+    {
+      "path": "inputs/states.json",
+      "bytes": 91931,
+      "sha256": "3cca124536a91f66adc8831be0abcc79df2b68393b85b73e43916b3e7a7b9813"
+    },
+    {
+      "path": "inputs/strategy-config.json",
+      "bytes": 200,
+      "sha256": "0a2f757fa09fef9b8948acff503fed187c2295ca62a10cc6d680919d58de392c"
+    },
+    {
+      "path": "inputs/systemData.json",
+      "bytes": 3,
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+    },
+    {
+      "path": "inputs/translations.json",
+      "bytes": 8551,
+      "sha256": "e2010a14f0bd50eb21bef33fe81206721432b87bbc0a60ef746635d093321d4b"
+    },
+    {
+      "path": "inputs/user.json",
+      "bytes": 342,
+      "sha256": "d18f0cd510f760717f9c1b49bc1a2772025266327ba19869ea4b62aef25b1b89"
+    },
+    {
+      "path": "inputs/userData.json",
+      "bytes": 3,
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+    },
+    {
+      "path": "outputs/dashboard.json",
+      "bytes": 1964,
+      "sha256": "7c57c4e1e9ba93c81bc58fd9d29be00db99f283f9c9b970c0dbb24b0ae2e3051"
+    },
+    {
+      "path": "outputs/expanded.json",
+      "bytes": 64741,
+      "sha256": "a2d01ab949d9553e3bf4c765ffe362e4367a95c1d316d1ae4c79825bacb92a15"
+    },
+    {
+      "path": "outputs/sections/overview/0-common-controls.json",
+      "bytes": 1565,
+      "sha256": "6edacf1a87a5663bb0d1a296ee850136aad08173c18832f801d10c521875293f"
+    },
+    {
+      "path": "outputs/views/areas-bedroom.json",
+      "bytes": 5006,
+      "sha256": "75d0821390146a2ea6dd79f067b1e695e65be9f87cd80f135f14eaed1163847d"
+    },
+    {
+      "path": "outputs/views/areas-garage.json",
+      "bytes": 3511,
+      "sha256": "81fa28d87585475e5eb4ceb00af1163af2e3c676f550d34b0472ee97c46b679a"
+    },
+    {
+      "path": "outputs/views/areas-garden.json",
+      "bytes": 6336,
+      "sha256": "f2b59fbda666f6c57a2dac15bc4bc0463b6cc0fe60dc3a3d8b34da9fd8ab5ac5"
+    },
+    {
+      "path": "outputs/views/areas-kitchen.json",
+      "bytes": 4837,
+      "sha256": "e566dcf644bd523d8ec4d5fc69e308408c5dc4203e401df4e8a8c2ed65329a08"
+    },
+    {
+      "path": "outputs/views/areas-living_room.json",
+      "bytes": 6913,
+      "sha256": "0d8161b462d848ad05c78df91c6319dd2d41ef71621e5c69ce262ed02a06ce60"
+    },
+    {
+      "path": "outputs/views/areas-office.json",
+      "bytes": 4759,
+      "sha256": "85fd35b845632fe9dc1bcfcc2e4ccf2826528e65c76228e97545e564d4c2ec29"
+    },
+    {
+      "path": "outputs/views/media-players.json",
+      "bytes": 2944,
+      "sha256": "b0c4aa34f43335ece41338d102c4888e2d3bee0b373041f4cdd2fcdaab488221"
+    },
+    {
+      "path": "outputs/views/other-devices.json",
+      "bytes": 9757,
+      "sha256": "f8f0624858bc591a96e9f740041553dcb912be68a72948d9c00014f3a32cb619"
+    },
+    {
+      "path": "outputs/views/overview.json",
+      "bytes": 10338,
+      "sha256": "4a4ec8e9aca81ddfb4f58dd0123a6e2c56e4bcd4921c709dbb04c48959675911"
+    },
+    {
+      "path": "ws/auth-current_user.json",
+      "bytes": 460,
+      "sha256": "ab02d79553192967e59c5e93172e31a8f31039d214d86ae41f71e9498932f9f6"
+    },
+    {
+      "path": "ws/config-area_registry-list.json",
+      "bytes": 2127,
+      "sha256": "b84d0fe7c17ecdd4363f6cd6a8aeec56b8ba412c0969304033bde451bb9619e8"
+    },
+    {
+      "path": "ws/config-device_registry-list.json",
+      "bytes": 56276,
+      "sha256": "faf10061c2c9dae2a7887df5d584bf4a01ca1a32840a26f814efa4821a8eca43"
+    },
+    {
+      "path": "ws/config-entity_registry-list_for_display.json",
+      "bytes": 23229,
+      "sha256": "a2401e586a3f9ce59b7c14c203020cf44f486de102d032e4054cef7546bc5010"
+    },
+    {
+      "path": "ws/config-floor_registry-list.json",
+      "bytes": 763,
+      "sha256": "474ee1277182904d6d9b34bba23e781d6a97bc32edda51885b601938f89fc589"
+    },
+    {
+      "path": "ws/energy-get_prefs.json",
+      "bytes": 137,
+      "sha256": "390ffb9b15d597bc29ab4546dfc24fa96b3b48784fe6a69fd7cc636b738a67c0"
+    },
+    {
+      "path": "ws/frontend-get_system_data-core.json",
+      "bytes": 132,
+      "sha256": "6be2eb06f13d9f1674cfce5f438d17b75d49c4a96104714fa9d70347ce26ba74"
+    },
+    {
+      "path": "ws/frontend-get_system_data-home.json",
+      "bytes": 277,
+      "sha256": "b0fe5e6478eaa9cfb1e374f7a94c89b47d8f8bd7b731dcfc8db1b7e529755115"
+    },
+    {
+      "path": "ws/frontend-get_user_data-core.json",
+      "bytes": 130,
+      "sha256": "a7f64f17dc2f8faf1f83fced6afd3565c540f97d87ff7b313426e8a15c1c464c"
+    },
+    {
+      "path": "ws/get_config.json",
+      "bytes": 4618,
+      "sha256": "3d05ab26360240c3d1917674250ae83ff7e3fcc80ae54a359aebbc01fc289d78"
+    },
+    {
+      "path": "ws/get_panels.json",
+      "bytes": 5119,
+      "sha256": "a413957dfef8ae3027109d427996b72cf4f4ec2c6f64b7c3ab4e285e468fcf2c"
+    },
+    {
+      "path": "ws/get_states.json",
+      "bytes": 102438,
+      "sha256": "8acff4281bfac6582d7fa4d5b2adb74eb3d961cddab80f1e39a943817862b5a7"
+    },
+    {
+      "path": "ws/manifest-get-frontend.json",
+      "bytes": 838,
+      "sha256": "394569cabd6150932965f711335007f6cddb3e660f171ad2b698383c0f06d94e"
+    },
+    {
+      "path": "ws/strategy-calls.json",
+      "bytes": 334,
+      "sha256": "4432f79b42eb5ca568ce025d10e6e1ed8a75144a67cf03298cc5141e1dcd2694"
+    },
+    {
+      "path": "ws/usage_prediction-common_control.json",
+      "bytes": 121,
+      "sha256": "d0d90e42cead11b1c14aa3a54278963589daad3a0ca0012f5ff76543fc4cbd1a"
+    }
+  ]
+}

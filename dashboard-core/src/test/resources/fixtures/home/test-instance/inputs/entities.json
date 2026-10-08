@@ -1,0 +1,964 @@
+{
+  "media_player.living_room_tv": {
+    "entity_id": "media_player.living_room_tv",
+    "area_id": "living_room",
+    "labels": [],
+    "platform": "universal",
+    "name": "Living Room TV"
+  },
+  "media_player.kitchen_speaker": {
+    "entity_id": "media_player.kitchen_speaker",
+    "area_id": "kitchen",
+    "labels": [],
+    "platform": "universal",
+    "name": "Kitchen Speaker"
+  },
+  "media_player.bedroom_speaker": {
+    "entity_id": "media_player.bedroom_speaker",
+    "area_id": "bedroom",
+    "labels": [],
+    "platform": "universal",
+    "name": "Bedroom Speaker"
+  },
+  "media_player.office_speaker": {
+    "entity_id": "media_player.office_speaker",
+    "area_id": "office",
+    "labels": [],
+    "platform": "universal",
+    "name": "Office Speaker"
+  },
+  "timer.laundry": {
+    "entity_id": "timer.laundry",
+    "area_id": "garage",
+    "labels": [],
+    "platform": "timer",
+    "name": "Laundry"
+  },
+  "input_number.target_humidity": {
+    "entity_id": "input_number.target_humidity",
+    "labels": [],
+    "platform": "input_number",
+    "name": "Target humidity"
+  },
+  "input_number.bedroom_brightness": {
+    "entity_id": "input_number.bedroom_brightness",
+    "area_id": "bedroom",
+    "labels": [],
+    "platform": "input_number",
+    "name": "Bedroom brightness"
+  },
+  "input_boolean.guest_mode": {
+    "entity_id": "input_boolean.guest_mode",
+    "labels": [],
+    "platform": "input_boolean",
+    "name": "Guest mode"
+  },
+  "input_boolean.vacation_mode": {
+    "entity_id": "input_boolean.vacation_mode",
+    "labels": [],
+    "platform": "input_boolean",
+    "name": "Vacation mode"
+  },
+  "input_select.house_mode": {
+    "entity_id": "input_select.house_mode",
+    "labels": [],
+    "platform": "input_select",
+    "name": "House mode"
+  },
+  "input_button.doorbell_test": {
+    "entity_id": "input_button.doorbell_test",
+    "labels": [],
+    "platform": "input_button",
+    "name": "Doorbell test"
+  },
+  "person.dev": {
+    "entity_id": "person.dev",
+    "labels": [],
+    "platform": "person",
+    "name": "Dev"
+  },
+  "counter.coffee_cups": {
+    "entity_id": "counter.coffee_cups",
+    "area_id": "kitchen",
+    "labels": [],
+    "platform": "counter",
+    "name": "Coffee cups"
+  },
+  "sensor.sun_next_dawn": {
+    "entity_id": "sensor.sun_next_dawn",
+    "device_id": "31938c6c73a4ffde98d1ec3a659e7a56",
+    "labels": [],
+    "translation_key": "next_dawn",
+    "platform": "sun",
+    "entity_category": "diagnostic",
+    "has_entity_name": true,
+    "name": "Next dawn"
+  },
+  "sensor.sun_next_dusk": {
+    "entity_id": "sensor.sun_next_dusk",
+    "device_id": "31938c6c73a4ffde98d1ec3a659e7a56",
+    "labels": [],
+    "translation_key": "next_dusk",
+    "platform": "sun",
+    "entity_category": "diagnostic",
+    "has_entity_name": true,
+    "name": "Next dusk"
+  },
+  "sensor.sun_next_midnight": {
+    "entity_id": "sensor.sun_next_midnight",
+    "device_id": "31938c6c73a4ffde98d1ec3a659e7a56",
+    "labels": [],
+    "translation_key": "next_midnight",
+    "platform": "sun",
+    "entity_category": "diagnostic",
+    "has_entity_name": true,
+    "name": "Next midnight"
+  },
+  "sensor.sun_next_noon": {
+    "entity_id": "sensor.sun_next_noon",
+    "device_id": "31938c6c73a4ffde98d1ec3a659e7a56",
+    "labels": [],
+    "translation_key": "next_noon",
+    "platform": "sun",
+    "entity_category": "diagnostic",
+    "has_entity_name": true,
+    "name": "Next noon"
+  },
+  "sensor.sun_next_rising": {
+    "entity_id": "sensor.sun_next_rising",
+    "device_id": "31938c6c73a4ffde98d1ec3a659e7a56",
+    "labels": [],
+    "translation_key": "next_rising",
+    "platform": "sun",
+    "entity_category": "diagnostic",
+    "has_entity_name": true,
+    "name": "Next rising"
+  },
+  "sensor.sun_next_setting": {
+    "entity_id": "sensor.sun_next_setting",
+    "device_id": "31938c6c73a4ffde98d1ec3a659e7a56",
+    "labels": [],
+    "translation_key": "next_setting",
+    "platform": "sun",
+    "entity_category": "diagnostic",
+    "has_entity_name": true,
+    "name": "Next setting"
+  },
+  "input_datetime.wake_up": {
+    "entity_id": "input_datetime.wake_up",
+    "labels": [],
+    "platform": "input_datetime",
+    "name": "Wake-up time"
+  },
+  "input_text.welcome_message": {
+    "entity_id": "input_text.welcome_message",
+    "labels": [],
+    "platform": "input_text",
+    "name": "Welcome message"
+  },
+  "lock.front_door_deadbolt": {
+    "entity_id": "lock.front_door_deadbolt",
+    "area_id": "living_room",
+    "labels": [],
+    "platform": "template",
+    "name": "Front door deadbolt"
+  },
+  "lock.back_door_lock": {
+    "entity_id": "lock.back_door_lock",
+    "area_id": "kitchen",
+    "labels": [],
+    "platform": "template",
+    "name": "Back door lock"
+  },
+  "sensor.living_room_temperature": {
+    "entity_id": "sensor.living_room_temperature",
+    "area_id": "living_room",
+    "labels": [],
+    "platform": "template",
+    "name": "Living room temperature",
+    "display_precision": 1
+  },
+  "sensor.living_room_humidity": {
+    "entity_id": "sensor.living_room_humidity",
+    "area_id": "living_room",
+    "labels": [],
+    "platform": "template",
+    "name": "Living room humidity"
+  },
+  "sensor.bedroom_temperature": {
+    "entity_id": "sensor.bedroom_temperature",
+    "area_id": "bedroom",
+    "labels": [],
+    "platform": "template",
+    "name": "Bedroom temperature",
+    "display_precision": 1
+  },
+  "sensor.office_temperature": {
+    "entity_id": "sensor.office_temperature",
+    "area_id": "office",
+    "labels": [],
+    "platform": "template",
+    "name": "Office temperature",
+    "display_precision": 1
+  },
+  "sensor.garden_temperature": {
+    "entity_id": "sensor.garden_temperature",
+    "area_id": "garden",
+    "labels": [],
+    "platform": "template",
+    "name": "Garden temperature",
+    "display_precision": 1
+  },
+  "sensor.garage_battery": {
+    "entity_id": "sensor.garage_battery",
+    "area_id": "garage",
+    "labels": [],
+    "platform": "template",
+    "name": "Garage battery"
+  },
+  "sensor.house_power": {
+    "entity_id": "sensor.house_power",
+    "labels": [],
+    "platform": "template",
+    "name": "House power",
+    "display_precision": 0
+  },
+  "sensor.lights_on": {
+    "entity_id": "sensor.lights_on",
+    "labels": [],
+    "platform": "template",
+    "name": "Lights on"
+  },
+  "binary_sensor.front_door": {
+    "entity_id": "binary_sensor.front_door",
+    "area_id": "living_room",
+    "labels": [],
+    "platform": "template",
+    "name": "Front door"
+  },
+  "binary_sensor.garage_door_contact": {
+    "entity_id": "binary_sensor.garage_door_contact",
+    "area_id": "garage",
+    "labels": [],
+    "platform": "template",
+    "name": "Garage door contact"
+  },
+  "binary_sensor.kitchen_motion": {
+    "entity_id": "binary_sensor.kitchen_motion",
+    "area_id": "kitchen",
+    "labels": [],
+    "platform": "template",
+    "name": "Kitchen motion"
+  },
+  "binary_sensor.bedroom_window": {
+    "entity_id": "binary_sensor.bedroom_window",
+    "area_id": "bedroom",
+    "labels": [],
+    "platform": "template",
+    "name": "Bedroom window"
+  },
+  "binary_sensor.garden_leak": {
+    "entity_id": "binary_sensor.garden_leak",
+    "area_id": "garden",
+    "labels": [],
+    "platform": "template",
+    "name": "Garden leak"
+  },
+  "binary_sensor.office_occupancy": {
+    "entity_id": "binary_sensor.office_occupancy",
+    "area_id": "office",
+    "labels": [],
+    "platform": "template",
+    "name": "Office occupancy"
+  },
+  "switch.garden_irrigation": {
+    "entity_id": "switch.garden_irrigation",
+    "area_id": "garden",
+    "labels": [],
+    "platform": "template",
+    "name": "Garden irrigation"
+  },
+  "alarm_control_panel.security": {
+    "entity_id": "alarm_control_panel.security",
+    "area_id": "living_room",
+    "labels": [],
+    "platform": "demo",
+    "name": "Security"
+  },
+  "binary_sensor.basement_floor_wet": {
+    "entity_id": "binary_sensor.basement_floor_wet",
+    "device_id": "8c49fdeb5ec2053d77fa414232e146b1",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "binary_sensor.movement_backyard": {
+    "entity_id": "binary_sensor.movement_backyard",
+    "device_id": "172a882e06368fe11efdb8848899190e",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "binary_sensor.outside_temperature_battery_charging": {
+    "entity_id": "binary_sensor.outside_temperature_battery_charging",
+    "device_id": "b97199947ecfb4ddd3b1e80e71d09e0d",
+    "labels": [],
+    "platform": "demo",
+    "entity_category": "diagnostic",
+    "has_entity_name": true,
+    "name": "Battery Charging"
+  },
+  "button.push": {
+    "entity_id": "button.push",
+    "device_id": "2d9e00b8c5abacf3b9b112a00176f57d",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "climate.heatpump": {
+    "entity_id": "climate.heatpump",
+    "device_id": "8a5b0c745c47fe240b8a1f143e530b8e",
+    "labels": [],
+    "translation_key": "ubercool",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "climate.hvac": {
+    "entity_id": "climate.hvac",
+    "device_id": "505460fb6b679b60291c2fa54cf45fa6",
+    "labels": [],
+    "translation_key": "ubercool",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "climate.ecobee": {
+    "entity_id": "climate.ecobee",
+    "device_id": "3b72a9ad8600116b813324dc271568c9",
+    "labels": [],
+    "translation_key": "ubercool",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "cover.kitchen_window": {
+    "entity_id": "cover.kitchen_window",
+    "device_id": "75666e913eb536fad3387e804763d874",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "cover.hall_window": {
+    "entity_id": "cover.hall_window",
+    "device_id": "8e14bd6490a70631bd5180b6f3047133",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "cover.living_room_window": {
+    "entity_id": "cover.living_room_window",
+    "device_id": "72a4c9fe12beb4a65f8874bd4d913dfc",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "cover.garage_door": {
+    "entity_id": "cover.garage_door",
+    "device_id": "6e4d7e6547a90fdd7bb05800d60dc8c3",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "cover.pergola_roof": {
+    "entity_id": "cover.pergola_roof",
+    "device_id": "7f9ca03f8677ae4e3f64225be8405ae2",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "date.date": {
+    "entity_id": "date.date",
+    "device_id": "51d2691ea1b27508a27739b6cdca85ae",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "datetime.date_and_time": {
+    "entity_id": "datetime.date_and_time",
+    "device_id": "5a096c4a7e1524063b557158bc284cfc",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "event.push_button_press": {
+    "entity_id": "event.push_button_press",
+    "device_id": "2d9e00b8c5abacf3b9b112a00176f57d",
+    "labels": [],
+    "translation_key": "push",
+    "platform": "demo",
+    "has_entity_name": true,
+    "name": "Button press"
+  },
+  "fan.living_room_fan": {
+    "entity_id": "fan.living_room_fan",
+    "area_id": "living_room",
+    "labels": [],
+    "translation_key": "demo",
+    "platform": "demo",
+    "name": "Living Room Fan"
+  },
+  "fan.ceiling_fan": {
+    "entity_id": "fan.ceiling_fan",
+    "area_id": "bedroom",
+    "labels": [],
+    "translation_key": "demo",
+    "platform": "demo",
+    "name": "Ceiling Fan"
+  },
+  "fan.percentage_full_fan": {
+    "entity_id": "fan.percentage_full_fan",
+    "labels": [],
+    "translation_key": "demo",
+    "platform": "demo",
+    "name": "Percentage Full Fan"
+  },
+  "fan.percentage_limited_fan": {
+    "entity_id": "fan.percentage_limited_fan",
+    "labels": [],
+    "translation_key": "demo",
+    "platform": "demo",
+    "name": "Percentage Limited Fan"
+  },
+  "fan.preset_only_limited_fan": {
+    "entity_id": "fan.preset_only_limited_fan",
+    "labels": [],
+    "translation_key": "demo",
+    "platform": "demo",
+    "name": "Preset Only Limited Fan"
+  },
+  "light.bed_light": {
+    "entity_id": "light.bed_light",
+    "device_id": "4286fe79c6ed9eddf7d973f125c6208d",
+    "labels": [],
+    "translation_key": "bed_light",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "light.ceiling_lights": {
+    "entity_id": "light.ceiling_lights",
+    "device_id": "d0ce50c1ef9602564791883cd5f03cdc",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "light.kitchen_lights": {
+    "entity_id": "light.kitchen_lights",
+    "device_id": "dd1fecf1c16988dbda20a3a1ab006482",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "light.office_rgbw_lights": {
+    "entity_id": "light.office_rgbw_lights",
+    "device_id": "71a0aa5177dbdacd0d134ec71feef8c9",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "light.living_room_rgbww_lights": {
+    "entity_id": "light.living_room_rgbww_lights",
+    "device_id": "62e651ea594077ada0059650f42dff38",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "light.entrance_color_white_lights": {
+    "entity_id": "light.entrance_color_white_lights",
+    "device_id": "90f936837ae5c809e934b85941c8dfc5",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "notify.notifier": {
+    "entity_id": "notify.notifier",
+    "device_id": "b7be8b3be218e0608d725b1df971ab83",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "number.volume": {
+    "entity_id": "number.volume",
+    "device_id": "2d731c6600777fdebd33cebbf569e5a4",
+    "labels": [],
+    "translation_key": "volume",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "number.pwm_1": {
+    "entity_id": "number.pwm_1",
+    "device_id": "2ba06f5a3b598a3b4ae59781372b6c26",
+    "labels": [],
+    "translation_key": "pwm",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "number.large_range": {
+    "entity_id": "number.large_range",
+    "device_id": "f29adef4651240c1d4999ec480c8aae2",
+    "labels": [],
+    "translation_key": "range",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "number.small_range": {
+    "entity_id": "number.small_range",
+    "device_id": "48015bd370e5a480100205f2a0511bb9",
+    "labels": [],
+    "translation_key": "range",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "number.temperature_setting": {
+    "entity_id": "number.temperature_setting",
+    "device_id": "b81e152d5c81404429eef13e4517e616",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "select.speed": {
+    "entity_id": "select.speed",
+    "device_id": "56adaa3edbabc1d7a29c79676364fc02",
+    "labels": [],
+    "translation_key": "speed",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "sensor.outside_temperature": {
+    "entity_id": "sensor.outside_temperature",
+    "device_id": "b97199947ecfb4ddd3b1e80e71d09e0d",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true,
+    "display_precision": 1
+  },
+  "sensor.outside_temperature_battery": {
+    "entity_id": "sensor.outside_temperature_battery",
+    "device_id": "b97199947ecfb4ddd3b1e80e71d09e0d",
+    "labels": [],
+    "platform": "demo",
+    "entity_category": "diagnostic",
+    "has_entity_name": true,
+    "name": "Battery"
+  },
+  "sensor.outside_humidity": {
+    "entity_id": "sensor.outside_humidity",
+    "device_id": "5b8f2b7fd11a9f8b920a1af29304a57b",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "sensor.carbon_monoxide": {
+    "entity_id": "sensor.carbon_monoxide",
+    "device_id": "aacd896aac2cb23a72886802a8e73902",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "sensor.carbon_dioxide": {
+    "entity_id": "sensor.carbon_dioxide",
+    "device_id": "473a622bb53dc7210dd4144b9f5f8779",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "sensor.carbon_dioxide_battery": {
+    "entity_id": "sensor.carbon_dioxide_battery",
+    "device_id": "473a622bb53dc7210dd4144b9f5f8779",
+    "labels": [],
+    "platform": "demo",
+    "entity_category": "diagnostic",
+    "has_entity_name": true,
+    "name": "Battery"
+  },
+  "sensor.power_consumption": {
+    "entity_id": "sensor.power_consumption",
+    "device_id": "4e6af34b79756be91cbb80eff30a6ad3",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true,
+    "display_precision": 0
+  },
+  "sensor.total_energy_kwh": {
+    "entity_id": "sensor.total_energy_kwh",
+    "device_id": "95e414aa2be131478923de9a834873be",
+    "labels": [],
+    "platform": "demo",
+    "display_precision": 2
+  },
+  "sensor.total_energy_mwh": {
+    "entity_id": "sensor.total_energy_mwh",
+    "device_id": "d9377496f6bcf6f0398f39dfb7677d14",
+    "labels": [],
+    "platform": "demo",
+    "display_precision": 2
+  },
+  "sensor.total_gas_m3": {
+    "entity_id": "sensor.total_gas_m3",
+    "device_id": "f06af6ad1168981b1e1e5a2d9fb6c33a",
+    "labels": [],
+    "platform": "demo",
+    "display_precision": 2
+  },
+  "sensor.total_gas_ft3": {
+    "entity_id": "sensor.total_gas_ft3",
+    "device_id": "6d3a8bce069fb4e83ef338bfa1660367",
+    "labels": [],
+    "platform": "demo",
+    "display_precision": 2
+  },
+  "sensor.thermostat": {
+    "entity_id": "sensor.thermostat",
+    "device_id": "3c3b8f12aca52e2fe82894ff054da252",
+    "labels": [],
+    "translation_key": "thermostat_mode",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "switch.decorative_lights": {
+    "entity_id": "switch.decorative_lights",
+    "device_id": "559228e557e77332b372f24f869193ff",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "switch.ac": {
+    "entity_id": "switch.ac",
+    "device_id": "8055ba1526ac522b0099c0b7dd400ad8",
+    "labels": [],
+    "translation_key": "air_conditioner",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "text.text": {
+    "entity_id": "text.text",
+    "device_id": "1615c788167c371c3182a29d8bf75696",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "text.password": {
+    "entity_id": "text.password",
+    "device_id": "3c88d0dbcb463e389129f0109a8b0dd8",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "text.text_with_1_to_5_characters": {
+    "entity_id": "text.text_with_1_to_5_characters",
+    "device_id": "8cb190134a465edeed278409a8e8350d",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "text.text_with_only_lower_case_characters": {
+    "entity_id": "text.text_with_only_lower_case_characters",
+    "device_id": "ffc113a6efc3112f43ccce06838644ce",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "time.time": {
+    "entity_id": "time.time",
+    "device_id": "1dd15670b21aaeaac6c3132de79d4994",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "update.demo_update_no_install": {
+    "entity_id": "update.demo_update_no_install",
+    "device_id": "64c4cede4625fa9abce2395ef3c249a4",
+    "labels": [],
+    "platform": "demo",
+    "entity_category": "diagnostic",
+    "has_entity_name": true
+  },
+  "update.demo_no_update": {
+    "entity_id": "update.demo_no_update",
+    "device_id": "c7477af1594a6424f09f3f7d92832214",
+    "labels": [],
+    "platform": "demo",
+    "entity_category": "config",
+    "has_entity_name": true
+  },
+  "update.demo_add_on": {
+    "entity_id": "update.demo_add_on",
+    "device_id": "1e1605c64faf6e7fc6117f979c4bd797",
+    "labels": [],
+    "platform": "demo",
+    "entity_category": "config",
+    "has_entity_name": true
+  },
+  "update.demo_living_room_bulb_update": {
+    "entity_id": "update.demo_living_room_bulb_update",
+    "device_id": "d4e01219ffc7e39acecd485fd5e7e004",
+    "labels": [],
+    "platform": "demo",
+    "entity_category": "config",
+    "has_entity_name": true
+  },
+  "update.demo_update_with_progress": {
+    "entity_id": "update.demo_update_with_progress",
+    "device_id": "42cc967f01f180aa53b7f590dc446a34",
+    "labels": [],
+    "platform": "demo",
+    "entity_category": "config",
+    "has_entity_name": true
+  },
+  "update.demo_update_with_decimal_progress": {
+    "entity_id": "update.demo_update_with_decimal_progress",
+    "device_id": "2284ff919948057d4f39670be2340c1b",
+    "labels": [],
+    "platform": "demo",
+    "entity_category": "config",
+    "has_entity_name": true
+  },
+  "vacuum.demo_vacuum_0_ground_floor": {
+    "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+    "device_id": "802de5381b5f27cf5161e45bb6c5228f",
+    "labels": [],
+    "translation_key": "model_s",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "vacuum.demo_vacuum_1_first_floor": {
+    "entity_id": "vacuum.demo_vacuum_1_first_floor",
+    "device_id": "2e915b402f95c00fd154e96bd981c039",
+    "labels": [],
+    "translation_key": "model_s",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "vacuum.demo_vacuum_2_second_floor": {
+    "entity_id": "vacuum.demo_vacuum_2_second_floor",
+    "device_id": "571e826aef62be658bfd615ec8b3e182",
+    "labels": [],
+    "translation_key": "model_s",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "vacuum.demo_vacuum_3_third_floor": {
+    "entity_id": "vacuum.demo_vacuum_3_third_floor",
+    "device_id": "ef48be141c9842f742f8c6abd0f2b12f",
+    "labels": [],
+    "translation_key": "model_s",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "vacuum.demo_vacuum_4_fourth_floor": {
+    "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+    "device_id": "a3afd687cfc44c60258b374d2a8fbfe4",
+    "labels": [],
+    "translation_key": "model_s",
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "valve.front_garden": {
+    "entity_id": "valve.front_garden",
+    "device_id": "1d6e0934758c1652e75d80539b14a67f",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "valve.orchard": {
+    "entity_id": "valve.orchard",
+    "device_id": "6740cf474901be06e13747a505306fcc",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "valve.back_garden": {
+    "entity_id": "valve.back_garden",
+    "device_id": "a263a8abfed6d3ae07475f21fed9d5c4",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "valve.trees": {
+    "entity_id": "valve.trees",
+    "device_id": "f48890a813b64666407312aef44d2fed",
+    "labels": [],
+    "platform": "demo",
+    "has_entity_name": true
+  },
+  "water_heater.demo_water_heater": {
+    "entity_id": "water_heater.demo_water_heater",
+    "area_id": "garage",
+    "labels": [],
+    "platform": "demo",
+    "name": "Demo Water Heater"
+  },
+  "water_heater.demo_water_heater_celsius": {
+    "entity_id": "water_heater.demo_water_heater_celsius",
+    "labels": [],
+    "platform": "demo",
+    "name": "Demo Water Heater Celsius"
+  },
+  "weather.demo_weather_south": {
+    "entity_id": "weather.demo_weather_south",
+    "labels": [],
+    "platform": "demo",
+    "name": "Demo Weather South"
+  },
+  "weather.demo_weather_north": {
+    "entity_id": "weather.demo_weather_north",
+    "labels": [],
+    "platform": "demo",
+    "name": "Demo Weather North"
+  },
+  "todo.shopping_list": {
+    "entity_id": "todo.shopping_list",
+    "labels": [],
+    "translation_key": "shopping_list",
+    "platform": "shopping_list",
+    "has_entity_name": true,
+    "name": "Shopping List"
+  },
+  "tts.google_translate_en_com": {
+    "entity_id": "tts.google_translate_en_com",
+    "device_id": "f2c3d450693cb53cd822350b69dcfbd7",
+    "labels": [],
+    "platform": "google_translate",
+    "name": ""
+  },
+  "weather.forecast_native_test_home": {
+    "entity_id": "weather.forecast_native_test_home",
+    "device_id": "5c631cfb31e43cd5daabaae479769f8d",
+    "labels": [],
+    "platform": "met",
+    "has_entity_name": true,
+    "name": "Native Test Home"
+  },
+  "event.backup_automatic_backup": {
+    "entity_id": "event.backup_automatic_backup",
+    "device_id": "747b893e1aba0a4c99c134e5aeccc37c",
+    "labels": [],
+    "translation_key": "automatic_backup_event",
+    "platform": "backup",
+    "has_entity_name": true,
+    "name": "Automatic backup"
+  },
+  "sensor.backup_backup_manager_state": {
+    "entity_id": "sensor.backup_backup_manager_state",
+    "device_id": "747b893e1aba0a4c99c134e5aeccc37c",
+    "labels": [],
+    "translation_key": "backup_manager_state",
+    "platform": "backup",
+    "has_entity_name": true,
+    "name": "Backup Manager state"
+  },
+  "sensor.backup_next_scheduled_automatic_backup": {
+    "entity_id": "sensor.backup_next_scheduled_automatic_backup",
+    "device_id": "747b893e1aba0a4c99c134e5aeccc37c",
+    "labels": [],
+    "translation_key": "next_scheduled_automatic_backup",
+    "platform": "backup",
+    "has_entity_name": true,
+    "name": "Next scheduled automatic backup"
+  },
+  "sensor.backup_last_successful_automatic_backup": {
+    "entity_id": "sensor.backup_last_successful_automatic_backup",
+    "device_id": "747b893e1aba0a4c99c134e5aeccc37c",
+    "labels": [],
+    "translation_key": "last_successful_automatic_backup",
+    "platform": "backup",
+    "has_entity_name": true,
+    "name": "Last successful automatic backup"
+  },
+  "sensor.backup_last_attempted_automatic_backup": {
+    "entity_id": "sensor.backup_last_attempted_automatic_backup",
+    "device_id": "747b893e1aba0a4c99c134e5aeccc37c",
+    "labels": [],
+    "translation_key": "last_attempted_automatic_backup",
+    "platform": "backup",
+    "has_entity_name": true,
+    "name": "Last attempted automatic backup"
+  },
+  "device_tracker.sm_f946b": {
+    "entity_id": "device_tracker.sm_f946b",
+    "device_id": "bf1206d2c2629106e95e6bdc6600b9ed",
+    "labels": [],
+    "platform": "mobile_app",
+    "entity_category": "diagnostic",
+    "name": ""
+  },
+  "notify.sm_f946b": {
+    "entity_id": "notify.sm_f946b",
+    "device_id": "bf1206d2c2629106e95e6bdc6600b9ed",
+    "labels": [],
+    "translation_key": "notify",
+    "platform": "mobile_app",
+    "has_entity_name": true
+  },
+  "sensor.sm_f946b_battery_level": {
+    "entity_id": "sensor.sm_f946b_battery_level",
+    "device_id": "bf1206d2c2629106e95e6bdc6600b9ed",
+    "labels": [],
+    "platform": "mobile_app",
+    "entity_category": "diagnostic",
+    "name": "Battery level"
+  },
+  "sensor.sm_f946b_battery_state": {
+    "entity_id": "sensor.sm_f946b_battery_state",
+    "device_id": "bf1206d2c2629106e95e6bdc6600b9ed",
+    "labels": [],
+    "platform": "mobile_app",
+    "entity_category": "diagnostic",
+    "name": "Battery state"
+  },
+  "sensor.sm_f946b_charger_type": {
+    "entity_id": "sensor.sm_f946b_charger_type",
+    "device_id": "bf1206d2c2629106e95e6bdc6600b9ed",
+    "labels": [],
+    "platform": "mobile_app",
+    "entity_category": "diagnostic",
+    "name": "Charger type"
+  },
+  "device_tracker.sdk_gphone64_x86_64": {
+    "entity_id": "device_tracker.sdk_gphone64_x86_64",
+    "device_id": "03dfeec1333dc3ff497c2b6f7c8a7e7f",
+    "labels": [],
+    "platform": "mobile_app",
+    "entity_category": "diagnostic",
+    "name": ""
+  },
+  "notify.sdk_gphone64_x86_64": {
+    "entity_id": "notify.sdk_gphone64_x86_64",
+    "device_id": "03dfeec1333dc3ff497c2b6f7c8a7e7f",
+    "labels": [],
+    "translation_key": "notify",
+    "platform": "mobile_app",
+    "has_entity_name": true
+  },
+  "sensor.sdk_gphone64_x86_64_battery_level": {
+    "entity_id": "sensor.sdk_gphone64_x86_64_battery_level",
+    "device_id": "03dfeec1333dc3ff497c2b6f7c8a7e7f",
+    "labels": [],
+    "platform": "mobile_app",
+    "entity_category": "diagnostic",
+    "name": "Battery level"
+  },
+  "sensor.sdk_gphone64_x86_64_battery_state": {
+    "entity_id": "sensor.sdk_gphone64_x86_64_battery_state",
+    "device_id": "03dfeec1333dc3ff497c2b6f7c8a7e7f",
+    "labels": [],
+    "platform": "mobile_app",
+    "entity_category": "diagnostic",
+    "name": "Battery state"
+  },
+  "sensor.sdk_gphone64_x86_64_charger_type": {
+    "entity_id": "sensor.sdk_gphone64_x86_64_charger_type",
+    "device_id": "03dfeec1333dc3ff497c2b6f7c8a7e7f",
+    "labels": [],
+    "platform": "mobile_app",
+    "entity_category": "diagnostic",
+    "name": "Charger type"
+  }
+}

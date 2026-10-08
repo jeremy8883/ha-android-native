@@ -1,0 +1,10 @@
+{
+  "request": {
+    "type": "frontend/get_user_data",
+    "key": "core",
+    "id": 60
+  },
+  "result": {
+    "value": null
+  }
+}

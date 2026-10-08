@@ -1,0 +1,28 @@
+[
+  {
+    "level": "view:overview",
+    "request": {
+      "type": "energy/get_prefs"
+    },
+    "error": {
+      "code": "not_found",
+      "message": "No prefs"
+    }
+  },
+  {
+    "level": "section:overview:0",
+    "request": {
+      "type": "usage_prediction/common_control"
+    },
+    "result": {
+      "entities": [
+        "light.kitchen_lights",
+        "light.living_room_rgbww_lights",
+        "switch.decorative_lights",
+        "fan.living_room_fan",
+        "cover.kitchen_window",
+        "input_boolean.guest_mode"
+      ]
+    }
+  }
+]

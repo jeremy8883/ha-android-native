@@ -1,0 +1,10 @@
+{
+  "request": {
+    "type": "frontend/get_system_data",
+    "key": "core",
+    "id": 65
+  },
+  "result": {
+    "value": null
+  }
+}

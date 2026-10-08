@@ -1,0 +1,9 @@
+{
+  "request": {
+    "type": "usage_prediction/common_control",
+    "id": 61
+  },
+  "result": {
+    "entities": []
+  }
+}

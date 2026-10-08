@@ -1,0 +1,193 @@
+{
+  "lovelace": {
+    "component_name": "lovelace",
+    "icon": null,
+    "title": null,
+    "default_visible": true,
+    "config": null,
+    "url_path": "lovelace",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  },
+  "light": {
+    "component_name": "light",
+    "icon": "mdi:lamps",
+    "title": "light",
+    "default_visible": true,
+    "config": null,
+    "url_path": "light",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": false
+  },
+  "security": {
+    "component_name": "security",
+    "icon": "mdi:security",
+    "title": "security",
+    "default_visible": true,
+    "config": null,
+    "url_path": "security",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": false
+  },
+  "climate": {
+    "component_name": "climate",
+    "icon": "mdi:home-thermometer",
+    "title": "climate",
+    "default_visible": true,
+    "config": null,
+    "url_path": "climate",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": false
+  },
+  "home": {
+    "component_name": "home",
+    "icon": "mdi:home",
+    "title": "home",
+    "default_visible": true,
+    "config": null,
+    "url_path": "home",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": false
+  },
+  "maintenance": {
+    "component_name": "maintenance",
+    "icon": "mdi:wrench",
+    "title": "maintenance",
+    "default_visible": true,
+    "config": null,
+    "url_path": "maintenance",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": false
+  },
+  "profile": {
+    "component_name": "profile",
+    "icon": null,
+    "title": null,
+    "default_visible": true,
+    "config": null,
+    "url_path": "profile",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  },
+  "notfound": {
+    "component_name": "notfound",
+    "icon": null,
+    "title": null,
+    "default_visible": true,
+    "config": null,
+    "url_path": "notfound",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  },
+  "media-browser": {
+    "component_name": "media-browser",
+    "icon": "mdi:play-box-multiple",
+    "title": "media_browser",
+    "default_visible": true,
+    "config": null,
+    "url_path": "media-browser",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  },
+  "logbook": {
+    "component_name": "logbook",
+    "icon": "mdi:format-list-bulleted-type",
+    "title": "logbook",
+    "default_visible": true,
+    "config": null,
+    "url_path": "logbook",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  },
+  "history": {
+    "component_name": "history",
+    "icon": "mdi:chart-box",
+    "title": "history",
+    "default_visible": true,
+    "config": null,
+    "url_path": "history",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  },
+  "energy": {
+    "component_name": "energy",
+    "icon": "mdi:lightning-bolt",
+    "title": "energy",
+    "default_visible": true,
+    "config": null,
+    "url_path": "energy",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  },
+  "_my_redirect": {
+    "component_name": "my",
+    "icon": null,
+    "title": null,
+    "default_visible": true,
+    "config": null,
+    "url_path": "_my_redirect",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  },
+  "map": {
+    "component_name": "lovelace",
+    "icon": "mdi:map",
+    "title": "Map",
+    "default_visible": true,
+    "config": {
+      "mode": "storage"
+    },
+    "url_path": "map",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  },
+  "calendar": {
+    "component_name": "calendar",
+    "icon": "mdi:calendar",
+    "title": "calendar",
+    "default_visible": true,
+    "config": null,
+    "url_path": "calendar",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  },
+  "todo": {
+    "component_name": "todo",
+    "icon": "mdi:clipboard-list",
+    "title": "todo",
+    "default_visible": true,
+    "config": null,
+    "url_path": "todo",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  },
+  "dashboard-test": {
+    "component_name": "lovelace",
+    "icon": "mdi:test-tube",
+    "title": "Test dashboard",
+    "default_visible": true,
+    "config": {
+      "mode": "storage"
+    },
+    "url_path": "dashboard-test",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  }
+}

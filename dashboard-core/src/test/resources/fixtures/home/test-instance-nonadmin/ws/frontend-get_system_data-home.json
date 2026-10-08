@@ -1,0 +1,16 @@
+{
+  "request": {
+    "type": "frontend/get_system_data",
+    "key": "home",
+    "id": 58
+  },
+  "result": {
+    "value": {
+      "favorite_entities": [
+        "light.living_room_rgbww_lights",
+        "climate.heatpump",
+        "lock.front_door_deadbolt"
+      ]
+    }
+  }
+}

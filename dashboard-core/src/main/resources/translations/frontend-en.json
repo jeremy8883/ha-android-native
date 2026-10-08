@@ -1,0 +1,118 @@
+{
+ "panel": {
+  "apps": "Apps",
+  "calendar": "Calendar",
+  "climate": "Climate",
+  "config": "Settings",
+  "demo": "Demo",
+  "energy": "Energy",
+  "history": "History",
+  "home": "Overview",
+  "light": "Lights",
+  "logbook": "Activity",
+  "maintenance": "Maintenance",
+  "map": "Map",
+  "media_browser": "Media",
+  "notfound": "Page not found",
+  "profile": "Profile",
+  "security": "Security",
+  "states": "Overview",
+  "todo": "To-do lists"
+ },
+ "ui": {
+  "panel": {
+   "lovelace": {
+    "strategy": {
+     "areas": {
+      "areas": "Areas",
+      "edit_the_area": "edit the area",
+      "groups": {
+       "actions": "Actions",
+       "climate": "Climate",
+       "covers": "Covers",
+       "lights": "Lights",
+       "media_players": "Media players",
+       "others": "Others",
+       "security": "Security"
+      },
+      "other_areas": "Other areas",
+      "sensors": "Sensors",
+      "sensors_description": "To display temperature and humidity sensors in the overview and in the area view, add a sensor to that area and {edit_the_area} to configure related sensors."
+     },
+     "climate": {
+      "devices": "Devices",
+      "other_devices": "Other devices"
+     },
+     "common_controls": {
+      "no_data": "This place will soon fill up with the entities you use most often, based on your activity.",
+      "not_loaded": "Usage Prediction integration is not loaded."
+     },
+     "home": {
+      "areas": "Areas",
+      "automations": "Automations",
+      "devices": "Devices",
+      "favorites": "Favorites",
+      "for_you": "For you",
+      "home": "Home",
+      "other_areas": "Other areas",
+      "others": "Others",
+      "scenes": "Scenes",
+      "summaries": "Summaries",
+      "summary_list": {
+       "energy": "Today's energy",
+       "maintenance": "Maintenance",
+       "media_players": "Media players",
+       "other_devices": "Other devices",
+       "persons": "Presence",
+       "weather": "Weather"
+      },
+      "unnamed_device": "Unnamed device",
+      "welcome_add_device": "Add new device",
+      "welcome_content": "Add lights, switches, sensors, or other smart home devices to get started.",
+      "welcome_edit_areas": "Edit areas",
+      "welcome_title": "No devices here yet",
+      "welcome_user": "Welcome {user}"
+     },
+     "home-area": {
+      "no_devices_add_device": "Add new device",
+      "no_devices_assign_device": "Assign existing device",
+      "no_devices_content": "Add your smart lights, switches, or sensors to this area to get started.",
+      "no_devices_title": "This is a blank canvas"
+     },
+     "home-other-devices": {
+      "all_organized_content": "There are no unassigned devices left. All devices are organized into areas.",
+      "all_organized_title": "All devices are organized",
+      "assign_area": "Assign area",
+      "entities": "Entities",
+      "helpers": "Helpers"
+     },
+     "home_media_players": {
+      "media_players": "Media players",
+      "other_media_players": "Other media players"
+     },
+     "light": {
+      "lights": "Lights",
+      "off": "Off",
+      "on": "On",
+      "other_lights": "Other lights"
+     },
+     "maintenance": {
+      "devices": "Devices",
+      "other_devices": "Other devices"
+     },
+     "original-states": {
+      "empty_state_action": "Go to the integrations page",
+      "empty_state_content": "This page allows you to control your devices, however it looks like you have no devices set up yet.",
+      "empty_state_title": "Welcome Home",
+      "helpers": "[%key:ui::panel::config::helpers::caption%]"
+     },
+     "security": {
+      "activity": "Activity",
+      "devices": "Devices",
+      "other_devices": "Other devices"
+     }
+    }
+   }
+  }
+ }
+}

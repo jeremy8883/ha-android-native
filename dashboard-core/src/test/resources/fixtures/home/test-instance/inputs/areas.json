@@ -1,0 +1,80 @@
+{
+  "living_room": {
+    "aliases": [],
+    "area_id": "living_room",
+    "floor_id": "ground_floor",
+    "humidity_entity_id": null,
+    "icon": "mdi:sofa",
+    "labels": [],
+    "name": "Living Room",
+    "picture": null,
+    "temperature_entity_id": null,
+    "created_at": 1791433961.139347,
+    "modified_at": 1791433963.280085
+  },
+  "kitchen": {
+    "aliases": [],
+    "area_id": "kitchen",
+    "floor_id": "ground_floor",
+    "humidity_entity_id": null,
+    "icon": "mdi:stove",
+    "labels": [],
+    "name": "Kitchen",
+    "picture": null,
+    "temperature_entity_id": null,
+    "created_at": 1791433961.139405,
+    "modified_at": 1791433963.280752
+  },
+  "bedroom": {
+    "aliases": [],
+    "area_id": "bedroom",
+    "floor_id": "first_floor",
+    "humidity_entity_id": null,
+    "icon": "mdi:bed",
+    "labels": [],
+    "name": "Bedroom",
+    "picture": null,
+    "temperature_entity_id": null,
+    "created_at": 1791433961.13944,
+    "modified_at": 1791433963.282676
+  },
+  "garage": {
+    "aliases": [],
+    "area_id": "garage",
+    "floor_id": "ground_floor",
+    "humidity_entity_id": null,
+    "icon": "mdi:garage",
+    "labels": [],
+    "name": "Garage",
+    "picture": null,
+    "temperature_entity_id": null,
+    "created_at": 1791433963.281436,
+    "modified_at": 1791433963.281438
+  },
+  "office": {
+    "aliases": [],
+    "area_id": "office",
+    "floor_id": "first_floor",
+    "humidity_entity_id": null,
+    "icon": "mdi:desk",
+    "labels": [],
+    "name": "Office",
+    "picture": null,
+    "temperature_entity_id": null,
+    "created_at": 1791433963.283564,
+    "modified_at": 1791433963.283565
+  },
+  "garden": {
+    "aliases": [],
+    "area_id": "garden",
+    "floor_id": "outside",
+    "humidity_entity_id": null,
+    "icon": "mdi:flower",
+    "labels": [],
+    "name": "Garden",
+    "picture": null,
+    "temperature_entity_id": null,
+    "created_at": 1791433963.283776,
+    "modified_at": 1791433963.283777
+  }
+}

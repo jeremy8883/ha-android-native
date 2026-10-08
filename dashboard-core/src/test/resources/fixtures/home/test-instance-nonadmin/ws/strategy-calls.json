@@ -1,0 +1,21 @@
+[
+  {
+    "level": "view:overview",
+    "request": {
+      "type": "energy/get_prefs"
+    },
+    "error": {
+      "code": "not_found",
+      "message": "No prefs"
+    }
+  },
+  {
+    "level": "section:overview:0",
+    "request": {
+      "type": "usage_prediction/common_control"
+    },
+    "result": {
+      "entities": []
+    }
+  }
+]

@@ -1,0 +1,126 @@
+{
+  "title": "Media players",
+  "path": "media-players",
+  "subview": true,
+  "icon": "mdi:multimedia",
+  "type": "sections",
+  "max_columns": 2,
+  "sections": [
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Ground floor",
+          "icon": "mdi:home-floor-0"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Living Room",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "areas-living_room"
+          }
+        },
+        {
+          "type": "media-control",
+          "entity": "media_player.living_room_tv"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Kitchen",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "areas-kitchen"
+          }
+        },
+        {
+          "type": "media-control",
+          "entity": "media_player.kitchen_speaker"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "First floor",
+          "icon": "mdi:home-floor-1"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Bedroom",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "areas-bedroom"
+          }
+        },
+        {
+          "type": "media-control",
+          "entity": "media_player.bedroom_speaker"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Office",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "areas-office"
+          }
+        },
+        {
+          "type": "media-control",
+          "entity": "media_player.office_speaker"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Other media players"
+        },
+        {
+          "type": "media-control",
+          "entity": "media_player.living_room"
+        },
+        {
+          "type": "media-control",
+          "entity": "media_player.bedroom"
+        },
+        {
+          "type": "media-control",
+          "entity": "media_player.walkman"
+        },
+        {
+          "type": "media-control",
+          "entity": "media_player.kitchen"
+        },
+        {
+          "type": "media-control",
+          "entity": "media_player.lounge_room"
+        },
+        {
+          "type": "media-control",
+          "entity": "media_player.browse"
+        },
+        {
+          "type": "media-control",
+          "entity": "media_player.group"
+        },
+        {
+          "type": "media-control",
+          "entity": "media_player.search"
+        }
+      ]
+    }
+  ]
+}

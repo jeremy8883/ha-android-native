@@ -1,0 +1,291 @@
+{
+  "title": "Garden",
+  "path": "areas-garden",
+  "subview": true,
+  "type": "sections",
+  "header": {
+    "badges_position": "bottom"
+  },
+  "max_columns": 3,
+  "sections": [
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Lights",
+          "icon": "mdi:lamps",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/light?historyBack=1"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "text": "Off",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_on",
+                "target": {
+                  "area_id": "garden"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "not",
+                  "conditions": [
+                    {
+                      "condition": "or",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "light.entrance_color_white_lights",
+                          "state": "on"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "color": "orange",
+              "text": "On",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_off",
+                "target": {
+                  "area_id": "garden"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "or",
+                  "conditions": [
+                    {
+                      "condition": "state",
+                      "entity": "light.entrance_color_white_lights",
+                      "state": "on"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "light.entrance_color_white_lights",
+          "features": [
+            {
+              "type": "light-brightness"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Climate",
+          "icon": "mdi:home-thermometer",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/climate?historyBack=1"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "cover.pergola_roof"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Security",
+          "icon": "mdi:security",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/security?historyBack=1"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "binary_sensor.garden_leak",
+          "name": "Leak"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 3,
+      "cards": [
+        {
+          "type": "heading",
+          "heading_style": "subtitle",
+          "heading": ""
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Movement Backyard",
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "binary_sensor.movement_backyard",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Outside Temperature",
+          "badges": [
+            {
+              "entity": "sensor.outside_temperature_battery",
+              "type": "entity",
+              "tap_action": {
+                "action": "more-info"
+              }
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.outside_temperature",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Outside Humidity",
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.outside_humidity",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Front Garden",
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "valve.front_garden",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Orchard",
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "valve.orchard",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Back Garden",
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "valve.back_garden",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Trees",
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "valve.trees",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Others",
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.garden_temperature",
+          "name": {
+            "type": "entity"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "switch.garden_irrigation",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    }
+  ],
+  "badges": []
+}

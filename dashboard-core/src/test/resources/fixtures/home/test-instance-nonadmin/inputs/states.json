@@ -1,0 +1,3290 @@
+{
+  "media_player.living_room_tv": {
+    "entity_id": "media_player.living_room_tv",
+    "state": "playing",
+    "attributes": {
+      "sound_mode_list": [
+        "Music",
+        "Movie"
+      ],
+      "volume_level": 1,
+      "is_volume_muted": false,
+      "media_content_id": "eyU3bRy2x44",
+      "media_content_type": "movie",
+      "media_duration": 300,
+      "media_position": 45,
+      "media_position_updated_at": "2026-10-08T04:32:42.224697+00:00",
+      "media_title": "♥♥ The Best Fireplace Video (3 hours)",
+      "app_name": "YouTube",
+      "sound_mode": "Music",
+      "shuffle": false,
+      "entity_picture_local": "/api/media_player_proxy/media_player.living_room_tv?token=9804651d122a487cd47ae1b50daa1f667529328ee66c7b62b11cda467dfe0207&cache=be6d2a9d68ae2ad3",
+      "active_child": "media_player.living_room",
+      "device_class": "tv",
+      "entity_picture": "/api/media_player_proxy/media_player.living_room?token=d375cd90512e86a102d4eb3624a0935b0a8108c8f22db9e8ae4bf320751b567a&cache=bc2ffb49c4f67034",
+      "friendly_name": "Living Room TV",
+      "supported_features": 119695
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "media_player.kitchen_speaker": {
+    "entity_id": "media_player.kitchen_speaker",
+    "state": "playing",
+    "attributes": {
+      "sound_mode_list": [
+        "Music",
+        "Movie"
+      ],
+      "group_members": null,
+      "volume_level": 1,
+      "is_volume_muted": false,
+      "media_content_id": "bounzz-1",
+      "media_content_type": "music",
+      "media_duration": 213,
+      "media_title": "I Wanna Be A Hippy (Flamman & Abraxas Radio Mix)",
+      "media_artist": "Technohead",
+      "media_album_name": "Bounzz",
+      "media_track": 1,
+      "sound_mode": "Music",
+      "shuffle": false,
+      "repeat": "off",
+      "entity_picture_local": "/api/media_player_proxy/media_player.kitchen_speaker?token=be6fd978833b1c357a0d342e8d3a916383f058ecb66de1d3de94d06de2d5f4ac&cache=03a23be97450dad6",
+      "active_child": "media_player.kitchen",
+      "device_class": "speaker",
+      "entity_picture": "/api/media_player_proxy/media_player.kitchen?token=6b8a689dcdd0eae65a86a64a13ff26e61677e74c7234b1da7b8bd03a2f99ebf3&cache=62c0c516acbc53a9",
+      "friendly_name": "Kitchen Speaker",
+      "supported_features": 914877
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "media_player.bedroom_speaker": {
+    "entity_id": "media_player.bedroom_speaker",
+    "state": "playing",
+    "attributes": {
+      "sound_mode_list": [
+        "Music",
+        "Movie"
+      ],
+      "volume_level": 1,
+      "is_volume_muted": false,
+      "media_content_id": "kxopViU98Xo",
+      "media_content_type": "movie",
+      "media_duration": 360000,
+      "media_position": 54000,
+      "media_position_updated_at": "2026-10-08T04:32:42.224706+00:00",
+      "media_title": "Epic sax guy 10 hours",
+      "app_name": "YouTube",
+      "sound_mode": "Music",
+      "shuffle": false,
+      "entity_picture_local": "/api/media_player_proxy/media_player.bedroom_speaker?token=421db65f32a4d61b85ea855a33a5370f74021dbc1d39d86f7e24b2b970721184&cache=1a3a48ee8015702e",
+      "active_child": "media_player.bedroom",
+      "device_class": "speaker",
+      "entity_picture": "/api/media_player_proxy/media_player.bedroom?token=634692d2b22c4725dbb92288dd064f8f38afdca336482d232a67d12820504f1a&cache=e4513ed94ec89151",
+      "friendly_name": "Bedroom Speaker",
+      "supported_features": 119695
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "media_player.office_speaker": {
+    "entity_id": "media_player.office_speaker",
+    "state": "playing",
+    "attributes": {
+      "sound_mode_list": [
+        "Music",
+        "Movie"
+      ],
+      "group_members": null,
+      "volume_level": 1,
+      "is_volume_muted": false,
+      "media_content_id": "bounzz-1",
+      "media_content_type": "music",
+      "media_duration": 213,
+      "media_title": "I Wanna Be A Hippy (Flamman & Abraxas Radio Mix)",
+      "media_artist": "Technohead",
+      "media_album_name": "Bounzz",
+      "media_track": 1,
+      "sound_mode": "Music",
+      "shuffle": false,
+      "repeat": "off",
+      "entity_picture_local": "/api/media_player_proxy/media_player.office_speaker?token=3d7269696e6c1f927859410de18f020543ef933ace12573ef906cc02c3aa37b8&cache=f7f455e30a33e88a",
+      "active_child": "media_player.walkman",
+      "device_class": "speaker",
+      "entity_picture": "/api/media_player_proxy/media_player.walkman?token=9a720454157332ecd1159310b9daa4fd252fc9878281aceb248f8064b2986440&cache=62c0c516acbc53a9",
+      "friendly_name": "Office Speaker",
+      "supported_features": 914877
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "conversation.home_assistant": {
+    "entity_id": "conversation.home_assistant",
+    "state": "unknown",
+    "attributes": {
+      "friendly_name": "Home Assistant",
+      "supported_features": 1
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "timer.laundry": {
+    "entity_id": "timer.laundry",
+    "state": "idle",
+    "attributes": {
+      "duration": "1:00:00",
+      "editable": false,
+      "last_transition": null,
+      "friendly_name": "Laundry"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "input_number.target_humidity": {
+    "entity_id": "input_number.target_humidity",
+    "state": "30.0",
+    "attributes": {
+      "initial": null,
+      "editable": false,
+      "min": 30,
+      "max": 70,
+      "step": 1,
+      "mode": "slider",
+      "unit_of_measurement": "%",
+      "icon": "mdi:water-percent",
+      "friendly_name": "Target humidity"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "input_number.bedroom_brightness": {
+    "entity_id": "input_number.bedroom_brightness",
+    "state": "0.0",
+    "attributes": {
+      "initial": null,
+      "editable": false,
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "mode": "box",
+      "unit_of_measurement": "%",
+      "friendly_name": "Bedroom brightness"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "input_boolean.guest_mode": {
+    "entity_id": "input_boolean.guest_mode",
+    "state": "off",
+    "attributes": {
+      "editable": false,
+      "icon": "mdi:account-multiple",
+      "friendly_name": "Guest mode"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "input_boolean.vacation_mode": {
+    "entity_id": "input_boolean.vacation_mode",
+    "state": "off",
+    "attributes": {
+      "editable": false,
+      "icon": "mdi:airplane",
+      "friendly_name": "Vacation mode"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "input_select.house_mode": {
+    "entity_id": "input_select.house_mode",
+    "state": "Home",
+    "attributes": {
+      "options": [
+        "Home",
+        "Away",
+        "Night",
+        "Vacation"
+      ],
+      "editable": false,
+      "icon": "mdi:home-switch",
+      "friendly_name": "House mode"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "input_button.doorbell_test": {
+    "entity_id": "input_button.doorbell_test",
+    "state": "unknown",
+    "attributes": {
+      "editable": false,
+      "icon": "mdi:doorbell",
+      "friendly_name": "Doorbell test"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "zone.home": {
+    "entity_id": "zone.home",
+    "state": "0",
+    "attributes": {
+      "latitude": 52.3731,
+      "longitude": 4.8922,
+      "radius": 100,
+      "passive": false,
+      "persons": [],
+      "editable": true,
+      "icon": "mdi:home",
+      "friendly_name": "Native Test Home"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "person.dev": {
+    "entity_id": "person.dev",
+    "state": "unknown",
+    "attributes": {
+      "editable": true,
+      "id": "dev",
+      "device_trackers": [
+        "device_tracker.sm_f946b",
+        "device_tracker.sdk_gphone64_x86_64"
+      ],
+      "in_zones": [],
+      "user_id": "4dced85e68734d9b807a24fb2cccdc38",
+      "friendly_name": "Dev"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "counter.coffee_cups": {
+    "entity_id": "counter.coffee_cups",
+    "state": "0",
+    "attributes": {
+      "editable": false,
+      "initial": 0,
+      "step": 1,
+      "icon": "mdi:coffee",
+      "friendly_name": "Coffee cups"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sun.sun": {
+    "entity_id": "sun.sun",
+    "state": "below_horizon",
+    "attributes": {
+      "next_dawn": "2026-10-09T05:20:36.178142+00:00",
+      "next_dusk": "2026-10-08T17:36:01.825880+00:00",
+      "next_midnight": "2026-10-08T23:27:42+00:00",
+      "next_noon": "2026-10-08T11:28:06+00:00",
+      "next_rising": "2026-10-08T05:53:37.499506+00:00",
+      "next_setting": "2026-10-08T17:01:24.736346+00:00",
+      "elevation": -5.08,
+      "azimuth": 92.98,
+      "rising": true,
+      "friendly_name": "Sun"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.sun_next_dawn": {
+    "entity_id": "sensor.sun_next_dawn",
+    "state": "2026-10-09T05:20:36+00:00",
+    "attributes": {
+      "device_class": "timestamp",
+      "friendly_name": "Sun Next dawn"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.sun_next_dusk": {
+    "entity_id": "sensor.sun_next_dusk",
+    "state": "2026-10-08T17:36:01+00:00",
+    "attributes": {
+      "device_class": "timestamp",
+      "friendly_name": "Sun Next dusk"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.sun_next_midnight": {
+    "entity_id": "sensor.sun_next_midnight",
+    "state": "2026-10-08T23:27:42+00:00",
+    "attributes": {
+      "device_class": "timestamp",
+      "friendly_name": "Sun Next midnight"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.sun_next_noon": {
+    "entity_id": "sensor.sun_next_noon",
+    "state": "2026-10-08T11:28:06+00:00",
+    "attributes": {
+      "device_class": "timestamp",
+      "friendly_name": "Sun Next noon"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.sun_next_rising": {
+    "entity_id": "sensor.sun_next_rising",
+    "state": "2026-10-08T05:53:37+00:00",
+    "attributes": {
+      "device_class": "timestamp",
+      "friendly_name": "Sun Next rising"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.sun_next_setting": {
+    "entity_id": "sensor.sun_next_setting",
+    "state": "2026-10-08T17:01:24+00:00",
+    "attributes": {
+      "device_class": "timestamp",
+      "friendly_name": "Sun Next setting"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "input_datetime.wake_up": {
+    "entity_id": "input_datetime.wake_up",
+    "state": "07:00:00",
+    "attributes": {
+      "has_date": false,
+      "has_time": true,
+      "editable": false,
+      "hour": 7,
+      "minute": 0,
+      "second": 0,
+      "timestamp": 25200,
+      "friendly_name": "Wake-up time"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "input_text.welcome_message": {
+    "entity_id": "input_text.welcome_message",
+    "state": "Hello from the test instance",
+    "attributes": {
+      "editable": false,
+      "min": 0,
+      "max": 100,
+      "pattern": null,
+      "mode": "text",
+      "friendly_name": "Welcome message"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "lock.front_door_deadbolt": {
+    "entity_id": "lock.front_door_deadbolt",
+    "state": "locked",
+    "attributes": {
+      "friendly_name": "Front door deadbolt",
+      "supported_features": 0
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "lock.back_door_lock": {
+    "entity_id": "lock.back_door_lock",
+    "state": "unlocked",
+    "attributes": {
+      "friendly_name": "Back door lock",
+      "supported_features": 0
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.living_room_temperature": {
+    "entity_id": "sensor.living_room_temperature",
+    "state": "21.5",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "°C",
+      "device_class": "temperature",
+      "friendly_name": "Living room temperature"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.living_room_humidity": {
+    "entity_id": "sensor.living_room_humidity",
+    "state": "49",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "%",
+      "device_class": "humidity",
+      "friendly_name": "Living room humidity"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.bedroom_temperature": {
+    "entity_id": "sensor.bedroom_temperature",
+    "state": "19.4",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "°C",
+      "device_class": "temperature",
+      "friendly_name": "Bedroom temperature"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.office_temperature": {
+    "entity_id": "sensor.office_temperature",
+    "state": "22.8",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "°C",
+      "device_class": "temperature",
+      "friendly_name": "Office temperature"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.garden_temperature": {
+    "entity_id": "sensor.garden_temperature",
+    "state": "13.2",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "°C",
+      "device_class": "temperature",
+      "friendly_name": "Garden temperature"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.garage_battery": {
+    "entity_id": "sensor.garage_battery",
+    "state": "64.0",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "%",
+      "device_class": "battery",
+      "friendly_name": "Garage battery"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.house_power": {
+    "entity_id": "sensor.house_power",
+    "state": "475",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "W",
+      "device_class": "power",
+      "friendly_name": "House power"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.lights_on": {
+    "entity_id": "sensor.lights_on",
+    "state": "5",
+    "attributes": {
+      "friendly_name": "Lights on"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "binary_sensor.front_door": {
+    "entity_id": "binary_sensor.front_door",
+    "state": "off",
+    "attributes": {
+      "device_class": "door",
+      "friendly_name": "Front door"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "binary_sensor.garage_door_contact": {
+    "entity_id": "binary_sensor.garage_door_contact",
+    "state": "off",
+    "attributes": {
+      "device_class": "garage_door",
+      "friendly_name": "Garage door contact"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "binary_sensor.kitchen_motion": {
+    "entity_id": "binary_sensor.kitchen_motion",
+    "state": "off",
+    "attributes": {
+      "device_class": "motion",
+      "friendly_name": "Kitchen motion"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "binary_sensor.bedroom_window": {
+    "entity_id": "binary_sensor.bedroom_window",
+    "state": "on",
+    "attributes": {
+      "device_class": "window",
+      "friendly_name": "Bedroom window"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "binary_sensor.garden_leak": {
+    "entity_id": "binary_sensor.garden_leak",
+    "state": "off",
+    "attributes": {
+      "device_class": "moisture",
+      "friendly_name": "Garden leak"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "binary_sensor.office_occupancy": {
+    "entity_id": "binary_sensor.office_occupancy",
+    "state": "on",
+    "attributes": {
+      "device_class": "occupancy",
+      "friendly_name": "Office occupancy"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "switch.garden_irrigation": {
+    "entity_id": "switch.garden_irrigation",
+    "state": "off",
+    "attributes": {
+      "friendly_name": "Garden irrigation"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "image_processing.demo_face": {
+    "entity_id": "image_processing.demo_face",
+    "state": "Hans",
+    "attributes": {
+      "faces": [
+        {
+          "confidence": 98.34,
+          "name": "Hans",
+          "age": 16,
+          "gender": "male",
+          "entity_id": "image_processing.demo_face"
+        },
+        {
+          "name": "Helena",
+          "age": 28,
+          "gender": "female",
+          "entity_id": "image_processing.demo_face"
+        },
+        {
+          "confidence": 62.53,
+          "name": "Luna"
+        }
+      ],
+      "total_faces": 4,
+      "device_class": "face",
+      "friendly_name": "Demo Face"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "device_tracker.demo_paulus": {
+    "entity_id": "device_tracker.demo_paulus",
+    "state": "not_home",
+    "attributes": {
+      "source_type": "gps",
+      "latitude": 52.365885,
+      "longitude": 4.88502,
+      "gps_accuracy": 139,
+      "battery": 37,
+      "friendly_name": "Paulus"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "device_tracker.demo_anne_therese": {
+    "entity_id": "device_tracker.demo_anne_therese",
+    "state": "not_home",
+    "attributes": {
+      "source_type": "gps",
+      "latitude": 52.36314,
+      "longitude": 4.89667,
+      "gps_accuracy": 51,
+      "battery": 37,
+      "friendly_name": "Anne Therese"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "device_tracker.demo_home_boy": {
+    "entity_id": "device_tracker.demo_home_boy",
+    "state": "home",
+    "attributes": {
+      "source_type": "gps",
+      "latitude": 52.37308,
+      "longitude": 4.89222,
+      "gps_accuracy": 20,
+      "battery": 53,
+      "friendly_name": "Home Boy"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "air_quality.demo_air_quality_home": {
+    "entity_id": "air_quality.demo_air_quality_home",
+    "state": "14",
+    "attributes": {
+      "nitrogen_oxide": 100,
+      "particulate_matter_10": 23,
+      "particulate_matter_2_5": 14,
+      "unit_of_measurement": "μg/m³",
+      "attribution": "Powered by Home Assistant",
+      "friendly_name": "Demo Air Quality Home"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "air_quality.demo_air_quality_office": {
+    "entity_id": "air_quality.demo_air_quality_office",
+    "state": "4",
+    "attributes": {
+      "particulate_matter_10": 16,
+      "particulate_matter_2_5": 4,
+      "unit_of_measurement": "μg/m³",
+      "attribution": "Powered by Home Assistant",
+      "friendly_name": "Demo Air Quality Office"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "alarm_control_panel.security": {
+    "entity_id": "alarm_control_panel.security",
+    "state": "disarmed",
+    "attributes": {
+      "code_format": "number",
+      "changed_by": null,
+      "code_arm_required": true,
+      "previous_state": null,
+      "next_state": null,
+      "friendly_name": "Security",
+      "supported_features": 63
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "binary_sensor.basement_floor_wet": {
+    "entity_id": "binary_sensor.basement_floor_wet",
+    "state": "off",
+    "attributes": {
+      "device_class": "moisture",
+      "friendly_name": "Basement Floor Wet"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "binary_sensor.movement_backyard": {
+    "entity_id": "binary_sensor.movement_backyard",
+    "state": "on",
+    "attributes": {
+      "device_class": "motion",
+      "friendly_name": "Movement Backyard"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "binary_sensor.outside_temperature_battery_charging": {
+    "entity_id": "binary_sensor.outside_temperature_battery_charging",
+    "state": "off",
+    "attributes": {
+      "device_class": "battery_charging",
+      "friendly_name": "Outside Temperature Battery Charging"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "button.push": {
+    "entity_id": "button.push",
+    "state": "unknown",
+    "attributes": {
+      "friendly_name": "Push"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "camera.demo_camera": {
+    "entity_id": "camera.demo_camera",
+    "state": "streaming",
+    "attributes": {
+      "access_token": "9e93e5abdc5f0fb8e62711669adaf80741ccad5a43c3e37d65328e125097ae47",
+      "entity_picture": "/api/camera_proxy/camera.demo_camera?token=9e93e5abdc5f0fb8e62711669adaf80741ccad5a43c3e37d65328e125097ae47",
+      "friendly_name": "Demo camera",
+      "supported_features": 3
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "camera.demo_camera_png": {
+    "entity_id": "camera.demo_camera_png",
+    "state": "streaming",
+    "attributes": {
+      "access_token": "63d5c38b393d4fdcad0ef079910c76bf2abec7a1b1fdaab99018bc544f4820e",
+      "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=63d5c38b393d4fdcad0ef079910c76bf2abec7a1b1fdaab99018bc544f4820e",
+      "friendly_name": "Demo camera png",
+      "supported_features": 3
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "camera.demo_camera_without_stream": {
+    "entity_id": "camera.demo_camera_without_stream",
+    "state": "streaming",
+    "attributes": {
+      "access_token": "c6f1d410e9d6c8f497c04cb9a8438b08cffba04e9339b30d637478a46cfd7946",
+      "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=c6f1d410e9d6c8f497c04cb9a8438b08cffba04e9339b30d637478a46cfd7946",
+      "friendly_name": "Demo camera without stream",
+      "supported_features": 1
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "calendar.calendar_1": {
+    "entity_id": "calendar.calendar_1",
+    "state": "on",
+    "attributes": {
+      "message": "Future Event",
+      "all_day": false,
+      "start_time": "2026-10-08 07:02:42",
+      "end_time": "2026-10-08 08:02:42",
+      "location": "Future Location",
+      "description": "Future Description",
+      "friendly_name": "Calendar 1"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "calendar.calendar_2": {
+    "entity_id": "calendar.calendar_2",
+    "state": "off",
+    "attributes": {
+      "message": "Current Event",
+      "all_day": false,
+      "start_time": "2026-10-08 06:02:42",
+      "end_time": "2026-10-08 07:02:42",
+      "location": "",
+      "description": "",
+      "friendly_name": "Calendar 2"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "climate.heatpump": {
+    "entity_id": "climate.heatpump",
+    "state": "heat",
+    "attributes": {
+      "hvac_modes": [
+        "heat",
+        "off"
+      ],
+      "min_temp": 7,
+      "max_temp": 35,
+      "current_temperature": 25,
+      "temperature": 20,
+      "hvac_action": "heating",
+      "friendly_name": "HeatPump",
+      "supported_features": 385
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "climate.hvac": {
+    "entity_id": "climate.hvac",
+    "state": "cool",
+    "attributes": {
+      "hvac_modes": [
+        "off",
+        "heat",
+        "cool",
+        "auto",
+        "dry",
+        "fan_only"
+      ],
+      "min_temp": 7,
+      "max_temp": 35,
+      "min_humidity": 30,
+      "max_humidity": 99,
+      "target_humidity_step": 5,
+      "fan_modes": [
+        "on_low",
+        "on_high",
+        "auto_low",
+        "auto_high",
+        "off"
+      ],
+      "swing_modes": [
+        "auto",
+        "1",
+        "2",
+        "3",
+        "off"
+      ],
+      "swing_horizontal_modes": [
+        "auto",
+        "rangefull",
+        "off"
+      ],
+      "current_temperature": 22,
+      "temperature": 21,
+      "target_temp_high": null,
+      "target_temp_low": null,
+      "current_humidity": 54.2,
+      "humidity": 67.4,
+      "fan_mode": "on_high",
+      "hvac_action": "cooling",
+      "swing_mode": "off",
+      "swing_horizontal_mode": "auto",
+      "friendly_name": "Hvac",
+      "supported_features": 943
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "climate.ecobee": {
+    "entity_id": "climate.ecobee",
+    "state": "heat_cool",
+    "attributes": {
+      "hvac_modes": [
+        "off",
+        "cool",
+        "heat_cool",
+        "auto",
+        "dry",
+        "fan_only"
+      ],
+      "min_temp": 7,
+      "max_temp": 35,
+      "fan_modes": [
+        "on_low",
+        "on_high",
+        "auto_low",
+        "auto_high",
+        "off"
+      ],
+      "preset_modes": [
+        "home",
+        "eco",
+        "away"
+      ],
+      "swing_modes": [
+        "auto",
+        "1",
+        "2",
+        "3",
+        "off"
+      ],
+      "current_temperature": 23,
+      "target_temp_high": 24,
+      "target_temp_low": 21,
+      "fan_mode": "auto_low",
+      "preset_mode": "home",
+      "swing_mode": "auto",
+      "friendly_name": "Ecobee",
+      "supported_features": 442
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "cover.kitchen_window": {
+    "entity_id": "cover.kitchen_window",
+    "state": "closed",
+    "attributes": {
+      "is_closed": true,
+      "friendly_name": "Kitchen Window",
+      "supported_features": 11
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "cover.hall_window": {
+    "entity_id": "cover.hall_window",
+    "state": "open",
+    "attributes": {
+      "is_closed": false,
+      "current_position": 10,
+      "friendly_name": "Hall Window",
+      "supported_features": 15
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "cover.living_room_window": {
+    "entity_id": "cover.living_room_window",
+    "state": "open",
+    "attributes": {
+      "is_closed": false,
+      "current_position": 70,
+      "current_tilt_position": 50,
+      "friendly_name": "Living Room Window",
+      "supported_features": 255
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "cover.garage_door": {
+    "entity_id": "cover.garage_door",
+    "state": "closed",
+    "attributes": {
+      "is_closed": true,
+      "device_class": "garage",
+      "friendly_name": "Garage Door",
+      "supported_features": 3
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "cover.pergola_roof": {
+    "entity_id": "cover.pergola_roof",
+    "state": "closed",
+    "attributes": {
+      "is_closed": true,
+      "current_tilt_position": 60,
+      "friendly_name": "Pergola Roof",
+      "supported_features": 240
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "date.date": {
+    "entity_id": "date.date",
+    "state": "2020-01-01",
+    "attributes": {
+      "icon": "mdi:calendar",
+      "friendly_name": "Date"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "datetime.date_and_time": {
+    "entity_id": "datetime.date_and_time",
+    "state": "2020-01-01T12:00:00+00:00",
+    "attributes": {
+      "icon": "mdi:calendar-clock",
+      "friendly_name": "Date and Time"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "event.push_button_press": {
+    "entity_id": "event.push_button_press",
+    "state": "unknown",
+    "attributes": {
+      "event_types": [
+        "pressed"
+      ],
+      "event_type": null,
+      "device_class": "button",
+      "friendly_name": "Push Button press"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "fan.living_room_fan": {
+    "entity_id": "fan.living_room_fan",
+    "state": "off",
+    "attributes": {
+      "preset_modes": [
+        "auto",
+        "smart",
+        "sleep",
+        "on"
+      ],
+      "direction": "forward",
+      "oscillating": false,
+      "percentage": 0,
+      "percentage_step": 33.333333333333336,
+      "preset_mode": null,
+      "friendly_name": "Living Room Fan",
+      "supported_features": 55
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "fan.ceiling_fan": {
+    "entity_id": "fan.ceiling_fan",
+    "state": "off",
+    "attributes": {
+      "preset_modes": null,
+      "percentage": null,
+      "percentage_step": 33.333333333333336,
+      "preset_mode": null,
+      "friendly_name": "Ceiling Fan",
+      "supported_features": 49
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "fan.percentage_full_fan": {
+    "entity_id": "fan.percentage_full_fan",
+    "state": "off",
+    "attributes": {
+      "preset_modes": [
+        "auto",
+        "smart",
+        "sleep",
+        "on"
+      ],
+      "direction": "forward",
+      "oscillating": false,
+      "percentage": null,
+      "percentage_step": 33.333333333333336,
+      "preset_mode": null,
+      "friendly_name": "Percentage Full Fan",
+      "supported_features": 55
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "fan.percentage_limited_fan": {
+    "entity_id": "fan.percentage_limited_fan",
+    "state": "off",
+    "attributes": {
+      "preset_modes": [
+        "auto",
+        "smart",
+        "sleep",
+        "on"
+      ],
+      "percentage": null,
+      "percentage_step": 33.333333333333336,
+      "preset_mode": null,
+      "friendly_name": "Percentage Limited Fan",
+      "supported_features": 49
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "fan.preset_only_limited_fan": {
+    "entity_id": "fan.preset_only_limited_fan",
+    "state": "off",
+    "attributes": {
+      "preset_modes": [
+        "auto",
+        "smart",
+        "sleep",
+        "on"
+      ],
+      "preset_mode": null,
+      "friendly_name": "Preset Only Limited Fan",
+      "supported_features": 56
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "humidifier.humidifier": {
+    "entity_id": "humidifier.humidifier",
+    "state": "on",
+    "attributes": {
+      "min_humidity": 0,
+      "max_humidity": 100,
+      "target_humidity_step": 5,
+      "action": "humidifying",
+      "current_humidity": 45,
+      "humidity": 65,
+      "device_class": "humidifier",
+      "friendly_name": "Humidifier",
+      "supported_features": 0
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "humidifier.dehumidifier": {
+    "entity_id": "humidifier.dehumidifier",
+    "state": "on",
+    "attributes": {
+      "min_humidity": 0,
+      "max_humidity": 100,
+      "action": "drying",
+      "current_humidity": 59.4,
+      "humidity": 54.2,
+      "device_class": "dehumidifier",
+      "friendly_name": "Dehumidifier",
+      "supported_features": 0
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "humidifier.hygrostat": {
+    "entity_id": "humidifier.hygrostat",
+    "state": "on",
+    "attributes": {
+      "min_humidity": 0,
+      "max_humidity": 100,
+      "available_modes": [
+        "home",
+        "eco"
+      ],
+      "humidity": 50,
+      "mode": "home",
+      "friendly_name": "Hygrostat",
+      "supported_features": 1
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "light.bed_light": {
+    "entity_id": "light.bed_light",
+    "state": "off",
+    "attributes": {
+      "min_color_temp_kelvin": 2000,
+      "max_color_temp_kelvin": 6535,
+      "effect_list": [
+        "rainbow",
+        "off"
+      ],
+      "supported_color_modes": [
+        "color_temp",
+        "hs"
+      ],
+      "effect": null,
+      "color_mode": null,
+      "brightness": null,
+      "color_temp_kelvin": null,
+      "hs_color": null,
+      "rgb_color": null,
+      "xy_color": null,
+      "friendly_name": "Bed Light",
+      "supported_features": 4
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "light.ceiling_lights": {
+    "entity_id": "light.ceiling_lights",
+    "state": "on",
+    "attributes": {
+      "min_color_temp_kelvin": 2000,
+      "max_color_temp_kelvin": 6535,
+      "supported_color_modes": [
+        "color_temp",
+        "hs"
+      ],
+      "color_mode": "color_temp",
+      "brightness": 180,
+      "color_temp_kelvin": 2631,
+      "hs_color": [
+        28.55,
+        67.974
+      ],
+      "rgb_color": [
+        255,
+        164,
+        82
+      ],
+      "xy_color": [
+        0.532,
+        0.388
+      ],
+      "friendly_name": "Ceiling Lights",
+      "supported_features": 0
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "light.kitchen_lights": {
+    "entity_id": "light.kitchen_lights",
+    "state": "on",
+    "attributes": {
+      "min_color_temp_kelvin": 2000,
+      "max_color_temp_kelvin": 6535,
+      "supported_color_modes": [
+        "color_temp",
+        "hs"
+      ],
+      "color_mode": "hs",
+      "brightness": 180,
+      "color_temp_kelvin": null,
+      "hs_color": [
+        345,
+        75
+      ],
+      "rgb_color": [
+        255,
+        64,
+        112
+      ],
+      "xy_color": [
+        0.588,
+        0.274
+      ],
+      "friendly_name": "Kitchen Lights",
+      "supported_features": 0
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "light.office_rgbw_lights": {
+    "entity_id": "light.office_rgbw_lights",
+    "state": "on",
+    "attributes": {
+      "supported_color_modes": [
+        "rgbw"
+      ],
+      "color_mode": "rgbw",
+      "brightness": 180,
+      "hs_color": [
+        0,
+        49.804
+      ],
+      "rgb_color": [
+        255,
+        128,
+        128
+      ],
+      "xy_color": [
+        0.524,
+        0.313
+      ],
+      "rgbw_color": [
+        255,
+        0,
+        0,
+        255
+      ],
+      "friendly_name": "Office RGBW Lights",
+      "supported_features": 0
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "light.living_room_rgbww_lights": {
+    "entity_id": "light.living_room_rgbww_lights",
+    "state": "on",
+    "attributes": {
+      "supported_color_modes": [
+        "rgbww"
+      ],
+      "color_mode": "rgbww",
+      "brightness": 180,
+      "hs_color": [
+        0.923,
+        50.98
+      ],
+      "rgb_color": [
+        255,
+        127,
+        125
+      ],
+      "xy_color": [
+        0.528,
+        0.315
+      ],
+      "rgbww_color": [
+        255,
+        0,
+        0,
+        255,
+        0
+      ],
+      "friendly_name": "Living Room RGBWW Lights",
+      "supported_features": 0
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "light.entrance_color_white_lights": {
+    "entity_id": "light.entrance_color_white_lights",
+    "state": "on",
+    "attributes": {
+      "supported_color_modes": [
+        "hs",
+        "white"
+      ],
+      "color_mode": "hs",
+      "brightness": 180,
+      "hs_color": [
+        345,
+        75
+      ],
+      "rgb_color": [
+        255,
+        64,
+        112
+      ],
+      "xy_color": [
+        0.588,
+        0.274
+      ],
+      "friendly_name": "Entrance Color + White Lights",
+      "supported_features": 0
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "lock.front_door": {
+    "entity_id": "lock.front_door",
+    "state": "locked",
+    "attributes": {
+      "friendly_name": "Front Door",
+      "supported_features": 0
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "lock.kitchen_door": {
+    "entity_id": "lock.kitchen_door",
+    "state": "unlocked",
+    "attributes": {
+      "friendly_name": "Kitchen Door",
+      "supported_features": 0
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "lock.poorly_installed_door": {
+    "entity_id": "lock.poorly_installed_door",
+    "state": "unlocked",
+    "attributes": {
+      "friendly_name": "Poorly Installed Door",
+      "supported_features": 0
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "lock.openable_lock": {
+    "entity_id": "lock.openable_lock",
+    "state": "locked",
+    "attributes": {
+      "friendly_name": "Openable Lock",
+      "supported_features": 1
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "media_player.living_room": {
+    "entity_id": "media_player.living_room",
+    "state": "playing",
+    "attributes": {
+      "sound_mode_list": [
+        "Music",
+        "Movie"
+      ],
+      "volume_level": 1,
+      "is_volume_muted": false,
+      "media_content_id": "eyU3bRy2x44",
+      "media_content_type": "movie",
+      "media_duration": 300,
+      "media_position": 45,
+      "media_position_updated_at": "2026-10-08T04:32:42.224697+00:00",
+      "media_title": "♥♥ The Best Fireplace Video (3 hours)",
+      "app_name": "YouTube",
+      "sound_mode": "Music",
+      "shuffle": false,
+      "entity_picture": "/api/media_player_proxy/media_player.living_room?token=d375cd90512e86a102d4eb3624a0935b0a8108c8f22db9e8ae4bf320751b567a&cache=bc2ffb49c4f67034",
+      "friendly_name": "Living Room",
+      "supported_features": 119695
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "media_player.bedroom": {
+    "entity_id": "media_player.bedroom",
+    "state": "playing",
+    "attributes": {
+      "sound_mode_list": [
+        "Music",
+        "Movie"
+      ],
+      "volume_level": 1,
+      "is_volume_muted": false,
+      "media_content_id": "kxopViU98Xo",
+      "media_content_type": "movie",
+      "media_duration": 360000,
+      "media_position": 54000,
+      "media_position_updated_at": "2026-10-08T04:32:42.224706+00:00",
+      "media_title": "Epic sax guy 10 hours",
+      "app_name": "YouTube",
+      "sound_mode": "Music",
+      "shuffle": false,
+      "entity_picture": "/api/media_player_proxy/media_player.bedroom?token=634692d2b22c4725dbb92288dd064f8f38afdca336482d232a67d12820504f1a&cache=e4513ed94ec89151",
+      "friendly_name": "Bedroom",
+      "supported_features": 119695
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "media_player.walkman": {
+    "entity_id": "media_player.walkman",
+    "state": "playing",
+    "attributes": {
+      "sound_mode_list": [
+        "Music",
+        "Movie"
+      ],
+      "group_members": [],
+      "volume_level": 1,
+      "is_volume_muted": false,
+      "media_content_id": "bounzz-1",
+      "media_content_type": "music",
+      "media_duration": 213,
+      "media_title": "I Wanna Be A Hippy (Flamman & Abraxas Radio Mix)",
+      "media_artist": "Technohead",
+      "media_album_name": "Bounzz",
+      "media_track": 1,
+      "sound_mode": "Music",
+      "shuffle": false,
+      "repeat": "off",
+      "entity_picture": "/api/media_player_proxy/media_player.walkman?token=9a720454157332ecd1159310b9daa4fd252fc9878281aceb248f8064b2986440&cache=62c0c516acbc53a9",
+      "friendly_name": "Walkman",
+      "supported_features": 914877
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "media_player.kitchen": {
+    "entity_id": "media_player.kitchen",
+    "state": "playing",
+    "attributes": {
+      "sound_mode_list": [
+        "Music",
+        "Movie"
+      ],
+      "group_members": [],
+      "volume_level": 1,
+      "is_volume_muted": false,
+      "media_content_id": "bounzz-1",
+      "media_content_type": "music",
+      "media_duration": 213,
+      "media_title": "I Wanna Be A Hippy (Flamman & Abraxas Radio Mix)",
+      "media_artist": "Technohead",
+      "media_album_name": "Bounzz",
+      "media_track": 1,
+      "sound_mode": "Music",
+      "shuffle": false,
+      "repeat": "off",
+      "entity_picture": "/api/media_player_proxy/media_player.kitchen?token=6b8a689dcdd0eae65a86a64a13ff26e61677e74c7234b1da7b8bd03a2f99ebf3&cache=62c0c516acbc53a9",
+      "friendly_name": "Kitchen",
+      "supported_features": 914877
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "media_player.lounge_room": {
+    "entity_id": "media_player.lounge_room",
+    "state": "playing",
+    "attributes": {
+      "source_list": [
+        "dvd",
+        "youtube"
+      ],
+      "sound_mode_list": [
+        "Music",
+        "Movie"
+      ],
+      "volume_level": 1,
+      "is_volume_muted": false,
+      "media_content_id": "house-of-cards-1",
+      "media_content_type": "tvshow",
+      "media_duration": 3600,
+      "media_title": "Chapter 1",
+      "media_series_title": "House of Cards",
+      "media_season": "1",
+      "media_episode": "1",
+      "app_name": "Netflix",
+      "source": "dvd",
+      "sound_mode": "Music",
+      "shuffle": false,
+      "device_class": "tv",
+      "entity_picture": "/api/media_player_proxy/media_player.lounge_room?token=95b0b9a2ba81b7b4cfc770bfeb14724366879ba1e5aba85c50c3a5328c4765d3&cache=cb9d84451faf9351",
+      "friendly_name": "Lounge room",
+      "supported_features": 121265
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "media_player.browse": {
+    "entity_id": "media_player.browse",
+    "state": "playing",
+    "attributes": {
+      "volume_level": 1,
+      "is_volume_muted": false,
+      "sound_mode": "Music",
+      "shuffle": false,
+      "friendly_name": "Browse",
+      "supported_features": 131072
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "media_player.group": {
+    "entity_id": "media_player.group",
+    "state": "playing",
+    "attributes": {
+      "sound_mode_list": [
+        "Music",
+        "Movie"
+      ],
+      "group_members": null,
+      "volume_level": 1,
+      "is_volume_muted": false,
+      "sound_mode": "Music",
+      "shuffle": false,
+      "friendly_name": "Group",
+      "supported_features": 643983
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "media_player.search": {
+    "entity_id": "media_player.search",
+    "state": "playing",
+    "attributes": {
+      "volume_level": 1,
+      "is_volume_muted": false,
+      "sound_mode": "Music",
+      "shuffle": false,
+      "friendly_name": "Search",
+      "supported_features": 4194304
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "notify.notifier": {
+    "entity_id": "notify.notifier",
+    "state": "unknown",
+    "attributes": {
+      "friendly_name": "Notifier",
+      "supported_features": 1
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "number.volume": {
+    "entity_id": "number.volume",
+    "state": "42.0",
+    "attributes": {
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "mode": "slider",
+      "friendly_name": "volume"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "number.pwm_1": {
+    "entity_id": "number.pwm_1",
+    "state": "0.42",
+    "attributes": {
+      "min": 0,
+      "max": 1,
+      "step": 0.01,
+      "mode": "box",
+      "friendly_name": "PWM 1"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "number.large_range": {
+    "entity_id": "number.large_range",
+    "state": "500",
+    "attributes": {
+      "min": 1,
+      "max": 1000,
+      "step": 1,
+      "mode": "auto",
+      "friendly_name": "Large Range"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "number.small_range": {
+    "entity_id": "number.small_range",
+    "state": "128",
+    "attributes": {
+      "min": 1,
+      "max": 255,
+      "step": 1,
+      "mode": "auto",
+      "friendly_name": "Small Range"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "number.temperature_setting": {
+    "entity_id": "number.temperature_setting",
+    "state": "22",
+    "attributes": {
+      "min": 15,
+      "max": 35,
+      "step": 1,
+      "mode": "box",
+      "unit_of_measurement": "°C",
+      "device_class": "temperature",
+      "friendly_name": "Temperature setting"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "select.speed": {
+    "entity_id": "select.speed",
+    "state": "ridiculous_speed",
+    "attributes": {
+      "options": [
+        "light_speed",
+        "ridiculous_speed",
+        "ludicrous_speed"
+      ],
+      "friendly_name": "Speed"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.outside_temperature": {
+    "entity_id": "sensor.outside_temperature",
+    "state": "15.6",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "°C",
+      "device_class": "temperature",
+      "friendly_name": "Outside Temperature"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.outside_temperature_battery": {
+    "entity_id": "sensor.outside_temperature_battery",
+    "state": "12",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "%",
+      "device_class": "battery",
+      "friendly_name": "Outside Temperature Battery"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.outside_humidity": {
+    "entity_id": "sensor.outside_humidity",
+    "state": "54",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "%",
+      "device_class": "humidity",
+      "friendly_name": "Outside Humidity"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.carbon_monoxide": {
+    "entity_id": "sensor.carbon_monoxide",
+    "state": "54",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "ppm",
+      "device_class": "carbon_monoxide",
+      "friendly_name": "Carbon monoxide"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.carbon_dioxide": {
+    "entity_id": "sensor.carbon_dioxide",
+    "state": "54",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "ppm",
+      "device_class": "carbon_dioxide",
+      "friendly_name": "Carbon dioxide"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.carbon_dioxide_battery": {
+    "entity_id": "sensor.carbon_dioxide_battery",
+    "state": "99",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "%",
+      "device_class": "battery",
+      "friendly_name": "Carbon dioxide Battery"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.power_consumption": {
+    "entity_id": "sensor.power_consumption",
+    "state": "100",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "W",
+      "device_class": "power",
+      "friendly_name": "Power consumption"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.total_energy_kwh": {
+    "entity_id": "sensor.total_energy_kwh",
+    "state": "5.0",
+    "attributes": {
+      "state_class": "total",
+      "unit_of_measurement": "kWh",
+      "device_class": "energy",
+      "friendly_name": "Total energy 1"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.total_energy_mwh": {
+    "entity_id": "sensor.total_energy_mwh",
+    "state": "0.0025",
+    "attributes": {
+      "state_class": "total",
+      "unit_of_measurement": "MWh",
+      "device_class": "energy",
+      "friendly_name": "Total energy 2"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.total_gas_m3": {
+    "entity_id": "sensor.total_gas_m3",
+    "state": "0.25",
+    "attributes": {
+      "state_class": "total",
+      "unit_of_measurement": "m³",
+      "device_class": "gas",
+      "friendly_name": "Total gas 1"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.total_gas_ft3": {
+    "entity_id": "sensor.total_gas_ft3",
+    "state": "0.28316846592",
+    "attributes": {
+      "state_class": "total",
+      "unit_of_measurement": "m³",
+      "device_class": "gas",
+      "friendly_name": "Total gas 2"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.thermostat": {
+    "entity_id": "sensor.thermostat",
+    "state": "eco",
+    "attributes": {
+      "options": [
+        "away",
+        "comfort",
+        "eco",
+        "sleep"
+      ],
+      "device_class": "enum",
+      "friendly_name": "Thermostat"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "siren.siren": {
+    "entity_id": "siren.siren",
+    "state": "on",
+    "attributes": {
+      "friendly_name": "Siren",
+      "supported_features": 3
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "siren.siren_with_all_features": {
+    "entity_id": "siren.siren_with_all_features",
+    "state": "on",
+    "attributes": {
+      "available_tones": [
+        "fire",
+        "alarm"
+      ],
+      "friendly_name": "Siren with all features",
+      "supported_features": 31
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "stt.demo_stt": {
+    "entity_id": "stt.demo_stt",
+    "state": "unknown",
+    "attributes": {
+      "friendly_name": "Demo STT"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "switch.decorative_lights": {
+    "entity_id": "switch.decorative_lights",
+    "state": "on",
+    "attributes": {
+      "assumed_state": true,
+      "friendly_name": "Decorative Lights"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "switch.ac": {
+    "entity_id": "switch.ac",
+    "state": "off",
+    "attributes": {
+      "device_class": "outlet",
+      "friendly_name": "AC"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "text.text": {
+    "entity_id": "text.text",
+    "state": "Hello world",
+    "attributes": {
+      "mode": "text",
+      "min": 0,
+      "max": 255,
+      "pattern": null,
+      "friendly_name": "Text"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "text.password": {
+    "entity_id": "text.password",
+    "state": "Hello world",
+    "attributes": {
+      "mode": "password",
+      "min": 0,
+      "max": 255,
+      "pattern": null,
+      "friendly_name": "Password"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "text.text_with_1_to_5_characters": {
+    "entity_id": "text.text_with_1_to_5_characters",
+    "state": "Hello",
+    "attributes": {
+      "mode": "text",
+      "min": 1,
+      "max": 5,
+      "pattern": null,
+      "friendly_name": "Text with 1 to 5 characters"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "text.text_with_only_lower_case_characters": {
+    "entity_id": "text.text_with_only_lower_case_characters",
+    "state": "world",
+    "attributes": {
+      "mode": "text",
+      "min": 0,
+      "max": 255,
+      "pattern": "[a-z]+",
+      "friendly_name": "Text with only lower case characters"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "time.time": {
+    "entity_id": "time.time",
+    "state": "12:00:00",
+    "attributes": {
+      "friendly_name": "Time"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "update.demo_update_no_install": {
+    "entity_id": "update.demo_update_no_install",
+    "state": "on",
+    "attributes": {
+      "auto_update": false,
+      "display_precision": 0,
+      "installed_version": "1.0.0",
+      "in_progress": false,
+      "latest_version": "1.0.1",
+      "release_summary": "Awesome update, fixing everything!",
+      "release_url": "https://www.example.com/release/1.0.1",
+      "skipped_version": null,
+      "title": "Awesomesoft Inc.",
+      "update_percentage": null,
+      "entity_picture": "/api/brands/integration/demo/icon.png",
+      "friendly_name": "Demo Update No Install",
+      "supported_features": 0
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "update.demo_no_update": {
+    "entity_id": "update.demo_no_update",
+    "state": "off",
+    "attributes": {
+      "auto_update": false,
+      "display_precision": 0,
+      "installed_version": "1.0.0",
+      "in_progress": false,
+      "latest_version": "1.0.0",
+      "release_summary": null,
+      "release_url": null,
+      "skipped_version": null,
+      "title": "AdGuard Home",
+      "update_percentage": null,
+      "entity_picture": "/api/brands/integration/demo/icon.png",
+      "friendly_name": "Demo No Update",
+      "supported_features": 11
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "update.demo_add_on": {
+    "entity_id": "update.demo_add_on",
+    "state": "on",
+    "attributes": {
+      "auto_update": false,
+      "display_precision": 0,
+      "installed_version": "1.0.0",
+      "in_progress": false,
+      "latest_version": "1.0.1",
+      "release_summary": "Awesome update, fixing everything!",
+      "release_url": "https://www.example.com/release/1.0.1",
+      "skipped_version": null,
+      "title": "AdGuard Home",
+      "update_percentage": null,
+      "entity_picture": "/api/brands/integration/demo/icon.png",
+      "friendly_name": "Demo add-on",
+      "supported_features": 11
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "update.demo_living_room_bulb_update": {
+    "entity_id": "update.demo_living_room_bulb_update",
+    "state": "on",
+    "attributes": {
+      "auto_update": false,
+      "display_precision": 0,
+      "installed_version": "1.93.3",
+      "in_progress": false,
+      "latest_version": "1.94.2",
+      "release_summary": "Added support for effects",
+      "release_url": "https://www.example.com/release/1.93.3",
+      "skipped_version": null,
+      "title": "Philips Lamps Firmware",
+      "update_percentage": null,
+      "device_class": "firmware",
+      "entity_picture": "/api/brands/integration/demo/icon.png",
+      "friendly_name": "Demo Living Room Bulb Update",
+      "supported_features": 11
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "update.demo_update_with_progress": {
+    "entity_id": "update.demo_update_with_progress",
+    "state": "on",
+    "attributes": {
+      "auto_update": false,
+      "display_precision": 0,
+      "installed_version": "1.93.3",
+      "in_progress": false,
+      "latest_version": "1.94.2",
+      "release_summary": "Added support for effects",
+      "release_url": "https://www.example.com/release/1.93.3",
+      "skipped_version": null,
+      "title": "Philips Lamps Firmware",
+      "update_percentage": null,
+      "device_class": "firmware",
+      "entity_picture": "/api/brands/integration/demo/icon.png",
+      "friendly_name": "Demo Update with Progress",
+      "supported_features": 31
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "update.demo_update_with_decimal_progress": {
+    "entity_id": "update.demo_update_with_decimal_progress",
+    "state": "on",
+    "attributes": {
+      "auto_update": false,
+      "display_precision": 2,
+      "installed_version": "1.93.3",
+      "in_progress": false,
+      "latest_version": "1.94.2",
+      "release_summary": "Added support for effects",
+      "release_url": "https://www.example.com/release/1.93.3",
+      "skipped_version": null,
+      "title": "Philips Lamps Firmware",
+      "update_percentage": null,
+      "device_class": "firmware",
+      "entity_picture": "/api/brands/integration/demo/icon.png",
+      "friendly_name": "Demo Update with Decimal Progress",
+      "supported_features": 31
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "vacuum.demo_vacuum_0_ground_floor": {
+    "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+    "state": "docked",
+    "attributes": {
+      "fan_speed_list": [
+        "min",
+        "medium",
+        "high",
+        "max"
+      ],
+      "fan_speed": "medium",
+      "cleaned_area": 0,
+      "friendly_name": "Demo vacuum 0 ground floor",
+      "supported_features": 32700
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "vacuum.demo_vacuum_1_first_floor": {
+    "entity_id": "vacuum.demo_vacuum_1_first_floor",
+    "state": "docked",
+    "attributes": {
+      "fan_speed_list": [
+        "min",
+        "medium",
+        "high",
+        "max"
+      ],
+      "fan_speed": "medium",
+      "cleaned_area": 0,
+      "friendly_name": "Demo vacuum 1 first floor",
+      "supported_features": 12348
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "vacuum.demo_vacuum_2_second_floor": {
+    "entity_id": "vacuum.demo_vacuum_2_second_floor",
+    "state": "docked",
+    "attributes": {
+      "cleaned_area": 0,
+      "friendly_name": "Demo vacuum 2 second floor",
+      "supported_features": 12296
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "vacuum.demo_vacuum_3_third_floor": {
+    "entity_id": "vacuum.demo_vacuum_3_third_floor",
+    "state": "docked",
+    "attributes": {
+      "cleaned_area": 0,
+      "friendly_name": "Demo vacuum 3 third floor",
+      "supported_features": 3
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "vacuum.demo_vacuum_4_fourth_floor": {
+    "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+    "state": "docked",
+    "attributes": {
+      "cleaned_area": 0,
+      "friendly_name": "Demo vacuum 4 fourth floor",
+      "supported_features": 0
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "valve.front_garden": {
+    "entity_id": "valve.front_garden",
+    "state": "open",
+    "attributes": {
+      "is_closed": false,
+      "friendly_name": "Front Garden",
+      "supported_features": 3
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "valve.orchard": {
+    "entity_id": "valve.orchard",
+    "state": "closed",
+    "attributes": {
+      "is_closed": true,
+      "friendly_name": "Orchard",
+      "supported_features": 3
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "valve.back_garden": {
+    "entity_id": "valve.back_garden",
+    "state": "open",
+    "attributes": {
+      "is_closed": false,
+      "current_position": 70,
+      "friendly_name": "Back Garden",
+      "supported_features": 15
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "valve.trees": {
+    "entity_id": "valve.trees",
+    "state": "open",
+    "attributes": {
+      "is_closed": false,
+      "current_position": 30,
+      "friendly_name": "Trees",
+      "supported_features": 15
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "water_heater.demo_water_heater": {
+    "entity_id": "water_heater.demo_water_heater",
+    "state": "eco",
+    "attributes": {
+      "min_temp": 43.3,
+      "max_temp": 60,
+      "target_temp_step": 1,
+      "operation_list": [
+        "eco",
+        "electric",
+        "performance",
+        "high_demand",
+        "heat_pump",
+        "gas",
+        "off"
+      ],
+      "current_temperature": null,
+      "temperature": 48.3,
+      "target_temp_high": null,
+      "target_temp_low": null,
+      "operation_mode": "eco",
+      "away_mode": "off",
+      "friendly_name": "Demo Water Heater",
+      "supported_features": 15
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "water_heater.demo_water_heater_celsius": {
+    "entity_id": "water_heater.demo_water_heater_celsius",
+    "state": "eco",
+    "attributes": {
+      "min_temp": 43.3,
+      "max_temp": 60,
+      "target_temp_step": 1,
+      "operation_list": [
+        "eco",
+        "electric",
+        "performance",
+        "high_demand",
+        "heat_pump",
+        "gas",
+        "off"
+      ],
+      "current_temperature": null,
+      "temperature": 45,
+      "target_temp_high": null,
+      "target_temp_low": null,
+      "operation_mode": "eco",
+      "away_mode": "on",
+      "friendly_name": "Demo Water Heater Celsius",
+      "supported_features": 15
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "weather.demo_weather_south": {
+    "entity_id": "weather.demo_weather_south",
+    "state": "sunny",
+    "attributes": {
+      "temperature": 21.6,
+      "temperature_unit": "°C",
+      "humidity": 92,
+      "pressure": 1099,
+      "pressure_unit": "hPa",
+      "wind_speed": 1.8,
+      "wind_speed_unit": "km/h",
+      "visibility_unit": "km",
+      "precipitation_unit": "mm",
+      "attribution": "Powered by Home Assistant",
+      "friendly_name": "Demo Weather South",
+      "supported_features": 1
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "weather.demo_weather_north": {
+    "entity_id": "weather.demo_weather_north",
+    "state": "rainy",
+    "attributes": {
+      "temperature": -24.4,
+      "temperature_unit": "°C",
+      "humidity": 54,
+      "pressure": 33423.66,
+      "pressure_unit": "hPa",
+      "wind_speed": 7.72,
+      "wind_speed_unit": "km/h",
+      "visibility_unit": "km",
+      "precipitation_unit": "mm",
+      "attribution": "Powered by Home Assistant",
+      "friendly_name": "Demo Weather North",
+      "supported_features": 7
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "todo.shopping_list": {
+    "entity_id": "todo.shopping_list",
+    "state": "0",
+    "attributes": {
+      "friendly_name": "Shopping List",
+      "supported_features": 15
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "tts.google_translate_en_com": {
+    "entity_id": "tts.google_translate_en_com",
+    "state": "unknown",
+    "attributes": {
+      "friendly_name": "Google Translate en com"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "weather.forecast_native_test_home": {
+    "entity_id": "weather.forecast_native_test_home",
+    "state": "rainy",
+    "attributes": {
+      "temperature": 12.7,
+      "dew_point": 10.6,
+      "temperature_unit": "°C",
+      "humidity": 86,
+      "cloud_coverage": 91.4,
+      "uv_index": 0,
+      "pressure": 1008.3,
+      "pressure_unit": "hPa",
+      "wind_bearing": 334.6,
+      "wind_speed": 25.9,
+      "wind_speed_unit": "km/h",
+      "visibility_unit": "km",
+      "precipitation_unit": "mm",
+      "attribution": "Weather forecast from met.no, delivered by the Norwegian Meteorological Institute.",
+      "friendly_name": "Forecast Native Test Home",
+      "supported_features": 3
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "event.backup_automatic_backup": {
+    "entity_id": "event.backup_automatic_backup",
+    "state": "unknown",
+    "attributes": {
+      "event_types": [
+        "completed",
+        "failed",
+        "in_progress"
+      ],
+      "event_type": null,
+      "friendly_name": "Backup Automatic backup"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.backup_backup_manager_state": {
+    "entity_id": "sensor.backup_backup_manager_state",
+    "state": "idle",
+    "attributes": {
+      "options": [
+        "idle",
+        "create_backup",
+        "blocked",
+        "receive_backup",
+        "restore_backup"
+      ],
+      "device_class": "enum",
+      "friendly_name": "Backup Backup Manager state"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.backup_next_scheduled_automatic_backup": {
+    "entity_id": "sensor.backup_next_scheduled_automatic_backup",
+    "state": "unknown",
+    "attributes": {
+      "device_class": "timestamp",
+      "friendly_name": "Backup Next scheduled automatic backup"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.backup_last_successful_automatic_backup": {
+    "entity_id": "sensor.backup_last_successful_automatic_backup",
+    "state": "unknown",
+    "attributes": {
+      "device_class": "timestamp",
+      "friendly_name": "Backup Last successful automatic backup"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.backup_last_attempted_automatic_backup": {
+    "entity_id": "sensor.backup_last_attempted_automatic_backup",
+    "state": "unknown",
+    "attributes": {
+      "device_class": "timestamp",
+      "friendly_name": "Backup Last attempted automatic backup"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "device_tracker.sm_f946b": {
+    "entity_id": "device_tracker.sm_f946b",
+    "state": "unknown",
+    "attributes": {
+      "tracking_type": "position",
+      "in_zones": [],
+      "source_type": "gps",
+      "friendly_name": "SM-F946B"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "notify.sm_f946b": {
+    "entity_id": "notify.sm_f946b",
+    "state": "unknown",
+    "attributes": {
+      "friendly_name": "SM-F946B",
+      "supported_features": 1
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.sm_f946b_battery_level": {
+    "entity_id": "sensor.sm_f946b_battery_level",
+    "state": "55",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "%",
+      "device_class": "battery",
+      "icon": "mdi:battery-charging-50",
+      "friendly_name": "SM-F946B Battery level"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.sm_f946b_battery_state": {
+    "entity_id": "sensor.sm_f946b_battery_state",
+    "state": "charging",
+    "attributes": {
+      "options": [
+        "charging",
+        "discharging",
+        "full",
+        "not_charging"
+      ],
+      "device_class": "enum",
+      "icon": "mdi:battery-plus",
+      "friendly_name": "SM-F946B Battery state"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.sm_f946b_charger_type": {
+    "entity_id": "sensor.sm_f946b_charger_type",
+    "state": "usb",
+    "attributes": {
+      "options": [
+        "ac",
+        "usb",
+        "wireless",
+        "dock",
+        "none"
+      ],
+      "device_class": "enum",
+      "icon": "mdi:usb-port",
+      "friendly_name": "SM-F946B Charger type"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "device_tracker.sdk_gphone64_x86_64": {
+    "entity_id": "device_tracker.sdk_gphone64_x86_64",
+    "state": "unknown",
+    "attributes": {
+      "tracking_type": "position",
+      "in_zones": [],
+      "source_type": "gps",
+      "friendly_name": "sdk_gphone64_x86_64"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "notify.sdk_gphone64_x86_64": {
+    "entity_id": "notify.sdk_gphone64_x86_64",
+    "state": "unknown",
+    "attributes": {
+      "friendly_name": "sdk_gphone64_x86_64",
+      "supported_features": 1
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.sdk_gphone64_x86_64_battery_level": {
+    "entity_id": "sensor.sdk_gphone64_x86_64_battery_level",
+    "state": "100",
+    "attributes": {
+      "state_class": "measurement",
+      "unit_of_measurement": "%",
+      "device_class": "battery",
+      "icon": "mdi:battery",
+      "friendly_name": "sdk_gphone64_x86_64 Battery level"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.sdk_gphone64_x86_64_battery_state": {
+    "entity_id": "sensor.sdk_gphone64_x86_64_battery_state",
+    "state": "not_charging",
+    "attributes": {
+      "options": [
+        "charging",
+        "discharging",
+        "full",
+        "not_charging"
+      ],
+      "device_class": "enum",
+      "icon": "mdi:battery",
+      "friendly_name": "sdk_gphone64_x86_64 Battery state"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "sensor.sdk_gphone64_x86_64_charger_type": {
+    "entity_id": "sensor.sdk_gphone64_x86_64_charger_type",
+    "state": "none",
+    "attributes": {
+      "options": [
+        "ac",
+        "usb",
+        "wireless",
+        "dock",
+        "none"
+      ],
+      "device_class": "enum",
+      "icon": "mdi:battery",
+      "friendly_name": "sdk_gphone64_x86_64 Charger type"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  }
+}

@@ -1,0 +1,773 @@
+{
+  "title": "Devices",
+  "path": "other-devices",
+  "subview": true,
+  "icon": "mdi:devices",
+  "type": "sections",
+  "header": {
+    "badges_position": "bottom"
+  },
+  "max_columns": 3,
+  "sections": [
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Date",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/51d2691ea1b27508a27739b6cdca85ae"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "51d2691ea1b27508a27739b6cdca85ae"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "date.date",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Date and Time",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/5a096c4a7e1524063b557158bc284cfc"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "5a096c4a7e1524063b557158bc284cfc"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "datetime.date_and_time",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "volume",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/2d731c6600777fdebd33cebbf569e5a4"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "2d731c6600777fdebd33cebbf569e5a4"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "number.volume",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "PWM 1",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/2ba06f5a3b598a3b4ae59781372b6c26"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "2ba06f5a3b598a3b4ae59781372b6c26"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "number.pwm_1",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Large Range",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/f29adef4651240c1d4999ec480c8aae2"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "f29adef4651240c1d4999ec480c8aae2"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "number.large_range",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Small Range",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/48015bd370e5a480100205f2a0511bb9"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "48015bd370e5a480100205f2a0511bb9"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "number.small_range",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Temperature setting",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/b81e152d5c81404429eef13e4517e616"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "b81e152d5c81404429eef13e4517e616"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "number.temperature_setting",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Speed",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/56adaa3edbabc1d7a29c79676364fc02"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "56adaa3edbabc1d7a29c79676364fc02"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "select.speed",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Total energy 2",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/d9377496f6bcf6f0398f39dfb7677d14"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "d9377496f6bcf6f0398f39dfb7677d14"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "sensor.total_energy_mwh",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Total gas 2",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/6d3a8bce069fb4e83ef338bfa1660367"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "6d3a8bce069fb4e83ef338bfa1660367"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "sensor.total_gas_ft3",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Text",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/1615c788167c371c3182a29d8bf75696"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "1615c788167c371c3182a29d8bf75696"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "text.text",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Password",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/3c88d0dbcb463e389129f0109a8b0dd8"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "3c88d0dbcb463e389129f0109a8b0dd8"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "text.password",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Text with 1 to 5 characters",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/8cb190134a465edeed278409a8e8350d"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "8cb190134a465edeed278409a8e8350d"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "text.text_with_1_to_5_characters",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Text with only lower case characters",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/ffc113a6efc3112f43ccce06838644ce"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "ffc113a6efc3112f43ccce06838644ce"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "text.text_with_only_lower_case_characters",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Time",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/1dd15670b21aaeaac6c3132de79d4994"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "1dd15670b21aaeaac6c3132de79d4994"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "time.time",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Demo vacuum 1 first floor",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/2e915b402f95c00fd154e96bd981c039"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "2e915b402f95c00fd154e96bd981c039"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "vacuum.demo_vacuum_1_first_floor",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Demo vacuum 2 second floor",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/571e826aef62be658bfd615ec8b3e182"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "571e826aef62be658bfd615ec8b3e182"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "vacuum.demo_vacuum_2_second_floor",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Demo vacuum 3 third floor",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/ef48be141c9842f742f8c6abd0f2b12f"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "ef48be141c9842f742f8c6abd0f2b12f"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "vacuum.demo_vacuum_3_third_floor",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Demo vacuum 4 fourth floor",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/a3afd687cfc44c60258b374d2a8fbfe4"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "a3afd687cfc44c60258b374d2a8fbfe4"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "vacuum.demo_vacuum_4_fourth_floor",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Forecast",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/5c631cfb31e43cd5daabaae479769f8d"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:home-plus",
+              "text": "Assign area",
+              "tap_action": {
+                "action": "fire-dom-event",
+                "home_panel": {
+                  "type": "assign_area",
+                  "device_id": "5c631cfb31e43cd5daabaae479769f8d"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "weather.forecast_native_test_home",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

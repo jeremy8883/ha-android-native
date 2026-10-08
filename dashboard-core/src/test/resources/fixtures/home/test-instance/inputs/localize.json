@@ -1,0 +1,81 @@
+[
+  {
+    "key": "ui.panel.lovelace.strategy.home.summary_list.media_players",
+    "args": [],
+    "result": "Media players"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.home.devices",
+    "args": [],
+    "result": "Devices"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.home.favorites",
+    "args": [],
+    "result": "Favorites"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.home.summary_list.weather",
+    "args": [],
+    "result": "Weather"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.home.summaries",
+    "args": [],
+    "result": "Summaries"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.home.welcome_user",
+    "args": [
+      {
+        "user": "{{ user }}"
+      }
+    ],
+    "result": "Welcome {{ user }}"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.home.home",
+    "args": [],
+    "result": "Home"
+  },
+  {
+    "key": "panel.light",
+    "args": [],
+    "result": "Lights"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.light.off",
+    "args": [],
+    "result": "Off"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.light.on",
+    "args": [],
+    "result": "On"
+  },
+  {
+    "key": "panel.climate",
+    "args": [],
+    "result": "Climate"
+  },
+  {
+    "key": "panel.security",
+    "args": [],
+    "result": "Security"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.home.others",
+    "args": [],
+    "result": "Others"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.home_media_players.other_media_players",
+    "args": [],
+    "result": "Other media players"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.home-other-devices.assign_area",
+    "args": [],
+    "result": "Assign area"
+  }
+]

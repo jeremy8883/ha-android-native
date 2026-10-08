@@ -1,0 +1,173 @@
+{
+  "title": "Garage",
+  "path": "areas-garage",
+  "subview": true,
+  "type": "sections",
+  "header": {
+    "badges_position": "bottom"
+  },
+  "max_columns": 3,
+  "sections": [
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Climate",
+          "icon": "mdi:home-thermometer",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/climate?historyBack=1"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "water_heater.demo_water_heater",
+          "features": [
+            {
+              "type": "target-temperature"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Security",
+          "icon": "mdi:security",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/security?historyBack=1"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "cover.garage_door",
+          "name": "Door",
+          "features": [
+            {
+              "type": "cover-open-close"
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "binary_sensor.garage_door_contact",
+          "name": "Door contact"
+        },
+        {
+          "type": "tile",
+          "entity": "binary_sensor.basement_floor_wet"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 3,
+      "cards": [
+        {
+          "type": "heading",
+          "heading_style": "subtitle",
+          "heading": ""
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Power consumption",
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.power_consumption",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Total energy 1",
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.total_energy_kwh",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Total gas 1",
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.total_gas_m3",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Demo vacuum 0 ground floor",
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "vacuum.demo_vacuum_0_ground_floor",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Others",
+          "badges": [
+            {
+              "entity": "sensor.garage_battery",
+              "type": "entity",
+              "tap_action": {
+                "action": "more-info"
+              }
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "timer.laundry",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    }
+  ],
+  "badges": []
+}

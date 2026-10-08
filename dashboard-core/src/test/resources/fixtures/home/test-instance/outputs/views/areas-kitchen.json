@@ -1,0 +1,215 @@
+{
+  "title": "Kitchen",
+  "path": "areas-kitchen",
+  "subview": true,
+  "type": "sections",
+  "header": {
+    "badges_position": "bottom"
+  },
+  "max_columns": 3,
+  "sections": [
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Lights",
+          "icon": "mdi:lamps",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/light?historyBack=1"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "text": "Off",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_on",
+                "target": {
+                  "area_id": "kitchen"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "not",
+                  "conditions": [
+                    {
+                      "condition": "or",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "light.kitchen_lights",
+                          "state": "on"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "color": "orange",
+              "text": "On",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_off",
+                "target": {
+                  "area_id": "kitchen"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "or",
+                  "conditions": [
+                    {
+                      "condition": "state",
+                      "entity": "light.kitchen_lights",
+                      "state": "on"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "light.kitchen_lights",
+          "name": "Lights",
+          "features": [
+            {
+              "type": "light-brightness"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Climate",
+          "icon": "mdi:home-thermometer",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/climate?historyBack=1"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "cover.kitchen_window",
+          "name": "Window",
+          "features": [
+            {
+              "type": "cover-open-close"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Security",
+          "icon": "mdi:security",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/security?historyBack=1"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "lock.back_door_lock",
+          "features": [
+            {
+              "type": "lock-commands"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Media players",
+          "icon": "mdi:multimedia",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "media-players?historyBack=1"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "media_player.kitchen_speaker",
+          "name": "Speaker"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 3,
+      "cards": [
+        {
+          "type": "heading",
+          "heading_style": "subtitle",
+          "heading": ""
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Carbon monoxide",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/aacd896aac2cb23a72886802a8e73902"
+          },
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.carbon_monoxide",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Others",
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "counter.coffee_cups",
+          "name": {
+            "type": "entity"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "binary_sensor.kitchen_motion",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    }
+  ],
+  "badges": []
+}

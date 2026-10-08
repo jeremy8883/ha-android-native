@@ -1,0 +1,219 @@
+{
+  "title": "Office",
+  "path": "areas-office",
+  "subview": true,
+  "type": "sections",
+  "header": {
+    "badges_position": "bottom"
+  },
+  "max_columns": 3,
+  "sections": [
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Lights",
+          "icon": "mdi:lamps",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/light?historyBack=1"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "text": "Off",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_on",
+                "target": {
+                  "area_id": "office"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "not",
+                  "conditions": [
+                    {
+                      "condition": "or",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "light.office_rgbw_lights",
+                          "state": "on"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "color": "orange",
+              "text": "On",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_off",
+                "target": {
+                  "area_id": "office"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "or",
+                  "conditions": [
+                    {
+                      "condition": "state",
+                      "entity": "light.office_rgbw_lights",
+                      "state": "on"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "light.office_rgbw_lights",
+          "name": "RGBW Lights",
+          "features": [
+            {
+              "type": "light-brightness"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Climate",
+          "icon": "mdi:home-thermometer",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/climate?historyBack=1"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "climate.hvac",
+          "features": [
+            {
+              "type": "target-temperature"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Media players",
+          "icon": "mdi:multimedia",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "media-players?historyBack=1"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "media_player.office_speaker",
+          "name": "Speaker"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 3,
+      "cards": [
+        {
+          "type": "heading",
+          "heading_style": "subtitle",
+          "heading": ""
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Push",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/2d9e00b8c5abacf3b9b112a00176f57d"
+          },
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "button.push",
+          "name": {
+            "type": "entity"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "event.push_button_press",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "AC",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/8055ba1526ac522b0099c0b7dd400ad8"
+          },
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "switch.ac",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Others",
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.office_temperature",
+          "name": {
+            "type": "entity"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "binary_sensor.office_occupancy",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    }
+  ],
+  "badges": []
+}

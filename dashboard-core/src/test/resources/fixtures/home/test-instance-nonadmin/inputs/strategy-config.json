@@ -1,0 +1,11 @@
+{
+  "strategy": {
+    "type": "home",
+    "favorite_entities": [
+      "light.living_room_rgbww_lights",
+      "climate.heatpump",
+      "lock.front_door_deadbolt"
+    ],
+    "home_panel": true
+  }
+}

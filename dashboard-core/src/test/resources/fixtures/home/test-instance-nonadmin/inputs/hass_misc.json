@@ -1,0 +1,9 @@
+{
+  "kioskMode": false,
+  "suspendWhenHidden": true,
+  "enableShortcuts": true,
+  "vibrate": true,
+  "dockedSidebar": "docked",
+  "selectedTheme": null,
+  "debugConnection": false
+}
