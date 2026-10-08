@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -29,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.composable.HATopBar
@@ -42,7 +44,10 @@ import io.homeassistant.companion.android.dashboard.condition.ScreenInfo
 import io.homeassistant.companion.android.dashboard.condition.sectionsViewColumns
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.layout.CardGroup
-import io.homeassistant.companion.android.dashboard.layout.visibleCards
+import io.homeassistant.companion.android.dashboard.layout.SECTION_GRID_GAP_DP
+import io.homeassistant.companion.android.dashboard.layout.SECTION_ROW_HEIGHT_DP
+import io.homeassistant.companion.android.dashboard.layout.SectionLayout
+import io.homeassistant.companion.android.dashboard.layout.viewLayout
 import io.homeassistant.companion.android.dashboard.model.DashboardInfo
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardCard
 import java.time.ZonedDateTime
@@ -216,24 +221,57 @@ private fun CardGroups(
     maxColumns: Int,
     onNavigate: (String) -> Unit,
 ) {
+    // Re-evaluated on every state, screen or clock change, but only recomposes when the layout changes
+    val layout by remember(groups, screen, maxColumns) {
+        derivedStateOf {
+            val context = ConditionContext(maxColumns = maxColumns, screen = screen, now = now.value)
+            hass.value?.viewLayout(groups, context)
+        }
+    }
+    val viewLayout = layout ?: return
+    // One list item per row of sections, so long phone layouts stay lazy
+    val rows = remember(viewLayout) { viewLayout.sections.groupBy { it.cell.row }.values.toList() }
+    val narrow = screen.widthDp <= NARROW_WIDTH_DP
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(HADimens.SPACE4),
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
     ) {
-        items(groups) { group ->
-            // Re-evaluated on every state, screen or clock change, but only recomposes when the visible cards change
-            val visibleCards by remember(group, screen, maxColumns) {
-                derivedStateOf {
-                    val context = ConditionContext(maxColumns = maxColumns, screen = screen, now = now.value)
-                    hass.value?.visibleCards(group, context)
-                }
+        items(rows) { sections ->
+            DashboardGrid(
+                cells = sections.map { it.cell.copy(row = 0, rowSpan = 1) },
+                columnCount = viewLayout.columnCount,
+                columnGap = if (narrow) HADimens.SPACE2 else HADimens.SPACE8,
+                rowGap = HADimens.SPACE6,
+            ) {
+                sections.forEach { section -> SectionGrid(section, hass, now, onNavigate) }
             }
-            visibleCards?.let { cards ->
-                Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
-                    cards.forEach { card -> DashboardCard(card, hass, now, onNavigate, Modifier.fillMaxWidth()) }
-                }
+        }
+    }
+}
+
+@Composable
+private fun SectionGrid(
+    section: SectionLayout,
+    hass: State<HassSnapshot?>,
+    now: State<ZonedDateTime?>,
+    onNavigate: (String) -> Unit,
+) {
+    DashboardGrid(
+        cells = section.cards.map { it.cell },
+        columnCount = section.columnCount,
+        columnGap = HADimens.SPACE2,
+        rowGap = HADimens.SPACE2,
+    ) {
+        section.cards.forEach { placed ->
+            // Fixed-row cards keep the web's row rhythm but may grow to fit native content
+            val rows = placed.fixedRows
+            val sizing = if (rows != null) {
+                Modifier.heightIn(min = SECTION_ROW_HEIGHT_DP.dp * rows + SECTION_GRID_GAP_DP.dp * (rows - 1))
+            } else {
+                Modifier
             }
+            DashboardCard(placed.card, hass, now, onNavigate, sizing.fillMaxWidth())
         }
     }
 }
@@ -260,3 +298,6 @@ private fun DashboardScreenNotFoundPreview() {
         )
     }
 }
+
+/** Screens up to this width use the narrow gaps between sections, like upstream's 600px breakpoint. */
+private const val NARROW_WIDTH_DP = 600

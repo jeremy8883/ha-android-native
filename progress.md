@@ -63,6 +63,7 @@ Update it in the same commit as the work it describes.
     - [x] UI polish for the initial tile, heading and compact area renderers: shared HA-token card surface, active/unavailable treatment, and safe dynamic MDI icons
   - [x] View navigation like upstream: tabs only for non-subviews, `navigate` actions open subviews, back arrow plus system back
   - [x] Entity icons (`ha-state-icon`: registry, attribute, server icon translations, built-in state icons, domain fallback), entity names (`formatEntityName`), formatted states (`formatEntityState`, attribute values) and the tile secondary line (`state-display`, incl. relative times), golden-tested per entity against the real frontend (outputs/entity-display.json)
+  - [x] Sections layout: card sizes from each card type's `getGridOptions` plus `grid_options`/`layout_options`, CSS-grid auto-placement in each section's 12×span grid, sections placed in the view's columns (hidden sections take no space). Rendered by `ui/DashboardGrid.kt`; fixed-row cards get a 56dp-row minimum height. Not yet: the overview sidebar, `dense_section_placement`, masonry columns, a golden test against browser placement
   - [x] Visibility conditions: all types (state, numeric_state, and/or/not, user, location, time, screen, view_columns, legacy), with upstream's tests ported. Section and card visibility in rendering; `view_columns` uses upstream's sections column formula
 - [x] List dashboards (`lovelace/dashboards/list`)
 - [x] Load dashboard config (`lovelace/config`)
@@ -141,7 +142,8 @@ Update it in the same commit as the work it describes.
 ### 2026-10-08: entity display (Opus)
 - `TileModel` now carries display-ready text: `name` (formatEntityName), `state` (the full secondary line, unit included; `unit` is gone), `icon` (always resolved for existing entities). `HassSnapshot.tileModel(card, now)` needs the current time for relative timestamps; cards get it as `State<ZonedDateTime?>`.
 - Locale formatting sits behind `display/DisplayFormats`; `JdkDisplayFormats` is English-accurate (golden-tested). Relative times are English only for now; the app always uses the bundled `en` strings and the server's `en` translations. Other languages need an Android implementation (ICU `RelativeDateTimeFormatter`) and translated bundles.
-- Not ported yet: weather attribute units, `number_format: none`/explicit 12/24h preferences, the user's frontend locale settings (we use language formatting and the device time zone).
+- Sections grid is in (`layout/ViewLayout.kt` + `ui/DashboardGrid.kt`). Tiles now render single-line, start-aligned text (HATextStyle.Body is centred by default, which broke narrow tiles); Astra may want to revisit.
+- Not ported yet: weather attribute units (the weather tile shows "-24.4 · Rainy" without °C), `number_format: none`/explicit 12/24h preferences, the user's frontend locale settings (we use language formatting and the device time zone).
 
 ### 2026-10-08: Astra UI track
 - Polished the initial native tile, heading and compact area renderers and split them into focused files under `dashboard/ui/cards/`.

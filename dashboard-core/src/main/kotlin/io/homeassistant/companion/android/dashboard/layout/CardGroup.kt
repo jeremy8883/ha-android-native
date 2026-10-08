@@ -7,6 +7,7 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.ViewConfig
 import io.homeassistant.companion.android.dashboard.model.ViewType
 import io.homeassistant.companion.android.dashboard.model.boolean
+import io.homeassistant.companion.android.dashboard.model.number
 import kotlinx.serialization.json.JsonObject
 
 /**
@@ -14,22 +15,37 @@ import kotlinx.serialization.json.JsonObject
  *
  * @property visibility the section's visibility conditions
  * @property disabled sections a strategy disabled (for example an empty `common-controls` with `hide_empty`)
+ * @property grid whether cards are laid out in a section grid; otherwise they are stacked
+ * @property columnSpan view columns the section spans (`column_span`)
+ * @property rowSpan view rows the section spans (`row_span`)
  */
 data class CardGroup(
     val cards: List<CardConfig>,
     val visibility: List<JsonObject> = emptyList(),
     val disabled: Boolean = false,
+    val grid: Boolean = false,
+    val columnSpan: Int = 1,
+    val rowSpan: Int = 1,
 )
 
 /**
  * The card groups of [view], in display order.
  *
- * Basic version: sections become one group each, and every other view type becomes a single group.
- * Still to port: grid sizing (src/panels/lovelace/sections/hui-grid-section.ts) and masonry column
- * distribution (src/panels/lovelace/views/hui-masonry-view.ts).
+ * Sections become one grid group each, and every other view type becomes a single stacked group.
+ * Still to port: masonry column distribution (src/panels/lovelace/views/hui-masonry-view.ts).
  */
 fun cardGroups(view: ViewConfig): List<CardGroup> = when (view.viewType) {
-    ViewType.SECTIONS -> view.sections.map { CardGroup(it.cards, it.visibility, it.json.boolean("disabled") == true) }
+    ViewType.SECTIONS -> view.sections.map {
+        CardGroup(
+            cards = it.cards,
+            visibility = it.visibility,
+            disabled = it.json.boolean("disabled") == true,
+            grid = true,
+            // `column_span || 1`: missing, 0 and invalid values span one column
+            columnSpan = it.json.number("column_span")?.toInt()?.takeIf { span -> span > 0 } ?: 1,
+            rowSpan = it.json.number("row_span")?.toInt()?.takeIf { span -> span > 0 } ?: 1,
+        )
+    }
     else -> listOf(CardGroup(view.cards))
 }
 

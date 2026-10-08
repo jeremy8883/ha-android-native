@@ -16,6 +16,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
@@ -73,13 +75,18 @@ internal fun TileCardContent(tile: TileModel, modifier: Modifier = Modifier) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = tile.name,
-                    style = HATextStyle.Body,
+                    // Single line and start-aligned like upstream's ha-tile-info
+                    style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                     color = if (tile.available) colors.colorTextPrimary else colors.colorTextDisabled,
                 )
                 tile.state?.let { state ->
                     Text(
                         text = state,
-                        style = HATextStyle.BodyMedium,
+                        style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                         color = if (tile.available) colors.colorTextSecondary else colors.colorTextDisabled,
                     )
                 }
