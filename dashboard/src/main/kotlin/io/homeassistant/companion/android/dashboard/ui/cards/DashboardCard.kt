@@ -23,7 +23,7 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 
 /** Renders [card] with its native renderer, or a placeholder when the type is not supported yet. */
 @Composable
-internal fun DashboardCard(card: CardConfig, entityStates: State<EntityStates>, modifier: Modifier = Modifier) {
+internal fun DashboardCard(card: CardConfig, entityStates: State<EntityStates?>, modifier: Modifier = Modifier) {
     when (card.type) {
         CARD_TILE -> TileCard(card, entityStates, modifier)
         else -> UnsupportedCard(card.type.orEmpty(), modifier)
@@ -31,9 +31,9 @@ internal fun DashboardCard(card: CardConfig, entityStates: State<EntityStates>, 
 }
 
 @Composable
-private fun TileCard(card: CardConfig, entityStates: State<EntityStates>, modifier: Modifier) {
+private fun TileCard(card: CardConfig, entityStates: State<EntityStates?>, modifier: Modifier) {
     // Recomposes only when this tile's derived content changes, not on every entity update
-    val tile by remember(card) { derivedStateOf { tileModel(card, entityStates.value) } }
+    val tile by remember(card) { derivedStateOf { tileModel(card, entityStates.value.orEmpty()) } }
     val model = tile
     if (model == null) {
         UnsupportedCard(stringResource(R.string.native_dashboard_entity_not_found, card.entity.orEmpty()), modifier)

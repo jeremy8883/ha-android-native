@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-08T05:25:46.499Z",
+  "capture_date": "2026-10-08T05:27:40.174Z",
   "user": {
     "name": "Dev",
     "is_admin": true
@@ -49,7 +49,7 @@
     },
     {
       "what": "section overview#0 == hui-section._config (+type)",
-      "ok": false
+      "ok": true
     },
     {
       "what": "view areas-living_room == hui-view._config (+type)",
@@ -149,7 +149,7 @@
     {
       "path": "inputs/states.json",
       "bytes": 91931,
-      "sha256": "3cca124536a91f66adc8831be0abcc79df2b68393b85b73e43916b3e7a7b9813"
+      "sha256": "1c80b5bb8906667bae2883309d539b02f5aeec09c3cb6123fa368e9486a743e1"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -238,68 +238,68 @@
     },
     {
       "path": "ws/auth-current_user.json",
-      "bytes": 448,
-      "sha256": "039aecabc8858bb4bdaad0ba43b6853105434dd20b00d9141b97b37819df9c9b"
+      "bytes": 434,
+      "sha256": "e2de9186f188a2ec1713e999a8d3bed83b7e4118772dd7009ec0e6d4eb83f69b"
     },
     {
       "path": "ws/config-area_registry-list.json",
-      "bytes": 2127,
-      "sha256": "cdeb6f1a34ee7b525331b790e23498ec3fc1d36d1d460f69d058e218c57a27c7"
+      "bytes": 2113,
+      "sha256": "cbc953df3df1b52a876539a999c6f2af81076c33d9eda6224b4c75e3fe8a1ae0"
     },
     {
       "path": "ws/config-device_registry-list.json",
-      "bytes": 56276,
-      "sha256": "bac52b7f265443f35e146b5b26cdc153f5c3ac757a9cb3b39d384f235da5333f"
+      "bytes": 56262,
+      "sha256": "9cf44bc614f0033e55b2c0efc5d395e5938ec2035a8303be6251e1e28e73faea"
     },
     {
       "path": "ws/config-entity_registry-list_for_display.json",
-      "bytes": 23229,
-      "sha256": "13bb64b9818b20dd6d0342453e03e0424ded9d6cd834b83cc9791953b71baa2b"
+      "bytes": 23215,
+      "sha256": "668cf41e139b8d0e55dbf3f89a3cc12144a24615025bfb1c7af6272e1bf87bc3"
     },
     {
       "path": "ws/config-floor_registry-list.json",
-      "bytes": 763,
-      "sha256": "b465648a2c8623f981166dccd3cc9300b165a06dcc696d42dd6fd70f5414e94f"
+      "bytes": 749,
+      "sha256": "7de0e06fdd8126b0f2de40d94526f84fdb8b40bd7ddbc01bb58f7246baeaa57b"
     },
     {
       "path": "ws/energy-get_prefs.json",
-      "bytes": 137,
-      "sha256": "ca64f96dc45b8ec7388dff6e95f371fbfef7c6ad388b7ff8033d3e5c4f0df72f"
+      "bytes": 123,
+      "sha256": "ef5560163cc3db904af5abe898464105db7f7884436e04b6714c37d591fd8c12"
     },
     {
       "path": "ws/frontend-get_system_data-core.json",
-      "bytes": 132,
-      "sha256": "18f0ecc3aed851b8c55ab07e2573268b3a57cb8539b9a9a02c5224cd6235146b"
+      "bytes": 118,
+      "sha256": "2d32d987ee2f10b218df1ffeb138ba9badce1e6839b64c188593ed4863d9bea4"
     },
     {
       "path": "ws/frontend-get_system_data-home.json",
-      "bytes": 277,
-      "sha256": "f8f5c809c56c5cfaf2ec2fa29d696a5552c3b21d88b20f3b4cbbf2fc3f3059ac"
+      "bytes": 263,
+      "sha256": "cad5b376a2a9385910450aa6f2b47aa176d891511f3dbc2beb14307397980dd9"
     },
     {
       "path": "ws/frontend-get_user_data-core.json",
-      "bytes": 130,
-      "sha256": "bb4a68357924ab52353e65d4a58b66573dd205b08efca8031173930091f3a471"
+      "bytes": 116,
+      "sha256": "a76945597fcd9fb55a7a8fe795b9ebb900b5be626044bc85c5b9716c8781fbdf"
     },
     {
       "path": "ws/get_config.json",
-      "bytes": 4618,
-      "sha256": "b5c45ae6bd9947c4c624fe3352c62a01d4a9a11aa8f4f03a9d9e8de98177dafd"
+      "bytes": 4604,
+      "sha256": "2eda47e1e3cb2e3518c22bb1509c71bc42ca71c4c5039b17e864eb759bc41885"
     },
     {
       "path": "ws/get_panels.json",
-      "bytes": 5401,
-      "sha256": "bdd01c7fb08714e082d31191585543e3521838bf5d874a0053ab53bca43fea44"
+      "bytes": 5387,
+      "sha256": "a13f7cae487955199cc07a998462019de936bf8374f8dca6166e4cc569f46263"
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 102438,
-      "sha256": "736cd4469d4b8fabf9180c9d2794b28cee6728fea3e430d4f3f50fe997327edd"
+      "bytes": 102424,
+      "sha256": "2e046eb9ece5c9059f04b3f52b4cd1245bd69719ddbeaaf93deb549578ea8089"
     },
     {
       "path": "ws/manifest-get-frontend.json",
-      "bytes": 838,
-      "sha256": "958b49afdc1ea31fccb8054484885410c682751a934e77050b36b50400a2f734"
+      "bytes": 824,
+      "sha256": "e31e886d1580112fbb3cefe259bee3e8f5100b4cdfa8fc189e63c4221a6eff72"
     },
     {
       "path": "ws/strategy-calls.json",
@@ -308,8 +308,8 @@
     },
     {
       "path": "ws/usage_prediction-common_control.json",
-      "bytes": 322,
-      "sha256": "b71d5f9e7c0df97a8b76d015ed130602e61f220f6069e373549fa65d2015d14b"
+      "bytes": 308,
+      "sha256": "20289375fda54fdc1f708905a7840c92381a8ef85a1898b57466f59313d2f898"
     }
   ]
 }

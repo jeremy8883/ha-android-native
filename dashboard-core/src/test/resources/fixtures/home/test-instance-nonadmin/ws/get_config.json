@@ -1,7 +1,6 @@
 {
   "request": {
-    "type": "get_config",
-    "id": 51
+    "type": "get_config"
   },
   "result": {
     "allowlist_external_dirs": [

@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-08T05:25:49.209Z",
+  "capture_date": "2026-10-08T05:27:43.183Z",
   "user": {
     "name": "Golden Viewer",
     "is_admin": false
@@ -61,11 +61,11 @@
     },
     {
       "what": "view areas-bedroom == hui-view._config (+type)",
-      "ok": false
+      "ok": true
     },
     {
       "what": "view areas-garage == hui-view._config (+type)",
-      "ok": false
+      "ok": true
     },
     {
       "what": "view areas-office == hui-view._config (+type)",
@@ -73,7 +73,7 @@
     },
     {
       "what": "view areas-garden == hui-view._config (+type)",
-      "ok": false
+      "ok": true
     },
     {
       "what": "view media-players == hui-view._config (+type)",
@@ -148,8 +148,8 @@
     },
     {
       "path": "inputs/states.json",
-      "bytes": 91931,
-      "sha256": "3cca124536a91f66adc8831be0abcc79df2b68393b85b73e43916b3e7a7b9813"
+      "bytes": 91936,
+      "sha256": "f435160077e2a6ab114ef179b3bd2ad2a5600230328fa41b78741821bb4bdb37"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -238,68 +238,68 @@
     },
     {
       "path": "ws/auth-current_user.json",
-      "bytes": 460,
-      "sha256": "ab02d79553192967e59c5e93172e31a8f31039d214d86ae41f71e9498932f9f6"
+      "bytes": 446,
+      "sha256": "04ec8d7fc53eba2741439d3b8922d60b3202f29b042d4220726e138b13c2d9fb"
     },
     {
       "path": "ws/config-area_registry-list.json",
-      "bytes": 2127,
-      "sha256": "b84d0fe7c17ecdd4363f6cd6a8aeec56b8ba412c0969304033bde451bb9619e8"
+      "bytes": 2113,
+      "sha256": "cbc953df3df1b52a876539a999c6f2af81076c33d9eda6224b4c75e3fe8a1ae0"
     },
     {
       "path": "ws/config-device_registry-list.json",
-      "bytes": 56276,
-      "sha256": "faf10061c2c9dae2a7887df5d584bf4a01ca1a32840a26f814efa4821a8eca43"
+      "bytes": 56262,
+      "sha256": "9cf44bc614f0033e55b2c0efc5d395e5938ec2035a8303be6251e1e28e73faea"
     },
     {
       "path": "ws/config-entity_registry-list_for_display.json",
-      "bytes": 23229,
-      "sha256": "a2401e586a3f9ce59b7c14c203020cf44f486de102d032e4054cef7546bc5010"
+      "bytes": 23215,
+      "sha256": "668cf41e139b8d0e55dbf3f89a3cc12144a24615025bfb1c7af6272e1bf87bc3"
     },
     {
       "path": "ws/config-floor_registry-list.json",
-      "bytes": 763,
-      "sha256": "474ee1277182904d6d9b34bba23e781d6a97bc32edda51885b601938f89fc589"
+      "bytes": 749,
+      "sha256": "7de0e06fdd8126b0f2de40d94526f84fdb8b40bd7ddbc01bb58f7246baeaa57b"
     },
     {
       "path": "ws/energy-get_prefs.json",
-      "bytes": 137,
-      "sha256": "390ffb9b15d597bc29ab4546dfc24fa96b3b48784fe6a69fd7cc636b738a67c0"
+      "bytes": 123,
+      "sha256": "ef5560163cc3db904af5abe898464105db7f7884436e04b6714c37d591fd8c12"
     },
     {
       "path": "ws/frontend-get_system_data-core.json",
-      "bytes": 132,
-      "sha256": "6be2eb06f13d9f1674cfce5f438d17b75d49c4a96104714fa9d70347ce26ba74"
+      "bytes": 118,
+      "sha256": "2d32d987ee2f10b218df1ffeb138ba9badce1e6839b64c188593ed4863d9bea4"
     },
     {
       "path": "ws/frontend-get_system_data-home.json",
-      "bytes": 277,
-      "sha256": "b0fe5e6478eaa9cfb1e374f7a94c89b47d8f8bd7b731dcfc8db1b7e529755115"
+      "bytes": 263,
+      "sha256": "cad5b376a2a9385910450aa6f2b47aa176d891511f3dbc2beb14307397980dd9"
     },
     {
       "path": "ws/frontend-get_user_data-core.json",
-      "bytes": 130,
-      "sha256": "a7f64f17dc2f8faf1f83fced6afd3565c540f97d87ff7b313426e8a15c1c464c"
+      "bytes": 116,
+      "sha256": "a76945597fcd9fb55a7a8fe795b9ebb900b5be626044bc85c5b9716c8781fbdf"
     },
     {
       "path": "ws/get_config.json",
-      "bytes": 4618,
-      "sha256": "3d05ab26360240c3d1917674250ae83ff7e3fcc80ae54a359aebbc01fc289d78"
+      "bytes": 4604,
+      "sha256": "2eda47e1e3cb2e3518c22bb1509c71bc42ca71c4c5039b17e864eb759bc41885"
     },
     {
       "path": "ws/get_panels.json",
-      "bytes": 5119,
-      "sha256": "a413957dfef8ae3027109d427996b72cf4f4ec2c6f64b7c3ab4e285e468fcf2c"
+      "bytes": 5105,
+      "sha256": "6bc17995e1bd75dad077b396256c58a67a9aec60cd1e019636983a627dc4727d"
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 102438,
-      "sha256": "8acff4281bfac6582d7fa4d5b2adb74eb3d961cddab80f1e39a943817862b5a7"
+      "bytes": 102429,
+      "sha256": "65d730afc145fe4f8622a6450b1355dced9f0cacd42f52894b056c12d87a942a"
     },
     {
       "path": "ws/manifest-get-frontend.json",
-      "bytes": 838,
-      "sha256": "394569cabd6150932965f711335007f6cddb3e660f171ad2b698383c0f06d94e"
+      "bytes": 824,
+      "sha256": "e31e886d1580112fbb3cefe259bee3e8f5100b4cdfa8fc189e63c4221a6eff72"
     },
     {
       "path": "ws/strategy-calls.json",
@@ -308,8 +308,8 @@
     },
     {
       "path": "ws/usage_prediction-common_control.json",
-      "bytes": 121,
-      "sha256": "d0d90e42cead11b1c14aa3a54278963589daad3a0ca0012f5ff76543fc4cbd1a"
+      "bytes": 107,
+      "sha256": "fa54d1b5655f7b68298373bc0b87a8001a24ad127c3f25c4993d7334b6a64309"
     }
   ]
 }

@@ -1,7 +1,6 @@
 {
   "request": {
-    "type": "config/device_registry/list",
-    "id": 61
+    "type": "config/device_registry/list"
   },
   "result": [
     {

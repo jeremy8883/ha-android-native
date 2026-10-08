@@ -1,7 +1,6 @@
 {
   "request": {
-    "type": "config/entity_registry/list_for_display",
-    "id": 60
+    "type": "config/entity_registry/list_for_display"
   },
   "result": {
     "entity_categories": {

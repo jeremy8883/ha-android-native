@@ -1,8 +1,7 @@
 {
   "request": {
     "type": "frontend/get_user_data",
-    "key": "core",
-    "id": 66
+    "key": "core"
   },
   "result": {
     "value": null

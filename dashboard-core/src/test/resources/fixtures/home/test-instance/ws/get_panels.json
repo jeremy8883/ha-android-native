@@ -1,7 +1,6 @@
 {
   "request": {
-    "type": "get_panels",
-    "id": 58
+    "type": "get_panels"
   },
   "result": {
     "config": {

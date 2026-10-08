@@ -1,0 +1,12 @@
+{
+  "name": "ha-golden-capture",
+  "private": true,
+  "type": "module",
+  "description": "Captures golden fixtures of the HA frontend home strategy from the local test instance",
+  "scripts": {
+    "capture": "node capture.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.64.0"
+  }
+}

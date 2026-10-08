@@ -1,7 +1,6 @@
 {
   "request": {
-    "type": "config/floor_registry/list",
-    "id": 63
+    "type": "config/floor_registry/list"
   },
   "result": [
     {

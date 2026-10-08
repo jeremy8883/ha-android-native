@@ -355,8 +355,8 @@
       "next_noon": "2026-10-08T11:28:06+00:00",
       "next_rising": "2026-10-08T05:53:37.499506+00:00",
       "next_setting": "2026-10-08T17:01:24.736346+00:00",
-      "elevation": -5.08,
-      "azimuth": 92.98,
+      "elevation": -4.77,
+      "azimuth": 93.38,
       "rising": true,
       "friendly_name": "Sun"
     },
@@ -530,7 +530,7 @@
   },
   "sensor.living_room_temperature": {
     "entity_id": "sensor.living_room_temperature",
-    "state": "21.5",
+    "state": "21.7",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "°C",
@@ -547,7 +547,7 @@
   },
   "sensor.living_room_humidity": {
     "entity_id": "sensor.living_room_humidity",
-    "state": "49",
+    "state": "51",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "%",
@@ -632,7 +632,7 @@
   },
   "sensor.house_power": {
     "entity_id": "sensor.house_power",
-    "state": "475",
+    "state": "489",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",

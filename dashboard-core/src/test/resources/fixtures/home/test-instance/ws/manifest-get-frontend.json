@@ -1,8 +1,7 @@
 {
   "request": {
     "type": "manifest/get",
-    "integration": "frontend",
-    "id": 69
+    "integration": "frontend"
   },
   "result": {
     "domain": "frontend",

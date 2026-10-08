@@ -1,7 +1,6 @@
 {
   "request": {
-    "type": "get_panels",
-    "id": 52
+    "type": "get_panels"
   },
   "result": {
     "lovelace": {

@@ -5,6 +5,7 @@ import io.homeassistant.companion.android.dashboard.model.number
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
+import java.time.Instant
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -63,6 +64,26 @@ fun applyEntityEvent(states: EntityStates, event: JsonObject): EntityStates {
 
     return result
 }
+
+/** Decode a `get_states` result (full state objects with ISO timestamps). */
+fun parseStates(result: JsonArray): EntityStates = result.filterIsInstance<JsonObject>().mapNotNull {
+    val entityId = it.string("entity_id") ?: return@mapNotNull null
+    val lastChanged = it.string("last_changed")?.let(::epochSeconds) ?: 0.0
+    entityId to EntityState(
+        entityId = entityId,
+        state = it.string("state").orEmpty(),
+        attributes = it.obj("attributes") ?: EMPTY,
+        contextId = contextId(it["context"]),
+        lastChanged = lastChanged,
+        lastUpdated = it.string("last_updated")?.let(::epochSeconds) ?: lastChanged,
+    )
+}.toMap()
+
+private fun epochSeconds(iso: String): Double? = runCatching {
+    Instant.parse(iso).let { it.epochSecond + it.nano / NANOS_PER_SECOND }
+}.getOrNull()
+
+private const val NANOS_PER_SECOND = 1_000_000_000.0
 
 private fun applyDiff(current: EntityState, add: JsonObject?, remove: JsonObject?): EntityState {
     var attributes = current.attributes

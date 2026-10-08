@@ -1,7 +1,6 @@
 {
   "request": {
-    "type": "auth/current_user",
-    "id": 59
+    "type": "auth/current_user"
   },
   "result": {
     "id": "4dced85e68734d9b807a24fb2cccdc38",

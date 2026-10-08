@@ -8,6 +8,21 @@ fun interface Localize {
 /** The current user, from `auth/current_user`. */
 data class HassUser(val id: String, val name: String?, val isAdmin: Boolean, val isOwner: Boolean)
 
+/** Server state from `get_config`. */
+data class HassConfig(
+    val state: String?,
+    val recoveryMode: Boolean,
+    val version: String?,
+    val components: Set<String>,
+) {
+    companion object {
+        val UNKNOWN = HassConfig(state = null, recoveryMode = false, version = null, components = emptySet())
+
+        /** Core's `state` value while Home Assistant is still starting. */
+        const val STATE_NOT_RUNNING = "NOT_RUNNING"
+    }
+}
+
 /**
  * Everything pure dashboard logic (strategies, conditions, derivations) may read: the Kotlin equivalent
  * of the frontend's `hass` object, restricted to raw server data plus translations.
@@ -18,6 +33,7 @@ data class HassSnapshot(
     val states: EntityStates,
     val registries: Registries,
     val user: HassUser?,
+    val config: HassConfig,
     val panels: Set<String>,
     val localize: Localize,
 )

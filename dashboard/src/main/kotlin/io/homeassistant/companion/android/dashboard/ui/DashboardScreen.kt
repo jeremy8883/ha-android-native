@@ -58,7 +58,7 @@ internal fun DashboardScreenContent(
     uiState: DashboardUiState,
     dashboards: List<DashboardInfo>,
     selectedDashboard: String?,
-    entityStates: State<EntityStates>,
+    entityStates: State<EntityStates?>,
     onSelectDashboard: (String?) -> Unit,
     onSelectView: (Int) -> Unit,
 ) {
@@ -78,6 +78,9 @@ internal fun DashboardScreenContent(
                 DashboardUiState.NotFound -> Message(stringResource(R.string.native_dashboard_not_found))
                 is DashboardUiState.Error -> Message(
                     stringResource(R.string.native_dashboard_error, uiState.message.orEmpty()),
+                )
+                is DashboardUiState.UnsupportedStrategy -> Message(
+                    stringResource(R.string.native_dashboard_unsupported_strategy, uiState.type.orEmpty()),
                 )
                 is DashboardUiState.Content -> DashboardView(uiState, entityStates, onSelectView)
             }
@@ -111,7 +114,7 @@ private fun DashboardPicker(dashboards: List<DashboardInfo>, selected: String?, 
 @Composable
 private fun DashboardView(
     content: DashboardUiState.Content,
-    entityStates: State<EntityStates>,
+    entityStates: State<EntityStates?>,
     onSelectView: (Int) -> Unit,
 ) {
     Column {
@@ -126,12 +129,16 @@ private fun DashboardView(
                 }
             }
         }
-        CardGroups(content.groups, entityStates)
+        if (content.groups == null) {
+            Message(stringResource(R.string.native_dashboard_unsupported_view))
+        } else {
+            CardGroups(content.groups, entityStates)
+        }
     }
 }
 
 @Composable
-private fun CardGroups(groups: List<CardGroup>, entityStates: State<EntityStates>) {
+private fun CardGroups(groups: List<CardGroup>, entityStates: State<EntityStates?>) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(HADimens.SPACE4),
@@ -158,7 +165,7 @@ private fun DashboardScreenNotFoundPreview() {
             uiState = DashboardUiState.NotFound,
             dashboards = listOf(DashboardInfo("dashboard-test", "Test", "storage", requireAdmin = false)),
             selectedDashboard = null,
-            entityStates = androidx.compose.runtime.mutableStateOf(emptyMap()),
+            entityStates = androidx.compose.runtime.mutableStateOf(null),
             onSelectDashboard = {},
             onSelectView = {},
         )

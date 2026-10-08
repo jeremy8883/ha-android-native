@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard
 
 import io.homeassistant.companion.android.dashboard.entity.EntityStates
+import io.homeassistant.companion.android.dashboard.entity.HassConfig
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.HassUser
 import io.homeassistant.companion.android.dashboard.entity.Localize
@@ -44,6 +45,7 @@ fun hass(
     states = states,
     registries = registries,
     user = HassUser(id = "u1", name = "Dev", isAdmin = isAdmin, isOwner = isAdmin),
+    config = HassConfig(state = "RUNNING", recoveryMode = false, version = "2026.7.4", components = emptySet()),
     panels = panels,
     localize = Localize { "[$it]" },
 )

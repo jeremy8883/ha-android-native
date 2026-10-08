@@ -1,7 +1,6 @@
 {
   "request": {
-    "type": "config/area_registry/list",
-    "id": 62
+    "type": "config/area_registry/list"
   },
   "result": [
     {

@@ -1,8 +1,7 @@
 {
   "request": {
     "type": "frontend/get_system_data",
-    "key": "home",
-    "id": 58
+    "key": "home"
   },
   "result": {
     "value": {

@@ -54,7 +54,12 @@ Update it in the same commit as the work it describes.
 - [x] Entry point: `DashboardActivity`; debug builds get a separate "Native dashboard" launcher icon
 
 ### Step 3 — Vertical slice (connect → load → render → live)
-- [ ] Port the `home` dashboard strategy (pure fn: states + registries → config) — needed when no stored dashboard exists
+- [ ] Port the `home` dashboard strategy (pure fn: states + registries → config), needed when no stored dashboard exists
+  - [x] Dashboard level (`homeDashboard`) and area views (`homeAreaView`), plus helpers. **Golden-tested** against the real frontend output (14/14, admin and non-admin)
+  - [x] Wired into the app: the default dashboard falls back to the generated home dashboard on `config_not_found`
+  - [ ] Overview view (`home-overview`: area cards, summaries, `common-controls` section strategy)
+  - [ ] `home-media-players`, `home-other-devices` views
+  - [ ] Native rendering of heading, area, empty-state and `picture-entity` cards used by these views
 - [x] List dashboards (`lovelace/dashboards/list`)
 - [x] Load dashboard config (`lovelace/config`)
 - [x] Parse config, preserving unknown fields
@@ -107,6 +112,11 @@ Update it in the same commit as the work it describes.
 | 2026-10-08 | Port behaviour from the frontend release matching the target server (20260624.6), not frontend main | Behaviour must match what the server actually ships |
 | 2026-10-08 | Two new modules: `:dashboard-core` (pure JVM) and `:dashboard` (Android, depends on `:common`) | Pure logic stays fast to test and diff-test; minimal upstream file edits (see docs/architecture.md §2) |
 | 2026-10-08 | The `home` strategy (the `/home` panel) is on the critical path for M1 | With no stored dashboard, `lovelace/config` returns `config_not_found` and the frontend shows `/home`, generated client-side by `strategies/home/*` |
+
+## Golden tests
+
+- `tools/golden/capture.mjs` (Playwright) drives the real frontend on the test instance and records raw WS inputs plus strategy outputs into `dashboard-core/src/test/resources/fixtures/home/<variant>/`. `HomeStrategyGoldenTest` feeds the same raw data to the Kotlin port and compares JSON. Re-capture after a frontend version bump; see `tools/golden/README.md`.
+- `usage_prediction/common_control` depends on history and time of day, so tests must use the recorded `ws/strategy-calls.json`.
 
 ## Open questions
 

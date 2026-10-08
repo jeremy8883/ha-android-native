@@ -1,7 +1,6 @@
 {
   "request": {
-    "type": "energy/get_prefs",
-    "id": 68
+    "type": "energy/get_prefs"
   },
   "error": {
     "code": "not_found",
