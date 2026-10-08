@@ -36,6 +36,7 @@ internal fun DashboardEffects(
     onConfirmed: (CardAction) -> Unit,
     onCodeEntered: (CardAction.CallService, String) -> Unit,
     onMoreInfo: (String) -> Unit,
+    onOpenWeb: (String) -> Unit,
 ) {
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
@@ -60,8 +61,10 @@ internal fun DashboardEffects(
                     }
                     null
                 }
-                is DashboardEvent.UnsupportedNavigation ->
-                    context.getString(R.string.native_dashboard_navigation_unsupported, event.path)
+                is DashboardEvent.OpenWeb -> {
+                    onOpenWeb(event.path)
+                    null
+                }
                 is DashboardEvent.UnsupportedAction ->
                     context.getString(R.string.native_dashboard_action_unsupported, event.type)
                 is DashboardEvent.EnterCode -> {

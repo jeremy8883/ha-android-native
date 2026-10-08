@@ -1,5 +1,7 @@
 package io.homeassistant.companion.android
 
+import androidx.annotation.VisibleForTesting
+
 /**
  * Central configuration for work-in-progress features.
  *
@@ -21,4 +23,18 @@ object WIPFeature {
      * This flag is currently not enabled by default as the feature is on hold (no active contributor).
      */
     val USE_SHORTCUTS_V2: Boolean = false
+
+    /**
+     * Shows dashboards natively (the `:dashboard` module) with a native navigation drawer, and every other page in
+     * the web frontend, whose own sidebar is then hidden (`hasSidebar`). See docs/architecture.md section 10.
+     *
+     * Enabled in debug builds only while it is being built. Unit tests set [nativeDashboardOverride] to `false` (see
+     * `TestStateResetPlatformListener`), so the existing tests keep covering the web-only app; tests of the native
+     * dashboard flow set it to `true`.
+     */
+    val USE_NATIVE_DASHBOARD: Boolean get() = nativeDashboardOverride ?: BuildConfig.DEBUG
+
+    /** Overrides [USE_NATIVE_DASHBOARD] in tests. */
+    @VisibleForTesting
+    var nativeDashboardOverride: Boolean? = null
 }

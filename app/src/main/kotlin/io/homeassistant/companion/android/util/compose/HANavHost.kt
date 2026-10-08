@@ -20,6 +20,7 @@ import io.homeassistant.companion.android.frontend.navigation.navigateToFrontend
 import io.homeassistant.companion.android.launch.HAStartDestinationRoute
 import io.homeassistant.companion.android.launch.PipReadiness
 import io.homeassistant.companion.android.loading.LoadingScreen
+import io.homeassistant.companion.android.nativedashboard.nativeDashboardScreen
 import io.homeassistant.companion.android.onboarding.OnboardingRoute
 import io.homeassistant.companion.android.onboarding.WearOnboardApp
 import io.homeassistant.companion.android.onboarding.WearOnboardingRoute
@@ -108,6 +109,7 @@ internal fun HANavHost(
                     wearNameToOnboard = startDestination.wearName,
                 )
             }
+            nativeDashboardScreen(navController)
             frontendScreen(
                 navController = navController,
                 onOpenExternalLink = { uri ->

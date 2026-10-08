@@ -99,6 +99,14 @@ data class FrontendLoaded(override val id: Int? = null) : IncomingExternalBusMes
 data class ConfigGetMessage(override val id: Int? = null) : IncomingExternalBusMessage
 
 /**
+ * Message asking the app to show its navigation, sent instead of opening the frontend's sidebar when the app
+ * reports `hasSidebar` (the frontend's menu button). No response is expected.
+ */
+@Serializable
+@SerialName("sidebar/show")
+data class ShowSidebarMessage(override val id: Int? = null) : IncomingExternalBusMessage
+
+/**
  * Message requesting the app to open its settings.
  * No response is expected for this message
  */

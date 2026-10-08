@@ -28,6 +28,8 @@ import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.parseDashboards
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
+import io.homeassistant.companion.android.dashboard.navigation.PanelInfo
+import io.homeassistant.companion.android.dashboard.navigation.parsePanels
 import io.homeassistant.companion.android.dashboard.strategy.StrategyData
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
@@ -270,6 +272,7 @@ class DashboardRepository @Inject constructor(private val serverManager: ServerM
                 )
             } ?: HassConfig.UNKNOWN,
             panels = panels?.keys.orEmpty(),
+            panelInfo = panels?.let(::parsePanels).orEmpty(),
         )
     }
 
@@ -313,6 +316,20 @@ class DashboardRepository @Inject constructor(private val serverManager: ServerM
                 entity = webSocket.result("frontend/get_icons", mapOf("category" to "entity")) as? JsonObject,
             ),
             translations = translations("entity_component")() + translations("entity")(),
+        )
+    }
+
+    /**
+     * The settings the navigation sidebar depends on: the user's and the system's `core` data (default panel) and
+     * the user's `sidebar` data (panel order, hidden panels).
+     */
+    suspend fun sidebarData(): SidebarData {
+        val webSocket = serverManager.webSocketRepositoryOrNull() ?: return SidebarData(null, null, null)
+        fun value(result: JsonElement?) = (result as? JsonObject)?.obj("value")
+        return SidebarData(
+            userCore = value(webSocket.result("frontend/get_user_data", mapOf("key" to "core"))),
+            systemCore = value(webSocket.result("frontend/get_system_data", mapOf("key" to "core"))),
+            sidebar = value(webSocket.result("frontend/get_user_data", mapOf("key" to "sidebar"))),
         )
     }
 
@@ -368,7 +385,19 @@ data class EntityResources(val icons: IconResources, val translations: Map<Strin
     }
 }
 
-data class ServerInfo(val user: HassUser?, val config: HassConfig, val panels: Set<String>)
+/**
+ * @property panels the url paths of the registered panels
+ * @property panelInfo the panels with their titles, icons and visibility, for the navigation sidebar
+ */
+data class ServerInfo(
+    val user: HassUser?,
+    val config: HassConfig,
+    val panels: Set<String>,
+    val panelInfo: Map<String, PanelInfo> = emptyMap(),
+)
+
+/** What the navigation sidebar is computed from besides the panels: the user's and the system's settings. */
+data class SidebarData(val userCore: JsonObject?, val systemCore: JsonObject?, val sidebar: JsonObject?)
 
 private suspend fun WebSocketRepository.result(type: String, data: Map<String, Any?> = emptyMap()): JsonElement? =
     sendRawMessage(mapOf("type" to type) + data)?.takeIf { it.success }?.result

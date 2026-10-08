@@ -902,6 +902,10 @@ internal class FrontendViewModel @VisibleForTesting constructor(
                 _events.emit(FrontendEvent.NavigateToSettings)
             }
 
+            is FrontendHandlerEvent.ShowNavigation -> {
+                _events.emit(FrontendEvent.ShowNativeNavigation)
+            }
+
             is FrontendHandlerEvent.OpenAssistSettings -> {
                 _events.emit(FrontendEvent.NavigateToAssistSettings)
             }

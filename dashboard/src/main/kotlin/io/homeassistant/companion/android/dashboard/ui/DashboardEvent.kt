@@ -23,8 +23,8 @@ sealed interface DashboardEvent {
     /** Show more information about [entityId]. */
     data class MoreInfo(val entityId: String) : DashboardEvent
 
-    /** [path] leads outside the dashboard, which the native dashboard can't show yet. */
-    data class UnsupportedNavigation(val path: String) : DashboardEvent
+    /** Open [path] (a panel other than a native dashboard) in the web frontend. */
+    data class OpenWeb(val path: String) : DashboardEvent
 
     /** The action type [type] is not supported natively yet. */
     data class UnsupportedAction(val type: String) : DashboardEvent

@@ -184,3 +184,40 @@ Full tables are in frontend-lovelace.md §4 and §12.8. M1 targets:
    output shapes are not public contracts.
 7. **The `:common` WS patch** has to be carried on every upstream merge until (if ever) it's accepted upstream.
 8. **Heavy-data cards** (history, statistics, energy, camera): deferred, with WebView fallback in the meantime.
+
+## 10. Native dashboards inside the app: navigation and the web hand-off
+
+Goal: dashboards are native (instant, offline); every other page stays the web frontend in the WebView.
+
+**Pieces that already exist**
+
+- The frontend's external-app mode: with `hasSidebar: true` in the app's `config/get` answer it hides its own sidebar,
+  and its menu button sends `sidebar/show` to the app (the iOS app works this way).
+- The `navigate` command (HA 2025.6+) moves the frontend to a path; `homeassistant://navigate/<path>` deep links
+  (and `?more-info-entity-id=`) reach the frontend through `LinkHandler` → `LaunchActivity` → `FrontendRoute`.
+- `HAWebViewClient.doUpdateVisitedHistory` sees every route change of the frontend (it changes routes without
+  reloading).
+
+**Design**
+
+1. One router decides, per path, native or web: a path whose panel is a dashboard the native renderer supports
+   (`home`, `lovelace`, storage dashboards, and their views) is native; anything else is the WebView at that path.
+2. Native dashboards are a destination of the app's nav graph (`NativeDashboardRoute` next to `FrontendRoute`), and
+   the start destination when the feature is on.
+3. The native screen has the navigation drawer: a port of `ha-sidebar` (`dashboard-core` `navigation/Sidebar.kt`,
+   golden-tested). Dashboards switch natively; other panels, Settings and the profile open the WebView at their path.
+4. In the WebView the frontend hides its sidebar (`hasSidebar`); its menu button (`sidebar/show`) returns to the
+   native screen with the drawer open. A route change to a dashboard path (a link, the frontend's back) returns to
+   the native dashboard too.
+5. Native actions that navigate outside the dashboard (`/config/...`) and the more-info "More details" open the
+   WebView at that path.
+6. The WebView destination stays on the back stack under/over the native one, so switching is cheap and its own
+   history is kept; system back goes through the WebView history first, then back to the native dashboard.
+
+Everything is behind `WIPFeature.USE_NATIVE_DASHBOARD` (debug builds) while it settles; with it off the app is
+unchanged.
+
+**Phases**: A) native start screen with the drawer, web for other panels, `hasSidebar` and `sidebar/show`;
+B) route changes inside the WebView back to native, native `/...` navigation to the WebView; C) back-stack polish,
+offline behaviour, server switching.
+

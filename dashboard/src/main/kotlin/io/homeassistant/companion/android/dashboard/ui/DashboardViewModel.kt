@@ -28,6 +28,11 @@ import io.homeassistant.companion.android.dashboard.model.DashboardInfo
 import io.homeassistant.companion.android.dashboard.model.ViewConfig
 import io.homeassistant.companion.android.dashboard.model.number
 import io.homeassistant.companion.android.dashboard.model.string
+import io.homeassistant.companion.android.dashboard.navigation.PanelInfo
+import io.homeassistant.companion.android.dashboard.navigation.SidebarItem
+import io.homeassistant.companion.android.dashboard.navigation.SidebarSettings
+import io.homeassistant.companion.android.dashboard.navigation.defaultPanelUrlPath
+import io.homeassistant.companion.android.dashboard.navigation.sidebarItems
 import io.homeassistant.companion.android.dashboard.strategy.StrategyData
 import io.homeassistant.companion.android.dashboard.strategy.expandView
 import io.homeassistant.companion.android.dashboard.strategy.home.HomeDashboardConfig
@@ -50,6 +55,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -172,8 +178,32 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
             ),
             strategyData = strategyData,
             homeSettings = homeSettings,
+            panelInfo = serverInfo?.panelInfo.orEmpty(),
         )
     }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), replay = 1)
+
+    /** The navigation sidebar: the panels in the user's order, and which one is the default. */
+    val sidebar: StateFlow<SidebarState?> = combine(
+        structureInputs,
+        flow {
+            emit(repository.sidebarData())
+        },
+    ) { inputs, data ->
+        val defaultPanel = defaultPanelUrlPath(data.userCore, data.systemCore, inputs.panelInfo)
+        SidebarState(
+            items = sidebarItems(
+                panels = inputs.panelInfo,
+                defaultPanel = defaultPanel,
+                settings = SidebarSettings.fromUserData(data.sidebar),
+                localize = inputs.hass.localize,
+                locale = Locale.forLanguageTag(BUNDLED_LANGUAGE),
+            ),
+            panels = inputs.panelInfo,
+            defaultPanel = defaultPanel,
+            isAdmin = inputs.hass.user?.isAdmin == true,
+        )
+    }.flowOn(Dispatchers.Default)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
 
     // Live collections some cards show; `null` until first loaded
     private val repairsIssues = repository.repairsIssues()
@@ -313,6 +343,19 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         }
     }
 
+    /**
+     * Open [path] in the web frontend through the app's `homeassistant://navigate/<path>` deep link, for hosts that
+     * do not navigate to the frontend themselves (the standalone debug activity).
+     */
+    fun onOpenWebViaDeepLink(path: String) {
+        viewModelScope.launch {
+            val serverId = repository.activeServerId() ?: return@launch
+            val uri = "$DEEP_LINK_NAVIGATE/${path.removePrefix("/")}" +
+                (if ('?' in path) "&" else "?") + "$SERVER_ID_PARAM=$serverId"
+            _events.send(DashboardEvent.OpenAppLink(uri))
+        }
+    }
+
     /** Run [action] that a card control started directly, such as a tile feature. */
     fun onAction(action: CardAction) {
         viewModelScope.launch { run(action) }
@@ -330,8 +373,11 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
 
     private suspend fun run(action: CardAction) {
         when (action) {
-            is CardAction.Navigate -> if (action.path.startsWith("/")) {
-                _events.send(DashboardEvent.UnsupportedNavigation(action.path))
+            is CardAction.Navigate -> if (action.path.startsWith(
+                    "/",
+                )
+            ) {
+                onOpenPath(action.path)
             } else {
                 onNavigate(action.path)
             }
@@ -366,6 +412,26 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         _events.send(DashboardEvent.Message(listOf(failed, error).filter(String::isNotEmpty).joinToString(" ")))
     }
 
+    /**
+     * Go to an app path such as `/dashboard-test/kitchen` or `/config/devices`: dashboards the native renderer
+     * shows open here (with their view), every other panel opens in the web frontend.
+     */
+    fun onOpenPath(path: String) {
+        viewModelScope.launch {
+            // The panels decide what is a dashboard, so wait for them
+            val state = sidebar.filterNotNull().first()
+            val segments = path.substringBefore('?').removePrefix("/").split('/').filter { it.isNotEmpty() }
+            val urlPath = segments.firstOrNull() ?: state.defaultPanel
+            val panel = state.panels[urlPath]
+            if (panel == null || !isNativeDashboard(panel)) {
+                _events.send(DashboardEvent.OpenWeb(path))
+                return@launch
+            }
+            selectedDashboard.value = if (urlPath == HOME_PANEL) null else urlPath
+            viewStack.value = segments.drop(1).take(1)
+        }
+    }
+
     /** @return whether a view was closed; the first view is implicit, so an empty stack shows it */
     fun onBack(): Boolean {
         if (viewStack.value.isEmpty()) return false
@@ -378,6 +444,7 @@ private data class StructureInputs(
     val hass: HassSnapshot,
     val strategyData: StrategyData,
     val homeSettings: JsonObject?,
+    val panelInfo: Map<String, PanelInfo>,
 )
 
 private fun DashboardConfigResult.toUiState(
@@ -441,3 +508,18 @@ private fun CardAction.CallService.withCode(code: String) =
 private const val DEEP_LINK_NAVIGATE = "homeassistant://navigate"
 private const val MORE_INFO_PARAM = "more-info-entity-id"
 private const val SERVER_ID_PARAM = "server_id"
+
+/** The navigation sidebar's entries and what paths they lead to. */
+data class SidebarState(
+    val items: List<SidebarItem>,
+    val panels: Map<String, PanelInfo>,
+    val defaultPanel: String,
+    val isAdmin: Boolean,
+)
+
+/** Whether [panel] is a dashboard the native renderer shows: the home dashboard and Lovelace dashboards. */
+internal fun isNativeDashboard(panel: PanelInfo): Boolean =
+    panel.componentName == HOME_PANEL || panel.componentName == LOVELACE_PANEL
+
+private const val HOME_PANEL = "home"
+private const val LOVELACE_PANEL = "lovelace"

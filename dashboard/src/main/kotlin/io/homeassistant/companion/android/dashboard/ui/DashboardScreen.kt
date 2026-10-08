@@ -11,16 +11,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
@@ -29,12 +32,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -56,18 +62,22 @@ import io.homeassistant.companion.android.dashboard.layout.SectionLayout
 import io.homeassistant.companion.android.dashboard.layout.SidebarLayout
 import io.homeassistant.companion.android.dashboard.layout.viewLayout
 import io.homeassistant.companion.android.dashboard.layout.viewSidebar
-import io.homeassistant.companion.android.dashboard.model.DashboardInfo
 import io.homeassistant.companion.android.dashboard.model.ViewConfig
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardCard
+import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.LocalConditionContext
 import io.homeassistant.companion.android.dashboard.ui.cards.LocalServerUrl
 import java.time.ZonedDateTime
+import kotlinx.coroutines.launch
 
 @Composable
-internal fun DashboardScreen(viewModel: DashboardViewModel) {
+internal fun DashboardScreen(
+    viewModel: DashboardViewModel,
+    onOpenWeb: ((String) -> Unit)? = null,
+    openDrawer: Boolean = false,
+) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val dashboards by viewModel.dashboards.collectAsStateWithLifecycle()
     val selectedDashboard by viewModel.selectedDashboardUrlPath.collectAsStateWithLifecycle()
     // Passed down as State so that only the cards whose derived content changes recompose
     val hass = viewModel.hass.collectAsStateWithLifecycle()
@@ -78,22 +88,41 @@ internal fun DashboardScreen(viewModel: DashboardViewModel) {
     val snackbar = remember { SnackbarHostState() }
     val interactions = remember(viewModel) { CardInteractions(viewModel::onGesture, viewModel::onAction) }
     var moreInfo by rememberSaveable { mutableStateOf<String?>(null) }
-    DashboardEffects(viewModel.events, snackbar, viewModel::onConfirmed, viewModel::onCodeEntered) { moreInfo = it }
+    DashboardEffects(
+        events = viewModel.events,
+        snackbar = snackbar,
+        onConfirmed = viewModel::onConfirmed,
+        onCodeEntered = viewModel::onCodeEntered,
+        onMoreInfo = { moreInfo = it },
+        onOpenWeb = onOpenWeb ?: viewModel::onOpenWebViaDeepLink,
+    )
+    val sidebar by viewModel.sidebar.collectAsStateWithLifecycle()
+    val drawerState = rememberDrawerState(if (openDrawer) DrawerValue.Open else DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
     val serverUrl by viewModel.serverUrl.collectAsStateWithLifecycle()
     CompositionLocalProvider(LocalServerUrl provides serverUrl) {
-        DashboardScreenContent(
-            uiState = uiState,
-            dashboards = dashboards,
-            selectedDashboard = selectedDashboard,
-            hass = hass,
-            now = now,
-            onSelectDashboard = viewModel::onSelectDashboard,
-            onSelectTab = viewModel::onSelectTab,
-            interactions = interactions,
-            onBack = { viewModel.onBack() },
-            snackbar = snackbar,
-        )
+        ModalNavigationDrawer(
+            drawerState = drawerState,
+            gesturesEnabled = content?.isSubview != true,
+            drawerContent = {
+                NavigationDrawerContent(sidebar, selectedDashboard ?: sidebar?.defaultPanel) { path ->
+                    scope.launch { drawerState.close() }
+                    viewModel.onOpenPath(path)
+                }
+            },
+        ) {
+            DashboardScreenContent(
+                uiState = uiState,
+                hass = hass,
+                now = now,
+                onSelectTab = viewModel::onSelectTab,
+                interactions = interactions,
+                onBack = { viewModel.onBack() },
+                onOpenMenu = { scope.launch { drawerState.open() } },
+                snackbar = snackbar,
+            )
+        }
         moreInfo?.let { entityId ->
             MoreInfoSheet(
                 entityId = entityId,
@@ -113,35 +142,47 @@ internal fun DashboardScreen(viewModel: DashboardViewModel) {
 @Composable
 internal fun DashboardScreenContent(
     uiState: DashboardUiState,
-    dashboards: List<DashboardInfo>,
-    selectedDashboard: String?,
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
-    onSelectDashboard: (String?) -> Unit,
     onSelectTab: (String) -> Unit,
     interactions: CardInteractions,
     onBack: () -> Unit,
+    onOpenMenu: () -> Unit = {},
     snackbar: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val content = uiState as? DashboardUiState.Content
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
         topBar = {
-            HATopBar(
-                title = {
-                    Text(
-                        when {
-                            content?.isSubview == true -> content.subviewTitle.orEmpty()
-                            else -> content?.title ?: stringResource(R.string.native_dashboard_title)
-                        },
-                    )
-                },
-                onBackClick = if (content?.isSubview == true) onBack else null,
-            )
+            val title = @Composable {
+                Text(
+                    when {
+                        content?.isSubview == true -> content.subviewTitle.orEmpty()
+                        else -> content?.title ?: stringResource(R.string.native_dashboard_title)
+                    },
+                )
+            }
+            if (content?.isSubview == true) {
+                HATopBar(title = title, onBackClick = onBack)
+            } else {
+                HATopBar(
+                    title = title,
+                    navigationIcon = {
+                        val menuLabel = stringResource(R.string.native_dashboard_menu)
+                        IconButton(
+                            onClick = onOpenMenu,
+                            modifier = Modifier.semantics {
+                                contentDescription = menuLabel
+                            },
+                        ) {
+                            DashboardIcon(name = MENU_ICON, tint = LocalHAColorScheme.current.colorTextPrimary)
+                        }
+                    },
+                )
+            }
         },
     ) { padding ->
         Column(Modifier.padding(padding).fillMaxSize()) {
-            if (content?.isSubview != true) DashboardPicker(dashboards, selectedDashboard, onSelectDashboard)
             when (uiState) {
                 DashboardUiState.Loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     HALoading()
@@ -157,53 +198,6 @@ internal fun DashboardScreenContent(
             }
         }
     }
-}
-
-@Composable
-private fun DashboardPicker(dashboards: List<DashboardInfo>, selected: String?, onSelect: (String?) -> Unit) {
-    LazyRow(
-        contentPadding = PaddingValues(horizontal = HADimens.SPACE4),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
-    ) {
-        item {
-            FilterChip(
-                selected = selected == null,
-                onClick = { onSelect(null) },
-                label = { Text(stringResource(R.string.native_dashboard_default)) },
-                colors = dashboardPickerColors(),
-                border = dashboardPickerBorder(selected = selected == null),
-            )
-        }
-        items(dashboards, key = { it.urlPath.orEmpty() }) { dashboard ->
-            FilterChip(
-                selected = selected == dashboard.urlPath,
-                onClick = { onSelect(dashboard.urlPath) },
-                label = { Text(dashboard.title ?: dashboard.urlPath.orEmpty()) },
-                colors = dashboardPickerColors(),
-                border = dashboardPickerBorder(selected = selected == dashboard.urlPath),
-            )
-        }
-    }
-}
-
-@Composable
-private fun dashboardPickerColors() = with(LocalHAColorScheme.current) {
-    FilterChipDefaults.filterChipColors(
-        containerColor = colorSurfaceDefault,
-        labelColor = colorTextPrimary,
-        selectedContainerColor = colorFillPrimaryLoudResting,
-        selectedLabelColor = colorOnPrimaryLoud,
-    )
-}
-
-@Composable
-private fun dashboardPickerBorder(selected: Boolean) = with(LocalHAColorScheme.current) {
-    FilterChipDefaults.filterChipBorder(
-        enabled = true,
-        selected = selected,
-        borderColor = colorBorderNeutralNormal,
-        selectedBorderColor = colorBorderPrimaryLoud,
-    )
 }
 
 @Composable
@@ -398,11 +392,8 @@ private fun DashboardScreenNotFoundPreview() {
     HAThemeForPreview {
         DashboardScreenContent(
             uiState = DashboardUiState.NotFound,
-            dashboards = listOf(DashboardInfo("dashboard-test", "Test", "storage", requireAdmin = false)),
-            selectedDashboard = null,
             hass = mutableStateOf(null),
             now = mutableStateOf(null),
-            onSelectDashboard = {},
             onSelectTab = {},
             interactions = CardInteractions.NONE,
             onBack = {},
@@ -412,3 +403,5 @@ private fun DashboardScreenNotFoundPreview() {
 
 /** Screens up to this width use the narrow gaps between sections, like upstream's 600px breakpoint. */
 private const val NARROW_WIDTH_DP = 600
+
+private const val MENU_ICON = "mdi:menu"

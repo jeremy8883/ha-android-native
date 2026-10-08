@@ -39,6 +39,9 @@ sealed interface FrontendHandlerEvent {
      */
     data object OpenSettings : FrontendHandlerEvent
 
+    /** The frontend asked the app to show its navigation (`sidebar/show`). */
+    data object ShowNavigation : FrontendHandlerEvent
+
     /**
      * User tapped the companion app assist settings button in the frontend.
      */

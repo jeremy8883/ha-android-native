@@ -9,6 +9,7 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.homeassistant.companion.android.BuildConfig
+import io.homeassistant.companion.android.WIPFeature
 import io.homeassistant.companion.android.applock.AppLockStateManager
 import io.homeassistant.companion.android.automotive.navigation.AutomotiveRoute
 import io.homeassistant.companion.android.common.data.authentication.SessionState
@@ -22,6 +23,7 @@ import io.homeassistant.companion.android.di.qualifiers.IsAutomotive
 import io.homeassistant.companion.android.di.qualifiers.LocationTrackingSupport
 import io.homeassistant.companion.android.frontend.navigation.FrontendRoute
 import io.homeassistant.companion.android.frontend.navigation.FrontendTarget
+import io.homeassistant.companion.android.nativedashboard.NativeDashboardRoute
 import io.homeassistant.companion.android.onboarding.OnboardingRoute
 import io.homeassistant.companion.android.onboarding.WearOnboardingRoute
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -310,10 +312,12 @@ internal class LaunchViewModel @VisibleForTesting constructor(
             NetworkState.READY_INTERNAL, NetworkState.READY_NET_VALIDATED, NetworkState.READY_NET_LOCAL -> {
                 workManager.enqueueResyncRegistration()
                 _uiState.value = LaunchUiState.Ready(
-                    if (shouldNavigateToAutomotive) {
-                        AutomotiveRoute
-                    } else {
-                        FrontendRoute(target, serverId)
+                    when {
+                        shouldNavigateToAutomotive -> AutomotiveRoute
+                        // Native dashboards start the app; other targets open the frontend, which hands back
+                        // to the native dashboards for dashboard paths
+                        WIPFeature.USE_NATIVE_DASHBOARD && target == FrontendTarget.Default -> NativeDashboardRoute()
+                        else -> FrontendRoute(target, serverId)
                     },
                 )
                 true

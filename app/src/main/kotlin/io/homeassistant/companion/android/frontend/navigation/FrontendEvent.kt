@@ -52,6 +52,9 @@ sealed interface FrontendEvent {
     /** Navigate to the app settings screen. */
     data object NavigateToSettings : FrontendEvent
 
+    /** Show the app's native navigation drawer (the frontend's menu button with `hasSidebar`). */
+    data object ShowNativeNavigation : FrontendEvent
+
     /** Open the OS security settings screen (client-certificate installation). */
     data object OpenSecuritySettings : FrontendEvent
 

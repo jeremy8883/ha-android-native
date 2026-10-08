@@ -31,6 +31,7 @@ import io.homeassistant.companion.android.frontend.externalbus.incoming.MatterCo
 import io.homeassistant.companion.android.frontend.externalbus.incoming.OpenAssistMessage
 import io.homeassistant.companion.android.frontend.externalbus.incoming.OpenAssistSettingsMessage
 import io.homeassistant.companion.android.frontend.externalbus.incoming.OpenSettingsMessage
+import io.homeassistant.companion.android.frontend.externalbus.incoming.ShowSidebarMessage
 import io.homeassistant.companion.android.frontend.externalbus.incoming.TagWriteMessage
 import io.homeassistant.companion.android.frontend.externalbus.incoming.ThemeUpdateMessage
 import io.homeassistant.companion.android.frontend.externalbus.incoming.ThreadImportCredentialsMessage
@@ -172,6 +173,11 @@ class FrontendMessageHandler @Inject constructor(
                 Timber.d("Config/get request received with id: ${message.id}")
                 sendConfigResponse(message.id)
                 FrontendHandlerEvent.ConfigSent
+            }
+
+            is ShowSidebarMessage -> {
+                Timber.d("sidebar/show received with id: ${message.id}")
+                FrontendHandlerEvent.ShowNavigation
             }
 
             is OpenSettingsMessage -> {

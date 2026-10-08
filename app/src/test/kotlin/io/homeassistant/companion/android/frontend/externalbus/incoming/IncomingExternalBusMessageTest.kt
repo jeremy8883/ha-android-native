@@ -311,4 +311,12 @@ class IncomingExternalBusMessageTest {
         val message = assertInstanceOf(BarcodeCloseMessage::class.java, frontendExternalBusJson.decodeFromString<IncomingExternalBusMessage>(json))
         assertNull(message.id)
     }
+
+    @Test
+    fun `Given sidebar-show JSON then parses to ShowSidebarMessage`() {
+        val json = """{"type":"sidebar/show","id":7}"""
+
+        val message = assertInstanceOf(ShowSidebarMessage::class.java, frontendExternalBusJson.decodeFromString<IncomingExternalBusMessage>(json))
+        assertEquals(7, message.id)
+    }
 }

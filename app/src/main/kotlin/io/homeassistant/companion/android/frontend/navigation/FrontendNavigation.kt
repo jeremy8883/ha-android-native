@@ -23,6 +23,7 @@ import io.homeassistant.companion.android.frontend.navigation.FrontendTarget.Com
 import io.homeassistant.companion.android.launch.HAStartDestinationRoute
 import io.homeassistant.companion.android.launch.LaunchActivity
 import io.homeassistant.companion.android.launch.PipReadiness
+import io.homeassistant.companion.android.nativedashboard.navigateToNativeDashboard
 import io.homeassistant.companion.android.nfc.WriteNfcTag
 import io.homeassistant.companion.android.settings.SettingsActivity
 import io.homeassistant.companion.android.util.getActivity
@@ -103,6 +104,7 @@ internal fun NavGraphBuilder.frontendScreen(
 
         FrontendEventHandler(
             events = viewModel.events,
+            onShowNativeNavigation = { navController.navigateToNativeDashboard(openDrawer = true) },
             onShowSnackbar = onShowSnackbar,
             onNavigateToSettings = onNavigateToSettings,
             onRelaunch = {
@@ -182,6 +184,7 @@ internal fun FrontendEventHandler(
     onOpenSecuritySettings: suspend () -> Unit = {},
     onUpdateWebView: suspend () -> Unit = {},
     onRelaunch: () -> Unit = {},
+    onShowNativeNavigation: () -> Unit = {},
 ) {
     val resources = LocalResources.current
     LaunchedEffect(Unit) {
@@ -199,6 +202,7 @@ internal fun FrontendEventHandler(
                 }
 
                 is FrontendEvent.NavigateToSettings -> onNavigateToSettings(null)
+                is FrontendEvent.ShowNativeNavigation -> onShowNativeNavigation()
                 is FrontendEvent.OpenSecuritySettings -> onOpenSecuritySettings()
                 is FrontendEvent.UpdateWebView -> onUpdateWebView()
                 is FrontendEvent.Relaunch -> onRelaunch()

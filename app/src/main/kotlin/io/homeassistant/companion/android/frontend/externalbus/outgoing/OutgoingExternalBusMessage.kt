@@ -1,9 +1,12 @@
 package io.homeassistant.companion.android.frontend.externalbus.outgoing
 
 import androidx.annotation.VisibleForTesting
+import io.homeassistant.companion.android.WIPFeature
 import io.homeassistant.companion.android.common.util.AppVersion
 import io.homeassistant.companion.android.frontend.addto.ExternalEntityAddToAction
 import io.homeassistant.companion.android.frontend.externalbus.frontendExternalBusJson
+import kotlinx.serialization.EncodeDefault
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonElement
@@ -98,6 +101,13 @@ object ConfigResultMessage {
         val downloadFileSupported: Boolean = true,
         val appVersion: String,
         val hasEntityAddTo: Boolean = true,
+        /**
+         * The app shows its own navigation, so the frontend hides its sidebar and sends `sidebar/show`. Only sent
+         * when true, so the config is unchanged while the native dashboards are off.
+         */
+        @OptIn(ExperimentalSerializationApi::class)
+        @EncodeDefault(EncodeDefault.Mode.NEVER)
+        val hasSidebar: Boolean = false,
         val hasAssistSettings: Boolean = true,
         val hasSplashscreen: Boolean = true,
         val hasMatterStatusReport: Boolean = true,
@@ -117,6 +127,7 @@ object ConfigResultMessage {
                 hasBarCodeScanner = hasBarCodeScanner,
                 canSetupImprov = canSetupImprov,
                 appVersion = appVersion.toString(),
+                hasSidebar = WIPFeature.USE_NATIVE_DASHBOARD,
             )
         }
     }
