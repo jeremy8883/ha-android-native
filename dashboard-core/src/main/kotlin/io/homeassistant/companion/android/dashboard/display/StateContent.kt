@@ -33,6 +33,7 @@ import kotlinx.serialization.json.JsonPrimitive
  * @param now the time relative timestamps ("in 10 hours") are computed from
  * @param name the text of the `name` content
  * @param timeFormat a card's `time_format` for timestamps (`relative`, `total`, `date`, `time`, `datetime`)
+ * @param dashUnavailable show "—" instead of unavailable and unknown states (`dash-unavailable`)
  */
 fun HassSnapshot.stateDisplay(
     state: EntityState,
@@ -40,9 +41,12 @@ fun HassSnapshot.stateDisplay(
     now: Instant,
     name: String? = null,
     timeFormat: String? = null,
+    dashUnavailable: Boolean = false,
 ): String {
     val contents = normalizeContent(content) ?: DEFAULT_STATE_CONTENT[state.domain] ?: listOf(CONTENT_STATE)
-    val values = contents.mapNotNull { computeContent(state, it, now, name, timeFormat)?.ifEmpty { null } }
+    val values = contents.mapNotNull {
+        computeContent(state, it, now, name, timeFormat, dashUnavailable)?.ifEmpty { null }
+    }
     return if (values.isEmpty()) formatEntityState(state) else values.joinToString(SEPARATOR_DOT)
 }
 
@@ -64,9 +68,13 @@ private fun HassSnapshot.computeContent(
     now: Instant,
     name: String?,
     timeFormat: String?,
+    dashUnavailable: Boolean,
 ): String? {
     val domain = state.domain
-    if (content == CONTENT_STATE) return stateContent(state, now, timeFormat)
+    if (content == CONTENT_STATE) {
+        val noValue = state.state == STATE_UNAVAILABLE || state.state == STATE_UNKNOWN
+        return if (dashUnavailable && noValue) DASH else stateContent(state, now, timeFormat)
+    }
     if (content == "name" && !name.isNullOrEmpty()) return name
     if (content in NAME_CONTENTS) {
         val item = JsonObject(mapOf("type" to JsonPrimitive(content.removeSuffix("_name"))))
@@ -204,6 +212,7 @@ private fun Long.pad(): String = toString().padStart(2, '0')
 private fun String.capitalizeFirst(): String = replaceFirstChar { it.uppercaseChar() }
 
 private const val CONTENT_STATE = "state"
+private const val DASH = "—"
 private const val INTL_DEFAULT_MAX_FRACTION_DIGITS = 3
 private const val SEPARATOR_DOT = " · "
 private const val DEVICE_CLASS_UPTIME = "uptime"

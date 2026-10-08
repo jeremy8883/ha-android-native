@@ -9,16 +9,6 @@ import io.homeassistant.companion.android.dashboard.model.string
 val CardConfig.tapNavigationPath: String?
     get() = json.obj("tap_action")?.takeIf { it.string("action") == "navigate" }?.string("navigation_path")
 
-/** Display-ready content of a heading card. */
-data class HeadingModel(val text: String, val icon: String?, val isSubtitle: Boolean)
-
-/** Basic heading: its text, icon and style. Badges are not ported yet (src/panels/lovelace/cards/hui-heading-card.ts). */
-fun headingModel(card: CardConfig): HeadingModel = HeadingModel(
-    text = card.json.string("heading").orEmpty(),
-    icon = card.json.string("icon"),
-    isSubtitle = card.json.string("heading_style") == "subtitle",
-)
-
 /** Display-ready content of an area card. */
 data class AreaCardModel(val name: String, val icon: String?)
 

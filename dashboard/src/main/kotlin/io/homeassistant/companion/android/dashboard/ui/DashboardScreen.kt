@@ -21,6 +21,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -52,6 +53,7 @@ import io.homeassistant.companion.android.dashboard.layout.SectionLayout
 import io.homeassistant.companion.android.dashboard.layout.viewLayout
 import io.homeassistant.companion.android.dashboard.model.DashboardInfo
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardCard
+import io.homeassistant.companion.android.dashboard.ui.cards.LocalConditionContext
 import io.homeassistant.companion.android.dashboard.ui.cards.OnGesture
 import java.time.ZonedDateTime
 
@@ -240,6 +242,21 @@ private fun CardGroups(
     // One list item per row of sections, so long phone layouts stay lazy
     val rows = remember(viewLayout) { viewLayout.sections.groupBy { it.cell.row }.values.toList() }
     val narrow = screen.widthDp <= NARROW_WIDTH_DP
+    val cardContext = remember(screen, maxColumns) { ConditionContext(maxColumns = maxColumns, screen = screen) }
+    CompositionLocalProvider(LocalConditionContext provides cardContext) {
+        ViewRows(rows, viewLayout.columnCount, narrow, hass, now, onGesture)
+    }
+}
+
+@Composable
+private fun ViewRows(
+    rows: List<List<SectionLayout>>,
+    columnCount: Int,
+    narrow: Boolean,
+    hass: State<HassSnapshot?>,
+    now: State<ZonedDateTime?>,
+    onGesture: OnGesture,
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(HADimens.SPACE4),
@@ -248,7 +265,7 @@ private fun CardGroups(
         items(rows) { sections ->
             DashboardGrid(
                 cells = sections.map { it.cell.copy(row = 0, rowSpan = 1) },
-                columnCount = viewLayout.columnCount,
+                columnCount = columnCount,
                 columnGap = if (narrow) HADimens.SPACE2 else HADimens.SPACE8,
                 rowGap = HADimens.SPACE6,
             ) { index -> SectionGrid(sections[index], hass, now, onGesture) }

@@ -49,6 +49,9 @@ fun cardActions(card: CardConfig): CardActions {
     )
 }
 
+/** The gestures an element with its own `*_action` options responds to; unset actions do nothing. */
+fun elementActions(config: JsonObject): ElementActions = elementActions(config, tapWhenUnset = false)
+
 /** `!config.tap_action || hasAction(tap_action)` for tap when [tapWhenUnset], `hasAction` for the others. */
 private fun elementActions(config: JsonObject, tapWhenUnset: Boolean) = ElementActions(
     config = config,

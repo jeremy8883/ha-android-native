@@ -37,7 +37,7 @@ internal fun DashboardCard(
             modifier = cardModifier,
             iconModifier = actions.icon?.let { Modifier.clip(CircleShape).elementGestures(it, onGesture) } ?: Modifier,
         )
-        CARD_HEADING -> HeadingCard(card, cardModifier)
+        CARD_HEADING -> HeadingCard(card, hass, now, onGesture, cardModifier)
         CARD_AREA -> AreaCard(card, hass, cardModifier)
         CARD_HOME_SUMMARY -> InfoTileCard(card, hass, cardModifier) { homeSummaryModel(it) }
         CARD_REPAIRS -> InfoTileCard(card, hass, cardModifier) { repairsModel(it) }
