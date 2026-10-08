@@ -2,6 +2,7 @@ package io.homeassistant.companion.android.dashboard.ui
 
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.action.Confirmation
+import io.homeassistant.companion.android.dashboard.data.LoadError
 
 /** One-off effects of the dashboard the screen shows or performs. */
 sealed interface DashboardEvent {
@@ -28,6 +29,9 @@ sealed interface DashboardEvent {
 
     /** A native dashboard was opened, so it should show in place of the web frontend. */
     data object ShowDashboard : DashboardEvent
+
+    /** What the user asked for needs data that couldn't be loaded. */
+    data class LoadFailed(val error: LoadError) : DashboardEvent
 
     /** The action type [type] is not supported natively yet. */
     data class UnsupportedAction(val type: String) : DashboardEvent

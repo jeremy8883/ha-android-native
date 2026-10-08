@@ -100,6 +100,17 @@ WS / Room ──► Raw state (single source)                  Derived (pure, ne
   recomposition minimal.
 - Actions → `:common` service call → server → state diff → UI. No optimistic duplicate state.
 - While `connection != Live`, controls are disabled (read-only offline). There is no command queue.
+- **Failures are never empty data.** Every piece of server data is a `Loadable` (`data/Loadable.kt`): `Loading`,
+  `Ready(value, refreshing, refreshError)` or `Failed(error)`, with a typed `LoadError` (no server, no response,
+  server error, unexpected response). `KeptData` (`data/KeptData.kt`) loads it when collected, again on change events,
+  after every reconnection (`WebSocketRepository.connectionStatus()` counts connections) and after retryable failures
+  with backoff; a failed attempt keeps the loaded value. The last value of each piece is kept per server
+  (`LoadedData`, in memory for now; the Room cache will take its place), so a screen collected again starts from it.
+  The first `subscribe_entities` event after a reconnection is a full snapshot and replaces the states.
+- **Screen states:** nothing loaded → spinner; nothing could be loaded → error with Retry; loaded data being loaded
+  again → thin bar under the top bar; connection lost (after 1s, like the frontend's toast) → a bar at the bottom,
+  "Connection lost. Reconnecting… · Updated …"; a refresh refused by the server → a message with Retry. Indicators
+  float over the content so nothing moves; the scrolling content keeps room at its end for the bottom bar.
 - **Dev safety:** a debug `readOnly` flag blocks all service calls.
 
 ## 5. APIs needed for M1

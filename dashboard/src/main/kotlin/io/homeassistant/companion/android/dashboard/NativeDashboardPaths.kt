@@ -1,12 +1,14 @@
 package io.homeassistant.companion.android.dashboard
 
 import io.homeassistant.companion.android.dashboard.data.DashboardRepository
+import io.homeassistant.companion.android.dashboard.data.Fetched
 import io.homeassistant.companion.android.dashboard.navigation.PanelInfo
 import io.homeassistant.companion.android.dashboard.ui.isNativeDashboard
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import timber.log.Timber
 
 /**
  * Tells which app paths the native dashboards show, for the app to hand the web frontend's route changes over to
@@ -28,7 +30,14 @@ class NativeDashboardPaths @Inject constructor(private val repository: Dashboard
         val urlPath = path.substringBefore('?').removePrefix("/").substringBefore('/')
         if (urlPath.isEmpty()) return false
         val panel = mutex.withLock {
-            panels?.get(urlPath) ?: repository.serverInfo()?.panelInfo.also { panels = it }?.get(urlPath)
+            panels?.get(urlPath) ?: when (val loaded = repository.panels()) {
+                is Fetched.Success -> loaded.value.also { panels = it }[urlPath]
+                is Fetched.Failure -> {
+                    // Unknown, so the path stays in the web frontend, which can show it
+                    Timber.w("Failed to load the panels to tell whether /$urlPath is a dashboard: ${loaded.error}")
+                    null
+                }
+            }
         }
         return panel != null && isNativeDashboard(panel)
     }

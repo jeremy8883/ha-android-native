@@ -29,10 +29,15 @@ import io.homeassistant.companion.android.common.data.websocket.impl.entities.Tr
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.serialization.json.JsonElement
 
 interface WebSocketRepository {
     fun getConnectionState(): WebSocketState
+
+    /** The state of the connection as it changes, with the number of connections established so far. */
+    fun connectionStatus(): StateFlow<WebSocketConnectionStatus>
+
     fun shutdown()
     suspend fun sendPing(): Boolean
     suspend fun getCurrentUser(): CurrentUserResponse?

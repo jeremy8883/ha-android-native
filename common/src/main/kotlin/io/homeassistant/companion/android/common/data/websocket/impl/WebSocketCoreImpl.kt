@@ -9,6 +9,7 @@ import io.homeassistant.companion.android.common.data.authentication.Authorizati
 import io.homeassistant.companion.android.common.data.servers.ServerManager
 import io.homeassistant.companion.android.common.data.servers.UrlState
 import io.homeassistant.companion.android.common.data.websocket.HAWebSocketException
+import io.homeassistant.companion.android.common.data.websocket.WebSocketConnectionStatus
 import io.homeassistant.companion.android.common.data.websocket.WebSocketCore
 import io.homeassistant.companion.android.common.data.websocket.WebSocketRequest
 import io.homeassistant.companion.android.common.data.websocket.WebSocketState
@@ -72,12 +73,16 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.channels.consumeEach
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -164,6 +169,9 @@ internal class WebSocketCoreImpl(
 
     private val connectionHolder = AtomicReference<ConnectionHolder?>(null)
 
+    /** Backs [connectionState], observable through [connectionStatus]. */
+    private val connectionStatus = MutableStateFlow(WebSocketConnectionStatus(WebSocketState.Initial, connections = 0))
+
     /**
      * Represents the current state of the WebSocket connection.
      *
@@ -179,6 +187,10 @@ internal class WebSocketCoreImpl(
      * to this variable at the same time.
      */
     private var connectionState: WebSocketState = WebSocketState.Initial
+        set(value) {
+            field = value
+            connectionStatus.update { it.withState(value) }
+        }
 
     /**
      * Used to communicate the close reason to [handleClosingSocket] when closing due to URL change.
@@ -575,6 +587,8 @@ internal class WebSocketCoreImpl(
     }
 
     override fun getConnectionState(): WebSocketState = connectionState
+
+    override fun connectionStatus(): StateFlow<WebSocketConnectionStatus> = connectionStatus.asStateFlow()
 
     override suspend fun sendMessage(request: Map<String, Any?>): RawMessageSocketResponse? =
         sendMessage(WebSocketRequest(request))

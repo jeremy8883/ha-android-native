@@ -19,7 +19,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
@@ -57,6 +56,7 @@ import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.condition.ConditionContext
 import io.homeassistant.companion.android.dashboard.condition.ScreenInfo
 import io.homeassistant.companion.android.dashboard.condition.sectionsViewColumns
+import io.homeassistant.companion.android.dashboard.data.valueOrNull
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.layout.CardGroup
 import io.homeassistant.companion.android.dashboard.layout.SECTION_GRID_GAP_DP
@@ -72,6 +72,8 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.LocalConditionContext
 import io.homeassistant.companion.android.dashboard.ui.cards.LocalServerUrl
 import java.time.ZonedDateTime
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @Composable
@@ -88,6 +90,7 @@ internal fun DashboardScreen(
     val hass = viewModel.hass.collectAsStateWithLifecycle()
     val now = viewModel.now.collectAsStateWithLifecycle()
 
+    val status by viewModel.status.collectAsStateWithLifecycle()
     val content = uiState as? DashboardUiState.Content
     val webVisible = web?.visible == true
     BackHandler(enabled = !webVisible && content?.isSubview == true) { viewModel.onBack() }
@@ -96,6 +99,13 @@ internal fun DashboardScreen(
         viewModel.onSelectDashboard(null)
     }
     val snackbar = remember { SnackbarHostState() }
+    RefreshErrorMessages(
+        refreshErrors = remember(viewModel) {
+            viewModel.status.map { it.refreshError.takeIf { _ -> it.offlineSince == null } }.distinctUntilChanged()
+        },
+        snackbar = snackbar,
+        onRetry = viewModel::onRetry,
+    )
     val interactions = remember(viewModel) { CardInteractions(viewModel::onGesture, viewModel::onAction) }
     var moreInfo by rememberSaveable { mutableStateOf<String?>(null) }
     DashboardEffects(
@@ -129,7 +139,8 @@ internal fun DashboardScreen(
             drawerContent = {
                 NavigationDrawerContent(
                     sidebar = sidebar,
-                    selected = if (webVisible) web?.panel else selectedDashboard ?: sidebar?.defaultPanel,
+                    selected = if (webVisible) web?.panel else selectedDashboard ?: sidebar.valueOrNull?.defaultPanel,
+                    onRetry = viewModel::onRetry,
                     onSwitchServer = onSwitchServer?.let { switch ->
                         {
                             scope.launch { drawerState.close() }
@@ -154,6 +165,8 @@ internal fun DashboardScreen(
                     onBack = { viewModel.onBack() },
                     onOpenMenu = { scope.launch { drawerState.open() } },
                     snackbar = snackbar,
+                    status = status,
+                    onRetry = viewModel::onRetry,
                 )
             }
             web?.let { ScreenLayer(visible = it.visible, backEnabled = drawerClosed, content = it.content) }
@@ -184,10 +197,13 @@ internal fun DashboardScreenContent(
     onBack: () -> Unit,
     onOpenMenu: () -> Unit = {},
     snackbar: SnackbarHostState = remember { SnackbarHostState() },
+    status: DashboardStatus = DashboardStatus.CURRENT,
+    onRetry: () -> Unit = {},
 ) {
     val content = uiState as? DashboardUiState.Content
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbar) },
+        // Over the content, so they never move it
+        snackbarHost = { DashboardBottomBars(snackbar, status.offlineSince, content != null, now) },
         topBar = {
             val title = @Composable {
                 Text(
@@ -217,20 +233,19 @@ internal fun DashboardScreenContent(
             }
         },
     ) { padding ->
-        Column(Modifier.padding(padding).fillMaxSize()) {
+        Box(Modifier.padding(padding).fillMaxSize()) {
             when (uiState) {
                 DashboardUiState.Loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     HALoading()
                 }
                 DashboardUiState.NotFound -> Message(stringResource(R.string.native_dashboard_not_found))
-                is DashboardUiState.Error -> Message(
-                    stringResource(R.string.native_dashboard_error, uiState.message.orEmpty()),
-                )
+                is DashboardUiState.Error -> LoadErrorScreen(uiState.error, onRetry)
                 is DashboardUiState.UnsupportedStrategy -> Message(
                     stringResource(R.string.native_dashboard_unsupported_strategy, uiState.type.orEmpty()),
                 )
                 is DashboardUiState.Content -> DashboardView(uiState, hass, now, onSelectTab, interactions)
             }
+            RefreshIndicator(visible = status.refreshing, modifier = Modifier.align(Alignment.TopCenter))
         }
     }
 }
@@ -329,7 +344,13 @@ private fun ViewRows(
     }
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(HADimens.SPACE4),
+        // Room at the end to scroll the last cards clear of the offline bar, kept so nothing moves when it shows
+        contentPadding = PaddingValues(
+            start = HADimens.SPACE4,
+            top = HADimens.SPACE4,
+            end = HADimens.SPACE4,
+            bottom = BOTTOM_BAR_CLEARANCE,
+        ),
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
     ) {
         if (view != null) item { ViewHeader(view, hass, now, interactions) }
@@ -440,3 +461,6 @@ private fun DashboardScreenNotFoundPreview() {
 private const val NARROW_WIDTH_DP = 600
 
 private const val MENU_ICON = "mdi:menu"
+
+/** About the offline bar's height with its margins. */
+private val BOTTOM_BAR_CLEARANCE = 80.dp

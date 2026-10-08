@@ -110,7 +110,9 @@ Update it in the same commit as the work it describes.
 - [ ] Persist last dashboard config (Room)
 - [ ] Persist last known entity states
 - [ ] Render from cache with a visible "cached" indicator
-- [ ] Explicit connection status, resubscribe on reconnect
+- [x] Explicit connection status, resubscribe on reconnect (`connectionStatus()` in `:common`; data reloads on reconnection, the next states snapshot replaces the old states)
+- [x] Failures are never shown as empty data: `Loadable`/`LoadError`, last good value kept, retries, error screen with Retry, refresh bar, offline bar (docs/architecture.md section 4)
+- [ ] Action failures like upstream: translated exception messages, 10s message, haptic, toggles flip back after 2s without a state update
 - [ ] Read-only offline: commands disabled while disconnected
 
 ### Later — Startup time
@@ -145,7 +147,8 @@ Update it in the same commit as the work it describes.
 
 ## Open questions
 
-- After a reconnect, `subscribe_entities` resends a full `a` snapshot, but entities removed while we were offline stay in our map. Fix: reset the states on resubscribe; this needs a resubscribe signal from `:common`.
+- Known deviations after the empty-data audit: a refused `usage_prediction/common_control` leaves the common controls section out (upstream fails that section); a template whose subscription can't be made shows its raw text until it renders, as upstream; an `subscribe_entities` addition without `s` still gets an empty state.
+- `:common` shares identical subscriptions (`findSubscription`) without replaying their snapshot, so a second collector of the same `subscribe_entities` would miss it. The dashboards subscribe once per screen, so it doesn't arise today.
 
 - How do we support several frontend versions at once? Gate on `ha_version`, and use per-version fixtures?
 - Differential testing: can the TS strategies run headless in Node against fixture `hass` data?
@@ -158,6 +161,11 @@ Update it in the same commit as the work it describes.
 - Dependency lockfiles are global, so avoid adding new libraries to `:app`/`:automotive` (merge conflicts).
 
 ## Handover notes
+
+### 2026-10-09: failures are not empty (Opus)
+- The "all rooms empty" bug: after the app was in the background for more than 5s, the dashboard's flows restarted and fetched the registries again, often before the connection was back; the failed requests became empty lists. Data now goes through `Loadable` and `KeptData`, and keeps its last value per server (`LoadedData`).
+- `DashboardRepository` returns `Flow<Loadable<T>>` for every piece of data and `Fetched<T>` for one-off requests; `dashboards()` (unused) is gone. `DashboardViewModel.status` carries refreshing, offline and refresh errors for the screen; `sidebar` is a `Loadable` and the drawer shows its loading and failure.
+- Next: offline read-only controls, action failures like upstream, then the Room cache behind `LoadedData` (clear it on logout and when a server is removed).
 
 ### 2026-10-08: entity display (Opus)
 - `TileModel` now carries display-ready text: `name` (formatEntityName), `state` (the full secondary line, unit included; `unit` is gone), `icon` (always resolved for existing entities). `HassSnapshot.tileModel(card, now)` needs the current time for relative timestamps; cards get it as `State<ZonedDateTime?>`.

@@ -43,9 +43,11 @@ class InfoCardsTest {
         )
         val added = applyConfigFlowMessages(snapshot, Json.parseToJsonElement("""[{"type": "added", "flow": ${flow("3", "dhcp")}}]"""))
         val removed = applyConfigFlowMessages(added, Json.parseToJsonElement("""[{"type": "removed", "flow_id": "1"}]"""))
-        assertEquals(listOf("1"), snapshot.map { it.string("flow_id") })
-        assertEquals(listOf("1", "3"), added.map { it.string("flow_id") })
-        assertEquals(listOf("3"), removed.map { it.string("flow_id") })
+        assertEquals(listOf("1"), snapshot?.map { it.string("flow_id") })
+        assertEquals(listOf("1", "3"), added?.map { it.string("flow_id") })
+        assertEquals(listOf("3"), removed?.map { it.string("flow_id") })
+        // Not a list of messages, so it can't be applied
+        assertEquals(null, applyConfigFlowMessages(added, Json.parseToJsonElement("""{"type": "added"}""")))
         val hass = base.copy(discoveredFlows = added)
         assertEquals("2 devices", hass.discoveredDevicesModel(CardConfig(json("""{"type": "discovered-devices"}"""))).secondary)
     }

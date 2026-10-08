@@ -6,6 +6,7 @@ import io.homeassistant.companion.android.common.data.integration.IntegrationDom
 import io.homeassistant.companion.android.common.data.integration.impl.entities.EntityResponse
 import io.homeassistant.companion.android.common.data.servers.ServerManager
 import io.homeassistant.companion.android.common.data.websocket.RawWebSocketResponse
+import io.homeassistant.companion.android.common.data.websocket.WebSocketConnectionStatus
 import io.homeassistant.companion.android.common.data.websocket.WebSocketCore
 import io.homeassistant.companion.android.common.data.websocket.WebSocketRepository
 import io.homeassistant.companion.android.common.data.websocket.WebSocketRequest
@@ -50,6 +51,7 @@ import io.homeassistant.companion.android.database.server.ServerUserInfo
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -68,6 +70,8 @@ class WebSocketRepositoryImpl internal constructor(
     override fun getConnectionState(): WebSocketState {
         return webSocketCore.getConnectionState()
     }
+
+    override fun connectionStatus(): StateFlow<WebSocketConnectionStatus> = webSocketCore.connectionStatus()
 
     override fun shutdown() {
         return webSocketCore.shutdown()

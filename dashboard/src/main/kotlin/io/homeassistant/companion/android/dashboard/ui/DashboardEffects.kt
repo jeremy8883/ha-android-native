@@ -76,6 +76,8 @@ internal fun DashboardEffects(
                     currentOnShowDashboard()
                     null
                 }
+                is DashboardEvent.LoadFailed ->
+                    context.getString(R.string.native_dashboard_load_failed, context.loadErrorText(event.error))
                 is DashboardEvent.UnsupportedAction ->
                     context.getString(R.string.native_dashboard_action_unsupported, event.type)
                 is DashboardEvent.EnterCode -> {

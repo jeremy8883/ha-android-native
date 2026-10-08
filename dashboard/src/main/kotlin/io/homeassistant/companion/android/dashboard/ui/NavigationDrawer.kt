@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -13,16 +14,22 @@ import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
+import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
+import io.homeassistant.companion.android.dashboard.data.Loadable
+import io.homeassistant.companion.android.dashboard.data.valueOrNull
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 
 /**
@@ -30,14 +37,16 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
  * (for admins) and the profile, like `ha-sidebar`'s fixed entries.
  *
  * @param selected the url path of the panel shown now
+ * @param sidebar the panels, or why they couldn't be loaded, with [onRetry] to try again
  * @param onSwitchServer shows the server picker; `null` hides the entry (a single server)
  * @param onOpen called with the path of the chosen entry
  */
 @Composable
 internal fun NavigationDrawerContent(
-    sidebar: SidebarState?,
+    sidebar: Loadable<SidebarState>,
     selected: String?,
     onSwitchServer: (() -> Unit)? = null,
+    onRetry: () -> Unit = {},
     onOpen: (String) -> Unit,
 ) {
     val colors = LocalHAColorScheme.current
@@ -65,13 +74,27 @@ internal fun NavigationDrawerContent(
         Column(
             modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(vertical = HADimens.SPACE2),
         ) {
-            sidebar?.items?.forEach { Entry(it.urlPath, it.title, it.icon) }
+            when (sidebar) {
+                Loadable.Loading -> HALoading(Modifier.align(Alignment.CenterHorizontally).padding(HADimens.SPACE4))
+                is Loadable.Failed -> Column(
+                    modifier = Modifier.padding(HADimens.SPACE4),
+                    verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+                ) {
+                    Text(
+                        text = stringResource(
+                            R.string.native_dashboard_load_failed,
+                            LocalContext.current.loadErrorText(sidebar.error),
+                        ),
+                        style = HATextStyle.Body,
+                    )
+                    HAAccentButton(text = stringResource(R.string.native_dashboard_retry), onClick = onRetry)
+                }
+                is Loadable.Ready -> sidebar.value.items.forEach { Entry(it.urlPath, it.title, it.icon) }
+            }
         }
         HorizontalDivider()
         Column(modifier = Modifier.padding(vertical = HADimens.SPACE2)) {
-            if (sidebar?.isAdmin ==
-                true
-            ) {
+            if (sidebar.valueOrNull?.isAdmin == true) {
                 Entry(CONFIG_PANEL, stringResource(R.string.native_dashboard_settings), SETTINGS_ICON)
             }
             Entry(PROFILE_PANEL, stringResource(R.string.native_dashboard_profile), PROFILE_ICON)

@@ -8,6 +8,7 @@ import io.homeassistant.companion.android.database.server.Server
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import okhttp3.OkHttpClient
 
 /**
@@ -33,6 +34,9 @@ internal interface WebSocketCore {
      * Returns the current state of the WebSocket connection.
      */
     fun getConnectionState(): WebSocketState
+
+    /** The state of the connection as it changes, with the number of connections established so far. */
+    fun connectionStatus(): StateFlow<WebSocketConnectionStatus>
 
     /**
      * Sends a message over the WebSocket connection and waits for a response.

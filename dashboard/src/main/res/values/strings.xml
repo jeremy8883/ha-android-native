@@ -4,7 +4,6 @@
     <string name="native_dashboard_default">Overview</string>
     <string name="native_dashboard_not_found">This dashboard has no stored configuration. Generated dashboards are not supported yet; pick another dashboard.</string>
     <string name="native_dashboard_error">Unable to load the dashboard: %1$s</string>
-    <string name="native_dashboard_not_connected">Not connected to Home Assistant</string>
     <string name="native_dashboard_unsupported_card">Unsupported card: %1$s</string>
     <string name="native_dashboard_entity_not_found">Entity not available: %1$s</string>
     <string name="native_dashboard_select">Select dashboard</string>
@@ -18,4 +17,14 @@
     <string name="native_dashboard_settings">Settings</string>
     <string name="native_dashboard_profile">Profile</string>
     <string name="native_dashboard_switch_server">Switch server</string>
+    <string name="native_dashboard_error_no_server">No Home Assistant server is set up</string>
+    <string name="native_dashboard_error_no_response">Home Assistant couldn\'t be reached</string>
+    <string name="native_dashboard_error_server">Home Assistant returned an error: %1$s</string>
+    <string name="native_dashboard_error_unexpected">Home Assistant sent an unexpected response (%1$s)</string>
+    <string name="native_dashboard_retry">Retry</string>
+    <string name="native_dashboard_refresh_failed">Couldn\'t refresh the dashboard: %1$s</string>
+    <string name="native_dashboard_load_failed">Couldn\'t load the navigation: %1$s</string>
+    <string name="native_dashboard_offline">Connection lost. Reconnecting…</string>
+    <string name="native_dashboard_updated">Updated %1$s</string>
+    <string name="native_dashboard_updated_just_now">Updated just now</string>
 </resources>

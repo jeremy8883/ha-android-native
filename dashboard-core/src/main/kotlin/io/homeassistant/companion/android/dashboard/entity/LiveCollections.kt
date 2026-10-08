@@ -20,10 +20,11 @@ fun activeRepairsIssues(result: JsonObject): List<JsonObject> =
  * Apply one `config_entries/flow/subscribe` event (a list of `{type, flow_id, flow}` messages) to the discovered
  * flows: `null`-type messages are a full snapshot, `added` adds, `removed` removes. Only flows from discovery
  * sources are kept. Port of the handler in `HuiDiscoveredDevicesCard.hassSubscribe`
- * (src/panels/lovelace/cards/hui-discovered-devices-card.ts).
+ * (src/panels/lovelace/cards/hui-discovered-devices-card.ts). `null` when [event] is not a list of messages.
  */
-fun applyConfigFlowMessages(current: List<JsonObject>?, event: JsonElement): List<JsonObject> {
-    val messages = (event as? JsonArray)?.filterIsInstance<JsonObject>().orEmpty()
+fun applyConfigFlowMessages(current: List<JsonObject>?, event: JsonElement): List<JsonObject>? {
+    val messages = (event as? JsonArray)?.filterIsInstance<JsonObject>() ?: return null
+    // As upstream, no messages means no flows
     if (messages.isEmpty()) return emptyList()
     var flows = current
     var fullUpdate = false

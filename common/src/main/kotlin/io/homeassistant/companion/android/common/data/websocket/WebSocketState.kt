@@ -24,3 +24,23 @@ sealed interface WebSocketState {
         val ClosedOther = Closed(Closed.Reason.OTHER)
     }
 }
+
+/**
+ * The state of a WebSocket connection, with how many connections have been established so far.
+ *
+ * @property connections grows by one every time a connection becomes [WebSocketState.Active], so a change tells
+ * that the connection was re-established and that data read before may have changed since
+ */
+data class WebSocketConnectionStatus(val state: WebSocketState, val connections: Int) {
+    /** This status moved to [newState], counting a new connection when it becomes active. */
+    fun withState(newState: WebSocketState): WebSocketConnectionStatus = copy(
+        state = newState,
+        connections = if (newState == WebSocketState.Active &&
+            state != WebSocketState.Active
+        ) {
+            connections + 1
+        } else {
+            connections
+        },
+    )
+}
