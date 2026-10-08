@@ -59,8 +59,9 @@ Update it in the same commit as the work it describes.
   - [x] Wired into the app: the default dashboard falls back to the generated home dashboard on `config_not_found`
   - [x] Overview view (`home-overview`) and the `common-controls` section strategy, golden-tested (20/20 with section and full expansion)
   - [x] `home-media-players`, `home-other-devices` views, golden-tested (24/24 strategy goldens)
-  - [ ] Native rendering of the cards these views use. Basic heading and area cards exist; still to do: more entity row types, the overview sidebar
+  - [ ] Native rendering of the cards these views use. Basic heading and area cards exist; still to do: more entity row types, vertical tiles (`vertical: true`, e.g. the overview's Devices tile on tablets)
     - [x] tile features used by the home strategy: light-brightness (slider), cover-open-close and lock-commands (buttons), fan-speed (speed segments or slider), alarm-modes (mode segments), target-temperature (+/- with 1 s debounce, single or range). Models in `feature/TileFeatures.kt`; protected lock/alarm calls use the entity's default code or ask for one (`CodeDialog`). Verified on the test instance (brightness, fan speed, alarm arming with code)
+    - [x] Sections view sidebar (the home overview's Summaries on large screens): a column of its own beside the content, or Home/Summaries tabs on narrow (≤ 870dp) screens, following `hui-sections-view`; checked at 411, 800 and 1066dp
     - [x] conditional card: hidden (taking no space) while its conditions fail, otherwise its card; inner cards get their templates and snapshots
     - [x] picture-entity: camera snapshots signed with `auth/sign_path` and refreshed every 10 s like `hui-image`, configured/image/person pictures; media artwork. Images load through the app's Coil image loader (coil-compose added) against the server's current URL (`LocalServerUrl`). The test dashboard has a Cameras section
     - [x] shortcut card (label and icon from area targets, URLs, Assist; panel and service names not resolved yet)

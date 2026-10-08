@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
@@ -52,7 +53,9 @@ import io.homeassistant.companion.android.dashboard.layout.CardGroup
 import io.homeassistant.companion.android.dashboard.layout.SECTION_GRID_GAP_DP
 import io.homeassistant.companion.android.dashboard.layout.SECTION_ROW_HEIGHT_DP
 import io.homeassistant.companion.android.dashboard.layout.SectionLayout
+import io.homeassistant.companion.android.dashboard.layout.SidebarLayout
 import io.homeassistant.companion.android.dashboard.layout.viewLayout
+import io.homeassistant.companion.android.dashboard.layout.viewSidebar
 import io.homeassistant.companion.android.dashboard.model.DashboardInfo
 import io.homeassistant.companion.android.dashboard.model.ViewConfig
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
@@ -256,11 +259,12 @@ private fun CardGroups(
     maxColumns: Int,
     interactions: CardInteractions,
 ) {
+    val sidebar = remember(view) { view?.let(::viewSidebar) }
     // Re-evaluated on every state, screen or clock change, but only recomposes when the layout changes
-    val layout by remember(groups, screen, maxColumns) {
+    val layout by remember(groups, sidebar, screen, maxColumns) {
         derivedStateOf {
             val context = ConditionContext(maxColumns = maxColumns, screen = screen, now = now.value)
-            hass.value?.viewLayout(groups, context)
+            hass.value?.viewLayout(groups, context, sidebar)
         }
     }
     val viewLayout = layout ?: return
@@ -269,7 +273,7 @@ private fun CardGroups(
     val narrow = screen.widthDp <= NARROW_WIDTH_DP
     val cardContext = remember(screen, maxColumns) { ConditionContext(maxColumns = maxColumns, screen = screen) }
     CompositionLocalProvider(LocalConditionContext provides cardContext) {
-        ViewRows(rows, viewLayout.columnCount, narrow, view, hass, now, interactions)
+        ViewRows(rows, viewLayout.columnCount, viewLayout.sidebar, narrow, view, hass, now, interactions)
     }
 }
 
@@ -277,25 +281,82 @@ private fun CardGroups(
 private fun ViewRows(
     rows: List<List<SectionLayout>>,
     columnCount: Int,
+    sidebar: SidebarLayout?,
     narrow: Boolean,
     view: ViewConfig?,
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
     interactions: CardInteractions,
 ) {
+    val columnGap = if (narrow) HADimens.SPACE2 else HADimens.SPACE8
+    var showSidebar by rememberSaveable(view) { mutableStateOf(false) }
+    val sectionRow: @Composable (List<SectionLayout>) -> Unit = { sections ->
+        DashboardGrid(
+            cells = sections.map { it.cell.copy(row = 0, rowSpan = 1) },
+            columnCount = columnCount,
+            columnGap = columnGap,
+            rowGap = HADimens.SPACE6,
+        ) { index -> SectionGrid(sections[index], hass, now, interactions) }
+    }
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(HADimens.SPACE4),
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
     ) {
         if (view != null) item { ViewHeader(view, hass, now, interactions) }
-        items(rows) { sections ->
-            DashboardGrid(
-                cells = sections.map { it.cell.copy(row = 0, rowSpan = 1) },
-                columnCount = columnCount,
-                columnGap = if (narrow) HADimens.SPACE2 else HADimens.SPACE8,
-                rowGap = HADimens.SPACE6,
-            ) { index -> SectionGrid(sections[index], hass, now, interactions) }
+        when (sidebar?.mode) {
+            // Content and sidebar side by side, scrolling together like upstream's grid
+            SidebarLayout.MODE_COLUMN -> item {
+                Row(horizontalArrangement = Arrangement.spacedBy(columnGap)) {
+                    Column(
+                        modifier = Modifier.weight(columnCount.toFloat()),
+                        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
+                    ) { rows.forEach { sectionRow(it) } }
+                    SidebarSections(sidebar, hass, now, interactions, Modifier.weight(1f))
+                }
+            }
+            SidebarLayout.MODE_TABS -> {
+                item { SidebarSwitch(sidebar, showSidebar) { showSidebar = it } }
+                if (showSidebar) {
+                    item { SidebarSections(sidebar, hass, now, interactions, Modifier.fillMaxWidth()) }
+                } else {
+                    items(rows) { sectionRow(it) }
+                }
+            }
+            else -> items(rows) { sectionRow(it) }
+        }
+    }
+}
+
+@Composable
+private fun SidebarSections(
+    sidebar: SidebarLayout,
+    hass: State<HassSnapshot?>,
+    now: State<ZonedDateTime?>,
+    interactions: CardInteractions,
+    modifier: Modifier,
+) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6)) {
+        sidebar.sections.forEach { SectionGrid(it, hass, now, interactions) }
+    }
+}
+
+/** The switch between the content and the sidebar on narrow screens (upstream's `mobile-tabs`). */
+@Composable
+private fun SidebarSwitch(sidebar: SidebarLayout, showSidebar: Boolean, onChange: (Boolean) -> Unit) {
+    val colors = LocalHAColorScheme.current
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+        listOf(false to sidebar.contentLabel, true to sidebar.sidebarLabel).forEach { (isSidebar, label) ->
+            FilterChip(
+                selected = showSidebar == isSidebar,
+                onClick = { onChange(isSidebar) },
+                label = { Text(label) },
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = colors.colorFillPrimaryLoudResting,
+                    selectedLabelColor = colors.colorOnPrimaryLoud,
+                ),
+                modifier = Modifier.padding(horizontal = HADimens.SPACE1),
+            )
         }
     }
 }
