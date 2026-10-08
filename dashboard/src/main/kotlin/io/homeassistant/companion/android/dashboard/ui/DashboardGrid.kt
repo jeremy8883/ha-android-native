@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.ui
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.Layout
@@ -8,7 +9,8 @@ import androidx.compose.ui.unit.Dp
 import io.homeassistant.companion.android.dashboard.layout.GridCell
 
 /**
- * Lays [content] out like a CSS grid with [columnCount] equal columns: the n-th child goes to `cells[n]`.
+ * Lays items out like a CSS grid with [columnCount] equal columns: [itemContent] for index n goes to `cells[n]`.
+ * Each item gets its own container, so an item that draws nothing still keeps its cell.
  * Rows are as tall as their tallest single-row child; a child spanning several rows grows the last of them when
  * it needs more room. Children are measured at their cell's width.
  */
@@ -19,8 +21,9 @@ internal fun DashboardGrid(
     columnGap: Dp,
     rowGap: Dp,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit,
+    itemContent: @Composable (index: Int) -> Unit,
 ) {
+    val content = @Composable { cells.indices.forEach { index -> Box { itemContent(index) } } }
     Layout(content = content, modifier = modifier) { measurables, constraints ->
         val columnGapPx = columnGap.roundToPx()
         val rowGapPx = rowGap.roundToPx()

@@ -15,8 +15,11 @@ from pathlib import Path
 SUBTREES = [
     "panel",
     "state",
+    "ui.notification_toast",
     "ui.card",
+    "ui.panel.lovelace.cards.actions",
     "ui.panel.lovelace.components",
+    "ui.panel.lovelace.editor.action-editor.actions",
     "ui.panel.lovelace.strategy",
 ]
 

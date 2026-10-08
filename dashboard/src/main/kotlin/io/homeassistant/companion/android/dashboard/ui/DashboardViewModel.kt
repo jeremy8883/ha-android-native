@@ -3,6 +3,9 @@ package io.homeassistant.companion.android.dashboard.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.homeassistant.companion.android.dashboard.action.CardAction
+import io.homeassistant.companion.android.dashboard.action.Gesture
+import io.homeassistant.companion.android.dashboard.action.resolveAction
 import io.homeassistant.companion.android.dashboard.data.DashboardConfigResult
 import io.homeassistant.companion.android.dashboard.data.DashboardRepository
 import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
@@ -31,6 +34,7 @@ import kotlin.time.Duration.Companion.seconds
 import kotlin.time.toJavaInstant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,10 +45,13 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.JsonObject
 
 /** What the dashboard screen shows. */
@@ -200,6 +207,60 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         viewStack.update { it + path }
     }
 
+    private val _events = Channel<DashboardEvent>(Channel.BUFFERED)
+
+    /** One-off effects for the screen: messages, confirmations, links to open. */
+    val events: Flow<DashboardEvent> = _events.receiveAsFlow()
+
+    /**
+     * Handle [gesture] on a card element configured by [config] (see `cardActions`): resolve it against the
+     * current state and run it, after asking for confirmation when the action wants it.
+     */
+    fun onGesture(config: JsonObject, gesture: Gesture) {
+        val snapshot = hass.value ?: return
+        viewModelScope.launch {
+            val resolved = withContext(Dispatchers.Default) { snapshot.resolveAction(config, gesture) } ?: return@launch
+            val confirmation = resolved.confirmation
+            if (confirmation != null) {
+                _events.send(DashboardEvent.Confirm(confirmation, resolved.action))
+            } else {
+                run(resolved.action)
+            }
+        }
+    }
+
+    /** Run [action] once the user confirmed it. */
+    fun onConfirmed(action: CardAction) {
+        viewModelScope.launch { run(action) }
+    }
+
+    private suspend fun run(action: CardAction) {
+        when (action) {
+            is CardAction.Navigate -> if (action.path.startsWith("/")) {
+                _events.send(DashboardEvent.UnsupportedNavigation(action.path))
+            } else {
+                onNavigate(action.path)
+            }
+            is CardAction.CallService -> callService(action)
+            is CardAction.MoreInfo -> _events.send(DashboardEvent.MoreInfo(action.entityId))
+            is CardAction.OpenUrl -> _events.send(DashboardEvent.OpenUrl(action.url))
+            is CardAction.Failure -> _events.send(DashboardEvent.Message(action.message))
+            is CardAction.Assist -> _events.send(DashboardEvent.UnsupportedAction(ACTION_ASSIST))
+            is CardAction.FireDomEvent -> _events.send(DashboardEvent.UnsupportedAction(ACTION_FIRE_DOM_EVENT))
+        }
+    }
+
+    private suspend fun callService(call: CardAction.CallService) {
+        val error = repository.callService(call.domain, call.service, call.data, call.target) ?: return
+        // Like upstream's notifyOnError toast: "Failed to perform the action light/turn_on. <message>"
+        val localize = hass.value?.localize ?: return
+        val failed = localize(
+            "ui.notification_toast.action_failed",
+            mapOf("service" to "${call.domain}/${call.service}"),
+        )
+        _events.send(DashboardEvent.Message(listOf(failed, error).filter(String::isNotEmpty).joinToString(" ")))
+    }
+
     /** @return whether a view was closed; the first view is implicit, so an empty stack shows it */
     fun onBack(): Boolean {
         if (viewStack.value.isEmpty()) return false
@@ -262,3 +323,6 @@ private val CLOCK_TICK = 15.seconds
 
 /** The language of the bundled frontend strings; server translations are fetched in the same language. */
 private const val BUNDLED_LANGUAGE = "en"
+
+private const val ACTION_ASSIST = "assist"
+private const val ACTION_FIRE_DOM_EVENT = "fire-dom-event"

@@ -38,6 +38,7 @@ internal fun TileCard(
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
     modifier: Modifier = Modifier,
+    iconModifier: Modifier = Modifier,
 ) {
     val tile by remember(card) {
         derivedStateOf { hass.value?.tileModel(card, now.value?.toInstant() ?: Instant.EPOCH) }
@@ -46,12 +47,12 @@ internal fun TileCard(
     if (model == null) {
         UnsupportedCard(stringResource(R.string.native_dashboard_entity_not_found, card.entity.orEmpty()), modifier)
     } else {
-        TileCardContent(model, modifier)
+        TileCardContent(model, modifier, iconModifier)
     }
 }
 
 @Composable
-internal fun TileCardContent(tile: TileModel, modifier: Modifier = Modifier) {
+internal fun TileCardContent(tile: TileModel, modifier: Modifier = Modifier, iconModifier: Modifier = Modifier) {
     val colors = LocalHAColorScheme.current
     DashboardCardSurface(modifier = modifier, active = tile.active) {
         Row(
@@ -60,7 +61,7 @@ internal fun TileCardContent(tile: TileModel, modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             if (tile.icon != null) {
-                Box(modifier = Modifier.size(HASize.X5L), contentAlignment = Alignment.Center) {
+                Box(modifier = Modifier.size(HASize.X5L).then(iconModifier), contentAlignment = Alignment.Center) {
                     DashboardIcon(
                         name = tile.icon,
                         tint = when {

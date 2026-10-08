@@ -325,8 +325,33 @@
     "twice_daily": "Twice daily"
    }
   },
+  "notification_toast": {
+   "action_failed": "Failed to perform the action {service}.",
+   "connection_lost": "Connection lost. Reconnecting…",
+   "dismiss": "Dismiss",
+   "integration_starting": "Starting {integration}. Not everything will be available until startup is finished.",
+   "new_version_available": "A new version of the frontend is available.",
+   "no_matching_link_found": "No matching My link found for {path}",
+   "reload": "Reload",
+   "started": "Home Assistant has started!",
+   "starting": "Home Assistant is starting. Not everything will be available until it is finished.",
+   "theme_preferences_unavailable": "Unable to load user profile theme settings.",
+   "theme_save_failed": "Unable to save theme settings to your user profile.",
+   "triggered": "Triggered {name}",
+   "wrapping_up_startup": "Wrapping up startup. Not everything will be available until it is finished."
+  },
   "panel": {
    "lovelace": {
+    "cards": {
+     "actions": {
+      "action_confirmation": "Are you sure you want to run action ''{action}''?",
+      "no_action": "No action to run specified",
+      "no_entity_more_info": "No entity provided for more info dialog",
+      "no_entity_toggle": "No entity provided to toggle",
+      "no_navigation_path": "No navigation path specified",
+      "no_url": "No URL to open specified"
+     }
+    },
     "components": {
      "energy_period_selector": {
       "compare": "Compare data",
@@ -338,6 +363,20 @@
      "timestamp-display": {
       "invalid": "Invalid timestamp",
       "invalid_format": "Invalid display format"
+     }
+    },
+    "editor": {
+     "action-editor": {
+      "actions": {
+       "assist": "Assist",
+       "default_action": "Default",
+       "more-info": "More info",
+       "navigate": "Navigate",
+       "none": "Nothing",
+       "perform-action": "Perform action",
+       "toggle": "Toggle",
+       "url": "URL"
+      }
      }
     },
     "strategy": {

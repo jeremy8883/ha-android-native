@@ -154,6 +154,24 @@ class DashboardRepository @Inject constructor(private val serverManager: ServerM
         )
     }
 
+    /**
+     * Call `[domain].[service]` (`call_service`), as the frontend's `callService` does.
+     *
+     * @return `null` when it succeeded, otherwise the server's error message (empty when there is none)
+     */
+    suspend fun callService(domain: String, service: String, data: JsonObject?, target: JsonObject?): String? {
+        val webSocket = serverManager.webSocketRepositoryOrNull() ?: return ""
+        val message = buildMap<String, Any?> {
+            put("type", "call_service")
+            put("domain", domain)
+            put("service", service)
+            data?.let { put("service_data", it) }
+            target?.let { put("target", it) }
+        }
+        val response = webSocket.sendRawMessage(message) ?: return ""
+        return if (response.success) null else (response.error as? JsonObject)?.string("message").orEmpty()
+    }
+
     /** User, server config and panels, or `null` when no connection can be made. */
     suspend fun serverInfo(): ServerInfo? {
         val webSocket = serverManager.webSocketRepositoryOrNull() ?: return null

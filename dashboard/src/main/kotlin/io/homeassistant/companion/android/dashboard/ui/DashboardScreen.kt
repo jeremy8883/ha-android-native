@@ -16,6 +16,8 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -50,6 +52,7 @@ import io.homeassistant.companion.android.dashboard.layout.SectionLayout
 import io.homeassistant.companion.android.dashboard.layout.viewLayout
 import io.homeassistant.companion.android.dashboard.model.DashboardInfo
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardCard
+import io.homeassistant.companion.android.dashboard.ui.cards.OnGesture
 import java.time.ZonedDateTime
 
 @Composable
@@ -63,6 +66,8 @@ internal fun DashboardScreen(viewModel: DashboardViewModel) {
 
     val content = uiState as? DashboardUiState.Content
     BackHandler(enabled = content?.isSubview == true) { viewModel.onBack() }
+    val snackbar = remember { SnackbarHostState() }
+    DashboardEffects(viewModel.events, snackbar, viewModel::onConfirmed)
 
     DashboardScreenContent(
         uiState = uiState,
@@ -72,8 +77,9 @@ internal fun DashboardScreen(viewModel: DashboardViewModel) {
         now = now,
         onSelectDashboard = viewModel::onSelectDashboard,
         onSelectTab = viewModel::onSelectTab,
-        onNavigate = viewModel::onNavigate,
+        onGesture = viewModel::onGesture,
         onBack = { viewModel.onBack() },
+        snackbar = snackbar,
     )
 }
 
@@ -86,11 +92,13 @@ internal fun DashboardScreenContent(
     now: State<ZonedDateTime?>,
     onSelectDashboard: (String?) -> Unit,
     onSelectTab: (String) -> Unit,
-    onNavigate: (String) -> Unit,
+    onGesture: OnGesture,
     onBack: () -> Unit,
+    snackbar: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     val content = uiState as? DashboardUiState.Content
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbar) },
         topBar = {
             HATopBar(
                 title = {
@@ -118,7 +126,7 @@ internal fun DashboardScreenContent(
                 is DashboardUiState.UnsupportedStrategy -> Message(
                     stringResource(R.string.native_dashboard_unsupported_strategy, uiState.type.orEmpty()),
                 )
-                is DashboardUiState.Content -> DashboardView(uiState, hass, now, onSelectTab, onNavigate)
+                is DashboardUiState.Content -> DashboardView(uiState, hass, now, onSelectTab, onGesture)
             }
         }
     }
@@ -177,7 +185,7 @@ private fun DashboardView(
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
     onSelectTab: (String) -> Unit,
-    onNavigate: (String) -> Unit,
+    onGesture: OnGesture,
 ) {
     val colors = LocalHAColorScheme.current
     Column {
@@ -207,7 +215,7 @@ private fun DashboardView(
             val configuration = LocalConfiguration.current
             val screen = ScreenInfo(configuration.screenWidthDp, configuration.screenHeightDp)
             val maxColumns = sectionsViewColumns(configuration.screenWidthDp, content.maxColumns)
-            key(content.viewPath) { CardGroups(content.groups, hass, now, screen, maxColumns, onNavigate) }
+            key(content.viewPath) { CardGroups(content.groups, hass, now, screen, maxColumns, onGesture) }
         }
     }
 }
@@ -219,7 +227,7 @@ private fun CardGroups(
     now: State<ZonedDateTime?>,
     screen: ScreenInfo,
     maxColumns: Int,
-    onNavigate: (String) -> Unit,
+    onGesture: OnGesture,
 ) {
     // Re-evaluated on every state, screen or clock change, but only recomposes when the layout changes
     val layout by remember(groups, screen, maxColumns) {
@@ -243,9 +251,7 @@ private fun CardGroups(
                 columnCount = viewLayout.columnCount,
                 columnGap = if (narrow) HADimens.SPACE2 else HADimens.SPACE8,
                 rowGap = HADimens.SPACE6,
-            ) {
-                sections.forEach { section -> SectionGrid(section, hass, now, onNavigate) }
-            }
+            ) { index -> SectionGrid(sections[index], hass, now, onGesture) }
         }
     }
 }
@@ -255,15 +261,15 @@ private fun SectionGrid(
     section: SectionLayout,
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
-    onNavigate: (String) -> Unit,
+    onGesture: OnGesture,
 ) {
     DashboardGrid(
         cells = section.cards.map { it.cell },
         columnCount = section.columnCount,
         columnGap = HADimens.SPACE2,
         rowGap = HADimens.SPACE2,
-    ) {
-        section.cards.forEach { placed ->
+    ) { index ->
+        section.cards[index].let { placed ->
             // Fixed-row cards keep the web's row rhythm but may grow to fit native content
             val rows = placed.fixedRows
             val sizing = if (rows != null) {
@@ -271,7 +277,7 @@ private fun SectionGrid(
             } else {
                 Modifier
             }
-            DashboardCard(placed.card, hass, now, onNavigate, sizing.fillMaxWidth())
+            DashboardCard(placed.card, hass, now, onGesture, sizing.fillMaxWidth())
         }
     }
 }
@@ -293,7 +299,7 @@ private fun DashboardScreenNotFoundPreview() {
             now = mutableStateOf(null),
             onSelectDashboard = {},
             onSelectTab = {},
-            onNavigate = {},
+            onGesture = { _, _ -> },
             onBack = {},
         )
     }

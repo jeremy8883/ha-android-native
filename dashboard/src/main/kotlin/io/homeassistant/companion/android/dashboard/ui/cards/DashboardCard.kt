@@ -1,14 +1,17 @@
 package io.homeassistant.companion.android.dashboard.ui.cards
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.draw.clip
+import io.homeassistant.companion.android.common.compose.theme.HARadius
+import io.homeassistant.companion.android.dashboard.action.cardActions
 import io.homeassistant.companion.android.dashboard.derive.discoveredDevicesModel
 import io.homeassistant.companion.android.dashboard.derive.homeSummaryModel
 import io.homeassistant.companion.android.dashboard.derive.repairsModel
-import io.homeassistant.companion.android.dashboard.derive.tapNavigationPath
 import io.homeassistant.companion.android.dashboard.derive.updatesModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
@@ -20,25 +23,29 @@ internal fun DashboardCard(
     card: CardConfig,
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
-    onNavigate: (String) -> Unit,
+    onGesture: OnGesture,
     modifier: Modifier = Modifier,
 ) {
-    // A navigate tap action works on any card, so subviews are reachable before every card type is native.
-    val clickModifier = card.tapNavigationPath
-        ?.let { path -> modifier.clickable(role = Role.Button) { onNavigate(path) } }
-        ?: modifier
+    val actions = remember(card) { cardActions(card) }
+    // Gestures work on every card, so actions are available before every card type is native
+    val cardModifier = modifier.clip(RoundedCornerShape(HARadius.XL)).elementGestures(actions.card, onGesture)
     when (card.type) {
-        CARD_TILE -> TileCard(card, hass, now, clickModifier)
-        CARD_HEADING -> HeadingCard(card, clickModifier)
-        CARD_AREA -> AreaCard(card, hass, clickModifier)
-        CARD_HOME_SUMMARY -> InfoTileCard(card, hass, clickModifier) { homeSummaryModel(it) }
-        CARD_REPAIRS -> InfoTileCard(card, hass, clickModifier) { repairsModel(it) }
-        CARD_UPDATES -> InfoTileCard(card, hass, clickModifier) { updatesModel(it) }
-        CARD_DISCOVERED_DEVICES -> InfoTileCard(card, hass, clickModifier) { discoveredDevicesModel(it) }
-        else -> UnsupportedCard(card.type.orEmpty(), clickModifier)
+        CARD_TILE -> TileCard(
+            card = card,
+            hass = hass,
+            now = now,
+            modifier = cardModifier,
+            iconModifier = actions.icon?.let { Modifier.clip(CircleShape).elementGestures(it, onGesture) } ?: Modifier,
+        )
+        CARD_HEADING -> HeadingCard(card, cardModifier)
+        CARD_AREA -> AreaCard(card, hass, cardModifier)
+        CARD_HOME_SUMMARY -> InfoTileCard(card, hass, cardModifier) { homeSummaryModel(it) }
+        CARD_REPAIRS -> InfoTileCard(card, hass, cardModifier) { repairsModel(it) }
+        CARD_UPDATES -> InfoTileCard(card, hass, cardModifier) { updatesModel(it) }
+        CARD_DISCOVERED_DEVICES -> InfoTileCard(card, hass, cardModifier) { discoveredDevicesModel(it) }
+        else -> UnsupportedCard(card.type.orEmpty(), cardModifier)
     }
 }
-
 private const val CARD_TILE = "tile"
 private const val CARD_HEADING = "heading"
 private const val CARD_AREA = "area"
