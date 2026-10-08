@@ -172,6 +172,18 @@ class DashboardRepository @Inject constructor(private val serverManager: ServerM
         return if (response.success) null else (response.error as? JsonObject)?.string("message").orEmpty()
     }
 
+    /**
+     * The default code stored for [entityId] (`options.[optionsDomain].default_code` of its registry entry), as
+     * the frontend reads it before asking for a lock or alarm code. `null` when there is none or it can't be read.
+     */
+    suspend fun defaultCode(entityId: String, optionsDomain: String): String? = (
+        serverManager.webSocketRepositoryOrNull()?.result(
+            "config/entity_registry/get",
+            mapOf("entity_id" to entityId),
+        ) as? JsonObject
+        )
+        ?.obj("options")?.obj(optionsDomain)?.string("default_code")?.ifEmpty { null }
+
     /** User, server config and panels, or `null` when no connection can be made. */
     suspend fun serverInfo(): ServerInfo? {
         val webSocket = serverManager.webSocketRepositoryOrNull() ?: return null

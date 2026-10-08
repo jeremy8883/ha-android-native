@@ -23,21 +23,23 @@ internal fun DashboardCard(
     card: CardConfig,
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
-    onGesture: OnGesture,
+    interactions: CardInteractions,
     modifier: Modifier = Modifier,
 ) {
     val actions = remember(card) { cardActions(card) }
     // Gestures work on every card, so actions are available before every card type is native
-    val cardModifier = modifier.clip(RoundedCornerShape(HARadius.XL)).elementGestures(actions.card, onGesture)
+    val cardModifier = modifier.clip(RoundedCornerShape(HARadius.XL)).elementGestures(actions.card, interactions)
     when (card.type) {
         CARD_TILE -> TileCard(
             card = card,
             hass = hass,
             now = now,
             modifier = cardModifier,
-            iconModifier = actions.icon?.let { Modifier.clip(CircleShape).elementGestures(it, onGesture) } ?: Modifier,
+            iconModifier =
+            actions.icon?.let { Modifier.clip(CircleShape).elementGestures(it, interactions) } ?: Modifier,
+            onAction = interactions.onAction,
         )
-        CARD_HEADING -> HeadingCard(card, hass, now, onGesture, cardModifier)
+        CARD_HEADING -> HeadingCard(card, hass, now, interactions, cardModifier)
         CARD_AREA -> AreaCard(card, hass, cardModifier)
         CARD_HOME_SUMMARY -> InfoTileCard(card, hass, cardModifier) { homeSummaryModel(it) }
         CARD_REPAIRS -> InfoTileCard(card, hass, cardModifier) { repairsModel(it) }

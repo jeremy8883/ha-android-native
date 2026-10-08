@@ -38,7 +38,7 @@ internal fun HeadingCard(
     card: CardConfig,
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
-    onGesture: OnGesture,
+    interactions: CardInteractions,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalConditionContext.current
@@ -90,14 +90,14 @@ internal fun HeadingCard(
                 horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.End),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                heading.badges.forEach { badge -> HeadingBadge(badge, onGesture) }
+                heading.badges.forEach { badge -> HeadingBadge(badge, interactions) }
             }
         }
     }
 }
 
 @Composable
-private fun HeadingBadge(badge: HeadingBadgeModel, onGesture: OnGesture) {
+private fun HeadingBadge(badge: HeadingBadgeModel, interactions: CardInteractions) {
     val colors = LocalHAColorScheme.current
     val tint = when (badge) {
         is HeadingBadgeModel.Entity -> badge.color?.toColor()
@@ -114,7 +114,7 @@ private fun HeadingBadge(badge: HeadingBadgeModel, onGesture: OnGesture) {
             .heightIn(min = HASize.X2L)
             .clip(CircleShape)
             .background(background)
-            .elementGestures(badge.actions, onGesture)
+            .elementGestures(badge.actions, interactions)
             .semantics { if (badge is HeadingBadgeModel.Entity) contentDescription = badge.name }
             .padding(horizontal = HADimens.SPACE2, vertical = HADimens.SPACE1),
         horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),

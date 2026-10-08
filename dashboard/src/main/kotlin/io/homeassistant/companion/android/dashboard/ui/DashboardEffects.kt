@@ -32,10 +32,12 @@ internal fun DashboardEffects(
     events: Flow<DashboardEvent>,
     snackbar: SnackbarHostState,
     onConfirmed: (CardAction) -> Unit,
+    onCodeEntered: (CardAction.CallService, String) -> Unit,
 ) {
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
     var confirm by remember { mutableStateOf<DashboardEvent.Confirm?>(null) }
+    var codeFor by remember { mutableStateOf<CardAction.CallService?>(null) }
 
     LaunchedEffect(events) {
         events.collect { event ->
@@ -49,6 +51,10 @@ internal fun DashboardEffects(
                     context.getString(R.string.native_dashboard_navigation_unsupported, event.path)
                 is DashboardEvent.UnsupportedAction ->
                     context.getString(R.string.native_dashboard_action_unsupported, event.type)
+                is DashboardEvent.EnterCode -> {
+                    codeFor = event.action
+                    null
+                }
                 is DashboardEvent.Confirm -> {
                     confirm = event
                     null
@@ -84,6 +90,17 @@ internal fun DashboardEffects(
             dismissButton = {
                 HAPlainButton(pending.confirmation.dismissText ?: stringResource(commonR.string.cancel), dismiss)
             },
+        )
+    }
+
+    codeFor?.let { action ->
+        CodeDialog(
+            request = checkNotNull(action.code),
+            onSubmit = { code ->
+                codeFor = null
+                onCodeEntered(action, code)
+            },
+            onDismiss = { codeFor = null },
         )
     }
 }

@@ -2,6 +2,8 @@ package io.homeassistant.companion.android.dashboard.derive
 
 import io.homeassistant.companion.android.dashboard.display.stateDisplay
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
+import io.homeassistant.companion.android.dashboard.feature.TileFeature
+import io.homeassistant.companion.android.dashboard.feature.tileFeatures
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.string
@@ -17,6 +19,8 @@ data class TileModel(
     val icon: String?,
     val active: Boolean,
     val available: Boolean,
+    /** The controls under the tile, see [tileFeatures]. */
+    val features: List<TileFeature> = emptyList(),
 )
 
 /**
@@ -42,5 +46,6 @@ fun HassSnapshot.tileModel(card: CardConfig, now: Instant): TileModel? {
         icon = entityIcon(entityId, configIcon = card.json.string("icon")),
         active = entity.isActive(),
         available = entity.state != STATE_UNAVAILABLE,
+        features = tileFeatures(card),
     )
 }

@@ -16,6 +16,7 @@ fun EntityState.supportsFeature(feature: Int): Boolean =
 object EntityFeature {
     const val COVER_OPEN = 1
     const val COVER_CLOSE = 2
+    const val COVER_STOP = 8
     const val CLIMATE_TARGET_TEMPERATURE = 1
     const val CLIMATE_TARGET_TEMPERATURE_RANGE = 2
     const val FAN_SET_SPEED = 1

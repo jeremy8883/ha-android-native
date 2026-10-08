@@ -53,6 +53,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 
 /** What the dashboard screen shows. */
 sealed interface DashboardUiState {
@@ -229,6 +230,16 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         }
     }
 
+    /** Run [action] that a card control started directly, such as a tile feature. */
+    fun onAction(action: CardAction) {
+        viewModelScope.launch { run(action) }
+    }
+
+    /** Run [action] with the [code] the user entered for it. */
+    fun onCodeEntered(action: CardAction.CallService, code: String) {
+        viewModelScope.launch { callService(action.withCode(code)) }
+    }
+
     /** Run [action] once the user confirmed it. */
     fun onConfirmed(action: CardAction) {
         viewModelScope.launch { run(action) }
@@ -241,12 +252,23 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
             } else {
                 onNavigate(action.path)
             }
-            is CardAction.CallService -> callService(action)
+            is CardAction.CallService -> callProtectedService(action)
             is CardAction.MoreInfo -> _events.send(DashboardEvent.MoreInfo(action.entityId))
             is CardAction.OpenUrl -> _events.send(DashboardEvent.OpenUrl(action.url))
             is CardAction.Failure -> _events.send(DashboardEvent.Message(action.message))
             is CardAction.Assist -> _events.send(DashboardEvent.UnsupportedAction(ACTION_ASSIST))
             is CardAction.FireDomEvent -> _events.send(DashboardEvent.UnsupportedAction(ACTION_FIRE_DOM_EVENT))
+        }
+    }
+
+    /** A service that may need a code: use the entity's default code, or ask the user, as upstream does. */
+    private suspend fun callProtectedService(call: CardAction.CallService) {
+        val code = call.code ?: return callService(call)
+        if (repository.defaultCode(code.entityId, code.optionsDomain) != null) {
+            // The server applies the default code itself
+            callService(call)
+        } else {
+            _events.send(DashboardEvent.EnterCode(call))
         }
     }
 
@@ -326,3 +348,6 @@ private const val BUNDLED_LANGUAGE = "en"
 
 private const val ACTION_ASSIST = "assist"
 private const val ACTION_FIRE_DOM_EVENT = "fire-dom-event"
+
+private fun CardAction.CallService.withCode(code: String) =
+    copy(data = JsonObject(data.orEmpty() + ("code" to JsonPrimitive(code))), code = null)

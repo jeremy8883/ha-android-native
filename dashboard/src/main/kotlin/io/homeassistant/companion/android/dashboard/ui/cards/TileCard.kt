@@ -25,6 +25,7 @@ import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.HAThemeForPreview
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
+import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.TileModel
 import io.homeassistant.companion.android.dashboard.derive.tileModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -39,6 +40,7 @@ internal fun TileCard(
     now: State<ZonedDateTime?>,
     modifier: Modifier = Modifier,
     iconModifier: Modifier = Modifier,
+    onAction: (CardAction) -> Unit = {},
 ) {
     val tile by remember(card) {
         derivedStateOf { hass.value?.tileModel(card, now.value?.toInstant() ?: Instant.EPOCH) }
@@ -47,14 +49,40 @@ internal fun TileCard(
     if (model == null) {
         UnsupportedCard(stringResource(R.string.native_dashboard_entity_not_found, card.entity.orEmpty()), modifier)
     } else {
-        TileCardContent(model, modifier, iconModifier)
+        TileCardContent(model, modifier, iconModifier, onAction)
     }
 }
 
 @Composable
-internal fun TileCardContent(tile: TileModel, modifier: Modifier = Modifier, iconModifier: Modifier = Modifier) {
-    val colors = LocalHAColorScheme.current
+internal fun TileCardContent(
+    tile: TileModel,
+    modifier: Modifier = Modifier,
+    iconModifier: Modifier = Modifier,
+    onAction: (CardAction) -> Unit = {},
+) {
     DashboardCardSurface(modifier = modifier, active = tile.active) {
+        Column(modifier = Modifier.fillMaxWidth()) {
+            TileInfo(tile, iconModifier)
+            if (tile.features.isNotEmpty()) {
+                Column(
+                    modifier = Modifier.padding(
+                        start = HADimens.SPACE3,
+                        end = HADimens.SPACE3,
+                        bottom = HADimens.SPACE3,
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                ) {
+                    tile.features.forEach { feature -> TileFeatureControl(feature, tile.available, onAction) }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun TileInfo(tile: TileModel, iconModifier: Modifier) {
+    val colors = LocalHAColorScheme.current
+    run {
         Row(
             modifier = Modifier.fillMaxWidth().padding(HADimens.SPACE4),
             horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),

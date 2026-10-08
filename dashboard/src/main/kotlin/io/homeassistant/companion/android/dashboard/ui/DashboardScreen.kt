@@ -52,9 +52,9 @@ import io.homeassistant.companion.android.dashboard.layout.SECTION_ROW_HEIGHT_DP
 import io.homeassistant.companion.android.dashboard.layout.SectionLayout
 import io.homeassistant.companion.android.dashboard.layout.viewLayout
 import io.homeassistant.companion.android.dashboard.model.DashboardInfo
+import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardCard
 import io.homeassistant.companion.android.dashboard.ui.cards.LocalConditionContext
-import io.homeassistant.companion.android.dashboard.ui.cards.OnGesture
 import java.time.ZonedDateTime
 
 @Composable
@@ -69,7 +69,7 @@ internal fun DashboardScreen(viewModel: DashboardViewModel) {
     val content = uiState as? DashboardUiState.Content
     BackHandler(enabled = content?.isSubview == true) { viewModel.onBack() }
     val snackbar = remember { SnackbarHostState() }
-    DashboardEffects(viewModel.events, snackbar, viewModel::onConfirmed)
+    DashboardEffects(viewModel.events, snackbar, viewModel::onConfirmed, viewModel::onCodeEntered)
 
     DashboardScreenContent(
         uiState = uiState,
@@ -79,7 +79,7 @@ internal fun DashboardScreen(viewModel: DashboardViewModel) {
         now = now,
         onSelectDashboard = viewModel::onSelectDashboard,
         onSelectTab = viewModel::onSelectTab,
-        onGesture = viewModel::onGesture,
+        interactions = remember(viewModel) { CardInteractions(viewModel::onGesture, viewModel::onAction) },
         onBack = { viewModel.onBack() },
         snackbar = snackbar,
     )
@@ -94,7 +94,7 @@ internal fun DashboardScreenContent(
     now: State<ZonedDateTime?>,
     onSelectDashboard: (String?) -> Unit,
     onSelectTab: (String) -> Unit,
-    onGesture: OnGesture,
+    interactions: CardInteractions,
     onBack: () -> Unit,
     snackbar: SnackbarHostState = remember { SnackbarHostState() },
 ) {
@@ -128,7 +128,7 @@ internal fun DashboardScreenContent(
                 is DashboardUiState.UnsupportedStrategy -> Message(
                     stringResource(R.string.native_dashboard_unsupported_strategy, uiState.type.orEmpty()),
                 )
-                is DashboardUiState.Content -> DashboardView(uiState, hass, now, onSelectTab, onGesture)
+                is DashboardUiState.Content -> DashboardView(uiState, hass, now, onSelectTab, interactions)
             }
         }
     }
@@ -187,7 +187,7 @@ private fun DashboardView(
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
     onSelectTab: (String) -> Unit,
-    onGesture: OnGesture,
+    interactions: CardInteractions,
 ) {
     val colors = LocalHAColorScheme.current
     Column {
@@ -217,7 +217,7 @@ private fun DashboardView(
             val configuration = LocalConfiguration.current
             val screen = ScreenInfo(configuration.screenWidthDp, configuration.screenHeightDp)
             val maxColumns = sectionsViewColumns(configuration.screenWidthDp, content.maxColumns)
-            key(content.viewPath) { CardGroups(content.groups, hass, now, screen, maxColumns, onGesture) }
+            key(content.viewPath) { CardGroups(content.groups, hass, now, screen, maxColumns, interactions) }
         }
     }
 }
@@ -229,7 +229,7 @@ private fun CardGroups(
     now: State<ZonedDateTime?>,
     screen: ScreenInfo,
     maxColumns: Int,
-    onGesture: OnGesture,
+    interactions: CardInteractions,
 ) {
     // Re-evaluated on every state, screen or clock change, but only recomposes when the layout changes
     val layout by remember(groups, screen, maxColumns) {
@@ -244,7 +244,7 @@ private fun CardGroups(
     val narrow = screen.widthDp <= NARROW_WIDTH_DP
     val cardContext = remember(screen, maxColumns) { ConditionContext(maxColumns = maxColumns, screen = screen) }
     CompositionLocalProvider(LocalConditionContext provides cardContext) {
-        ViewRows(rows, viewLayout.columnCount, narrow, hass, now, onGesture)
+        ViewRows(rows, viewLayout.columnCount, narrow, hass, now, interactions)
     }
 }
 
@@ -255,7 +255,7 @@ private fun ViewRows(
     narrow: Boolean,
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
-    onGesture: OnGesture,
+    interactions: CardInteractions,
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -268,7 +268,7 @@ private fun ViewRows(
                 columnCount = columnCount,
                 columnGap = if (narrow) HADimens.SPACE2 else HADimens.SPACE8,
                 rowGap = HADimens.SPACE6,
-            ) { index -> SectionGrid(sections[index], hass, now, onGesture) }
+            ) { index -> SectionGrid(sections[index], hass, now, interactions) }
         }
     }
 }
@@ -278,7 +278,7 @@ private fun SectionGrid(
     section: SectionLayout,
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
-    onGesture: OnGesture,
+    interactions: CardInteractions,
 ) {
     DashboardGrid(
         cells = section.cards.map { it.cell },
@@ -294,7 +294,7 @@ private fun SectionGrid(
             } else {
                 Modifier
             }
-            DashboardCard(placed.card, hass, now, onGesture, sizing.fillMaxWidth())
+            DashboardCard(placed.card, hass, now, interactions, sizing.fillMaxWidth())
         }
     }
 }
@@ -316,7 +316,7 @@ private fun DashboardScreenNotFoundPreview() {
             now = mutableStateOf(null),
             onSelectDashboard = {},
             onSelectTab = {},
-            onGesture = { _, _ -> },
+            interactions = CardInteractions.NONE,
             onBack = {},
         )
     }

@@ -28,9 +28,18 @@ sealed interface CardAction {
     /** Open [url] outside the dashboard. */
     data class OpenUrl(val url: String) : CardAction
 
-    /** Call `[domain].[service]` with [data] and [target]. */
-    data class CallService(val domain: String, val service: String, val data: JsonObject?, val target: JsonObject?) :
-        CardAction
+    /**
+     * Call `[domain].[service]` with [data] and [target].
+     *
+     * @property code set when the service may need a code from the user first (protected locks and alarms)
+     */
+    data class CallService(
+        val domain: String,
+        val service: String,
+        val data: JsonObject?,
+        val target: JsonObject?,
+        val code: CodeRequest? = null,
+    ) : CardAction
 
     /** Open Assist. */
     data class Assist(val pipelineId: String, val startListening: Boolean) : CardAction
@@ -41,6 +50,16 @@ sealed interface CardAction {
     /** The action can't run; tell the user [message] (upstream shows a toast). */
     data class Failure(val message: String) : CardAction
 }
+
+/**
+ * A code the user may have to enter before a protected service runs, unless the entity has a default code
+ * (`options.[optionsDomain].default_code` of its registry entry). Ports of `callProtectedLockService` and
+ * `setProtectedAlarmControlPanelMode` (frontend@20260624.6 src/data/lock.ts, src/data/alarm_control_panel.ts).
+ *
+ * @property codeFormat `number` for a keypad, otherwise free text (a regex upstream)
+ * @property title the dialog's title and submit text
+ */
+data class CodeRequest(val entityId: String, val optionsDomain: String, val codeFormat: String?, val title: String)
 
 /** A text asking the user to confirm before [action] runs. */
 data class Confirmation(val text: String, val title: String?, val confirmText: String?, val dismissText: String?)

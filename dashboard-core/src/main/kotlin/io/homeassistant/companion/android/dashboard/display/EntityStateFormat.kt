@@ -222,7 +222,7 @@ private fun isNumericFromAttributes(attributes: JsonObject): Boolean =
     jsTruthy(attributes["unit_of_measurement"]) || jsTruthy(attributes["state_class"])
 
 /** Port of `blankBeforeUnit` (src/common/translations/blank_before_unit.ts) for English. */
-internal fun blankBeforeUnit(unit: String): String = if (unit == "°" || unit == "%") "" else " "
+fun blankBeforeUnit(unit: String): String = if (unit == "°" || unit == "%") "" else " "
 
 /**
  * JavaScript `new Date(text)` for the ISO forms Home Assistant uses: date-only strings are UTC, date-times
