@@ -28,6 +28,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -71,7 +73,9 @@ internal fun DashboardScreen(viewModel: DashboardViewModel) {
     val content = uiState as? DashboardUiState.Content
     BackHandler(enabled = content?.isSubview == true) { viewModel.onBack() }
     val snackbar = remember { SnackbarHostState() }
-    DashboardEffects(viewModel.events, snackbar, viewModel::onConfirmed, viewModel::onCodeEntered)
+    val interactions = remember(viewModel) { CardInteractions(viewModel::onGesture, viewModel::onAction) }
+    var moreInfo by rememberSaveable { mutableStateOf<String?>(null) }
+    DashboardEffects(viewModel.events, snackbar, viewModel::onConfirmed, viewModel::onCodeEntered) { moreInfo = it }
 
     val serverUrl by viewModel.serverUrl.collectAsStateWithLifecycle()
     CompositionLocalProvider(LocalServerUrl provides serverUrl) {
@@ -83,10 +87,23 @@ internal fun DashboardScreen(viewModel: DashboardViewModel) {
             now = now,
             onSelectDashboard = viewModel::onSelectDashboard,
             onSelectTab = viewModel::onSelectTab,
-            interactions = remember(viewModel) { CardInteractions(viewModel::onGesture, viewModel::onAction) },
+            interactions = interactions,
             onBack = { viewModel.onBack() },
             snackbar = snackbar,
         )
+        moreInfo?.let { entityId ->
+            MoreInfoSheet(
+                entityId = entityId,
+                hass = hass,
+                now = now,
+                interactions = interactions,
+                onShowFull = {
+                    moreInfo = null
+                    viewModel.onShowFullMoreInfo(entityId)
+                },
+                onDismiss = { moreInfo = null },
+            )
+        }
     }
 }
 

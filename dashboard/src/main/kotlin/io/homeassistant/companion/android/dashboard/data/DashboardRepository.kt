@@ -238,6 +238,9 @@ class DashboardRepository @Inject constructor(private val serverManager: ServerM
         ) as? JsonObject
         )?.string("path")
 
+    /** The id of the active server, for links into the rest of the app. */
+    suspend fun activeServerId(): Int? = serverManager.getServer()?.id
+
     /** User, server config and panels, or `null` when no connection can be made. */
     suspend fun serverInfo(): ServerInfo? {
         val webSocket = serverManager.webSocketRepositoryOrNull() ?: return null

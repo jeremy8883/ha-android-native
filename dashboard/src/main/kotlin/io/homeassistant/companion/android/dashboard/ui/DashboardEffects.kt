@@ -1,6 +1,8 @@
 package io.homeassistant.companion.android.dashboard.ui
 
 import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -33,6 +35,7 @@ internal fun DashboardEffects(
     snackbar: SnackbarHostState,
     onConfirmed: (CardAction) -> Unit,
     onCodeEntered: (CardAction.CallService, String) -> Unit,
+    onMoreInfo: (String) -> Unit,
 ) {
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
@@ -43,10 +46,20 @@ internal fun DashboardEffects(
         events.collect { event ->
             val message = when (event) {
                 is DashboardEvent.Message -> event.text
-                is DashboardEvent.MoreInfo -> context.getString(
-                    R.string.native_dashboard_more_info_unsupported,
-                    event.entityId,
-                )
+                is DashboardEvent.MoreInfo -> {
+                    onMoreInfo(event.entityId)
+                    null
+                }
+                is DashboardEvent.OpenAppLink -> {
+                    // The app's own link handler, so the link never leaves the app
+                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.uri)).setPackage(context.packageName)
+                    try {
+                        context.startActivity(intent)
+                    } catch (e: ActivityNotFoundException) {
+                        Timber.w(e, "No activity handles the app link")
+                    }
+                    null
+                }
                 is DashboardEvent.UnsupportedNavigation ->
                     context.getString(R.string.native_dashboard_navigation_unsupported, event.path)
                 is DashboardEvent.UnsupportedAction ->

@@ -302,6 +302,17 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         }
     }
 
+    /** Open upstream's full more-info dialog for [entityId] in the app's web frontend. */
+    fun onShowFullMoreInfo(entityId: String) {
+        viewModelScope.launch {
+            val serverId = repository.activeServerId() ?: return@launch
+            // The app's `homeassistant://navigate` deep link, which opens the frontend's more-info dialog
+            val uri = "$DEEP_LINK_NAVIGATE?$MORE_INFO_PARAM=${java.net.URLEncoder.encode(entityId, Charsets.UTF_8)}" +
+                "&$SERVER_ID_PARAM=$serverId"
+            _events.send(DashboardEvent.OpenAppLink(uri))
+        }
+    }
+
     /** Run [action] that a card control started directly, such as a tile feature. */
     fun onAction(action: CardAction) {
         viewModelScope.launch { run(action) }
@@ -427,3 +438,6 @@ private const val ACTION_FIRE_DOM_EVENT = "fire-dom-event"
 
 private fun CardAction.CallService.withCode(code: String) =
     copy(data = JsonObject(data.orEmpty() + ("code" to JsonPrimitive(code))), code = null)
+private const val DEEP_LINK_NAVIGATE = "homeassistant://navigate"
+private const val MORE_INFO_PARAM = "more-info-entity-id"
+private const val SERVER_ID_PARAM = "server_id"

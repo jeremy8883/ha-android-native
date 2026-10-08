@@ -114,3 +114,26 @@ class PictureEntityModelTest {
         assertEquals(emptySet<String>(), hass.cameraSnapshotEntities(listOf(card)))
     }
 }
+
+class MoreInfoModelTest {
+    private val hass = GoldenFixture("test-instance").hass
+
+    @Test
+    fun `Given a dimmable light when deriving its quick view then it has a toggle, brightness and its attributes`() {
+        val model = hass.moreInfoModel("light.kitchen_lights", Instant.parse("2026-01-01T01:00:00Z"))!!
+        assertEquals("Kitchen Lights", model.name)
+        assertEquals("On", model.state)
+        assertEquals("1 hour ago", model.changed)
+        assertEquals("turn_off", model.toggle?.service)
+        assertTrue(model.controls.single() is io.homeassistant.companion.android.dashboard.feature.TileFeature.Slider)
+        assertTrue(model.attributes.none { (name, _) -> name == "Friendly name" })
+        assertTrue(model.attributes.isNotEmpty())
+    }
+
+    @Test
+    fun `Given a media player when deriving its quick view then it carries the media controls and no toggle`() {
+        val model = hass.moreInfoModel("media_player.kitchen_speaker", Instant.EPOCH)!!
+        assertNull(model.toggle)
+        assertEquals(4, model.media?.controls?.size)
+    }
+}

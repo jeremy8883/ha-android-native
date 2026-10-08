@@ -14,6 +14,9 @@ sealed interface DashboardEvent {
     /** Ask the user for the code [action] needs (`action.code`), then run it with that code. */
     data class EnterCode(val action: CardAction.CallService) : DashboardEvent
 
+    /** Open [uri] inside the app, such as a `homeassistant://navigate` deep link to the web frontend. */
+    data class OpenAppLink(val uri: String) : DashboardEvent
+
     /** Open [url] in the browser. */
     data class OpenUrl(val url: String) : DashboardEvent
 
