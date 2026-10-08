@@ -211,14 +211,22 @@ Goal: dashboards are native (instant, offline); every other page stays the web f
    the native dashboard too.
 5. Native actions that navigate outside the dashboard (`/config/...`) and the more-info "More details" open the
    WebView at that path.
-6. The WebView destination stays on the back stack under/over the native one, so switching is cheap and its own
-   history is kept; system back goes through the WebView history first, then back to the native dashboard.
+6. The native dashboards and the frontend share one destination (`NativeDashboardShell`), so one WebView is kept
+   between web visits. It is created lazily, on the first page opened in it (never at launch, no preloading), and
+   then kept loaded but hidden while the native dashboards show. Later pages open in it with the frontend's
+   `navigate` command after clearing its history, so they don't load the frontend again (servers before 2025.6
+   load it again). System back goes through the WebView history first, then back to the native dashboards. The
+   hidden layer is laid out but not placed (not drawn, no touches), and its back handlers sit on a disabled child
+   `NavigationEventDispatcher`. Switching the active server drops the frontend; the next web page creates a new one.
+   The frontend destination (`FrontendRoute`) is still used for links to a server that isn't the active one, and
+   with the flag off.
 
 Everything is behind `WIPFeature.USE_NATIVE_DASHBOARD` (debug builds) while it settles; with it off the app is
 unchanged.
 
 **Phases**: A) native start screen with the drawer, web for other panels, `hasSidebar` and `sidebar/show`;
 B) route changes inside the WebView back to native, native `/...` navigation to the WebView; C) deep links start
-native, top-level back behaviour, server switching. All three are in. Still to do: one WebView kept alive across
-web visits (today each visit loads the frontend), and the offline behaviour.
+native, top-level back behaviour, server switching. All three are in, and so is the WebView kept alive across web
+visits. Still to do: the offline behaviour. Possible later: pausing the hidden frontend (it keeps its JavaScript and
+connection running while the native dashboards show), and preloading it when the app is idle.
 

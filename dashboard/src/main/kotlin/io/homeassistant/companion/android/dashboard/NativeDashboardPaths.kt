@@ -19,10 +19,12 @@ class NativeDashboardPaths @Inject constructor(private val repository: Dashboard
 
     /**
      * Whether [path] (such as `/dashboard-test/kitchen?edit=1`) is a dashboard the native renderer shows. Dashboard
-     * paths opened for editing (`edit=1`) stay in the web frontend, which has the editor.
+     * paths opened for editing (`edit=1`) stay in the web frontend, which has the editor, and so do those showing the
+     * frontend's more-info dialog (`more-info-entity-id`) until it is closed.
      */
     suspend fun isNativeDashboard(path: String): Boolean {
-        if (EDIT_PARAM.containsMatchIn(path.substringAfter('?', ""))) return false
+        val query = path.substringAfter('?', "")
+        if (EDIT_PARAM.containsMatchIn(query) || MORE_INFO_PARAM.containsMatchIn(query)) return false
         val urlPath = path.substringBefore('?').removePrefix("/").substringBefore('/')
         if (urlPath.isEmpty()) return false
         val panel = mutex.withLock {
@@ -36,5 +38,6 @@ class NativeDashboardPaths @Inject constructor(private val repository: Dashboard
 
     private companion object {
         val EDIT_PARAM = Regex("(^|&)edit=1(&|$)")
+        val MORE_INFO_PARAM = Regex("(^|&)more-info-entity-id=")
     }
 }

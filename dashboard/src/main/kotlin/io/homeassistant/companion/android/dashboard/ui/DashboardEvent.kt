@@ -26,6 +26,9 @@ sealed interface DashboardEvent {
     /** Open [path] (a panel other than a native dashboard) in the web frontend. */
     data class OpenWeb(val path: String) : DashboardEvent
 
+    /** A native dashboard was opened, so it should show in place of the web frontend. */
+    data object ShowDashboard : DashboardEvent
+
     /** The action type [type] is not supported natively yet. */
     data class UnsupportedAction(val type: String) : DashboardEvent
 }

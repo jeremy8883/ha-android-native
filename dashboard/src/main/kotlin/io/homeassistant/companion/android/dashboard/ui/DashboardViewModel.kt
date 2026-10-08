@@ -335,11 +335,10 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
     /** Open upstream's full more-info dialog for [entityId] in the app's web frontend. */
     fun onShowFullMoreInfo(entityId: String) {
         viewModelScope.launch {
-            val serverId = repository.activeServerId() ?: return@launch
-            // The app's `homeassistant://navigate` deep link, which opens the frontend's more-info dialog
-            val uri = "$DEEP_LINK_NAVIGATE?$MORE_INFO_PARAM=${java.net.URLEncoder.encode(entityId, Charsets.UTF_8)}" +
-                "&$SERVER_ID_PARAM=$serverId"
-            _events.send(DashboardEvent.OpenAppLink(uri))
+            // The frontend's more-info dialog over the dashboard shown now, back to it natively once closed
+            val urlPath = selectedDashboard.value ?: sidebar.filterNotNull().first().defaultPanel
+            val encoded = java.net.URLEncoder.encode(entityId, Charsets.UTF_8)
+            _events.send(DashboardEvent.OpenWeb("/$urlPath?$MORE_INFO_PARAM=$encoded"))
         }
     }
 
@@ -429,6 +428,7 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
             }
             selectedDashboard.value = if (urlPath == HOME_PANEL) null else urlPath
             viewStack.value = segments.drop(1).take(1)
+            _events.send(DashboardEvent.ShowDashboard)
         }
     }
 

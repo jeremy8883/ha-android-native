@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -50,6 +51,8 @@ import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.HAThemeForPreview
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
+import io.homeassistant.companion.android.dashboard.NativeDashboardRequest
+import io.homeassistant.companion.android.dashboard.NativeDashboardWeb
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.condition.ConditionContext
 import io.homeassistant.companion.android.dashboard.condition.ScreenInfo
@@ -75,9 +78,9 @@ import kotlinx.coroutines.launch
 internal fun DashboardScreen(
     viewModel: DashboardViewModel,
     onOpenWeb: ((String) -> Unit)? = null,
-    openDrawer: Boolean = false,
-    initialMoreInfo: String? = null,
+    request: NativeDashboardRequest = NativeDashboardRequest(),
     onSwitchServer: (() -> Unit)? = null,
+    web: NativeDashboardWeb? = null,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val selectedDashboard by viewModel.selectedDashboardUrlPath.collectAsStateWithLifecycle()
@@ -86,12 +89,15 @@ internal fun DashboardScreen(
     val now = viewModel.now.collectAsStateWithLifecycle()
 
     val content = uiState as? DashboardUiState.Content
-    BackHandler(enabled = content?.isSubview == true) { viewModel.onBack() }
+    val webVisible = web?.visible == true
+    BackHandler(enabled = !webVisible && content?.isSubview == true) { viewModel.onBack() }
     // Like other top-level destinations, back from another dashboard returns to the default one before leaving
-    BackHandler(enabled = content?.isSubview != true && selectedDashboard != null) { viewModel.onSelectDashboard(null) }
+    BackHandler(enabled = !webVisible && content?.isSubview != true && selectedDashboard != null) {
+        viewModel.onSelectDashboard(null)
+    }
     val snackbar = remember { SnackbarHostState() }
     val interactions = remember(viewModel) { CardInteractions(viewModel::onGesture, viewModel::onAction) }
-    var moreInfo by rememberSaveable { mutableStateOf(initialMoreInfo) }
+    var moreInfo by rememberSaveable { mutableStateOf<String?>(null) }
     DashboardEffects(
         events = viewModel.events,
         snackbar = snackbar,
@@ -99,20 +105,31 @@ internal fun DashboardScreen(
         onCodeEntered = viewModel::onCodeEntered,
         onMoreInfo = { moreInfo = it },
         onOpenWeb = onOpenWeb ?: viewModel::onOpenWebViaDeepLink,
+        onShowDashboard = { web?.onShowDashboard?.invoke() },
     )
     val sidebar by viewModel.sidebar.collectAsStateWithLifecycle()
-    val drawerState = rememberDrawerState(if (openDrawer) DrawerValue.Open else DrawerValue.Closed)
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    // Saved, so the request isn't applied again when the screen is recreated
+    var appliedRequest by rememberSaveable { mutableStateOf<Int?>(null) }
+    LaunchedEffect(request) {
+        if (appliedRequest == request.id) return@LaunchedEffect
+        appliedRequest = request.id
+        request.path?.let(viewModel::onOpenPath)
+        request.moreInfoEntityId?.let { moreInfo = it }
+        if (request.openDrawer) drawerState.open()
+    }
     val scope = rememberCoroutineScope()
 
     val serverUrl by viewModel.serverUrl.collectAsStateWithLifecycle()
     CompositionLocalProvider(LocalServerUrl provides serverUrl) {
         ModalNavigationDrawer(
             drawerState = drawerState,
-            gesturesEnabled = content?.isSubview != true,
+            // The frontend has its own gestures, so over it the drawer only opens from its menu button
+            gesturesEnabled = drawerState.isOpen || (!webVisible && content?.isSubview != true),
             drawerContent = {
                 NavigationDrawerContent(
                     sidebar = sidebar,
-                    selected = selectedDashboard ?: sidebar?.defaultPanel,
+                    selected = if (webVisible) web?.panel else selectedDashboard ?: sidebar?.defaultPanel,
                     onSwitchServer = onSwitchServer?.let { switch ->
                         {
                             scope.launch { drawerState.close() }
@@ -125,16 +142,21 @@ internal fun DashboardScreen(
                 }
             },
         ) {
-            DashboardScreenContent(
-                uiState = uiState,
-                hass = hass,
-                now = now,
-                onSelectTab = viewModel::onSelectTab,
-                interactions = interactions,
-                onBack = { viewModel.onBack() },
-                onOpenMenu = { scope.launch { drawerState.open() } },
-                snackbar = snackbar,
-            )
+            // Back presses go to the drawer while it is open
+            val drawerClosed = drawerState.isClosed
+            ScreenLayer(visible = !webVisible, backEnabled = drawerClosed) {
+                DashboardScreenContent(
+                    uiState = uiState,
+                    hass = hass,
+                    now = now,
+                    onSelectTab = viewModel::onSelectTab,
+                    interactions = interactions,
+                    onBack = { viewModel.onBack() },
+                    onOpenMenu = { scope.launch { drawerState.open() } },
+                    snackbar = snackbar,
+                )
+            }
+            web?.let { ScreenLayer(visible = it.visible, backEnabled = drawerClosed, content = it.content) }
         }
         moreInfo?.let { entityId ->
             MoreInfoSheet(

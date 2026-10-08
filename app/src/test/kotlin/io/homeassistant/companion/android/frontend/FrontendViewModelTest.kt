@@ -42,6 +42,7 @@ import io.homeassistant.companion.android.frontend.exoplayer.ExoPlayerUiState
 import io.homeassistant.companion.android.frontend.exoplayer.FrontendExoPlayerManager
 import io.homeassistant.companion.android.frontend.externalbus.FrontendExternalBusRepository
 import io.homeassistant.companion.android.frontend.externalbus.incoming.HapticType
+import io.homeassistant.companion.android.frontend.externalbus.outgoing.NavigateToMessage
 import io.homeassistant.companion.android.frontend.externalbus.outgoing.SuccessResultMessage
 import io.homeassistant.companion.android.frontend.filechooser.FileChooserManager
 import io.homeassistant.companion.android.frontend.gesture.FrontendGestureManager
@@ -2917,6 +2918,59 @@ class FrontendViewModelTest {
             viewModel.processImprovScanRequests()
 
             coVerify { improvHandler.processImprovScanRequests() }
+        }
+    }
+
+    @Nested
+    inner class OpenPath {
+
+        @Test
+        fun `Given the frontend shown on a 2025_6 server when opening a path then history is cleared and it navigates in place`() = runTest {
+            val messageFlow = MutableSharedFlow<FrontendHandlerEvent>()
+            every { frontendBusObserver.messageResults() } returns messageFlow
+            every { urlManager.serverUrlFlow(any(), any()) } returns flowOf(
+                UrlLoadResult.Success(url = testUrlWithAuth, serverId = serverId),
+            )
+            coEvery { serverManager.getServer(serverId) } returns mockServer(
+                url = "https://ha.test",
+                name = "t",
+                haVersion = HomeAssistantVersion(2025, 6, 0),
+                serverId = serverId,
+            )
+
+            val viewModel = createViewModel()
+            viewModel.webViewActions.test {
+                advanceTimeBy(CONNECTION_TIMEOUT - 1.seconds)
+                messageFlow.emit(FrontendHandlerEvent.Connected)
+                advanceUntilIdle()
+                // What connecting does to the WebView (clearing the first load's history, reading the theme)
+                expectMostRecentItem()
+
+                viewModel.openPath("/config")
+                advanceUntilIdle()
+
+                assertInstanceOf(WebViewAction.ClearHistory::class.java, awaitItem()).result.complete(Unit)
+                advanceUntilIdle()
+                coVerify { externalBusRepository.send(NavigateToMessage(path = "/config", replace = true)) }
+                verify(exactly = 1) { urlManager.serverUrlFlow(any(), any()) }
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+        @Test
+        fun `Given the frontend not shown yet when opening a path then the server is loaded for the path`() = runTest {
+            every { urlManager.serverUrlFlow(any(), any()) } returns flowOf(
+                UrlLoadResult.Success(url = testUrlWithAuth, serverId = serverId),
+            )
+
+            val viewModel = createViewModel()
+            advanceUntilIdle()
+
+            viewModel.openPath("/config")
+            advanceUntilIdle()
+
+            verify { urlManager.serverUrlFlow(serverId, FrontendTarget.Path("/config")) }
+            coVerify(exactly = 0) { externalBusRepository.send(NavigateToMessage(path = "/config", replace = true)) }
         }
     }
 

@@ -40,6 +40,15 @@ try {
 - Thrown exceptions need meaningful messages and explicit types instead of generic ones.
 - Don't use `check()`/`require()` for conditions whose exception is then caught and ignored upstream — the message never reaches the logs. Log the problem where it's detected and return early (or surface an error state to the user) instead.
 
+## Failures Are Not Empty Data
+
+Never let a failure become empty or default data. "Couldn't load" shown as "nothing here" (an empty dashboard, an empty drawer, every room empty) is a bug, and worse than an error because the user believes it.
+
+- A failed request, a missing connection, or a response that isn't `success` or has an unexpected shape must not become `[]`, `""`, `emptyMap()` or a placeholder object through `.orEmpty()`, `?: emptyList()`, `getOrDefault`, or a `catch` that returns empty.
+- Make failure visible in the type: return `null` (or a sealed result such as `Loaded`/`Failed`) and let the compiler force every caller to decide. Keep "not loaded yet", "failed" and "loaded and empty" distinct; a `StateFlow` that starts at `emptyList()` can't tell them apart, so start it at `null`.
+- Decide what failure means for the user: keep the last good data and retry (a refresh that fails must never replace good data), or show an error state with a retry. Log it with context.
+- Defaults are fine only for data that is optional by design and absent in a successful response, the way upstream treats it (an entity without an `icon`, a card option left unset).
+
 ## FailFast
 
 Use the `FailFast` API from `:common` for offensive programming: it crashes debug builds so issues surface early, and falls back gracefully in production.

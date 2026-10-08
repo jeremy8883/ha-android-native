@@ -11,6 +11,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
@@ -28,6 +29,7 @@ import timber.log.Timber
  * Shows the dashboard's one-off [events]: messages as snackbars, confirmations as a dialog, links in the browser.
  *
  * @param onConfirmed runs an action the user confirmed
+ * @param onShowDashboard shows the native dashboards in place of the web frontend, once one was opened
  */
 @Composable
 internal fun DashboardEffects(
@@ -37,18 +39,23 @@ internal fun DashboardEffects(
     onCodeEntered: (CardAction.CallService, String) -> Unit,
     onMoreInfo: (String) -> Unit,
     onOpenWeb: (String) -> Unit,
+    onShowDashboard: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val uriHandler = LocalUriHandler.current
     var confirm by remember { mutableStateOf<DashboardEvent.Confirm?>(null) }
     var codeFor by remember { mutableStateOf<CardAction.CallService?>(null) }
+    // The events are collected once, so they reach the latest callbacks through these
+    val currentOnMoreInfo by rememberUpdatedState(onMoreInfo)
+    val currentOnOpenWeb by rememberUpdatedState(onOpenWeb)
+    val currentOnShowDashboard by rememberUpdatedState(onShowDashboard)
 
     LaunchedEffect(events) {
         events.collect { event ->
             val message = when (event) {
                 is DashboardEvent.Message -> event.text
                 is DashboardEvent.MoreInfo -> {
-                    onMoreInfo(event.entityId)
+                    currentOnMoreInfo(event.entityId)
                     null
                 }
                 is DashboardEvent.OpenAppLink -> {
@@ -62,7 +69,11 @@ internal fun DashboardEffects(
                     null
                 }
                 is DashboardEvent.OpenWeb -> {
-                    onOpenWeb(event.path)
+                    currentOnOpenWeb(event.path)
+                    null
+                }
+                DashboardEvent.ShowDashboard -> {
+                    currentOnShowDashboard()
                     null
                 }
                 is DashboardEvent.UnsupportedAction ->

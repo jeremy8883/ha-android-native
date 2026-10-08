@@ -35,6 +35,7 @@ Detailed developer documentation lives at https://developers.home-assistant.io/d
 - All displayed strings go in the value files in `:common`, English only, accessed via `stringResource`.
 - Gate new features on the server version, for example `serverManager.getServer()?.version?.isAtLeast(2025, 6, 0) == true`.
 - Never use `System.currentTimeMillis`; inject `kotlin.time.Clock` through Hilt.
+- Never show "empty" when something failed. A failed request, a missing connection, or an unexpected response must not become `[]`, `""`, `emptyMap()` or a default object (`.orEmpty()`, `?: emptyList()`, `getOrDefault`, a catch returning empty): that shows the user "nothing here" when the truth is "couldn't load". Model failure in the type system instead (nullable or a sealed result type so "not loaded" and "failed" are distinct from "loaded and empty"), handle it explicitly (keep the last good data, retry, or show an error state), and log it. Defaults are only for genuinely optional data that is absent by design, as upstream treats it.
 - When JetBrains IDE (Android Studio) capabilities are available to you, prefer them over raw text edits and grep: use Rename refactoring for renames, Find Usages for impact analysis, Safe Delete, and Change Signature. They understand Kotlin semantics across all Gradle modules, where plain text search misses generated code, XML references, and overloads.
 
 ## Project Skills

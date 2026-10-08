@@ -14,6 +14,7 @@ import io.homeassistant.companion.android.changelog.navigation.changelogScreen
 import io.homeassistant.companion.android.common.util.DisabledLocationHandler
 import io.homeassistant.companion.android.common.util.FailFast
 import io.homeassistant.companion.android.common.util.isAutomotive
+import io.homeassistant.companion.android.frontend.navigation.FrontendCallbacks
 import io.homeassistant.companion.android.frontend.navigation.FrontendRoute
 import io.homeassistant.companion.android.frontend.navigation.frontendScreen
 import io.homeassistant.companion.android.frontend.navigation.navigateToFrontend
@@ -109,12 +110,7 @@ internal fun HANavHost(
                     wearNameToOnboard = startDestination.wearName,
                 )
             }
-            nativeDashboardScreen(
-                navController = navController,
-                onShowServerSwitcher = { onServerSelected -> showServerSwitcher(activity, onServerSelected) },
-            )
-            frontendScreen(
-                navController = navController,
+            val frontendCallbacks = FrontendCallbacks(
                 onOpenExternalLink = { uri ->
                     navController.navigateToUri(uri.toString(), onShowSnackbar)
                 },
@@ -139,6 +135,8 @@ internal fun HANavHost(
                 onRequestFullscreen = onRequestFullscreen,
                 onPipReadinessChanged = onPipReadinessChanged,
             )
+            nativeDashboardScreen(frontendCallbacks = frontendCallbacks)
+            frontendScreen(navController = navController, callbacks = frontendCallbacks)
             changelogScreen(
                 navController = navController,
                 onOpenUrl = { url -> navController.navigateToUri(url, onShowSnackbar) },
