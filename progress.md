@@ -61,7 +61,7 @@ Update it in the same commit as the work it describes.
 - [x] Render view structure plus one card type (tile); other types show a placeholder
 - [x] Live entity updates (`subscribe_entities`)
 - [x] React to `lovelace_updated`
-- [ ] **Verify the slice on an emulator against the test container**
+- [x] Slice verified on a physical device (2026-10-08) against the test container via `adb reverse tcp:8124 tcp:8124`: tiles render, a light toggled on the server updates within ~2 s, and a `lovelace/config/save` re-renders within ~3 s
 
 ### Step 4 — Card renderers
 - [ ] Entities
@@ -126,7 +126,7 @@ Update it in the same commit as the work it describes.
 
 ### 2026-10-08: session 1, later (Opus)
 - Done: generic raw WS API in `:common`, `:dashboard-core`, `:dashboard` vertical slice (tile card plus placeholders), local test HA container. `:app:assembleMinimalDebug` builds.
-- **Not yet verified on a device.** The headless emulator (36.4.10) segfaults on this host. To try the slice: install the minimal debug APK, onboard to `http://10.0.2.2:8124` (emulator) or the host IP (dev/dev), then open the "Native dashboard" launcher entry and pick "dashboard-test".
+- Verified on a physical device. The headless emulator (36.4.10) segfaults on this host, so use a USB device with `adb reverse tcp:8124 tcp:8124`, then onboard to `http://localhost:8124` (dev/dev). **Discovery also finds other servers on the LAN; always use "Enter address manually".** The debug app's package is `...minimal.debug`, which doesn't clash with the store app. Launch it with `adb shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n io.homeassistant.companion.android.minimal.debug/io.homeassistant.companion.android.dashboard.ui.DashboardActivity`.
 - Next: verify the slice; unit-test `DashboardRepository` with a fake WebSocket; then the home strategy (architecture.md §8 step 3).
 
 ### 2026-10-08: session 1 (Opus)
