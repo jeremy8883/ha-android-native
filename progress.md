@@ -14,7 +14,7 @@ Update it in the same commit as the work it describes.
 - **Test server:** `tools/test-ha/up.sh` starts HA 2026.7.4 in podman at `http://localhost:8124` (login dev/dev). It runs `demo` plus seeded floors, areas, a stored `dashboard-test` dashboard and home favourites. Reads and writes are both fine here. See `tools/test-ha/README.md`.
 - **Probe:** `tools/ha-probe/ha_ro.py` targets the test server by default; pass `--allow-write` to send writes. `--live` targets a real server and is strictly read-only. Output goes to `tools/ha-probe/out/` (gitignored). Never commit dumps from a real server; anonymize them first.
 - **Investigation docs:** `docs/investigation/`.
-- **UI-heavy work** (visual design, card polish) is delegated to **Astra**. Keep logic and data in pure, testable Kotlin so the UI layer can be handed off cleanly.
+- **UI-heavy work** (visual design, card polish) is delegated to **Astra**; see **`docs/ui-handover.md`** for ownership, the card-model contract and how to run it. Logic stays in pure, testable Kotlin in `:dashboard-core`.
 
 ## Upstream versions tracked
 
