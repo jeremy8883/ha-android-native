@@ -19,6 +19,8 @@ data class TileModel(
     val icon: String?,
     val active: Boolean,
     val available: Boolean,
+    /** Whether the icon and text are stacked, following the tile card's `vertical` option. */
+    val vertical: Boolean = false,
     /** The controls under the tile, see [tileFeatures]. */
     val features: List<TileFeature> = emptyList(),
 )
@@ -46,6 +48,7 @@ fun HassSnapshot.tileModel(card: CardConfig, now: Instant): TileModel? {
         icon = entityIcon(entityId, configIcon = card.json.string("icon")),
         active = entity.isActive(),
         available = entity.state != STATE_UNAVAILABLE,
+        vertical = card.json.boolean("vertical") == true,
         features = tileFeatures(card),
     )
 }

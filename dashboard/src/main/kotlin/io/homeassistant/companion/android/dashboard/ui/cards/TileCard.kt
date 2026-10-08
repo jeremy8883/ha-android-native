@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
@@ -19,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
@@ -81,45 +83,78 @@ internal fun TileCardContent(
 
 @Composable
 private fun TileInfo(tile: TileModel, iconModifier: Modifier) {
+    if (tile.vertical) {
+        VerticalTileInfo(tile, iconModifier)
+    } else {
+        HorizontalTileInfo(tile, iconModifier)
+    }
+}
+
+@Composable
+private fun HorizontalTileInfo(tile: TileModel, iconModifier: Modifier) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(HADimens.SPACE4),
+        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        TileIcon(tile, iconModifier)
+        TileText(tile, TextAlign.Start, Modifier.weight(1f))
+    }
+}
+
+@Composable
+private fun VerticalTileInfo(tile: TileModel, iconModifier: Modifier) {
+    Column(
+        modifier = Modifier.fillMaxWidth().heightIn(min = VERTICAL_TILE_MIN_HEIGHT).padding(vertical = HADimens.SPACE3),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.CenterVertically),
+    ) {
+        TileIcon(tile, iconModifier)
+        TileText(tile, TextAlign.Center, Modifier.fillMaxWidth().padding(horizontal = HADimens.SPACE3))
+    }
+}
+
+@Composable
+private fun TileIcon(tile: TileModel, modifier: Modifier) {
     val colors = LocalHAColorScheme.current
-    run {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(HADimens.SPACE4),
-            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            if (tile.icon != null) {
-                Box(modifier = Modifier.size(HASize.X5L).then(iconModifier), contentAlignment = Alignment.Center) {
-                    DashboardIcon(
-                        name = tile.icon,
-                        tint = when {
-                            !tile.available -> colors.colorTextDisabled
-                            tile.active -> colors.colorOnPrimaryQuiet
-                            else -> colors.colorTextSecondary
-                        },
-                        modifier = Modifier.size(HASize.X2L),
-                    )
-                }
-            }
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = tile.name,
-                    // Single line and start-aligned like upstream's ha-tile-info
-                    style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    color = if (tile.available) colors.colorTextPrimary else colors.colorTextDisabled,
-                )
-                tile.state?.let { state ->
-                    Text(
-                        text = state,
-                        style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        color = if (tile.available) colors.colorTextSecondary else colors.colorTextDisabled,
-                    )
-                }
-            }
+    tile.icon?.let { icon ->
+        Box(modifier = Modifier.size(HASize.X5L).then(modifier), contentAlignment = Alignment.Center) {
+            DashboardIcon(
+                name = icon,
+                tint = when {
+                    !tile.available -> colors.colorTextDisabled
+                    tile.active -> colors.colorOnPrimaryQuiet
+                    else -> colors.colorTextSecondary
+                },
+                modifier = Modifier.size(HASize.X2L),
+            )
+        }
+    }
+}
+
+@Composable
+private fun TileText(tile: TileModel, textAlign: TextAlign, modifier: Modifier) {
+    val colors = LocalHAColorScheme.current
+    val horizontalAlignment = if (textAlign == TextAlign.Center) Alignment.CenterHorizontally else Alignment.Start
+    Column(
+        modifier = modifier,
+        horizontalAlignment = horizontalAlignment,
+    ) {
+        Text(
+            text = tile.name,
+            style = HATextStyle.Body.copy(textAlign = textAlign),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+            color = if (tile.available) colors.colorTextPrimary else colors.colorTextDisabled,
+        )
+        tile.state?.let { state ->
+            Text(
+                text = state,
+                style = HATextStyle.BodyMedium.copy(textAlign = textAlign),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                color = if (tile.available) colors.colorTextSecondary else colors.colorTextDisabled,
+            )
         }
     }
 }
@@ -140,3 +175,23 @@ private fun TileCardContentPreview() {
         )
     }
 }
+
+@Preview
+@Composable
+private fun VerticalTileCardContentPreview() {
+    HAThemeForPreview(modifier = Modifier.padding(HADimens.SPACE4)) {
+        TileCardContent(
+            tile = TileModel(
+                entityId = "zone.home",
+                name = "Home",
+                state = "2 people",
+                icon = "mdi:home",
+                active = true,
+                available = true,
+                vertical = true,
+            ),
+        )
+    }
+}
+
+private val VERTICAL_TILE_MIN_HEIGHT = 112.dp

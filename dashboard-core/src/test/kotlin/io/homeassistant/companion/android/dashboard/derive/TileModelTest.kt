@@ -52,6 +52,11 @@ class TileModelTest {
     }
 
     @Test
+    fun `Given vertical tile when derived then vertical layout is requested`() {
+        assertEquals(true, tile("""{"type": "tile", "entity": "sensor.temp", "vertical": true}""")?.vertical)
+    }
+
+    @Test
     fun `Given tile for missing entity when derived then it is null`() {
         assertNull(tile("""{"type": "tile", "entity": "light.gone"}"""))
         assertNull(tile("""{"type": "tile"}"""))
