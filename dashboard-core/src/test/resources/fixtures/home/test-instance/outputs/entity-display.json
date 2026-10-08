@@ -1,5 +1,5 @@
 {
-  "now": "2026-10-08T08:46:19.804Z",
+  "now": "2026-10-08T09:42:32.715Z",
   "locale": {
     "language": "en",
     "number_format": "language",
@@ -225,7 +225,7 @@
     "sensor.sun_next_dawn": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 5:20 AM",
-      "secondary": "In 21 hours",
+      "secondary": "In 20 hours",
       "names": {
         "default": "Sun Next dawn",
         "entity": "Next dawn",
@@ -238,7 +238,7 @@
     "sensor.sun_next_dusk": {
       "icon": "mdi:sun-clock",
       "state": "October 8, 2026 at 5:36 PM",
-      "secondary": "In 9 hours",
+      "secondary": "In 8 hours",
       "names": {
         "default": "Sun Next dusk",
         "entity": "Next dusk",
@@ -251,7 +251,7 @@
     "sensor.sun_next_midnight": {
       "icon": "mdi:sun-clock",
       "state": "October 8, 2026 at 11:27 PM",
-      "secondary": "In 15 hours",
+      "secondary": "In 14 hours",
       "names": {
         "default": "Sun Next midnight",
         "entity": "Next midnight",
@@ -264,7 +264,7 @@
     "sensor.sun_next_noon": {
       "icon": "mdi:sun-clock",
       "state": "October 8, 2026 at 11:28 AM",
-      "secondary": "In 3 hours",
+      "secondary": "In 2 hours",
       "names": {
         "default": "Sun Next noon",
         "entity": "Next noon",
@@ -277,7 +277,7 @@
     "sensor.sun_next_rising": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 5:55 AM",
-      "secondary": "In 21 hours",
+      "secondary": "In 20 hours",
       "names": {
         "default": "Sun Next rising",
         "entity": "Next rising",
@@ -290,7 +290,7 @@
     "sensor.sun_next_setting": {
       "icon": "mdi:sun-clock",
       "state": "October 8, 2026 at 5:01 PM",
-      "secondary": "In 8 hours",
+      "secondary": "In 7 hours",
       "names": {
         "default": "Sun Next setting",
         "entity": "Next setting",
@@ -356,8 +356,8 @@
     },
     "sensor.living_room_temperature": {
       "icon": "mdi:thermometer",
-      "state": "21.6 °C",
-      "secondary": "21.6 °C",
+      "state": "21.2 °C",
+      "secondary": "21.2 °C",
       "names": {
         "default": "Living room temperature",
         "entity": "Living room temperature",
@@ -369,8 +369,8 @@
     },
     "sensor.living_room_humidity": {
       "icon": "mdi:water-percent",
-      "state": "49%",
-      "secondary": "49%",
+      "state": "45%",
+      "secondary": "45%",
       "names": {
         "default": "Living room humidity",
         "entity": "Living room humidity",
@@ -434,8 +434,8 @@
     },
     "sensor.house_power": {
       "icon": "mdi:flash",
-      "state": "622 W",
-      "secondary": "622 W",
+      "state": "594 W",
+      "secondary": "594 W",
       "names": {
         "default": "House power",
         "entity": "House power",
@@ -1424,8 +1424,8 @@
     },
     "sensor.total_energy_kwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "25.00 kWh",
-      "secondary": "25.00 kWh",
+      "state": "30.50 kWh",
+      "secondary": "30.50 kWh",
       "names": {
         "default": "Total energy 1",
         "entity": "Total energy 1",
@@ -1437,8 +1437,8 @@
     },
     "sensor.total_energy_mwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "0.01 MWh",
-      "secondary": "0.01 MWh",
+      "state": "0.02 MWh",
+      "secondary": "0.02 MWh",
       "names": {
         "default": "Total energy 2",
         "entity": "Total energy 2",
@@ -1450,8 +1450,8 @@
     },
     "sensor.total_gas_m3": {
       "icon": "mdi:meter-gas",
-      "state": "1.25 m³",
-      "secondary": "1.25 m³",
+      "state": "1.53 m³",
+      "secondary": "1.53 m³",
       "names": {
         "default": "Total gas 1",
         "entity": "Total gas 1",
@@ -1463,8 +1463,8 @@
     },
     "sensor.total_gas_ft3": {
       "icon": "mdi:meter-gas",
-      "state": "1.42 m³",
-      "secondary": "1.42 m³",
+      "state": "1.73 m³",
+      "secondary": "1.73 m³",
       "names": {
         "default": "Total gas 2",
         "entity": "Total gas 2",
@@ -1891,9 +1891,9 @@
       }
     },
     "weather.forecast_native_test_home": {
-      "icon": "mdi:weather-rainy",
-      "state": "Rainy",
-      "secondary": "Rainy",
+      "icon": "mdi:weather-partly-cloudy",
+      "state": "Partly cloudy",
+      "secondary": "Partly cloudy",
       "names": {
         "default": "Forecast Native Test Home",
         "entity": "Native Test Home",
@@ -2330,7 +2330,7 @@
         }
       },
       "name": "Living room temperature",
-      "secondary": "21.6 °C"
+      "secondary": "21.2 °C"
     },
     {
       "config": {
@@ -2341,7 +2341,7 @@
         }
       },
       "name": "Living room humidity",
-      "secondary": "49%"
+      "secondary": "45%"
     },
     {
       "config": {
@@ -2580,7 +2580,7 @@
         }
       },
       "name": "Total energy 1",
-      "secondary": "25.00 kWh"
+      "secondary": "30.50 kWh"
     },
     {
       "config": {
@@ -2591,7 +2591,7 @@
         }
       },
       "name": "Total gas 1",
-      "secondary": "1.25 m³"
+      "secondary": "1.53 m³"
     },
     {
       "config": {

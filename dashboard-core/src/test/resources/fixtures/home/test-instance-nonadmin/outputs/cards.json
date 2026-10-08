@@ -67,5 +67,43 @@
       "primary": null,
       "secondary": null
     }
-  }
+  },
+  "sidebar": [
+    {
+      "url_path": "home",
+      "title": "Overview"
+    },
+    {
+      "url_path": "map",
+      "title": "Map"
+    },
+    {
+      "url_path": "dashboard-test",
+      "title": "Test dashboard"
+    },
+    {
+      "url_path": "energy",
+      "title": "Energy"
+    },
+    {
+      "url_path": "logbook",
+      "title": "Activity"
+    },
+    {
+      "url_path": "history",
+      "title": "History"
+    },
+    {
+      "url_path": "calendar",
+      "title": "Calendar"
+    },
+    {
+      "url_path": "media-browser",
+      "title": "Media"
+    },
+    {
+      "url_path": "todo",
+      "title": "To-do lists"
+    }
+  ]
 }

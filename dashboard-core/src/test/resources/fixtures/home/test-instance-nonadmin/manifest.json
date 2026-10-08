@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-08T08:46:30.677Z",
+  "capture_date": "2026-10-08T09:42:43.829Z",
   "user": {
     "name": "Golden Viewer",
     "is_admin": false
@@ -153,8 +153,8 @@
     },
     {
       "path": "inputs/states.json",
-      "bytes": 89359,
-      "sha256": "7229be62831ff572effc44ad12538e47ccfd98dd4e71600e0b7b226177d99004"
+      "bytes": 89372,
+      "sha256": "77e66516fda35f52a8a2500d8dbaa3eb0c07f1fec21698b381e81a8d4f2a8330"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -183,8 +183,8 @@
     },
     {
       "path": "outputs/cards.json",
-      "bytes": 1428,
-      "sha256": "d4f38d307cc584459647e31cb5902938ec598050a846a6e4ba78059d38ca160c"
+      "bytes": 2060,
+      "sha256": "909ec1230e71f8fcc54c8942ff0d8c2c08d091a69a9a134720d5059fb46c567a"
     },
     {
       "path": "outputs/dashboard.json",
@@ -193,8 +193,8 @@
     },
     {
       "path": "outputs/entity-display.json",
-      "bytes": 69687,
-      "sha256": "ad282161e3c41e0209897daf7b44ea3b6cfe26c257ae67b279ccb45e496419f5"
+      "bytes": 69711,
+      "sha256": "434b1bb83b0c96b276d93ca4af2194dbbc4019f53f128f762b0e6276215ccbfc"
     },
     {
       "path": "outputs/expanded.json",
@@ -322,6 +322,11 @@
       "sha256": "a76945597fcd9fb55a7a8fe795b9ebb900b5be626044bc85c5b9716c8781fbdf"
     },
     {
+      "path": "ws/frontend-get_user_data-sidebar.json",
+      "bytes": 119,
+      "sha256": "5c7f2bc4c193129f2be67494e8e1e15aa5c07e00b086ca87f51d6bb57dde793d"
+    },
+    {
       "path": "ws/get_config.json",
       "bytes": 4604,
       "sha256": "2eda47e1e3cb2e3518c22bb1509c71bc42ca71c4c5039b17e864eb759bc41885"
@@ -333,8 +338,8 @@
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 99544,
-      "sha256": "453364c2fa2c38f501ba2e91b1d56c9c059c37f39e074021e3a5a5bb3f897db3"
+      "bytes": 99557,
+      "sha256": "ac4e49d2cf52d670a14ae6fe68e4b55b1617b7d73fdb40bce42a80ae1c7505cc"
     },
     {
       "path": "ws/manifest-get-frontend.json",

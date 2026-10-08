@@ -79,6 +79,7 @@ Update it in the same commit as the work it describes.
   - [x] Actions: tap/hold/double-tap (and the tile icon) resolve through a port of `handleAction` (`action/`): toggle (turnOnOffEntity), perform-action/call-service via `call_service`, navigate (views of this dashboard), url, confirmation dialogs with exemptions, upstream's failure toasts. Assist, fire-dom-event and navigation outside the dashboard show "not available yet" for now. Verified toggling on the test instance
   - [x] Visibility conditions: all types (state, numeric_state, and/or/not, user, location, time, screen, view_columns, legacy), with upstream's tests ported. Section and card visibility in rendering; `view_columns` uses upstream's sections column formula
 - [x] List dashboards (`lovelace/dashboards/list`)
+- [x] Navigation sidebar logic (`navigation/Sidebar.kt`): panels, default panel and the user's order/hidden panels like `ha-sidebar`, golden-tested against the real sidebar (admin with a custom order, non-admin default). The UI and the native/web router are next (see docs/architecture.md)
 - [x] Load dashboard config (`lovelace/config`)
 - [x] Parse config, preserving unknown fields
 - [x] Render view structure plus one card type (tile); other types show a placeholder

@@ -98,19 +98,19 @@ internal fun HassSnapshot.formatNumber(value: String, minDigits: Int?, maxDigits
         min = digits
         max = digits
     }
-    return formats.number(BigDecimal(number), min, maxOf(min, max))
+    return formats.number(BigDecimal.valueOf(number), min, maxOf(min, max))
 }
 
 /** Port of `formatNumber` for a number value (an attribute): at most 2 fraction digits. */
 internal fun HassSnapshot.formatNumber(value: Double): String =
-    if (value.isNaN() || value.isInfinite()) jsNumberString(value) else formats.number(BigDecimal(value), 0, 2)
+    if (value.isNaN() || value.isInfinite()) jsNumberString(value) else formats.number(BigDecimal.valueOf(value), 0, 2)
 
 private fun HassSnapshot.formatMonetary(value: String, currency: String?, minDigits: Int?, maxDigits: Int?): String? {
     val number = jsNumber(value)
     val code = currency?.let { runCatching { Currency.getInstance(it) }.getOrNull() } ?: return null
     if (number.isNaN() || number.isInfinite()) return null
     val min = minDigits ?: MONETARY_FRACTION_DIGITS
-    return formats.currency(BigDecimal(number), code, min, maxOf(min, maxDigits ?: min))
+    return formats.currency(BigDecimal.valueOf(number), code, min, maxOf(min, maxDigits ?: min))
 }
 
 /**

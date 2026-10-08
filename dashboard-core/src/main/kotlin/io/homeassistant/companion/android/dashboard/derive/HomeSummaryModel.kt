@@ -97,8 +97,8 @@ private fun HassSnapshot.climateSummary(): String {
             ?.takeUnless { it.isNaN() || it == 0.0 }
     }
     if (values.isEmpty()) return ""
-    val min = formats.number(BigDecimal(values.min()), 1, 1)
-    val max = formats.number(BigDecimal(values.max()), 1, 1)
+    val min = formats.number(BigDecimal.valueOf(values.min()), 1, 1)
+    val max = formats.number(BigDecimal.valueOf(values.max()), 1, 1)
     return if (min == max) "$min°" else "$min - $max°"
 }
 

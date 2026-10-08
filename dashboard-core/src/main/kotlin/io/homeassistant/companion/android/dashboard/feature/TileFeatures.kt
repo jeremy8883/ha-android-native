@@ -82,9 +82,8 @@ sealed interface TileFeature {
     ) {
         /** [value] with [fractionDigits] decimals and the unit, as `ha-control-number-buttons` shows it. */
         fun display(value: Double): String {
-            val number = java.math.BigDecimal(
-                value,
-            ).setScale(fractionDigits, java.math.RoundingMode.HALF_UP).toPlainString()
+            val number = java.math.BigDecimal.valueOf(value)
+                .setScale(fractionDigits, java.math.RoundingMode.HALF_UP).toPlainString()
             return if (unit.isNullOrEmpty()) number else number + blankBeforeUnit(unit) + unit
         }
     }

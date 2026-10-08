@@ -42,11 +42,17 @@ class StateDisplayTest {
     }
 
     @Test
-    fun `Given a value with more digits than the default when formatting then it rounds half away from zero on the exact value`() {
-        // 1.005 is 1.00499999999999989... in binary, which Intl rounds down
-        val hass = hass(states("""{"sensor.x": {"s": "1.005", "a": {"unit_of_measurement": "V"}}, "number.y": {"s": "2.5", "a": {"step": 1}}}"""))
+    fun `Given values at a rounding midpoint when formatting then they round on the shortest decimal form like V8`() {
+        // 1.525 is 1.52499999... in binary, but V8's Intl rounds its shortest decimal form "1.525" up
+        val hass = hass(
+            states(
+                """{"sensor.x": {"s": "1.005", "a": {"unit_of_measurement": "V"}}, "number.y": {"s": "2.5", "a": {"step": 1}}}""",
+            ),
+        )
         assertEquals("1.005 V", hass.formatEntityState(hass.states.getValue("sensor.x")))
         assertEquals("2.5", hass.formatEntityState(hass.states.getValue("number.y")))
+        assertEquals("1.53", hass.formatNumber("1.525", 2, 2))
+        assertEquals("1.01", hass.formatNumber("1.005", 2, 2))
     }
 
     @ParameterizedTest

@@ -177,7 +177,7 @@ private fun FeatureNumber(
         val current = shown ?: return
         val next = (current + direction * item.step)
             .coerceIn(item.min ?: Double.NEGATIVE_INFINITY, item.max ?: Double.POSITIVE_INFINITY)
-        pending = BigDecimal(next).setScale(item.fractionDigits, RoundingMode.HALF_UP).toDouble()
+        pending = BigDecimal.valueOf(next).setScale(item.fractionDigits, RoundingMode.HALF_UP).toDouble()
     }
     Row(
         modifier = modifier

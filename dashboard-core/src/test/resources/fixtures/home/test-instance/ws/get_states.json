@@ -373,8 +373,8 @@
         "next_noon": "2026-10-08T11:28:06+00:00",
         "next_rising": "2026-10-09T05:55:21.219680+00:00",
         "next_setting": "2026-10-08T17:01:24.736346+00:00",
-        "elevation": 22.02,
-        "azimuth": 134.94,
+        "elevation": 27.25,
+        "azimuth": 149.15,
         "rising": true,
         "friendly_name": "Sun"
       },
@@ -559,7 +559,7 @@
     },
     {
       "entity_id": "sensor.living_room_temperature",
-      "state": "21.6",
+      "state": "21.2",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "°C",
@@ -577,7 +577,7 @@
     },
     {
       "entity_id": "sensor.living_room_humidity",
-      "state": "49",
+      "state": "45",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "%",
@@ -667,7 +667,7 @@
     },
     {
       "entity_id": "sensor.house_power",
-      "state": "622",
+      "state": "594",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -1032,8 +1032,8 @@
       "entity_id": "camera.demo_camera",
       "state": "streaming",
       "attributes": {
-        "access_token": "1d59fb36be13cee1bd384226ba36d14d6f406d2a316562832978918c7d7f8215",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera?token=1d59fb36be13cee1bd384226ba36d14d6f406d2a316562832978918c7d7f8215",
+        "access_token": "673f03cec5a698f4fcb55c5a16b30979731f75fb24e1861b5166acf4adb1596d",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera?token=673f03cec5a698f4fcb55c5a16b30979731f75fb24e1861b5166acf4adb1596d",
         "friendly_name": "Demo camera",
         "supported_features": 3
       },
@@ -1050,8 +1050,8 @@
       "entity_id": "camera.demo_camera_png",
       "state": "streaming",
       "attributes": {
-        "access_token": "384388c7aca28b7ecc55ce377b6affeeb0adbf9aca4f8abd37adfcd885247648",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=384388c7aca28b7ecc55ce377b6affeeb0adbf9aca4f8abd37adfcd885247648",
+        "access_token": "833d3f6592bd7d4ce2aa020196abcec6db44da6c66103ea477064873988e68c8",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=833d3f6592bd7d4ce2aa020196abcec6db44da6c66103ea477064873988e68c8",
         "friendly_name": "Demo camera png",
         "supported_features": 3
       },
@@ -1068,8 +1068,8 @@
       "entity_id": "camera.demo_camera_without_stream",
       "state": "streaming",
       "attributes": {
-        "access_token": "3c032254c7d94d2f1725c43520e729120731831a9b13ee9f2f815765db63a8d4",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=3c032254c7d94d2f1725c43520e729120731831a9b13ee9f2f815765db63a8d4",
+        "access_token": "f21714ca29a5899ed78658abac57ee31487b2cf18e0c3d01670f2fa7539c8d2a",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=f21714ca29a5899ed78658abac57ee31487b2cf18e0c3d01670f2fa7539c8d2a",
         "friendly_name": "Demo camera without stream",
         "supported_features": 1
       },
@@ -2377,7 +2377,7 @@
     },
     {
       "entity_id": "sensor.total_energy_kwh",
-      "state": "25.0",
+      "state": "30.5",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "kWh",
@@ -2395,7 +2395,7 @@
     },
     {
       "entity_id": "sensor.total_energy_mwh",
-      "state": "0.0125",
+      "state": "0.01525",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "MWh",
@@ -2413,7 +2413,7 @@
     },
     {
       "entity_id": "sensor.total_gas_m3",
-      "state": "1.25",
+      "state": "1.525",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "m³",
@@ -2431,7 +2431,7 @@
     },
     {
       "entity_id": "sensor.total_gas_ft3",
-      "state": "1.4158423296",
+      "state": "1.727327642112",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "m³",
@@ -3130,18 +3130,18 @@
     },
     {
       "entity_id": "weather.forecast_native_test_home",
-      "state": "rainy",
+      "state": "partlycloudy",
       "attributes": {
-        "temperature": 13,
-        "dew_point": 8.3,
+        "temperature": 13.6,
+        "dew_point": 8,
         "temperature_unit": "°C",
-        "humidity": 73,
-        "cloud_coverage": 35.9,
-        "uv_index": 0.6,
-        "pressure": 1011.8,
+        "humidity": 69,
+        "cloud_coverage": 21.9,
+        "uv_index": 1.2,
+        "pressure": 1012.6,
         "pressure_unit": "hPa",
-        "wind_bearing": 328,
-        "wind_speed": 24.5,
+        "wind_bearing": 332.7,
+        "wind_speed": 25.9,
         "wind_speed_unit": "km/h",
         "visibility_unit": "km",
         "precipitation_unit": "mm",

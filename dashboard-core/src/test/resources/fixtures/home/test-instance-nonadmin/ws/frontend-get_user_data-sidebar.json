@@ -1,0 +1,9 @@
+{
+  "request": {
+    "type": "frontend/get_user_data",
+    "key": "sidebar"
+  },
+  "result": {
+    "value": null
+  }
+}

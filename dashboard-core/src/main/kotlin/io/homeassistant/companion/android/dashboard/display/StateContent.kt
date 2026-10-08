@@ -162,7 +162,11 @@ private fun HassSnapshot.updateStateDisplay(state: EntityState): String {
             val progress = if (number.isNaN() || number.isInfinite()) {
                 number.toString()
             } else {
-                formats.number(BigDecimal(number), precision ?: 0, precision ?: INTL_DEFAULT_MAX_FRACTION_DIGITS)
+                formats.number(
+                    BigDecimal.valueOf(number),
+                    precision ?: 0,
+                    precision ?: INTL_DEFAULT_MAX_FRACTION_DIGITS,
+                )
             }
             return localize("ui.card.update.installing_with_progress", mapOf("progress" to progress))
         }

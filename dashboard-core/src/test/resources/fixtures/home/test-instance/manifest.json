@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-08T08:46:23.938Z",
+  "capture_date": "2026-10-08T09:42:36.859Z",
   "user": {
     "name": "Dev",
     "is_admin": true
@@ -153,8 +153,8 @@
     },
     {
       "path": "inputs/states.json",
-      "bytes": 89359,
-      "sha256": "7229be62831ff572effc44ad12538e47ccfd98dd4e71600e0b7b226177d99004"
+      "bytes": 89372,
+      "sha256": "77e66516fda35f52a8a2500d8dbaa3eb0c07f1fec21698b381e81a8d4f2a8330"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -183,8 +183,8 @@
     },
     {
       "path": "outputs/cards.json",
-      "bytes": 1519,
-      "sha256": "75f5ad043ebaa3c5715dadd602377f1e4474c544b43a5114776b4b93971dd444"
+      "bytes": 2083,
+      "sha256": "283bf31328fa2cc429399447b1de501a678580904cf45fd60697112daadf042a"
     },
     {
       "path": "outputs/dashboard.json",
@@ -193,8 +193,8 @@
     },
     {
       "path": "outputs/entity-display.json",
-      "bytes": 71138,
-      "sha256": "16a8cfb60ab9916f17e4a86e02c529ee8eeb934bfc509b2eaa7fd6079b3113a7"
+      "bytes": 71162,
+      "sha256": "5bce616b3a84f59c4814987f93c1291c5f148d1fca9e6b94bb2bb269cabc3eb6"
     },
     {
       "path": "outputs/expanded.json",
@@ -322,6 +322,11 @@
       "sha256": "a76945597fcd9fb55a7a8fe795b9ebb900b5be626044bc85c5b9716c8781fbdf"
     },
     {
+      "path": "ws/frontend-get_user_data-sidebar.json",
+      "bytes": 262,
+      "sha256": "7a1d40a692934fb8297631543a45dc1c4dd15101c70057eba6753bc2aeb5148a"
+    },
+    {
       "path": "ws/get_config.json",
       "bytes": 4604,
       "sha256": "2eda47e1e3cb2e3518c22bb1509c71bc42ca71c4c5039b17e864eb759bc41885"
@@ -333,8 +338,8 @@
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 99544,
-      "sha256": "453364c2fa2c38f501ba2e91b1d56c9c059c37f39e074021e3a5a5bb3f897db3"
+      "bytes": 99557,
+      "sha256": "ac4e49d2cf52d670a14ae6fe68e4b55b1617b7d73fdb40bce42a80ae1c7505cc"
     },
     {
       "path": "ws/manifest-get-frontend.json",

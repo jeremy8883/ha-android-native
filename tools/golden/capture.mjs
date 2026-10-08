@@ -331,7 +331,15 @@ async function captureInPage() {
       }
     }
     host.remove();
-    return { "home-summary": summaries, info: infoCards };
+    // The panels ha-sidebar lists, in order (the fixed Settings/notifications/profile entries are separate)
+    const sidebarEl = g.deepAll("ha-sidebar")[0];
+    const sidebar = sidebarEl
+      ? [...sidebarEl.shadowRoot.querySelectorAll('ha-list-item-button[id^="sidebar-panel-"]')].map((el) => ({
+          url_path: el.id.replace("sidebar-panel-", ""),
+          title: el.querySelector(".item-text")?.textContent?.trim() ?? null,
+        }))
+      : null;
+    return { "home-summary": summaries, info: infoCards, sidebar };
   }
 
   async function captureEntityDisplay(hass, ha) {
@@ -421,6 +429,7 @@ async function captureInPage() {
       category: "entity_component",
     },
     "repairs-list_issues": { type: "repairs/list_issues" },
+    "frontend-get_user_data-sidebar": { type: "frontend/get_user_data", key: "sidebar" },
     "config_entries-flow-progress": { type: "config_entries/flow/progress" },
     "frontend-get_translations-entity": { type: "frontend/get_translations", language: hass.language, category: "entity" },
   };
