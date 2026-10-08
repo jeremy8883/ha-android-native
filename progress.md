@@ -126,6 +126,7 @@ Update it in the same commit as the work it describes.
 
 ### 2026-10-08: session 1, later (Opus)
 - Done: generic raw WS API in `:common`, `:dashboard-core`, `:dashboard` vertical slice (tile card plus placeholders), local test HA container. `:app:assembleMinimalDebug` builds.
+- App onboarding on a device/emulator: `ANDROID_SERIAL=emulator-5554 python3 tools/test-ha/onboard_app.py` (after `adb reverse tcp:8124 tcp:8124`). It refuses to type credentials unless the app's login URL is `localhost:8124`, because LAN discovery can surface other servers.
 - Verified on a physical device. The headless emulator (36.4.10) segfaults on this host, so use a USB device with `adb reverse tcp:8124 tcp:8124`, then onboard to `http://localhost:8124` (dev/dev). **Discovery also finds other servers on the LAN; always use "Enter address manually".** The debug app's package is `...minimal.debug`, which doesn't clash with the store app. Launch it with `adb shell am start -a android.intent.action.MAIN -c android.intent.category.LAUNCHER -n io.homeassistant.companion.android.minimal.debug/io.homeassistant.companion.android.dashboard.ui.DashboardActivity`.
 - Next: verify the slice; unit-test `DashboardRepository` with a fake WebSocket; then the home strategy (architecture.md §8 step 3).
 
