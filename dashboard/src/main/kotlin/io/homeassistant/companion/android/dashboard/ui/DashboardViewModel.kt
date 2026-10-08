@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.homeassistant.companion.android.dashboard.data.DashboardConfigResult
 import io.homeassistant.companion.android.dashboard.data.DashboardRepository
+import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
 import io.homeassistant.companion.android.dashboard.entity.HassConfig
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.IconResources
@@ -23,6 +24,7 @@ import io.homeassistant.companion.android.dashboard.strategy.home.HomeDashboardC
 import io.homeassistant.companion.android.dashboard.strategy.home.homeDashboard
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.util.Locale
 import javax.inject.Inject
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
@@ -145,6 +147,7 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
                 panels = serverInfo?.panels.orEmpty(),
                 localize = localize,
                 icons = icons,
+                formats = JdkDisplayFormats(Locale.forLanguageTag(BUNDLED_LANGUAGE), ZoneId.systemDefault()),
             ),
             strategyData = strategyData,
             homeSettings = homeSettings,

@@ -1,39 +1,45 @@
 package io.homeassistant.companion.android.dashboard.derive
 
-import io.homeassistant.companion.android.dashboard.entity.EntityStates
+import io.homeassistant.companion.android.dashboard.display.stateDisplay
+import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.string
+import java.time.Instant
 
 /** Display-ready content of a tile card. */
 data class TileModel(
     val entityId: String,
     val name: String,
-    /** The state text, or `null` when the card hides it (`hide_state`). */
+    /** The secondary line (formatted state, brightness, relative time...), or `null` when hidden (`hide_state`). */
     val state: String?,
-    val unit: String?,
+    /** The `mdi:` icon to show. */
     val icon: String?,
     val active: Boolean,
     val available: Boolean,
 )
 
 /**
- * Derive a tile from its config and the current states, or `null` when the entity does not exist.
+ * Derive a tile from its config and the snapshot, or `null` when the entity does not exist.
+ * Follows `hui-tile-card` render (frontend@20260624.6 src/panels/lovelace/cards/hui-tile-card.ts): the name from
+ * the `name` option, the icon as `ha-state-icon` picks it, and the secondary line from `state-display` with the
+ * `state_content` and `time_format` options.
  *
- * Basic version: the name is the config `name` or `friendly_name`, and the state is shown raw with its unit.
- * Still to port from frontend@20260624.6: entity naming (src/common/entity/compute_entity_name.ts) and
- * translated state display (src/common/entity/compute_state_display.ts).
+ * @param now the time relative times are shown against
  */
-fun tileModel(card: CardConfig, states: EntityStates): TileModel? {
+fun HassSnapshot.tileModel(card: CardConfig, now: Instant): TileModel? {
     val entityId = card.entity ?: return null
     val entity = states[entityId] ?: return null
     val hideState = card.json.boolean("hide_state") == true
     return TileModel(
         entityId = entityId,
-        name = card.json.string("name") ?: entity.attributes.string("friendly_name") ?: entityId,
-        state = entity.state.takeUnless { hideState },
-        unit = entity.attributes.string("unit_of_measurement").takeUnless { hideState },
-        icon = card.json.string("icon") ?: entity.attributes.string("icon"),
+        name = entityNameDisplay(entity, card.json["name"]),
+        state = if (hideState) {
+            null
+        } else {
+            stateDisplay(entity, card.json["state_content"], now, timeFormat = card.json.string("time_format"))
+        },
+        icon = entityIcon(entityId, configIcon = card.json.string("icon")),
         active = entity.isActive(),
         available = entity.state != STATE_UNAVAILABLE,
     )

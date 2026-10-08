@@ -1,5 +1,8 @@
 package io.homeassistant.companion.android.dashboard.entity
 
+import io.homeassistant.companion.android.dashboard.display.DisplayFormats
+import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
+
 /** Looks up a frontend translation by key, for example `panel.light`. Returns "" when unknown. */
 fun interface Localize {
     operator fun invoke(key: String): String
@@ -25,6 +28,8 @@ data class HassConfig(
     val recoveryMode: Boolean,
     val version: String?,
     val components: Set<String>,
+    /** `unit_system.temperature`, for example "°C". */
+    val temperatureUnit: String? = null,
 ) {
     companion object {
         val UNKNOWN = HassConfig(state = null, recoveryMode = false, version = null, components = emptySet())
@@ -41,6 +46,7 @@ data class HassConfig(
  * @property panels url paths of the registered panels (`get_panels` keys)
  * @property localize frontend strings plus the server's entity translations (state names, units)
  * @property icons the server's icon translations for entity states
+ * @property formats number and date formatting in the user's language and time zone (the frontend's `locale`)
  */
 data class HassSnapshot(
     val states: EntityStates,
@@ -50,4 +56,5 @@ data class HassSnapshot(
     val panels: Set<String>,
     val localize: Localize,
     val icons: IconResources = IconResources.EMPTY,
+    val formats: DisplayFormats = JdkDisplayFormats.DEFAULT,
 )

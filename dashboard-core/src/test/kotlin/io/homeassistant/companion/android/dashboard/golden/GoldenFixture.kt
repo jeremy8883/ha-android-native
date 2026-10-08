@@ -78,6 +78,7 @@ class GoldenFixture(variant: String) {
                 recoveryMode = config.boolean("recovery_mode") == true,
                 version = config.string("version"),
                 components = config["components"]?.jsonArray?.mapNotNull { it.stringOrNull }?.toSet().orEmpty(),
+                temperatureUnit = config.obj("unit_system")?.string("temperature"),
             ),
             panels = wsResult("get_panels").jsonObject.keys,
             localize = Localize { key -> strings[key].orEmpty() }.withFallback(backend),

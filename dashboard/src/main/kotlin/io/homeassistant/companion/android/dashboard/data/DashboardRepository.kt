@@ -145,6 +145,7 @@ class DashboardRepository @Inject constructor(private val serverManager: ServerM
                     components = it.array("components")?.mapNotNull { component ->
                         component.stringOrNull
                     }?.toSet().orEmpty(),
+                    temperatureUnit = it.obj("unit_system")?.string("temperature"),
                 )
             } ?: HassConfig.UNKNOWN,
             panels = panels?.keys.orEmpty(),

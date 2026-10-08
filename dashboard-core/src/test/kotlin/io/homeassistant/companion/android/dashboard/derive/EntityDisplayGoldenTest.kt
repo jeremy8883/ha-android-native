@@ -1,8 +1,12 @@
 package io.homeassistant.companion.android.dashboard.derive
 
+import io.homeassistant.companion.android.dashboard.display.formatEntityState
+import io.homeassistant.companion.android.dashboard.display.stateDisplay
 import io.homeassistant.companion.android.dashboard.golden.GoldenFixture
 import io.homeassistant.companion.android.dashboard.model.obj
+import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
+import java.time.Instant
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -36,6 +40,19 @@ class EntityDisplayGoldenTest {
         val actual = NAME_CONFIGS.mapValues { (_, config) -> fixture.hass.entityNameDisplay(state, config) }
         val captured = expected.obj("names")!!.mapValues { it.value.stringOrNull }
         assertEquals(captured, actual)
+    }
+
+    @TestFactory
+    fun `Given captured server data when formatting states then they match formatEntityState`(): List<DynamicTest> = perEntity { fixture, entityId, expected ->
+        val state = fixture.hass.states.getValue(entityId)
+        assertEquals(expected["state"]?.stringOrNull, fixture.hass.formatEntityState(state))
+    }
+
+    @TestFactory
+    fun `Given captured server data when showing default state content then it matches state-display`(): List<DynamicTest> = perEntity { fixture, entityId, expected ->
+        val now = Instant.parse(fixture.json("outputs/entity-display.json").string("now"))
+        val state = fixture.hass.states.getValue(entityId)
+        assertEquals(expected["secondary"]?.stringOrNull, fixture.hass.stateDisplay(state, content = null, now = now))
     }
 
     private fun perEntity(check: (GoldenFixture, String, JsonObject) -> Unit): List<DynamicTest> = GoldenFixture.VARIANTS.flatMap { variant ->

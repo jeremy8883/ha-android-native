@@ -231,7 +231,7 @@ private fun CardGroups(
             }
             visibleCards?.let { cards ->
                 Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
-                    cards.forEach { card -> DashboardCard(card, hass, onNavigate, Modifier.fillMaxWidth()) }
+                    cards.forEach { card -> DashboardCard(card, hass, now, onNavigate, Modifier.fillMaxWidth()) }
                 }
             }
         }

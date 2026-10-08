@@ -27,10 +27,19 @@ import io.homeassistant.companion.android.dashboard.derive.TileModel
 import io.homeassistant.companion.android.dashboard.derive.tileModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
+import java.time.Instant
+import java.time.ZonedDateTime
 
 @Composable
-internal fun TileCard(card: CardConfig, hass: State<HassSnapshot?>, modifier: Modifier = Modifier) {
-    val tile by remember(card) { derivedStateOf { tileModel(card, hass.value?.states.orEmpty()) } }
+internal fun TileCard(
+    card: CardConfig,
+    hass: State<HassSnapshot?>,
+    now: State<ZonedDateTime?>,
+    modifier: Modifier = Modifier,
+) {
+    val tile by remember(card) {
+        derivedStateOf { hass.value?.tileModel(card, now.value?.toInstant() ?: Instant.EPOCH) }
+    }
     val model = tile
     if (model == null) {
         UnsupportedCard(stringResource(R.string.native_dashboard_entity_not_found, card.entity.orEmpty()), modifier)
@@ -67,7 +76,7 @@ internal fun TileCardContent(tile: TileModel, modifier: Modifier = Modifier) {
                     style = HATextStyle.Body,
                     color = if (tile.available) colors.colorTextPrimary else colors.colorTextDisabled,
                 )
-                tile.stateText?.let { state ->
+                tile.state?.let { state ->
                     Text(
                         text = state,
                         style = HATextStyle.BodyMedium,
@@ -79,9 +88,6 @@ internal fun TileCardContent(tile: TileModel, modifier: Modifier = Modifier) {
     }
 }
 
-private val TileModel.stateText: String?
-    get() = listOfNotNull(state, unit).takeIf(List<String>::isNotEmpty)?.joinToString(" ")
-
 @Preview
 @Composable
 private fun TileCardContentPreview() {
@@ -90,8 +96,7 @@ private fun TileCardContentPreview() {
             tile = TileModel(
                 entityId = "light.kitchen",
                 name = "Kitchen lights",
-                state = "On",
-                unit = null,
+                state = "71%",
                 icon = "mdi:lightbulb-group",
                 active = true,
                 available = true,

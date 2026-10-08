@@ -62,6 +62,7 @@ Update it in the same commit as the work it describes.
   - [ ] Native rendering of the cards these views use. Basic heading and area cards exist; still to do: home-summary, repairs, updates, discovered-devices, shortcut, empty-state, picture-entity, markdown header, and the sidebar
     - [x] UI polish for the initial tile, heading and compact area renderers: shared HA-token card surface, active/unavailable treatment, and safe dynamic MDI icons
   - [x] View navigation like upstream: tabs only for non-subviews, `navigate` actions open subviews, back arrow plus system back
+  - [x] Entity icons (`ha-state-icon`: registry, attribute, server icon translations, built-in state icons, domain fallback), entity names (`formatEntityName`), formatted states (`formatEntityState`, attribute values) and the tile secondary line (`state-display`, incl. relative times), golden-tested per entity against the real frontend (outputs/entity-display.json)
   - [x] Visibility conditions: all types (state, numeric_state, and/or/not, user, location, time, screen, view_columns, legacy), with upstream's tests ported. Section and card visibility in rendering; `view_columns` uses upstream's sections column formula
 - [x] List dashboards (`lovelace/dashboards/list`)
 - [x] Load dashboard config (`lovelace/config`)
@@ -125,8 +126,6 @@ Update it in the same commit as the work it describes.
 
 - After a reconnect, `subscribe_entities` resends a full `a` snapshot, but entities removed while we were offline stay in our map. Fix: reset the states on resubscribe; this needs a resubscribe signal from `:common`.
 
-- The web home dashboard resolves default entity icons and includes area context in tile secondary text. Most native tiles currently have no icon because `TileModel.icon` only contains a configured/entity-attribute icon. Resolve the frontend-equivalent entity icon and final secondary display text in `:dashboard-core`; don't infer either in Compose.
-
 - How do we support several frontend versions at once? Gate on `ha_version`, and use per-version fixtures?
 - Differential testing: can the TS strategies run headless in Node against fixture `hass` data?
 
@@ -138,6 +137,11 @@ Update it in the same commit as the work it describes.
 - Dependency lockfiles are global, so avoid adding new libraries to `:app`/`:automotive` (merge conflicts).
 
 ## Handover notes
+
+### 2026-10-08: entity display (Opus)
+- `TileModel` now carries display-ready text: `name` (formatEntityName), `state` (the full secondary line, unit included; `unit` is gone), `icon` (always resolved for existing entities). `HassSnapshot.tileModel(card, now)` needs the current time for relative timestamps; cards get it as `State<ZonedDateTime?>`.
+- Locale formatting sits behind `display/DisplayFormats`; `JdkDisplayFormats` is English-accurate (golden-tested). Relative times are English only for now; the app always uses the bundled `en` strings and the server's `en` translations. Other languages need an Android implementation (ICU `RelativeDateTimeFormatter`) and translated bundles.
+- Not ported yet: weather attribute units, `number_format: none`/explicit 12/24h preferences, the user's frontend locale settings (we use language formatting and the device time zone).
 
 ### 2026-10-08: Astra UI track
 - Polished the initial native tile, heading and compact area renderers and split them into focused files under `dashboard/ui/cards/`.
