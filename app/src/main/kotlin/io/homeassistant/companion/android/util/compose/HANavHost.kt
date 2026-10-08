@@ -109,7 +109,10 @@ internal fun HANavHost(
                     wearNameToOnboard = startDestination.wearName,
                 )
             }
-            nativeDashboardScreen(navController)
+            nativeDashboardScreen(
+                navController = navController,
+                onShowServerSwitcher = { onServerSelected -> showServerSwitcher(activity, onServerSelected) },
+            )
             frontendScreen(
                 navController = navController,
                 onOpenExternalLink = { uri ->

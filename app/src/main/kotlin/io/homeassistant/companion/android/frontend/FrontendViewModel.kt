@@ -264,9 +264,15 @@ internal class FrontendViewModel @VisibleForTesting constructor(
         stateProvider = { BridgeState(serverId = viewState.value.serverId, url = viewState.value.url) },
     )
 
+    private val _frontendRoute = MutableStateFlow<String?>(null)
+
+    /** The URL the frontend is at now, following its own route changes. */
+    val frontendRoute: StateFlow<String?> = _frontendRoute.asStateFlow()
+
     private val webViewClient = SuspendLazy {
         webViewClientFactory.create(
             currentUrlFlow = urlFlow,
+            onRouteChanged = { url -> _frontendRoute.value = url },
             onFrontendError = ::onError,
             onCrash = ::onRetry,
             onPageFinished = ::onPageFinished,

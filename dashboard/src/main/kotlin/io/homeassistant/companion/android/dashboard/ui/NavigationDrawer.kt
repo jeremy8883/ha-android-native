@@ -26,10 +26,16 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
  * (for admins) and the profile, like `ha-sidebar`'s fixed entries.
  *
  * @param selected the url path of the panel shown now
+ * @param onSwitchServer shows the server picker; `null` hides the entry (a single server)
  * @param onOpen called with the path of the chosen entry
  */
 @Composable
-internal fun NavigationDrawerContent(sidebar: SidebarState?, selected: String?, onOpen: (String) -> Unit) {
+internal fun NavigationDrawerContent(
+    sidebar: SidebarState?,
+    selected: String?,
+    onSwitchServer: (() -> Unit)? = null,
+    onOpen: (String) -> Unit,
+) {
     val colors = LocalHAColorScheme.current
     val itemColors = NavigationDrawerItemDefaults.colors(
         selectedContainerColor = colors.colorFillPrimaryQuietResting,
@@ -62,6 +68,16 @@ internal fun NavigationDrawerContent(sidebar: SidebarState?, selected: String?, 
                 Entry(CONFIG_PANEL, stringResource(R.string.native_dashboard_settings), SETTINGS_ICON)
             }
             Entry(PROFILE_PANEL, stringResource(R.string.native_dashboard_profile), PROFILE_ICON)
+            onSwitchServer?.let { switch ->
+                NavigationDrawerItem(
+                    label = { Text(stringResource(R.string.native_dashboard_switch_server), style = HATextStyle.Body) },
+                    icon = { DashboardIcon(SERVER_ICON, colors.colorTextSecondary, Modifier.size(HASize.X2L)) },
+                    selected = false,
+                    onClick = switch,
+                    colors = itemColors,
+                    modifier = Modifier.padding(horizontal = HADimens.SPACE2),
+                )
+            }
         }
         Spacer(modifier = Modifier.padding(bottom = HADimens.SPACE2))
     }
@@ -71,3 +87,4 @@ private const val CONFIG_PANEL = "config"
 private const val PROFILE_PANEL = "profile"
 private const val SETTINGS_ICON = "mdi:cog"
 private const val PROFILE_ICON = "mdi:account"
+private const val SERVER_ICON = "mdi:home-switch"

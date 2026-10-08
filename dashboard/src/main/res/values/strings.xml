@@ -17,4 +17,5 @@
     <string name="native_dashboard_menu">Open navigation</string>
     <string name="native_dashboard_settings">Settings</string>
     <string name="native_dashboard_profile">Profile</string>
+    <string name="native_dashboard_switch_server">Switch server</string>
 </resources>

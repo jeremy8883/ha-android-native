@@ -741,7 +741,8 @@ class LaunchViewModelTest {
         WIPFeature.nativeDashboardOverride = true
         val serverId = 5
         every { workManager.enqueue(any<OneTimeWorkRequest>()) } returns mockk()
-        coEvery { serverManager.getServer(serverId) } returns mockk<Server>(relaxed = true)
+        val server = mockk<Server>(relaxed = true) { every { id } returns serverId }
+        coEvery { serverManager.getServer(any<Int>()) } returns server
         coEvery { serverManager.isRegistered() } returns true
         coEvery { serverManager.authenticationRepository().getSessionState() } returns SessionState.CONNECTED
         coEvery { networkStatusMonitor.observeNetworkStatus(any()) } returns MutableStateFlow(NetworkState.READY_NET_VALIDATED)
@@ -750,5 +751,23 @@ class LaunchViewModelTest {
         advanceUntilIdle()
 
         assertEquals(LaunchUiState.Ready(NativeDashboardRoute()), viewModel.uiState.value)
+    }
+
+    @Test
+    fun `Given native dashboards are on, when a link targets another server, then open the frontend`() = runTest {
+        WIPFeature.nativeDashboardOverride = true
+        every { workManager.enqueue(any<OneTimeWorkRequest>()) } returns mockk()
+        coEvery { serverManager.getServer(5) } returns mockk<Server>(relaxed = true) { every { id } returns 5 }
+        coEvery { serverManager.getServer(ServerManager.SERVER_ID_ACTIVE) } returns mockk<Server>(relaxed = true) {
+            every { id } returns 1
+        }
+        coEvery { serverManager.isRegistered() } returns true
+        coEvery { serverManager.authenticationRepository().getSessionState() } returns SessionState.CONNECTED
+        coEvery { networkStatusMonitor.observeNetworkStatus(any()) } returns MutableStateFlow(NetworkState.READY_NET_VALIDATED)
+
+        createViewModel(LaunchActivity.DeepLink.NavigateTo(FrontendTarget.Path("/energy"), 5))
+        advanceUntilIdle()
+
+        assertEquals(LaunchUiState.Ready(FrontendRoute(FrontendTarget.Path("/energy"), 5)), viewModel.uiState.value)
     }
 }

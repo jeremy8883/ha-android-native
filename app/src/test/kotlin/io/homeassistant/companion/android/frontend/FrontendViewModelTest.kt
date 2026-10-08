@@ -217,6 +217,7 @@ class FrontendViewModelTest {
                     onReceivedHttpAuthRequest = any(),
                     onCanGoBackChanged = any(),
                     onSubresourceSslError = any(),
+                    onRouteChanged = any(),
                 )
             } answers {
                 // onUrlIntercepted is at parameter index 3 in HAWebViewClientFactory.create
@@ -1385,6 +1386,7 @@ class FrontendViewModelTest {
                     onReceivedHttpAuthRequest = any(),
                     onCanGoBackChanged = any(),
                     onSubresourceSslError = any(),
+                    onRouteChanged = any(),
                 )
             } answers {
                 // onPageFinished is at parameter index 4 in HAWebViewClientFactory.create
@@ -1523,6 +1525,7 @@ class FrontendViewModelTest {
                     onReceivedHttpAuthRequest = any(),
                     onCanGoBackChanged = any(),
                     onSubresourceSslError = any(),
+                    onRouteChanged = any(),
                 )
             } answers {
                 capturedCallback = arg(5)
@@ -1627,6 +1630,7 @@ class FrontendViewModelTest {
                     onReceivedHttpAuthRequest = any(),
                     onCanGoBackChanged = any(),
                     onSubresourceSslError = any(),
+                    onRouteChanged = any(),
                 )
             } answers {
                 // onSubresourceSslError is at parameter index 7 in HAWebViewClientFactory.create
@@ -1689,6 +1693,7 @@ class FrontendViewModelTest {
                     onReceivedHttpAuthRequest = any(),
                     onCanGoBackChanged = any(),
                     onSubresourceSslError = any(),
+                    onRouteChanged = any(),
                 )
             } answers {
                 // onCanGoBackChanged is at parameter index 6 in HAWebViewClientFactory.create

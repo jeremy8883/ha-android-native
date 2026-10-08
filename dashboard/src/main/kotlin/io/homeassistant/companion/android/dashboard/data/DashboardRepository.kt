@@ -243,6 +243,14 @@ class DashboardRepository @Inject constructor(private val serverManager: ServerM
     /** The id of the active server, for links into the rest of the app. */
     suspend fun activeServerId(): Int? = serverManager.getServer()?.id
 
+    /** The active server's id and how many servers there are, updated as servers change. */
+    fun activeServer(): Flow<Pair<Int?, Int>> = serverManager.serversFlow.map { servers ->
+        serverManager.getServer()?.id to servers.size
+    }
+
+    /** Make [serverId] the active server, which the native dashboards then show. */
+    suspend fun activateServer(serverId: Int) = serverManager.activateServer(serverId)
+
     /** User, server config and panels, or `null` when no connection can be made. */
     suspend fun serverInfo(): ServerInfo? {
         val webSocket = serverManager.webSocketRepositoryOrNull() ?: return null

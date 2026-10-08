@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import io.homeassistant.companion.android.WIPFeature
 import io.homeassistant.companion.android.assist.AssistActivity
 import io.homeassistant.companion.android.common.data.servers.ServerManager.Companion.SERVER_ID_ACTIVE
 import io.homeassistant.companion.android.frontend.FrontendScreen
@@ -23,6 +24,7 @@ import io.homeassistant.companion.android.frontend.navigation.FrontendTarget.Com
 import io.homeassistant.companion.android.launch.HAStartDestinationRoute
 import io.homeassistant.companion.android.launch.LaunchActivity
 import io.homeassistant.companion.android.launch.PipReadiness
+import io.homeassistant.companion.android.nativedashboard.NativeDashboardHandOff
 import io.homeassistant.companion.android.nativedashboard.navigateToNativeDashboard
 import io.homeassistant.companion.android.nfc.WriteNfcTag
 import io.homeassistant.companion.android.settings.SettingsActivity
@@ -102,6 +104,7 @@ internal fun NavGraphBuilder.frontendScreen(
             ActivityResultContracts.StartIntentSenderForResult(),
         ) { result -> viewModel.onMatterThreadIntentResult(result) }
 
+        if (WIPFeature.USE_NATIVE_DASHBOARD) NativeDashboardHandOff(viewModel.frontendRoute, navController)
         FrontendEventHandler(
             events = viewModel.events,
             onShowNativeNavigation = { navController.navigateToNativeDashboard(openDrawer = true) },

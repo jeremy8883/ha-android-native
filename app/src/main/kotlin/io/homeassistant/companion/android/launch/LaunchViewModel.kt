@@ -235,11 +235,14 @@ internal class LaunchViewModel @VisibleForTesting constructor(
         try {
             getServerConnectedAndRegistered(serverId)?.let { server ->
                 Timber.d("Server (id=${server.id}) is connected and registered checking network status")
+                // The native dashboards show the active server only
+                val isActiveServer = WIPFeature.USE_NATIVE_DASHBOARD &&
+                    (serverId == ServerManager.SERVER_ID_ACTIVE || serverManager.getServer()?.id == server.id)
 
                 networkStatusMonitor.observeNetworkStatus(serverManager.connectionStateProvider(server.id))
                     .takeWhile { state ->
                         // Until the network is ready we continue to observe network status changes
-                        !handleNetworkState(state, target, serverId)
+                        !handleNetworkState(state, target, serverId, isActiveServer)
                     }.collect()
             } ?: navigateToOnboarding()
         } catch (e: IllegalStateException) {
@@ -306,7 +309,12 @@ internal class LaunchViewModel @VisibleForTesting constructor(
             .forEach { serverManager.removeServer(it.id) }
     }
 
-    private fun handleNetworkState(state: NetworkState, target: FrontendTarget, serverId: Int): Boolean {
+    private fun handleNetworkState(
+        state: NetworkState,
+        target: FrontendTarget,
+        serverId: Int,
+        isActiveServer: Boolean,
+    ): Boolean {
         Timber.i("Current network state $state")
         return when (state) {
             NetworkState.READY_INTERNAL, NetworkState.READY_NET_VALIDATED, NetworkState.READY_NET_LOCAL -> {
@@ -314,9 +322,9 @@ internal class LaunchViewModel @VisibleForTesting constructor(
                 _uiState.value = LaunchUiState.Ready(
                     when {
                         shouldNavigateToAutomotive -> AutomotiveRoute
-                        // Native dashboards start the app; other targets open the frontend, which hands back
-                        // to the native dashboards for dashboard paths
-                        WIPFeature.USE_NATIVE_DASHBOARD && target == FrontendTarget.Default -> NativeDashboardRoute()
+                        // The native dashboards start the app and stay at the bottom of the back stack: they show
+                        // dashboard paths and entities themselves and open other paths in the frontend on top
+                        WIPFeature.USE_NATIVE_DASHBOARD && isActiveServer -> NativeDashboardRoute.from(target)
                         else -> FrontendRoute(target, serverId)
                     },
                 )

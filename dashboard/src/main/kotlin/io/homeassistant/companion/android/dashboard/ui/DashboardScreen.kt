@@ -76,6 +76,8 @@ internal fun DashboardScreen(
     viewModel: DashboardViewModel,
     onOpenWeb: ((String) -> Unit)? = null,
     openDrawer: Boolean = false,
+    initialMoreInfo: String? = null,
+    onSwitchServer: (() -> Unit)? = null,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val selectedDashboard by viewModel.selectedDashboardUrlPath.collectAsStateWithLifecycle()
@@ -85,9 +87,11 @@ internal fun DashboardScreen(
 
     val content = uiState as? DashboardUiState.Content
     BackHandler(enabled = content?.isSubview == true) { viewModel.onBack() }
+    // Like other top-level destinations, back from another dashboard returns to the default one before leaving
+    BackHandler(enabled = content?.isSubview != true && selectedDashboard != null) { viewModel.onSelectDashboard(null) }
     val snackbar = remember { SnackbarHostState() }
     val interactions = remember(viewModel) { CardInteractions(viewModel::onGesture, viewModel::onAction) }
-    var moreInfo by rememberSaveable { mutableStateOf<String?>(null) }
+    var moreInfo by rememberSaveable { mutableStateOf(initialMoreInfo) }
     DashboardEffects(
         events = viewModel.events,
         snackbar = snackbar,
@@ -106,7 +110,16 @@ internal fun DashboardScreen(
             drawerState = drawerState,
             gesturesEnabled = content?.isSubview != true,
             drawerContent = {
-                NavigationDrawerContent(sidebar, selectedDashboard ?: sidebar?.defaultPanel) { path ->
+                NavigationDrawerContent(
+                    sidebar = sidebar,
+                    selected = selectedDashboard ?: sidebar?.defaultPanel,
+                    onSwitchServer = onSwitchServer?.let { switch ->
+                        {
+                            scope.launch { drawerState.close() }
+                            switch()
+                        }
+                    },
+                ) { path ->
                     scope.launch { drawerState.close() }
                     viewModel.onOpenPath(path)
                 }

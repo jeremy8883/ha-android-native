@@ -218,6 +218,7 @@ Everything is behind `WIPFeature.USE_NATIVE_DASHBOARD` (debug builds) while it s
 unchanged.
 
 **Phases**: A) native start screen with the drawer, web for other panels, `hasSidebar` and `sidebar/show`;
-B) route changes inside the WebView back to native, native `/...` navigation to the WebView; C) back-stack polish,
-offline behaviour, server switching.
+B) route changes inside the WebView back to native, native `/...` navigation to the WebView; C) deep links start
+native, top-level back behaviour, server switching. All three are in. Still to do: one WebView kept alive across
+web visits (today each visit loads the frontend), and the offline behaviour.
 
