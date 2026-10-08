@@ -113,6 +113,12 @@ Update it in the same commit as the work it describes.
 - [ ] Explicit connection status, resubscribe on reconnect
 - [ ] Read-only offline: commands disabled while disconnected
 
+### Later — Startup time
+- [ ] Cold launch straight to the dashboard: the splash is held by `LaunchViewModel` until the session is read (`getServerConnectedAndRegistered`, ~130–240ms in a release-like build) and the network reports READY; `CONNECTING` keeps the splash and `UNAVAILABLE` shows NetworkUnavailable instead of the dashboard
+- [ ] Don't start Chromium at launch: `CookieJarCookieManagerShim` (`:common`, OkHttp cookies backed by `CookieManager`) and `configureWebViewDebugging` both load the WebView before any web page is opened
+- [ ] Baseline profile (none in the project yet)
+- [ ] Measure on a release-like build on a real device and network; debug builds are about 3x slower to start
+
 ### Step 7 — Tests
 - [ ] JSON fixtures (real dashboards) and deserialization
 - [ ] Config interpretation and layout
