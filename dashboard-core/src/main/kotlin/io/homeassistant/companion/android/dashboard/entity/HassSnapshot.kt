@@ -12,6 +12,10 @@ fun interface Localize {
         args.entries.fold(invoke(key)) { message, (name, value) -> message.replace("{$name}", value) }
 }
 
+/** [Localize] that falls back to [fallback] (flat keys, as `frontend/get_translations` returns) for unknown keys. */
+fun Localize.withFallback(fallback: Map<String, String>): Localize =
+    if (fallback.isEmpty()) this else Localize { key -> invoke(key).ifEmpty { fallback[key].orEmpty() } }
+
 /** The current user, from `auth/current_user`. */
 data class HassUser(val id: String, val name: String?, val isAdmin: Boolean, val isOwner: Boolean)
 
@@ -35,6 +39,8 @@ data class HassConfig(
  * of the frontend's `hass` object, restricted to raw server data plus translations.
  *
  * @property panels url paths of the registered panels (`get_panels` keys)
+ * @property localize frontend strings plus the server's entity translations (state names, units)
+ * @property icons the server's icon translations for entity states
  */
 data class HassSnapshot(
     val states: EntityStates,
@@ -43,4 +49,5 @@ data class HassSnapshot(
     val config: HassConfig,
     val panels: Set<String>,
     val localize: Localize,
+    val icons: IconResources = IconResources.EMPTY,
 )

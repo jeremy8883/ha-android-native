@@ -255,6 +255,64 @@ async function visitView(page, path, strategyType) {
 /** The capture proper. Runs in the page with one consistent `hass` snapshot. */
 async function captureInPage() {
   const g = window.__golden;
+
+  async function captureEntityDisplay(hass, ha) {
+    // Visible text of a node, through shadow roots, as a user would read it
+    const deepText = (node) => {
+      if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+      if (node.nodeType !== Node.ELEMENT_NODE && node.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) return "";
+      if (node.localName === "style" || node.localName === "script") return "";
+      const children = node.shadowRoot ? node.shadowRoot.childNodes : node.childNodes;
+      return [...children].map(deepText).join("");
+    };
+    const clean = (t) => t.replace(/\s+/g, " ").trim();
+    // Icons consume the config/entities/connection contexts provided by <home-assistant>
+    const host = document.createElement("div");
+    ha.shadowRoot.appendChild(host);
+    const items = Object.entries(hass.states).map(([entityId, stateObj]) => {
+      const icon = document.createElement("ha-state-icon");
+      icon.stateObj = stateObj;
+      const sd = document.createElement("state-display");
+      sd.hass = hass;
+      sd.stateObj = stateObj;
+      host.append(icon, sd);
+      return { entityId, stateObj, icon, sd };
+    });
+    const iconOf = (el) => {
+      const root = el.shadowRoot;
+      const named = root?.querySelector("ha-icon");
+      if (named) return named.icon;
+      if (root?.querySelector("ha-svg-icon")) return { fallback: true };
+      return undefined;
+    };
+    for (let i = 0; i < 100 && items.some((it) => iconOf(it.icon) === undefined); i++) {
+      await new Promise((r) => setTimeout(r, 100));
+    }
+    await Promise.all(items.map((it) => it.sd.updateComplete));
+    await new Promise((r) => setTimeout(r, 500)); // nested timestamp elements
+    const now = Date.now();
+    const names = {
+      default: undefined,
+      entity: { type: "entity" },
+      device: { type: "device" },
+      area: { type: "area" },
+      floor: { type: "floor" },
+      device_entity: [{ type: "device" }, { type: "entity" }],
+    };
+    const entities = {};
+    for (const it of items) {
+      entities[it.entityId] = {
+        icon: iconOf(it.icon) ?? null,
+        state: hass.formatEntityState(it.stateObj),
+        secondary: clean(deepText(it.sd)),
+        names: Object.fromEntries(
+          Object.entries(names).map(([k, n]) => [k, hass.formatEntityName(it.stateObj, n)])
+        ),
+      };
+    }
+    host.remove();
+    return { now: new Date(now).toISOString(), locale: g.clone(hass.locale), time_zone: hass.config.time_zone, entities };
+  }
   const ha = document.querySelector("home-assistant");
   const hass = ha.hass; // hass is replaced (not mutated) on updates, so this is a stable snapshot
   const panel = g.deepAll("ha-panel-home")[0];
@@ -275,6 +333,16 @@ async function captureInPage() {
     "usage_prediction-common_control": { type: "usage_prediction/common_control" },
     "energy-get_prefs": { type: "energy/get_prefs" },
     "manifest-get-frontend": { type: "manifest/get", integration: "frontend" },
+    // What the frontend loads to resolve entity icons and translate states (data/icons.ts,
+    // layouts/home-assistant.ts hassConnected)
+    "frontend-get_icons-entity_component": { type: "frontend/get_icons", category: "entity_component" },
+    "frontend-get_icons-entity": { type: "frontend/get_icons", category: "entity" },
+    "frontend-get_translations-entity_component": {
+      type: "frontend/get_translations",
+      language: hass.language,
+      category: "entity_component",
+    },
+    "frontend-get_translations-entity": { type: "frontend/get_translations", language: hass.language, category: "entity" },
   };
   const ws = {};
   for (const [name, msg] of Object.entries(wsCalls)) {
@@ -381,6 +449,17 @@ async function captureInPage() {
     if (prefixes.some((p) => k.startsWith(p))) translations[k] = resources[k];
   }
 
+  // ---- per-entity display: the icon (ha-state-icon), names (formatEntityName) and the tile's secondary
+  // line (state-display, default content), all from the same hass snapshot
+  const display = await captureEntityDisplay(hass, ha);
+  // Frontend bundle strings used to display states (state.default.unknown, ...)
+  const stateStrings = {};
+  for (const k of Object.keys(resources).sort()) {
+    if (k.startsWith("state.") || k.startsWith("ui.common.") || k.startsWith("ui.components.relative_time.")) {
+      stateStrings[k] = resources[k];
+    }
+  }
+
   const pick = (o, keys) => Object.fromEntries(keys.filter((k) => k in o).map((k) => [k, g.clone(o[k])]));
 
   return {
@@ -401,6 +480,7 @@ async function captureInPage() {
       "home-system-data": g.clone(panel._config ?? null),
       "strategy-config": strategyConfig,
       translations: { language: hass.language, strings: translations },
+      "state-translations": { language: hass.language, strings: stateStrings },
       localize: [...localizeLog.values()],
       hass_misc: pick(hass, ["kioskMode", "suspendWhenHidden", "enableShortcuts", "vibrate", "dockedSidebar", "selectedTheme", "debugConnection"]),
     },
@@ -410,6 +490,7 @@ async function captureInPage() {
     views,
     sections,
     expanded,
+    display,
     rendered: { dashboard: g.clone(panel._lovelace?.config ?? null) },
   };
 }
@@ -535,6 +616,7 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
     if (s.error) problems.push(`section ${s.view}#${s.index}: ${s.error}`);
   }
   write("outputs/expanded.json", cap.expanded);
+  write("outputs/entity-display.json", cap.display);
 
   // ---- cross-checks against what the live frontend rendered
   const checks = [];

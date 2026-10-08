@@ -3,6 +3,8 @@ package io.homeassistant.companion.android.dashboard.condition
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.array
 import io.homeassistant.companion.android.dashboard.model.has
+import io.homeassistant.companion.android.dashboard.model.jsNumber
+import io.homeassistant.companion.android.dashboard.model.jsString
 import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
@@ -15,7 +17,6 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.doubleOrNull
 
 /**
@@ -156,33 +157,6 @@ private fun parseTime(value: String): LocalTime? {
 /** Port of `getValueFromEntityId`: the state of [value] when it is the id of an existing entity. */
 private fun HassSnapshot.stateOfEntityId(value: String): String? =
     value.takeIf { VALID_ENTITY_ID.matches(it) }?.let { states[it]?.state }
-
-/** JavaScript `String(value)` for JSON values. */
-private fun JsonElement.jsString(): String = when (this) {
-    is JsonPrimitive -> content
-    else -> toString()
-}
-
-/** JavaScript `Number(value)`: missing is NaN, null and "" are 0, booleans are 0/1, other strings parse or are NaN. */
-internal fun jsNumber(value: JsonElement?): Double = when {
-    value == null -> Double.NaN
-    value is JsonNull -> 0.0
-    value !is JsonPrimitive -> Double.NaN
-    !value.isString && value.booleanOrNull != null -> if (value.booleanOrNull == true) 1.0 else 0.0
-    !value.isString -> value.doubleOrNull ?: Double.NaN
-    value.content.isBlank() -> 0.0
-    else -> parseJsNumber(value.content.trim())
-}
-
-/** Decimal and exponent literals as `Number("...")` accepts them (hex and binary literals are not used in states). */
-private fun parseJsNumber(text: String): Double = when {
-    JS_DECIMAL.matches(text) -> text.toDouble()
-    text == "Infinity" || text == "+Infinity" -> Double.POSITIVE_INFINITY
-    text == "-Infinity" -> Double.NEGATIVE_INFINITY
-    else -> Double.NaN
-}
-
-private val JS_DECIMAL = Regex("""^[+-]?(\d+\.?\d*|\.\d+)([eE][+-]?\d+)?$""")
 
 private val VALID_ENTITY_ID = Regex("""^(\w+)\.(\w+)$""")
 private const val STATE_UNKNOWN = "unknown"

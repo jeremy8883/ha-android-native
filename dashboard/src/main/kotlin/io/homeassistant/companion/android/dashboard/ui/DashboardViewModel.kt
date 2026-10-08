@@ -7,8 +7,10 @@ import io.homeassistant.companion.android.dashboard.data.DashboardConfigResult
 import io.homeassistant.companion.android.dashboard.data.DashboardRepository
 import io.homeassistant.companion.android.dashboard.entity.HassConfig
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
+import io.homeassistant.companion.android.dashboard.entity.IconResources
 import io.homeassistant.companion.android.dashboard.entity.JsonTranslations
 import io.homeassistant.companion.android.dashboard.entity.Localize
+import io.homeassistant.companion.android.dashboard.entity.withFallback
 import io.homeassistant.companion.android.dashboard.layout.CardGroup
 import io.homeassistant.companion.android.dashboard.layout.cardGroups
 import io.homeassistant.companion.android.dashboard.model.DashboardConfig
@@ -111,8 +113,14 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
 
     // Reading the bundled resource touches disk, so never on the main thread
-    private val localize: Flow<Localize> = flow { emit(JsonTranslations.bundled() ?: Localize { "" }) }
+    private val bundledLocalize: Flow<Localize> = flow { emit(JsonTranslations.bundled() ?: Localize { "" }) }
         .flowOn(Dispatchers.IO)
+
+    /** Frontend strings plus the server's entity translations, and the icon translations. */
+    private val entityDisplay: Flow<Pair<Localize, IconResources>> = combine(
+        bundledLocalize,
+        flow { emit(repository.entityResources(BUNDLED_LANGUAGE)) },
+    ) { bundled, resources -> bundled.withFallback(resources.translations) to resources.icons }
 
     /**
      * The data the dashboard structure is derived from. Like upstream, structure is regenerated when registries
@@ -126,8 +134,8 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         },
         flow { emit(repository.homeSystemData()) },
         entityStates.filterNotNull().take(1),
-        localize,
-    ) { registries, (serverInfo, strategyData), homeSettings, states, localize ->
+        entityDisplay,
+    ) { registries, (serverInfo, strategyData), homeSettings, states, (localize, icons) ->
         StructureInputs(
             hass = HassSnapshot(
                 states = states,
@@ -136,6 +144,7 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
                 config = serverInfo?.config ?: HassConfig.UNKNOWN,
                 panels = serverInfo?.panels.orEmpty(),
                 localize = localize,
+                icons = icons,
             ),
             strategyData = strategyData,
             homeSettings = homeSettings,
@@ -235,3 +244,6 @@ private fun DashboardConfig.toContent(inputs: StructureInputs, stack: List<Strin
 
 private val STOP_TIMEOUT = 5.seconds.inWholeMilliseconds
 private val CLOCK_TICK = 15.seconds
+
+/** The language of the bundled frontend strings; server translations are fetched in the same language. */
+private const val BUNDLED_LANGUAGE = "en"

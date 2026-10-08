@@ -7,6 +7,7 @@ import io.homeassistant.companion.android.common.data.websocket.WebSocketReposit
 import io.homeassistant.companion.android.dashboard.entity.EntityStates
 import io.homeassistant.companion.android.dashboard.entity.HassConfig
 import io.homeassistant.companion.android.dashboard.entity.HassUser
+import io.homeassistant.companion.android.dashboard.entity.IconResources
 import io.homeassistant.companion.android.dashboard.entity.Registries
 import io.homeassistant.companion.android.dashboard.entity.applyEntityEvent
 import io.homeassistant.companion.android.dashboard.entity.parseAreaRegistry
@@ -167,6 +168,32 @@ class DashboardRepository @Inject constructor(private val serverManager: ServerM
         )
     }
 
+    /**
+     * The server's entity icon and state translations for [language], as the frontend loads them on connect
+     * (`frontend/get_icons` and `frontend/get_translations` for the `entity_component` and `entity` categories).
+     */
+    suspend fun entityResources(language: String): EntityResources {
+        val webSocket = serverManager.webSocketRepositoryOrNull() ?: return EntityResources.NONE
+        fun translations(category: String): suspend () -> Map<String, String> = {
+            (
+                webSocket.result(
+                    "frontend/get_translations",
+                    mapOf("language" to language, "category" to category),
+                ) as? JsonObject
+                )?.obj("resources")?.mapValues { it.value.stringOrNull.orEmpty() }.orEmpty()
+        }
+        return EntityResources(
+            icons = IconResources.fromResults(
+                entityComponent = webSocket.result(
+                    "frontend/get_icons",
+                    mapOf("category" to "entity_component"),
+                ) as? JsonObject,
+                entity = webSocket.result("frontend/get_icons", mapOf("category" to "entity")) as? JsonObject,
+            ),
+            translations = translations("entity_component")() + translations("entity")(),
+        )
+    }
+
     /** The home dashboard settings (`frontend/get_system_data {key: "home"}`), or `null` when unset. */
     suspend fun homeSystemData(): JsonObject? = (
         serverManager.webSocketRepositoryOrNull()
@@ -212,6 +239,13 @@ class DashboardRepository @Inject constructor(private val serverManager: ServerM
 }
 
 /** Server details that rarely change during a session. */
+/** Server resources used to display entities: icon translations and flat translation strings. */
+data class EntityResources(val icons: IconResources, val translations: Map<String, String>) {
+    companion object {
+        val NONE = EntityResources(IconResources.EMPTY, emptyMap())
+    }
+}
+
 data class ServerInfo(val user: HassUser?, val config: HassConfig, val panels: Set<String>)
 
 private suspend fun WebSocketRepository.result(type: String, data: Map<String, Any?> = emptyMap()): JsonElement? =

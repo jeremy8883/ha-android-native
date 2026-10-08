@@ -32,11 +32,13 @@ writes both sides to `tools/golden/out/<variant>/` (gitignored).
 | Path | Content |
 |---|---|
 | `inputs/*.json` | The frontend's processed `hass` view that the strategies read: `states` (timestamps and context frozen), `entities`, `devices`, `areas`, `floors`, `user`, `panels`, `config`, `language`, `locale`, `systemData`, `userData`. Also `home-system-data` (the panel's `_config`), `strategy-config` (the panel's `_strategyConfig`), `translations` (`ui.panel.lovelace.strategy.*`, `ui.panel.home.*`, `panel.*`), and `localize` (every `localize(key, args)` call the strategies made, with its result). |
-| `ws/*.json` | Raw WS responses as `{request, result}` or `{request, error}`: `get_states`, the four registry lists, `auth/current_user`, `get_config`, `get_panels`, `frontend/get_system_data` (home, core), `frontend/get_user_data` (core), `usage_prediction/common_control`, `energy/get_prefs`, `manifest/get` (frontend). |
+| `ws/*.json` | Raw WS responses as `{request, result}` or `{request, error}`: `get_states`, the four registry lists, `auth/current_user`, `get_config`, `get_panels`, `frontend/get_system_data` (home, core), `frontend/get_user_data` (core), `usage_prediction/common_control`, `energy/get_prefs`, `manifest/get` (frontend), `frontend/get_icons` and `frontend/get_translations` (`entity_component` and `entity` categories). |
 | `ws/strategy-calls.json` | The `callWS` calls the strategies themselves made during generation, with responses. These are the canned answers a Kotlin test should feed in. |
 | `outputs/dashboard.json` | `home-dashboard-strategy` output |
 | `outputs/views/<path>.json` | Each view with its view strategy resolved |
 | `outputs/sections/<view>/<index>-<type>.json` | `{input, output}` for each strategy section (`common-controls`) |
+| `outputs/entity-display.json` | Per entity, from the same snapshot: the icon `ha-state-icon` drew (`{fallback: true}` for the built-in domain icon), `formatEntityState`, the tile's secondary line (`state-display` with default content, as visible text), and `formatEntityName` for several `name` options. Also `now`, `locale` and `time_zone`, since relative times depend on them. |
+| `inputs/state-translations.json` | Frontend bundle strings used by state display (`state.*`, `ui.common.*`, `ui.components.relative_time.*`). |
 | `outputs/expanded.json` | The whole dashboard with every view and section strategy expanded, like `expandLovelaceConfigStrategies()` |
 | `manifest.json` | HA and frontend versions, capture date, how `generate` was invoked, cross-check results, and the file list with sizes and hashes |
 

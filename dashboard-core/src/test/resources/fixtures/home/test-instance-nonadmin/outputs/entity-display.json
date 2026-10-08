@@ -1,0 +1,2102 @@
+{
+  "now": "2026-10-08T07:13:56.603Z",
+  "locale": {
+    "language": "en",
+    "number_format": "language",
+    "time_format": "language",
+    "date_format": "language",
+    "time_zone": "local",
+    "first_weekday": "language"
+  },
+  "time_zone": "Europe/Amsterdam",
+  "entities": {
+    "media_player.living_room_tv": {
+      "icon": "mdi:television-play",
+      "state": "Playing",
+      "secondary": "Playing",
+      "names": {
+        "default": "Living Room TV",
+        "entity": "Living Room TV",
+        "device": "",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Living Room TV"
+      }
+    },
+    "media_player.kitchen_speaker": {
+      "icon": "mdi:speaker-play",
+      "state": "Playing",
+      "secondary": "Playing",
+      "names": {
+        "default": "Kitchen Speaker",
+        "entity": "Kitchen Speaker",
+        "device": "",
+        "area": "Kitchen",
+        "floor": "Ground floor",
+        "device_entity": "Kitchen Speaker"
+      }
+    },
+    "media_player.bedroom_speaker": {
+      "icon": "mdi:speaker-play",
+      "state": "Playing",
+      "secondary": "Playing",
+      "names": {
+        "default": "Bedroom Speaker",
+        "entity": "Bedroom Speaker",
+        "device": "",
+        "area": "Bedroom",
+        "floor": "First floor",
+        "device_entity": "Bedroom Speaker"
+      }
+    },
+    "media_player.office_speaker": {
+      "icon": "mdi:speaker-play",
+      "state": "Playing",
+      "secondary": "Playing",
+      "names": {
+        "default": "Office Speaker",
+        "entity": "Office Speaker",
+        "device": "",
+        "area": "Office",
+        "floor": "First floor",
+        "device_entity": "Office Speaker"
+      }
+    },
+    "conversation.home_assistant": {
+      "icon": "mdi:forum-outline",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Home Assistant",
+        "entity": "Home Assistant",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Home Assistant"
+      }
+    },
+    "timer.laundry": {
+      "icon": {
+        "fallback": true
+      },
+      "state": "Idle",
+      "secondary": "Idle",
+      "names": {
+        "default": "Laundry",
+        "entity": "Laundry",
+        "device": "",
+        "area": "Garage",
+        "floor": "Ground floor",
+        "device_entity": "Laundry"
+      }
+    },
+    "input_number.target_humidity": {
+      "icon": "mdi:water-percent",
+      "state": "30%",
+      "secondary": "30%",
+      "names": {
+        "default": "Target humidity",
+        "entity": "Target humidity",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Target humidity"
+      }
+    },
+    "input_number.bedroom_brightness": {
+      "icon": {
+        "fallback": true
+      },
+      "state": "0%",
+      "secondary": "0%",
+      "names": {
+        "default": "Bedroom brightness",
+        "entity": "Bedroom brightness",
+        "device": "",
+        "area": "Bedroom",
+        "floor": "First floor",
+        "device_entity": "Bedroom brightness"
+      }
+    },
+    "input_boolean.guest_mode": {
+      "icon": "mdi:account-multiple",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "Guest mode",
+        "entity": "Guest mode",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Guest mode"
+      }
+    },
+    "input_boolean.vacation_mode": {
+      "icon": "mdi:airplane",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "Vacation mode",
+        "entity": "Vacation mode",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Vacation mode"
+      }
+    },
+    "input_select.house_mode": {
+      "icon": "mdi:home-switch",
+      "state": "Home",
+      "secondary": "Home",
+      "names": {
+        "default": "House mode",
+        "entity": "House mode",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "House mode"
+      }
+    },
+    "input_button.doorbell_test": {
+      "icon": "mdi:doorbell",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Doorbell test",
+        "entity": "Doorbell test",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Doorbell test"
+      }
+    },
+    "zone.home": {
+      "icon": "mdi:home",
+      "state": "0",
+      "secondary": "0",
+      "names": {
+        "default": "Native Test Home",
+        "entity": "Native Test Home",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Native Test Home"
+      }
+    },
+    "person.dev": {
+      "icon": "mdi:account",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Dev",
+        "entity": "Dev",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Dev"
+      }
+    },
+    "counter.coffee_cups": {
+      "icon": "mdi:coffee",
+      "state": "0",
+      "secondary": "0",
+      "names": {
+        "default": "Coffee cups",
+        "entity": "Coffee cups",
+        "device": "",
+        "area": "Kitchen",
+        "floor": "Ground floor",
+        "device_entity": "Coffee cups"
+      }
+    },
+    "sun.sun": {
+      "icon": "mdi:white-balance-sunny",
+      "state": "Above horizon",
+      "secondary": "Above horizon",
+      "names": {
+        "default": "Sun",
+        "entity": "Sun",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Sun"
+      }
+    },
+    "sensor.sun_next_dawn": {
+      "icon": "mdi:sun-clock",
+      "state": "October 9, 2026 at 5:20 AM",
+      "secondary": "Tomorrow",
+      "names": {
+        "default": "Sun Next dawn",
+        "entity": "Next dawn",
+        "device": "Sun",
+        "area": "",
+        "floor": "",
+        "device_entity": "Sun Next dawn"
+      }
+    },
+    "sensor.sun_next_dusk": {
+      "icon": "mdi:sun-clock",
+      "state": "October 8, 2026 at 5:36 PM",
+      "secondary": "In 10 hours",
+      "names": {
+        "default": "Sun Next dusk",
+        "entity": "Next dusk",
+        "device": "Sun",
+        "area": "",
+        "floor": "",
+        "device_entity": "Sun Next dusk"
+      }
+    },
+    "sensor.sun_next_midnight": {
+      "icon": "mdi:sun-clock",
+      "state": "October 8, 2026 at 11:27 PM",
+      "secondary": "In 16 hours",
+      "names": {
+        "default": "Sun Next midnight",
+        "entity": "Next midnight",
+        "device": "Sun",
+        "area": "",
+        "floor": "",
+        "device_entity": "Sun Next midnight"
+      }
+    },
+    "sensor.sun_next_noon": {
+      "icon": "mdi:sun-clock",
+      "state": "October 8, 2026 at 11:28 AM",
+      "secondary": "In 4 hours",
+      "names": {
+        "default": "Sun Next noon",
+        "entity": "Next noon",
+        "device": "Sun",
+        "area": "",
+        "floor": "",
+        "device_entity": "Sun Next noon"
+      }
+    },
+    "sensor.sun_next_rising": {
+      "icon": "mdi:sun-clock",
+      "state": "October 9, 2026 at 5:55 AM",
+      "secondary": "Tomorrow",
+      "names": {
+        "default": "Sun Next rising",
+        "entity": "Next rising",
+        "device": "Sun",
+        "area": "",
+        "floor": "",
+        "device_entity": "Sun Next rising"
+      }
+    },
+    "sensor.sun_next_setting": {
+      "icon": "mdi:sun-clock",
+      "state": "October 8, 2026 at 5:01 PM",
+      "secondary": "In 10 hours",
+      "names": {
+        "default": "Sun Next setting",
+        "entity": "Next setting",
+        "device": "Sun",
+        "area": "",
+        "floor": "",
+        "device_entity": "Sun Next setting"
+      }
+    },
+    "input_datetime.wake_up": {
+      "icon": "mdi:clock",
+      "state": "7:00 AM",
+      "secondary": "7:00 AM",
+      "names": {
+        "default": "Wake-up time",
+        "entity": "Wake-up time",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Wake-up time"
+      }
+    },
+    "input_text.welcome_message": {
+      "icon": {
+        "fallback": true
+      },
+      "state": "Hello from the test instance",
+      "secondary": "Hello from the test instance",
+      "names": {
+        "default": "Welcome message",
+        "entity": "Welcome message",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Welcome message"
+      }
+    },
+    "lock.front_door_deadbolt": {
+      "icon": "mdi:lock",
+      "state": "Locked",
+      "secondary": "Locked",
+      "names": {
+        "default": "Front door deadbolt",
+        "entity": "Front door deadbolt",
+        "device": "",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Front door deadbolt"
+      }
+    },
+    "lock.back_door_lock": {
+      "icon": "mdi:lock-open-variant",
+      "state": "Unlocked",
+      "secondary": "Unlocked",
+      "names": {
+        "default": "Back door lock",
+        "entity": "Back door lock",
+        "device": "",
+        "area": "Kitchen",
+        "floor": "Ground floor",
+        "device_entity": "Back door lock"
+      }
+    },
+    "sensor.living_room_temperature": {
+      "icon": "mdi:thermometer",
+      "state": "21.3 °C",
+      "secondary": "21.3 °C",
+      "names": {
+        "default": "Living room temperature",
+        "entity": "Living room temperature",
+        "device": "",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Living room temperature"
+      }
+    },
+    "sensor.living_room_humidity": {
+      "icon": "mdi:water-percent",
+      "state": "51%",
+      "secondary": "51%",
+      "names": {
+        "default": "Living room humidity",
+        "entity": "Living room humidity",
+        "device": "",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Living room humidity"
+      }
+    },
+    "sensor.bedroom_temperature": {
+      "icon": "mdi:thermometer",
+      "state": "19.4 °C",
+      "secondary": "19.4 °C",
+      "names": {
+        "default": "Bedroom temperature",
+        "entity": "Bedroom temperature",
+        "device": "",
+        "area": "Bedroom",
+        "floor": "First floor",
+        "device_entity": "Bedroom temperature"
+      }
+    },
+    "sensor.office_temperature": {
+      "icon": "mdi:thermometer",
+      "state": "22.8 °C",
+      "secondary": "22.8 °C",
+      "names": {
+        "default": "Office temperature",
+        "entity": "Office temperature",
+        "device": "",
+        "area": "Office",
+        "floor": "First floor",
+        "device_entity": "Office temperature"
+      }
+    },
+    "sensor.garden_temperature": {
+      "icon": "mdi:thermometer",
+      "state": "13.2 °C",
+      "secondary": "13.2 °C",
+      "names": {
+        "default": "Garden temperature",
+        "entity": "Garden temperature",
+        "device": "",
+        "area": "Garden",
+        "floor": "Outside",
+        "device_entity": "Garden temperature"
+      }
+    },
+    "sensor.garage_battery": {
+      "icon": "mdi:battery-60",
+      "state": "64.0%",
+      "secondary": "64.0%",
+      "names": {
+        "default": "Garage battery",
+        "entity": "Garage battery",
+        "device": "",
+        "area": "Garage",
+        "floor": "Ground floor",
+        "device_entity": "Garage battery"
+      }
+    },
+    "sensor.house_power": {
+      "icon": "mdi:flash",
+      "state": "391 W",
+      "secondary": "391 W",
+      "names": {
+        "default": "House power",
+        "entity": "House power",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "House power"
+      }
+    },
+    "sensor.lights_on": {
+      "icon": "mdi:eye",
+      "state": "5",
+      "secondary": "5",
+      "names": {
+        "default": "Lights on",
+        "entity": "Lights on",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Lights on"
+      }
+    },
+    "binary_sensor.front_door": {
+      "icon": "mdi:door-closed",
+      "state": "Closed",
+      "secondary": "Closed",
+      "names": {
+        "default": "Front door",
+        "entity": "Front door",
+        "device": "",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Front door"
+      }
+    },
+    "binary_sensor.garage_door_contact": {
+      "icon": "mdi:garage",
+      "state": "Closed",
+      "secondary": "Closed",
+      "names": {
+        "default": "Garage door contact",
+        "entity": "Garage door contact",
+        "device": "",
+        "area": "Garage",
+        "floor": "Ground floor",
+        "device_entity": "Garage door contact"
+      }
+    },
+    "binary_sensor.kitchen_motion": {
+      "icon": "mdi:motion-sensor-off",
+      "state": "Clear",
+      "secondary": "Clear",
+      "names": {
+        "default": "Kitchen motion",
+        "entity": "Kitchen motion",
+        "device": "",
+        "area": "Kitchen",
+        "floor": "Ground floor",
+        "device_entity": "Kitchen motion"
+      }
+    },
+    "binary_sensor.bedroom_window": {
+      "icon": "mdi:window-open",
+      "state": "Open",
+      "secondary": "Open",
+      "names": {
+        "default": "Bedroom window",
+        "entity": "Bedroom window",
+        "device": "",
+        "area": "Bedroom",
+        "floor": "First floor",
+        "device_entity": "Bedroom window"
+      }
+    },
+    "binary_sensor.garden_leak": {
+      "icon": "mdi:water-off",
+      "state": "Dry",
+      "secondary": "Dry",
+      "names": {
+        "default": "Garden leak",
+        "entity": "Garden leak",
+        "device": "",
+        "area": "Garden",
+        "floor": "Outside",
+        "device_entity": "Garden leak"
+      }
+    },
+    "binary_sensor.office_occupancy": {
+      "icon": "mdi:home",
+      "state": "Detected",
+      "secondary": "Detected",
+      "names": {
+        "default": "Office occupancy",
+        "entity": "Office occupancy",
+        "device": "",
+        "area": "Office",
+        "floor": "First floor",
+        "device_entity": "Office occupancy"
+      }
+    },
+    "switch.garden_irrigation": {
+      "icon": "mdi:toggle-switch-variant-off",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "Garden irrigation",
+        "entity": "Garden irrigation",
+        "device": "",
+        "area": "Garden",
+        "floor": "Outside",
+        "device_entity": "Garden irrigation"
+      }
+    },
+    "image_processing.demo_face": {
+      "icon": {
+        "fallback": true
+      },
+      "state": "Hans",
+      "secondary": "Hans",
+      "names": {
+        "default": "Demo Face",
+        "entity": "Demo Face",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo Face"
+      }
+    },
+    "device_tracker.demo_paulus": {
+      "icon": "mdi:account-arrow-right",
+      "state": "Away",
+      "secondary": "Away",
+      "names": {
+        "default": "Paulus",
+        "entity": "Paulus",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Paulus"
+      }
+    },
+    "device_tracker.demo_anne_therese": {
+      "icon": "mdi:account-arrow-right",
+      "state": "Away",
+      "secondary": "Away",
+      "names": {
+        "default": "Anne Therese",
+        "entity": "Anne Therese",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Anne Therese"
+      }
+    },
+    "device_tracker.demo_home_boy": {
+      "icon": "mdi:account",
+      "state": "Home",
+      "secondary": "Home",
+      "names": {
+        "default": "Home Boy",
+        "entity": "Home Boy",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Home Boy"
+      }
+    },
+    "air_quality.demo_air_quality_home": {
+      "icon": "mdi:air-filter",
+      "state": "14 μg/m³",
+      "secondary": "14 μg/m³",
+      "names": {
+        "default": "Demo Air Quality Home",
+        "entity": "Demo Air Quality Home",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo Air Quality Home"
+      }
+    },
+    "air_quality.demo_air_quality_office": {
+      "icon": "mdi:air-filter",
+      "state": "4 μg/m³",
+      "secondary": "4 μg/m³",
+      "names": {
+        "default": "Demo Air Quality Office",
+        "entity": "Demo Air Quality Office",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo Air Quality Office"
+      }
+    },
+    "alarm_control_panel.security": {
+      "icon": "mdi:shield-off",
+      "state": "Disarmed",
+      "secondary": "Disarmed",
+      "names": {
+        "default": "Security",
+        "entity": "Security",
+        "device": "",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Security"
+      }
+    },
+    "binary_sensor.basement_floor_wet": {
+      "icon": "mdi:water-off",
+      "state": "Dry",
+      "secondary": "Dry",
+      "names": {
+        "default": "Basement Floor Wet",
+        "entity": "Basement Floor Wet",
+        "device": "Basement Floor Wet",
+        "area": "Garage",
+        "floor": "Ground floor",
+        "device_entity": "Basement Floor Wet"
+      }
+    },
+    "binary_sensor.movement_backyard": {
+      "icon": "mdi:motion-sensor",
+      "state": "Detected",
+      "secondary": "Detected",
+      "names": {
+        "default": "Movement Backyard",
+        "entity": "Movement Backyard",
+        "device": "Movement Backyard",
+        "area": "Garden",
+        "floor": "Outside",
+        "device_entity": "Movement Backyard"
+      }
+    },
+    "binary_sensor.outside_temperature_battery_charging": {
+      "icon": "mdi:battery",
+      "state": "Not charging",
+      "secondary": "Not charging",
+      "names": {
+        "default": "Outside Temperature Battery Charging",
+        "entity": "Battery Charging",
+        "device": "Outside Temperature",
+        "area": "Garden",
+        "floor": "Outside",
+        "device_entity": "Outside Temperature Battery Charging"
+      }
+    },
+    "button.push": {
+      "icon": "mdi:button-pointer",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Push",
+        "entity": "Push",
+        "device": "Push",
+        "area": "Office",
+        "floor": "First floor",
+        "device_entity": "Push"
+      }
+    },
+    "camera.demo_camera": {
+      "icon": "mdi:video",
+      "state": "Streaming",
+      "secondary": "Streaming",
+      "names": {
+        "default": "Demo camera",
+        "entity": "Demo camera",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo camera"
+      }
+    },
+    "camera.demo_camera_png": {
+      "icon": "mdi:video",
+      "state": "Streaming",
+      "secondary": "Streaming",
+      "names": {
+        "default": "Demo camera png",
+        "entity": "Demo camera png",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo camera png"
+      }
+    },
+    "camera.demo_camera_without_stream": {
+      "icon": "mdi:video",
+      "state": "Streaming",
+      "secondary": "Streaming",
+      "names": {
+        "default": "Demo camera without stream",
+        "entity": "Demo camera without stream",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo camera without stream"
+      }
+    },
+    "calendar.calendar_1": {
+      "icon": "mdi:calendar-blank",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "Calendar 1",
+        "entity": "Calendar 1",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Calendar 1"
+      }
+    },
+    "calendar.calendar_2": {
+      "icon": "mdi:calendar-blank",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "Calendar 2",
+        "entity": "Calendar 2",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Calendar 2"
+      }
+    },
+    "climate.heatpump": {
+      "icon": "mdi:thermostat",
+      "state": "Heat",
+      "secondary": "Heat · 25 °C",
+      "names": {
+        "default": "HeatPump",
+        "entity": "HeatPump",
+        "device": "HeatPump",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "HeatPump"
+      }
+    },
+    "climate.hvac": {
+      "icon": "mdi:thermostat",
+      "state": "Cool",
+      "secondary": "Cool · 22 °C",
+      "names": {
+        "default": "Hvac",
+        "entity": "Hvac",
+        "device": "Hvac",
+        "area": "Office",
+        "floor": "First floor",
+        "device_entity": "Hvac"
+      }
+    },
+    "climate.ecobee": {
+      "icon": "mdi:thermostat",
+      "state": "Heat/Cool",
+      "secondary": "Heat/Cool · 23 °C",
+      "names": {
+        "default": "Ecobee",
+        "entity": "Ecobee",
+        "device": "Ecobee",
+        "area": "Bedroom",
+        "floor": "First floor",
+        "device_entity": "Ecobee"
+      }
+    },
+    "cover.kitchen_window": {
+      "icon": "mdi:window-closed",
+      "state": "Closed",
+      "secondary": "Closed",
+      "names": {
+        "default": "Kitchen Window",
+        "entity": "Kitchen Window",
+        "device": "Kitchen Window",
+        "area": "Kitchen",
+        "floor": "Ground floor",
+        "device_entity": "Kitchen Window"
+      }
+    },
+    "cover.hall_window": {
+      "icon": "mdi:window-open",
+      "state": "Open",
+      "secondary": "Open · 10%",
+      "names": {
+        "default": "Hall Window",
+        "entity": "Hall Window",
+        "device": "Hall Window",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Hall Window"
+      }
+    },
+    "cover.living_room_window": {
+      "icon": "mdi:window-open",
+      "state": "Open",
+      "secondary": "Open · 70%",
+      "names": {
+        "default": "Living Room Window",
+        "entity": "Living Room Window",
+        "device": "Living Room Window",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Living Room Window"
+      }
+    },
+    "cover.garage_door": {
+      "icon": "mdi:garage",
+      "state": "Closed",
+      "secondary": "Closed",
+      "names": {
+        "default": "Garage Door",
+        "entity": "Garage Door",
+        "device": "Garage Door",
+        "area": "Garage",
+        "floor": "Ground floor",
+        "device_entity": "Garage Door"
+      }
+    },
+    "cover.pergola_roof": {
+      "icon": "mdi:window-closed",
+      "state": "Closed",
+      "secondary": "Closed",
+      "names": {
+        "default": "Pergola Roof",
+        "entity": "Pergola Roof",
+        "device": "Pergola Roof",
+        "area": "Garden",
+        "floor": "Outside",
+        "device_entity": "Pergola Roof"
+      }
+    },
+    "date.date": {
+      "icon": "mdi:calendar",
+      "state": "January 1, 2020",
+      "secondary": "January 1, 2020",
+      "names": {
+        "default": "Date",
+        "entity": "Date",
+        "device": "Date",
+        "area": "",
+        "floor": "",
+        "device_entity": "Date"
+      }
+    },
+    "datetime.date_and_time": {
+      "icon": "mdi:calendar-clock",
+      "state": "January 1, 2020 at 12:00 PM",
+      "secondary": "6 years ago",
+      "names": {
+        "default": "Date and Time",
+        "entity": "Date and Time",
+        "device": "Date and Time",
+        "area": "",
+        "floor": "",
+        "device_entity": "Date and Time"
+      }
+    },
+    "event.push_button_press": {
+      "icon": "mdi:gesture-tap-button",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Push Button press",
+        "entity": "Button press",
+        "device": "Push",
+        "area": "Office",
+        "floor": "First floor",
+        "device_entity": "Push Button press"
+      }
+    },
+    "fan.living_room_fan": {
+      "icon": "mdi:fan-off",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "Living Room Fan",
+        "entity": "Living Room Fan",
+        "device": "",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Living Room Fan"
+      }
+    },
+    "fan.ceiling_fan": {
+      "icon": "mdi:fan-off",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "Ceiling Fan",
+        "entity": "Ceiling Fan",
+        "device": "",
+        "area": "Bedroom",
+        "floor": "First floor",
+        "device_entity": "Ceiling Fan"
+      }
+    },
+    "fan.percentage_full_fan": {
+      "icon": "mdi:fan-off",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "Percentage Full Fan",
+        "entity": "Percentage Full Fan",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Percentage Full Fan"
+      }
+    },
+    "fan.percentage_limited_fan": {
+      "icon": "mdi:fan-off",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "Percentage Limited Fan",
+        "entity": "Percentage Limited Fan",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Percentage Limited Fan"
+      }
+    },
+    "fan.preset_only_limited_fan": {
+      "icon": "mdi:fan-off",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "Preset Only Limited Fan",
+        "entity": "Preset Only Limited Fan",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Preset Only Limited Fan"
+      }
+    },
+    "humidifier.humidifier": {
+      "icon": "mdi:air-humidifier",
+      "state": "On",
+      "secondary": "On · 45%",
+      "names": {
+        "default": "Humidifier",
+        "entity": "Humidifier",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Humidifier"
+      }
+    },
+    "humidifier.dehumidifier": {
+      "icon": "mdi:air-humidifier",
+      "state": "On",
+      "secondary": "On · 59.4%",
+      "names": {
+        "default": "Dehumidifier",
+        "entity": "Dehumidifier",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Dehumidifier"
+      }
+    },
+    "humidifier.hygrostat": {
+      "icon": "mdi:air-humidifier",
+      "state": "On",
+      "secondary": "On",
+      "names": {
+        "default": "Hygrostat",
+        "entity": "Hygrostat",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Hygrostat"
+      }
+    },
+    "light.bed_light": {
+      "icon": "mdi:lightbulb-off",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "Bed Light",
+        "entity": "Bed Light",
+        "device": "Bed Light",
+        "area": "Bedroom",
+        "floor": "First floor",
+        "device_entity": "Bed Light"
+      }
+    },
+    "light.ceiling_lights": {
+      "icon": "mdi:lightbulb",
+      "state": "On",
+      "secondary": "71%",
+      "names": {
+        "default": "Ceiling Lights",
+        "entity": "Ceiling Lights",
+        "device": "Ceiling Lights",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Ceiling Lights"
+      }
+    },
+    "light.kitchen_lights": {
+      "icon": "mdi:lightbulb",
+      "state": "On",
+      "secondary": "71%",
+      "names": {
+        "default": "Kitchen Lights",
+        "entity": "Kitchen Lights",
+        "device": "Kitchen Lights",
+        "area": "Kitchen",
+        "floor": "Ground floor",
+        "device_entity": "Kitchen Lights"
+      }
+    },
+    "light.office_rgbw_lights": {
+      "icon": "mdi:lightbulb",
+      "state": "On",
+      "secondary": "71%",
+      "names": {
+        "default": "Office RGBW Lights",
+        "entity": "Office RGBW Lights",
+        "device": "Office RGBW Lights",
+        "area": "Office",
+        "floor": "First floor",
+        "device_entity": "Office RGBW Lights"
+      }
+    },
+    "light.living_room_rgbww_lights": {
+      "icon": "mdi:lightbulb",
+      "state": "On",
+      "secondary": "71%",
+      "names": {
+        "default": "Living Room RGBWW Lights",
+        "entity": "Living Room RGBWW Lights",
+        "device": "Living Room RGBWW Lights",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Living Room RGBWW Lights"
+      }
+    },
+    "light.entrance_color_white_lights": {
+      "icon": "mdi:lightbulb",
+      "state": "On",
+      "secondary": "71%",
+      "names": {
+        "default": "Entrance Color + White Lights",
+        "entity": "Entrance Color + White Lights",
+        "device": "Entrance Color + White Lights",
+        "area": "Garden",
+        "floor": "Outside",
+        "device_entity": "Entrance Color + White Lights"
+      }
+    },
+    "lock.front_door": {
+      "icon": "mdi:lock",
+      "state": "Locked",
+      "secondary": "Locked",
+      "names": {
+        "default": "Front Door",
+        "entity": "Front Door",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Front Door"
+      }
+    },
+    "lock.kitchen_door": {
+      "icon": "mdi:lock-open-variant",
+      "state": "Unlocked",
+      "secondary": "Unlocked",
+      "names": {
+        "default": "Kitchen Door",
+        "entity": "Kitchen Door",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Kitchen Door"
+      }
+    },
+    "lock.poorly_installed_door": {
+      "icon": "mdi:lock-open-variant",
+      "state": "Unlocked",
+      "secondary": "Unlocked",
+      "names": {
+        "default": "Poorly Installed Door",
+        "entity": "Poorly Installed Door",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Poorly Installed Door"
+      }
+    },
+    "lock.openable_lock": {
+      "icon": "mdi:lock",
+      "state": "Locked",
+      "secondary": "Locked",
+      "names": {
+        "default": "Openable Lock",
+        "entity": "Openable Lock",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Openable Lock"
+      }
+    },
+    "media_player.living_room": {
+      "icon": "mdi:cast-connected",
+      "state": "Playing",
+      "secondary": "Playing",
+      "names": {
+        "default": "Living Room",
+        "entity": "Living Room",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Living Room"
+      }
+    },
+    "media_player.bedroom": {
+      "icon": "mdi:cast-connected",
+      "state": "Playing",
+      "secondary": "Playing",
+      "names": {
+        "default": "Bedroom",
+        "entity": "Bedroom",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Bedroom"
+      }
+    },
+    "media_player.walkman": {
+      "icon": "mdi:cast-connected",
+      "state": "Playing",
+      "secondary": "Playing",
+      "names": {
+        "default": "Walkman",
+        "entity": "Walkman",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Walkman"
+      }
+    },
+    "media_player.kitchen": {
+      "icon": "mdi:cast-connected",
+      "state": "Playing",
+      "secondary": "Playing",
+      "names": {
+        "default": "Kitchen",
+        "entity": "Kitchen",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Kitchen"
+      }
+    },
+    "media_player.lounge_room": {
+      "icon": "mdi:television-play",
+      "state": "Playing",
+      "secondary": "Playing",
+      "names": {
+        "default": "Lounge room",
+        "entity": "Lounge room",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Lounge room"
+      }
+    },
+    "media_player.browse": {
+      "icon": "mdi:cast-connected",
+      "state": "Playing",
+      "secondary": "Playing",
+      "names": {
+        "default": "Browse",
+        "entity": "Browse",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Browse"
+      }
+    },
+    "media_player.group": {
+      "icon": "mdi:cast-connected",
+      "state": "Playing",
+      "secondary": "Playing",
+      "names": {
+        "default": "Group",
+        "entity": "Group",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Group"
+      }
+    },
+    "media_player.search": {
+      "icon": "mdi:cast-connected",
+      "state": "Playing",
+      "secondary": "Playing",
+      "names": {
+        "default": "Search",
+        "entity": "Search",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Search"
+      }
+    },
+    "notify.notifier": {
+      "icon": "mdi:message",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Notifier",
+        "entity": "Notifier",
+        "device": "Notifier",
+        "area": "",
+        "floor": "",
+        "device_entity": "Notifier"
+      }
+    },
+    "number.volume": {
+      "icon": "mdi:volume-high",
+      "state": "42",
+      "secondary": "42",
+      "names": {
+        "default": "volume",
+        "entity": "volume",
+        "device": "volume",
+        "area": "",
+        "floor": "",
+        "device_entity": "volume"
+      }
+    },
+    "number.pwm_1": {
+      "icon": "mdi:square-wave",
+      "state": "0.42",
+      "secondary": "0.42",
+      "names": {
+        "default": "PWM 1",
+        "entity": "PWM 1",
+        "device": "PWM 1",
+        "area": "",
+        "floor": "",
+        "device_entity": "PWM 1"
+      }
+    },
+    "number.large_range": {
+      "icon": "mdi:square-wave",
+      "state": "500",
+      "secondary": "500",
+      "names": {
+        "default": "Large Range",
+        "entity": "Large Range",
+        "device": "Large Range",
+        "area": "",
+        "floor": "",
+        "device_entity": "Large Range"
+      }
+    },
+    "number.small_range": {
+      "icon": "mdi:square-wave",
+      "state": "128",
+      "secondary": "128",
+      "names": {
+        "default": "Small Range",
+        "entity": "Small Range",
+        "device": "Small Range",
+        "area": "",
+        "floor": "",
+        "device_entity": "Small Range"
+      }
+    },
+    "number.temperature_setting": {
+      "icon": "mdi:thermometer",
+      "state": "22 °C",
+      "secondary": "22 °C",
+      "names": {
+        "default": "Temperature setting",
+        "entity": "Temperature setting",
+        "device": "Temperature setting",
+        "area": "",
+        "floor": "",
+        "device_entity": "Temperature setting"
+      }
+    },
+    "select.speed": {
+      "icon": "mdi:speedometer",
+      "state": "Ridiculous speed",
+      "secondary": "Ridiculous speed",
+      "names": {
+        "default": "Speed",
+        "entity": "Speed",
+        "device": "Speed",
+        "area": "",
+        "floor": "",
+        "device_entity": "Speed"
+      }
+    },
+    "sensor.outside_temperature": {
+      "icon": "mdi:thermometer",
+      "state": "15.6 °C",
+      "secondary": "15.6 °C",
+      "names": {
+        "default": "Outside Temperature",
+        "entity": "Outside Temperature",
+        "device": "Outside Temperature",
+        "area": "Garden",
+        "floor": "Outside",
+        "device_entity": "Outside Temperature"
+      }
+    },
+    "sensor.outside_temperature_battery": {
+      "icon": "mdi:battery-10",
+      "state": "12%",
+      "secondary": "12%",
+      "names": {
+        "default": "Outside Temperature Battery",
+        "entity": "Battery",
+        "device": "Outside Temperature",
+        "area": "Garden",
+        "floor": "Outside",
+        "device_entity": "Outside Temperature Battery"
+      }
+    },
+    "sensor.outside_humidity": {
+      "icon": "mdi:water-percent",
+      "state": "54%",
+      "secondary": "54%",
+      "names": {
+        "default": "Outside Humidity",
+        "entity": "Outside Humidity",
+        "device": "Outside Humidity",
+        "area": "Garden",
+        "floor": "Outside",
+        "device_entity": "Outside Humidity"
+      }
+    },
+    "sensor.carbon_monoxide": {
+      "icon": "mdi:molecule-co",
+      "state": "54 ppm",
+      "secondary": "54 ppm",
+      "names": {
+        "default": "Carbon monoxide",
+        "entity": "Carbon monoxide",
+        "device": "Carbon monoxide",
+        "area": "Kitchen",
+        "floor": "Ground floor",
+        "device_entity": "Carbon monoxide"
+      }
+    },
+    "sensor.carbon_dioxide": {
+      "icon": "mdi:molecule-co2",
+      "state": "54 ppm",
+      "secondary": "54 ppm",
+      "names": {
+        "default": "Carbon dioxide",
+        "entity": "Carbon dioxide",
+        "device": "Carbon dioxide",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Carbon dioxide"
+      }
+    },
+    "sensor.carbon_dioxide_battery": {
+      "icon": "mdi:battery-90",
+      "state": "99%",
+      "secondary": "99%",
+      "names": {
+        "default": "Carbon dioxide Battery",
+        "entity": "Battery",
+        "device": "Carbon dioxide",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Carbon dioxide Battery"
+      }
+    },
+    "sensor.power_consumption": {
+      "icon": "mdi:flash",
+      "state": "100 W",
+      "secondary": "100 W",
+      "names": {
+        "default": "Power consumption",
+        "entity": "Power consumption",
+        "device": "Power consumption",
+        "area": "Garage",
+        "floor": "Ground floor",
+        "device_entity": "Power consumption"
+      }
+    },
+    "sensor.total_energy_kwh": {
+      "icon": "mdi:lightning-bolt",
+      "state": "16.00 kWh",
+      "secondary": "16.00 kWh",
+      "names": {
+        "default": "Total energy 1",
+        "entity": "Total energy 1",
+        "device": "Total energy 1",
+        "area": "Garage",
+        "floor": "Ground floor",
+        "device_entity": "Total energy 1"
+      }
+    },
+    "sensor.total_energy_mwh": {
+      "icon": "mdi:lightning-bolt",
+      "state": "0.01 MWh",
+      "secondary": "0.01 MWh",
+      "names": {
+        "default": "Total energy 2",
+        "entity": "Total energy 2",
+        "device": "Total energy 2",
+        "area": "",
+        "floor": "",
+        "device_entity": "Total energy 2"
+      }
+    },
+    "sensor.total_gas_m3": {
+      "icon": "mdi:meter-gas",
+      "state": "0.80 m³",
+      "secondary": "0.80 m³",
+      "names": {
+        "default": "Total gas 1",
+        "entity": "Total gas 1",
+        "device": "Total gas 1",
+        "area": "Garage",
+        "floor": "Ground floor",
+        "device_entity": "Total gas 1"
+      }
+    },
+    "sensor.total_gas_ft3": {
+      "icon": "mdi:meter-gas",
+      "state": "0.91 m³",
+      "secondary": "0.91 m³",
+      "names": {
+        "default": "Total gas 2",
+        "entity": "Total gas 2",
+        "device": "Total gas 2",
+        "area": "",
+        "floor": "",
+        "device_entity": "Total gas 2"
+      }
+    },
+    "sensor.thermostat": {
+      "icon": "mdi:leaf",
+      "state": "Eco",
+      "secondary": "Eco",
+      "names": {
+        "default": "Thermostat",
+        "entity": "Thermostat",
+        "device": "Thermostat",
+        "area": "Bedroom",
+        "floor": "First floor",
+        "device_entity": "Thermostat"
+      }
+    },
+    "siren.siren": {
+      "icon": "mdi:bullhorn",
+      "state": "On",
+      "secondary": "On",
+      "names": {
+        "default": "Siren",
+        "entity": "Siren",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Siren"
+      }
+    },
+    "siren.siren_with_all_features": {
+      "icon": "mdi:bullhorn",
+      "state": "On",
+      "secondary": "On",
+      "names": {
+        "default": "Siren with all features",
+        "entity": "Siren with all features",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Siren with all features"
+      }
+    },
+    "stt.demo_stt": {
+      "icon": "mdi:microphone-message",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Demo STT",
+        "entity": "Demo STT",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo STT"
+      }
+    },
+    "switch.decorative_lights": {
+      "icon": "mdi:toggle-switch-variant",
+      "state": "On",
+      "secondary": "On",
+      "names": {
+        "default": "Decorative Lights",
+        "entity": "Decorative Lights",
+        "device": "Decorative Lights",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Decorative Lights"
+      }
+    },
+    "switch.ac": {
+      "icon": "mdi:air-conditioner",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "AC",
+        "entity": "AC",
+        "device": "AC",
+        "area": "Office",
+        "floor": "First floor",
+        "device_entity": "AC"
+      }
+    },
+    "text.text": {
+      "icon": "mdi:form-textbox",
+      "state": "Hello world",
+      "secondary": "Hello world",
+      "names": {
+        "default": "Text",
+        "entity": "Text",
+        "device": "Text",
+        "area": "",
+        "floor": "",
+        "device_entity": "Text"
+      }
+    },
+    "text.password": {
+      "icon": "mdi:form-textbox",
+      "state": "Hello world",
+      "secondary": "Hello world",
+      "names": {
+        "default": "Password",
+        "entity": "Password",
+        "device": "Password",
+        "area": "",
+        "floor": "",
+        "device_entity": "Password"
+      }
+    },
+    "text.text_with_1_to_5_characters": {
+      "icon": "mdi:form-textbox",
+      "state": "Hello",
+      "secondary": "Hello",
+      "names": {
+        "default": "Text with 1 to 5 characters",
+        "entity": "Text with 1 to 5 characters",
+        "device": "Text with 1 to 5 characters",
+        "area": "",
+        "floor": "",
+        "device_entity": "Text with 1 to 5 characters"
+      }
+    },
+    "text.text_with_only_lower_case_characters": {
+      "icon": "mdi:form-textbox",
+      "state": "world",
+      "secondary": "world",
+      "names": {
+        "default": "Text with only lower case characters",
+        "entity": "Text with only lower case characters",
+        "device": "Text with only lower case characters",
+        "area": "",
+        "floor": "",
+        "device_entity": "Text with only lower case characters"
+      }
+    },
+    "time.time": {
+      "icon": "mdi:clock",
+      "state": "12:00 PM",
+      "secondary": "12:00 PM",
+      "names": {
+        "default": "Time",
+        "entity": "Time",
+        "device": "Time",
+        "area": "",
+        "floor": "",
+        "device_entity": "Time"
+      }
+    },
+    "update.demo_update_no_install": {
+      "icon": "mdi:package-up",
+      "state": "Update available",
+      "secondary": "Update available",
+      "names": {
+        "default": "Demo Update No Install",
+        "entity": "Demo Update No Install",
+        "device": "Demo Update No Install",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo Update No Install"
+      }
+    },
+    "update.demo_no_update": {
+      "icon": "mdi:package",
+      "state": "Up-to-date",
+      "secondary": "Up-to-date",
+      "names": {
+        "default": "Demo No Update",
+        "entity": "Demo No Update",
+        "device": "Demo No Update",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo No Update"
+      }
+    },
+    "update.demo_add_on": {
+      "icon": "mdi:package-up",
+      "state": "Update available",
+      "secondary": "Update available",
+      "names": {
+        "default": "Demo add-on",
+        "entity": "Demo add-on",
+        "device": "Demo add-on",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo add-on"
+      }
+    },
+    "update.demo_living_room_bulb_update": {
+      "icon": "mdi:package-up",
+      "state": "Update available",
+      "secondary": "Update available",
+      "names": {
+        "default": "Demo Living Room Bulb Update",
+        "entity": "Demo Living Room Bulb Update",
+        "device": "Demo Living Room Bulb Update",
+        "area": "Living Room",
+        "floor": "Ground floor",
+        "device_entity": "Demo Living Room Bulb Update"
+      }
+    },
+    "update.demo_update_with_progress": {
+      "icon": "mdi:package-up",
+      "state": "Update available",
+      "secondary": "Update available",
+      "names": {
+        "default": "Demo Update with Progress",
+        "entity": "Demo Update with Progress",
+        "device": "Demo Update with Progress",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo Update with Progress"
+      }
+    },
+    "update.demo_update_with_decimal_progress": {
+      "icon": "mdi:package-up",
+      "state": "Update available",
+      "secondary": "Update available",
+      "names": {
+        "default": "Demo Update with Decimal Progress",
+        "entity": "Demo Update with Decimal Progress",
+        "device": "Demo Update with Decimal Progress",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo Update with Decimal Progress"
+      }
+    },
+    "vacuum.demo_vacuum_0_ground_floor": {
+      "icon": "mdi:robot-vacuum",
+      "state": "Docked",
+      "secondary": "Docked",
+      "names": {
+        "default": "Demo vacuum 0 ground floor",
+        "entity": "Demo vacuum 0 ground floor",
+        "device": "Demo vacuum 0 ground floor",
+        "area": "Garage",
+        "floor": "Ground floor",
+        "device_entity": "Demo vacuum 0 ground floor"
+      }
+    },
+    "vacuum.demo_vacuum_1_first_floor": {
+      "icon": "mdi:robot-vacuum",
+      "state": "Docked",
+      "secondary": "Docked",
+      "names": {
+        "default": "Demo vacuum 1 first floor",
+        "entity": "Demo vacuum 1 first floor",
+        "device": "Demo vacuum 1 first floor",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo vacuum 1 first floor"
+      }
+    },
+    "vacuum.demo_vacuum_2_second_floor": {
+      "icon": "mdi:robot-vacuum",
+      "state": "Docked",
+      "secondary": "Docked",
+      "names": {
+        "default": "Demo vacuum 2 second floor",
+        "entity": "Demo vacuum 2 second floor",
+        "device": "Demo vacuum 2 second floor",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo vacuum 2 second floor"
+      }
+    },
+    "vacuum.demo_vacuum_3_third_floor": {
+      "icon": "mdi:robot-vacuum",
+      "state": "Docked",
+      "secondary": "Docked",
+      "names": {
+        "default": "Demo vacuum 3 third floor",
+        "entity": "Demo vacuum 3 third floor",
+        "device": "Demo vacuum 3 third floor",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo vacuum 3 third floor"
+      }
+    },
+    "vacuum.demo_vacuum_4_fourth_floor": {
+      "icon": "mdi:robot-vacuum",
+      "state": "Docked",
+      "secondary": "Docked",
+      "names": {
+        "default": "Demo vacuum 4 fourth floor",
+        "entity": "Demo vacuum 4 fourth floor",
+        "device": "Demo vacuum 4 fourth floor",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo vacuum 4 fourth floor"
+      }
+    },
+    "valve.front_garden": {
+      "icon": "mdi:valve-open",
+      "state": "Open",
+      "secondary": "Open",
+      "names": {
+        "default": "Front Garden",
+        "entity": "Front Garden",
+        "device": "Front Garden",
+        "area": "Garden",
+        "floor": "Outside",
+        "device_entity": "Front Garden"
+      }
+    },
+    "valve.orchard": {
+      "icon": "mdi:valve-closed",
+      "state": "Closed",
+      "secondary": "Closed",
+      "names": {
+        "default": "Orchard",
+        "entity": "Orchard",
+        "device": "Orchard",
+        "area": "Garden",
+        "floor": "Outside",
+        "device_entity": "Orchard"
+      }
+    },
+    "valve.back_garden": {
+      "icon": "mdi:valve-open",
+      "state": "Open",
+      "secondary": "Open · 70%",
+      "names": {
+        "default": "Back Garden",
+        "entity": "Back Garden",
+        "device": "Back Garden",
+        "area": "Garden",
+        "floor": "Outside",
+        "device_entity": "Back Garden"
+      }
+    },
+    "valve.trees": {
+      "icon": "mdi:valve-open",
+      "state": "Open",
+      "secondary": "Open · 30%",
+      "names": {
+        "default": "Trees",
+        "entity": "Trees",
+        "device": "Trees",
+        "area": "Garden",
+        "floor": "Outside",
+        "device_entity": "Trees"
+      }
+    },
+    "water_heater.demo_water_heater": {
+      "icon": "mdi:water-boiler",
+      "state": "Eco",
+      "secondary": "Eco",
+      "names": {
+        "default": "Demo Water Heater",
+        "entity": "Demo Water Heater",
+        "device": "",
+        "area": "Garage",
+        "floor": "Ground floor",
+        "device_entity": "Demo Water Heater"
+      }
+    },
+    "water_heater.demo_water_heater_celsius": {
+      "icon": "mdi:water-boiler",
+      "state": "Eco",
+      "secondary": "Eco",
+      "names": {
+        "default": "Demo Water Heater Celsius",
+        "entity": "Demo Water Heater Celsius",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo Water Heater Celsius"
+      }
+    },
+    "weather.demo_weather_south": {
+      "icon": "mdi:weather-sunny",
+      "state": "Sunny",
+      "secondary": "Sunny",
+      "names": {
+        "default": "Demo Weather South",
+        "entity": "Demo Weather South",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo Weather South"
+      }
+    },
+    "weather.demo_weather_north": {
+      "icon": "mdi:weather-rainy",
+      "state": "Rainy",
+      "secondary": "Rainy",
+      "names": {
+        "default": "Demo Weather North",
+        "entity": "Demo Weather North",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Demo Weather North"
+      }
+    },
+    "todo.shopping_list": {
+      "icon": "mdi:cart",
+      "state": "0",
+      "secondary": "0",
+      "names": {
+        "default": "Shopping List",
+        "entity": "Shopping List",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Shopping List"
+      }
+    },
+    "tts.google_translate_en_com": {
+      "icon": "mdi:speaker-message",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Google Translate en com",
+        "entity": "Google Translate en com",
+        "device": "Google Translate en com",
+        "area": "",
+        "floor": "",
+        "device_entity": "Google Translate en com"
+      }
+    },
+    "weather.forecast_native_test_home": {
+      "icon": "mdi:weather-partly-cloudy",
+      "state": "Partly cloudy",
+      "secondary": "Partly cloudy",
+      "names": {
+        "default": "Forecast Native Test Home",
+        "entity": "Native Test Home",
+        "device": "Forecast",
+        "area": "",
+        "floor": "",
+        "device_entity": "Forecast Native Test Home"
+      }
+    },
+    "event.backup_automatic_backup": {
+      "icon": "mdi:database",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Backup Automatic backup",
+        "entity": "Automatic backup",
+        "device": "Backup",
+        "area": "",
+        "floor": "",
+        "device_entity": "Backup Automatic backup"
+      }
+    },
+    "sensor.backup_backup_manager_state": {
+      "icon": "mdi:eye",
+      "state": "Idle",
+      "secondary": "Idle",
+      "names": {
+        "default": "Backup Backup Manager state",
+        "entity": "Manager state",
+        "device": "Backup",
+        "area": "",
+        "floor": "",
+        "device_entity": "Backup Manager state"
+      }
+    },
+    "sensor.backup_next_scheduled_automatic_backup": {
+      "icon": "mdi:clock",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Backup Next scheduled automatic backup",
+        "entity": "Next scheduled automatic backup",
+        "device": "Backup",
+        "area": "",
+        "floor": "",
+        "device_entity": "Backup Next scheduled automatic backup"
+      }
+    },
+    "sensor.backup_last_successful_automatic_backup": {
+      "icon": "mdi:clock",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Backup Last successful automatic backup",
+        "entity": "Last successful automatic backup",
+        "device": "Backup",
+        "area": "",
+        "floor": "",
+        "device_entity": "Backup Last successful automatic backup"
+      }
+    },
+    "sensor.backup_last_attempted_automatic_backup": {
+      "icon": "mdi:clock",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Backup Last attempted automatic backup",
+        "entity": "Last attempted automatic backup",
+        "device": "Backup",
+        "area": "",
+        "floor": "",
+        "device_entity": "Backup Last attempted automatic backup"
+      }
+    },
+    "device_tracker.sm_f946b": {
+      "icon": "mdi:account",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "SM-F946B",
+        "entity": "SM-F946B",
+        "device": "SM-F946B",
+        "area": "",
+        "floor": "",
+        "device_entity": "SM-F946B"
+      }
+    },
+    "notify.sm_f946b": {
+      "icon": "mdi:cellphone-message",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "SM-F946B",
+        "entity": "SM-F946B",
+        "device": "SM-F946B",
+        "area": "",
+        "floor": "",
+        "device_entity": "SM-F946B"
+      }
+    },
+    "sensor.sm_f946b_battery_level": {
+      "icon": "mdi:battery-charging-50",
+      "state": "55%",
+      "secondary": "55%",
+      "names": {
+        "default": "SM-F946B Battery level",
+        "entity": "Battery level",
+        "device": "SM-F946B",
+        "area": "",
+        "floor": "",
+        "device_entity": "SM-F946B Battery level"
+      }
+    },
+    "sensor.sm_f946b_battery_state": {
+      "icon": "mdi:battery-plus",
+      "state": "charging",
+      "secondary": "charging",
+      "names": {
+        "default": "SM-F946B Battery state",
+        "entity": "Battery state",
+        "device": "SM-F946B",
+        "area": "",
+        "floor": "",
+        "device_entity": "SM-F946B Battery state"
+      }
+    },
+    "sensor.sm_f946b_charger_type": {
+      "icon": "mdi:usb-port",
+      "state": "usb",
+      "secondary": "usb",
+      "names": {
+        "default": "SM-F946B Charger type",
+        "entity": "Charger type",
+        "device": "SM-F946B",
+        "area": "",
+        "floor": "",
+        "device_entity": "SM-F946B Charger type"
+      }
+    },
+    "device_tracker.sdk_gphone64_x86_64": {
+      "icon": "mdi:account",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "sdk_gphone64_x86_64",
+        "entity": "sdk_gphone64_x86_64",
+        "device": "sdk_gphone64_x86_64",
+        "area": "",
+        "floor": "",
+        "device_entity": "sdk_gphone64_x86_64"
+      }
+    },
+    "notify.sdk_gphone64_x86_64": {
+      "icon": "mdi:cellphone-message",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "sdk_gphone64_x86_64",
+        "entity": "sdk_gphone64_x86_64",
+        "device": "sdk_gphone64_x86_64",
+        "area": "",
+        "floor": "",
+        "device_entity": "sdk_gphone64_x86_64"
+      }
+    },
+    "sensor.sdk_gphone64_x86_64_battery_level": {
+      "icon": "mdi:battery",
+      "state": "100%",
+      "secondary": "100%",
+      "names": {
+        "default": "sdk_gphone64_x86_64 Battery level",
+        "entity": "Battery level",
+        "device": "sdk_gphone64_x86_64",
+        "area": "",
+        "floor": "",
+        "device_entity": "sdk_gphone64_x86_64 Battery level"
+      }
+    },
+    "sensor.sdk_gphone64_x86_64_battery_state": {
+      "icon": "mdi:battery",
+      "state": "not_charging",
+      "secondary": "not_charging",
+      "names": {
+        "default": "sdk_gphone64_x86_64 Battery state",
+        "entity": "Battery state",
+        "device": "sdk_gphone64_x86_64",
+        "area": "",
+        "floor": "",
+        "device_entity": "sdk_gphone64_x86_64 Battery state"
+      }
+    },
+    "sensor.sdk_gphone64_x86_64_charger_type": {
+      "icon": "mdi:battery",
+      "state": "none",
+      "secondary": "none",
+      "names": {
+        "default": "sdk_gphone64_x86_64 Charger type",
+        "entity": "Charger type",
+        "device": "sdk_gphone64_x86_64",
+        "area": "",
+        "floor": "",
+        "device_entity": "sdk_gphone64_x86_64 Charger type"
+      }
+    }
+  }
+}

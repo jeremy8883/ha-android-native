@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-08T05:27:43.183Z",
+  "capture_date": "2026-10-08T07:13:56.754Z",
   "user": {
     "name": "Golden Viewer",
     "is_admin": false
@@ -147,9 +147,14 @@
       "sha256": "44a17cac19a0a99b9620a56e1ae58f505ee6d6fcd9e8febf55e976d0a44a9b4f"
     },
     {
+      "path": "inputs/state-translations.json",
+      "bytes": 2570,
+      "sha256": "31f4f02374d44bfcd5c166eb99b6ba5589fcaa86995824beb83bef04d4dbbd50"
+    },
+    {
       "path": "inputs/states.json",
-      "bytes": 91936,
-      "sha256": "f435160077e2a6ab114ef179b3bd2ad2a5600230328fa41b78741821bb4bdb37"
+      "bytes": 91954,
+      "sha256": "81a4472f0dc4cf31d4460526df3ada85f9f60f4e7516fe2b3ee3a90d132a637c"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -180,6 +185,11 @@
       "path": "outputs/dashboard.json",
       "bytes": 1964,
       "sha256": "7c57c4e1e9ba93c81bc58fd9d29be00db99f283f9c9b970c0dbb24b0ae2e3051"
+    },
+    {
+      "path": "outputs/entity-display.json",
+      "bytes": 56281,
+      "sha256": "0dbe570910ed2cfc4cd1d14a836e5ccf06b4eb6930af52997fdcc57e2518986c"
     },
     {
       "path": "outputs/expanded.json",
@@ -267,6 +277,16 @@
       "sha256": "ef5560163cc3db904af5abe898464105db7f7884436e04b6714c37d591fd8c12"
     },
     {
+      "path": "ws/frontend-get_icons-entity_component.json",
+      "bytes": 28770,
+      "sha256": "80490f445255b60210762aaf4cdad0fb298f482ad16e69fa204924cd22c6994d"
+    },
+    {
+      "path": "ws/frontend-get_icons-entity.json",
+      "bytes": 4283,
+      "sha256": "9f3828549c200c62ecaf35b40172db59b81bbbcb0070b951ebf9095b5428ceaf"
+    },
+    {
       "path": "ws/frontend-get_system_data-core.json",
       "bytes": 118,
       "sha256": "2d32d987ee2f10b218df1ffeb138ba9badce1e6839b64c188593ed4863d9bea4"
@@ -275,6 +295,16 @@
       "path": "ws/frontend-get_system_data-home.json",
       "bytes": 263,
       "sha256": "cad5b376a2a9385910450aa6f2b47aa176d891511f3dbc2beb14307397980dd9"
+    },
+    {
+      "path": "ws/frontend-get_translations-entity_component.json",
+      "bytes": 66502,
+      "sha256": "667f1482e40429a120ed150ce1323301df8b1c47c510dfe97c167c9c48659b41"
+    },
+    {
+      "path": "ws/frontend-get_translations-entity.json",
+      "bytes": 7454,
+      "sha256": "52f5e3a2e7cd1b5378cc0c8c0447df5f6a08ec51e0b458ad44e298b8ee442ea3"
     },
     {
       "path": "ws/frontend-get_user_data-core.json",
@@ -293,8 +323,8 @@
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 102429,
-      "sha256": "65d730afc145fe4f8622a6450b1355dced9f0cacd42f52894b056c12d87a942a"
+      "bytes": 102447,
+      "sha256": "b694ec72f1fd205909c6c7e059161e8b5d8096c5039a16b433a0c8185153ca1b"
     },
     {
       "path": "ws/manifest-get-frontend.json",
