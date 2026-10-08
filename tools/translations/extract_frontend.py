@@ -8,6 +8,7 @@ release build (home-assistant-frontend package) and are a later step.
 """
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -47,13 +48,32 @@ def merge(into: dict, other: dict) -> None:
             into[key] = value
 
 
+REFERENCE = re.compile(r"\[%key:([^%]+)%\]")
+
+
+def resolve(value, source: dict, depth: int = 0):
+    """Replace `[%key:a::b::c%]` references with the referenced string, as the frontend build does."""
+    if isinstance(value, dict):
+        return {key: resolve(item, source, depth) for key, item in value.items()}
+    if not isinstance(value, str) or depth > 10:
+        return value
+
+    def lookup(match: re.Match) -> str:
+        node = source
+        for part in match.group(1).split("::"):
+            node = node[part]
+        return resolve(node, source, depth + 1)
+
+    return REFERENCE.sub(lookup, value)
+
+
 def main() -> None:
     frontend = Path(sys.argv[1])
     for language in sys.argv[2:] or ["en"]:
         source = json.loads((frontend / f"src/translations/{language}.json").read_text())
         subset: dict = {}
         for path in SUBTREES:
-            merge(subset, pick(source, path))
+            merge(subset, resolve(pick(source, path), source))
         out = OUT_DIR / f"frontend-{language}.json"
         out.write_text(json.dumps(subset, indent=1, ensure_ascii=False, sort_keys=True) + "\n")
         print(f"wrote {out} ({out.stat().st_size} bytes)")

@@ -136,16 +136,16 @@
    },
    "humidifier": {
     "current_humidity_entity": "{name} current humidity",
-    "currently": "[%key:ui::card::climate::currently%]",
+    "currently": "Currently",
     "drying": "{name} drying",
     "humidifying": "{name} humidifying",
     "humidity": "Target humidity",
     "mode": "Mode",
     "on_entity": "{name} on",
     "state": "State",
-    "target": "[%key:ui::card::climate::target%]",
+    "target": "Target",
     "target_humidity_entity": "{name} target humidity",
-    "target_label": "[%key:ui::card::climate::target_label%]"
+    "target_label": "{action} to target"
    },
    "lawn_mower": {
     "actions": {
@@ -165,7 +165,7 @@
     "white_value": "White brightness"
    },
    "lock": {
-    "code": "[%key:ui::card::alarm_control_panel::code%]",
+    "code": "Code",
     "lock": "Lock",
     "open": "Open",
     "open_door": "Open door",
@@ -221,7 +221,7 @@
     "cancel_all": "Cancel all",
     "cancel_multiple": "Cancel {number}",
     "idle": "Idle",
-    "run": "[%key:ui::card::service::run%]",
+    "run": "Run",
     "run_script": "Run script",
     "running_parallel": "{active} running…",
     "running_queued": "{queued} queued",
@@ -272,16 +272,16 @@
    "valve": {
     "close_valve": "Close valve",
     "open_valve": "Open valve",
-    "position": "[%key:ui::card::cover::position%]",
+    "position": "Position",
     "stop_valve": "Stop valve"
    },
    "water_heater": {
     "away_mode": "Away mode",
-    "currently": "[%key:ui::card::climate::currently%]",
+    "currently": "Currently",
     "mode": "Mode",
     "on_off": "On / off",
-    "target": "[%key:ui::card::climate::target%]",
-    "target_label": "[%key:ui::card::climate::target_label%]",
+    "target": "Target",
+    "target_label": "{action} to target",
     "target_temperature": "Target temperature"
    },
    "weather": {
@@ -355,7 +355,7 @@
     "components": {
      "energy_period_selector": {
       "compare": "Compare data",
-      "download_data": "[%key:ui::panel::history::download_data%]",
+      "download_data": "Download data",
       "next": "Next",
       "now": "Now",
       "previous": "Previous"
@@ -461,7 +461,7 @@
       "empty_state_action": "Go to the integrations page",
       "empty_state_content": "This page allows you to control your devices, however it looks like you have no devices set up yet.",
       "empty_state_title": "Welcome Home",
-      "helpers": "[%key:ui::panel::config::helpers::caption%]"
+      "helpers": "Helpers"
      },
      "security": {
       "activity": "Activity",
