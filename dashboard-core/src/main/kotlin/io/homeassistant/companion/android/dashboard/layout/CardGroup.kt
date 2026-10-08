@@ -1,20 +1,49 @@
 package io.homeassistant.companion.android.dashboard.layout
 
+import io.homeassistant.companion.android.dashboard.condition.ConditionContext
+import io.homeassistant.companion.android.dashboard.condition.conditionsMet
+import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.ViewConfig
 import io.homeassistant.companion.android.dashboard.model.ViewType
+import io.homeassistant.companion.android.dashboard.model.boolean
+import kotlinx.serialization.json.JsonObject
 
-/** A group of cards rendered together: a section of a `sections` view, or all cards of other views. */
-data class CardGroup(val cards: List<CardConfig>)
+/**
+ * A group of cards rendered together: a section of a `sections` view, or all cards of other views.
+ *
+ * @property visibility the section's visibility conditions
+ * @property disabled sections a strategy disabled (for example an empty `common-controls` with `hide_empty`)
+ */
+data class CardGroup(
+    val cards: List<CardConfig>,
+    val visibility: List<JsonObject> = emptyList(),
+    val disabled: Boolean = false,
+)
 
 /**
  * The card groups of [view], in display order.
  *
  * Basic version: sections become one group each, and every other view type becomes a single group.
- * Still to port: grid sizing (src/panels/lovelace/sections/hui-grid-section.ts), masonry column
- * distribution (src/panels/lovelace/views/hui-masonry-view.ts) and visibility conditions.
+ * Still to port: grid sizing (src/panels/lovelace/sections/hui-grid-section.ts) and masonry column
+ * distribution (src/panels/lovelace/views/hui-masonry-view.ts).
  */
 fun cardGroups(view: ViewConfig): List<CardGroup> = when (view.viewType) {
-    ViewType.SECTIONS -> view.sections.map { CardGroup(it.cards) }
+    ViewType.SECTIONS -> view.sections.map { CardGroup(it.cards, it.visibility, it.json.boolean("disabled") == true) }
     else -> listOf(CardGroup(view.cards))
+}
+
+/**
+ * The cards of [group] currently shown, or `null` when the whole group is hidden: when disabled, when its
+ * visibility conditions fail, or when every card is hidden by its own visibility conditions.
+ * Port of `_updateVisibility` in frontend@20260624.6 src/panels/lovelace/sections/hui-section.ts and the card
+ * visibility check in src/panels/lovelace/cards/hui-card.ts.
+ */
+fun HassSnapshot.visibleCards(group: CardGroup, context: ConditionContext): List<CardConfig>? {
+    if (group.disabled) return null
+    if (group.visibility.isNotEmpty() && !conditionsMet(group.visibility, context)) return null
+    val cards = group.cards.filter { card ->
+        card.visibility.isEmpty() || conditionsMet(card.visibility, context.copy(entityId = card.entity))
+    }
+    return cards.takeUnless { group.cards.isNotEmpty() && it.isEmpty() }
 }

@@ -61,7 +61,7 @@ Update it in the same commit as the work it describes.
   - [ ] `home-media-players`, `home-other-devices` views
   - [ ] Native rendering of the cards these views use. Basic heading and area cards exist; still to do: home-summary, repairs, updates, discovered-devices, shortcut, empty-state, picture-entity, markdown header, and the sidebar
   - [x] View navigation like upstream: tabs only for non-subviews, `navigate` actions open subviews, back arrow plus system back
-  - [ ] **Visibility conditions** (e.g. `view_columns`: on phones the Favorites heading and sidebar are hidden and the mobile summaries are shown)
+  - [x] Visibility conditions: all types (state, numeric_state, and/or/not, user, location, time, screen, view_columns, legacy), with upstream's tests ported. Section and card visibility in rendering; `view_columns` uses upstream's sections column formula
 - [x] List dashboards (`lovelace/dashboards/list`)
 - [x] Load dashboard config (`lovelace/config`)
 - [x] Parse config, preserving unknown fields
@@ -100,7 +100,7 @@ Update it in the same commit as the work it describes.
 - [ ] JSON fixtures (real dashboards) and deserialization
 - [ ] Config interpretation and layout
 - [ ] Derived entity state
-- [ ] Conditions / visibility
+- [x] Conditions / visibility (`ConditionsTest`, `CardGroupVisibilityTest`)
 - [ ] Supported features
 - [ ] WS state updates and reconnection
 - [ ] Cached loading

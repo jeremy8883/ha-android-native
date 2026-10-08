@@ -13,15 +13,21 @@ import io.homeassistant.companion.android.dashboard.layout.CardGroup
 import io.homeassistant.companion.android.dashboard.layout.cardGroups
 import io.homeassistant.companion.android.dashboard.model.DashboardConfig
 import io.homeassistant.companion.android.dashboard.model.DashboardInfo
+import io.homeassistant.companion.android.dashboard.model.number
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.strategy.StrategyData
 import io.homeassistant.companion.android.dashboard.strategy.expandView
 import io.homeassistant.companion.android.dashboard.strategy.home.HomeDashboardConfig
 import io.homeassistant.companion.android.dashboard.strategy.home.homeDashboard
+import java.time.ZoneId
+import java.time.ZonedDateTime
 import javax.inject.Inject
+import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.toJavaInstant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -62,6 +68,8 @@ sealed interface DashboardUiState {
         val isSubview: Boolean,
         val subviewTitle: String?,
         val viewPath: String,
+        /** The view's `max_columns`, bounding the column count `view_columns` conditions see. */
+        val maxColumns: Int?,
         val groups: List<CardGroup>?,
     ) : DashboardUiState
 }
@@ -75,13 +83,23 @@ data class ViewTab(val title: String?, val icon: String?, val path: String)
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class DashboardViewModel @Inject constructor(private val repository: DashboardRepository) : ViewModel() {
+class DashboardViewModel @Inject constructor(private val repository: DashboardRepository, private val clock: Clock) :
+    ViewModel() {
 
     /** `null` is the default dashboard. */
     private val selectedDashboard = MutableStateFlow<String?>(null)
 
     /** Opened views, last is shown. Empty shows the first view. */
     private val viewStack = MutableStateFlow<List<String>>(emptyList())
+
+    /** The current time for `time` conditions, updated often enough for their minute resolution. */
+    val now: StateFlow<ZonedDateTime?> = flow {
+        while (true) {
+            // The frontend's default time zone setting follows the device
+            emit(clock.now().toJavaInstant().atZone(ZoneId.systemDefault()))
+            delay(CLOCK_TICK)
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
 
     val dashboards: StateFlow<List<DashboardInfo>> = flow { emit(repository.dashboards()) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), emptyList())
@@ -209,9 +227,11 @@ private fun DashboardConfig.toContent(inputs: StructureInputs, stack: List<Strin
         isSubview = shown?.subview == true,
         subviewTitle = shown?.title,
         viewPath = if (shown != null) pathOf(shownIndex) else "",
+        maxColumns = shown?.json?.number("max_columns")?.toInt(),
         groups = shown?.let { inputs.hass.expandView(it, inputs.strategyData) }?.let(::cardGroups)
             ?: if (views.isEmpty()) emptyList() else null,
     )
 }
 
 private val STOP_TIMEOUT = 5.seconds.inWholeMilliseconds
+private val CLOCK_TICK = 15.seconds

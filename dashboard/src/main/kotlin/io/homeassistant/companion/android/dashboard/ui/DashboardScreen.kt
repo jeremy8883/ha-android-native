@@ -18,11 +18,14 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,10 +35,15 @@ import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.HAThemeForPreview
 import io.homeassistant.companion.android.dashboard.R
+import io.homeassistant.companion.android.dashboard.condition.ConditionContext
+import io.homeassistant.companion.android.dashboard.condition.ScreenInfo
+import io.homeassistant.companion.android.dashboard.condition.sectionsViewColumns
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.layout.CardGroup
+import io.homeassistant.companion.android.dashboard.layout.visibleCards
 import io.homeassistant.companion.android.dashboard.model.DashboardInfo
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardCard
+import java.time.ZonedDateTime
 
 @Composable
 internal fun DashboardScreen(viewModel: DashboardViewModel) {
@@ -44,6 +52,7 @@ internal fun DashboardScreen(viewModel: DashboardViewModel) {
     val selectedDashboard by viewModel.selectedDashboardUrlPath.collectAsStateWithLifecycle()
     // Passed down as State so that only the cards whose derived content changes recompose
     val hass = viewModel.hass.collectAsStateWithLifecycle()
+    val now = viewModel.now.collectAsStateWithLifecycle()
 
     val content = uiState as? DashboardUiState.Content
     BackHandler(enabled = content?.isSubview == true) { viewModel.onBack() }
@@ -53,6 +62,7 @@ internal fun DashboardScreen(viewModel: DashboardViewModel) {
         dashboards = dashboards,
         selectedDashboard = selectedDashboard,
         hass = hass,
+        now = now,
         onSelectDashboard = viewModel::onSelectDashboard,
         onSelectTab = viewModel::onSelectTab,
         onNavigate = viewModel::onNavigate,
@@ -66,6 +76,7 @@ internal fun DashboardScreenContent(
     dashboards: List<DashboardInfo>,
     selectedDashboard: String?,
     hass: State<HassSnapshot?>,
+    now: State<ZonedDateTime?>,
     onSelectDashboard: (String?) -> Unit,
     onSelectTab: (String) -> Unit,
     onNavigate: (String) -> Unit,
@@ -100,7 +111,7 @@ internal fun DashboardScreenContent(
                 is DashboardUiState.UnsupportedStrategy -> Message(
                     stringResource(R.string.native_dashboard_unsupported_strategy, uiState.type.orEmpty()),
                 )
-                is DashboardUiState.Content -> DashboardView(uiState, hass, onSelectTab, onNavigate)
+                is DashboardUiState.Content -> DashboardView(uiState, hass, now, onSelectTab, onNavigate)
             }
         }
     }
@@ -133,6 +144,7 @@ private fun DashboardPicker(dashboards: List<DashboardInfo>, selected: String?, 
 private fun DashboardView(
     content: DashboardUiState.Content,
     hass: State<HassSnapshot?>,
+    now: State<ZonedDateTime?>,
     onSelectTab: (String) -> Unit,
     onNavigate: (String) -> Unit,
 ) {
@@ -153,21 +165,40 @@ private fun DashboardView(
             Message(stringResource(R.string.native_dashboard_unsupported_view))
         } else {
             // A fresh list per view, so each view starts scrolled to the top
-            key(content.viewPath) { CardGroups(content.groups, hass, onNavigate) }
+            val configuration = LocalConfiguration.current
+            val screen = ScreenInfo(configuration.screenWidthDp, configuration.screenHeightDp)
+            val maxColumns = sectionsViewColumns(configuration.screenWidthDp, content.maxColumns)
+            key(content.viewPath) { CardGroups(content.groups, hass, now, screen, maxColumns, onNavigate) }
         }
     }
 }
 
 @Composable
-private fun CardGroups(groups: List<CardGroup>, hass: State<HassSnapshot?>, onNavigate: (String) -> Unit) {
+private fun CardGroups(
+    groups: List<CardGroup>,
+    hass: State<HassSnapshot?>,
+    now: State<ZonedDateTime?>,
+    screen: ScreenInfo,
+    maxColumns: Int,
+    onNavigate: (String) -> Unit,
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(HADimens.SPACE4),
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
     ) {
         items(groups) { group ->
-            Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
-                group.cards.forEach { card -> DashboardCard(card, hass, onNavigate, Modifier.fillMaxWidth()) }
+            // Re-evaluated on every state, screen or clock change, but only recomposes when the visible cards change
+            val visibleCards by remember(group, screen, maxColumns) {
+                derivedStateOf {
+                    val context = ConditionContext(maxColumns = maxColumns, screen = screen, now = now.value)
+                    hass.value?.visibleCards(group, context)
+                }
+            }
+            visibleCards?.let { cards ->
+                Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+                    cards.forEach { card -> DashboardCard(card, hass, onNavigate, Modifier.fillMaxWidth()) }
+                }
             }
         }
     }
@@ -187,6 +218,7 @@ private fun DashboardScreenNotFoundPreview() {
             dashboards = listOf(DashboardInfo("dashboard-test", "Test", "storage", requireAdmin = false)),
             selectedDashboard = null,
             hass = mutableStateOf(null),
+            now = mutableStateOf(null),
             onSelectDashboard = {},
             onSelectTab = {},
             onNavigate = {},
