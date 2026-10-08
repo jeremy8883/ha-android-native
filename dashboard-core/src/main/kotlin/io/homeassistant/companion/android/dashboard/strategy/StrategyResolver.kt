@@ -6,6 +6,8 @@ import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.strategy.home.homeAreaView
+import io.homeassistant.companion.android.dashboard.strategy.home.homeMediaPlayersView
+import io.homeassistant.companion.android.dashboard.strategy.home.homeOtherDevicesView
 import io.homeassistant.companion.android.dashboard.strategy.home.homeOverviewView
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -39,6 +41,8 @@ fun HassSnapshot.resolveStrategyView(view: ViewConfig, data: StrategyData = Stra
         when (strategy.string("type")) {
             "home-area" -> homeAreaView(strategy.string("area"), strategy.boolean("home_panel") == true)
             "home-overview" -> homeOverviewView(strategy, data)
+            "home-media-players" -> homeMediaPlayersView()
+            "home-other-devices" -> homeOtherDevicesView(strategy.boolean("home_panel") == true)
             else -> return null
         }
     } catch (e: IllegalArgumentException) {

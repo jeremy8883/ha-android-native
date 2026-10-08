@@ -45,10 +45,10 @@ class HomeStrategyGoldenTest {
     }
 
     @TestFactory
-    fun `Given captured server data when generating area views then they match the frontend`(): List<DynamicTest> = VARIANTS.flatMap { variant ->
+    fun `Given captured server data when generating area, media and other devices views then they match the frontend`(): List<DynamicTest> = VARIANTS.flatMap { variant ->
         val fixture = Fixture(variant)
         fixture.json("outputs/dashboard.json").objects("views")
-            .filter { it.obj("strategy")?.string("type") == "home-area" }
+            .filter { it.obj("strategy")?.string("type") in SIMPLE_VIEW_STRATEGIES }
             .map { view ->
                 val path = view.string("path")
                 DynamicTest.dynamicTest("$variant $path") {
@@ -156,5 +156,8 @@ class HomeStrategyGoldenTest {
 
     private companion object {
         val VARIANTS = listOf("test-instance", "test-instance-nonadmin")
+
+        /** View strategies that need no data beyond the snapshot. */
+        val SIMPLE_VIEW_STRATEGIES = setOf("home-area", "home-media-players", "home-other-devices")
     }
 }

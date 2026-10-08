@@ -362,7 +362,7 @@ private fun JsonObject.withGridOptions(columns: Int): JsonObject =
     JsonObject(this + ("grid_options" to buildJsonObject { put("columns", columns) }))
 
 /** Port of `floorDefaultIcon` (src/components/ha-floor-icon.ts). */
-private fun FloorEntry.defaultIcon(): String = when (level) {
+internal fun FloorEntry.defaultIcon(): String = when (level) {
     0 -> "mdi:home-floor-0"
     1 -> "mdi:home-floor-1"
     2 -> "mdi:home-floor-2"

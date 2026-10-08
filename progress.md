@@ -58,7 +58,7 @@ Update it in the same commit as the work it describes.
   - [x] Dashboard level (`homeDashboard`) and area views (`homeAreaView`), plus helpers. **Golden-tested** against the real frontend output (14/14, admin and non-admin)
   - [x] Wired into the app: the default dashboard falls back to the generated home dashboard on `config_not_found`
   - [x] Overview view (`home-overview`) and the `common-controls` section strategy, golden-tested (20/20 with section and full expansion)
-  - [ ] `home-media-players`, `home-other-devices` views
+  - [x] `home-media-players`, `home-other-devices` views, golden-tested (24/24 strategy goldens)
   - [ ] Native rendering of the cards these views use. Basic heading and area cards exist; still to do: home-summary, repairs, updates, discovered-devices, shortcut, empty-state, picture-entity, markdown header, and the sidebar
     - [x] UI polish for the initial tile, heading and compact area renderers: shared HA-token card surface, active/unavailable treatment, and safe dynamic MDI icons
   - [x] View navigation like upstream: tabs only for non-subviews, `navigate` actions open subviews, back arrow plus system back
