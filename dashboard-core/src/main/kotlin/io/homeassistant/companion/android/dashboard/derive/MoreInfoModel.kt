@@ -26,6 +26,8 @@ import kotlinx.serialization.json.put
  * @property context the area and device, for example "Kitchen › Kitchen speaker"
  * @property changed when the state last changed, as a relative time
  * @property toggle a switch for entities that turn on and off
+ * @property updatedAt when the entity's state object last changed (epoch seconds), so a switch knows when the server
+ * answered
  * @property controls the entity's main controls, as tile features
  * @property media the media controls of a media player
  * @property attributes the displayable attributes, as (name, formatted value)
@@ -39,6 +41,7 @@ data class MoreInfoModel(
     val changed: String,
     val active: Boolean,
     val toggle: CardAction.CallService?,
+    val updatedAt: Double,
     val controls: List<TileFeature>,
     val media: MediaControlModel?,
     val attributes: List<Pair<String, String>>,
@@ -75,6 +78,7 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
             .replaceFirstChar { it.uppercaseChar() },
         active = state.isActive(),
         toggle = toggleEntity(entityId).takeIf { domain in TOGGLE_DOMAINS && state.state in ON_OFF },
+        updatedAt = state.lastUpdated,
         controls = tileFeatures(controlCard),
         media = if (domain == "media_player") mediaControlModel(CardConfig(controlCard.json)) else null,
         attributes = displayAttributes(state).map { attributeName(state, it) to formatEntityAttributeValue(state, it) },

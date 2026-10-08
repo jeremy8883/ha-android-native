@@ -42,8 +42,16 @@ data class EntityRowModel(
 
 /** The control on the right of an entity row. */
 sealed interface RowControl {
-    /** A switch (`ha-entity-toggle`), [action] turns the entity on or off. */
-    data class Toggle(val checked: Boolean, val enabled: Boolean, val action: CardAction.CallService) : RowControl
+    /**
+     * A switch (`ha-entity-toggle`), [action] turns the entity on or off. [updatedAt] is when the entity's state
+     * object last changed (epoch seconds), so the switch knows when the server answered.
+     */
+    data class Toggle(
+        val checked: Boolean,
+        val enabled: Boolean,
+        val action: CardAction.CallService,
+        val updatedAt: Double,
+    ) : RowControl
 
     /** Text buttons, such as "Press", "Activate", "Run" or "Unlock". */
     data class Buttons(val buttons: List<RowButton>) : RowControl
@@ -111,7 +119,7 @@ private fun HassSnapshot.rowControl(state: EntityState, config: JsonObject): Row
     val actionName = config.string("action_name")?.ifEmpty { null }
     return when (DOMAIN_ROWS[state.domain]) {
         ROW_TOGGLE -> if (state.state in TOGGLE_STATES) {
-            RowControl.Toggle(state.state == "on", available, toggleEntity(state.entityId))
+            RowControl.Toggle(state.state == "on", available, toggleEntity(state.entityId), state.lastUpdated)
         } else {
             null
         }

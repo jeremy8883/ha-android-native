@@ -9,6 +9,9 @@ sealed interface DashboardEvent {
     /** A message for the user, already translated. */
     data class Message(val text: String) : DashboardEvent
 
+    /** An action failed, which the user feels (a failure haptic) and reads about for longer than a message. */
+    data class ActionFailed(val text: String) : DashboardEvent
+
     /** Ask the user to confirm [action] before it runs. */
     data class Confirm(val confirmation: Confirmation, val action: CardAction) : DashboardEvent
 

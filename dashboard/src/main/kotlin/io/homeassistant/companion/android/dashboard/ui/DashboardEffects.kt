@@ -3,7 +3,11 @@ package io.homeassistant.companion.android.dashboard.ui
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
+import android.view.HapticFeedbackConstants
+import android.view.View
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +19,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import io.homeassistant.companion.android.common.R as commonR
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
@@ -42,6 +47,7 @@ internal fun DashboardEffects(
     onShowDashboard: () -> Unit = {},
 ) {
     val context = LocalContext.current
+    val view = LocalView.current
     val uriHandler = LocalUriHandler.current
     var confirm by remember { mutableStateOf<DashboardEvent.Confirm?>(null) }
     var codeFor by remember { mutableStateOf<CardAction.CallService?>(null) }
@@ -54,6 +60,12 @@ internal fun DashboardEffects(
         events.collect { event ->
             val message = when (event) {
                 is DashboardEvent.Message -> event.text
+                is DashboardEvent.ActionFailed -> {
+                    performFailureHaptic(view)
+                    // Upstream shows it for 10s, a long snackbar's duration
+                    launch { snackbar.showSnackbar(event.text, duration = SnackbarDuration.Long) }
+                    null
+                }
                 is DashboardEvent.MoreInfo -> {
                     currentOnMoreInfo(event.entityId)
                     null
@@ -131,5 +143,14 @@ internal fun DashboardEffects(
             },
             onDismiss = { codeFor = null },
         )
+    }
+}
+
+/** The frontend's `failure` haptic, as the app performs it for the web frontend (`HapticFeedbackPerformer`). */
+private fun performFailureHaptic(view: View) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        view.performHapticFeedback(HapticFeedbackConstants.REJECT)
+    } else {
+        view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
     }
 }

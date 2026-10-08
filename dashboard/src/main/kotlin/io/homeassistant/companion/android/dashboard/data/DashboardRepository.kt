@@ -15,6 +15,7 @@ import io.homeassistant.companion.android.dashboard.entity.Registries
 import io.homeassistant.companion.android.dashboard.entity.activeRepairsIssues
 import io.homeassistant.companion.android.dashboard.entity.applyConfigFlowMessages
 import io.homeassistant.companion.android.dashboard.entity.applyEntityEvent
+import io.homeassistant.companion.android.dashboard.entity.formatIcuMessage
 import io.homeassistant.companion.android.dashboard.entity.parseAreaRegistry
 import io.homeassistant.companion.android.dashboard.entity.parseDeviceRegistry
 import io.homeassistant.companion.android.dashboard.entity.parseEntityRegistryDisplay
@@ -160,6 +161,21 @@ class DashboardRepository @Inject constructor(
             target?.let { put("target", it) }
         }
         return (webSocket.request("call_service", message) as? Fetched.Failure)?.error
+    }
+
+    /**
+     * The integration's message for [translation] in [language], as the frontend loads its `exceptions` translations
+     * to show a failed action; `null` when it has none.
+     */
+    suspend fun errorMessage(translation: ErrorTranslation, language: String): Fetched<String?> {
+        val webSocket = serverManager.webSocketRepositoryOrNull() ?: return Fetched.Failure(LoadError.NoServer)
+        val key = "component.${translation.domain}.exceptions.${translation.key}.message"
+        return webSocket.request(
+            "frontend/get_translations",
+            mapOf("language" to language, "category" to "exceptions", "integration" to listOf(translation.domain)),
+        ).expect<JsonObject>().map { result ->
+            result.obj("resources")?.string(key)?.let { formatIcuMessage(it, translation.placeholders) }
+        }
     }
 
     /**
@@ -484,9 +500,23 @@ private suspend fun WebSocketRepository.request(
         response == null -> Fetched.Failure(LoadError.NoResponse)
         response.success -> Fetched.Success(response.result)
         else -> (response.error as? JsonObject).let { error ->
-            Fetched.Failure(LoadError.Server(code = error?.string("code"), message = error?.string("message")))
+            Fetched.Failure(
+                LoadError.Server(
+                    code = error?.string("code"),
+                    message = error?.string("message"),
+                    translation = error?.let(::errorTranslation),
+                ),
+            )
         }
     }
+}
+
+private fun errorTranslation(error: JsonObject): ErrorTranslation? {
+    val domain = error.string("translation_domain") ?: return null
+    val key = error.string("translation_key") ?: return null
+    val placeholders = error.obj("translation_placeholders")
+        ?.mapNotNull { (name, value) -> value.stringOrNull?.let { name to it } }.orEmpty().toMap()
+    return ErrorTranslation(domain, key, placeholders)
 }
 
 /** The result as a [J], or failed when it is something else. */

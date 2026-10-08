@@ -182,6 +182,7 @@ internal fun DashboardScreen(
                     viewModel.onShowFullMoreInfo(entityId)
                 },
                 onDismiss = { moreInfo = null },
+                snackbar = snackbar,
             )
         }
     }

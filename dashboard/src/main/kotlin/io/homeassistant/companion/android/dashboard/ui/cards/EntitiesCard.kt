@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -92,11 +90,11 @@ private fun EntityRow(row: EntityRowModel, interactions: CardInteractions) {
             )
         }
         when (val control = row.control) {
-            is RowControl.Toggle -> Switch(
+            is RowControl.Toggle -> EntityToggle(
                 checked = control.checked,
-                onCheckedChange = { interactions.onAction(control.action) },
+                updatedAt = control.updatedAt,
+                onToggle = { interactions.onAction(control.action) },
                 enabled = control.enabled,
-                colors = SwitchDefaults.colors(checkedTrackColor = colors.colorFillPrimaryLoudResting),
             )
             is RowControl.Buttons -> control.buttons.forEach { button ->
                 TextButton(onClick = { interactions.onAction(button.action) }, enabled = button.enabled) {

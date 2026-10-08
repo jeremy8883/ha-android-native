@@ -99,7 +99,7 @@ WS / Room ──► Raw state (single source)                  Derived (pure, ne
 - Cards read `states[entityId]` and derive their model; keyed lookups and stable immutable models keep
   recomposition minimal.
 - Actions → `:common` service call → server → state diff → UI. No optimistic duplicate state.
-- While `connection != Live`, controls are disabled (read-only offline). There is no command queue.
+- Offline, controls stay enabled: an action fails and shows the failure message, as upstream. There is no command queue.
 - **Failures are never empty data.** Every piece of server data is a `Loadable` (`data/Loadable.kt`): `Loading`,
   `Ready(value, refreshing, refreshError)` or `Failed(error)`, with a typed `LoadError` (no server, no response,
   server error, unexpected response). `KeptData` (`data/KeptData.kt`) loads it when collected, again on change events,

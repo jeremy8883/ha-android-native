@@ -82,8 +82,13 @@ sealed interface LoadError {
         override val retries = true
     }
 
-    /** The server answered with an error. */
-    data class Server(val code: String?, val message: String?) : LoadError {
+    /**
+     * The server answered with an error.
+     *
+     * @property translation the integration's translation of [message], when it has one
+     */
+    data class Server(val code: String?, val message: String?, val translation: ErrorTranslation? = null) :
+        LoadError {
         override val retries = false
     }
 
@@ -92,6 +97,12 @@ sealed interface LoadError {
         override val retries = false
     }
 }
+
+/**
+ * Where an integration translates an error (`translation_domain`, `translation_key`, `translation_placeholders`
+ * of a Home Assistant error): `component.[domain].exceptions.[key].message` with [placeholders].
+ */
+data class ErrorTranslation(val domain: String, val key: String, val placeholders: Map<String, String>)
 
 /** The outcome of one request. */
 sealed interface Fetched<out T> {

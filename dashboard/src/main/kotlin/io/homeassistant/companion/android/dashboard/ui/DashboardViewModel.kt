@@ -473,17 +473,32 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         showActionFailed(call, error)
     }
 
-    /** Upstream's `notifyOnError` toast (connection-mixin.ts): "Failed to perform the action light/turn_on. <why>". */
+    /**
+     * Upstream's `notifyOnError` (connection-mixin.ts): a failure haptic and a 10s message, the integration's
+     * translation of the error when it has one, otherwise "Failed to perform the action light/turn_on. <why>". Nothing
+     * shows when the connection was lost to an action that restarts or stops Home Assistant.
+     */
     private suspend fun showActionFailed(call: CardAction.CallService, error: LoadError) {
-        val localize = hass.value?.localize ?: bundledLocalize.await()
-        val failed =
-            localize("ui.notification_toast.action_failed", mapOf("service" to "${call.domain}/${call.service}"))
-        val reason = when (error) {
-            is LoadError.Server -> error.message ?: UNKNOWN_ERROR
-            LoadError.NoResponse, LoadError.NoServer -> CONNECTION_LOST
-            is LoadError.UnexpectedResponse -> UNKNOWN_ERROR
+        if (error == LoadError.NoResponse && call.willDisconnect()) return
+        val translated = (error as? LoadError.Server)?.translation?.let { translation ->
+            when (val message = repository.errorMessage(translation, BUNDLED_LANGUAGE)) {
+                is Fetched.Success -> message.value?.ifEmpty { null }
+                is Fetched.Failure -> null.also {
+                    Timber.w("Failed to load the translation of $translation: ${message.error}")
+                }
+            }
         }
-        _events.send(DashboardEvent.Message("$failed $reason"))
+        val text = translated ?: run {
+            val localize = hass.value?.localize ?: bundledLocalize.await()
+            val failed = localize(
+                "ui.notification_toast.action_failed",
+                mapOf("service" to "${call.domain}/${call.service}"),
+            )
+            val reason = (error as? LoadError.Server)?.message
+                ?: if (error == LoadError.NoResponse || error == LoadError.NoServer) CONNECTION_LOST else UNKNOWN_ERROR
+            "$failed $reason"
+        }
+        _events.send(DashboardEvent.ActionFailed(text))
     }
 
     /**
@@ -644,6 +659,18 @@ private const val BUNDLED_LANGUAGE = "en"
 
 private const val ACTION_ASSIST = "assist"
 private const val ACTION_FIRE_DOM_EVENT = "fire-dom-event"
+
+/** Port of `serviceCallWillDisconnect` (src/data/service.ts): actions after which the connection is expected to drop. */
+private fun CardAction.CallService.willDisconnect(): Boolean =
+    (domain == "homeassistant" && service in setOf("restart", "stop")) ||
+        (
+            domain == "update" &&
+                service == "install" &&
+                data?.string("entity_id") in setOf(
+                    "update.home_assistant_core_update",
+                    "update.home_assistant_operating_system_update",
+                )
+            )
 
 private fun CardAction.CallService.withCode(code: String) =
     copy(data = JsonObject(data.orEmpty() + ("code" to JsonPrimitive(code))), code = null)
