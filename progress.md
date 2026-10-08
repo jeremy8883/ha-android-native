@@ -125,6 +125,8 @@ Update it in the same commit as the work it describes.
 
 - After a reconnect, `subscribe_entities` resends a full `a` snapshot, but entities removed while we were offline stay in our map. Fix: reset the states on resubscribe; this needs a resubscribe signal from `:common`.
 
+- The web home dashboard resolves default entity icons and includes area context in tile secondary text. Most native tiles currently have no icon because `TileModel.icon` only contains a configured/entity-attribute icon. Resolve the frontend-equivalent entity icon and final secondary display text in `:dashboard-core`; don't infer either in Compose.
+
 - How do we support several frontend versions at once? Gate on `ha_version`, and use per-version fixtures?
 - Differential testing: can the TS strategies run headless in Node against fixture `hass` data?
 
@@ -140,6 +142,7 @@ Update it in the same commit as the work it describes.
 ### 2026-10-08: Astra UI track
 - Polished the initial native tile, heading and compact area renderers and split them into focused files under `dashboard/ui/cards/`.
 - Added a safe `mdi:*` name-to-vector renderer using the existing MDI Compose dependency. Unknown names render no icon rather than failing.
+- Compared the generated Overview against the matching local web frontend and validated Overview, Test dashboard, area navigation and system back on `emulator-5554` in light and dark modes. The picker and view tabs now use explicit HA tokens instead of Material's default purple/dark colors. No StrictMode or runtime crashes were logged.
 - Kept derivation in `:dashboard-core`: UI continues to read tile/area display models from `derivedStateOf`; no dashboard data or ViewModel files changed.
 - Verified with `:dashboard:ktlintFormat` and `:dashboard:compileDebugKotlin` on JDK 21.
 - Next UI work: render the remaining generated-home card types as their core display models become available, then add isolated interaction and screenshot coverage for meaningful card states.

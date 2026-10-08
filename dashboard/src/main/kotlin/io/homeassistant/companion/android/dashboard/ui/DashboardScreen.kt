@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Tab
@@ -34,6 +35,7 @@ import io.homeassistant.companion.android.common.compose.composable.HATopBar
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.HAThemeForPreview
+import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.condition.ConditionContext
 import io.homeassistant.companion.android.dashboard.condition.ScreenInfo
@@ -128,6 +130,8 @@ private fun DashboardPicker(dashboards: List<DashboardInfo>, selected: String?, 
                 selected = selected == null,
                 onClick = { onSelect(null) },
                 label = { Text(stringResource(R.string.native_dashboard_default)) },
+                colors = dashboardPickerColors(),
+                border = dashboardPickerBorder(selected = selected == null),
             )
         }
         items(dashboards, key = { it.urlPath.orEmpty() }) { dashboard ->
@@ -135,9 +139,31 @@ private fun DashboardPicker(dashboards: List<DashboardInfo>, selected: String?, 
                 selected = selected == dashboard.urlPath,
                 onClick = { onSelect(dashboard.urlPath) },
                 label = { Text(dashboard.title ?: dashboard.urlPath.orEmpty()) },
+                colors = dashboardPickerColors(),
+                border = dashboardPickerBorder(selected = selected == dashboard.urlPath),
             )
         }
     }
+}
+
+@Composable
+private fun dashboardPickerColors() = with(LocalHAColorScheme.current) {
+    FilterChipDefaults.filterChipColors(
+        containerColor = colorSurfaceDefault,
+        labelColor = colorTextPrimary,
+        selectedContainerColor = colorFillPrimaryLoudResting,
+        selectedLabelColor = colorOnPrimaryLoud,
+    )
+}
+
+@Composable
+private fun dashboardPickerBorder(selected: Boolean) = with(LocalHAColorScheme.current) {
+    FilterChipDefaults.filterChipBorder(
+        enabled = true,
+        selected = selected,
+        borderColor = colorBorderNeutralNormal,
+        selectedBorderColor = colorBorderPrimaryLoud,
+    )
 }
 
 @Composable
@@ -148,15 +174,23 @@ private fun DashboardView(
     onSelectTab: (String) -> Unit,
     onNavigate: (String) -> Unit,
 ) {
+    val colors = LocalHAColorScheme.current
     Column {
         // As upstream, the tab bar only appears with several top-level views
         if (!content.isSubview && content.tabs.size > 1) {
-            PrimaryScrollableTabRow(selectedTabIndex = content.selectedTab) {
+            PrimaryScrollableTabRow(
+                selectedTabIndex = content.selectedTab,
+                containerColor = colors.colorSurfaceDefault,
+                contentColor = colors.colorOnPrimaryNormal,
+                divider = {},
+            ) {
                 content.tabs.forEachIndexed { index, tab ->
                     Tab(
                         selected = index == content.selectedTab,
                         onClick = { onSelectTab(tab.path) },
                         text = { Text(tab.title ?: tab.path) },
+                        selectedContentColor = colors.colorOnPrimaryNormal,
+                        unselectedContentColor = colors.colorTextSecondary,
                     )
                 }
             }
