@@ -11,7 +11,8 @@ Update it in the same commit as the work it describes.
   - Work happens on `native-dashboard`. Merge upstream `main` into it regularly.
   - `upstream` push URL is disabled on purpose. Upstream's [AI policy](AI_POLICY.md) forbids autonomous PRs/issues/comments, so **never** open anything against `home-assistant/*`.
 - **Reference clones** (shallow, read-only) live at `~/projects/ha-refs/`: `frontend` (main), `frontend-20260624.6` (the **primary port reference**, matching HA 2026.7.x), and `core`.
-- **Dev probe:** `tools/ha-probe/ha_ro.py` is an allowlisted, read-only WS client that uses `$HASS_SERVER`/`$HASS_TOKEN`. Output goes to `tools/ha-probe/out/`, which is gitignored. Never commit real dumps; anonymize them before turning them into fixtures.
+- **Test server:** `tools/test-ha/up.sh` starts HA 2026.7.4 in podman at `http://localhost:8124` (login dev/dev). It runs `demo` plus seeded floors, areas, a stored `dashboard-test` dashboard and home favourites. Reads and writes are both fine here. See `tools/test-ha/README.md`.
+- **Probe:** `tools/ha-probe/ha_ro.py` targets the test server by default; pass `--allow-write` to send writes. `--live` targets a real server and is strictly read-only. Output goes to `tools/ha-probe/out/` (gitignored). Never commit dumps from a real server; anonymize them first.
 - **Investigation docs:** `docs/investigation/`.
 - **UI-heavy work** (visual design, card polish) is delegated to **Astra**. Keep logic and data in pure, testable Kotlin so the UI layer can be handed off cleanly.
 
@@ -46,6 +47,8 @@ Update it in the same commit as the work it describes.
 ### Step 2 — Android foundation
 - [x] Generic raw WS API in `:common` (`sendRawMessage`, `subscribeRaw`, opt-in `rawEvents`). **Carried upstream-file patch:** WebSocketCore/Impl, WebSocketRequest, WebSocketRepository/Impl
 - [x] `:dashboard-core` (pure JVM): config wrappers that preserve unknown keys; `applyEntityEvent` (port of js-websocket `processEvent`)
+- [x] Local test HA container plus fixture capture (`tools/test-ha/`)
+- [x] `:dashboard-core` derivations: `isActive` (port of `stateActive`), basic `tileModel`
 - [ ] `:dashboard` Android module wired into the build, with minimal edits to upstream files
 - [ ] Reuse existing auth / ServerManager / WebSocket
 - [ ] Entry point / navigation into native dashboard

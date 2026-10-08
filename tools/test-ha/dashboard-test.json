@@ -1,0 +1,298 @@
+{
+  "title": "Test dashboard",
+  "views": [
+    {
+      "title": "Sections",
+      "path": "sections",
+      "icon": "mdi:view-dashboard",
+      "type": "sections",
+      "max_columns": 4,
+      "badges": [
+        {
+          "type": "entity",
+          "entity": "sensor.living_room_temperature"
+        },
+        {
+          "type": "entity",
+          "entity": "alarm_control_panel.security",
+          "show_name": true
+        }
+      ],
+      "sections": [
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Living room",
+              "icon": "mdi:sofa",
+              "badges": [
+                {
+                  "type": "entity",
+                  "entity": "sensor.living_room_humidity"
+                }
+              ]
+            },
+            {
+              "type": "tile",
+              "entity": "light.living_room_rgbww_lights",
+              "features": [
+                {
+                  "type": "light-brightness"
+                }
+              ],
+              "features_position": "bottom"
+            },
+            {
+              "type": "tile",
+              "entity": "light.ceiling_lights"
+            },
+            {
+              "type": "tile",
+              "entity": "climate.heatpump",
+              "grid_options": {
+                "columns": 12
+              },
+              "features": [
+                {
+                  "type": "target-temperature"
+                }
+              ]
+            },
+            {
+              "type": "tile",
+              "entity": "cover.living_room_window",
+              "features": [
+                {
+                  "type": "cover-open-close"
+                }
+              ]
+            },
+            {
+              "type": "tile",
+              "entity": "media_player.living_room_tv",
+              "vertical": true
+            },
+            {
+              "type": "tile",
+              "entity": "lock.front_door_deadbolt",
+              "vertical": true
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Controls",
+              "heading_style": "subtitle"
+            },
+            {
+              "type": "entities",
+              "title": "House",
+              "show_header_toggle": false,
+              "entities": [
+                "input_select.house_mode",
+                {
+                  "entity": "input_boolean.guest_mode",
+                  "name": "Guests"
+                },
+                "input_number.target_humidity",
+                {
+                  "type": "divider"
+                },
+                {
+                  "type": "section",
+                  "label": "Misc"
+                },
+                "timer.laundry",
+                {
+                  "type": "weblink",
+                  "name": "HA website",
+                  "url": "https://www.home-assistant.io"
+                }
+              ]
+            },
+            {
+              "type": "button",
+              "entity": "switch.decorative_lights",
+              "show_state": true,
+              "tap_action": {
+                "action": "toggle"
+              }
+            },
+            {
+              "type": "button",
+              "name": "Ring bell",
+              "icon": "mdi:bell",
+              "show_state": false,
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "input_button.press",
+                "target": {
+                  "entity_id": "input_button.doorbell_test"
+                }
+              }
+            },
+            {
+              "type": "glance",
+              "title": "Openings",
+              "columns": 3,
+              "entities": [
+                "binary_sensor.front_door",
+                "binary_sensor.bedroom_window",
+                "binary_sensor.garage_door_contact",
+                "binary_sensor.kitchen_motion",
+                "lock.back_door_lock",
+                "cover.garage_door"
+              ]
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Info"
+            },
+            {
+              "type": "gauge",
+              "entity": "sensor.living_room_humidity",
+              "min": 0,
+              "max": 100,
+              "severity": {
+                "green": 40,
+                "yellow": 60,
+                "red": 75
+              }
+            },
+            {
+              "type": "gauge",
+              "entity": "sensor.house_power",
+              "min": 0,
+              "max": 1000,
+              "needle": true
+            },
+            {
+              "type": "markdown",
+              "title": "Status",
+              "content": "**{{ states('sensor.lights_on') }}** lights on.\n\nHouse mode: *{{ states('input_select.house_mode') }}*\n\n- Living room: {{ states('sensor.living_room_temperature') }} °C"
+            },
+            {
+              "type": "conditional",
+              "conditions": [
+                {
+                  "condition": "state",
+                  "entity": "input_boolean.guest_mode",
+                  "state": "on"
+                }
+              ],
+              "card": {
+                "type": "markdown",
+                "content": "Guest mode is **on**."
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "fan.living_room_fan",
+              "visibility": [
+                {
+                  "condition": "state",
+                  "entity": "input_boolean.vacation_mode",
+                  "state": "off"
+                }
+              ]
+            },
+            {
+              "type": "custom:fake-card",
+              "entity": "light.kitchen_lights",
+              "some_option": 42
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Masonry",
+      "path": "masonry",
+      "icon": "mdi:view-quilt",
+      "cards": [
+        {
+          "type": "vertical-stack",
+          "cards": [
+            {
+              "type": "thermostat",
+              "entity": "climate.ecobee"
+            },
+            {
+              "type": "horizontal-stack",
+              "cards": [
+                {
+                  "type": "button",
+                  "entity": "light.bed_light"
+                },
+                {
+                  "type": "button",
+                  "entity": "light.office_rgbw_lights"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "columns": 3,
+          "square": false,
+          "cards": [
+            {
+              "type": "button",
+              "entity": "light.kitchen_lights"
+            },
+            {
+              "type": "button",
+              "entity": "switch.ac"
+            },
+            {
+              "type": "button",
+              "entity": "fan.ceiling_fan"
+            }
+          ]
+        },
+        {
+          "type": "light",
+          "entity": "light.living_room_rgbww_lights"
+        },
+        {
+          "type": "sensor",
+          "entity": "sensor.outside_temperature",
+          "graph": "line"
+        },
+        {
+          "type": "entities",
+          "title": "Garden",
+          "entities": [
+            "valve.front_garden",
+            "valve.back_garden",
+            "switch.garden_irrigation",
+            "binary_sensor.garden_leak",
+            "sensor.garden_temperature"
+          ]
+        },
+        {
+          "type": "media-control",
+          "entity": "media_player.kitchen_speaker"
+        },
+        {
+          "type": "alarm-panel",
+          "entity": "alarm_control_panel.security"
+        },
+        {
+          "type": "weather-forecast",
+          "entity": "weather.demo_weather_south"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,213 @@
+# Local test instance for the native dashboard project. Commit-safe: no secrets,
+# no real hardware. up.sh copies this directory into runtime/config/ (gitignored).
+
+default_config:
+
+# The demo integration provides fake lights, climate, covers, media players,
+# sensors, locks, alarm panel, vacuums, etc. (YAML key sets up the config entry
+# via an import flow, plus the YAML-only demo platforms and sun/input helpers).
+demo:
+
+homeassistant:
+  name: Native Test Home
+  latitude: 52.3731
+  longitude: 4.8922
+  elevation: 0
+  unit_system: metric
+  currency: EUR
+  country: NL
+  time_zone: Europe/Amsterdam
+  language: en
+
+logger:
+  default: warning
+
+input_boolean:
+  guest_mode:
+    name: Guest mode
+    icon: mdi:account-multiple
+  vacation_mode:
+    name: Vacation mode
+    icon: mdi:airplane
+
+input_number:
+  target_humidity:
+    name: Target humidity
+    min: 30
+    max: 70
+    step: 1
+    unit_of_measurement: "%"
+    icon: mdi:water-percent
+  bedroom_brightness:
+    name: Bedroom brightness
+    min: 0
+    max: 100
+    step: 5
+    mode: box
+    unit_of_measurement: "%"
+
+input_select:
+  house_mode:
+    name: House mode
+    options: [Home, Away, Night, Vacation]
+    initial: Home
+    icon: mdi:home-switch
+
+input_text:
+  welcome_message:
+    name: Welcome message
+    initial: Hello from the test instance
+
+input_datetime:
+  wake_up:
+    name: Wake-up time
+    has_date: false
+    has_time: true
+    initial: "07:00"
+
+input_button:
+  doorbell_test:
+    name: Doorbell test
+    icon: mdi:doorbell
+
+counter:
+  coffee_cups:
+    name: Coffee cups
+    icon: mdi:coffee
+
+timer:
+  laundry:
+    name: Laundry
+    duration: "01:00:00"
+
+# The demo media players and locks have no unique_id, so they can't be put in
+# areas. These wrappers (with unique_id) pass commands through to them.
+media_player:
+  - platform: universal
+    name: Living Room TV
+    unique_id: uni_living_room_tv
+    children: [media_player.living_room]
+    device_class: tv
+  - platform: universal
+    name: Kitchen Speaker
+    unique_id: uni_kitchen_speaker
+    children: [media_player.kitchen]
+    device_class: speaker
+  - platform: universal
+    name: Bedroom Speaker
+    unique_id: uni_bedroom_speaker
+    children: [media_player.bedroom]
+    device_class: speaker
+  - platform: universal
+    name: Office Speaker
+    unique_id: uni_office_speaker
+    children: [media_player.walkman]
+    device_class: speaker
+
+template:
+  - lock:
+      - name: Front door deadbolt
+        unique_id: tpl_front_door_deadbolt
+        state: "{{ states('lock.front_door') }}"
+        lock:
+          - action: lock.lock
+            target:
+              entity_id: lock.front_door
+        unlock:
+          - action: lock.unlock
+            target:
+              entity_id: lock.front_door
+      - name: Back door lock
+        unique_id: tpl_back_door_lock
+        state: "{{ states('lock.kitchen_door') }}"
+        lock:
+          - action: lock.lock
+            target:
+              entity_id: lock.kitchen_door
+        unlock:
+          - action: lock.unlock
+            target:
+              entity_id: lock.kitchen_door
+  - sensor:
+      - name: Living room temperature
+        unique_id: tpl_living_room_temperature
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        state: "{{ (21 + (now().minute % 10) / 10) | round(1) }}"
+      - name: Living room humidity
+        unique_id: tpl_living_room_humidity
+        unit_of_measurement: "%"
+        device_class: humidity
+        state_class: measurement
+        state: "{{ 45 + (now().minute % 7) }}"
+      - name: Bedroom temperature
+        unique_id: tpl_bedroom_temperature
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        state: "19.4"
+      - name: Office temperature
+        unique_id: tpl_office_temperature
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        state: "22.8"
+      - name: Garden temperature
+        unique_id: tpl_garden_temperature
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        state: "13.2"
+      - name: Garage battery
+        unique_id: tpl_garage_battery
+        unit_of_measurement: "%"
+        device_class: battery
+        state_class: measurement
+        state: "64"
+      - name: House power
+        unique_id: tpl_house_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ 300 + (now().minute * 7) }}"
+      - name: Lights on
+        unique_id: tpl_lights_on
+        state: "{{ states.light | selectattr('state', 'eq', 'on') | list | count }}"
+  - binary_sensor:
+      - name: Front door
+        unique_id: tpl_front_door
+        device_class: door
+        state: "off"
+      - name: Garage door contact
+        unique_id: tpl_garage_door_contact
+        device_class: garage_door
+        state: "off"
+      - name: Kitchen motion
+        unique_id: tpl_kitchen_motion
+        device_class: motion
+        state: "{{ now().minute % 2 == 0 }}"
+      - name: Bedroom window
+        unique_id: tpl_bedroom_window
+        device_class: window
+        state: "on"
+      - name: Garden leak
+        unique_id: tpl_garden_leak
+        device_class: moisture
+        state: "off"
+      - name: Office occupancy
+        unique_id: tpl_office_occupancy
+        device_class: occupancy
+        state: "{{ is_state('input_boolean.guest_mode', 'off') }}"
+  - switch:
+      - name: Garden irrigation
+        unique_id: tpl_garden_irrigation
+        state: "{{ is_state('input_boolean.vacation_mode', 'on') }}"
+        turn_on:
+          - action: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.vacation_mode
+        turn_off:
+          - action: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.vacation_mode

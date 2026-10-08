@@ -1,0 +1,5 @@
+# Runtime copy of config/ plus everything HA writes (.storage, db, logs, ...)
+runtime/
+# Test-instance credentials written by bootstrap.py
+.env
+__pycache__/
