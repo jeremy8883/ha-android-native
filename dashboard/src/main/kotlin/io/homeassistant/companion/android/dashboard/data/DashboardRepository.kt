@@ -4,6 +4,8 @@ import io.homeassistant.companion.android.common.data.servers.ServerManager
 import io.homeassistant.companion.android.common.data.servers.webSocketRepositoryOrNull
 import io.homeassistant.companion.android.common.data.websocket.RawWebSocketResponse
 import io.homeassistant.companion.android.common.data.websocket.WebSocketRepository
+import io.homeassistant.companion.android.dashboard.derive.TemplateRequest
+import io.homeassistant.companion.android.dashboard.derive.TemplateResult
 import io.homeassistant.companion.android.dashboard.entity.EntityStates
 import io.homeassistant.companion.android.dashboard.entity.HassConfig
 import io.homeassistant.companion.android.dashboard.entity.HassUser
@@ -39,6 +41,7 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.runningFold
 import kotlinx.coroutines.launch
@@ -183,6 +186,31 @@ class DashboardRepository @Inject constructor(private val serverManager: ServerM
         ) as? JsonObject
         )
         ?.obj("options")?.obj(optionsDomain)?.string("default_code")?.ifEmpty { null }
+
+    /**
+     * The renderings of [request], kept up to date by the server (`render_template`, strict like the markdown
+     * card). When the subscription can't be made, the raw template is shown, as upstream falls back to.
+     */
+    fun renderTemplate(request: TemplateRequest): Flow<TemplateResult> = flow {
+        val params = buildMap<String, Any?> {
+            put("template", request.template)
+            request.entityIds?.let { put("entity_ids", it) }
+            put("variables", request.variables)
+            put("strict", true)
+        }
+        val events = serverManager.webSocketRepositoryOrNull()?.subscribeRaw(RENDER_TEMPLATE, params)
+        if (events == null) {
+            emit(TemplateResult.Rendered(request.template))
+            return@flow
+        }
+        emitAll(
+            events.mapNotNull { event ->
+                val result = event as? JsonObject ?: return@mapNotNull null
+                result.string("result")?.let { TemplateResult.Rendered(it) }
+                    ?: result.string("error")?.let { TemplateResult.Failed(it, result.string("level")) }
+            },
+        )
+    }
 
     /** User, server config and panels, or `null` when no connection can be made. */
     suspend fun serverInfo(): ServerInfo? {
@@ -345,3 +373,4 @@ private const val SUBSCRIBE_EVENTS = "subscribe_events"
 private const val EVENT_LOVELACE_UPDATED = "lovelace_updated"
 private const val SUBSCRIBE_CONFIG_FLOWS = "config_entries/flow/subscribe"
 private const val REPAIRS_UPDATED_EVENT = "repairs_issue_registry_updated"
+private const val RENDER_TEMPLATE = "render_template"

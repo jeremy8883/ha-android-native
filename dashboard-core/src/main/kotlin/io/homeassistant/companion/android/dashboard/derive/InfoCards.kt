@@ -51,7 +51,8 @@ fun HassSnapshot.discoveredDevicesModel(card: CardConfig): InfoTileModel {
 
 /**
  * Whether [card] hides itself, as upstream cards do through `card-visibility-changed`: the repairs, updates and
- * discovered devices cards are for admins only, and with `hide_empty` they hide when there is nothing to show.
+ * discovered devices cards are for admins only, and with `hide_empty` they hide when there is nothing to show;
+ * markdown cards with `show_empty: false` hide when their template renders nothing.
  * Hidden cards take no space in the layout.
  */
 fun HassSnapshot.cardHidesItself(card: CardConfig): Boolean {
@@ -61,6 +62,7 @@ fun HassSnapshot.cardHidesItself(card: CardConfig): Boolean {
         "repairs" -> !isAdmin || (hideEmpty && repairsIssues?.isEmpty() == true)
         "updates" -> !isAdmin || (hideEmpty && installableUpdates().isEmpty())
         "discovered-devices" -> !isAdmin || (hideEmpty && discoveredFlows?.isEmpty() == true)
+        "markdown" -> markdownHidesItself(card)
         else -> false
     }
 }

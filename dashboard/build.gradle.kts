@@ -17,6 +17,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.activity.compose)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.markdown.renderer.m3)
 
     testImplementation(libs.turbine)
     testImplementation(libs.mockk)

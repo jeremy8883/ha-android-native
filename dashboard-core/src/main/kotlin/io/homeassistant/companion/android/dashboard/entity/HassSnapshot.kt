@@ -1,5 +1,7 @@
 package io.homeassistant.companion.android.dashboard.entity
 
+import io.homeassistant.companion.android.dashboard.derive.TemplateRequest
+import io.homeassistant.companion.android.dashboard.derive.TemplateResult
 import io.homeassistant.companion.android.dashboard.display.DisplayFormats
 import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
 import kotlinx.serialization.json.JsonObject
@@ -49,6 +51,7 @@ data class HassConfig(
  * @property formats number and date formatting in the user's language and time zone (the frontend's `locale`)
  * @property repairsIssues active, non-ignored repair issues; `null` while loading
  * @property discoveredFlows config flows started by discovery; `null` while loading
+ * @property templates the latest rendering of the templates cards asked for (`render_template`)
  */
 data class HassSnapshot(
     val states: EntityStates,
@@ -61,4 +64,5 @@ data class HassSnapshot(
     val formats: DisplayFormats = JdkDisplayFormats.DEFAULT,
     val repairsIssues: List<JsonObject>? = null,
     val discoveredFlows: List<JsonObject>? = null,
+    val templates: Map<TemplateRequest, TemplateResult> = emptyMap(),
 )

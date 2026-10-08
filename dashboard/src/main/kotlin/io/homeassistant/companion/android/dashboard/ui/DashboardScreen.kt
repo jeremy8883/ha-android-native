@@ -52,6 +52,7 @@ import io.homeassistant.companion.android.dashboard.layout.SECTION_ROW_HEIGHT_DP
 import io.homeassistant.companion.android.dashboard.layout.SectionLayout
 import io.homeassistant.companion.android.dashboard.layout.viewLayout
 import io.homeassistant.companion.android.dashboard.model.DashboardInfo
+import io.homeassistant.companion.android.dashboard.model.ViewConfig
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardCard
 import io.homeassistant.companion.android.dashboard.ui.cards.LocalConditionContext
@@ -217,7 +218,9 @@ private fun DashboardView(
             val configuration = LocalConfiguration.current
             val screen = ScreenInfo(configuration.screenWidthDp, configuration.screenHeightDp)
             val maxColumns = sectionsViewColumns(configuration.screenWidthDp, content.maxColumns)
-            key(content.viewPath) { CardGroups(content.groups, hass, now, screen, maxColumns, interactions) }
+            key(content.viewPath) {
+                CardGroups(content.groups, content.view, hass, now, screen, maxColumns, interactions)
+            }
         }
     }
 }
@@ -225,6 +228,7 @@ private fun DashboardView(
 @Composable
 private fun CardGroups(
     groups: List<CardGroup>,
+    view: ViewConfig?,
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
     screen: ScreenInfo,
@@ -244,7 +248,7 @@ private fun CardGroups(
     val narrow = screen.widthDp <= NARROW_WIDTH_DP
     val cardContext = remember(screen, maxColumns) { ConditionContext(maxColumns = maxColumns, screen = screen) }
     CompositionLocalProvider(LocalConditionContext provides cardContext) {
-        ViewRows(rows, viewLayout.columnCount, narrow, hass, now, interactions)
+        ViewRows(rows, viewLayout.columnCount, narrow, view, hass, now, interactions)
     }
 }
 
@@ -253,6 +257,7 @@ private fun ViewRows(
     rows: List<List<SectionLayout>>,
     columnCount: Int,
     narrow: Boolean,
+    view: ViewConfig?,
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
     interactions: CardInteractions,
@@ -262,6 +267,7 @@ private fun ViewRows(
         contentPadding = PaddingValues(HADimens.SPACE4),
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
     ) {
+        if (view != null) item { ViewHeader(view, hass, now, interactions) }
         items(rows) { sections ->
             DashboardGrid(
                 cells = sections.map { it.cell.copy(row = 0, rowSpan = 1) },

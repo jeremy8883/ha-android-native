@@ -8,6 +8,9 @@ import io.homeassistant.companion.android.dashboard.action.Gesture
 import io.homeassistant.companion.android.dashboard.action.resolveAction
 import io.homeassistant.companion.android.dashboard.data.DashboardConfigResult
 import io.homeassistant.companion.android.dashboard.data.DashboardRepository
+import io.homeassistant.companion.android.dashboard.derive.TemplateRequest
+import io.homeassistant.companion.android.dashboard.derive.TemplateResult
+import io.homeassistant.companion.android.dashboard.derive.templateRequests
 import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
 import io.homeassistant.companion.android.dashboard.entity.HassConfig
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -17,8 +20,10 @@ import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.entity.withFallback
 import io.homeassistant.companion.android.dashboard.layout.CardGroup
 import io.homeassistant.companion.android.dashboard.layout.cardGroups
+import io.homeassistant.companion.android.dashboard.layout.viewHeaderCard
 import io.homeassistant.companion.android.dashboard.model.DashboardConfig
 import io.homeassistant.companion.android.dashboard.model.DashboardInfo
+import io.homeassistant.companion.android.dashboard.model.ViewConfig
 import io.homeassistant.companion.android.dashboard.model.number
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.strategy.StrategyData
@@ -41,10 +46,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
@@ -72,6 +81,7 @@ sealed interface DashboardUiState {
      * @property selectedTab index in [tabs] of the shown view or of the view a subview was opened from
      * @property isSubview whether the shown view is a subview, which shows a back button instead of tabs
      * @property groups the shown view's cards, or `null` when its strategy is not ported yet
+     * @property view the shown view with its strategies expanded, for its header and badges
      */
     data class Content(
         val title: String?,
@@ -83,6 +93,7 @@ sealed interface DashboardUiState {
         /** The view's `max_columns`, bounding the column count `view_columns` conditions see. */
         val maxColumns: Int?,
         val groups: List<CardGroup>?,
+        val view: ViewConfig? = null,
     ) : DashboardUiState
 }
 
@@ -168,17 +179,6 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
     private val discoveredFlows = repository.discoveredFlows()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
 
-    /** The latest snapshot for cards: structure inputs with live entity states and collections. */
-    val hass: StateFlow<HassSnapshot?> = combine(
-        structureInputs,
-        entityStates.filterNotNull(),
-        repairsIssues,
-        discoveredFlows,
-    ) { inputs, states, repairs, flows ->
-        inputs.hass.copy(states = states, repairsIssues = repairs, discoveredFlows = flows)
-    }.flowOn(Dispatchers.Default)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
-
     val uiState: StateFlow<DashboardUiState> = selectedDashboard
         .flatMapLatest { urlPath ->
             repository.dashboardConfig(urlPath).combine(structureInputs) { result, inputs ->
@@ -188,6 +188,40 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         .combine(viewStack) { (urlPath, result, inputs), stack -> result.toUiState(urlPath, inputs, stack) }
         .flowOn(Dispatchers.Default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), DashboardUiState.Loading)
+
+    /**
+     * The renderings of the templates the shown view's cards use, by request. Re-subscribed when the view or its
+     * requests change, as each card would.
+     */
+    private val templates: Flow<Map<TemplateRequest, TemplateResult>> = uiState
+        .combine(structureInputs) { state, inputs ->
+            val content = state as? DashboardUiState.Content
+            val cards =
+                content?.groups?.flatMap { it.cards }.orEmpty() + listOfNotNull(content?.view?.let(::viewHeaderCard))
+            inputs.hass.templateRequests(cards)
+        }
+        .distinctUntilChanged()
+        .flatMapLatest { requests ->
+            if (requests.isEmpty()) {
+                flowOf(emptyMap())
+            } else {
+                combine(requests.map { request -> repository.renderTemplate(request).map { request to it } }) {
+                    it.toMap()
+                }.onStart { emit(emptyMap()) }
+            }
+        }
+
+    /** The latest snapshot for cards: structure inputs with live entity states and collections. */
+    val hass: StateFlow<HassSnapshot?> = combine(
+        structureInputs,
+        entityStates.filterNotNull(),
+        repairsIssues,
+        discoveredFlows,
+        templates,
+    ) { inputs, states, repairs, flows, rendered ->
+        inputs.hass.copy(states = states, repairsIssues = repairs, discoveredFlows = flows, templates = rendered)
+    }.flowOn(Dispatchers.Default)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
 
     fun onSelectDashboard(urlPath: String?) {
         viewStack.value = emptyList()
@@ -327,6 +361,7 @@ private fun DashboardConfig.toContent(inputs: StructureInputs, stack: List<Strin
     val tabIndices = views.indices.filter { !views[it].subview }
     val tabIndex = stack.mapNotNull(::indexOf).lastOrNull { it in tabIndices } ?: tabIndices.firstOrNull() ?: 0
 
+    val expanded = shown?.let { inputs.hass.expandView(it, inputs.strategyData) }
     return DashboardUiState.Content(
         title = title,
         tabs = tabIndices.map { ViewTab(views[it].title, views[it].icon, pathOf(it)) },
@@ -335,8 +370,8 @@ private fun DashboardConfig.toContent(inputs: StructureInputs, stack: List<Strin
         subviewTitle = shown?.title,
         viewPath = if (shown != null) pathOf(shownIndex) else "",
         maxColumns = shown?.json?.number("max_columns")?.toInt(),
-        groups = shown?.let { inputs.hass.expandView(it, inputs.strategyData) }?.let(::cardGroups)
-            ?: if (views.isEmpty()) emptyList() else null,
+        groups = expanded?.let(::cardGroups) ?: if (views.isEmpty()) emptyList() else null,
+        view = expanded,
     )
 }
 
