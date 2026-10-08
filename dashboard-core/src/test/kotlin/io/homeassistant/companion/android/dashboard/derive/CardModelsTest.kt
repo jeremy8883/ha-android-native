@@ -74,3 +74,20 @@ class CardModelsTest {
         assertTrue(model.buttons.single().actions.tap)
     }
 }
+
+class ShortcutModelTest {
+    private val hass = GoldenFixture("test-instance").hass
+
+    @Test
+    fun `Given shortcuts without label or icon when deriving them then the target supplies them`() {
+        fun shortcut(action: String) = hass.shortcutModel(CardConfig(json("""{"type": "shortcut", "tap_action": $action}""")))
+        val area = shortcut("""{"action": "navigate", "navigation_path": "areas-kitchen"}""")
+        assertEquals("Kitchen" to "mdi:stove", area.label to area.icon)
+        val url = shortcut("""{"action": "url", "url_path": "https://example.com"}""")
+        assertEquals("https://example.com" to "mdi:open-in-new", url.label to url.icon)
+        val explicit = hass.shortcutModel(
+            CardConfig(json("""{"type": "shortcut", "label": "Garden", "icon": "mdi:flower", "color": "green"}""")),
+        )
+        assertEquals(Triple("Garden", "mdi:flower", DisplayColor.Theme("green")), Triple(explicit.label, explicit.icon, explicit.color))
+    }
+}
