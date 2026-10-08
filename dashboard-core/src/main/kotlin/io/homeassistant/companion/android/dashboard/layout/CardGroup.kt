@@ -2,6 +2,7 @@ package io.homeassistant.companion.android.dashboard.layout
 
 import io.homeassistant.companion.android.dashboard.condition.ConditionContext
 import io.homeassistant.companion.android.dashboard.condition.conditionsMet
+import io.homeassistant.companion.android.dashboard.derive.cardHidesItself
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.ViewConfig
@@ -53,13 +54,14 @@ fun cardGroups(view: ViewConfig): List<CardGroup> = when (view.viewType) {
  * The cards of [group] currently shown, or `null` when the whole group is hidden: when disabled, when its
  * visibility conditions fail, or when every card is hidden by its own visibility conditions.
  * Port of `_updateVisibility` in frontend@20260624.6 src/panels/lovelace/sections/hui-section.ts and the card
- * visibility check in src/panels/lovelace/cards/hui-card.ts.
+ * visibility check in src/panels/lovelace/cards/hui-card.ts, plus cards that hide themselves ([cardHidesItself]).
  */
 fun HassSnapshot.visibleCards(group: CardGroup, context: ConditionContext): List<CardConfig>? {
     if (group.disabled) return null
     if (group.visibility.isNotEmpty() && !conditionsMet(group.visibility, context)) return null
     val cards = group.cards.filter { card ->
-        card.visibility.isEmpty() || conditionsMet(card.visibility, context.copy(entityId = card.entity))
+        (card.visibility.isEmpty() || conditionsMet(card.visibility, context.copy(entityId = card.entity))) &&
+            !cardHidesItself(card)
     }
     return cards.takeUnless { group.cards.isNotEmpty() && it.isEmpty() }
 }

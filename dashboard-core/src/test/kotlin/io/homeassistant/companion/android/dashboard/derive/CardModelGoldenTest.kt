@@ -32,4 +32,28 @@ class CardModelGoldenTest {
             }
         }
     }
+
+    @TestFactory
+    fun `Given captured server data when deriving info cards then text and self-hiding match the frontend`(): List<DynamicTest> = GoldenFixture.VARIANTS.flatMap { variant ->
+        val fixture = GoldenFixture(variant)
+        val captured = fixture.json("outputs/cards.json").obj("info") ?: JsonObject(emptyMap())
+        captured.map { (key, expected) ->
+            DynamicTest.dynamicTest("$variant $key") {
+                expected as JsonObject
+                val type = key.substringBefore(':')
+                val hideEmpty = key.endsWith(":hide_empty")
+                val card = CardConfig(json("""{"type": "$type", "hide_empty": $hideEmpty}"""))
+                val hidden = fixture.hass.cardHidesItself(card)
+                val model = when (type) {
+                    "repairs" -> fixture.hass.repairsModel(card)
+                    "updates" -> fixture.hass.updatesModel(card)
+                    else -> fixture.hass.discoveredDevicesModel(card)
+                }.takeUnless { hidden }
+                assertEquals(
+                    Triple(expected.boolean("hidden"), expected.string("primary"), expected.string("secondary")),
+                    Triple(hidden, model?.label, model?.secondary),
+                )
+            }
+        }
+    }
 }

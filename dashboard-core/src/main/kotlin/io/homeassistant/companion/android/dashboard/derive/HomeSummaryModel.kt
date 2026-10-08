@@ -9,13 +9,14 @@ import io.homeassistant.companion.android.dashboard.strategy.home.HomeSummary
 import java.math.BigDecimal
 
 /**
- * Display-ready content of a home summary card.
+ * Display-ready content of the tile-style info cards (home summary, repairs, updates, discovered devices),
+ * which upstream all draw with `ha-tile-container`.
  *
- * @property color the summary's colour name (`amber`, `deep-orange`, ...), as upstream's `HOME_SUMMARIES_COLORS`
- * @property secondary the summary of the matching entities ("3 on", "19.4 - 22.8°"); empty when there is nothing
- * @property loading whether [secondary] is still being loaded (energy)
+ * @property color the colour name (`amber`, `deep-orange`, `warning`, ...), as upstream sets `--tile-color`
+ * @property secondary the summary line ("3 on", "2 updates"); empty when there is nothing to say
+ * @property loading whether [secondary] is still being loaded
  */
-data class HomeSummaryModel(
+data class InfoTileModel(
     val label: String,
     val icon: String,
     val color: String,
@@ -29,9 +30,9 @@ data class HomeSummaryModel(
  * Port of `HuiHomeSummaryCard` (frontend@20260624.6 src/panels/lovelace/cards/hui-home-summary-card.ts). Energy
  * needs the energy statistics, which are not fetched yet, so it stays loading.
  */
-fun HassSnapshot.homeSummaryModel(card: CardConfig): HomeSummaryModel? {
+fun HassSnapshot.homeSummaryModel(card: CardConfig): InfoTileModel? {
     val summary = HomeSummary.entries.firstOrNull { it.key == card.json.string("summary") } ?: return null
-    return HomeSummaryModel(
+    return InfoTileModel(
         label = summary.label(localize),
         icon = summary.icon,
         color = summary.color,

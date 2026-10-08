@@ -6,16 +6,24 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import io.homeassistant.companion.android.dashboard.derive.InfoTileModel
 import io.homeassistant.companion.android.dashboard.derive.TileModel
-import io.homeassistant.companion.android.dashboard.derive.homeSummaryModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 
-/** A home summary, drawn like a tile as upstream does (`ha-tile-container`). */
+/**
+ * The tile-style info cards (home summary, repairs, updates, discovered devices), drawn like a tile as upstream
+ * does (`ha-tile-container`).
+ */
 @Composable
-internal fun HomeSummaryCard(card: CardConfig, hass: State<HassSnapshot?>, modifier: Modifier = Modifier) {
-    val summary by remember(card) { derivedStateOf { hass.value?.homeSummaryModel(card) } }
-    val model = summary ?: return UnsupportedCard(card.type.orEmpty(), modifier)
+internal fun InfoTileCard(
+    card: CardConfig,
+    hass: State<HassSnapshot?>,
+    modifier: Modifier = Modifier,
+    derive: HassSnapshot.(CardConfig) -> InfoTileModel?,
+) {
+    val info by remember(card) { derivedStateOf { hass.value?.derive(card) } }
+    val model = info ?: return UnsupportedCard(card.type.orEmpty(), modifier)
     TileCardContent(
         tile = TileModel(
             entityId = card.json.toString(),

@@ -1,0 +1,8 @@
+{
+  "request": {
+    "type": "repairs/list_issues"
+  },
+  "result": {
+    "issues": []
+  }
+}

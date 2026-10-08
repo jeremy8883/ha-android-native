@@ -9,6 +9,8 @@ import io.homeassistant.companion.android.dashboard.entity.HassConfig
 import io.homeassistant.companion.android.dashboard.entity.HassUser
 import io.homeassistant.companion.android.dashboard.entity.IconResources
 import io.homeassistant.companion.android.dashboard.entity.Registries
+import io.homeassistant.companion.android.dashboard.entity.activeRepairsIssues
+import io.homeassistant.companion.android.dashboard.entity.applyConfigFlowMessages
 import io.homeassistant.companion.android.dashboard.entity.applyEntityEvent
 import io.homeassistant.companion.android.dashboard.entity.parseAreaRegistry
 import io.homeassistant.companion.android.dashboard.entity.parseDeviceRegistry
@@ -35,6 +37,7 @@ import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.runningFold
@@ -120,6 +123,35 @@ class DashboardRepository @Inject constructor(private val serverManager: ServerM
         }
         fetch()
         awaitClose()
+    }
+
+    /**
+     * The active, non-ignored repair issues, fetched again (debounced, like the frontend) when the issue
+     * registry changes. Empty when they cannot be read, for example for non-admin users.
+     */
+    @OptIn(FlowPreview::class)
+    fun repairsIssues(): Flow<List<JsonObject>> = channelFlow {
+        val webSocket = serverManager.webSocketRepositoryOrNull() ?: return@channelFlow
+        suspend fun fetch() {
+            send((webSocket.result("repairs/list_issues") as? JsonObject)?.let(::activeRepairsIssues).orEmpty())
+        }
+        launch {
+            (webSocket.subscribeRaw(SUBSCRIBE_EVENTS, mapOf("event_type" to REPAIRS_UPDATED_EVENT)) ?: emptyFlow())
+                .debounce(REGISTRY_REFETCH_DEBOUNCE)
+                .collect { fetch() }
+        }
+        fetch()
+        awaitClose()
+    }
+
+    /** Config flows started by discovery, kept up to date through `config_entries/flow/subscribe`. */
+    fun discoveredFlows(): Flow<List<JsonObject>> = flow {
+        val events = serverManager.webSocketRepositoryOrNull()?.subscribeRaw(SUBSCRIBE_CONFIG_FLOWS) ?: return@flow
+        emitAll(
+            events.runningFold<JsonElement, List<JsonObject>?>(null) { flows, event ->
+                applyConfigFlowMessages(flows, event)
+            }.drop(1).filterNotNull(),
+        )
     }
 
     /** User, server config and panels, or `null` when no connection can be made. */
@@ -279,3 +311,5 @@ private val REGISTRY_REFETCH_DEBOUNCE = 500.milliseconds
 private const val SUBSCRIBE_ENTITIES = "subscribe_entities"
 private const val SUBSCRIBE_EVENTS = "subscribe_events"
 private const val EVENT_LOVELACE_UPDATED = "lovelace_updated"
+private const val SUBSCRIBE_CONFIG_FLOWS = "config_entries/flow/subscribe"
+private const val REPAIRS_UPDATED_EVENT = "repairs_issue_registry_updated"

@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-08T07:50:03.205Z",
+  "capture_date": "2026-10-08T07:54:10.053Z",
   "user": {
     "name": "Golden Viewer",
     "is_admin": false
@@ -153,8 +153,8 @@
     },
     {
       "path": "inputs/states.json",
-      "bytes": 89395,
-      "sha256": "8eae8a17c8af4befd17d26c1035b6f52e6067308a85852c2362c753778dcc7f8"
+      "bytes": 89365,
+      "sha256": "85721f9914fb4a3bab24f8d672d72371bc76cfc891cbe1001808a665a274b861"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -183,8 +183,8 @@
     },
     {
       "path": "outputs/cards.json",
-      "bytes": 799,
-      "sha256": "8da6fba0174c4efa1a473cf17f0fb9cd270a43072aaf334a8b3e29bcfe77902a"
+      "bytes": 1428,
+      "sha256": "d4f38d307cc584459647e31cb5902938ec598050a846a6e4ba78059d38ca160c"
     },
     {
       "path": "outputs/dashboard.json",
@@ -194,7 +194,7 @@
     {
       "path": "outputs/entity-display.json",
       "bytes": 54576,
-      "sha256": "5f28cdc1da3510320667f12becfcd71e6b8b4cfbece23dc5c8e9bc5c46adb655"
+      "sha256": "9928b705cc40d28e6485765148e2f1464cccf1e188ae893c5e6bcc752cb31cbf"
     },
     {
       "path": "outputs/expanded.json",
@@ -255,6 +255,11 @@
       "path": "ws/auth-current_user.json",
       "bytes": 446,
       "sha256": "04ec8d7fc53eba2741439d3b8922d60b3202f29b042d4220726e138b13c2d9fb"
+    },
+    {
+      "path": "ws/config_entries-flow-progress.json",
+      "bytes": 142,
+      "sha256": "f445659781c8478b17632c47794085dae625c1eef6c87618002e2cbc97b06df3"
     },
     {
       "path": "ws/config-area_registry-list.json",
@@ -328,13 +333,18 @@
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 99580,
-      "sha256": "22e46c4ce42a4b3025b4e51222e4c680e1ff74af1bc63679209e25718613caf2"
+      "bytes": 99550,
+      "sha256": "d1cebc8d9580a552826338aa528606292cb99d25822f8b7c3746bc9348bbc15f"
     },
     {
       "path": "ws/manifest-get-frontend.json",
       "bytes": 824,
       "sha256": "e31e886d1580112fbb3cefe259bee3e8f5100b4cdfa8fc189e63c4221a6eff72"
+    },
+    {
+      "path": "ws/repairs-list_issues.json",
+      "bytes": 93,
+      "sha256": "d2b01a5e254dbe6de6fbcabc090ec93f929e7b976da805b1b1d1c1f3b79ea089"
     },
     {
       "path": "ws/strategy-calls.json",

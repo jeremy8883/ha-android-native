@@ -2,6 +2,7 @@ package io.homeassistant.companion.android.dashboard.entity
 
 import io.homeassistant.companion.android.dashboard.display.DisplayFormats
 import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
+import kotlinx.serialization.json.JsonObject
 
 /** Looks up a frontend translation by key, for example `panel.light`. Returns "" when unknown. */
 fun interface Localize {
@@ -43,6 +44,8 @@ data class HassConfig(
  * @property localize frontend strings plus the server's entity translations (state names, units)
  * @property icons the server's icon translations for entity states
  * @property formats number and date formatting in the user's language and time zone (the frontend's `locale`)
+ * @property repairsIssues active, non-ignored repair issues; `null` while loading
+ * @property discoveredFlows config flows started by discovery; `null` while loading
  */
 data class HassSnapshot(
     val states: EntityStates,
@@ -53,4 +56,6 @@ data class HassSnapshot(
     val localize: Localize,
     val icons: IconResources = IconResources.EMPTY,
     val formats: DisplayFormats = JdkDisplayFormats.DEFAULT,
+    val repairsIssues: List<JsonObject>? = null,
+    val discoveredFlows: List<JsonObject>? = null,
 )

@@ -274,8 +274,30 @@ async function captureInPage() {
         loading: Boolean(info?.secondaryLoading),
       };
     }
+    // Cards that subscribe to their data and may hide themselves; with and without hide_empty
+    const infoCards = {};
+    for (const type of ["repairs", "updates", "discovered-devices"]) {
+      for (const hideEmpty of [false, true]) {
+        const el = document.createElement(`hui-${type}-card`);
+        el.hass = hass;
+        el.setConfig({ type, ...(hideEmpty ? { hide_empty: true } : {}) });
+        host.appendChild(el);
+        let info;
+        for (let i = 0; i < 50; i++) {
+          await el.updateComplete;
+          info = el.shadowRoot?.querySelector("ha-tile-info");
+          if (el.hidden || (info && !info.secondaryLoading)) break;
+          await new Promise((r) => setTimeout(r, 100));
+        }
+        infoCards[`${type}${hideEmpty ? ":hide_empty" : ""}`] = {
+          hidden: Boolean(el.hidden),
+          primary: el.hidden ? null : (info?.primary ?? null),
+          secondary: el.hidden ? null : (info?.secondary ?? null),
+        };
+      }
+    }
     host.remove();
-    return { "home-summary": summaries };
+    return { "home-summary": summaries, info: infoCards };
   }
 
   async function captureEntityDisplay(hass, ha) {
@@ -364,6 +386,8 @@ async function captureInPage() {
       language: hass.language,
       category: "entity_component",
     },
+    "repairs-list_issues": { type: "repairs/list_issues" },
+    "config_entries-flow-progress": { type: "config_entries/flow/progress" },
     "frontend-get_translations-entity": { type: "frontend/get_translations", language: hass.language, category: "entity" },
   };
   const ws = {};

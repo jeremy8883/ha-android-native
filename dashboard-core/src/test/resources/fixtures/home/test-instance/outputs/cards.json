@@ -35,5 +35,37 @@
       "secondary": "No one home",
       "loading": false
     }
+  },
+  "info": {
+    "repairs": {
+      "hidden": false,
+      "primary": "Repairs",
+      "secondary": "No issues"
+    },
+    "repairs:hide_empty": {
+      "hidden": true,
+      "primary": null,
+      "secondary": null
+    },
+    "updates": {
+      "hidden": false,
+      "primary": "Updates",
+      "secondary": "4 updates available"
+    },
+    "updates:hide_empty": {
+      "hidden": false,
+      "primary": "Updates",
+      "secondary": "4 updates available"
+    },
+    "discovered-devices": {
+      "hidden": false,
+      "primary": "Devices discovered",
+      "secondary": "No devices to add"
+    },
+    "discovered-devices:hide_empty": {
+      "hidden": true,
+      "primary": null,
+      "secondary": null
+    }
   }
 }

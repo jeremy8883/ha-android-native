@@ -154,10 +154,22 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         )
     }.shareIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), replay = 1)
 
-    /** The latest snapshot for cards: structure inputs with live entity states. */
-    val hass: StateFlow<HassSnapshot?> = combine(structureInputs, entityStates.filterNotNull()) { inputs, states ->
-        inputs.hass.copy(states = states)
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
+    // Live collections some cards show; `null` until first loaded
+    private val repairsIssues = repository.repairsIssues()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
+    private val discoveredFlows = repository.discoveredFlows()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
+
+    /** The latest snapshot for cards: structure inputs with live entity states and collections. */
+    val hass: StateFlow<HassSnapshot?> = combine(
+        structureInputs,
+        entityStates.filterNotNull(),
+        repairsIssues,
+        discoveredFlows,
+    ) { inputs, states, repairs, flows ->
+        inputs.hass.copy(states = states, repairsIssues = repairs, discoveredFlows = flows)
+    }.flowOn(Dispatchers.Default)
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
 
     val uiState: StateFlow<DashboardUiState> = selectedDashboard
         .flatMapLatest { urlPath ->

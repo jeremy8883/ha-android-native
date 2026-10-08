@@ -7,6 +7,8 @@ import io.homeassistant.companion.android.dashboard.entity.IconResources
 import io.homeassistant.companion.android.dashboard.entity.JsonTranslations
 import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.entity.Registries
+import io.homeassistant.companion.android.dashboard.entity.activeRepairsIssues
+import io.homeassistant.companion.android.dashboard.entity.applyConfigFlowMessages
 import io.homeassistant.companion.android.dashboard.entity.parseAreaRegistry
 import io.homeassistant.companion.android.dashboard.entity.parseDeviceRegistry
 import io.homeassistant.companion.android.dashboard.entity.parseEntityRegistryDisplay
@@ -21,6 +23,7 @@ import io.homeassistant.companion.android.dashboard.strategy.StrategyData
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
@@ -85,6 +88,11 @@ class GoldenFixture(variant: String) {
             panels = wsResult("get_panels").jsonObject.keys,
             // then the bundled frontend strings the app ships, then the server's entity translations
             localize = Localize { key -> strings[key] ?: bundled(key) }.withFallback(backend),
+            repairsIssues = (json("ws/repairs-list_issues.json")["result"] as? JsonObject)?.let(::activeRepairsIssues),
+            discoveredFlows = (json("ws/config_entries-flow-progress.json")["result"] as? JsonArray)?.let { flows ->
+                // What the subscription's first event holds: every flow in progress as a `null`-type message
+                applyConfigFlowMessages(null, JsonArray(flows.map { JsonObject(mapOf("type" to JsonNull, "flow" to it)) }))
+            },
             icons = IconResources.fromResults(
                 entityComponent = wsResult("frontend-get_icons-entity_component").jsonObject,
                 entity = wsResult("frontend-get_icons-entity").jsonObject,

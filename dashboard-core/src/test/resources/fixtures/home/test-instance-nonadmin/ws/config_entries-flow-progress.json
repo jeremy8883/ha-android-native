@@ -1,0 +1,9 @@
+{
+  "request": {
+    "type": "config_entries/flow/progress"
+  },
+  "error": {
+    "code": "unauthorized",
+    "message": "Unauthorized"
+  }
+}

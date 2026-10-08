@@ -1,5 +1,5 @@
 {
-  "now": "2026-10-08T07:50:03.064Z",
+  "now": "2026-10-08T07:54:09.888Z",
   "locale": {
     "language": "en",
     "number_format": "language",
@@ -225,7 +225,7 @@
     "sensor.sun_next_dawn": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 5:20 AM",
-      "secondary": "In 22 hours",
+      "secondary": "In 21 hours",
       "names": {
         "default": "Sun Next dawn",
         "entity": "Next dawn",
@@ -356,8 +356,8 @@
     },
     "sensor.living_room_temperature": {
       "icon": "mdi:thermometer",
-      "state": "21.0 °C",
-      "secondary": "21.0 °C",
+      "state": "21.4 °C",
+      "secondary": "21.4 °C",
       "names": {
         "default": "Living room temperature",
         "entity": "Living room temperature",
@@ -369,8 +369,8 @@
     },
     "sensor.living_room_humidity": {
       "icon": "mdi:water-percent",
-      "state": "46%",
-      "secondary": "46%",
+      "state": "50%",
+      "secondary": "50%",
       "names": {
         "default": "Living room humidity",
         "entity": "Living room humidity",
@@ -434,8 +434,8 @@
     },
     "sensor.house_power": {
       "icon": "mdi:flash",
-      "state": "650 W",
-      "secondary": "650 W",
+      "state": "678 W",
+      "secondary": "678 W",
       "names": {
         "default": "House power",
         "entity": "House power",
@@ -1424,8 +1424,8 @@
     },
     "sensor.total_energy_kwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "19.50 kWh",
-      "secondary": "19.50 kWh",
+      "state": "20.00 kWh",
+      "secondary": "20.00 kWh",
       "names": {
         "default": "Total energy 1",
         "entity": "Total energy 1",
@@ -1450,8 +1450,8 @@
     },
     "sensor.total_gas_m3": {
       "icon": "mdi:meter-gas",
-      "state": "0.98 m³",
-      "secondary": "0.98 m³",
+      "state": "1.00 m³",
+      "secondary": "1.00 m³",
       "names": {
         "default": "Total gas 1",
         "entity": "Total gas 1",
@@ -1463,8 +1463,8 @@
     },
     "sensor.total_gas_ft3": {
       "icon": "mdi:meter-gas",
-      "state": "1.10 m³",
-      "secondary": "1.10 m³",
+      "state": "1.13 m³",
+      "secondary": "1.13 m³",
       "names": {
         "default": "Total gas 2",
         "entity": "Total gas 2",

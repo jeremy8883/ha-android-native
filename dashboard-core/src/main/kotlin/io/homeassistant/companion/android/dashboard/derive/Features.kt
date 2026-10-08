@@ -20,6 +20,7 @@ object EntityFeature {
     const val CLIMATE_TARGET_TEMPERATURE_RANGE = 2
     const val FAN_SET_SPEED = 1
     const val WATER_HEATER_TARGET_TEMPERATURE = 1
+    const val UPDATE_INSTALL = 1
     const val UPDATE_PROGRESS = 4
 }
 
