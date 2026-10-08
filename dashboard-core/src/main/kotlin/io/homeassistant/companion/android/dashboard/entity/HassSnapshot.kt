@@ -25,9 +25,12 @@ data class HassConfig(
     val recoveryMode: Boolean,
     val version: String?,
     val components: Set<String>,
-    /** `unit_system.temperature`, for example "°C". */
-    val temperatureUnit: String? = null,
+    /** `unit_system`: the unit of each measure, for example `temperature` "°C" and `length` "km". */
+    val unitSystem: Map<String, String> = emptyMap(),
 ) {
+    /** `unit_system.temperature`, for example "°C". */
+    val temperatureUnit: String? get() = unitSystem["temperature"]
+
     companion object {
         val UNKNOWN = HassConfig(state = null, recoveryMode = false, version = null, components = emptySet())
 

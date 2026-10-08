@@ -3,7 +3,9 @@ package io.homeassistant.companion.android.dashboard.derive
 import io.homeassistant.companion.android.dashboard.display.formatEntityState
 import io.homeassistant.companion.android.dashboard.display.stateDisplay
 import io.homeassistant.companion.android.dashboard.golden.GoldenFixture
+import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.obj
+import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
 import java.time.Instant
@@ -53,6 +55,20 @@ class EntityDisplayGoldenTest {
         val now = Instant.parse(fixture.json("outputs/entity-display.json").string("now"))
         val state = fixture.hass.states.getValue(entityId)
         assertEquals(expected["secondary"]?.stringOrNull, fixture.hass.stateDisplay(state, content = null, now = now))
+    }
+
+    @TestFactory
+    fun `Given the tiles of the generated dashboard when deriving them then name and secondary line match hui-tile-card`(): List<DynamicTest> = GoldenFixture.VARIANTS.flatMap { variant ->
+        val fixture = GoldenFixture(variant)
+        val display = fixture.json("outputs/entity-display.json")
+        val now = Instant.parse(display.string("now"))
+        display.objects("tiles").mapIndexed { index, captured ->
+            val config = captured.obj("config")!!
+            DynamicTest.dynamicTest("$variant $index ${config.string("entity")}") {
+                val tile = fixture.hass.tileModel(CardConfig(config), now)
+                assertEquals(captured.string("name") to captured.string("secondary"), tile?.name to tile?.state)
+            }
+        }
     }
 
     private fun perEntity(check: (GoldenFixture, String, JsonObject) -> Unit): List<DynamicTest> = GoldenFixture.VARIANTS.flatMap { variant ->

@@ -1,5 +1,5 @@
 {
-  "now": "2026-10-08T07:54:09.888Z",
+  "now": "2026-10-08T08:46:27.197Z",
   "locale": {
     "language": "en",
     "number_format": "language",
@@ -238,7 +238,7 @@
     "sensor.sun_next_dusk": {
       "icon": "mdi:sun-clock",
       "state": "October 8, 2026 at 5:36 PM",
-      "secondary": "In 10 hours",
+      "secondary": "In 9 hours",
       "names": {
         "default": "Sun Next dusk",
         "entity": "Next dusk",
@@ -251,7 +251,7 @@
     "sensor.sun_next_midnight": {
       "icon": "mdi:sun-clock",
       "state": "October 8, 2026 at 11:27 PM",
-      "secondary": "In 16 hours",
+      "secondary": "In 15 hours",
       "names": {
         "default": "Sun Next midnight",
         "entity": "Next midnight",
@@ -264,7 +264,7 @@
     "sensor.sun_next_noon": {
       "icon": "mdi:sun-clock",
       "state": "October 8, 2026 at 11:28 AM",
-      "secondary": "In 4 hours",
+      "secondary": "In 3 hours",
       "names": {
         "default": "Sun Next noon",
         "entity": "Next noon",
@@ -277,7 +277,7 @@
     "sensor.sun_next_rising": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 5:55 AM",
-      "secondary": "Tomorrow",
+      "secondary": "In 21 hours",
       "names": {
         "default": "Sun Next rising",
         "entity": "Next rising",
@@ -290,7 +290,7 @@
     "sensor.sun_next_setting": {
       "icon": "mdi:sun-clock",
       "state": "October 8, 2026 at 5:01 PM",
-      "secondary": "In 9 hours",
+      "secondary": "In 8 hours",
       "names": {
         "default": "Sun Next setting",
         "entity": "Next setting",
@@ -356,8 +356,8 @@
     },
     "sensor.living_room_temperature": {
       "icon": "mdi:thermometer",
-      "state": "21.4 °C",
-      "secondary": "21.4 °C",
+      "state": "21.6 °C",
+      "secondary": "21.6 °C",
       "names": {
         "default": "Living room temperature",
         "entity": "Living room temperature",
@@ -369,8 +369,8 @@
     },
     "sensor.living_room_humidity": {
       "icon": "mdi:water-percent",
-      "state": "50%",
-      "secondary": "50%",
+      "state": "49%",
+      "secondary": "49%",
       "names": {
         "default": "Living room humidity",
         "entity": "Living room humidity",
@@ -434,8 +434,8 @@
     },
     "sensor.house_power": {
       "icon": "mdi:flash",
-      "state": "678 W",
-      "secondary": "678 W",
+      "state": "622 W",
+      "secondary": "622 W",
       "names": {
         "default": "House power",
         "entity": "House power",
@@ -1424,8 +1424,8 @@
     },
     "sensor.total_energy_kwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "20.00 kWh",
-      "secondary": "20.00 kWh",
+      "state": "25.00 kWh",
+      "secondary": "25.00 kWh",
       "names": {
         "default": "Total energy 1",
         "entity": "Total energy 1",
@@ -1450,8 +1450,8 @@
     },
     "sensor.total_gas_m3": {
       "icon": "mdi:meter-gas",
-      "state": "1.00 m³",
-      "secondary": "1.00 m³",
+      "state": "1.25 m³",
+      "secondary": "1.25 m³",
       "names": {
         "default": "Total gas 1",
         "entity": "Total gas 1",
@@ -1463,8 +1463,8 @@
     },
     "sensor.total_gas_ft3": {
       "icon": "mdi:meter-gas",
-      "state": "1.13 m³",
-      "secondary": "1.13 m³",
+      "state": "1.42 m³",
+      "secondary": "1.42 m³",
       "names": {
         "default": "Total gas 2",
         "entity": "Total gas 2",
@@ -1527,9 +1527,9 @@
       }
     },
     "switch.decorative_lights": {
-      "icon": "mdi:toggle-switch-variant",
-      "state": "On",
-      "secondary": "On",
+      "icon": "mdi:toggle-switch-variant-off",
+      "state": "Off",
+      "secondary": "Off",
       "names": {
         "default": "Decorative Lights",
         "entity": "Decorative Lights",
@@ -1891,9 +1891,9 @@
       }
     },
     "weather.forecast_native_test_home": {
-      "icon": "mdi:weather-partly-cloudy",
-      "state": "Partly cloudy",
-      "secondary": "Partly cloudy",
+      "icon": "mdi:weather-rainy",
+      "state": "Rainy",
+      "secondary": "Rainy",
       "names": {
         "default": "Forecast Native Test Home",
         "entity": "Native Test Home",
@@ -2033,5 +2033,742 @@
         "device_entity": "sdk_gphone64_x86_64 Charger type"
       }
     }
-  }
+  },
+  "tiles": [
+    {
+      "config": {
+        "type": "tile",
+        "entity": "light.living_room_rgbww_lights",
+        "state_content": [
+          "state",
+          "area_name"
+        ],
+        "show_entity_picture": true
+      },
+      "name": "Living Room RGBWW Lights",
+      "secondary": "On · Living Room"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "climate.heatpump",
+        "state_content": [
+          "state",
+          "area_name"
+        ],
+        "show_entity_picture": true
+      },
+      "name": "HeatPump",
+      "secondary": "Heat · Living Room"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "lock.front_door_deadbolt",
+        "state_content": [
+          "state",
+          "area_name"
+        ],
+        "show_entity_picture": true
+      },
+      "name": "Front door deadbolt",
+      "secondary": "Locked · Living Room"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "weather.demo_weather_north",
+        "name": "Weather",
+        "state_content": [
+          "temperature",
+          "state"
+        ],
+        "grid_options": {
+          "columns": 6
+        }
+      },
+      "name": "Weather",
+      "secondary": "-24.4 °C · Rainy"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "zone.home",
+        "vertical": true,
+        "name": "Devices",
+        "icon": "mdi:devices",
+        "hide_state": true,
+        "tap_action": {
+          "action": "navigate",
+          "navigation_path": "other-devices"
+        },
+        "grid_options": {
+          "rows": 2,
+          "columns": 4
+        }
+      },
+      "name": "Devices",
+      "secondary": "0"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "light.ceiling_lights",
+        "features": [
+          {
+            "type": "light-brightness"
+          }
+        ]
+      },
+      "name": "Ceiling Lights",
+      "secondary": "71%"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "light.living_room_rgbww_lights",
+        "name": "RGBWW Lights",
+        "features": [
+          {
+            "type": "light-brightness"
+          }
+        ]
+      },
+      "name": "RGBWW Lights",
+      "secondary": "71%"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "climate.heatpump",
+        "features": [
+          {
+            "type": "target-temperature"
+          }
+        ]
+      },
+      "name": "HeatPump",
+      "secondary": "Heat · 25 °C"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "fan.living_room_fan",
+        "name": "Fan",
+        "features": [
+          {
+            "type": "fan-speed"
+          }
+        ]
+      },
+      "name": "Fan",
+      "secondary": "Off"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "cover.hall_window",
+        "features": [
+          {
+            "type": "cover-open-close"
+          }
+        ]
+      },
+      "name": "Hall Window",
+      "secondary": "Open · 10%"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "cover.living_room_window",
+        "name": "Window",
+        "features": [
+          {
+            "type": "cover-open-close"
+          }
+        ]
+      },
+      "name": "Window",
+      "secondary": "Open · 70%"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "alarm_control_panel.security",
+        "features": [
+          {
+            "type": "alarm-modes"
+          }
+        ]
+      },
+      "name": "Security",
+      "secondary": "Disarmed"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "lock.front_door_deadbolt",
+        "features": [
+          {
+            "type": "lock-commands"
+          }
+        ]
+      },
+      "name": "Front door deadbolt",
+      "secondary": "Locked"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "binary_sensor.front_door"
+      },
+      "name": "Front door",
+      "secondary": "Closed"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "media_player.living_room_tv",
+        "name": "TV"
+      },
+      "name": "TV",
+      "secondary": "Playing"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.carbon_dioxide",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Carbon dioxide",
+      "secondary": "54 ppm"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "switch.decorative_lights",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Decorative Lights",
+      "secondary": "Off"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.living_room_temperature",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Living room temperature",
+      "secondary": "21.6 °C"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.living_room_humidity",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Living room humidity",
+      "secondary": "49%"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "light.kitchen_lights",
+        "name": "Lights",
+        "features": [
+          {
+            "type": "light-brightness"
+          }
+        ]
+      },
+      "name": "Lights",
+      "secondary": "71%"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "cover.kitchen_window",
+        "name": "Window",
+        "features": [
+          {
+            "type": "cover-open-close"
+          }
+        ]
+      },
+      "name": "Window",
+      "secondary": "Closed"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "lock.back_door_lock",
+        "features": [
+          {
+            "type": "lock-commands"
+          }
+        ]
+      },
+      "name": "Back door lock",
+      "secondary": "Unlocked"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "media_player.kitchen_speaker",
+        "name": "Speaker"
+      },
+      "name": "Speaker",
+      "secondary": "Playing"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.carbon_monoxide",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Carbon monoxide",
+      "secondary": "54 ppm"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "counter.coffee_cups",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Coffee cups",
+      "secondary": "0"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "binary_sensor.kitchen_motion",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Kitchen motion",
+      "secondary": "Detected"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "light.bed_light",
+        "features": [
+          {
+            "type": "light-brightness"
+          }
+        ]
+      },
+      "name": "Bed Light",
+      "secondary": "Off"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "climate.ecobee",
+        "features": [
+          {
+            "type": "target-temperature"
+          }
+        ]
+      },
+      "name": "Ecobee",
+      "secondary": "Heat/Cool · 23 °C"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "fan.ceiling_fan",
+        "features": [
+          {
+            "type": "fan-speed"
+          }
+        ]
+      },
+      "name": "Ceiling Fan",
+      "secondary": "Off"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "binary_sensor.bedroom_window",
+        "name": "Window"
+      },
+      "name": "Window",
+      "secondary": "Open"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "media_player.bedroom_speaker",
+        "name": "Speaker"
+      },
+      "name": "Speaker",
+      "secondary": "Playing"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.thermostat",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Thermostat",
+      "secondary": "Eco"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "input_number.bedroom_brightness",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Bedroom brightness",
+      "secondary": "0%"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.bedroom_temperature",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Bedroom temperature",
+      "secondary": "19.4 °C"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "water_heater.demo_water_heater",
+        "features": [
+          {
+            "type": "target-temperature"
+          }
+        ]
+      },
+      "name": "Demo Water Heater",
+      "secondary": "Eco"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "cover.garage_door",
+        "name": "Door",
+        "features": [
+          {
+            "type": "cover-open-close"
+          }
+        ]
+      },
+      "name": "Door",
+      "secondary": "Closed"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "binary_sensor.garage_door_contact",
+        "name": "Door contact"
+      },
+      "name": "Door contact",
+      "secondary": "Closed"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "binary_sensor.basement_floor_wet"
+      },
+      "name": "Basement Floor Wet",
+      "secondary": "Dry"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.power_consumption",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Power consumption",
+      "secondary": "100 W"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.total_energy_kwh",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Total energy 1",
+      "secondary": "25.00 kWh"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.total_gas_m3",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Total gas 1",
+      "secondary": "1.25 m³"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "vacuum.demo_vacuum_0_ground_floor",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Demo vacuum 0 ground floor",
+      "secondary": "Docked"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "timer.laundry",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Laundry",
+      "secondary": "Idle"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "light.office_rgbw_lights",
+        "name": "RGBW Lights",
+        "features": [
+          {
+            "type": "light-brightness"
+          }
+        ]
+      },
+      "name": "RGBW Lights",
+      "secondary": "71%"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "climate.hvac",
+        "features": [
+          {
+            "type": "target-temperature"
+          }
+        ]
+      },
+      "name": "Hvac",
+      "secondary": "Cool · 22 °C"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "media_player.office_speaker",
+        "name": "Speaker"
+      },
+      "name": "Speaker",
+      "secondary": "Playing"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "button.push",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Push",
+      "secondary": "Unknown"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "event.push_button_press",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Button press",
+      "secondary": "Unknown"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "switch.ac",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "AC",
+      "secondary": "Off"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.office_temperature",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Office temperature",
+      "secondary": "22.8 °C"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "binary_sensor.office_occupancy",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Office occupancy",
+      "secondary": "Detected"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "light.entrance_color_white_lights",
+        "features": [
+          {
+            "type": "light-brightness"
+          }
+        ]
+      },
+      "name": "Entrance Color + White Lights",
+      "secondary": "71%"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "cover.pergola_roof"
+      },
+      "name": "Pergola Roof",
+      "secondary": "Closed"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "binary_sensor.garden_leak",
+        "name": "Leak"
+      },
+      "name": "Leak",
+      "secondary": "Dry"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "binary_sensor.movement_backyard",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Movement Backyard",
+      "secondary": "Detected"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.outside_temperature",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Outside Temperature",
+      "secondary": "15.6 °C"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.outside_humidity",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Outside Humidity",
+      "secondary": "54%"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "valve.front_garden",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Front Garden",
+      "secondary": "Open"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "valve.orchard",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Orchard",
+      "secondary": "Closed"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "valve.back_garden",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Back Garden",
+      "secondary": "Open · 70%"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "valve.trees",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Trees",
+      "secondary": "Open · 30%"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.garden_temperature",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Garden temperature",
+      "secondary": "13.2 °C"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "switch.garden_irrigation",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Garden irrigation",
+      "secondary": "Off"
+    }
+  ]
 }

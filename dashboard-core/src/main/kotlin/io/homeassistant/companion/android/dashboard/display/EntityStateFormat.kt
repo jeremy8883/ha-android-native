@@ -205,7 +205,7 @@ private fun HassSnapshot.formatAttributeNumber(state: EntityState, attribute: St
         else -> formatNumber(number)
     }
     val unit = when {
-        domain == "weather" -> null
+        domain == "weather" -> weatherUnit(state, attribute)
         attribute in TEMPERATURE_ATTRIBUTES -> config.temperatureUnit
         else -> DOMAIN_ATTRIBUTES_UNITS[domain]?.get(attribute)
     }?.ifEmpty { null }
@@ -215,6 +215,23 @@ private fun HassSnapshot.formatAttributeNumber(state: EntityState, attribute: St
 private fun HassSnapshot.formatAttributeDate(value: String): String? {
     val instant = parseJsDate(value, formats.zone) ?: return null
     return if (TIMESTAMP.matches(value)) formats.dateTimeWithSeconds(instant) else formats.date(instant)
+}
+
+/** Port of `getWeatherUnit` (src/data/weather.ts): the entity's own unit, else one from the unit system. */
+private fun HassSnapshot.weatherUnit(state: EntityState, measure: String): String {
+    val attributes = state.attributes
+    val length = config.unitSystem["length"].orEmpty()
+    val metric = length == UNIT_KM
+    return when (measure) {
+        "visibility" -> attributes.string("visibility_unit")?.ifEmpty { null } ?: length
+        "precipitation" -> attributes.string("precipitation_unit")?.ifEmpty { null } ?: if (metric) "mm" else "in"
+        "pressure" -> attributes.string("pressure_unit")?.ifEmpty { null } ?: if (metric) "hPa" else "inHg"
+        "apparent_temperature", "dew_point", "temperature", "templow" ->
+            attributes.string("temperature_unit")?.ifEmpty { null } ?: config.temperatureUnit.orEmpty()
+        "wind_speed" -> attributes.string("wind_speed_unit")?.ifEmpty { null } ?: "$length/h"
+        "cloud_coverage", "humidity", "precipitation_probability" -> "%"
+        else -> config.unitSystem[measure].orEmpty()
+    }
 }
 
 /** Port of `isNumericFromAttributes`. */
@@ -263,6 +280,7 @@ private fun jsNumberString(value: Double): String = when {
 }
 
 private const val DEFAULT_MAX_FRACTION_DIGITS = 2
+private const val UNIT_KM = "km"
 private const val MONETARY_FRACTION_DIGITS = 2
 private const val HOURS_PER_DAY = 24
 private const val MINUTES_PER_HOUR = 60

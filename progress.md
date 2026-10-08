@@ -66,6 +66,7 @@ Update it in the same commit as the work it describes.
     - [x] home-summary: `HomeSummaryModel` golden-tested against `hui-home-summary-card` (outputs/cards.json); rendered with the tile layout. Energy stays "loading" until energy statistics are fetched
     - [x] UI polish for the initial tile, heading and compact area renderers: shared HA-token card surface, active/unavailable treatment, and safe dynamic MDI icons
   - [x] View navigation like upstream: tabs only for non-subviews, `navigate` actions open subviews, back arrow plus system back
+  - [x] Weather attribute units (`getWeatherUnit`); every tile of the generated dashboard is golden-tested for name and secondary line (outputs/entity-display.json `tiles`)
   - [x] Entity icons (`ha-state-icon`: registry, attribute, server icon translations, built-in state icons, domain fallback), entity names (`formatEntityName`), formatted states (`formatEntityState`, attribute values) and the tile secondary line (`state-display`, incl. relative times), golden-tested per entity against the real frontend (outputs/entity-display.json)
   - [x] Sections layout: card sizes from each card type's `getGridOptions` plus `grid_options`/`layout_options`, CSS-grid auto-placement in each section's 12×span grid, sections placed in the view's columns (hidden sections take no space). Rendered by `ui/DashboardGrid.kt`; fixed-row cards get a 56dp-row minimum height. Not yet: the overview sidebar, `dense_section_placement`, masonry columns, a golden test against browser placement
   - [x] Actions: tap/hold/double-tap (and the tile icon) resolve through a port of `handleAction` (`action/`): toggle (turnOnOffEntity), perform-action/call-service via `call_service`, navigate (views of this dashboard), url, confirmation dialogs with exemptions, upstream's failure toasts. More-info, assist, fire-dom-event and navigation outside the dashboard show "not available yet" for now. Verified toggling on the test instance
@@ -152,7 +153,7 @@ Update it in the same commit as the work it describes.
 - Sections grid is in (`layout/ViewLayout.kt` + `ui/DashboardGrid.kt`). Tiles now render single-line, start-aligned text (HATextStyle.Body is centred by default, which broke narrow tiles); Astra may want to revisit.
 - Cards get `onGesture(config, gesture)`; `cardActions(card)` says which gestures an element reacts to. `DashboardGrid` wraps every item in its own Box (a card drawing nothing crashed the measure otherwise).
 - Feature controls are first versions: Astra may want to restyle them (the enabled lock button blends into an inactive tile).
-- Not ported yet: weather attribute units (the weather tile shows "-24.4 · Rainy" without °C), `number_format: none`/explicit 12/24h preferences, the user's frontend locale settings (we use language formatting and the device time zone).
+- Not ported yet: `number_format: none`/explicit 12/24h preferences, the user's frontend locale settings (we use language formatting and the device time zone).
 
 ### 2026-10-08: Astra UI track
 - Polished the initial native tile, heading and compact area renderers and split them into focused files under `dashboard/ui/cards/`.

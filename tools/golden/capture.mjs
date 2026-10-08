@@ -256,6 +256,40 @@ async function visitView(page, path, strategyType) {
 async function captureInPage() {
   const g = window.__golden;
 
+  // Name and secondary line of every tile of the expanded dashboard, as hui-tile-card computes them
+  async function captureTiles(hass, expanded) {
+    const tiles = [];
+    const walk = (node) => {
+      if (Array.isArray(node)) return node.forEach(walk);
+      if (!node || typeof node !== "object") return;
+      if (node.type === "tile" && node.entity) tiles.push(node);
+      Object.values(node).forEach(walk);
+    };
+    walk(expanded?.views ?? []);
+    const seen = new Set();
+    const out = [];
+    for (const cfg of tiles) {
+      const key = JSON.stringify([cfg.entity, cfg.name ?? null, cfg.state_content ?? null, cfg.time_format ?? null]);
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const stateObj = hass.states[cfg.entity];
+      if (!stateObj) continue;
+      const name = hass.formatEntityName(stateObj, cfg.name);
+      const sd = document.createElement("state-display");
+      sd.hass = hass;
+      sd.stateObj = stateObj;
+      sd.content = cfg.state_content;
+      sd.timeFormat = cfg.time_format;
+      document.body.appendChild(sd);
+      await sd.updateComplete;
+      await new Promise((r) => setTimeout(r, 50));
+      const text = sd.textContent.replace(/\s+/g, " ").trim();
+      sd.remove();
+      out.push({ config: g.clone(cfg), name, secondary: text });
+    }
+    return out;
+  }
+
   // What built-in cards show for given configs, read from their rendered elements
   async function captureCardContent(hass, ha) {
     const host = document.createElement("div");
@@ -498,6 +532,7 @@ async function captureInPage() {
   // ---- per-entity display: the icon (ha-state-icon), names (formatEntityName) and the tile's secondary
   // line (state-display, default content), all from the same hass snapshot
   const display = await captureEntityDisplay(hass, ha);
+  display.tiles = await captureTiles(hass, expanded);
   const cards = await captureCardContent(hass, ha);
   // Frontend bundle strings used to display states (state.default.unknown, ...)
   const stateStrings = {};

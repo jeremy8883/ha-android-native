@@ -83,7 +83,7 @@ class GoldenFixture(variant: String) {
                 recoveryMode = config.boolean("recovery_mode") == true,
                 version = config.string("version"),
                 components = config["components"]?.jsonArray?.mapNotNull { it.stringOrNull }?.toSet().orEmpty(),
-                temperatureUnit = config.obj("unit_system")?.string("temperature"),
+                unitSystem = config.obj("unit_system")?.mapValues { unit -> unit.value.stringOrNull.orEmpty() }.orEmpty(),
             ),
             panels = wsResult("get_panels").jsonObject.keys,
             // then the bundled frontend strings the app ships, then the server's entity translations
