@@ -4,6 +4,7 @@ import io.homeassistant.companion.android.dashboard.display.formatEntityState
 import io.homeassistant.companion.android.dashboard.display.stateDisplay
 import io.homeassistant.companion.android.dashboard.golden.GoldenFixture
 import io.homeassistant.companion.android.dashboard.model.CardConfig
+import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
@@ -66,7 +67,9 @@ class EntityDisplayGoldenTest {
             val config = captured.obj("config")!!
             DynamicTest.dynamicTest("$variant $index ${config.string("entity")}") {
                 val tile = fixture.hass.tileModel(CardConfig(config), now)
-                assertEquals(captured.string("name") to captured.string("secondary"), tile?.name to tile?.state)
+                // The capture renders state-display for every tile; hui-tile-card skips it with hide_state
+                val secondary = captured.string("secondary").takeUnless { config.boolean("hide_state") == true }
+                assertEquals(captured.string("name") to secondary, tile?.name to tile?.state)
             }
         }
     }
