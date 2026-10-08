@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DrawerState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.NavigationDrawerItem
@@ -37,12 +38,14 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
  * (for admins) and the profile, like `ha-sidebar`'s fixed entries.
  *
  * @param selected the url path of the panel shown now
+ * @param drawerState the drawer's state, which back closes (with Material's predictive back animation)
  * @param sidebar the panels, or why they couldn't be loaded, with [onRetry] to try again
  * @param onSwitchServer shows the server picker; `null` hides the entry (a single server)
  * @param onOpen called with the path of the chosen entry
  */
 @Composable
 internal fun NavigationDrawerContent(
+    drawerState: DrawerState,
     sidebar: Loadable<SidebarState>,
     selected: String?,
     onSwitchServer: (() -> Unit)? = null,
@@ -70,7 +73,11 @@ internal fun NavigationDrawerContent(
     // Material's phone drawer: the screen's width less a touch target for the scrim, at most 320dp
     val screenWidth = with(LocalDensity.current) { LocalWindowInfo.current.containerSize.width.toDp() }
     val width = (screenWidth - DRAWER_SCRIM_GAP).coerceIn(DRAWER_MIN_WIDTH, DRAWER_MAX_WIDTH)
-    ModalDrawerSheet(modifier = Modifier.width(width), drawerContainerColor = colors.colorSurfaceDefault) {
+    ModalDrawerSheet(
+        drawerState = drawerState,
+        modifier = Modifier.width(width),
+        drawerContainerColor = colors.colorSurfaceDefault,
+    ) {
         Column(
             modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(vertical = HADimens.SPACE2),
         ) {

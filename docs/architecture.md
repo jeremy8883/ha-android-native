@@ -105,7 +105,12 @@ WS / Room ──► Raw state (single source)                  Derived (pure, ne
   server error, unexpected response). `KeptData` (`data/KeptData.kt`) loads it when collected, again on change events,
   after every reconnection (`WebSocketRepository.connectionStatus()` counts connections) and after retryable failures
   with backoff; a failed attempt keeps the loaded value. The last value of each piece is kept per server
-  (`LoadedData`, in memory for now; the Room cache will take its place), so a screen collected again starts from it.
+  (`LoadedData`): in memory, and in the dashboard cache (`data/cache/`, its own Room database, so it never touches the
+  app's migrations), so a screen collected again, or the app started again, starts from it, even offline. What is
+  cached is the raw server responses (bundled by piece, `ServerResponses.kt`), parsed the same way as when loaded;
+  entity states are one row per entity in the compressed `subscribe_entities` form, written only when they change;
+  template renderings are cached too. Writes are batched (2s). A server's cache is removed with the server (logging
+  out removes it); there is no expiry, and the offline bar says how old the data is.
   The first `subscribe_entities` event after a reconnection is a full snapshot and replaces the states.
 - **Screen states:** nothing loaded → spinner; nothing could be loaded → error with Retry; loaded data being loaded
   again → thin bar under the top bar; connection lost (after 1s, like the frontend's toast) → a bar at the bottom,

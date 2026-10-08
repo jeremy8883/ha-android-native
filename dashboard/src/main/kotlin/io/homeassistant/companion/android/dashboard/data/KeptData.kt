@@ -3,6 +3,7 @@ package io.homeassistant.companion.android.dashboard.data
 import io.homeassistant.companion.android.common.data.websocket.WebSocketConnectionStatus
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Instant
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.channels.Channel
@@ -26,13 +27,13 @@ import timber.log.Timber
  */
 interface ValueKeeper<T> {
     /** The value kept, or `null` when there is none. */
-    fun get(): Kept<T>?
+    suspend fun get(): Kept<T>?
 
     fun put(value: T)
 }
 
-/** A kept value, which may itself be `null` when that is what was loaded. */
-data class Kept<out T>(val value: T)
+/** A kept value, which may itself be `null` when that is what was loaded, and when it was kept. */
+data class Kept<out T>(val value: T, val at: Instant)
 
 /** How long to wait before the next attempt after [attempt] consecutive failures. */
 fun interface RetryDelays {
@@ -164,8 +165,8 @@ class KeptData<T>(
         current != null
     }
 
-    private fun initialState(): Loadable<T> =
-        keeper.get()?.let { Loadable.Ready(it.value, refreshing = true) } ?: Loadable.Loading
+    private suspend fun initialState(): Loadable<T> =
+        keeper.get()?.let { Loadable.Ready(it.value, refreshing = true, keptAt = it.at) } ?: Loadable.Loading
 }
 
 /** The state last sent through [send]. */

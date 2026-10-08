@@ -1,5 +1,7 @@
 package io.homeassistant.companion.android.dashboard.data
 
+import kotlin.time.Instant
+
 /**
  * Server data as the screen sees it. "Not loaded yet" and "failed" are kept apart from a loaded value, so a failure is
  * never shown as empty data.
@@ -14,9 +16,15 @@ sealed interface Loadable<out T> {
      * @property refreshing whether it is being loaded again, for example after a reconnection
      * @property refreshError why the last attempt to load it again failed, while [value] is kept; `null` once one
      * succeeds
+     * @property keptAt when [value] was loaded, while it is one kept from before (the cache, or earlier in the app's
+     * life) rather than loaded since; `null` once loaded
      */
-    data class Ready<out T>(val value: T, val refreshing: Boolean = false, val refreshError: LoadError? = null) :
-        Loadable<T>
+    data class Ready<out T>(
+        val value: T,
+        val refreshing: Boolean = false,
+        val refreshError: LoadError? = null,
+        val keptAt: Instant? = null,
+    ) : Loadable<T>
 
     /** Nothing could be loaded. Attempts continue (see [LoadError.retries]). */
     data class Failed(val error: LoadError) : Loadable<Nothing>
@@ -29,12 +37,12 @@ val <T> Loadable<T>.valueOrNull: T? get() = (this as? Loadable.Ready)?.value
 inline fun <T, R> Loadable<T>.map(transform: (T) -> R): Loadable<R> = when (this) {
     Loadable.Loading -> Loadable.Loading
     is Loadable.Failed -> this
-    is Loadable.Ready -> Loadable.Ready(transform(value), refreshing, refreshError)
+    is Loadable.Ready -> Loadable.Ready(transform(value), refreshing, refreshError, keptAt)
 }
 
 /**
  * [a] and [b] as one: failed when either failed, loading when either is still loading, otherwise ready with their
- * values given to [transform], refreshing when either is, and with the first refresh error.
+ * values given to [transform], refreshing when either is, with the first refresh error and the oldest kept time.
  */
 fun <A, B, R> combineLoadables(a: Loadable<A>, b: Loadable<B>, transform: (A, B) -> R): Loadable<R> =
     combineAll(a, b) { values ->
@@ -63,6 +71,8 @@ private fun <R> combineAll(vararg loadables: Loadable<*>, transform: (List<Any?>
             value = transform(ready.map { it.value }),
             refreshing = ready.any { it.refreshing },
             refreshError = ready.firstNotNullOfOrNull { it.refreshError },
+            // The oldest of the values
+            keptAt = ready.mapNotNull { it.keptAt }.minOrNull(),
         )
     }
 }

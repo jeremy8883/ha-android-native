@@ -62,22 +62,22 @@ internal fun RefreshIndicator(visible: Boolean, modifier: Modifier = Modifier) {
 }
 
 /**
- * The bottom of the screen, over the content: messages for the user, and below them while the connection is lost,
- * a bar saying so and, when [dataShown], how old the data shown is.
+ * The bottom of the screen, over the content: messages for the user, and below them while [offline], a bar saying
+ * so and, when known, when the data shown was last current ([updatedAt]).
  */
 @Composable
 internal fun DashboardBottomBars(
     snackbar: SnackbarHostState,
-    offlineSince: Instant?,
-    dataShown: Boolean,
+    offline: Boolean,
+    updatedAt: Instant?,
     now: State<ZonedDateTime?>,
 ) {
     Column(Modifier.fillMaxWidth()) {
         SnackbarHost(snackbar)
-        if (offlineSince != null) {
+        if (offline) {
             Snackbar(modifier = Modifier.padding(HADimens.SPACE3)) {
-                val offline = stringResource(R.string.native_dashboard_offline)
-                Text(if (dataShown) "$offline · ${updatedText(offlineSince, now.value)}" else offline)
+                val text = stringResource(R.string.native_dashboard_offline)
+                Text(if (updatedAt != null) "$text · ${updatedText(updatedAt, now.value)}" else text)
             }
         }
     }

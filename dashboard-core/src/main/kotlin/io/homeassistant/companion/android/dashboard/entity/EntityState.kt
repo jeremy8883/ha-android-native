@@ -9,6 +9,8 @@ import java.time.Instant
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.put
 
 /**
  * Authoritative state of one entity, as received from the server.
@@ -63,6 +65,19 @@ fun applyEntityEvent(states: EntityStates, event: JsonObject): EntityStates {
     }
 
     return result
+}
+
+/**
+ * This state in the compressed `subscribe_entities` form, which [applyEntityEvent] reads back from an `a` event, for
+ * keeping states as the server sent them.
+ */
+fun EntityState.toCompressed(): JsonObject = buildJsonObject {
+    put("s", state)
+    put("a", attributes)
+    contextId?.let { put("c", it) }
+    put("lc", lastChanged)
+    // As the server, `lu` only when it differs from `lc`
+    if (lastUpdated != lastChanged) put("lu", lastUpdated)
 }
 
 /** Decode a `get_states` result (full state objects with ISO timestamps). */

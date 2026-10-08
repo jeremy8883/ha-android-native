@@ -19,6 +19,7 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.markdown.renderer.m3)
     implementation(libs.coil.compose)
+    ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.turbine)
     testImplementation(libs.mockk)

@@ -126,13 +126,20 @@ sealed interface DashboardUiState {
  * How current the shown data is, apart from the data itself.
  *
  * @property refreshing whether shown data is being loaded again
- * @property offlineSince when the connection was lost, `null` while connected (or briefly reconnecting)
+ * @property offline whether the connection is lost (after a short grace, so a quick reconnection doesn't show)
+ * @property updatedAt when the shown data was last current: when the oldest of it was loaded while it comes from
+ * before (the cache), otherwise when the connection was lost; `null` while connected and loaded
  * @property refreshError why loading shown data again failed, while the data loaded before stays; connection
- * problems are left to [offlineSince]
+ * problems are left to [offline]
  */
-data class DashboardStatus(val refreshing: Boolean, val offlineSince: Instant?, val refreshError: LoadError?) {
+data class DashboardStatus(
+    val refreshing: Boolean,
+    val offline: Boolean,
+    val updatedAt: Instant?,
+    val refreshError: LoadError?,
+) {
     companion object {
-        val CURRENT = DashboardStatus(refreshing = false, offlineSince = null, refreshError = null)
+        val CURRENT = DashboardStatus(refreshing = false, offline = false, updatedAt = null, refreshError = null)
     }
 }
 
@@ -200,10 +207,10 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         repository.registries(),
         serverInfo,
         combine(strategyData, repository.homeSystemData(), ::Pair),
-        // The first states loaded; later ones don't change the structure
+        // The states until the first live ones (kept ones show until then); later ones don't change the structure
         entityStates.transformWhile {
             emit(it)
-            it !is Loadable.Ready
+            !(it is Loadable.Ready && it.keptAt == null)
         },
         entityDisplay,
     ) { registries, info, (strategy, home), states, display ->
@@ -275,10 +282,12 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         dashboard.map { it?.second.progress() }.distinctUntilChanged(),
         entityStates.map { it.progress() }.distinctUntilChanged(),
         offlineSince,
-    ) { dashboardProgress, statesProgress, offline ->
+    ) { dashboardProgress, statesProgress, offlineSince ->
+        val keptAt = listOfNotNull(dashboardProgress.keptAt, statesProgress.keptAt).minOrNull()
         DashboardStatus(
             refreshing = dashboardProgress.refreshing || statesProgress.refreshing,
-            offlineSince = offline,
+            offline = offlineSince != null,
+            updatedAt = keptAt ?: offlineSince,
             refreshError = (dashboardProgress.refreshError ?: statesProgress.refreshError)
                 ?.takeUnless { it == LoadError.NoResponse },
         )
@@ -592,11 +601,12 @@ private fun shownCards(state: DashboardUiState, withHeader: Boolean): List<CardC
     return cards + header
 }
 
-/** Whether data is being loaded again, and why it last failed to, whatever the value. */
-private data class Progress(val refreshing: Boolean, val refreshError: LoadError?)
+/** Whether data is being loaded again, why it last failed to, and when it was kept, whatever the value. */
+private data class Progress(val refreshing: Boolean, val refreshError: LoadError?, val keptAt: Instant?)
 
 private fun Loadable<*>?.progress(): Progress =
-    (this as? Loadable.Ready)?.let { Progress(it.refreshing, it.refreshError) } ?: Progress(false, null)
+    (this as? Loadable.Ready)?.let { Progress(it.refreshing, it.refreshError, it.keptAt) }
+        ?: Progress(false, null, null)
 
 private fun StoredDashboardConfig.toUiState(
     urlPath: String?,

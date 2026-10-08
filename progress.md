@@ -107,13 +107,13 @@ Update it in the same commit as the work it describes.
 - [ ] Unavailable / unknown / disconnected handling
 
 ### Step 6 — Offline foundations
-- [ ] Persist last dashboard config (Room)
-- [ ] Persist last known entity states
-- [ ] Render from cache with a visible "cached" indicator
+- [x] Persist last dashboard config (Room, `data/cache/`)
+- [x] Persist last known entity states (a row per entity, written when changed)
+- [x] Render from cache with a visible "cached" indicator (offline bar with "Updated …"; refresh bar while loading again)
 - [x] Explicit connection status, resubscribe on reconnect (`connectionStatus()` in `:common`; data reloads on reconnection, the next states snapshot replaces the old states)
 - [x] Failures are never shown as empty data: `Loadable`/`LoadError`, last good value kept, retries, error screen with Retry, refresh bar, offline bar (docs/architecture.md section 4)
-- [ ] Action failures like upstream: translated exception messages, 10s message, haptic, toggles flip back after 2s without a state update
-- [ ] Read-only offline: commands disabled while disconnected
+- [x] Action failures like upstream: translated exception messages, 10s message, haptic, toggles flip back after 2s without a state update
+- [x] Offline, controls stay enabled and a failed action says so (decided 2026-10-09, instead of disabling them)
 
 ### Later — Startup time
 - [ ] Cold launch straight to the dashboard: the splash is held by `LaunchViewModel` until the session is read (`getServerConnectedAndRegistered`, ~130–240ms in a release-like build) and the network reports READY; `CONNECTING` keeps the splash and `UNAVAILABLE` shows NetworkUnavailable instead of the dashboard
@@ -128,7 +128,7 @@ Update it in the same commit as the work it describes.
 - [x] Conditions / visibility (`ConditionsTest`, `CardGroupVisibilityTest`)
 - [ ] Supported features
 - [ ] WS state updates and reconnection
-- [ ] Cached loading
+- [x] Cached loading (`LoadedDataTest`, `KeptDataTest`)
 - [ ] Unknown / unsupported configs
 
 ## Decisions log
@@ -165,7 +165,7 @@ Update it in the same commit as the work it describes.
 ### 2026-10-09: failures are not empty (Opus)
 - The "all rooms empty" bug: after the app was in the background for more than 5s, the dashboard's flows restarted and fetched the registries again, often before the connection was back; the failed requests became empty lists. Data now goes through `Loadable` and `KeptData`, and keeps its last value per server (`LoadedData`).
 - `DashboardRepository` returns `Flow<Loadable<T>>` for every piece of data and `Fetched<T>` for one-off requests; `dashboards()` (unused) is gone. `DashboardViewModel.status` carries refreshing, offline and refresh errors for the screen; `sidebar` is a `Loadable` and the drawer shows its loading and failure.
-- Next: offline read-only controls, action failures like upstream, then the Room cache behind `LoadedData` (clear it on logout and when a server is removed).
+- Then: action failures like upstream (`showActionFailed`, `EntityToggle`), and the dashboard cache behind `LoadedData` (Room, `data/cache/`), cleared when a server is removed. Back now closes the drawer (the sheet needs the drawer state).
 
 ### 2026-10-08: entity display (Opus)
 - `TileModel` now carries display-ready text: `name` (formatEntityName), `state` (the full secondary line, unit included; `unit` is gone), `icon` (always resolved for existing entities). `HassSnapshot.tileModel(card, now)` needs the current time for relative timestamps; cards get it as `State<ZonedDateTime?>`.

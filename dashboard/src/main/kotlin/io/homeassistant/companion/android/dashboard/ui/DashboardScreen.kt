@@ -101,7 +101,7 @@ internal fun DashboardScreen(
     val snackbar = remember { SnackbarHostState() }
     RefreshErrorMessages(
         refreshErrors = remember(viewModel) {
-            viewModel.status.map { it.refreshError.takeIf { _ -> it.offlineSince == null } }.distinctUntilChanged()
+            viewModel.status.map { it.refreshError.takeIf { _ -> !it.offline } }.distinctUntilChanged()
         },
         snackbar = snackbar,
         onRetry = viewModel::onRetry,
@@ -138,6 +138,7 @@ internal fun DashboardScreen(
             gesturesEnabled = drawerState.isOpen || (!webVisible && content?.isSubview != true),
             drawerContent = {
                 NavigationDrawerContent(
+                    drawerState = drawerState,
                     sidebar = sidebar,
                     selected = if (webVisible) web?.panel else selectedDashboard ?: sidebar.valueOrNull?.defaultPanel,
                     onRetry = viewModel::onRetry,
@@ -204,7 +205,9 @@ internal fun DashboardScreenContent(
     val content = uiState as? DashboardUiState.Content
     Scaffold(
         // Over the content, so they never move it
-        snackbarHost = { DashboardBottomBars(snackbar, status.offlineSince, content != null, now) },
+        snackbarHost = {
+            DashboardBottomBars(snackbar, status.offline, status.updatedAt.takeIf { content != null }, now)
+        },
         topBar = {
             val title = @Composable {
                 Text(
@@ -246,7 +249,11 @@ internal fun DashboardScreenContent(
                 )
                 is DashboardUiState.Content -> DashboardView(uiState, hass, now, onSelectTab, interactions)
             }
-            RefreshIndicator(visible = status.refreshing, modifier = Modifier.align(Alignment.TopCenter))
+            // Offline, the offline bar says it; retries would flicker the bar
+            RefreshIndicator(
+                visible = status.refreshing && !status.offline,
+                modifier = Modifier.align(Alignment.TopCenter),
+            )
         }
     }
 }

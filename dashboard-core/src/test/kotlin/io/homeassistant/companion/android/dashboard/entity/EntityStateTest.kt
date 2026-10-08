@@ -81,4 +81,10 @@ class EntityStateTest {
         val updated = applyEntityEvent(initial, event("""{"c": {"light.kitchen": {"+": {"s": "off"}}}}"""))
         assertSame(initial.getValue("sensor.temp"), updated.getValue("sensor.temp"))
     }
+
+    @Test
+    fun `Given states when written compressed and read back then they are the same`() {
+        val compressed = JsonObject(initial.mapValues { it.value.toCompressed() })
+        assertEquals(initial, applyEntityEvent(emptyMap(), JsonObject(mapOf("a" to compressed))))
+    }
 }

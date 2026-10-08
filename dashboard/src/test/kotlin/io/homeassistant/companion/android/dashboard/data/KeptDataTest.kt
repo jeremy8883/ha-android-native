@@ -4,6 +4,7 @@ import app.cash.turbine.test
 import io.homeassistant.companion.android.common.data.websocket.WebSocketConnectionStatus
 import io.homeassistant.companion.android.common.data.websocket.WebSocketState
 import kotlin.time.Duration.Companion.seconds
+import kotlin.time.Instant
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
@@ -16,10 +17,10 @@ import org.junit.jupiter.api.Test
 class KeptDataTest {
 
     private class FakeKeeper<T>(var kept: Kept<T>? = null) : ValueKeeper<T> {
-        override fun get(): Kept<T>? = kept
+        override suspend fun get(): Kept<T>? = kept
 
         override fun put(value: T) {
-            kept = Kept(value)
+            kept = Kept(value, KEPT_AT)
         }
     }
 
@@ -63,12 +64,12 @@ class KeptDataTest {
 
         @Test
         fun `Given a kept value when collected then it shows while refreshing, then the loaded one`() = runTest {
-            val keeper = FakeKeeper(Kept("old areas"))
+            val keeper = FakeKeeper(Kept("old areas", KEPT_AT))
             KeptData("test", keeper, connection).fetched { Fetched.Success("new areas") }.test {
-                assertEquals(Loadable.Ready("old areas", refreshing = true), awaitItem())
+                assertEquals(Loadable.Ready("old areas", refreshing = true, keptAt = KEPT_AT), awaitItem())
                 assertEquals(Loadable.Ready("new areas"), awaitItem())
             }
-            assertEquals(Kept("new areas"), keeper.kept)
+            assertEquals(Kept("new areas", KEPT_AT), keeper.kept)
         }
 
         @Test
@@ -132,14 +133,17 @@ class KeptDataTest {
         @Test
         fun `Given a kept value when subscribing fails then the value stays, and it subscribes again`() = runTest {
             var attempts = 0
-            KeptData("test", FakeKeeper(Kept(listOf(1))), connection, retryDelays).subscribed<Int>(
+            KeptData("test", FakeKeeper(Kept(listOf(1), KEPT_AT)), connection, retryDelays).subscribed<Int>(
                 subscribe = {
                     if (attempts++ == 0) Fetched.Failure(LoadError.NoResponse) else Fetched.Success(flowOf(5))
                 },
                 reduce = { current, event -> current.orEmpty() + event },
             ).test {
-                assertEquals(Loadable.Ready(listOf(1), refreshing = true), awaitItem())
-                assertEquals(Loadable.Ready(listOf(1), refreshError = LoadError.NoResponse), awaitItem())
+                assertEquals(Loadable.Ready(listOf(1), refreshing = true, keptAt = KEPT_AT), awaitItem())
+                assertEquals(
+                    Loadable.Ready(listOf(1), refreshError = LoadError.NoResponse, keptAt = KEPT_AT),
+                    awaitItem(),
+                )
                 advanceTimeBy(1.seconds + 1.seconds / 10)
                 assertEquals(Loadable.Ready(listOf(5)), awaitItem())
                 // The subscription ended, which is a failure too
@@ -167,5 +171,9 @@ class KeptDataTest {
             ) { a, b -> a + b }
             assertEquals(Loadable.Ready(3, refreshing = true, refreshError = LoadError.NoResponse), combined)
         }
+    }
+
+    private companion object {
+        val KEPT_AT = Instant.fromEpochSeconds(1_700_000_000)
     }
 }
