@@ -29,6 +29,7 @@ import io.homeassistant.companion.android.common.data.websocket.impl.entities.Tr
 import javax.inject.Inject
 import javax.inject.Provider
 import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.json.JsonElement
 
 interface WebSocketRepository {
     fun getConnectionState(): WebSocketState
@@ -150,6 +151,22 @@ interface WebSocketRepository {
      * @return `true`/`false` indicating if it was enqueued, or `null` on unexpected failures
      */
     suspend fun sendVoiceData(binaryHandlerId: Int, data: ByteArray): Boolean
+
+    /**
+     * Send an arbitrary command and return its undecoded response, for commands without a typed API.
+     * @param message the full message including `type`, excluding `id`
+     * @return the response, or `null` if the command could not be sent or timed out
+     */
+    suspend fun sendRawMessage(message: Map<String, Any?>): RawWebSocketResponse?
+
+    /**
+     * Start an arbitrary subscription whose events are emitted undecoded. Shares the same lifecycle as
+     * other subscriptions (automatic resubscription on reconnect, unsubscribe when no longer collected).
+     * @param type the subscription command, for example `subscribe_events`
+     * @param data additional message fields, for example `event_type`
+     * @return a Flow of event payloads, or `null` if the subscription failed
+     */
+    suspend fun subscribeRaw(type: String, data: Map<String, Any?> = emptyMap()): Flow<JsonElement>?
 }
 
 internal class WebSocketRepositoryFactory @Inject internal constructor(

@@ -47,6 +47,9 @@ import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.WebSocket
@@ -1134,6 +1137,62 @@ class WebSocketCoreImplTest {
                 assertEquals("light.bed_light", awaitItem().entityId)
                 webSocketListener.onMessage(mockConnection, """{"id":2, "type":"event", "event":{"event_type":"state_changed", "time_fired":"2016-11-26T01:37:24.265429+00:00", "data": {"entity_id":"light.bathroom"}}}""")
                 assertEquals("light.bathroom", awaitItem().entityId)
+            }
+        }
+
+        @Test
+        fun `Given a raw subscription When an event of an unknown type is received Then it emits the undecoded payload`() = runTest {
+            setupServer()
+            prepareAuthenticationAnswer()
+            assertTrue(webSocketCore.connect())
+
+            // Message sent by subscribeTo to request for events
+            mockResultSuccessForId(2)
+
+            checkNotNull(
+                webSocketCore.subscribeTo<JsonElement>(
+                    SUBSCRIBE_TYPE_SUBSCRIBE_EVENTS,
+                    mapOf("event_type" to "lovelace_updated"),
+                    rawEvents = true,
+                ),
+            ).test {
+                webSocketListener.onMessage(mockConnection, """{"id":2, "type":"event", "event":{"event_type":"lovelace_updated", "data": {"url_path":"dashboard-test"}}}""")
+                assertEquals(
+                    Json.parseToJsonElement("""{"event_type":"lovelace_updated", "data": {"url_path":"dashboard-test"}}"""),
+                    awaitItem(),
+                )
+            }
+        }
+
+        @Test
+        fun `Given a typed subscription When subscribing raw to the same message Then a separate subscription is sent`() = runTest {
+            setupServer()
+            prepareAuthenticationAnswer()
+            assertTrue(webSocketCore.connect())
+
+            mockResultSuccessForId(2)
+            mockResultSuccessForId(3)
+
+            turbineScope {
+                val typed = checkNotNull(
+                    webSocketCore.subscribeTo<StateChangedEvent>(SUBSCRIBE_TYPE_SUBSCRIBE_EVENTS, mapOf("event_type" to "state_changed")),
+                ).testIn(this, name = "typed")
+                val raw = checkNotNull(
+                    webSocketCore.subscribeTo<JsonElement>(SUBSCRIBE_TYPE_SUBSCRIBE_EVENTS, mapOf("event_type" to "state_changed"), rawEvents = true),
+                ).testIn(this, name = "raw")
+
+                assertEquals(2, webSocketCore.activeMessages.size)
+
+                webSocketListener.onMessage(mockConnection, """{"id":2, "type":"event", "event":{"event_type":"state_changed", "time_fired":"2016-11-26T01:37:24.265429+00:00", "data": {"entity_id":"light.bed_light"}}}""")
+                assertEquals("light.bed_light", typed.awaitItem().entityId)
+                raw.expectNoEvents()
+
+                webSocketListener.onMessage(mockConnection, """{"id":3, "type":"event", "event":{"event_type":"state_changed", "data": {"entity_id":"light.kitchen"}}}""")
+                assertTrue(raw.awaitItem() is JsonObject)
+                typed.expectNoEvents()
+
+                typed.cancelAndIgnoreRemainingEvents()
+                raw.cancelAndIgnoreRemainingEvents()
             }
         }
 

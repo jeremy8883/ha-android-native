@@ -44,7 +44,9 @@ Update it in the same commit as the work it describes.
   - [x] Risks and open questions
 
 ### Step 2 — Android foundation
-- [ ] New module wired into the build, with minimal edits to upstream files
+- [x] Generic raw WS API in `:common` (`sendRawMessage`, `subscribeRaw`, opt-in `rawEvents`). **Carried upstream-file patch:** WebSocketCore/Impl, WebSocketRequest, WebSocketRepository/Impl
+- [x] `:dashboard-core` (pure JVM): config wrappers that preserve unknown keys; `applyEntityEvent` (port of js-websocket `processEvent`)
+- [ ] `:dashboard` Android module wired into the build, with minimal edits to upstream files
 - [ ] Reuse existing auth / ServerManager / WebSocket
 - [ ] Entry point / navigation into native dashboard
 

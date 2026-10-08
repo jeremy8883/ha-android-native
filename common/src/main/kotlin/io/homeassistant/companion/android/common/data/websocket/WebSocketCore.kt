@@ -71,6 +71,8 @@ internal interface WebSocketCore {
      * @param data a key/value map of additional data to be included in the subscription message, for
      *             example the `event_type` + value when subscribing with `subscribe_events`
      * @param timeout timeout until the subscription is ended after the flow is no longer collected
+     * @param rawEvents when `true`, the Flow emits each event payload as an undecoded `JsonElement`
+     *                  instead of a typed event, regardless of the subscription type
      * @return a Flow that will emit messages delivered to this subscription, or `null` if an error
      *         occurred
      */
@@ -78,6 +80,7 @@ internal interface WebSocketCore {
         type: String,
         data: Map<String, Any?> = mapOf(),
         timeout: kotlin.time.Duration = kotlin.time.Duration.ZERO,
+        rawEvents: Boolean = false,
     ): Flow<T>?
 
     fun shutdown()

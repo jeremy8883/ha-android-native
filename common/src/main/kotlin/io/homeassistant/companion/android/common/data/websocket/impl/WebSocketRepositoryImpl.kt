@@ -5,6 +5,7 @@ import io.homeassistant.companion.android.common.data.integration.ActionData
 import io.homeassistant.companion.android.common.data.integration.IntegrationDomains.TODO_DOMAIN
 import io.homeassistant.companion.android.common.data.integration.impl.entities.EntityResponse
 import io.homeassistant.companion.android.common.data.servers.ServerManager
+import io.homeassistant.companion.android.common.data.websocket.RawWebSocketResponse
 import io.homeassistant.companion.android.common.data.websocket.WebSocketCore
 import io.homeassistant.companion.android.common.data.websocket.WebSocketRepository
 import io.homeassistant.companion.android.common.data.websocket.WebSocketRequest
@@ -49,6 +50,7 @@ import io.homeassistant.companion.android.database.server.ServerUserInfo
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.flow.Flow
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.decodeFromJsonElement
@@ -457,6 +459,14 @@ class WebSocketRepositoryImpl internal constructor(
             )
         }
     }
+
+    override suspend fun sendRawMessage(message: Map<String, Any?>): RawWebSocketResponse? =
+        webSocketCore.sendMessage(message)?.let {
+            RawWebSocketResponse(success = it.success == true, result = it.result, error = it.error)
+        }
+
+    override suspend fun subscribeRaw(type: String, data: Map<String, Any?>): Flow<JsonElement>? =
+        webSocketCore.subscribeTo(type, data, rawEvents = true)
 
     /** Whether the server this repository talks to runs at least [version]. */
     private suspend fun isServerAtLeast(version: HomeAssistantVersion): Boolean =

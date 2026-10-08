@@ -665,6 +665,7 @@ internal class WebSocketCoreImpl(
         type: String,
         data: Map<String, Any?>,
         timeout: kotlin.time.Duration,
+        rawEvents: Boolean,
     ): Flow<T>? {
         val subscribeMessage = buildMap {
             put("type", type)
@@ -673,8 +674,8 @@ internal class WebSocketCoreImpl(
 
         return eventSubscriptionMutex.withLock<Flow<T>?> {
             ( // Check for existing subscription before creating a new one
-                findSubscription(subscribeMessage)?.second?.eventFlow
-                    ?: createSubscriptionFlow<T>(subscribeMessage, timeout)
+                findSubscription(subscribeMessage, rawEvents)?.second?.eventFlow
+                    ?: createSubscriptionFlow<T>(subscribeMessage, timeout, rawEvents)
                 ) as? Flow<T>
         }
     }
@@ -797,14 +798,18 @@ internal class WebSocketCoreImpl(
         handleClosingSocket()
     }
 
-    private suspend fun <T> createSubscriptionFlow(subscribeMessage: Map<String, Any?>, timeout: Duration): Flow<T>? {
+    private suspend fun <T> createSubscriptionFlow(
+        subscribeMessage: Map<String, Any?>,
+        timeout: Duration,
+        rawEvents: Boolean,
+    ): Flow<T>? {
         val channel = Channel<T>(capacity = Channel.BUFFERED)
         val flow = callbackFlow<T> {
             launch { channel.consumeAsFlow().collect(::send) }
             awaitClose {
                 wsScope.launch {
                     eventSubscriptionMutex.withLock {
-                        findSubscription(subscribeMessage)?.let { (subscriptionId, subscription) ->
+                        findSubscription(subscribeMessage, rawEvents)?.let { (subscriptionId, subscription) ->
                             Timber.d("Unsubscribing from $subscribeMessage")
                             // Unsubscribe must happen before removing from activeMessages to ensure
                             // the server acknowledges before we stop handling events for this subscription
@@ -835,14 +840,16 @@ internal class WebSocketCoreImpl(
 
         val response = sendMessage(
             Command.WithAnswer.Subscription(
-                request = WebSocketRequest(message = subscribeMessage),
+                request = WebSocketRequest(message = subscribeMessage, rawEvents = rawEvents),
                 eventFlow = flow as SharedFlow<Any>,
                 onEvent = channel as Channel<Any>,
             ),
         )
         if (response == null || response.success != true) {
             Timber.e("Unable to subscribe to $subscribeMessage")
-            findSubscription(subscribeMessage)?.let { (subscriptionId, _) -> activeMessages.remove(subscriptionId) }
+            findSubscription(subscribeMessage, rawEvents)?.let { (subscriptionId, _) ->
+                activeMessages.remove(subscriptionId)
+            }
             return null
         } else {
             return flow
@@ -855,9 +862,15 @@ internal class WebSocketCoreImpl(
      * Resubscription attempts are tracked as [ActiveMessage.Reconnecting] and never match, so one
      * logical subscription always has exactly one matching entry.
      */
-    private fun findSubscription(subscribeMessage: Map<String, Any?>): Pair<Long, ActiveMessage.Subscription>? {
+    private fun findSubscription(
+        subscribeMessage: Map<String, Any?>,
+        rawEvents: Boolean,
+    ): Pair<Long, ActiveMessage.Subscription>? {
         return activeMessages.firstNotNullOfOrNull { (id, message) ->
-            if (message is ActiveMessage.Subscription && message.request.message == subscribeMessage) {
+            if (message is ActiveMessage.Subscription &&
+                message.request.message == subscribeMessage &&
+                message.request.rawEvents == rawEvents
+            ) {
                 id to message
             } else {
                 null
@@ -928,7 +941,9 @@ internal class WebSocketCoreImpl(
         val eventResponseType = (response.event as? JsonObject)?.get("event_type")
 
         val message: Any =
-            if ((response.event as? JsonObject)?.contains("hass_confirm_id") == true) {
+            if (activeMessage.request.rawEvents) {
+                response.event ?: return
+            } else if ((response.event as? JsonObject)?.contains("hass_confirm_id") == true) {
                 kotlinJsonMapper.decodeFromJsonElement<Map<String, Any?>>(MapAnySerializer, response.event)
             } else if (subscriptionType == SUBSCRIBE_TYPE_SUBSCRIBE_ENTITIES) {
                 if (response.event != null) {
