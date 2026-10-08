@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="native_dashboard_title">Native dashboard</string>
+    <string name="native_dashboard_default">Overview</string>
+    <string name="native_dashboard_not_found">This dashboard has no stored configuration. Generated dashboards are not supported yet; pick another dashboard.</string>
+    <string name="native_dashboard_error">Unable to load the dashboard: %1$s</string>
+    <string name="native_dashboard_not_connected">Not connected to Home Assistant</string>
+    <string name="native_dashboard_unsupported_card">Unsupported card: %1$s</string>
+    <string name="native_dashboard_entity_not_found">Entity not available: %1$s</string>
+    <string name="native_dashboard_select">Select dashboard</string>
+</resources>

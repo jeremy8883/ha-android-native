@@ -49,18 +49,19 @@ Update it in the same commit as the work it describes.
 - [x] `:dashboard-core` (pure JVM): config wrappers that preserve unknown keys; `applyEntityEvent` (port of js-websocket `processEvent`)
 - [x] Local test HA container plus fixture capture (`tools/test-ha/`)
 - [x] `:dashboard-core` derivations: `isActive` (port of `stateActive`), basic `tileModel`
-- [ ] `:dashboard` Android module wired into the build, with minimal edits to upstream files
-- [ ] Reuse existing auth / ServerManager / WebSocket
-- [ ] Entry point / navigation into native dashboard
+- [x] `:dashboard` Android module wired into the build. Upstream edits: `settings.gradle.kts`, plus one line in `app/build.gradle.kts`
+- [x] Reuse existing auth / ServerManager / WebSocket (`DashboardRepository`)
+- [x] Entry point: `DashboardActivity`; debug builds get a separate "Native dashboard" launcher icon
 
 ### Step 3 — Vertical slice (connect → load → render → live)
 - [ ] Port the `home` dashboard strategy (pure fn: states + registries → config) — needed when no stored dashboard exists
-- [ ] List dashboards (`lovelace/dashboards/list`)
-- [ ] Load dashboard config (`lovelace/config`)
-- [ ] Parse config, preserving unknown fields
-- [ ] Render view structure plus one card type
-- [ ] Live entity updates (`subscribe_entities`)
-- [ ] React to `lovelace_updated`
+- [x] List dashboards (`lovelace/dashboards/list`)
+- [x] Load dashboard config (`lovelace/config`)
+- [x] Parse config, preserving unknown fields
+- [x] Render view structure plus one card type (tile); other types show a placeholder
+- [x] Live entity updates (`subscribe_entities`)
+- [x] React to `lovelace_updated`
+- [ ] **Verify the slice on an emulator against the test container**
 
 ### Step 4 — Card renderers
 - [ ] Entities
@@ -108,6 +109,8 @@ Update it in the same commit as the work it describes.
 | 2026-10-08 | The `home` strategy (the `/home` panel) is on the critical path for M1 | With no stored dashboard, `lovelace/config` returns `config_not_found` and the frontend shows `/home`, generated client-side by `strategies/home/*` |
 
 ## Open questions
+
+- After a reconnect, `subscribe_entities` resends a full `a` snapshot, but entities removed while we were offline stay in our map. Fix: reset the states on resubscribe; this needs a resubscribe signal from `:common`.
 
 - How do we support several frontend versions at once? Gate on `ha_version`, and use per-version fixtures?
 - Differential testing: can the TS strategies run headless in Node against fixture `hass` data?

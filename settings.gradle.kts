@@ -8,6 +8,7 @@ include(
     ":microwakeword",
     ":provides-sensor-processor",
     ":dashboard-core",
+    ":dashboard",
 )
 
 rootProject.name = "home-assistant-android"
