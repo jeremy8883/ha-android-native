@@ -1,5 +1,5 @@
 {
-  "now": "2026-10-08T07:13:52.850Z",
+  "now": "2026-10-08T07:49:59.679Z",
   "locale": {
     "language": "en",
     "number_format": "language",
@@ -225,7 +225,7 @@
     "sensor.sun_next_dawn": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 5:20 AM",
-      "secondary": "Tomorrow",
+      "secondary": "In 22 hours",
       "names": {
         "default": "Sun Next dawn",
         "entity": "Next dawn",
@@ -290,7 +290,7 @@
     "sensor.sun_next_setting": {
       "icon": "mdi:sun-clock",
       "state": "October 8, 2026 at 5:01 PM",
-      "secondary": "In 10 hours",
+      "secondary": "In 9 hours",
       "names": {
         "default": "Sun Next setting",
         "entity": "Next setting",
@@ -356,8 +356,8 @@
     },
     "sensor.living_room_temperature": {
       "icon": "mdi:thermometer",
-      "state": "21.3 °C",
-      "secondary": "21.3 °C",
+      "state": "21.9 °C",
+      "secondary": "21.9 °C",
       "names": {
         "default": "Living room temperature",
         "entity": "Living room temperature",
@@ -369,8 +369,8 @@
     },
     "sensor.living_room_humidity": {
       "icon": "mdi:water-percent",
-      "state": "51%",
-      "secondary": "51%",
+      "state": "45%",
+      "secondary": "45%",
       "names": {
         "default": "Living room humidity",
         "entity": "Living room humidity",
@@ -434,8 +434,8 @@
     },
     "sensor.house_power": {
       "icon": "mdi:flash",
-      "state": "391 W",
-      "secondary": "391 W",
+      "state": "643 W",
+      "secondary": "643 W",
       "names": {
         "default": "House power",
         "entity": "House power",
@@ -1424,8 +1424,8 @@
     },
     "sensor.total_energy_kwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "16.00 kWh",
-      "secondary": "16.00 kWh",
+      "state": "19.50 kWh",
+      "secondary": "19.50 kWh",
       "names": {
         "default": "Total energy 1",
         "entity": "Total energy 1",
@@ -1450,8 +1450,8 @@
     },
     "sensor.total_gas_m3": {
       "icon": "mdi:meter-gas",
-      "state": "0.80 m³",
-      "secondary": "0.80 m³",
+      "state": "0.98 m³",
+      "secondary": "0.98 m³",
       "names": {
         "default": "Total gas 1",
         "entity": "Total gas 1",
@@ -1463,8 +1463,8 @@
     },
     "sensor.total_gas_ft3": {
       "icon": "mdi:meter-gas",
-      "state": "0.91 m³",
-      "secondary": "0.91 m³",
+      "state": "1.10 m³",
+      "secondary": "1.10 m³",
       "names": {
         "default": "Total gas 2",
         "entity": "Total gas 2",
@@ -1966,71 +1966,6 @@
         "area": "",
         "floor": "",
         "device_entity": "Backup Last attempted automatic backup"
-      }
-    },
-    "device_tracker.sm_f946b": {
-      "icon": "mdi:account",
-      "state": "Unknown",
-      "secondary": "Unknown",
-      "names": {
-        "default": "SM-F946B",
-        "entity": "SM-F946B",
-        "device": "SM-F946B",
-        "area": "",
-        "floor": "",
-        "device_entity": "SM-F946B"
-      }
-    },
-    "notify.sm_f946b": {
-      "icon": "mdi:cellphone-message",
-      "state": "Unknown",
-      "secondary": "Unknown",
-      "names": {
-        "default": "SM-F946B",
-        "entity": "SM-F946B",
-        "device": "SM-F946B",
-        "area": "",
-        "floor": "",
-        "device_entity": "SM-F946B"
-      }
-    },
-    "sensor.sm_f946b_battery_level": {
-      "icon": "mdi:battery-charging-50",
-      "state": "55%",
-      "secondary": "55%",
-      "names": {
-        "default": "SM-F946B Battery level",
-        "entity": "Battery level",
-        "device": "SM-F946B",
-        "area": "",
-        "floor": "",
-        "device_entity": "SM-F946B Battery level"
-      }
-    },
-    "sensor.sm_f946b_battery_state": {
-      "icon": "mdi:battery-plus",
-      "state": "charging",
-      "secondary": "charging",
-      "names": {
-        "default": "SM-F946B Battery state",
-        "entity": "Battery state",
-        "device": "SM-F946B",
-        "area": "",
-        "floor": "",
-        "device_entity": "SM-F946B Battery state"
-      }
-    },
-    "sensor.sm_f946b_charger_type": {
-      "icon": "mdi:usb-port",
-      "state": "usb",
-      "secondary": "usb",
-      "names": {
-        "default": "SM-F946B Charger type",
-        "entity": "Charger type",
-        "device": "SM-F946B",
-        "area": "",
-        "floor": "",
-        "device_entity": "SM-F946B Charger type"
       }
     },
     "device_tracker.sdk_gphone64_x86_64": {

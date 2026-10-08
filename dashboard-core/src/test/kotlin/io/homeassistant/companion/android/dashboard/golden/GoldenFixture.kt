@@ -4,6 +4,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassConfig
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.HassUser
 import io.homeassistant.companion.android.dashboard.entity.IconResources
+import io.homeassistant.companion.android.dashboard.entity.JsonTranslations
 import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.entity.Registries
 import io.homeassistant.companion.android.dashboard.entity.parseAreaRegistry
@@ -59,6 +60,7 @@ class GoldenFixture(variant: String) {
         val strings = flatStrings(json("inputs/translations.json")) +
             flatStrings(json("inputs/state-translations.json"))
         val backend = translationResources("entity_component") + translationResources("entity")
+        val bundled = checkNotNull(JsonTranslations.bundled()) { "No bundled translations" }
         HassSnapshot(
             states = parseStates(wsResult("get_states").jsonArray),
             registries = Registries(
@@ -81,7 +83,8 @@ class GoldenFixture(variant: String) {
                 temperatureUnit = config.obj("unit_system")?.string("temperature"),
             ),
             panels = wsResult("get_panels").jsonObject.keys,
-            localize = Localize { key -> strings[key].orEmpty() }.withFallback(backend),
+            // then the bundled frontend strings the app ships, then the server's entity translations
+            localize = Localize { key -> strings[key] ?: bundled(key) }.withFallback(backend),
             icons = IconResources.fromResults(
                 entityComponent = wsResult("frontend-get_icons-entity_component").jsonObject,
                 entity = wsResult("frontend-get_icons-entity").jsonObject,

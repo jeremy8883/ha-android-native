@@ -891,46 +891,6 @@
         "en": "Last attempted automatic backup"
       },
       {
-        "ei": "device_tracker.sm_f946b",
-        "pl": "mobile_app",
-        "lb": [],
-        "di": "bf1206d2c2629106e95e6bdc6600b9ed",
-        "ec": 1,
-        "en": ""
-      },
-      {
-        "ei": "notify.sm_f946b",
-        "pl": "mobile_app",
-        "lb": [],
-        "di": "bf1206d2c2629106e95e6bdc6600b9ed",
-        "tk": "notify",
-        "hn": true
-      },
-      {
-        "ei": "sensor.sm_f946b_battery_level",
-        "pl": "mobile_app",
-        "lb": [],
-        "di": "bf1206d2c2629106e95e6bdc6600b9ed",
-        "ec": 1,
-        "en": "Battery level"
-      },
-      {
-        "ei": "sensor.sm_f946b_battery_state",
-        "pl": "mobile_app",
-        "lb": [],
-        "di": "bf1206d2c2629106e95e6bdc6600b9ed",
-        "ec": 1,
-        "en": "Battery state"
-      },
-      {
-        "ei": "sensor.sm_f946b_charger_type",
-        "pl": "mobile_app",
-        "lb": [],
-        "di": "bf1206d2c2629106e95e6bdc6600b9ed",
-        "ec": 1,
-        "en": "Charger type"
-      },
-      {
         "ei": "device_tracker.sdk_gphone64_x86_64",
         "pl": "mobile_app",
         "lb": [],

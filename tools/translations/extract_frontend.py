@@ -14,6 +14,9 @@ from pathlib import Path
 # Dotted paths of the subtrees to keep. Extend when ported code needs more keys.
 SUBTREES = [
     "panel",
+    "state",
+    "ui.card",
+    "ui.panel.lovelace.components",
     "ui.panel.lovelace.strategy",
 ]
 

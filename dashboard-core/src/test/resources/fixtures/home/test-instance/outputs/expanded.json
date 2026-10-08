@@ -225,7 +225,9 @@
               "type": "area",
               "area": "living_room",
               "display_type": "compact",
-              "sensor_classes": [],
+              "sensor_classes": [
+                "temperature"
+              ],
               "tap_action": {
                 "action": "navigate",
                 "navigation_path": "areas-living_room"
@@ -282,7 +284,9 @@
               "type": "area",
               "area": "bedroom",
               "display_type": "compact",
-              "sensor_classes": [],
+              "sensor_classes": [
+                "temperature"
+              ],
               "tap_action": {
                 "action": "navigate",
                 "navigation_path": "areas-bedroom"
@@ -297,7 +301,9 @@
               "type": "area",
               "area": "office",
               "display_type": "compact",
-              "sensor_classes": [],
+              "sensor_classes": [
+                "temperature"
+              ],
               "tap_action": {
                 "action": "navigate",
                 "navigation_path": "areas-office"
@@ -797,7 +803,18 @@
           ]
         }
       ],
-      "badges": []
+      "badges": [
+        {
+          "entity": "sensor.living_room_temperature",
+          "type": "entity",
+          "color": "red"
+        },
+        {
+          "entity": "sensor.living_room_humidity",
+          "type": "entity",
+          "color": "indigo"
+        }
+      ]
     },
     {
       "title": "Kitchen",
@@ -1235,7 +1252,13 @@
           ]
         }
       ],
-      "badges": []
+      "badges": [
+        {
+          "entity": "sensor.bedroom_temperature",
+          "type": "entity",
+          "color": "red"
+        }
+      ]
     },
     {
       "title": "Garage",
@@ -1643,7 +1666,13 @@
           ]
         }
       ],
-      "badges": []
+      "badges": [
+        {
+          "entity": "sensor.office_temperature",
+          "type": "entity",
+          "color": "red"
+        }
+      ]
     },
     {
       "title": "Garden",

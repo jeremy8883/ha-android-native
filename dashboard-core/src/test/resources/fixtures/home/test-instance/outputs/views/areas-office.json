@@ -215,5 +215,11 @@
       ]
     }
   ],
-  "badges": []
+  "badges": [
+    {
+      "entity": "sensor.office_temperature",
+      "type": "entity",
+      "color": "red"
+    }
+  ]
 }

@@ -3,14 +3,14 @@
     "aliases": [],
     "area_id": "living_room",
     "floor_id": "ground_floor",
-    "humidity_entity_id": null,
+    "humidity_entity_id": "sensor.living_room_humidity",
     "icon": "mdi:sofa",
     "labels": [],
     "name": "Living Room",
     "picture": null,
-    "temperature_entity_id": null,
+    "temperature_entity_id": "sensor.living_room_temperature",
     "created_at": 1791433961.139347,
-    "modified_at": 1791433963.280085
+    "modified_at": 1791445796.058348
   },
   "kitchen": {
     "aliases": [],
@@ -34,9 +34,9 @@
     "labels": [],
     "name": "Bedroom",
     "picture": null,
-    "temperature_entity_id": null,
+    "temperature_entity_id": "sensor.bedroom_temperature",
     "created_at": 1791433961.13944,
-    "modified_at": 1791433963.282676
+    "modified_at": 1791445796.059264
   },
   "garage": {
     "aliases": [],
@@ -60,9 +60,9 @@
     "labels": [],
     "name": "Office",
     "picture": null,
-    "temperature_entity_id": null,
+    "temperature_entity_id": "sensor.office_temperature",
     "created_at": 1791433963.283564,
-    "modified_at": 1791433963.283565
+    "modified_at": 1791445796.059844
   },
   "garden": {
     "aliases": [],

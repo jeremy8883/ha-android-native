@@ -219,5 +219,11 @@
       ]
     }
   ],
-  "badges": []
+  "badges": [
+    {
+      "entity": "sensor.bedroom_temperature",
+      "type": "entity",
+      "color": "red"
+    }
+  ]
 }

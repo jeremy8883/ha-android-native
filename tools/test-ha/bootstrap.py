@@ -250,6 +250,16 @@ USAGE_CALLS: list[tuple[str, str, str]] = (
 )
 
 
+AREA_SENSORS = {
+    "living_room": {
+        "temperature_entity_id": "sensor.living_room_temperature",
+        "humidity_entity_id": "sensor.living_room_humidity",
+    },
+    "bedroom": {"temperature_entity_id": "sensor.bedroom_temperature"},
+    "office": {"temperature_entity_id": "sensor.office_temperature"},
+}
+
+
 async def wait_for_demo(ws: Ws) -> list[dict]:
     for _ in range(120):
         states = await ws.call("get_states")
@@ -300,6 +310,13 @@ async def seed_structure(ws: Ws) -> None:
             log(f"warning: {entity_id} not in entity registry, cannot assign area")
         elif entry.get("area_id") != area_id:
             await ws.call("config/entity_registry/update", entity_id=entity_id, area_id=area_id)
+
+    # Area sensors drive area badges and the climate summary
+    areas = {a["area_id"]: a for a in await ws.call("config/area_registry/list")}
+    for area_id, sensors in AREA_SENSORS.items():
+        if any(areas[area_id].get(key) != value for key, value in sensors.items()):
+            await ws.call("config/area_registry/update", area_id=area_id, **sensors)
+            log(f"area sensors set: {area_id}")
 
 
 async def seed_dashboard(ws: Ws) -> None:

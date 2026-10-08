@@ -27,6 +27,7 @@ internal fun DashboardCard(
         CARD_TILE -> TileCard(card, hass, now, clickModifier)
         CARD_HEADING -> HeadingCard(card, clickModifier)
         CARD_AREA -> AreaCard(card, hass, clickModifier)
+        CARD_HOME_SUMMARY -> HomeSummaryCard(card, hass, clickModifier)
         else -> UnsupportedCard(card.type.orEmpty(), clickModifier)
     }
 }
@@ -34,3 +35,4 @@ internal fun DashboardCard(
 private const val CARD_TILE = "tile"
 private const val CARD_HEADING = "heading"
 private const val CARD_AREA = "area"
+private const val CARD_HOME_SUMMARY = "home-summary"

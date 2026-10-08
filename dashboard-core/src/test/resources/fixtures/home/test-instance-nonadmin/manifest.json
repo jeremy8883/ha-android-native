@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-08T07:13:56.754Z",
+  "capture_date": "2026-10-08T07:50:03.205Z",
   "user": {
     "name": "Golden Viewer",
     "is_admin": false
@@ -88,8 +88,8 @@
   "files": [
     {
       "path": "inputs/areas.json",
-      "bytes": 1946,
-      "sha256": "9074f071b499d5eb713d72c1f760cefdbac746437e0f3e0d463be47547a75c89"
+      "bytes": 2046,
+      "sha256": "bb11c79870ca61993ef5541d8438236f604bec8e0683b3f7716e841796ba8dc1"
     },
     {
       "path": "inputs/config.json",
@@ -98,13 +98,13 @@
     },
     {
       "path": "inputs/devices.json",
-      "bytes": 54006,
-      "sha256": "c725d5570fe37d085c50f82037cba8a50e92ccde311f9e2c8e4aa45cdc00e528"
+      "bytes": 53151,
+      "sha256": "357d2176c07050628d8751531914ce4e1824ec880a8c959c9902ab9ee63a2f15"
     },
     {
       "path": "inputs/entities.json",
-      "bytes": 27971,
-      "sha256": "e123ad7eb7ab0e4f7c553097c216d781070615206f812ad2091025fb4fb252e2"
+      "bytes": 26741,
+      "sha256": "28fbe92750bbef4771729cd68b9eeef6e289a3480ee88424f30c30e7f4315ae1"
     },
     {
       "path": "inputs/floors.json",
@@ -153,8 +153,8 @@
     },
     {
       "path": "inputs/states.json",
-      "bytes": 91954,
-      "sha256": "81a4472f0dc4cf31d4460526df3ada85f9f60f4e7516fe2b3ee3a90d132a637c"
+      "bytes": 89395,
+      "sha256": "8eae8a17c8af4befd17d26c1035b6f52e6067308a85852c2362c753778dcc7f8"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -182,19 +182,24 @@
       "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
     },
     {
+      "path": "outputs/cards.json",
+      "bytes": 799,
+      "sha256": "8da6fba0174c4efa1a473cf17f0fb9cd270a43072aaf334a8b3e29bcfe77902a"
+    },
+    {
       "path": "outputs/dashboard.json",
       "bytes": 1964,
       "sha256": "7c57c4e1e9ba93c81bc58fd9d29be00db99f283f9c9b970c0dbb24b0ae2e3051"
     },
     {
       "path": "outputs/entity-display.json",
-      "bytes": 56281,
-      "sha256": "0dbe570910ed2cfc4cd1d14a836e5ccf06b4eb6930af52997fdcc57e2518986c"
+      "bytes": 54576,
+      "sha256": "5f28cdc1da3510320667f12becfcd71e6b8b4cfbece23dc5c8e9bc5c46adb655"
     },
     {
       "path": "outputs/expanded.json",
-      "bytes": 64741,
-      "sha256": "a2d01ab949d9553e3bf4c765ffe362e4367a95c1d316d1ae4c79825bacb92a15"
+      "bytes": 65397,
+      "sha256": "a522c470d198df624711ccd4b6af1caf0ce7d80466ae10e03c0a058d624f4d65"
     },
     {
       "path": "outputs/sections/overview/0-common-controls.json",
@@ -203,8 +208,8 @@
     },
     {
       "path": "outputs/views/areas-bedroom.json",
-      "bytes": 5006,
-      "sha256": "75d0821390146a2ea6dd79f067b1e695e65be9f87cd80f135f14eaed1163847d"
+      "bytes": 5112,
+      "sha256": "a79c94991bc1fe553d01e90ae4dc79a019046ed885fd51b409fab224cd224526"
     },
     {
       "path": "outputs/views/areas-garage.json",
@@ -223,13 +228,13 @@
     },
     {
       "path": "outputs/views/areas-living_room.json",
-      "bytes": 6913,
-      "sha256": "0d8161b462d848ad05c78df91c6319dd2d41ef71621e5c69ce262ed02a06ce60"
+      "bytes": 7131,
+      "sha256": "4245ad8d42e16d7d212d14a2191f4d8b1054f4049fd69763d75d3eeecf38472a"
     },
     {
       "path": "outputs/views/areas-office.json",
-      "bytes": 4759,
-      "sha256": "85fd35b845632fe9dc1bcfcc2e4ccf2826528e65c76228e97545e564d4c2ec29"
+      "bytes": 4864,
+      "sha256": "cc23d5d3d6d2c4a203eab1ea4ee85a0a1eff71011ebff924f2ac7ddb3e8c2d33"
     },
     {
       "path": "outputs/views/media-players.json",
@@ -243,8 +248,8 @@
     },
     {
       "path": "outputs/views/overview.json",
-      "bytes": 10338,
-      "sha256": "4a4ec8e9aca81ddfb4f58dd0123a6e2c56e4bcd4921c709dbb04c48959675911"
+      "bytes": 10449,
+      "sha256": "476c18cd21040a41fc49b478d9a4f3284c01f0e0d578822b1049f74801b5bbd4"
     },
     {
       "path": "ws/auth-current_user.json",
@@ -253,18 +258,18 @@
     },
     {
       "path": "ws/config-area_registry-list.json",
-      "bytes": 2113,
-      "sha256": "cbc953df3df1b52a876539a999c6f2af81076c33d9eda6224b4c75e3fe8a1ae0"
+      "bytes": 2213,
+      "sha256": "5f93217c4ccb6b60f18257f4ef2ed81c02306e4d895af8f25c15be0670f4b6d5"
     },
     {
       "path": "ws/config-device_registry-list.json",
-      "bytes": 56262,
-      "sha256": "9cf44bc614f0033e55b2c0efc5d395e5938ec2035a8303be6251e1e28e73faea"
+      "bytes": 55373,
+      "sha256": "6b0460e71c9f6adcf306dd2b7de7c855f30e243818e8b701c3b28a78f271b40f"
     },
     {
       "path": "ws/config-entity_registry-list_for_display.json",
-      "bytes": 23215,
-      "sha256": "668cf41e139b8d0e55dbf3f89a3cc12144a24615025bfb1c7af6272e1bf87bc3"
+      "bytes": 22219,
+      "sha256": "f124b35ed0f37d5e415a01d55e97a55830d49707389de05337067d5542b5ec0f"
     },
     {
       "path": "ws/config-floor_registry-list.json",
@@ -323,8 +328,8 @@
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 102447,
-      "sha256": "b694ec72f1fd205909c6c7e059161e8b5d8096c5039a16b433a0c8185153ca1b"
+      "bytes": 99580,
+      "sha256": "22e46c4ce42a4b3025b4e51222e4c680e1ff74af1bc63679209e25718613caf2"
     },
     {
       "path": "ws/manifest-get-frontend.json",

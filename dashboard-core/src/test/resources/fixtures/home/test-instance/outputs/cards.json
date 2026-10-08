@@ -1,0 +1,39 @@
+{
+  "home-summary": {
+    "light": {
+      "primary": "Lights",
+      "secondary": "5 on",
+      "loading": false
+    },
+    "climate": {
+      "primary": "Climate",
+      "secondary": "19.4 - 22.8°",
+      "loading": false
+    },
+    "security": {
+      "primary": "Security",
+      "secondary": "3 unlocked",
+      "loading": false
+    },
+    "media_players": {
+      "primary": "Media players",
+      "secondary": "12 playing",
+      "loading": false
+    },
+    "maintenance": {
+      "primary": "Maintenance",
+      "secondary": "1 low battery",
+      "loading": false
+    },
+    "energy": {
+      "primary": "Today's energy",
+      "secondary": "",
+      "loading": true
+    },
+    "persons": {
+      "primary": "Presence",
+      "secondary": "No one home",
+      "loading": false
+    }
+  }
+}

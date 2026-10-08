@@ -329,7 +329,6 @@
         "editable": true,
         "id": "dev",
         "device_trackers": [
-          "device_tracker.sm_f946b",
           "device_tracker.sdk_gphone64_x86_64"
         ],
         "in_zones": [],
@@ -374,8 +373,8 @@
         "next_noon": "2026-10-08T11:28:06+00:00",
         "next_rising": "2026-10-09T05:55:21.219680+00:00",
         "next_setting": "2026-10-08T17:01:24.736346+00:00",
-        "elevation": 10.55,
-        "azimuth": 114.3,
+        "elevation": 15.36,
+        "azimuth": 122.03,
         "rising": true,
         "friendly_name": "Sun"
       },
@@ -560,7 +559,7 @@
     },
     {
       "entity_id": "sensor.living_room_temperature",
-      "state": "21.3",
+      "state": "21.9",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "°C",
@@ -578,7 +577,7 @@
     },
     {
       "entity_id": "sensor.living_room_humidity",
-      "state": "51",
+      "state": "45",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "%",
@@ -668,7 +667,7 @@
     },
     {
       "entity_id": "sensor.house_power",
-      "state": "391",
+      "state": "643",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -1033,8 +1032,8 @@
       "entity_id": "camera.demo_camera",
       "state": "streaming",
       "attributes": {
-        "access_token": "3efeaa121a79a2d55b86bd4e6032718db6016d800bcd41b33d76802259267f5a",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera?token=3efeaa121a79a2d55b86bd4e6032718db6016d800bcd41b33d76802259267f5a",
+        "access_token": "ac713f46d1e1a7864b444529d40e0ba42f55463416685484be2d8b88510ef909",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera?token=ac713f46d1e1a7864b444529d40e0ba42f55463416685484be2d8b88510ef909",
         "friendly_name": "Demo camera",
         "supported_features": 3
       },
@@ -1051,8 +1050,8 @@
       "entity_id": "camera.demo_camera_png",
       "state": "streaming",
       "attributes": {
-        "access_token": "2c40757258f428d974ac9cc1c946880917c83d45759a27c095909e256a721aab",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=2c40757258f428d974ac9cc1c946880917c83d45759a27c095909e256a721aab",
+        "access_token": "717ec95428efd2a847e3d99827be28e33b8d62665afb544e9c1983a62f96b17c",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=717ec95428efd2a847e3d99827be28e33b8d62665afb544e9c1983a62f96b17c",
         "friendly_name": "Demo camera png",
         "supported_features": 3
       },
@@ -1069,8 +1068,8 @@
       "entity_id": "camera.demo_camera_without_stream",
       "state": "streaming",
       "attributes": {
-        "access_token": "ec0ec4b0558a6173510785d3fdc3558e4e9e2203aea24e4b71f35bc8828948fb",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=ec0ec4b0558a6173510785d3fdc3558e4e9e2203aea24e4b71f35bc8828948fb",
+        "access_token": "dbd4010eb01f2999d5457b7f6436c4b8679071233a5477efd1ed64106261a930",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=dbd4010eb01f2999d5457b7f6436c4b8679071233a5477efd1ed64106261a930",
         "friendly_name": "Demo camera without stream",
         "supported_features": 1
       },
@@ -2378,7 +2377,7 @@
     },
     {
       "entity_id": "sensor.total_energy_kwh",
-      "state": "16.0",
+      "state": "19.5",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "kWh",
@@ -2396,7 +2395,7 @@
     },
     {
       "entity_id": "sensor.total_energy_mwh",
-      "state": "0.00800000000000001",
+      "state": "0.00975000000000001",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "MWh",
@@ -2414,7 +2413,7 @@
     },
     {
       "entity_id": "sensor.total_gas_m3",
-      "state": "0.8",
+      "state": "0.975000000000001",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "m³",
@@ -2432,7 +2431,7 @@
     },
     {
       "entity_id": "sensor.total_gas_ft3",
-      "state": "0.906139090944",
+      "state": "1.104357017088",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "m³",
@@ -3134,15 +3133,15 @@
       "state": "partlycloudy",
       "attributes": {
         "temperature": 11.9,
-        "dew_point": 8.8,
+        "dew_point": 9,
         "temperature_unit": "°C",
-        "humidity": 81,
-        "cloud_coverage": 38.3,
-        "uv_index": 0,
-        "pressure": 1010.2,
+        "humidity": 82,
+        "cloud_coverage": 50.8,
+        "uv_index": 0.2,
+        "pressure": 1011.1,
         "pressure_unit": "hPa",
-        "wind_bearing": 331.7,
-        "wind_speed": 23.8,
+        "wind_bearing": 327.8,
+        "wind_speed": 22.3,
         "wind_speed_unit": "km/h",
         "visibility_unit": "km",
         "precipitation_unit": "mm",
@@ -3241,106 +3240,6 @@
       "attributes": {
         "device_class": "timestamp",
         "friendly_name": "Backup Last attempted automatic backup"
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
-      "entity_id": "device_tracker.sm_f946b",
-      "state": "unknown",
-      "attributes": {
-        "tracking_type": "position",
-        "in_zones": [],
-        "source_type": "gps",
-        "friendly_name": "SM-F946B"
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
-      "entity_id": "notify.sm_f946b",
-      "state": "unknown",
-      "attributes": {
-        "friendly_name": "SM-F946B",
-        "supported_features": 1
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
-      "entity_id": "sensor.sm_f946b_battery_level",
-      "state": "55",
-      "attributes": {
-        "state_class": "measurement",
-        "unit_of_measurement": "%",
-        "device_class": "battery",
-        "icon": "mdi:battery-charging-50",
-        "friendly_name": "SM-F946B Battery level"
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
-      "entity_id": "sensor.sm_f946b_battery_state",
-      "state": "charging",
-      "attributes": {
-        "options": [
-          "charging",
-          "discharging",
-          "full",
-          "not_charging"
-        ],
-        "device_class": "enum",
-        "icon": "mdi:battery-plus",
-        "friendly_name": "SM-F946B Battery state"
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
-      "entity_id": "sensor.sm_f946b_charger_type",
-      "state": "usb",
-      "attributes": {
-        "options": [
-          "ac",
-          "usb",
-          "wireless",
-          "dock",
-          "none"
-        ],
-        "device_class": "enum",
-        "icon": "mdi:usb-port",
-        "friendly_name": "SM-F946B Charger type"
       },
       "last_changed": "2026-01-01T00:00:00+00:00",
       "last_reported": "2026-01-01T00:00:00+00:00",

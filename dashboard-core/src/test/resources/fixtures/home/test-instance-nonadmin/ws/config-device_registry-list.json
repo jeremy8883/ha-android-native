@@ -2177,41 +2177,6 @@
       "area_id": null,
       "configuration_url": null,
       "config_entries": [
-        "01M4CYMT1HPNX017GNW2PNMGBZ"
-      ],
-      "config_entries_subentries": {
-        "01M4CYMT1HPNX017GNW2PNMGBZ": [
-          null
-        ]
-      },
-      "connections": [],
-      "created_at": 1791436154.930909,
-      "disabled_by": null,
-      "entry_type": null,
-      "hw_version": null,
-      "id": "bf1206d2c2629106e95e6bdc6600b9ed",
-      "identifiers": [
-        [
-          "mobile_app",
-          "882be64d052ee7ca"
-        ]
-      ],
-      "labels": [],
-      "manufacturer": "samsung",
-      "model": "SM-F946B",
-      "model_id": null,
-      "modified_at": 1791436154.931092,
-      "name_by_user": null,
-      "name": "SM-F946B",
-      "primary_config_entry": "01M4CYMT1HPNX017GNW2PNMGBZ",
-      "serial_number": null,
-      "sw_version": "36",
-      "via_device_id": null
-    },
-    {
-      "area_id": null,
-      "configuration_url": null,
-      "config_entries": [
         "01M4CZ815PX6H3H5HZ5V01FR99"
       ],
       "config_entries_subentries": {

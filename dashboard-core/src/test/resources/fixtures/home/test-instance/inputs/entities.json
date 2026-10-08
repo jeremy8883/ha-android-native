@@ -881,46 +881,6 @@
     "has_entity_name": true,
     "name": "Last attempted automatic backup"
   },
-  "device_tracker.sm_f946b": {
-    "entity_id": "device_tracker.sm_f946b",
-    "device_id": "bf1206d2c2629106e95e6bdc6600b9ed",
-    "labels": [],
-    "platform": "mobile_app",
-    "entity_category": "diagnostic",
-    "name": ""
-  },
-  "notify.sm_f946b": {
-    "entity_id": "notify.sm_f946b",
-    "device_id": "bf1206d2c2629106e95e6bdc6600b9ed",
-    "labels": [],
-    "translation_key": "notify",
-    "platform": "mobile_app",
-    "has_entity_name": true
-  },
-  "sensor.sm_f946b_battery_level": {
-    "entity_id": "sensor.sm_f946b_battery_level",
-    "device_id": "bf1206d2c2629106e95e6bdc6600b9ed",
-    "labels": [],
-    "platform": "mobile_app",
-    "entity_category": "diagnostic",
-    "name": "Battery level"
-  },
-  "sensor.sm_f946b_battery_state": {
-    "entity_id": "sensor.sm_f946b_battery_state",
-    "device_id": "bf1206d2c2629106e95e6bdc6600b9ed",
-    "labels": [],
-    "platform": "mobile_app",
-    "entity_category": "diagnostic",
-    "name": "Battery state"
-  },
-  "sensor.sm_f946b_charger_type": {
-    "entity_id": "sensor.sm_f946b_charger_type",
-    "device_id": "bf1206d2c2629106e95e6bdc6600b9ed",
-    "labels": [],
-    "platform": "mobile_app",
-    "entity_category": "diagnostic",
-    "name": "Charger type"
-  },
   "device_tracker.sdk_gphone64_x86_64": {
     "entity_id": "device_tracker.sdk_gphone64_x86_64",
     "device_id": "03dfeec1333dc3ff497c2b6f7c8a7e7f",

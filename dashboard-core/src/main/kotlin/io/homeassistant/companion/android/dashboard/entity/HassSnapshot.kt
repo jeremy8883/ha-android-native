@@ -7,12 +7,8 @@ import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
 fun interface Localize {
     operator fun invoke(key: String): String
 
-    /**
-     * The translation with `{name}` placeholders replaced by [args]. Only simple arguments are supported, not
-     * full ICU MessageFormat (plurals, selects).
-     */
-    operator fun invoke(key: String, args: Map<String, String>): String =
-        args.entries.fold(invoke(key)) { message, (name, value) -> message.replace("{$name}", value) }
+    /** The translation formatted with [args], as an ICU message (see [formatIcuMessage]). */
+    operator fun invoke(key: String, args: Map<String, String>): String = formatIcuMessage(invoke(key), args)
 }
 
 /** [Localize] that falls back to [fallback] (flat keys, as `frontend/get_translations` returns) for unknown keys. */

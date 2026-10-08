@@ -19,9 +19,327 @@
   "states": "Overview",
   "todo": "To-do lists"
  },
+ "state": {
+  "default": {
+   "unavailable": "Unavailable",
+   "unknown": "Unknown"
+  }
+ },
  "ui": {
+  "card": {
+   "alarm_control_panel": {
+    "arm": "Arm",
+    "arm_away": "Arm away",
+    "arm_custom_bypass": "Custom bypass",
+    "arm_home": "Arm home",
+    "arm_night": "Arm night",
+    "arm_vacation": "Arm vacation",
+    "clear_code": "Clear",
+    "code": "Code",
+    "disarm": "Disarm",
+    "modes": {
+     "armed_away": "Away",
+     "armed_custom_bypass": "Custom",
+     "armed_home": "Home",
+     "armed_night": "Night",
+     "armed_vacation": "Vacation",
+     "disarmed": "Disarmed"
+    },
+    "modes_label": "Modes"
+   },
+   "area": {
+    "area_not_found": "Area not found."
+   },
+   "automation": {
+    "last_triggered": "Last triggered",
+    "trigger": "Run actions"
+   },
+   "button": {
+    "press": "Press"
+   },
+   "camera": {
+    "not_available": "Image not available"
+   },
+   "climate": {
+    "cooling": "{name} cooling",
+    "current_temperature": "{name} current temperature",
+    "currently": "Currently",
+    "drying": "{name} drying",
+    "fan": "{name} fan only",
+    "heating": "{name} heating",
+    "high": "high",
+    "humidity_target": "Humidity target",
+    "low": "low",
+    "mode": "Mode",
+    "on_off": "On / off",
+    "preset": "Preset",
+    "target": "Target",
+    "target_label": "{action} to target",
+    "target_temperature_entity": "{name} target temperature",
+    "target_temperature_mode": "{name} target temperature {mode}"
+   },
+   "common": {
+    "entity_not_found": "Entity not found",
+    "toggle": "Toggle",
+    "turn_off": "Turn off",
+    "turn_on": "Turn on"
+   },
+   "counter": {
+    "actions": {
+     "decrement": "Decrement",
+     "increment": "Increment",
+     "reset": "Reset"
+    }
+   },
+   "cover": {
+    "close_cover": "Close cover",
+    "close_tilt_cover": "Close cover tilt",
+    "open_cover": "Open cover",
+    "open_tilt_cover": "Open cover tilt",
+    "position": "Position",
+    "stop_cover": "Stop cover",
+    "tilt_position": "Tilt position"
+   },
+   "date": {
+    "set_date": "Set date"
+   },
+   "discovered-devices": {
+    "count_devices": "{count} {count, plural,\n one {device to add}\n other {devices to add}\n}",
+    "no_devices": "No devices to add",
+    "title": "Devices discovered"
+   },
+   "fan": {
+    "direction": "Direction",
+    "forward": "Forward",
+    "oscillate": "Oscillate",
+    "preset_mode": "Preset mode",
+    "reverse": "Reverse",
+    "speed": {
+     "high": "High",
+     "low": "Low",
+     "medium": "Medium"
+    }
+   },
+   "home-summary": {
+    "all_lights_off": "All off",
+    "all_maintenance_good": "All good",
+    "all_secure": "All secure",
+    "count_alarms_disarmed": "{count} {count, plural,\n one {disarmed}\n other {disarmed}\n}",
+    "count_lights_on": "{count} {count, plural,\n one {on}\n other {on}\n}",
+    "count_locks_unlocked": "{count} {count, plural,\n one {unlocked}\n other {unlocked}\n}",
+    "count_maintenance_issues_unavailable_battery_entities": "{count} {count, plural,\n one {unavailable device}\n other {unavailable devices}\n}",
+    "count_maintenance_low_battery_issues": "{count} {count, plural,\n one {low battery}\n other {low batteries}\n}",
+    "count_media_playing": "{count} {count, plural,\n one {playing}\n other {playing}\n}",
+    "count_persons_home": "{count} {count, plural,\n one {person}\n other {people}\n} home",
+    "no_media_playing": "No media playing",
+    "nobody_home": "No one home"
+   },
+   "humidifier": {
+    "current_humidity_entity": "{name} current humidity",
+    "currently": "[%key:ui::card::climate::currently%]",
+    "drying": "{name} drying",
+    "humidifying": "{name} humidifying",
+    "humidity": "Target humidity",
+    "mode": "Mode",
+    "on_entity": "{name} on",
+    "state": "State",
+    "target": "[%key:ui::card::climate::target%]",
+    "target_humidity_entity": "{name} target humidity",
+    "target_label": "[%key:ui::card::climate::target_label%]"
+   },
+   "lawn_mower": {
+    "actions": {
+     "dock": "Return to dock",
+     "pause": "Pause",
+     "resume_mowing": "Resume mowing",
+     "start_mowing": "Start mowing"
+    }
+   },
+   "light": {
+    "brightness": "Brightness",
+    "cold_white_value": "Cold white brightness",
+    "color_brightness": "Color brightness",
+    "color_temperature": "Color temperature",
+    "effect": "Effect",
+    "warm_white_value": "Warm white brightness",
+    "white_value": "White brightness"
+   },
+   "lock": {
+    "code": "[%key:ui::card::alarm_control_panel::code%]",
+    "lock": "Lock",
+    "open": "Open",
+    "open_door": "Open door",
+    "open_door_confirm": "Really open?",
+    "open_door_done": "Done",
+    "unlock": "Unlock"
+   },
+   "media_player": {
+    "browse_media": "Browse media",
+    "idle": "Idle",
+    "join": "Join",
+    "media_next_track": "Next track",
+    "media_pause": "Pause",
+    "media_play": "Play",
+    "media_play_pause": "Play/pause",
+    "media_players": "Media players",
+    "media_previous_track": "Previous track",
+    "media_stop": "Stop",
+    "media_volume_down": "Volume down",
+    "media_volume_mute": "Volume mute",
+    "media_volume_unmute": "Volume unmute",
+    "media_volume_up": "Volume up",
+    "nothing_playing": "Nothing playing",
+    "power": "Power",
+    "repeat": "Repeat",
+    "repeat_set": "Repeat mode",
+    "select_all": "Select all",
+    "shuffle": "Shuffle",
+    "shuffle_set": "Shuffle",
+    "sound_mode": "Sound mode",
+    "source": "Source",
+    "text_to_speak": "Text to speak",
+    "track_position": "Track position",
+    "turn_off": "Turn off",
+    "turn_on": "Turn on",
+    "volume_down": "Volume down",
+    "volume_mute": "Mute",
+    "volume_up": "Volume up"
+   },
+   "persistent_notification": {
+    "dismiss": "Dismiss"
+   },
+   "repairs": {
+    "count_issues": "{count} {count, plural,\n one {issue}\n other {issues}\n}",
+    "no_issues": "No issues",
+    "title": "Repairs"
+   },
+   "scene": {
+    "activate": "Activate"
+   },
+   "script": {
+    "cancel": "Cancel",
+    "cancel_all": "Cancel all",
+    "cancel_multiple": "Cancel {number}",
+    "idle": "Idle",
+    "run": "[%key:ui::card::service::run%]",
+    "run_script": "Run script",
+    "running_parallel": "{active} running…",
+    "running_queued": "{queued} queued",
+    "running_single": "Running…"
+   },
+   "select": {
+    "option": "Option"
+   },
+   "service": {
+    "run": "Run"
+   },
+   "text": {
+    "empty_value": "(empty value)"
+   },
+   "timer": {
+    "actions": {
+     "cancel": "Cancel",
+     "finish": "Finish",
+     "pause": "Pause",
+     "set": "Set",
+     "start": "Start"
+    }
+   },
+   "toggle-group": {
+    "all_off": "All off",
+    "all_on": "All on",
+    "some_on": "{on_count} of {total_count} {on_count, plural, one {on} other {on}}"
+   },
+   "update": {
+    "installing": "Installing",
+    "installing_with_progress": "Installing ({progress}%)",
+    "up_to_date": "Up-to-date"
+   },
+   "updates": {
+    "count_updates": "{count} {count, plural,\n one {update available}\n other {updates available}\n}",
+    "no_updates": "Up to date",
+    "title": "Updates"
+   },
+   "vacuum": {
+    "actions": {
+     "resume_cleaning": "Resume cleaning",
+     "return_to_base": "Return to dock",
+     "start_cleaning": "Start cleaning",
+     "turn_off": "Turn off",
+     "turn_on": "Turn on"
+    }
+   },
+   "valve": {
+    "close_valve": "Close valve",
+    "open_valve": "Open valve",
+    "position": "[%key:ui::card::cover::position%]",
+    "stop_valve": "Stop valve"
+   },
+   "water_heater": {
+    "away_mode": "Away mode",
+    "currently": "[%key:ui::card::climate::currently%]",
+    "mode": "Mode",
+    "on_off": "On / off",
+    "target": "[%key:ui::card::climate::target%]",
+    "target_label": "[%key:ui::card::climate::target_label%]",
+    "target_temperature": "Target temperature"
+   },
+   "weather": {
+    "attributes": {
+     "air_pressure": "Air pressure",
+     "dew_point": "Dew point",
+     "humidity": "Humidity",
+     "precipitation": "Precipitation",
+     "temperature": "Temperature",
+     "visibility": "Visibility",
+     "wind_speed": "Wind speed"
+    },
+    "cardinal_direction": {
+     "e": "E",
+     "ene": "ENE",
+     "ese": "ESE",
+     "n": "N",
+     "ne": "NE",
+     "nne": "NNE",
+     "nnw": "NNW",
+     "nw": "NW",
+     "s": "S",
+     "se": "SE",
+     "sse": "SSE",
+     "ssw": "SSW",
+     "sw": "SW",
+     "w": "W",
+     "wnw": "WNW",
+     "wsw": "WSW"
+    },
+    "daily": "Daily",
+    "day": "Day",
+    "forecast": "Forecast",
+    "forecast_daily": "Forecast daily",
+    "forecast_hourly": "Forecast hourly",
+    "forecast_twice_daily": "Forecast twice daily",
+    "high": "High",
+    "hourly": "Hourly",
+    "low": "Low",
+    "night": "Night",
+    "twice_daily": "Twice daily"
+   }
+  },
   "panel": {
    "lovelace": {
+    "components": {
+     "energy_period_selector": {
+      "compare": "Compare data",
+      "download_data": "[%key:ui::panel::history::download_data%]",
+      "next": "Next",
+      "now": "Now",
+      "previous": "Previous"
+     },
+     "timestamp-display": {
+      "invalid": "Invalid timestamp",
+      "invalid_format": "Invalid display format"
+     }
+    },
     "strategy": {
      "areas": {
       "areas": "Areas",

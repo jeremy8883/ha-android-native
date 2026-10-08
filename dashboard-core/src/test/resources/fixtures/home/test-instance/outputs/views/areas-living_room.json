@@ -300,5 +300,16 @@
       ]
     }
   ],
-  "badges": []
+  "badges": [
+    {
+      "entity": "sensor.living_room_temperature",
+      "type": "entity",
+      "color": "red"
+    },
+    {
+      "entity": "sensor.living_room_humidity",
+      "type": "entity",
+      "color": "indigo"
+    }
+  ]
 }

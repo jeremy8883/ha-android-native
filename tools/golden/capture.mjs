@@ -256,6 +256,28 @@ async function visitView(page, path, strategyType) {
 async function captureInPage() {
   const g = window.__golden;
 
+  // What built-in cards show for given configs, read from their rendered elements
+  async function captureCardContent(hass, ha) {
+    const host = document.createElement("div");
+    ha.shadowRoot.appendChild(host);
+    const summaries = {};
+    for (const summary of ["light", "climate", "security", "media_players", "maintenance", "energy", "persons"]) {
+      const el = document.createElement("hui-home-summary-card");
+      el.hass = hass;
+      el.setConfig({ type: "home-summary", summary });
+      host.appendChild(el);
+      await el.updateComplete;
+      const info = el.shadowRoot?.querySelector("ha-tile-info");
+      summaries[summary] = {
+        primary: info?.primary ?? null,
+        secondary: info?.secondary ?? null,
+        loading: Boolean(info?.secondaryLoading),
+      };
+    }
+    host.remove();
+    return { "home-summary": summaries };
+  }
+
   async function captureEntityDisplay(hass, ha) {
     // Visible text of a node, through shadow roots, as a user would read it
     const deepText = (node) => {
@@ -452,6 +474,7 @@ async function captureInPage() {
   // ---- per-entity display: the icon (ha-state-icon), names (formatEntityName) and the tile's secondary
   // line (state-display, default content), all from the same hass snapshot
   const display = await captureEntityDisplay(hass, ha);
+  const cards = await captureCardContent(hass, ha);
   // Frontend bundle strings used to display states (state.default.unknown, ...)
   const stateStrings = {};
   for (const k of Object.keys(resources).sort()) {
@@ -491,6 +514,7 @@ async function captureInPage() {
     sections,
     expanded,
     display,
+    cards,
     rendered: { dashboard: g.clone(panel._lovelace?.config ?? null) },
   };
 }
@@ -617,6 +641,7 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
   }
   write("outputs/expanded.json", cap.expanded);
   write("outputs/entity-display.json", cap.display);
+  write("outputs/cards.json", cap.cards);
 
   // ---- cross-checks against what the live frontend rendered
   const checks = [];

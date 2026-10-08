@@ -158,7 +158,9 @@
           "type": "area",
           "area": "living_room",
           "display_type": "compact",
-          "sensor_classes": [],
+          "sensor_classes": [
+            "temperature"
+          ],
           "tap_action": {
             "action": "navigate",
             "navigation_path": "areas-living_room"
@@ -215,7 +217,9 @@
           "type": "area",
           "area": "bedroom",
           "display_type": "compact",
-          "sensor_classes": [],
+          "sensor_classes": [
+            "temperature"
+          ],
           "tap_action": {
             "action": "navigate",
             "navigation_path": "areas-bedroom"
@@ -230,7 +234,9 @@
           "type": "area",
           "area": "office",
           "display_type": "compact",
-          "sensor_classes": [],
+          "sensor_classes": [
+            "temperature"
+          ],
           "tap_action": {
             "action": "navigate",
             "navigation_path": "areas-office"
