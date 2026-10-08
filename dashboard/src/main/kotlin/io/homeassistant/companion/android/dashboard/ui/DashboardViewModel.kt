@@ -22,6 +22,7 @@ import io.homeassistant.companion.android.dashboard.entity.withFallback
 import io.homeassistant.companion.android.dashboard.layout.CardGroup
 import io.homeassistant.companion.android.dashboard.layout.cardGroups
 import io.homeassistant.companion.android.dashboard.layout.viewHeaderCard
+import io.homeassistant.companion.android.dashboard.layout.withNestedCards
 import io.homeassistant.companion.android.dashboard.model.DashboardConfig
 import io.homeassistant.companion.android.dashboard.model.DashboardInfo
 import io.homeassistant.companion.android.dashboard.model.ViewConfig
@@ -198,7 +199,8 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         .combine(structureInputs) { state, inputs ->
             val content = state as? DashboardUiState.Content
             val cards =
-                content?.groups?.flatMap { it.cards }.orEmpty() + listOfNotNull(content?.view?.let(::viewHeaderCard))
+                withNestedCards(content?.groups?.flatMap { it.cards }.orEmpty()) +
+                    listOfNotNull(content?.view?.let(::viewHeaderCard))
             inputs.hass.templateRequests(cards)
         }
         .distinctUntilChanged()
@@ -216,7 +218,7 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
     private val cameraImages: Flow<Map<String, String>> = uiState
         .combine(structureInputs) { state, inputs ->
             val content = state as? DashboardUiState.Content
-            inputs.hass.cameraSnapshotEntities(content?.groups?.flatMap { it.cards }.orEmpty())
+            inputs.hass.cameraSnapshotEntities(withNestedCards(content?.groups?.flatMap { it.cards }.orEmpty()))
         }
         .distinctUntilChanged()
         .flatMapLatest { cameras ->

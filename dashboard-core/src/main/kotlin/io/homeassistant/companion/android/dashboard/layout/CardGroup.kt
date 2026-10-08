@@ -9,6 +9,8 @@ import io.homeassistant.companion.android.dashboard.model.ViewConfig
 import io.homeassistant.companion.android.dashboard.model.ViewType
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.number
+import io.homeassistant.companion.android.dashboard.model.obj
+import io.homeassistant.companion.android.dashboard.model.objects
 import kotlinx.serialization.json.JsonObject
 
 /**
@@ -61,7 +63,29 @@ fun HassSnapshot.visibleCards(group: CardGroup, context: ConditionContext): List
     if (group.visibility.isNotEmpty() && !conditionsMet(group.visibility, context)) return null
     val cards = group.cards.filter { card ->
         (card.visibility.isEmpty() || conditionsMet(card.visibility, context.copy(entityId = card.entity))) &&
+            conditionalCardShown(card, context) &&
             !cardHidesItself(card)
     }
     return cards.takeUnless { group.cards.isNotEmpty() && it.isEmpty() }
 }
+
+/**
+ * Whether a conditional card's conditions pass (other cards always pass). Port of `HuiConditionalBase`
+ * (frontend@20260624.6 src/panels/lovelace/components/hui-conditional-base.ts): a failing conditional card hides
+ * itself, and with it its card.
+ */
+fun HassSnapshot.conditionalCardShown(card: CardConfig, context: ConditionContext): Boolean {
+    if (card.type != CONDITIONAL) return true
+    val conditions = card.json.objects("conditions")
+    return conditions.isEmpty() || conditionsMet(conditions, context)
+}
+
+/** The card a conditional card shows, or `null` for other cards. */
+fun CardConfig.conditionalInnerCard(): CardConfig? =
+    if (type == CONDITIONAL) json.obj("card")?.let(::CardConfig) else null
+
+/** [cards] with the cards nested in them (conditional cards), for data that inner cards need. */
+fun withNestedCards(cards: List<CardConfig>): List<CardConfig> =
+    cards.flatMap { card -> listOf(card) + withNestedCards(listOfNotNull(card.conditionalInnerCard())) }
+
+private const val CONDITIONAL = "conditional"

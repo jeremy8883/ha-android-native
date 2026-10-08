@@ -14,6 +14,7 @@ import io.homeassistant.companion.android.dashboard.derive.homeSummaryModel
 import io.homeassistant.companion.android.dashboard.derive.repairsModel
 import io.homeassistant.companion.android.dashboard.derive.updatesModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
+import io.homeassistant.companion.android.dashboard.layout.conditionalInnerCard
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import java.time.ZonedDateTime
 
@@ -26,6 +27,8 @@ internal fun DashboardCard(
     interactions: CardInteractions,
     modifier: Modifier = Modifier,
 ) {
+    // A conditional card is only laid out while its conditions pass, so it shows its card
+    card.conditionalInnerCard()?.let { inner -> return DashboardCard(inner, hass, now, interactions, modifier) }
     val actions = remember(card) { cardActions(card) }
     // Gestures work on every card, so actions are available before every card type is native
     val cardModifier = modifier.clip(RoundedCornerShape(HARadius.XL)).elementGestures(actions.card, interactions)
