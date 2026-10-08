@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.FilledTonalIconButton
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
@@ -95,13 +97,17 @@ private fun FeatureButtons(buttons: TileFeature.Buttons, onAction: (CardAction) 
                 onClick = { onAction(button.action) },
                 enabled = button.enabled,
                 colors = IconButtonDefaults.filledTonalIconButtonColors(
-                    containerColor = colors.colorFillNeutralQuietResting,
+                    containerColor = colors.colorFillNeutralNormalResting,
+                    contentColor = colors.colorOnNeutralNormal,
+                    disabledContainerColor = colors.colorFillNeutralQuietResting,
+                    disabledContentColor = colors.colorOnDisabledQuiet,
                 ),
+                shape = RoundedCornerShape(HARadius.XL),
                 modifier = Modifier.weight(1f).semantics { contentDescription = button.label },
             ) {
                 DashboardIcon(
                     name = button.icon,
-                    tint = if (button.enabled) colors.colorTextPrimary else colors.colorTextDisabled,
+                    tint = if (button.enabled) colors.colorOnNeutralNormal else colors.colorOnDisabledQuiet,
                     modifier = Modifier.size(HASize.X2L),
                 )
             }
@@ -150,14 +156,6 @@ private fun FeatureSelect(select: TileFeature.Select, onAction: (CardAction) -> 
     }
 }
 
-@Composable
-private fun controlButtonColors() = with(LocalHAColorScheme.current) {
-    IconButtonDefaults.filledTonalIconButtonColors(
-        containerColor = colorFillNeutralNormalResting,
-        disabledContainerColor = colorFillNeutralQuietResting,
-    )
-}
-
 /** Minus/plus around the value; presses are collected for a second before one call, like upstream's debounce. */
 @Composable
 private fun FeatureNumber(
@@ -182,20 +180,33 @@ private fun FeatureNumber(
         pending = BigDecimal(next).setScale(item.fractionDigits, RoundingMode.HALF_UP).toDouble()
     }
     Row(
-        modifier = modifier.semantics { contentDescription = item.label },
+        modifier = modifier
+            .height(CONTROL_HEIGHT)
+            .clip(RoundedCornerShape(HARadius.XL))
+            .background(colors.colorFillNeutralNormalResting)
+            .padding(horizontal = HADimens.SPACE1)
+            .semantics { contentDescription = item.label },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
-        FilledTonalIconButton(onClick = { step(-1) }, enabled = enabled, colors = controlButtonColors()) {
-            DashboardIcon(name = MINUS, tint = colors.colorTextPrimary, modifier = Modifier.size(HASize.L))
+        IconButton(onClick = { step(-1) }, enabled = enabled) {
+            DashboardIcon(
+                name = MINUS,
+                tint = if (enabled) colors.colorOnNeutralNormal else colors.colorOnDisabledQuiet,
+                modifier = Modifier.size(HASize.L),
+            )
         }
         Text(
             text = shown?.let(item::display) ?: "–",
             style = HATextStyle.Body,
-            color = if (enabled) colors.colorTextPrimary else colors.colorTextDisabled,
+            color = if (enabled) colors.colorOnNeutralNormal else colors.colorOnDisabledQuiet,
         )
-        FilledTonalIconButton(onClick = { step(1) }, enabled = enabled, colors = controlButtonColors()) {
-            DashboardIcon(name = PLUS, tint = colors.colorTextPrimary, modifier = Modifier.size(HASize.L))
+        IconButton(onClick = { step(1) }, enabled = enabled) {
+            DashboardIcon(
+                name = PLUS,
+                tint = if (enabled) colors.colorOnNeutralNormal else colors.colorOnDisabledQuiet,
+                modifier = Modifier.size(HASize.L),
+            )
         }
     }
 }
