@@ -27,4 +27,5 @@
     <string name="native_dashboard_offline">Connection lost. Reconnecting…</string>
     <string name="native_dashboard_updated">Updated %1$s</string>
     <string name="native_dashboard_updated_just_now">Updated just now</string>
+    <string name="native_dashboard_page_unavailable">This page isn\'t available in this app</string>
 </resources>

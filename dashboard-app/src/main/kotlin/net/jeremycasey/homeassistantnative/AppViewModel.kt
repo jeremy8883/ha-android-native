@@ -12,10 +12,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import net.jeremycasey.homeassistantnative.settings.AppSettings
 
 /** Whether the app is logged in to a server, and where its pages are on the web. */
 @HiltViewModel
-internal class AppViewModel @Inject constructor(private val serverManager: ServerManager) : ViewModel() {
+internal class AppViewModel @Inject constructor(private val serverManager: ServerManager, settings: AppSettings) :
+    ViewModel() {
+
+    /** Whether pages the dashboards don't show open in the companion app (see [AppSettings]); `null` until read. */
+    val openOtherPages: StateFlow<Boolean?> = settings.openOtherPagesInCompanionApp
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     /** Whether a server is logged in to (has a session); `null` until the servers are read. */
     val hasServer: StateFlow<Boolean?> = serverManager.serversFlow

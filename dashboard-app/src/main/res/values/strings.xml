@@ -15,9 +15,12 @@
     <string name="login_error_unexpected">This doesn\'t look like a Home Assistant server, or it asks for a sign-in this app doesn\'t support yet</string>
     <string name="settings_title">Settings</string>
     <string name="settings_servers">Servers</string>
-    <string name="settings_active">Current</string>
+    <string name="settings_active">Active</string>
+    <string name="server_select">Select server</string>
     <string name="settings_add_server">Add server</string>
     <string name="settings_log_out">Log out</string>
     <string name="settings_log_out_title">Log out of %1$s?</string>
     <string name="settings_log_out_text">This app forgets the server. The companion app and other devices stay logged in.</string>
+    <string name="settings_other_pages">Open other pages in the Home Assistant app</string>
+    <string name="settings_other_pages_description">Pages this app doesn\'t show, such as History or an entity\'s full details, open in the Home Assistant companion app, or the browser without it. When off, they\'re left out.</string>
 </resources>

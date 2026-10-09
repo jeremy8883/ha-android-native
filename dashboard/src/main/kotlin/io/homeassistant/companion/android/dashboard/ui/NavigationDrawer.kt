@@ -41,6 +41,7 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
  * @param drawerState the drawer's state, which back closes (with Material's predictive back animation)
  * @param sidebar the panels, or why they couldn't be loaded, with [onRetry] to try again
  * @param onSwitchServer shows the server picker; `null` hides the entry (a single server)
+ * @param onlyDashboards lists only the dashboards, when other pages can't be opened
  * @param onOpenSettings opens the app's own settings, in place of the frontend's Settings and profile; `null` keeps
  *   those
  * @param onOpen called with the path of the chosen entry
@@ -52,6 +53,7 @@ internal fun NavigationDrawerContent(
     selected: String?,
     onSwitchServer: (() -> Unit)? = null,
     onOpenSettings: (() -> Unit)? = null,
+    onlyDashboards: Boolean = false,
     onRetry: () -> Unit = {},
     onOpen: (String) -> Unit,
 ) {
@@ -99,7 +101,8 @@ internal fun NavigationDrawerContent(
                     )
                     HAAccentButton(text = stringResource(R.string.native_dashboard_retry), onClick = onRetry)
                 }
-                is Loadable.Ready -> sidebar.value.items.forEach { Entry(it.urlPath, it.title, it.icon) }
+                is Loadable.Ready -> (if (onlyDashboards) sidebar.value.dashboardItems else sidebar.value.items)
+                    .forEach { Entry(it.urlPath, it.title, it.icon) }
             }
         }
         HorizontalDivider()

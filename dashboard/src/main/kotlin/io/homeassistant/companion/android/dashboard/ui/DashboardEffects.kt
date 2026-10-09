@@ -42,7 +42,7 @@ internal fun DashboardEffects(
     onConfirmed: (CardAction) -> Unit,
     onCodeEntered: (CardAction.CallService, String) -> Unit,
     onMoreInfo: (String) -> Unit,
-    onOpenWeb: (String) -> Unit,
+    onOpenWeb: ((String) -> Unit)?,
 ) {
     val context = LocalContext.current
     val view = LocalView.current
@@ -107,18 +107,16 @@ private fun performFailureHaptic(view: View) {
 }
 
 /** Where navigation events lead. */
-private data class NavigationCallbacks(val onMoreInfo: (String) -> Unit, val onOpenWeb: (String) -> Unit)
+private data class NavigationCallbacks(val onMoreInfo: (String) -> Unit, val onOpenWeb: ((String) -> Unit)?)
 
 /** Follow [event] when it navigates somewhere. @return whether it did */
-private fun navigate(event: DashboardEvent, uriHandler: UriHandler, callbacks: NavigationCallbacks): Boolean {
+private fun navigate(event: DashboardEvent, uriHandler: UriHandler, callbacks: NavigationCallbacks): Boolean =
     when (event) {
-        is DashboardEvent.MoreInfo -> callbacks.onMoreInfo(event.entityId)
-        is DashboardEvent.OpenWeb -> callbacks.onOpenWeb(event.path)
-        is DashboardEvent.OpenUrl -> openUrl(uriHandler, event.url)
-        else -> return false
+        is DashboardEvent.MoreInfo -> true.also { callbacks.onMoreInfo(event.entityId) }
+        is DashboardEvent.OpenWeb -> callbacks.onOpenWeb?.let { open -> true.also { open(event.path) } } ?: false
+        is DashboardEvent.OpenUrl -> true.also { openUrl(uriHandler, event.url) }
+        else -> false
     }
-    return true
-}
 
 private fun openUrl(uriHandler: UriHandler, url: String) {
     try {
@@ -143,6 +141,9 @@ private fun messageFor(event: DashboardEvent, context: Context, view: View): Pai
             R.string.native_dashboard_load_failed,
             context.loadErrorText(event.error),
         ) to SnackbarDuration.Short
+        // Pages other than the dashboards, when they can't be opened
+        is DashboardEvent.OpenWeb ->
+            context.getString(R.string.native_dashboard_page_unavailable) to SnackbarDuration.Short
         is DashboardEvent.UnsupportedAction ->
             context.getString(R.string.native_dashboard_action_unsupported, event.type) to SnackbarDuration.Short
         else -> null

@@ -58,7 +58,7 @@ internal fun MoreInfoSheet(
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
     interactions: CardInteractions,
-    onShowFull: () -> Unit,
+    onShowFull: (() -> Unit)?,
     onDismiss: () -> Unit,
     snackbar: SnackbarHostState? = null,
 ) {
@@ -78,7 +78,7 @@ internal fun MoreInfoSheet(
 }
 
 @Composable
-private fun MoreInfoContent(model: MoreInfoModel, interactions: CardInteractions, onShowFull: () -> Unit) {
+private fun MoreInfoContent(model: MoreInfoModel, interactions: CardInteractions, onShowFull: (() -> Unit)?) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -98,11 +98,13 @@ private fun MoreInfoContent(model: MoreInfoModel, interactions: CardInteractions
             }
         }
         if (model.attributes.isNotEmpty()) MoreInfoAttributes(model.attributes)
-        HAPlainButton(
-            stringResource(R.string.native_dashboard_more_info_full),
-            onShowFull,
-            modifier = Modifier.align(Alignment.End),
-        )
+        onShowFull?.let {
+            HAPlainButton(
+                stringResource(R.string.native_dashboard_more_info_full),
+                it,
+                modifier = Modifier.align(Alignment.End),
+            )
+        }
     }
 }
 

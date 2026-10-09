@@ -51,7 +51,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun DashboardScreen(
     viewModel: DashboardViewModel,
-    onOpenWeb: (String) -> Unit,
+    onOpenWeb: ((String) -> Unit)?,
     request: NativeDashboardRequest = NativeDashboardRequest(),
     onSwitchServer: (() -> Unit)? = null,
     onOpenSettings: (() -> Unit)? = null,
@@ -85,6 +85,7 @@ internal fun DashboardScreen(
                     drawerState = drawerState,
                     viewModel = viewModel,
                     selected = selectedDashboard,
+                    onlyDashboards = onOpenWeb == null,
                     onSwitchServer = onSwitchServer,
                     onOpenSettings = onOpenSettings,
                 )
@@ -104,9 +105,12 @@ internal fun DashboardScreen(
             )
         }
         moreInfo?.let { entityId ->
-            val onShowFull = {
-                moreInfo = null
-                viewModel.onShowFullMoreInfo(entityId)
+            // The full details are a page of the frontend
+            val onShowFull = onOpenWeb?.let {
+                {
+                    moreInfo = null
+                    viewModel.onShowFullMoreInfo(entityId)
+                }
             }
             MoreInfoSheet(entityId, hass, now, interactions, onShowFull, onDismiss = { moreInfo = null }, snackbar)
         }
@@ -118,7 +122,7 @@ internal fun DashboardScreen(
 private fun DashboardMessages(
     viewModel: DashboardViewModel,
     snackbar: SnackbarHostState,
-    onOpenWeb: (String) -> Unit,
+    onOpenWeb: ((String) -> Unit)?,
     onMoreInfo: (String) -> Unit,
 ) {
     RefreshErrorMessages(
@@ -160,6 +164,7 @@ private fun DashboardDrawer(
     drawerState: DrawerState,
     viewModel: DashboardViewModel,
     selected: String?,
+    onlyDashboards: Boolean,
     onSwitchServer: (() -> Unit)?,
     onOpenSettings: (() -> Unit)?,
 ) {
@@ -170,6 +175,7 @@ private fun DashboardDrawer(
         sidebar = sidebar,
         selected = selected ?: sidebar.valueOrNull?.defaultPanel,
         onRetry = viewModel::onRetry,
+        onlyDashboards = onlyDashboards,
         onSwitchServer = onSwitchServer?.let { switch -> closingDrawer(drawerState, scope, switch) },
         onOpenSettings = onOpenSettings?.let { open -> closingDrawer(drawerState, scope, open) },
         onOpen = closingDrawer(drawerState, scope, viewModel::onOpenPath),

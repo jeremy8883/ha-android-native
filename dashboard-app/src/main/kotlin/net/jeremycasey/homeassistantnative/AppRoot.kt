@@ -82,9 +82,14 @@ private fun Dashboard(viewModel: AppViewModel, onOpenSettings: () -> Unit) {
     val scope = rememberCoroutineScope()
     val request = remember { NativeDashboardRequest() }
     var chooseServer by remember { mutableStateOf<((Int) -> Unit)?>(null) }
+    val openOtherPages by viewModel.openOtherPages.collectAsStateWithLifecycle()
+    val openWeb: (String) -> Unit = { path ->
+        scope.launch { openWebPage(context, path, viewModel.webUrl(path)) }
+    }
     NativeDashboard(
         request = request,
-        onOpenWeb = { path -> scope.launch { openWebPage(context, path, viewModel.webUrl(path)) } },
+        // Off, other pages are left out rather than switching apps unasked
+        onOpenWeb = openWeb.takeIf { openOtherPages == true },
         onShowServerSwitcher = { onSelected -> chooseServer = onSelected },
         onOpenSettings = onOpenSettings,
     )

@@ -509,14 +509,16 @@ private fun structureInputs(
 
 private fun sidebarState(inputs: StructureInputs, data: SidebarData): SidebarState {
     val defaultPanel = defaultPanelUrlPath(data.userCore, data.systemCore, inputs.panelInfo)
+    val items = sidebarItems(
+        panels = inputs.panelInfo,
+        defaultPanel = defaultPanel,
+        settings = SidebarSettings.fromUserData(data.sidebar),
+        localize = inputs.hass.localize,
+        locale = Locale.forLanguageTag(BUNDLED_LANGUAGE),
+    )
     return SidebarState(
-        items = sidebarItems(
-            panels = inputs.panelInfo,
-            defaultPanel = defaultPanel,
-            settings = SidebarSettings.fromUserData(data.sidebar),
-            localize = inputs.hass.localize,
-            locale = Locale.forLanguageTag(BUNDLED_LANGUAGE),
-        ),
+        items = items,
+        dashboardItems = items.filter { item -> inputs.panelInfo[item.urlPath]?.let(::isNativeDashboard) == true },
         panels = inputs.panelInfo,
         defaultPanel = defaultPanel,
         isAdmin = inputs.hass.user?.isAdmin == true,
@@ -595,6 +597,8 @@ private const val MORE_INFO_PARAM = "more-info-entity-id"
 /** The navigation sidebar's entries and what paths they lead to. */
 data class SidebarState(
     val items: List<SidebarItem>,
+    /** [items] the native dashboards show themselves, for when other pages can't be opened. */
+    val dashboardItems: List<SidebarItem>,
     val panels: Map<String, PanelInfo>,
     val defaultPanel: String,
     val isAdmin: Boolean,

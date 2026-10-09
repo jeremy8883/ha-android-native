@@ -20,7 +20,8 @@ import kotlinx.coroutines.launch
  * server, and start over when another server is activated.
  *
  * @param request what to show, applied once per request
- * @param onOpenWeb opens a path the native dashboards don't show (other panels, an entity's full more-info)
+ * @param onOpenWeb opens a path the native dashboards don't show (other panels, an entity's full more-info); `null`
+ *   when they can't be opened, which leaves them out of the drawer and the more-info sheet
  * @param onShowServerSwitcher shows the app's server picker, which calls back with the chosen server; `null` hides
  *   the drawer's server entry
  * @param onOpenSettings opens the app's own settings from the drawer, in place of the frontend's; `null` keeps those
@@ -28,7 +29,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun NativeDashboard(
     request: NativeDashboardRequest,
-    onOpenWeb: (String) -> Unit,
+    onOpenWeb: ((String) -> Unit)?,
     onShowServerSwitcher: ((onServerSelected: (Int) -> Unit) -> Unit)? = null,
     onOpenSettings: (() -> Unit)? = null,
 ) {

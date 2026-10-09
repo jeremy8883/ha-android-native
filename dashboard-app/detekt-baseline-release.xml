@@ -6,5 +6,10 @@
     <ID>ReturnCount:HomeAssistantSearcher.kt:private fun NsdServiceInfo.toHomeAssistantInstance: HomeAssistantInstance?</ID>
     <ID>UnusedPrivateProperty:HomeAssistantSearcher.kt:HomeAssistantSearcherImpl$private val nsdManager: NsdManager</ID>
     <ID>UnusedPrivateProperty:HomeAssistantSearcher.kt:HomeAssistantSearcherImpl$private val wifiManager: WifiManager?</ID>
+    <!-- ServerUserAvatarUseCase.kt is a verbatim copy of the companion app's, whose baseline holds the same findings -->
+    <ID>InjectDispatcher:ServerUserAvatarUseCase.kt:ServerUserAvatarUseCase$IO</ID>
+    <ID>ReturnCount:ServerUserAvatarUseCase.kt:ServerUserAvatarUseCase$private suspend fun String.toAbsoluteUrl: String?</ID>
+    <ID>ReturnCount:ServerUserAvatarUseCase.kt:ServerUserAvatarUseCase$private suspend fun cachedAvatar: Bitmap?</ID>
+    <ID>ReturnCount:ServerUserAvatarUseCase.kt:ServerUserAvatarUseCase$suspend fun getUserAvatar: Bitmap?</ID>
   </CurrentIssues>
 </SmellBaseline>
