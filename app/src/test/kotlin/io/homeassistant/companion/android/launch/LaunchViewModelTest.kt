@@ -4,7 +4,6 @@ import android.graphics.Rect
 import android.util.Rational
 import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
-import io.homeassistant.companion.android.WIPFeature
 import io.homeassistant.companion.android.applock.AppLockStateManager
 import io.homeassistant.companion.android.automotive.navigation.AutomotiveRoute
 import io.homeassistant.companion.android.common.data.authentication.SessionState
@@ -18,7 +17,6 @@ import io.homeassistant.companion.android.database.server.ServerSessionInfo
 import io.homeassistant.companion.android.database.server.ServerUserInfo
 import io.homeassistant.companion.android.frontend.navigation.FrontendRoute
 import io.homeassistant.companion.android.frontend.navigation.FrontendTarget
-import io.homeassistant.companion.android.nativedashboard.NativeDashboardRoute
 import io.homeassistant.companion.android.onboarding.OnboardingRoute
 import io.homeassistant.companion.android.onboarding.WearOnboardingRoute
 import io.homeassistant.companion.android.testing.unit.MainDispatcherJUnit5Extension
@@ -734,40 +732,5 @@ class LaunchViewModelTest {
         advanceUntilIdle()
 
         assertNull(viewModel.pipReadiness.value)
-    }
-
-    @Test
-    fun `Given native dashboards are on, when the server is connected without a target, then start on the native dashboards`() = runTest {
-        WIPFeature.nativeDashboardOverride = true
-        val serverId = 5
-        every { workManager.enqueue(any<OneTimeWorkRequest>()) } returns mockk()
-        val server = mockk<Server>(relaxed = true) { every { id } returns serverId }
-        coEvery { serverManager.getServer(any<Int>()) } returns server
-        coEvery { serverManager.isRegistered() } returns true
-        coEvery { serverManager.authenticationRepository().getSessionState() } returns SessionState.CONNECTED
-        coEvery { networkStatusMonitor.observeNetworkStatus(any()) } returns MutableStateFlow(NetworkState.READY_NET_VALIDATED)
-
-        createViewModel(LaunchActivity.DeepLink.NavigateTo(FrontendTarget.Default, serverId))
-        advanceUntilIdle()
-
-        assertEquals(LaunchUiState.Ready(NativeDashboardRoute()), viewModel.uiState.value)
-    }
-
-    @Test
-    fun `Given native dashboards are on, when a link targets another server, then open the frontend`() = runTest {
-        WIPFeature.nativeDashboardOverride = true
-        every { workManager.enqueue(any<OneTimeWorkRequest>()) } returns mockk()
-        coEvery { serverManager.getServer(5) } returns mockk<Server>(relaxed = true) { every { id } returns 5 }
-        coEvery { serverManager.getServer(ServerManager.SERVER_ID_ACTIVE) } returns mockk<Server>(relaxed = true) {
-            every { id } returns 1
-        }
-        coEvery { serverManager.isRegistered() } returns true
-        coEvery { serverManager.authenticationRepository().getSessionState() } returns SessionState.CONNECTED
-        coEvery { networkStatusMonitor.observeNetworkStatus(any()) } returns MutableStateFlow(NetworkState.READY_NET_VALIDATED)
-
-        createViewModel(LaunchActivity.DeepLink.NavigateTo(FrontendTarget.Path("/energy"), 5))
-        advanceUntilIdle()
-
-        assertEquals(LaunchUiState.Ready(FrontendRoute(FrontendTarget.Path("/energy"), 5)), viewModel.uiState.value)
     }
 }

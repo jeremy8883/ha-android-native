@@ -94,9 +94,6 @@ private const val APP_PREFIX = "app://"
 private const val INTENT_PREFIX = "intent:"
 private const val SECURITY_ALERT_URL = "https://www.home-assistant.io/latest-security-alert/"
 
-/** How long to wait for the frontend to go back from its more-info dialog before marking that it closed. */
-private const val MORE_INFO_CLOSE_FALLBACK_MS = 500
-
 /**
  * URLs that must NOT trigger the "always show first view on app start" navigation.
  *
@@ -267,15 +264,9 @@ internal class FrontendViewModel @VisibleForTesting constructor(
         stateProvider = { BridgeState(serverId = viewState.value.serverId, url = viewState.value.url) },
     )
 
-    private val _frontendRoute = MutableStateFlow<String?>(null)
-
-    /** The URL the frontend is at now, following its own route changes. */
-    val frontendRoute: StateFlow<String?> = _frontendRoute.asStateFlow()
-
     private val webViewClient = SuspendLazy {
         webViewClientFactory.create(
             currentUrlFlow = urlFlow,
-            onRouteChanged = { url -> _frontendRoute.value = url },
             onFrontendError = ::onError,
             onCrash = ::onRetry,
             onPageFinished = ::onPageFinished,
@@ -640,57 +631,6 @@ internal class FrontendViewModel @VisibleForTesting constructor(
     }
 
     /**
-     * Marks the frontend's URL with the fragment [marker] once its more-info dialog closes, a route change that tells
-     * the app the dialog is gone. The dialog's own history entry doesn't tell: the WebView skips history entries a
-     * page adds without a user gesture.
-     */
-    @OptIn(EvaluateJavascriptUsage::class)
-    fun markWhenMoreInfoCloses(marker: String) {
-        viewModelScope.launch {
-            externalBusRepository.evaluateScript(
-                """
-                window.addEventListener("dialog-closed", function onClosed(event) {
-                  if (event.detail?.dialog !== "ha-more-info-dialog") return;
-                  window.removeEventListener("dialog-closed", onClosed);
-                  // The frontend goes back from the dialog's history entry after this event, so mark the entry
-                  // left once that is done
-                  let marked = false;
-                  const mark = () => {
-                    if (marked) return;
-                    marked = true;
-                    history.replaceState(history.state, "", location.pathname + location.search + "#$marker");
-                  };
-                  window.addEventListener("popstate", () => setTimeout(mark), { once: true });
-                  setTimeout(mark, $MORE_INFO_CLOSE_FALLBACK_MS);
-                });
-                """.trimIndent(),
-            )
-        }
-    }
-
-    /**
-     * Shows [path] in the frontend already loaded, without reloading it, as the only entry of its history so back
-     * from it leaves the frontend. Loads the server again for [path] when the frontend isn't showing or the server
-     * can't navigate (before Home Assistant 2025.6).
-     */
-    fun openPath(path: String) {
-        viewModelScope.launch {
-            val state = _viewState.value
-            if (state is FrontendViewState.Content &&
-                NavigateToMessage.isAvailable(serverManager.getServer(state.serverId)?.version)
-            ) {
-                val clearHistory = WebViewAction.ClearHistory()
-                _webViewActions.emit(clearHistory)
-                clearHistory.await()
-                // Replacing the only entry left, the dashboard the frontend was at before
-                externalBusRepository.send(NavigateToMessage(path = path, replace = true))
-            } else {
-                startLoad(target = FrontendTarget.Path(path))
-            }
-        }
-    }
-
-    /**
      * Called from the security level configuration screen after the user makes a choice or discard.
      * The actual saving of the preference is handled by [io.homeassistant.companion.android.onboarding.locationforsecureconnection.LocationForSecureConnectionViewModel].
      */
@@ -960,10 +900,6 @@ internal class FrontendViewModel @VisibleForTesting constructor(
 
             is FrontendHandlerEvent.OpenSettings -> {
                 _events.emit(FrontendEvent.NavigateToSettings)
-            }
-
-            is FrontendHandlerEvent.ShowNavigation -> {
-                _events.emit(FrontendEvent.ShowNativeNavigation)
             }
 
             is FrontendHandlerEvent.OpenAssistSettings -> {

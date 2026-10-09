@@ -70,8 +70,6 @@ class HAWebViewClientFactory @Inject constructor(private val keyChainRepository:
      * @param onSubresourceSslError Optional callback when an SSL error occurs on a resource other than
      *        the main URL being loaded. Receives the URL of the failing resource. The frontend itself
      *        is unaffected, so this is a notice rather than a connection error.
-     * @param onRouteChanged Optional callback with the WebView's URL whenever its history changes, which
-     *        includes the frontend's own route changes (it navigates without reloading).
      */
     suspend fun create(
         currentUrlFlow: StateFlow<String?>,
@@ -89,7 +87,6 @@ class HAWebViewClientFactory @Inject constructor(private val keyChainRepository:
         )? = null,
         onCanGoBackChanged: ((canGoBack: Boolean) -> Unit)? = null,
         onSubresourceSslError: ((url: String?) -> Unit)? = null,
-        onRouteChanged: ((url: String?) -> Unit)? = null,
     ): HAWebViewClient {
         return HAWebViewClient(
             keyChainRepository = keyChainRepository,
@@ -102,7 +99,6 @@ class HAWebViewClientFactory @Inject constructor(private val keyChainRepository:
             onReceivedHttpAuthRequest = onReceivedHttpAuthRequest,
             onCanGoBackChanged = onCanGoBackChanged,
             onSubresourceSslError = onSubresourceSslError,
-            onRouteChanged = onRouteChanged,
         )
     }
 }
@@ -126,7 +122,6 @@ class HAWebViewClient internal constructor(
     )?,
     private val onCanGoBackChanged: ((canGoBack: Boolean) -> Unit)? = null,
     private val onSubresourceSslError: ((url: String?) -> Unit)? = null,
-    private val onRouteChanged: ((url: String?) -> Unit)? = null,
 ) : TLSWebViewClient(keyChainRepository, clientCertProvider) {
 
     /** Last resource URL loaded by the WebView, used to identify the resource requesting auth. */
@@ -160,7 +155,6 @@ class HAWebViewClient internal constructor(
     override fun doUpdateVisitedHistory(view: WebView?, url: String?, isReload: Boolean) {
         super.doUpdateVisitedHistory(view, url, isReload)
         view?.let { onCanGoBackChanged?.invoke(it.canGoBack()) }
-        onRouteChanged?.invoke(url)
     }
 
     override fun onReceivedHttpAuthRequest(view: WebView?, handler: HttpAuthHandler?, host: String?, realm: String?) {

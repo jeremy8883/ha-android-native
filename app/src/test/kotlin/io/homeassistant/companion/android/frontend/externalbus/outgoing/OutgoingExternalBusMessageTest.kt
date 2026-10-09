@@ -1,6 +1,5 @@
 package io.homeassistant.companion.android.frontend.externalbus.outgoing
 
-import io.homeassistant.companion.android.WIPFeature
 import io.homeassistant.companion.android.common.util.AppVersion
 import io.homeassistant.companion.android.frontend.addto.ExternalEntityAddToAction
 import io.homeassistant.companion.android.frontend.externalbus.frontendExternalBusJson
@@ -84,22 +83,5 @@ class OutgoingExternalBusMessageTest {
             """{"type":"result","id":20,"success":true,"result":{"actions":[{"app_payload":"dGVzdA==","enabled":true,"name":"Entity Widget","details":null,"mdi_icon":"mdi:shape"}]},"error":null}""",
             json,
         )
-    }
-
-    @Test
-    fun `Given native dashboards are on when serializing config then hasSidebar is true`() {
-        WIPFeature.nativeDashboardOverride = true
-        val json = frontendExternalBusJson.encodeToString<OutgoingExternalBusMessage>(
-            ConfigResultMessage(
-                id = 3,
-                hasNfc = false,
-                canCommissionMatter = false,
-                canExportThread = false,
-                hasBarCodeScanner = 0,
-                canSetupImprov = false,
-                appVersion = AppVersion.from("1.0.0 (1)"),
-            ),
-        )
-        assertTrue(json.contains(""""hasSidebar":true"""))
     }
 }

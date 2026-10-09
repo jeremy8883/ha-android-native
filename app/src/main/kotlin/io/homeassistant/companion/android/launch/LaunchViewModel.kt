@@ -9,7 +9,6 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.homeassistant.companion.android.BuildConfig
-import io.homeassistant.companion.android.WIPFeature
 import io.homeassistant.companion.android.applock.AppLockStateManager
 import io.homeassistant.companion.android.automotive.navigation.AutomotiveRoute
 import io.homeassistant.companion.android.common.data.authentication.SessionState
@@ -23,7 +22,6 @@ import io.homeassistant.companion.android.di.qualifiers.IsAutomotive
 import io.homeassistant.companion.android.di.qualifiers.LocationTrackingSupport
 import io.homeassistant.companion.android.frontend.navigation.FrontendRoute
 import io.homeassistant.companion.android.frontend.navigation.FrontendTarget
-import io.homeassistant.companion.android.nativedashboard.NativeDashboardRoute
 import io.homeassistant.companion.android.onboarding.OnboardingRoute
 import io.homeassistant.companion.android.onboarding.WearOnboardingRoute
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -235,14 +233,11 @@ internal class LaunchViewModel @VisibleForTesting constructor(
         try {
             getServerConnectedAndRegistered(serverId)?.let { server ->
                 Timber.d("Server (id=${server.id}) is connected and registered checking network status")
-                // The native dashboards show the active server only
-                val isActiveServer = WIPFeature.USE_NATIVE_DASHBOARD &&
-                    (serverId == ServerManager.SERVER_ID_ACTIVE || serverManager.getServer()?.id == server.id)
 
                 networkStatusMonitor.observeNetworkStatus(serverManager.connectionStateProvider(server.id))
                     .takeWhile { state ->
                         // Until the network is ready we continue to observe network status changes
-                        !handleNetworkState(state, target, serverId, isActiveServer)
+                        !handleNetworkState(state, target, serverId)
                     }.collect()
             } ?: navigateToOnboarding()
         } catch (e: IllegalStateException) {
@@ -309,23 +304,16 @@ internal class LaunchViewModel @VisibleForTesting constructor(
             .forEach { serverManager.removeServer(it.id) }
     }
 
-    private fun handleNetworkState(
-        state: NetworkState,
-        target: FrontendTarget,
-        serverId: Int,
-        isActiveServer: Boolean,
-    ): Boolean {
+    private fun handleNetworkState(state: NetworkState, target: FrontendTarget, serverId: Int): Boolean {
         Timber.i("Current network state $state")
         return when (state) {
             NetworkState.READY_INTERNAL, NetworkState.READY_NET_VALIDATED, NetworkState.READY_NET_LOCAL -> {
                 workManager.enqueueResyncRegistration()
                 _uiState.value = LaunchUiState.Ready(
-                    when {
-                        shouldNavigateToAutomotive -> AutomotiveRoute
-                        // The native dashboards start the app and stay at the bottom of the back stack: they show
-                        // dashboard paths and entities themselves and open other paths in the frontend on top
-                        WIPFeature.USE_NATIVE_DASHBOARD && isActiveServer -> NativeDashboardRoute.from(target)
-                        else -> FrontendRoute(target, serverId)
+                    if (shouldNavigateToAutomotive) {
+                        AutomotiveRoute
+                    } else {
+                        FrontendRoute(target, serverId)
                     },
                 )
                 true

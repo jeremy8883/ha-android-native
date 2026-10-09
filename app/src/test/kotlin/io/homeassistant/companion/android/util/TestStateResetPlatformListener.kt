@@ -1,6 +1,5 @@
 package io.homeassistant.companion.android.util
 
-import io.homeassistant.companion.android.WIPFeature
 import io.homeassistant.companion.android.common.util.FailFast
 import io.homeassistant.companion.android.common.util.FailFastHandler
 import io.homeassistant.companion.android.common.util.SdkVersion
@@ -64,6 +63,4 @@ class TestStateResetRobolectricPlugin : TestEnvironmentLifecyclePlugin {
 private fun resetTestState() {
     FailFast.setHandler(TestFailFastHandler)
     SdkVersion.resetSdkInt()
-    // Work-in-progress flags default to off in tests; tests of the new flows enable them
-    WIPFeature.nativeDashboardOverride = false
 }
