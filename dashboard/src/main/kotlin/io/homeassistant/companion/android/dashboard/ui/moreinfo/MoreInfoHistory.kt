@@ -31,16 +31,14 @@ import io.homeassistant.companion.android.dashboard.history.historyUsesStatistic
 import io.homeassistant.companion.android.dashboard.history.historyWithoutAttributes
 import io.homeassistant.companion.android.dashboard.history.statisticsChart
 import io.homeassistant.companion.android.dashboard.history.timelineChart
+import io.homeassistant.companion.android.dashboard.logbook.moreInfoPanelPath
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.charts.HistoryLineChartView
 import io.homeassistant.companion.android.dashboard.ui.charts.StatisticsChartView
 import io.homeassistant.companion.android.dashboard.ui.charts.TimeSpan
 import io.homeassistant.companion.android.dashboard.ui.charts.TimelineChartView
 import io.homeassistant.companion.android.dashboard.ui.loadErrorText
-import java.net.URLEncoder
 import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneId
 
 /**
  * The history section of an entity's details: its last day's states as timelines or lines, or a sensor's 5-minute
@@ -55,11 +53,14 @@ internal fun MoreInfoHistory(entityId: String, hass: HassSnapshot, now: Instant,
     LaunchedEffect(request) { viewModel.show(request) }
     val history by viewModel.history.collectAsStateWithLifecycle()
     Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
-        HistoryHeader(
-            hass = hass,
-            aggregate = (history as? Loadable.Ready)?.value is EntityHistory.Statistics,
+        val aggregate = (history as? Loadable.Ready)?.value is EntityHistory.Statistics
+        MoreInfoSectionHeader(
+            title = hass.localize("$MORE_INFO.history"),
+            subtitle = if (aggregate) hass.localize("$MORE_INFO.aggregate") else null,
+            showMore = hass.localize("$MORE_INFO.show_more"),
             onShowMore = {
-                interactions.onAction(CardAction.Navigate(historyPath(entityId, now, hass), replace = false))
+                val path = moreInfoPanelPath("history", entityId, now, hass.formats.zone)
+                interactions.onAction(CardAction.Navigate(path, replace = false))
             },
         )
         when (val loaded = history) {
@@ -70,24 +71,16 @@ internal fun MoreInfoHistory(entityId: String, hass: HassSnapshot, now: Instant,
     }
 }
 
+/** A section's header in the details: its [title] (with a [subtitle]), and a link to see more on its page. */
 @Composable
-private fun HistoryHeader(hass: HassSnapshot, aggregate: Boolean, onShowMore: () -> Unit) {
+internal fun MoreInfoSectionHeader(title: String, subtitle: String?, showMore: String, onShowMore: () -> Unit) {
     val colors = LocalHAColorScheme.current
     Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
-            Text(
-                hass.localize("$MORE_INFO.history"),
-                style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
-                color = colors.colorTextPrimary,
-            )
-            if (aggregate) {
-                Text(
-                    hass.localize("$MORE_INFO.aggregate"),
-                    style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
-                )
-            }
+            Text(title, style = HATextStyle.Body.copy(textAlign = TextAlign.Start), color = colors.colorTextPrimary)
+            subtitle?.let { Text(it, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start)) }
         }
-        HAPlainButton(hass.localize("$MORE_INFO.show_more"), onShowMore)
+        HAPlainButton(showMore, onShowMore)
     }
 }
 
@@ -134,12 +127,4 @@ private fun HistoryCharts(entityId: String, history: EntityHistory, hass: HassSn
     }
 }
 
-/** The History panel's address for [entityId] from the start of yesterday, as the frontend's "Show more" links. */
-private fun historyPath(entityId: String, now: Instant, hass: HassSnapshot): String {
-    val zone: ZoneId = hass.formats.zone
-    val yesterday = LocalDate.ofInstant(now, zone).minusDays(1).atStartOfDay(zone).toInstant()
-    val params = listOf("entity_id" to entityId, "start_date" to yesterday.toString(), "back" to "1")
-    return "/history?" + params.joinToString("&") { (key, value) -> "$key=${URLEncoder.encode(value, Charsets.UTF_8)}" }
-}
-
-private const val MORE_INFO = "ui.dialogs.more_info_control"
+internal const val MORE_INFO = "ui.dialogs.more_info_control"

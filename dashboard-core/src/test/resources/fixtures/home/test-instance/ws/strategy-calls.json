@@ -85,7 +85,10 @@
       "type": "usage_prediction/common_control"
     },
     "result": {
-      "entities": []
+      "entities": [
+        "light.kitchen_lights",
+        "select.speed"
+      ]
     }
   }
 ]

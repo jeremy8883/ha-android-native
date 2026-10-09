@@ -13,15 +13,15 @@
       "media_content_type": "movie",
       "media_duration": 300,
       "media_position": 45,
-      "media_position_updated_at": "2026-10-09T10:29:47.535940+00:00",
+      "media_position_updated_at": "2026-10-09T23:05:17.167980+00:00",
       "media_title": "♥♥ The Best Fireplace Video (3 hours)",
       "app_name": "YouTube",
       "sound_mode": "Music",
       "shuffle": false,
-      "entity_picture_local": "/api/media_player_proxy/media_player.living_room_tv?token=f52d5bcf114f13dd2e28d9224dcf947f1c734bace547086bf5eddb1d523610b8&cache=af30194897be0cd9",
+      "entity_picture_local": "/api/media_player_proxy/media_player.living_room_tv?token=58a075e30ac534b2090a2e7748d764c6d8c5705918fe07e987c999a02b1ba853&cache=3a60fab7b571abf2",
       "active_child": "media_player.living_room",
       "device_class": "tv",
-      "entity_picture": "/api/media_player_proxy/media_player.living_room?token=ac2801c103586fdff454b5fc902fc13be26722fff61bae23130f1a9e9131bdca&cache=bc2ffb49c4f67034",
+      "entity_picture": "/api/media_player_proxy/media_player.living_room?token=56b844c3683c80b2f03813954c1eecd1fccb7c3b0b60717674c93381378b2b6b&cache=bc2ffb49c4f67034",
       "friendly_name": "Living Room TV",
       "supported_features": 119695
     },
@@ -54,10 +54,10 @@
       "sound_mode": "Music",
       "shuffle": false,
       "repeat": "off",
-      "entity_picture_local": "/api/media_player_proxy/media_player.kitchen_speaker?token=8b31fd5c0ad99f654b4b6ada759f4073b16b0d716d24446c22c8363e65c4b8ac&cache=b3dbb875c28c562b",
+      "entity_picture_local": "/api/media_player_proxy/media_player.kitchen_speaker?token=3ddd88738fcae16b5b958f390dc7f9006b55ae33d7e72389e693f1ae083d9965&cache=e9b1cc3371804826",
       "active_child": "media_player.kitchen",
       "device_class": "speaker",
-      "entity_picture": "/api/media_player_proxy/media_player.kitchen?token=cfc72cc71261f15072daf4fe8a908d4e63273d7512c93c50b0651368f79b7343&cache=62c0c516acbc53a9",
+      "entity_picture": "/api/media_player_proxy/media_player.kitchen?token=2e1785ff48dfe2a4681f40c2855b65e511614e02353647328bcc10664878b86c&cache=62c0c516acbc53a9",
       "friendly_name": "Kitchen Speaker",
       "supported_features": 914877
     },
@@ -83,15 +83,15 @@
       "media_content_type": "movie",
       "media_duration": 360000,
       "media_position": 54000,
-      "media_position_updated_at": "2026-10-09T10:29:47.535947+00:00",
+      "media_position_updated_at": "2026-10-09T23:05:17.167987+00:00",
       "media_title": "Epic sax guy 10 hours",
       "app_name": "YouTube",
       "sound_mode": "Music",
       "shuffle": false,
-      "entity_picture_local": "/api/media_player_proxy/media_player.bedroom_speaker?token=2023b1d9601564ac8650e986a2e15bf097bb78d1452ab378a4c30986f72943e9&cache=2fd8ba5b9927b150",
+      "entity_picture_local": "/api/media_player_proxy/media_player.bedroom_speaker?token=4bb49ddb77f16e36e2cb862cbd8c8d53a28190cc1f07b9e8c136ad2e4ef75ae7&cache=1d2f0d4b45e3fcb5",
       "active_child": "media_player.bedroom",
       "device_class": "speaker",
-      "entity_picture": "/api/media_player_proxy/media_player.bedroom?token=b64033c1055770a3df7e9ce01aa370fb01e5e59ba589996a9321a4af7fa71617&cache=e4513ed94ec89151",
+      "entity_picture": "/api/media_player_proxy/media_player.bedroom?token=af409c873fd2ea1fe3848be47ca5dc992cf3c79cf9d25ec212f5c470821729e4&cache=e4513ed94ec89151",
       "friendly_name": "Bedroom Speaker",
       "supported_features": 119695
     },
@@ -124,10 +124,10 @@
       "sound_mode": "Music",
       "shuffle": false,
       "repeat": "off",
-      "entity_picture_local": "/api/media_player_proxy/media_player.office_speaker?token=16b7366e1d37d28a75e93e16cbd2d96292dc7f84d40ea32aec16bdfbb954d588&cache=90d574ade48eac67",
+      "entity_picture_local": "/api/media_player_proxy/media_player.office_speaker?token=e4bf75ff32d84afd1567ca9c847b436f1b5a479e5cfb836096268201676d7187&cache=53ce3ed5adcb1254",
       "active_child": "media_player.walkman",
       "device_class": "speaker",
-      "entity_picture": "/api/media_player_proxy/media_player.walkman?token=928fe3b58033cc5c779ca8d05699f55f0ce21aa0467a267b59f83117e6abc199&cache=62c0c516acbc53a9",
+      "entity_picture": "/api/media_player_proxy/media_player.walkman?token=02c40dceaa46994a922610c6b9850580c9f81bee738c1b095ebd73f97e637d91&cache=62c0c516acbc53a9",
       "friendly_name": "Office Speaker",
       "supported_features": 914877
     },
@@ -262,6 +262,23 @@
     "last_changed": "2026-01-01T00:00:00+00:00",
     "last_updated": "2026-01-01T00:00:00+00:00"
   },
+  "script.lock_up": {
+    "entity_id": "script.lock_up",
+    "state": "off",
+    "attributes": {
+      "last_triggered": "2026-10-09T23:41:10.459631+00:00",
+      "mode": "single",
+      "current": 0,
+      "friendly_name": "Lock up"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
   "input_number.target_humidity": {
     "entity_id": "input_number.target_humidity",
     "state": "30.0",
@@ -296,44 +313,6 @@
       "mode": "box",
       "unit_of_measurement": "%",
       "friendly_name": "Bedroom brightness"
-    },
-    "context": {
-      "id": "01JGOLDENCONTEXT000000000000",
-      "parent_id": null,
-      "user_id": null
-    },
-    "last_changed": "2026-01-01T00:00:00+00:00",
-    "last_updated": "2026-01-01T00:00:00+00:00"
-  },
-  "input_select.house_mode": {
-    "entity_id": "input_select.house_mode",
-    "state": "Home",
-    "attributes": {
-      "options": [
-        "Home",
-        "Away",
-        "Night",
-        "Vacation"
-      ],
-      "editable": false,
-      "icon": "mdi:home-switch",
-      "friendly_name": "House mode"
-    },
-    "context": {
-      "id": "01JGOLDENCONTEXT000000000000",
-      "parent_id": null,
-      "user_id": null
-    },
-    "last_changed": "2026-01-01T00:00:00+00:00",
-    "last_updated": "2026-01-01T00:00:00+00:00"
-  },
-  "input_button.doorbell_test": {
-    "entity_id": "input_button.doorbell_test",
-    "state": "unknown",
-    "attributes": {
-      "editable": false,
-      "icon": "mdi:doorbell",
-      "friendly_name": "Doorbell test"
     },
     "context": {
       "id": "01JGOLDENCONTEXT000000000000",
@@ -413,15 +392,53 @@
     "last_changed": "2026-01-01T00:00:00+00:00",
     "last_updated": "2026-01-01T00:00:00+00:00"
   },
+  "input_select.house_mode": {
+    "entity_id": "input_select.house_mode",
+    "state": "Vacation",
+    "attributes": {
+      "options": [
+        "Home",
+        "Away",
+        "Night",
+        "Vacation"
+      ],
+      "editable": false,
+      "icon": "mdi:home-switch",
+      "friendly_name": "House mode"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "input_button.doorbell_test": {
+    "entity_id": "input_button.doorbell_test",
+    "state": "2026-10-09T23:41:13.493436+00:00",
+    "attributes": {
+      "editable": false,
+      "icon": "mdi:doorbell",
+      "friendly_name": "Doorbell test"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
   "device_tracker.demo_paulus": {
     "entity_id": "device_tracker.demo_paulus",
     "state": "not_home",
     "attributes": {
       "source_type": "gps",
-      "latitude": 52.364885,
-      "longitude": 4.89612,
-      "gps_accuracy": 79,
-      "battery": 40,
+      "latitude": 52.367725,
+      "longitude": 4.888155,
+      "gps_accuracy": 116,
+      "battery": 19,
       "friendly_name": "Paulus"
     },
     "context": {
@@ -437,10 +454,10 @@
     "state": "not_home",
     "attributes": {
       "source_type": "gps",
-      "latitude": 52.366575,
-      "longitude": 4.8862749999999995,
-      "gps_accuracy": 71,
-      "battery": 62,
+      "latitude": 52.378165,
+      "longitude": 4.896555,
+      "gps_accuracy": 96,
+      "battery": 87,
       "friendly_name": "Anne Therese"
     },
     "context": {
@@ -470,37 +487,19 @@
     "last_changed": "2026-01-01T00:00:00+00:00",
     "last_updated": "2026-01-01T00:00:00+00:00"
   },
-  "counter.coffee_cups": {
-    "entity_id": "counter.coffee_cups",
-    "state": "0",
-    "attributes": {
-      "editable": false,
-      "initial": 0,
-      "step": 1,
-      "icon": "mdi:coffee",
-      "friendly_name": "Coffee cups"
-    },
-    "context": {
-      "id": "01JGOLDENCONTEXT000000000000",
-      "parent_id": null,
-      "user_id": null
-    },
-    "last_changed": "2026-01-01T00:00:00+00:00",
-    "last_updated": "2026-01-01T00:00:00+00:00"
-  },
   "sun.sun": {
     "entity_id": "sun.sun",
-    "state": "above_horizon",
+    "state": "below_horizon",
     "attributes": {
       "next_dawn": "2026-10-10T05:22:17.733203+00:00",
-      "next_dusk": "2026-10-09T17:33:47.367726+00:00",
-      "next_midnight": "2026-10-09T23:27:26+00:00",
+      "next_dusk": "2026-10-10T17:31:33.757424+00:00",
+      "next_midnight": "2026-10-10T23:27:10+00:00",
       "next_noon": "2026-10-10T11:27:33+00:00",
       "next_rising": "2026-10-10T05:57:05.237028+00:00",
-      "next_setting": "2026-10-09T16:59:07.942658+00:00",
-      "elevation": 31.05,
-      "azimuth": 187,
-      "rising": false,
+      "next_setting": "2026-10-10T16:56:51.752558+00:00",
+      "elevation": -44.18,
+      "azimuth": 359.96,
+      "rising": true,
       "friendly_name": "Sun"
     },
     "context": {
@@ -528,7 +527,7 @@
   },
   "sensor.sun_next_dusk": {
     "entity_id": "sensor.sun_next_dusk",
-    "state": "2026-10-09T17:33:47+00:00",
+    "state": "2026-10-10T17:31:33+00:00",
     "attributes": {
       "device_class": "timestamp",
       "friendly_name": "Sun Next dusk"
@@ -543,7 +542,7 @@
   },
   "sensor.sun_next_midnight": {
     "entity_id": "sensor.sun_next_midnight",
-    "state": "2026-10-09T23:27:26+00:00",
+    "state": "2026-10-10T23:27:10+00:00",
     "attributes": {
       "device_class": "timestamp",
       "friendly_name": "Sun Next midnight"
@@ -588,10 +587,47 @@
   },
   "sensor.sun_next_setting": {
     "entity_id": "sensor.sun_next_setting",
-    "state": "2026-10-09T16:59:07+00:00",
+    "state": "2026-10-10T16:56:51+00:00",
     "attributes": {
       "device_class": "timestamp",
       "friendly_name": "Sun Next setting"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "counter.coffee_cups": {
+    "entity_id": "counter.coffee_cups",
+    "state": "0",
+    "attributes": {
+      "editable": false,
+      "initial": 0,
+      "step": 1,
+      "icon": "mdi:coffee",
+      "friendly_name": "Coffee cups"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "input_text.welcome_message": {
+    "entity_id": "input_text.welcome_message",
+    "state": "Hello from the test instance",
+    "attributes": {
+      "editable": false,
+      "min": 0,
+      "max": 100,
+      "pattern": null,
+      "mode": "text",
+      "friendly_name": "Welcome message"
     },
     "context": {
       "id": "01JGOLDENCONTEXT000000000000",
@@ -613,25 +649,6 @@
       "second": 0,
       "timestamp": 25200,
       "friendly_name": "Wake-up time"
-    },
-    "context": {
-      "id": "01JGOLDENCONTEXT000000000000",
-      "parent_id": null,
-      "user_id": null
-    },
-    "last_changed": "2026-01-01T00:00:00+00:00",
-    "last_updated": "2026-01-01T00:00:00+00:00"
-  },
-  "input_text.welcome_message": {
-    "entity_id": "input_text.welcome_message",
-    "state": "Hello from the test instance",
-    "attributes": {
-      "editable": false,
-      "min": 0,
-      "max": 100,
-      "pattern": null,
-      "mode": "text",
-      "friendly_name": "Welcome message"
     },
     "context": {
       "id": "01JGOLDENCONTEXT000000000000",
@@ -673,7 +690,7 @@
   },
   "sensor.living_room_temperature": {
     "entity_id": "sensor.living_room_temperature",
-    "state": "21.3",
+    "state": "21.4",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "°C",
@@ -690,7 +707,7 @@
   },
   "sensor.living_room_humidity": {
     "entity_id": "sensor.living_room_humidity",
-    "state": "49",
+    "state": "47",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "%",
@@ -775,7 +792,7 @@
   },
   "sensor.house_power": {
     "entity_id": "sensor.house_power",
-    "state": "671",
+    "state": "608",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -792,7 +809,7 @@
   },
   "sensor.solar_power": {
     "entity_id": "sensor.solar_power",
-    "state": "2643",
+    "state": "0",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -809,7 +826,7 @@
   },
   "sensor.grid_power": {
     "entity_id": "sensor.grid_power",
-    "state": "-293",
+    "state": "0",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -826,7 +843,7 @@
   },
   "sensor.home_battery_power": {
     "entity_id": "sensor.home_battery_power",
-    "state": "-2000",
+    "state": "350",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -843,7 +860,7 @@
   },
   "sensor.home_battery_charge": {
     "entity_id": "sensor.home_battery_charge",
-    "state": "85",
+    "state": "25",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "%",
@@ -860,7 +877,7 @@
   },
   "sensor.fridge_power": {
     "entity_id": "sensor.fridge_power",
-    "state": "5",
+    "state": "120",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -894,7 +911,7 @@
   },
   "sensor.office_circuit_power": {
     "entity_id": "sensor.office_circuit_power",
-    "state": "160",
+    "state": "15",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -911,7 +928,7 @@
   },
   "sensor.office_computer_power": {
     "entity_id": "sensor.office_computer_power",
-    "state": "120",
+    "state": "3",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -996,7 +1013,7 @@
   },
   "sensor.lights_on": {
     "entity_id": "sensor.lights_on",
-    "state": "5",
+    "state": "6",
     "attributes": {
       "friendly_name": "Lights on"
     },
@@ -1040,7 +1057,7 @@
   },
   "binary_sensor.kitchen_motion": {
     "entity_id": "binary_sensor.kitchen_motion",
-    "state": "off",
+    "state": "on",
     "attributes": {
       "device_class": "motion",
       "friendly_name": "Kitchen motion"
@@ -1207,12 +1224,62 @@
     "last_changed": "2026-01-01T00:00:00+00:00",
     "last_updated": "2026-01-01T00:00:00+00:00"
   },
+  "tts.google_translate_en_com": {
+    "entity_id": "tts.google_translate_en_com",
+    "state": "unknown",
+    "attributes": {
+      "friendly_name": "Google Translate en com"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
   "todo.shopping_list": {
     "entity_id": "todo.shopping_list",
     "state": "0",
     "attributes": {
       "friendly_name": "Shopping List",
       "supported_features": 15
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "automation.bed_light_schedule": {
+    "entity_id": "automation.bed_light_schedule",
+    "state": "on",
+    "attributes": {
+      "id": "bed_light_schedule",
+      "last_triggered": "2026-10-09T23:41:13.500248+00:00",
+      "mode": "single",
+      "current": 0,
+      "friendly_name": "Bed light schedule"
+    },
+    "context": {
+      "id": "01JGOLDENCONTEXT000000000000",
+      "parent_id": null,
+      "user_id": null
+    },
+    "last_changed": "2026-01-01T00:00:00+00:00",
+    "last_updated": "2026-01-01T00:00:00+00:00"
+  },
+  "automation.guest_welcome": {
+    "entity_id": "automation.guest_welcome",
+    "state": "on",
+    "attributes": {
+      "id": "guest_welcome",
+      "last_triggered": "2026-10-09T23:41:10.459467+00:00",
+      "mode": "single",
+      "current": 0,
+      "friendly_name": "Guest welcome"
     },
     "context": {
       "id": "01JGOLDENCONTEXT000000000000",
@@ -1361,7 +1428,7 @@
   },
   "button.push": {
     "entity_id": "button.push",
-    "state": "unknown",
+    "state": "2026-10-09T23:41:13.491202+00:00",
     "attributes": {
       "friendly_name": "Push"
     },
@@ -1377,8 +1444,8 @@
     "entity_id": "camera.demo_camera",
     "state": "streaming",
     "attributes": {
-      "access_token": "dacdce62ab89af6ec334ec243076637b411ae98303a079cc521af7f9db1c161d",
-      "entity_picture": "/api/camera_proxy/camera.demo_camera?token=dacdce62ab89af6ec334ec243076637b411ae98303a079cc521af7f9db1c161d",
+      "access_token": "e687932ce05608170dfd2cece5ae1f152ef9325eb6f55e5cd692dee9dbc53a0a",
+      "entity_picture": "/api/camera_proxy/camera.demo_camera?token=e687932ce05608170dfd2cece5ae1f152ef9325eb6f55e5cd692dee9dbc53a0a",
       "friendly_name": "Demo camera",
       "supported_features": 3
     },
@@ -1394,8 +1461,8 @@
     "entity_id": "camera.demo_camera_png",
     "state": "streaming",
     "attributes": {
-      "access_token": "c8a707978c3b479d50ff4524943265450cfddc4fae7a41e74eef6de3c8880a58",
-      "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=c8a707978c3b479d50ff4524943265450cfddc4fae7a41e74eef6de3c8880a58",
+      "access_token": "178f5852b15960e6f8ab90b8e7a7845812f69caccab70e1c109d75fade9397c7",
+      "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=178f5852b15960e6f8ab90b8e7a7845812f69caccab70e1c109d75fade9397c7",
       "friendly_name": "Demo camera png",
       "supported_features": 3
     },
@@ -1411,8 +1478,8 @@
     "entity_id": "camera.demo_camera_without_stream",
     "state": "streaming",
     "attributes": {
-      "access_token": "3c8911605845248e4331270f1166eba199357bd5520f8ce93867d8d78f8f480d",
-      "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=3c8911605845248e4331270f1166eba199357bd5520f8ce93867d8d78f8f480d",
+      "access_token": "a3f1e4f6accfa64af621952cefc8972f010627cb6fa5e410044bf8dda2958f07",
+      "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=a3f1e4f6accfa64af621952cefc8972f010627cb6fa5e410044bf8dda2958f07",
       "friendly_name": "Demo camera without stream",
       "supported_features": 1
     },
@@ -1430,8 +1497,8 @@
     "attributes": {
       "message": "Future Event",
       "all_day": false,
-      "start_time": "2026-10-09 12:59:47",
-      "end_time": "2026-10-09 13:59:47",
+      "start_time": "2026-10-10 01:35:17",
+      "end_time": "2026-10-10 02:35:17",
       "location": "Future Location",
       "description": "Future Description",
       "friendly_name": "Calendar 1"
@@ -1450,8 +1517,8 @@
     "attributes": {
       "message": "Current Event",
       "all_day": false,
-      "start_time": "2026-10-09 11:59:47",
-      "end_time": "2026-10-09 12:59:47",
+      "start_time": "2026-10-10 00:35:17",
+      "end_time": "2026-10-10 01:35:17",
       "location": "",
       "description": "",
       "friendly_name": "Calendar 2"
@@ -1712,12 +1779,12 @@
   },
   "event.push_button_press": {
     "entity_id": "event.push_button_press",
-    "state": "unknown",
+    "state": "2026-10-09T23:41:13.491+00:00",
     "attributes": {
       "event_types": [
         "pressed"
       ],
-      "event_type": null,
+      "event_type": "pressed",
       "device_class": "button",
       "friendly_name": "Push Button press"
     },
@@ -1914,7 +1981,7 @@
   },
   "light.bed_light": {
     "entity_id": "light.bed_light",
-    "state": "off",
+    "state": "on",
     "attributes": {
       "min_color_temp_kelvin": 2000,
       "max_color_temp_kelvin": 6535,
@@ -1926,13 +1993,23 @@
         "color_temp",
         "hs"
       ],
-      "effect": null,
-      "color_mode": null,
-      "brightness": null,
-      "color_temp_kelvin": null,
-      "hs_color": null,
-      "rgb_color": null,
-      "xy_color": null,
+      "effect": "rainbow",
+      "color_mode": "color_temp",
+      "brightness": 180,
+      "color_temp_kelvin": 4166,
+      "hs_color": [
+        26.752,
+        31.945
+      ],
+      "rgb_color": [
+        255,
+        210,
+        174
+      ],
+      "xy_color": [
+        0.41,
+        0.362
+      ],
       "friendly_name": "Bed Light",
       "supported_features": 4
     },
@@ -2205,12 +2282,12 @@
       "media_content_type": "movie",
       "media_duration": 300,
       "media_position": 45,
-      "media_position_updated_at": "2026-10-09T10:29:47.535940+00:00",
+      "media_position_updated_at": "2026-10-09T23:05:17.167980+00:00",
       "media_title": "♥♥ The Best Fireplace Video (3 hours)",
       "app_name": "YouTube",
       "sound_mode": "Music",
       "shuffle": false,
-      "entity_picture": "/api/media_player_proxy/media_player.living_room?token=ac2801c103586fdff454b5fc902fc13be26722fff61bae23130f1a9e9131bdca&cache=bc2ffb49c4f67034",
+      "entity_picture": "/api/media_player_proxy/media_player.living_room?token=56b844c3683c80b2f03813954c1eecd1fccb7c3b0b60717674c93381378b2b6b&cache=bc2ffb49c4f67034",
       "friendly_name": "Living Room",
       "supported_features": 119695
     },
@@ -2236,12 +2313,12 @@
       "media_content_type": "movie",
       "media_duration": 360000,
       "media_position": 54000,
-      "media_position_updated_at": "2026-10-09T10:29:47.535947+00:00",
+      "media_position_updated_at": "2026-10-09T23:05:17.167987+00:00",
       "media_title": "Epic sax guy 10 hours",
       "app_name": "YouTube",
       "sound_mode": "Music",
       "shuffle": false,
-      "entity_picture": "/api/media_player_proxy/media_player.bedroom?token=b64033c1055770a3df7e9ce01aa370fb01e5e59ba589996a9321a4af7fa71617&cache=e4513ed94ec89151",
+      "entity_picture": "/api/media_player_proxy/media_player.bedroom?token=af409c873fd2ea1fe3848be47ca5dc992cf3c79cf9d25ec212f5c470821729e4&cache=e4513ed94ec89151",
       "friendly_name": "Bedroom",
       "supported_features": 119695
     },
@@ -2274,7 +2351,7 @@
       "sound_mode": "Music",
       "shuffle": false,
       "repeat": "off",
-      "entity_picture": "/api/media_player_proxy/media_player.walkman?token=928fe3b58033cc5c779ca8d05699f55f0ce21aa0467a267b59f83117e6abc199&cache=62c0c516acbc53a9",
+      "entity_picture": "/api/media_player_proxy/media_player.walkman?token=02c40dceaa46994a922610c6b9850580c9f81bee738c1b095ebd73f97e637d91&cache=62c0c516acbc53a9",
       "friendly_name": "Walkman",
       "supported_features": 914877
     },
@@ -2307,7 +2384,7 @@
       "sound_mode": "Music",
       "shuffle": false,
       "repeat": "off",
-      "entity_picture": "/api/media_player_proxy/media_player.kitchen?token=cfc72cc71261f15072daf4fe8a908d4e63273d7512c93c50b0651368f79b7343&cache=62c0c516acbc53a9",
+      "entity_picture": "/api/media_player_proxy/media_player.kitchen?token=2e1785ff48dfe2a4681f40c2855b65e511614e02353647328bcc10664878b86c&cache=62c0c516acbc53a9",
       "friendly_name": "Kitchen",
       "supported_features": 914877
     },
@@ -2345,7 +2422,7 @@
       "sound_mode": "Music",
       "shuffle": false,
       "device_class": "tv",
-      "entity_picture": "/api/media_player_proxy/media_player.lounge_room?token=b88cfaf35233e4eb64c9c5285a55660bf3cf476f9f58c2b815b84d0242b56b82&cache=cb9d84451faf9351",
+      "entity_picture": "/api/media_player_proxy/media_player.lounge_room?token=22ec93951bab98be74618c927bf88f5c274bddddf61d34732658fd7950237029&cache=cb9d84451faf9351",
       "friendly_name": "Lounge room",
       "supported_features": 121265
     },
@@ -2666,7 +2743,7 @@
   },
   "sensor.total_energy_kwh": {
     "entity_id": "sensor.total_energy_kwh",
-    "state": "183.5",
+    "state": "253.5",
     "attributes": {
       "state_class": "total",
       "unit_of_measurement": "kWh",
@@ -2683,7 +2760,7 @@
   },
   "sensor.total_energy_mwh": {
     "entity_id": "sensor.total_energy_mwh",
-    "state": "0.0917500000000001",
+    "state": "0.12675",
     "attributes": {
       "state_class": "total",
       "unit_of_measurement": "MWh",
@@ -2700,7 +2777,7 @@
   },
   "sensor.total_gas_m3": {
     "entity_id": "sensor.total_gas_m3",
-    "state": "9.17500000000006",
+    "state": "12.6750000000001",
     "attributes": {
       "state_class": "total",
       "unit_of_measurement": "m³",
@@ -2717,7 +2794,7 @@
   },
   "sensor.total_gas_ft3": {
     "entity_id": "sensor.total_gas_ft3",
-    "state": "10.392282699264",
+    "state": "14.356641222144",
     "attributes": {
       "state_class": "total",
       "unit_of_measurement": "m³",
@@ -3352,34 +3429,20 @@
     "last_changed": "2026-01-01T00:00:00+00:00",
     "last_updated": "2026-01-01T00:00:00+00:00"
   },
-  "tts.google_translate_en_com": {
-    "entity_id": "tts.google_translate_en_com",
-    "state": "unknown",
-    "attributes": {
-      "friendly_name": "Google Translate en com"
-    },
-    "context": {
-      "id": "01JGOLDENCONTEXT000000000000",
-      "parent_id": null,
-      "user_id": null
-    },
-    "last_changed": "2026-01-01T00:00:00+00:00",
-    "last_updated": "2026-01-01T00:00:00+00:00"
-  },
   "weather.forecast_native_test_home": {
     "entity_id": "weather.forecast_native_test_home",
     "state": "rainy",
     "attributes": {
-      "temperature": 15.8,
-      "dew_point": 14.8,
+      "temperature": 13.1,
+      "dew_point": 9.3,
       "temperature_unit": "°C",
-      "humidity": 94,
-      "cloud_coverage": 100,
-      "uv_index": 2.5,
-      "pressure": 1006.7,
+      "humidity": 78,
+      "cloud_coverage": 72.7,
+      "uv_index": 0,
+      "pressure": 1006.4,
       "pressure_unit": "hPa",
-      "wind_bearing": 252.8,
-      "wind_speed": 31,
+      "wind_bearing": 279.4,
+      "wind_speed": 20.5,
       "wind_speed_unit": "km/h",
       "visibility_unit": "km",
       "precipitation_unit": "mm",

@@ -5,6 +5,7 @@ import io.homeassistant.companion.android.dashboard.display.stateDisplay
 import io.homeassistant.companion.android.dashboard.golden.GoldenFixture
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.boolean
+import io.homeassistant.companion.android.dashboard.model.number
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
@@ -15,6 +16,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 
@@ -55,7 +57,21 @@ class EntityDisplayGoldenTest {
     fun `Given captured server data when showing default state content then it matches state-display`(): List<DynamicTest> = perEntity { fixture, entityId, expected ->
         val now = Instant.parse(fixture.json("outputs/entity-display.json").string("now"))
         val state = fixture.hass.states.getValue(entityId)
-        assertEquals(expected["secondary"]?.stringOrNull, fixture.hass.stateDisplay(state, content = null, now = now))
+        assertSameDisplay(expected["secondary"]?.stringOrNull, fixture.hass.stateDisplay(state, content = null, now = now))
+    }
+
+    /**
+     * [expected] and [actual] read the same. The capture reads the time after the page drew it, and relative times
+     * refresh on a tick of their own, so a time seconds ago may be one second apart.
+     */
+    private fun assertSameDisplay(expected: String?, actual: String?) {
+        val seconds = { text: String? -> text?.let(SECONDS_AGO::matchEntire)?.groupValues?.get(1)?.toInt() }
+        val (expectedSeconds, actualSeconds) = seconds(expected) to seconds(actual)
+        if (expectedSeconds != null && actualSeconds != null) {
+            assertTrue(kotlin.math.abs(expectedSeconds - actualSeconds) <= 1, "$actual, expected $expected")
+        } else {
+            assertEquals(expected, actual)
+        }
     }
 
     @TestFactory
@@ -66,7 +82,8 @@ class EntityDisplayGoldenTest {
         display.objects("tiles").mapIndexed { index, captured ->
             val config = captured.obj("config")!!
             DynamicTest.dynamicTest("$variant $index ${config.string("entity")}") {
-                val tile = fixture.hass.tileModel(CardConfig(config), now)
+                val drawnAt = captured.number("renderedAt")?.let { Instant.ofEpochMilli(it.toLong()) } ?: now
+                val tile = fixture.hass.tileModel(CardConfig(config), drawnAt)
                 // The capture renders state-display for every tile; hui-tile-card skips it with hide_state
                 val secondary = captured.string("secondary").takeUnless { config.boolean("hide_state") == true }
                 assertEquals(captured.string("name") to secondary, tile?.name to tile?.state)
@@ -83,6 +100,8 @@ class EntityDisplayGoldenTest {
     }
 
     private companion object {
+        val SECONDS_AGO = Regex("(\\d+) seconds ago")
+
         fun item(type: String) = JsonObject(mapOf("type" to JsonPrimitive(type)))
 
         /** The `name` options capture.mjs passed to formatEntityName, by fixture key. */

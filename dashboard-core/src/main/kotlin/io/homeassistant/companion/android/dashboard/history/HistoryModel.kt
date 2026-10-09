@@ -76,10 +76,7 @@ private fun HassSnapshot.historyUnit(id: String, states: List<HistoryState>): St
     } else {
         states.firstOrNull { it.attributes?.let(::isNumericFromAttributes) == true }
     }
-    val numeric = domain in NUMERICAL_DOMAINS ||
-        current?.attributes?.let(::isNumericFromAttributes) == true ||
-        (domain == "sensor" && current?.attributes?.string("device_class") in SENSOR_NUMERIC_DEVICE_CLASSES) ||
-        numericFromHistory != null
+    val numeric = isNumericEntity(domain, current) || numericFromHistory != null
     return if (numeric) {
         current?.attributes?.unit()
             ?: numericFromHistory?.attributes?.unit()
@@ -155,6 +152,11 @@ internal fun stateName(entityId: String, attributes: Map<String, JsonElement>): 
         (friendly as? JsonPrimitive)?.content.orEmpty()
     }
 }
+
+/** Port of `isNumericEntity` without history: whether [current]'s states are numbers, charted as lines. */
+internal fun isNumericEntity(domain: String, current: EntityState?): Boolean = domain in NUMERICAL_DOMAINS ||
+    current?.attributes?.let(::isNumericFromAttributes) == true ||
+    (domain == "sensor" && current?.attributes?.string("device_class") in SENSOR_NUMERIC_DEVICE_CLASSES)
 
 /** Port of `limitedHistoryFromStateObj`: the current state as the only one. */
 private fun limitedHistory(state: EntityState) =

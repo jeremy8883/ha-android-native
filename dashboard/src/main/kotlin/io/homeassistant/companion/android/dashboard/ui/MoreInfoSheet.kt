@@ -40,11 +40,13 @@ import io.homeassistant.companion.android.dashboard.derive.MoreInfoModel
 import io.homeassistant.companion.android.dashboard.derive.moreInfoModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.history.showsHistory
+import io.homeassistant.companion.android.dashboard.logbook.showsLogbook
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.EntityToggle
 import io.homeassistant.companion.android.dashboard.ui.cards.TileFeatureControl
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLogbook
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -107,6 +109,7 @@ private fun MoreInfoContent(
             }
         }
         if (hass.showsHistory(model.entityId)) MoreInfoHistory(model.entityId, hass, now, interactions)
+        if (hass.showsLogbook(model.entityId)) MoreInfoLogbook(model.entityId, hass, now, interactions)
         if (model.attributes.isNotEmpty()) MoreInfoAttributes(model.attributes)
         onShowFull?.let {
             HAPlainButton(

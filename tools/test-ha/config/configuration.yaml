@@ -303,3 +303,35 @@ template:
           - action: input_boolean.turn_off
             target:
               entity_id: input_boolean.vacation_mode
+
+# Automations and a script, so the logbook has runs and the changes they cause (with traces): one on a schedule,
+# one following another entity's state, and a script the second runs.
+automation:
+  - id: bed_light_schedule
+    alias: Bed light schedule
+    triggers:
+      - trigger: time_pattern
+        minutes: "/20"
+    actions:
+      - action: light.toggle
+        target:
+          entity_id: light.bed_light
+  - id: guest_welcome
+    alias: Guest welcome
+    triggers:
+      - trigger: state
+        entity_id: input_boolean.guest_mode
+        to: "on"
+    actions:
+      - action: script.lock_up
+      - action: input_select.select_next
+        target:
+          entity_id: input_select.house_mode
+
+script:
+  lock_up:
+    alias: Lock up
+    sequence:
+      - action: lock.lock
+        target:
+          entity_id: lock.back_door_lock

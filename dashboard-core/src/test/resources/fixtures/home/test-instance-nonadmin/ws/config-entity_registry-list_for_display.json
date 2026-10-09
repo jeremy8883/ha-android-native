@@ -1017,6 +1017,24 @@
         "lb": [],
         "en": "Garden tap flow",
         "dp": 0
+      },
+      {
+        "ei": "script.lock_up",
+        "pl": "script",
+        "lb": [],
+        "en": "Lock up"
+      },
+      {
+        "ei": "automation.bed_light_schedule",
+        "pl": "automation",
+        "lb": [],
+        "en": "Bed light schedule"
+      },
+      {
+        "ei": "automation.guest_welcome",
+        "pl": "automation",
+        "lb": [],
+        "en": "Guest welcome"
       }
     ]
   }

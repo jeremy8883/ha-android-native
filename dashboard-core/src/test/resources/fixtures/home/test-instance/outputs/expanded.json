@@ -50,6 +50,24 @@
                 "area_name"
               ],
               "show_entity_picture": true
+            },
+            {
+              "type": "tile",
+              "entity": "light.kitchen_lights",
+              "state_content": [
+                "state",
+                "area_name"
+              ],
+              "show_entity_picture": true
+            },
+            {
+              "type": "tile",
+              "entity": "select.speed",
+              "state_content": [
+                "state",
+                "area_name"
+              ],
+              "show_entity_picture": true
             }
           ]
         },

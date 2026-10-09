@@ -101,13 +101,6 @@ class HistoryRepository @Inject constructor(private val sessions: ServerSessions
     private suspend fun ServerSession.request(command: WsCommand): Fetched<JsonElement?> =
         request(command.type, command.params)
 
-    /** A value that is not kept beyond the subscription. */
-    private class NotKept<T> : ValueKeeper<T> {
-        override suspend fun get(): Kept<T>? = null
-
-        override fun put(value: T) = Unit
-    }
-
     private companion object {
         val STATISTICS_REFRESH = 1.minutes
     }

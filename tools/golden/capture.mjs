@@ -689,6 +689,151 @@ async function captureMoreInfoHistory(entityIds) {
   return { capturedAt: new Date().toISOString(), unitSystem: g.clone(ha.hass.config.unit_system), entities: out };
 }
 
+/** The entities whose more-info logbook is recorded: state changes with their causes, runs, presses and events. */
+const LOGBOOK_ENTITIES = [
+  "light.bed_light",
+  "light.ceiling_lights",
+  "input_boolean.guest_mode",
+  "lock.back_door_lock",
+  "input_select.house_mode",
+  "automation.guest_welcome",
+  "automation.bed_light_schedule",
+  "script.lock_up",
+  "button.push",
+  "input_button.doorbell_test",
+  "event.push_button_press",
+  "binary_sensor.office_occupancy",
+  "cover.hall_window",
+  "person.dev",
+  "alarm_control_panel.security",
+  "select.speed",
+  "sensor.backup_backup_manager_state",
+  "climate.hvac",
+];
+
+/**
+ * Makes logbook entries of every kind as the user: a state change that runs an automation, which runs a script and
+ * changes a select; direct changes; presses; an automation run by hand. Runs in the page.
+ */
+async function seedLogbook() {
+  const hass = document.querySelector("home-assistant").hass;
+  const call = (domain, service, entityId) => hass.callService(domain, service, {}, { entity_id: entityId });
+  await call("input_boolean", "turn_on", "input_boolean.guest_mode");
+  await new Promise((r) => setTimeout(r, 1000));
+  await call("input_boolean", "turn_off", "input_boolean.guest_mode");
+  await call("lock", "unlock", "lock.back_door_lock");
+  await call("button", "press", "button.push");
+  await call("input_button", "press", "input_button.doorbell_test");
+  await call("automation", "trigger", "automation.bed_light_schedule");
+  await call("light", "toggle", "light.ceiling_lights");
+  await call("light", "toggle", "light.ceiling_lights");
+  // Past the recorder's commit interval, so the stream's history has them
+  await new Promise((r) => setTimeout(r, 6000));
+}
+
+/**
+ * Renders the more-info dialog's logbook section (`ha-more-info-logbook`) for each of [entityIds] and returns what
+ * it fetched (the logbook stream's messages, the users, the traces) and each row it drew. Runs in the page.
+ */
+async function captureMoreInfoLogbook(entityIds) {
+  const g = window.__golden;
+  const ha = document.querySelector("home-assistant");
+  // The section's code loads with the dialog's: open one once
+  if (!customElements.get("ha-more-info-logbook")) {
+    ha.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId: entityIds[0] }, bubbles: true, composed: true }));
+    for (let i = 0; i < 100 && !customElements.get("ha-more-info-logbook"); i++) await new Promise((r) => setTimeout(r, 100));
+    ha.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId: "" }, bubbles: true, composed: true }));
+    await new Promise((r) => setTimeout(r, 500));
+  }
+  const conn = ha.hass.connection;
+  const deep = (root, selector) => {
+    const found = [];
+    const visit = (r) => r?.querySelectorAll("*").forEach((n) => {
+      if (n.matches(selector)) found.push(n);
+      visit(n.shadowRoot);
+    });
+    visit(root);
+    return found;
+  };
+  const text = (n) => n?.textContent.replace(/\s+/g, " ").trim() ?? null;
+  const out = {};
+  for (const entityId of entityIds) {
+    const messages = [];
+    const requests = [];
+    const origSubscribe = conn.subscribeMessage;
+    const origSend = conn.sendMessagePromise;
+    conn.subscribeMessage = function (callback, params, options) {
+      requests.push(g.clone(params));
+      // When it came, which the purge of old entries counts back from
+      return origSubscribe.call(this, (m) => { messages.push({ ...g.clone(m), receivedAt: Date.now() }); callback(m); }, params, options);
+    };
+    conn.sendMessagePromise = async function (msg) {
+      const entry = { request: g.clone(msg) };
+      requests.push(entry.request);
+      const result = await origSend.call(this, msg);
+      entry.result = g.clone(result);
+      messages.push(entry);
+      return result;
+    };
+    const el = document.createElement("ha-more-info-logbook");
+    el.hass = ha.hass;
+    el.entityId = entityId;
+    ha.shadowRoot.appendChild(el);
+    await new Promise((r) => setTimeout(r, 300));
+    const logbook = () => el.shadowRoot?.querySelector("ha-logbook");
+    for (let i = 0; i < 100 && !(logbook()?._logbookEntries || logbook()?._error); i++) await new Promise((r) => setTimeout(r, 100));
+    // The users and traces load alongside
+    await new Promise((r) => setTimeout(r, 1500));
+    conn.subscribeMessage = origSubscribe;
+    conn.sendMessagePromise = origSend;
+    const lb = logbook();
+    const renderer = lb?.shadowRoot?.querySelector("ha-logbook-renderer");
+    const rows = [];
+    renderer?.shadowRoot?.querySelectorAll(".entry-container").forEach((container) => {
+      const entry = container.querySelector("ha-logbook-entry");
+      const root = entry?.shadowRoot;
+      const div = root?.querySelector(".entry");
+      const dot = root?.querySelector(".dot");
+      const node = root?.querySelector(".node");
+      const causeIcon = root?.querySelector(".cause-badge > *");
+      rows.push({
+        dateHeader: text(container.querySelector("h4.date")),
+        classes: div ? [...div.classList].sort() : [],
+        nodeClasses: node ? [...node.classList].sort() : [],
+        dotColor: dot?.style.getPropertyValue("--node-color") || null,
+        dotUnavailable: dot?.classList.contains("unavailable") ?? false,
+        primary: text(root?.querySelector(".primary-text")),
+        time: text(root?.querySelector(".time-chip")),
+        cause: root?.querySelector(".cause-badge")
+          ? {
+              tooltip: text(root.querySelector("ha-tooltip")),
+              icon: causeIcon?.localName ?? null,
+              path: causeIcon?.path ?? null,
+              domain: causeIcon?.domain ?? null,
+              user: causeIcon?.user ? g.clone(causeIcon.user) : null,
+            }
+          : null,
+        traceLink: root?.querySelector(".trace-link")?.getAttribute("href") ?? null,
+      });
+    });
+    out[entityId] = {
+      requests,
+      messages,
+      state: g.clone(ha.hass.states[entityId] ?? null),
+      entries: lb?._logbookEntries ? g.clone(lb._logbookEntries) : null,
+      userIdToName: lb ? g.clone(lb._userIdToName) : null,
+      systemUserIds: lb ? [...lb._systemUserIds].sort() : null,
+      traceContexts: lb ? g.clone(lb._traceContexts) : null,
+      error: lb?._error ? String(lb._error) : null,
+      showMoreHref: el._showMoreHref ?? null,
+      noEntries: text(lb?.shadowRoot?.querySelector(".no-entries") ?? renderer?.shadowRoot?.querySelector(".no-entries")),
+      rows,
+    };
+    el.remove();
+  }
+  return { capturedAt: new Date().toISOString(), entities: out };
+}
+
 /**
  * Loads the energy collection for each of [periods] and records the WS requests it made with their results (what
  * `getEnergyData` fetches), on the energy panel's page.
@@ -776,12 +921,21 @@ async function captureInPage() {
       sd.stateObj = stateObj;
       sd.content = cfg.state_content;
       sd.timeFormat = cfg.time_format;
-      document.body.appendChild(sd);
+      // Inside <home-assistant>, whose contexts relative times read their language from
+      document.querySelector("home-assistant").shadowRoot.appendChild(sd);
       await sd.updateComplete;
       await new Promise((r) => setTimeout(r, 50));
-      const text = sd.textContent.replace(/\s+/g, " ").trim();
+      // Timestamps are drawn in hui-timestamp-display's shadow root
+      const deep = (node) => {
+        if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+        if (node.nodeType !== Node.ELEMENT_NODE && node.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) return "";
+        if (node.localName === "style" || node.localName === "script") return "";
+        return [...(node.shadowRoot ? node.shadowRoot.childNodes : node.childNodes)].map(deep).join("");
+      };
+      const text = [...sd.childNodes].map(deep).join("").replace(/\s+/g, " ").trim();
       sd.remove();
-      out.push({ config: g.clone(cfg), name, secondary: text });
+      // When it was drawn, which relative times count from
+      out.push({ config: g.clone(cfg), name, secondary: text, renderedAt: Date.now() });
     }
     return out;
   }
@@ -1208,6 +1362,10 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
   await page.waitForTimeout(500);
 
   const cap = await page.evaluate(captureInPage);
+  // After the rest, so that the entries it makes (recent presses and changes) don't show in it
+  if (variant === "admin") await page.evaluate(seedLogbook);
+  const logbookData = variant === "admin" ? await page.evaluate(captureMoreInfoLogbook, LOGBOOK_ENTITIES) : null;
+  if (logbookData) console.log(`  recorded the logbook of ${Object.keys(logbookData.entities).length} entities`);
   await context.close();
 
   // ---- write files
@@ -1263,6 +1421,7 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
     if (energyData.error) problems.push(`energy data: ${energyData.error}`);
   }
   if (historyData) write("history/more-info.json", historyData, true);
+  if (logbookData) write("logbook/more-info.json", logbookData, true);
   write("outputs/expanded.json", cap.expanded);
   write("outputs/entity-display.json", cap.display);
   write("outputs/cards.json", cap.cards);

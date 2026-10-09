@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-09T10:32:48.293Z",
+  "capture_date": "2026-10-09T23:45:17.441Z",
   "user": {
     "name": "Golden Viewer",
     "is_admin": false
@@ -138,7 +138,7 @@
     {
       "path": "inputs/config.json",
       "bytes": 4124,
-      "sha256": "e1ea38cd45482192846a5944ae02b82a285ccba8caba7797f25d90055d100e6b"
+      "sha256": "0a80ed932ea94d17052b9a27f2de32cdf1640712678186e881bab8e32bc31ede"
     },
     {
       "path": "inputs/devices.json",
@@ -147,8 +147,8 @@
     },
     {
       "path": "inputs/entities.json",
-      "bytes": 28985,
-      "sha256": "34d999c77f2fd580140e9120fc6539b1cedf1274fbf60013f28a8718cdb3463c"
+      "bytes": 29444,
+      "sha256": "5907f855779ace6b935d5ce8ed3021c4b7fc88e510a262377e4675fd9461f8ff"
     },
     {
       "path": "inputs/floors.json",
@@ -183,7 +183,7 @@
     {
       "path": "inputs/panels.json",
       "bytes": 4660,
-      "sha256": "5139c670e60d659f335c02727398ad273e7f39e3c9aadf797e147d6efd6be3b2"
+      "sha256": "51d60b0cd98e428f6a9dd18c22bcc767b74e4b37a805ee578f5a3f9e635077ad"
     },
     {
       "path": "inputs/selectedLanguage.json",
@@ -197,8 +197,8 @@
     },
     {
       "path": "inputs/states.json",
-      "bytes": 95165,
-      "sha256": "13fc6c2bb5d4f0bccb7f3663f76e8807200ae14929e235b5d7c672ac217fc1f6"
+      "bytes": 96719,
+      "sha256": "63a0954f42793689d55750cc38f40f9c1344bd7541bfb514e91d9a8ad7c1a949"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -267,8 +267,8 @@
     },
     {
       "path": "outputs/entity-display.json",
-      "bytes": 74750,
-      "sha256": "9eee32fa7bb619ca7b42ce192efdb3ac6be9410384acc2fe2c3e9da669a395ef"
+      "bytes": 78137,
+      "sha256": "03d78da4e7fec8df8f1f6a584dcdca8026559241d5f00217685a584c3466bf9c"
     },
     {
       "path": "outputs/expanded.json",
@@ -372,8 +372,8 @@
     },
     {
       "path": "ws/config-entity_registry-list_for_display.json",
-      "bytes": 24098,
-      "sha256": "96977b91d4fcac1996496be5ca5dab2cc16bcd965133d015cb0f4740e49b430a"
+      "bytes": 24493,
+      "sha256": "810402a03079e541c0938d3b4d38e315aeefb5aa6ff35e725f08d591ffbc23ee"
     },
     {
       "path": "ws/config-floor_registry-list.json",
@@ -388,12 +388,12 @@
     {
       "path": "ws/frontend-get_icons-entity_component.json",
       "bytes": 28770,
-      "sha256": "6e532b06f1d1fc5e59332c5b43108a60a27c2ffdbae04f9788e54e454ad44e15"
+      "sha256": "9a9c2b269ccd400bc1f5457424940629894d6a40b07fcb50e336d76b167f21db"
     },
     {
       "path": "ws/frontend-get_icons-entity.json",
       "bytes": 4283,
-      "sha256": "102b39a14e27c70ff80b5adc7c1557f40363d2d998d15bda678e064c46d28a11"
+      "sha256": "f7c2b53b17716bc1a0fd93ef941507564d5eaec656f5e3f85a20a436abf6c1cc"
     },
     {
       "path": "ws/frontend-get_system_data-core.json",
@@ -413,12 +413,12 @@
     {
       "path": "ws/frontend-get_translations-entity_component.json",
       "bytes": 66502,
-      "sha256": "c556229aac7f87c89b7e4cf0f3e990ce1d52fee7367523707054a39f3bcfce29"
+      "sha256": "17dab590b50c2db4b33e1d8580e4256b43725686f13948f545a5cd96d17fcc0a"
     },
     {
       "path": "ws/frontend-get_translations-entity.json",
       "bytes": 7454,
-      "sha256": "94834f3f674ac8ad6ada960e488ba3540987eb69f06ef93c7ff2474ed396dd06"
+      "sha256": "1673e15f6a48811579963551fc1bd79e854339d602f1a9bd29dad7cab1b411b5"
     },
     {
       "path": "ws/frontend-get_user_data-core.json",
@@ -433,17 +433,17 @@
     {
       "path": "ws/get_config.json",
       "bytes": 4633,
-      "sha256": "9bfec14efcb01136a42160b07459b0e074bf6448de1160b49af20ffa8b267b68"
+      "sha256": "9f25cafb2f91e15ed2db0e445b9b5837f876cb5809fc1f4581b5d73538a6ceb2"
     },
     {
       "path": "ws/get_panels.json",
       "bytes": 5105,
-      "sha256": "cac1ec96c348d7492078a59beb6634cc9deeb6dd1472886f64055d218af19565"
+      "sha256": "02113f7e42026a5387030701f45b8a5ff795e9c73c65b90e458c9747eadf96b4"
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 106083,
-      "sha256": "7a0f92f9b66e3f4049c6345b60ceccbd5846af2dc22e97594c5ed5a84f01711e"
+      "bytes": 107820,
+      "sha256": "cbbc19baa17de851dc5b1ab4b9b299dc44b8f203871a66e02dfb013eb590a30c"
     },
     {
       "path": "ws/manifest-get-frontend.json",

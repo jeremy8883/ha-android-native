@@ -32,6 +32,13 @@ interface ValueKeeper<T> {
     fun put(value: T)
 }
 
+/** Where a value that is not kept beyond its collection is "kept": nowhere. */
+internal class NotKept<T> : ValueKeeper<T> {
+    override suspend fun get(): Kept<T>? = null
+
+    override fun put(value: T) = Unit
+}
+
 /** A kept value, which may itself be `null` when that is what was loaded, and when it was kept. */
 data class Kept<out T>(val value: T, val at: Instant)
 

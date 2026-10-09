@@ -1,5 +1,5 @@
 {
-  "now": "2026-10-09T10:32:44.636Z",
+  "now": "2026-10-09T23:45:13.747Z",
   "locale": {
     "language": "en",
     "number_format": "language",
@@ -153,6 +153,19 @@
         "device_entity": "Native Test Home"
       }
     },
+    "script.lock_up": {
+      "icon": "mdi:script-text",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "Lock up",
+        "entity": "Lock up",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Lock up"
+      }
+    },
     "input_number.target_humidity": {
       "icon": "mdi:water-percent",
       "state": "30%",
@@ -179,32 +192,6 @@
         "area": "Bedroom",
         "floor": "First floor",
         "device_entity": "Bedroom brightness"
-      }
-    },
-    "input_select.house_mode": {
-      "icon": "mdi:home-switch",
-      "state": "Home",
-      "secondary": "Home",
-      "names": {
-        "default": "House mode",
-        "entity": "House mode",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "House mode"
-      }
-    },
-    "input_button.doorbell_test": {
-      "icon": "mdi:doorbell",
-      "state": "Unknown",
-      "secondary": "Unknown",
-      "names": {
-        "default": "Doorbell test",
-        "entity": "Doorbell test",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Doorbell test"
       }
     },
     "input_boolean.guest_mode": {
@@ -261,6 +248,32 @@
         "device_entity": "Laundry"
       }
     },
+    "input_select.house_mode": {
+      "icon": "mdi:home-switch",
+      "state": "Home",
+      "secondary": "Home",
+      "names": {
+        "default": "House mode",
+        "entity": "House mode",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "House mode"
+      }
+    },
+    "input_button.doorbell_test": {
+      "icon": "mdi:doorbell",
+      "state": "October 9, 2026 at 11:44 PM",
+      "secondary": "44 seconds ago",
+      "names": {
+        "default": "Doorbell test",
+        "entity": "Doorbell test",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Doorbell test"
+      }
+    },
     "device_tracker.demo_paulus": {
       "icon": "mdi:account-arrow-right",
       "state": "Away",
@@ -300,23 +313,10 @@
         "device_entity": "Home Boy"
       }
     },
-    "counter.coffee_cups": {
-      "icon": "mdi:coffee",
-      "state": "0",
-      "secondary": "0",
-      "names": {
-        "default": "Coffee cups",
-        "entity": "Coffee cups",
-        "device": "",
-        "area": "Kitchen",
-        "floor": "Ground floor",
-        "device_entity": "Coffee cups"
-      }
-    },
     "sun.sun": {
-      "icon": "mdi:white-balance-sunny",
-      "state": "Above horizon",
-      "secondary": "Above horizon",
+      "icon": "mdi:weather-night",
+      "state": "Below horizon",
+      "secondary": "Below horizon",
       "names": {
         "default": "Sun",
         "entity": "Sun",
@@ -329,7 +329,7 @@
     "sensor.sun_next_dawn": {
       "icon": "mdi:sun-clock",
       "state": "October 10, 2026 at 5:22 AM",
-      "secondary": "In 19 hours",
+      "secondary": "In 6 hours",
       "names": {
         "default": "Sun Next dawn",
         "entity": "Next dawn",
@@ -341,8 +341,8 @@
     },
     "sensor.sun_next_dusk": {
       "icon": "mdi:sun-clock",
-      "state": "October 9, 2026 at 5:33 PM",
-      "secondary": "In 7 hours",
+      "state": "October 10, 2026 at 5:31 PM",
+      "secondary": "In 18 hours",
       "names": {
         "default": "Sun Next dusk",
         "entity": "Next dusk",
@@ -354,8 +354,8 @@
     },
     "sensor.sun_next_midnight": {
       "icon": "mdi:sun-clock",
-      "state": "October 9, 2026 at 11:27 PM",
-      "secondary": "In 13 hours",
+      "state": "October 10, 2026 at 11:27 PM",
+      "secondary": "Tomorrow",
       "names": {
         "default": "Sun Next midnight",
         "entity": "Next midnight",
@@ -367,8 +367,8 @@
     },
     "sensor.sun_next_noon": {
       "icon": "mdi:sun-clock",
-      "state": "October 9, 2026 at 11:27 AM",
-      "secondary": "In 55 minutes",
+      "state": "October 10, 2026 at 11:27 AM",
+      "secondary": "In 12 hours",
       "names": {
         "default": "Sun Next noon",
         "entity": "Next noon",
@@ -381,7 +381,7 @@
     "sensor.sun_next_rising": {
       "icon": "mdi:sun-clock",
       "state": "October 10, 2026 at 5:57 AM",
-      "secondary": "In 19 hours",
+      "secondary": "In 6 hours",
       "names": {
         "default": "Sun Next rising",
         "entity": "Next rising",
@@ -393,8 +393,8 @@
     },
     "sensor.sun_next_setting": {
       "icon": "mdi:sun-clock",
-      "state": "October 9, 2026 at 4:59 PM",
-      "secondary": "In 6 hours",
+      "state": "October 10, 2026 at 4:56 PM",
+      "secondary": "In 17 hours",
       "names": {
         "default": "Sun Next setting",
         "entity": "Next setting",
@@ -404,17 +404,17 @@
         "device_entity": "Sun Next setting"
       }
     },
-    "input_datetime.wake_up": {
-      "icon": "mdi:clock",
-      "state": "7:00 AM",
-      "secondary": "7:00 AM",
+    "counter.coffee_cups": {
+      "icon": "mdi:coffee",
+      "state": "0",
+      "secondary": "0",
       "names": {
-        "default": "Wake-up time",
-        "entity": "Wake-up time",
+        "default": "Coffee cups",
+        "entity": "Coffee cups",
         "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Wake-up time"
+        "area": "Kitchen",
+        "floor": "Ground floor",
+        "device_entity": "Coffee cups"
       }
     },
     "input_text.welcome_message": {
@@ -430,6 +430,19 @@
         "area": "",
         "floor": "",
         "device_entity": "Welcome message"
+      }
+    },
+    "input_datetime.wake_up": {
+      "icon": "mdi:clock",
+      "state": "7:00 AM",
+      "secondary": "7:00 AM",
+      "names": {
+        "default": "Wake-up time",
+        "entity": "Wake-up time",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Wake-up time"
       }
     },
     "lock.front_door_deadbolt": {
@@ -460,8 +473,8 @@
     },
     "sensor.living_room_temperature": {
       "icon": "mdi:thermometer",
-      "state": "21.2 °C",
-      "secondary": "21.2 °C",
+      "state": "21.5 °C",
+      "secondary": "21.5 °C",
       "names": {
         "default": "Living room temperature",
         "entity": "Living room temperature",
@@ -473,8 +486,8 @@
     },
     "sensor.living_room_humidity": {
       "icon": "mdi:water-percent",
-      "state": "49%",
-      "secondary": "49%",
+      "state": "48%",
+      "secondary": "48%",
       "names": {
         "default": "Living room humidity",
         "entity": "Living room humidity",
@@ -538,8 +551,8 @@
     },
     "sensor.house_power": {
       "icon": "mdi:flash",
-      "state": "524 W",
-      "secondary": "524 W",
+      "state": "615 W",
+      "secondary": "615 W",
       "names": {
         "default": "House power",
         "entity": "House power",
@@ -551,8 +564,8 @@
     },
     "sensor.solar_power": {
       "icon": "mdi:flash",
-      "state": "2,971 W",
-      "secondary": "2,971 W",
+      "state": "0 W",
+      "secondary": "0 W",
       "names": {
         "default": "Solar power",
         "entity": "Solar power",
@@ -564,8 +577,8 @@
     },
     "sensor.grid_power": {
       "icon": "mdi:flash",
-      "state": "-621 W",
-      "secondary": "-621 W",
+      "state": "0 W",
+      "secondary": "0 W",
       "names": {
         "default": "Grid power",
         "entity": "Grid power",
@@ -577,8 +590,8 @@
     },
     "sensor.home_battery_power": {
       "icon": "mdi:flash",
-      "state": "-2,000 W",
-      "secondary": "-2,000 W",
+      "state": "350 W",
+      "secondary": "350 W",
       "names": {
         "default": "Home battery power",
         "entity": "Home battery power",
@@ -589,9 +602,9 @@
       }
     },
     "sensor.home_battery_charge": {
-      "icon": "mdi:battery-80",
-      "state": "80%",
-      "secondary": "80%",
+      "icon": "mdi:battery-20",
+      "state": "25%",
+      "secondary": "25%",
       "names": {
         "default": "Home battery charge",
         "entity": "Home battery charge",
@@ -603,8 +616,8 @@
     },
     "sensor.fridge_power": {
       "icon": "mdi:flash",
-      "state": "5 W",
-      "secondary": "5 W",
+      "state": "120 W",
+      "secondary": "120 W",
       "names": {
         "default": "Fridge power",
         "entity": "Fridge power",
@@ -629,8 +642,8 @@
     },
     "sensor.office_circuit_power": {
       "icon": "mdi:flash",
-      "state": "160 W",
-      "secondary": "160 W",
+      "state": "15 W",
+      "secondary": "15 W",
       "names": {
         "default": "Office circuit power",
         "entity": "Office circuit power",
@@ -642,8 +655,8 @@
     },
     "sensor.office_computer_power": {
       "icon": "mdi:flash",
-      "state": "120 W",
-      "secondary": "120 W",
+      "state": "3 W",
+      "secondary": "3 W",
       "names": {
         "default": "Office computer power",
         "entity": "Office computer power",
@@ -745,9 +758,9 @@
       }
     },
     "binary_sensor.kitchen_motion": {
-      "icon": "mdi:motion-sensor",
-      "state": "Detected",
-      "secondary": "Detected",
+      "icon": "mdi:motion-sensor-off",
+      "state": "Clear",
+      "secondary": "Clear",
       "names": {
         "default": "Kitchen motion",
         "entity": "Kitchen motion",
@@ -874,6 +887,19 @@
         "device_entity": "sdk_gphone64_x86_64 Charger type"
       }
     },
+    "tts.google_translate_en_com": {
+      "icon": "mdi:speaker-message",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Google Translate en com",
+        "entity": "Google Translate en com",
+        "device": "Google Translate en com",
+        "area": "",
+        "floor": "",
+        "device_entity": "Google Translate en com"
+      }
+    },
     "todo.shopping_list": {
       "icon": "mdi:cart",
       "state": "0",
@@ -885,6 +911,32 @@
         "area": "",
         "floor": "",
         "device_entity": "Shopping List"
+      }
+    },
+    "automation.bed_light_schedule": {
+      "icon": "mdi:robot",
+      "state": "On",
+      "secondary": "On",
+      "names": {
+        "default": "Bed light schedule",
+        "entity": "Bed light schedule",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Bed light schedule"
+      }
+    },
+    "automation.guest_welcome": {
+      "icon": "mdi:robot",
+      "state": "On",
+      "secondary": "On",
+      "names": {
+        "default": "Guest welcome",
+        "entity": "Guest welcome",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Guest welcome"
       }
     },
     "image_processing.demo_face": {
@@ -982,8 +1034,8 @@
     },
     "button.push": {
       "icon": "mdi:button-pointer",
-      "state": "Unknown",
-      "secondary": "Unknown",
+      "state": "October 9, 2026 at 11:44 PM",
+      "secondary": "44 seconds ago",
       "names": {
         "default": "Push",
         "entity": "Push",
@@ -1033,9 +1085,9 @@
       }
     },
     "calendar.calendar_1": {
-      "icon": "mdi:calendar-blank",
-      "state": "Off",
-      "secondary": "Off",
+      "icon": "mdi:calendar-check",
+      "state": "On",
+      "secondary": "On",
       "names": {
         "default": "Calendar 1",
         "entity": "Calendar 1",
@@ -1046,9 +1098,9 @@
       }
     },
     "calendar.calendar_2": {
-      "icon": "mdi:calendar-check",
-      "state": "On",
-      "secondary": "On",
+      "icon": "mdi:calendar-blank",
+      "state": "Off",
+      "secondary": "Off",
       "names": {
         "default": "Calendar 2",
         "entity": "Calendar 2",
@@ -1190,8 +1242,8 @@
     },
     "event.push_button_press": {
       "icon": "mdi:gesture-tap-button",
-      "state": "Unknown",
-      "secondary": "Unknown",
+      "state": "October 9, 2026 at 11:44 PM",
+      "secondary": "44 seconds ago",
       "names": {
         "default": "Push Button press",
         "entity": "Button press",
@@ -1723,8 +1775,8 @@
     },
     "sensor.total_energy_kwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "175.50 kWh",
-      "secondary": "175.50 kWh",
+      "state": "253.50 kWh",
+      "secondary": "253.50 kWh",
       "names": {
         "default": "Total energy 1",
         "entity": "Total energy 1",
@@ -1736,8 +1788,8 @@
     },
     "sensor.total_energy_mwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "0.09 MWh",
-      "secondary": "0.09 MWh",
+      "state": "0.13 MWh",
+      "secondary": "0.13 MWh",
       "names": {
         "default": "Total energy 2",
         "entity": "Total energy 2",
@@ -1749,8 +1801,8 @@
     },
     "sensor.total_gas_m3": {
       "icon": "mdi:meter-gas",
-      "state": "8.78 m³",
-      "secondary": "8.78 m³",
+      "state": "12.68 m³",
+      "secondary": "12.68 m³",
       "names": {
         "default": "Total gas 1",
         "entity": "Total gas 1",
@@ -1762,8 +1814,8 @@
     },
     "sensor.total_gas_ft3": {
       "icon": "mdi:meter-gas",
-      "state": "9.94 m³",
-      "secondary": "9.94 m³",
+      "state": "14.36 m³",
+      "secondary": "14.36 m³",
       "names": {
         "default": "Total gas 2",
         "entity": "Total gas 2",
@@ -2163,19 +2215,6 @@
         "device_entity": "Demo Weather North"
       }
     },
-    "tts.google_translate_en_com": {
-      "icon": "mdi:speaker-message",
-      "state": "Unknown",
-      "secondary": "Unknown",
-      "names": {
-        "default": "Google Translate en com",
-        "entity": "Google Translate en com",
-        "device": "Google Translate en com",
-        "area": "",
-        "floor": "",
-        "device_entity": "Google Translate en com"
-      }
-    },
     "weather.forecast_native_test_home": {
       "icon": "mdi:weather-rainy",
       "state": "Rainy",
@@ -2202,7 +2241,8 @@
         "show_entity_picture": true
       },
       "name": "Living Room RGBWW Lights",
-      "secondary": "On · Living Room"
+      "secondary": "On · Living Room",
+      "renderedAt": 1791589513815
     },
     {
       "config": {
@@ -2215,7 +2255,8 @@
         "show_entity_picture": true
       },
       "name": "HeatPump",
-      "secondary": "Heat · Living Room"
+      "secondary": "Heat · Living Room",
+      "renderedAt": 1791589513866
     },
     {
       "config": {
@@ -2228,7 +2269,8 @@
         "show_entity_picture": true
       },
       "name": "Front door deadbolt",
-      "secondary": "Locked · Living Room"
+      "secondary": "Locked · Living Room",
+      "renderedAt": 1791589513917
     },
     {
       "config": {
@@ -2244,7 +2286,8 @@
         }
       },
       "name": "Weather",
-      "secondary": "-24.4 °C · Rainy"
+      "secondary": "-24.4 °C · Rainy",
+      "renderedAt": 1791589513968
     },
     {
       "config": {
@@ -2264,7 +2307,8 @@
         }
       },
       "name": "Devices",
-      "secondary": "0"
+      "secondary": "0",
+      "renderedAt": 1791589514019
     },
     {
       "config": {
@@ -2277,7 +2321,8 @@
         ]
       },
       "name": "Ceiling Lights",
-      "secondary": "71%"
+      "secondary": "71%",
+      "renderedAt": 1791589514069
     },
     {
       "config": {
@@ -2291,7 +2336,8 @@
         ]
       },
       "name": "RGBWW Lights",
-      "secondary": "71%"
+      "secondary": "71%",
+      "renderedAt": 1791589514120
     },
     {
       "config": {
@@ -2304,7 +2350,8 @@
         ]
       },
       "name": "HeatPump",
-      "secondary": "Heat · 25 °C"
+      "secondary": "Heat · 25 °C",
+      "renderedAt": 1791589514171
     },
     {
       "config": {
@@ -2318,7 +2365,8 @@
         ]
       },
       "name": "Fan",
-      "secondary": "Off"
+      "secondary": "Off",
+      "renderedAt": 1791589514222
     },
     {
       "config": {
@@ -2332,7 +2380,8 @@
         ]
       },
       "name": "Window",
-      "secondary": "Open · 70%"
+      "secondary": "Open · 70%",
+      "renderedAt": 1791589514273
     },
     {
       "config": {
@@ -2345,7 +2394,8 @@
         ]
       },
       "name": "Security",
-      "secondary": "Disarmed"
+      "secondary": "Disarmed",
+      "renderedAt": 1791589514324
     },
     {
       "config": {
@@ -2358,7 +2408,8 @@
         ]
       },
       "name": "Front door deadbolt",
-      "secondary": "Locked"
+      "secondary": "Locked",
+      "renderedAt": 1791589514375
     },
     {
       "config": {
@@ -2366,7 +2417,8 @@
         "entity": "binary_sensor.front_door"
       },
       "name": "Front door",
-      "secondary": "Closed"
+      "secondary": "Closed",
+      "renderedAt": 1791589514426
     },
     {
       "config": {
@@ -2375,7 +2427,8 @@
         "name": "TV"
       },
       "name": "TV",
-      "secondary": "Playing"
+      "secondary": "Playing",
+      "renderedAt": 1791589514477
     },
     {
       "config": {
@@ -2386,7 +2439,8 @@
         }
       },
       "name": "Carbon dioxide",
-      "secondary": "54 ppm"
+      "secondary": "54 ppm",
+      "renderedAt": 1791589514528
     },
     {
       "config": {
@@ -2397,7 +2451,8 @@
         }
       },
       "name": "Decorative Lights",
-      "secondary": "On"
+      "secondary": "On",
+      "renderedAt": 1791589514579
     },
     {
       "config": {
@@ -2408,7 +2463,8 @@
         }
       },
       "name": "Living room temperature",
-      "secondary": "21.2 °C"
+      "secondary": "21.5 °C",
+      "renderedAt": 1791589514630
     },
     {
       "config": {
@@ -2419,7 +2475,8 @@
         }
       },
       "name": "Living room humidity",
-      "secondary": "49%"
+      "secondary": "48%",
+      "renderedAt": 1791589514681
     },
     {
       "config": {
@@ -2433,7 +2490,8 @@
         ]
       },
       "name": "Lights",
-      "secondary": "71%"
+      "secondary": "71%",
+      "renderedAt": 1791589514732
     },
     {
       "config": {
@@ -2447,7 +2505,8 @@
         ]
       },
       "name": "Window",
-      "secondary": "Closed"
+      "secondary": "Closed",
+      "renderedAt": 1791589514783
     },
     {
       "config": {
@@ -2460,7 +2519,8 @@
         ]
       },
       "name": "Back door lock",
-      "secondary": "Unlocked"
+      "secondary": "Unlocked",
+      "renderedAt": 1791589514834
     },
     {
       "config": {
@@ -2469,7 +2529,8 @@
         "name": "Speaker"
       },
       "name": "Speaker",
-      "secondary": "Playing"
+      "secondary": "Playing",
+      "renderedAt": 1791589514885
     },
     {
       "config": {
@@ -2480,7 +2541,8 @@
         }
       },
       "name": "Carbon monoxide",
-      "secondary": "54 ppm"
+      "secondary": "54 ppm",
+      "renderedAt": 1791589514935
     },
     {
       "config": {
@@ -2491,7 +2553,8 @@
         }
       },
       "name": "Coffee cups",
-      "secondary": "0"
+      "secondary": "0",
+      "renderedAt": 1791589514986
     },
     {
       "config": {
@@ -2502,7 +2565,8 @@
         }
       },
       "name": "Fridge power",
-      "secondary": "5 W"
+      "secondary": "120 W",
+      "renderedAt": 1791589515037
     },
     {
       "config": {
@@ -2513,7 +2577,8 @@
         }
       },
       "name": "Kitchen motion",
-      "secondary": "Detected"
+      "secondary": "Clear",
+      "renderedAt": 1791589515088
     },
     {
       "config": {
@@ -2526,7 +2591,8 @@
         ]
       },
       "name": "Bed Light",
-      "secondary": "Off"
+      "secondary": "Off",
+      "renderedAt": 1791589515139
     },
     {
       "config": {
@@ -2539,7 +2605,8 @@
         ]
       },
       "name": "Ecobee",
-      "secondary": "Heat/Cool · 23 °C"
+      "secondary": "Heat/Cool · 23 °C",
+      "renderedAt": 1791589515189
     },
     {
       "config": {
@@ -2552,7 +2619,8 @@
         ]
       },
       "name": "Ceiling Fan",
-      "secondary": "Off"
+      "secondary": "Off",
+      "renderedAt": 1791589515240
     },
     {
       "config": {
@@ -2561,7 +2629,8 @@
         "name": "Window"
       },
       "name": "Window",
-      "secondary": "Open"
+      "secondary": "Open",
+      "renderedAt": 1791589515290
     },
     {
       "config": {
@@ -2570,7 +2639,8 @@
         "name": "Speaker"
       },
       "name": "Speaker",
-      "secondary": "Playing"
+      "secondary": "Playing",
+      "renderedAt": 1791589515341
     },
     {
       "config": {
@@ -2581,7 +2651,8 @@
         }
       },
       "name": "Thermostat",
-      "secondary": "Eco"
+      "secondary": "Eco",
+      "renderedAt": 1791589515392
     },
     {
       "config": {
@@ -2592,7 +2663,8 @@
         }
       },
       "name": "Bedroom brightness",
-      "secondary": "0%"
+      "secondary": "0%",
+      "renderedAt": 1791589515442
     },
     {
       "config": {
@@ -2603,7 +2675,8 @@
         }
       },
       "name": "Bedroom temperature",
-      "secondary": "19.4 °C"
+      "secondary": "19.4 °C",
+      "renderedAt": 1791589515493
     },
     {
       "config": {
@@ -2614,7 +2687,8 @@
         }
       },
       "name": "Shower flow",
-      "secondary": "0 L/min"
+      "secondary": "0 L/min",
+      "renderedAt": 1791589515544
     },
     {
       "config": {
@@ -2627,7 +2701,8 @@
         ]
       },
       "name": "Demo Water Heater",
-      "secondary": "Eco"
+      "secondary": "Eco",
+      "renderedAt": 1791589515594
     },
     {
       "config": {
@@ -2641,7 +2716,8 @@
         ]
       },
       "name": "Door",
-      "secondary": "Closed"
+      "secondary": "Closed",
+      "renderedAt": 1791589515645
     },
     {
       "config": {
@@ -2650,7 +2726,8 @@
         "name": "Door contact"
       },
       "name": "Door contact",
-      "secondary": "Closed"
+      "secondary": "Closed",
+      "renderedAt": 1791589515696
     },
     {
       "config": {
@@ -2658,7 +2735,8 @@
         "entity": "binary_sensor.basement_floor_wet"
       },
       "name": "Basement Floor Wet",
-      "secondary": "Dry"
+      "secondary": "Dry",
+      "renderedAt": 1791589515747
     },
     {
       "config": {
@@ -2669,7 +2747,8 @@
         }
       },
       "name": "Power consumption",
-      "secondary": "100 W"
+      "secondary": "100 W",
+      "renderedAt": 1791589515797
     },
     {
       "config": {
@@ -2680,7 +2759,8 @@
         }
       },
       "name": "Total energy 1",
-      "secondary": "175.50 kWh"
+      "secondary": "253.50 kWh",
+      "renderedAt": 1791589515848
     },
     {
       "config": {
@@ -2691,7 +2771,8 @@
         }
       },
       "name": "Total gas 1",
-      "secondary": "8.78 m³"
+      "secondary": "12.68 m³",
+      "renderedAt": 1791589515899
     },
     {
       "config": {
@@ -2702,7 +2783,8 @@
         }
       },
       "name": "Demo vacuum 0 ground floor",
-      "secondary": "Docked"
+      "secondary": "Docked",
+      "renderedAt": 1791589515950
     },
     {
       "config": {
@@ -2713,7 +2795,8 @@
         }
       },
       "name": "Laundry",
-      "secondary": "Idle"
+      "secondary": "Idle",
+      "renderedAt": 1791589516001
     },
     {
       "config": {
@@ -2727,7 +2810,8 @@
         ]
       },
       "name": "RGBW Lights",
-      "secondary": "71%"
+      "secondary": "71%",
+      "renderedAt": 1791589516051
     },
     {
       "config": {
@@ -2740,7 +2824,8 @@
         ]
       },
       "name": "Hvac",
-      "secondary": "Cool · 22 °C"
+      "secondary": "Cool · 22 °C",
+      "renderedAt": 1791589516102
     },
     {
       "config": {
@@ -2749,7 +2834,8 @@
         "name": "Speaker"
       },
       "name": "Speaker",
-      "secondary": "Playing"
+      "secondary": "Playing",
+      "renderedAt": 1791589516152
     },
     {
       "config": {
@@ -2760,7 +2846,8 @@
         }
       },
       "name": "Push",
-      "secondary": "Unknown"
+      "secondary": "47 seconds ago",
+      "renderedAt": 1791589516203
     },
     {
       "config": {
@@ -2771,7 +2858,8 @@
         }
       },
       "name": "Button press",
-      "secondary": "Unknown"
+      "secondary": "47 seconds ago",
+      "renderedAt": 1791589516255
     },
     {
       "config": {
@@ -2782,7 +2870,8 @@
         }
       },
       "name": "AC",
-      "secondary": "Off"
+      "secondary": "Off",
+      "renderedAt": 1791589516305
     },
     {
       "config": {
@@ -2793,7 +2882,8 @@
         }
       },
       "name": "Office temperature",
-      "secondary": "22.8 °C"
+      "secondary": "22.8 °C",
+      "renderedAt": 1791589516356
     },
     {
       "config": {
@@ -2804,7 +2894,8 @@
         }
       },
       "name": "Office circuit power",
-      "secondary": "160 W"
+      "secondary": "15 W",
+      "renderedAt": 1791589516407
     },
     {
       "config": {
@@ -2815,7 +2906,8 @@
         }
       },
       "name": "Office computer power",
-      "secondary": "120 W"
+      "secondary": "3 W",
+      "renderedAt": 1791589516458
     },
     {
       "config": {
@@ -2826,7 +2918,8 @@
         }
       },
       "name": "Office occupancy",
-      "secondary": "Detected"
+      "secondary": "Detected",
+      "renderedAt": 1791589516508
     },
     {
       "config": {
@@ -2834,7 +2927,8 @@
         "entity": "cover.pergola_roof"
       },
       "name": "Pergola Roof",
-      "secondary": "Closed"
+      "secondary": "Closed",
+      "renderedAt": 1791589516559
     },
     {
       "config": {
@@ -2843,7 +2937,8 @@
         "name": "Leak"
       },
       "name": "Leak",
-      "secondary": "Dry"
+      "secondary": "Dry",
+      "renderedAt": 1791589516609
     },
     {
       "config": {
@@ -2854,7 +2949,8 @@
         }
       },
       "name": "Movement Backyard",
-      "secondary": "Detected"
+      "secondary": "Detected",
+      "renderedAt": 1791589516660
     },
     {
       "config": {
@@ -2865,7 +2961,8 @@
         }
       },
       "name": "Outside Temperature",
-      "secondary": "15.6 °C"
+      "secondary": "15.6 °C",
+      "renderedAt": 1791589516711
     },
     {
       "config": {
@@ -2876,7 +2973,8 @@
         }
       },
       "name": "Outside Humidity",
-      "secondary": "54%"
+      "secondary": "54%",
+      "renderedAt": 1791589516761
     },
     {
       "config": {
@@ -2887,7 +2985,8 @@
         }
       },
       "name": "Front Garden",
-      "secondary": "Open"
+      "secondary": "Open",
+      "renderedAt": 1791589516812
     },
     {
       "config": {
@@ -2898,7 +2997,8 @@
         }
       },
       "name": "Orchard",
-      "secondary": "Closed"
+      "secondary": "Closed",
+      "renderedAt": 1791589516863
     },
     {
       "config": {
@@ -2909,7 +3009,8 @@
         }
       },
       "name": "Back Garden",
-      "secondary": "Open · 70%"
+      "secondary": "Open · 70%",
+      "renderedAt": 1791589516914
     },
     {
       "config": {
@@ -2920,7 +3021,8 @@
         }
       },
       "name": "Trees",
-      "secondary": "Open · 30%"
+      "secondary": "Open · 30%",
+      "renderedAt": 1791589516965
     },
     {
       "config": {
@@ -2931,7 +3033,8 @@
         }
       },
       "name": "Garden temperature",
-      "secondary": "13.2 °C"
+      "secondary": "13.2 °C",
+      "renderedAt": 1791589517016
     },
     {
       "config": {
@@ -2942,7 +3045,8 @@
         }
       },
       "name": "Garden tap flow",
-      "secondary": "0 L/min"
+      "secondary": "0 L/min",
+      "renderedAt": 1791589517067
     },
     {
       "config": {
@@ -2953,7 +3057,8 @@
         }
       },
       "name": "Garden irrigation",
-      "secondary": "Off"
+      "secondary": "Off",
+      "renderedAt": 1791589517118
     },
     {
       "config": {
@@ -2966,7 +3071,8 @@
         ]
       },
       "name": "Entrance Color + White Lights",
-      "secondary": "71%"
+      "secondary": "71%",
+      "renderedAt": 1791589517169
     },
     {
       "config": {
@@ -2979,7 +3085,8 @@
         ]
       },
       "name": "Hall Window",
-      "secondary": "Open · 10%"
+      "secondary": "Open · 10%",
+      "renderedAt": 1791589517220
     }
   ]
 }

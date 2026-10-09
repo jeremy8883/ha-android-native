@@ -71,6 +71,9 @@ interface DisplayFormats {
     /** `formatTime`: "12:00 PM". */
     fun time(instant: Instant, zone: ZoneId = this.zone): String
 
+    /** `formatTimeWithSeconds`: "12:00:00 PM". */
+    fun timeWithSeconds(instant: Instant, zone: ZoneId = this.zone): String
+
     /** A date shown as [part] alone, such as "Oct 9" or "2026". */
     fun datePart(date: LocalDate, part: DatePart): String
 
@@ -117,11 +120,13 @@ class JdkDisplayFormats(private val locale: Locale, override val zone: ZoneId) :
         date(instant, zone) + dateTimeJoiner + time(instant, zone)
 
     override fun dateTimeWithSeconds(instant: Instant, zone: ZoneId): String =
-        date(instant, zone) + dateTimeJoiner + format(TIME_SECONDS, instant, zone)
+        date(instant, zone) + dateTimeJoiner + timeWithSeconds(instant, zone)
 
     private val dateTimeJoiner = if (locale.language == Locale.ENGLISH.language) " at " else ", "
 
     override fun time(instant: Instant, zone: ZoneId): String = format(TIME, instant, zone)
+
+    override fun timeWithSeconds(instant: Instant, zone: ZoneId): String = format(TIME_SECONDS, instant, zone)
 
     override fun datePart(date: LocalDate, part: DatePart): String =
         DATE_PARTS.getValue(part).withLocale(locale).format(date)

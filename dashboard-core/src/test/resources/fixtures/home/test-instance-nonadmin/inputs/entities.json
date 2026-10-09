@@ -1008,5 +1008,23 @@
     "platform": "template",
     "name": "Garden tap flow",
     "display_precision": 0
+  },
+  "script.lock_up": {
+    "entity_id": "script.lock_up",
+    "labels": [],
+    "platform": "script",
+    "name": "Lock up"
+  },
+  "automation.bed_light_schedule": {
+    "entity_id": "automation.bed_light_schedule",
+    "labels": [],
+    "platform": "automation",
+    "name": "Bed light schedule"
+  },
+  "automation.guest_welcome": {
+    "entity_id": "automation.guest_welcome",
+    "labels": [],
+    "platform": "automation",
+    "name": "Guest welcome"
   }
 }
