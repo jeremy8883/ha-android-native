@@ -3,7 +3,7 @@
 
 Usage: extract_colors.py <frontend checkout>
 Reads src/resources/theme/color/color.globals.ts (colorStyles and darkColorStyles) and writes
-dashboard/src/main/kotlin/.../ui/theme/FrontendColors.kt with every `--*-color` variable whose value is a hex
+dashboard/src/main/kotlin/.../ui/theme/FrontendColor.kt with every `--*-color` variable whose value is a hex
 colour or a reference to another variable.
 """
 
@@ -13,9 +13,9 @@ from pathlib import Path
 
 OUT = (
     Path(__file__).resolve().parents[2]
-    / "dashboard/src/main/kotlin/io/homeassistant/companion/android/dashboard/ui/theme/FrontendColors.kt"
+    / "dashboard/src/main/kotlin/io/homeassistant/companion/android/dashboard/ui/theme/FrontendColor.kt"
 )
-DECL = re.compile(r"--([a-z0-9-]+-color):\s*([^;]+);")
+DECL = re.compile(r"--([a-z0-9-]*color(?:-[0-9]+)?):\s*([^;]+);")
 HEX = re.compile(r"^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$")
 REF = re.compile(r"^var\(--([a-z0-9-]+)\)$")
 

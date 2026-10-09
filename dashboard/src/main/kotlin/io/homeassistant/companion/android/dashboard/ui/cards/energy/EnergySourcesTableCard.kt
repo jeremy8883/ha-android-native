@@ -183,7 +183,7 @@ private fun Bullet(kind: String, index: Int) {
 }
 
 /** Open the more-info of [entityId], as the frontend's rows do. */
-private fun CardInteractions.openMoreInfo(entityId: String) = onGesture(
+internal fun CardInteractions.openMoreInfo(entityId: String) = onGesture(
     buildJsonObject {
         put("entity", entityId)
         putJsonObject("tap_action") { put("action", JsonPrimitive("more-info")) }

@@ -47,9 +47,7 @@ internal fun EnergyTooltipCard(tooltip: EnergyTooltip, dark: Boolean, formatTota
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
                 ) {
-                    val color = ENERGY_KIND_COLORS[row.series.kind]?.let {
-                        energyColor(it, dark, row.series.colorIndex, background = false, compare = row.series.compare)
-                    } ?: colors.colorTextSecondary
+                    val color = seriesColor(row.series, dark, background = false) ?: colors.colorTextSecondary
                     Box(Modifier.size(MARKER).background(color, CircleShape))
                     Text("${row.series.name}: ${row.value}", style = HATextStyle.Body, color = colors.colorTextPrimary)
                 }

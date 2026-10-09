@@ -112,11 +112,7 @@ internal fun Legend(chart: EnergyBarChart, hidden: Set<String>, onToggle: (Strin
     ) {
         chart.series.filterNot { it.compare }.forEach { series ->
             val off = series.id in hidden
-            val color =
-                ENERGY_KIND_COLORS[series.kind]?.let {
-                    energyColor(it, dark, series.colorIndex, background = false, compare = false)
-                }
-                    ?: colors.colorTextSecondary
+            val color = seriesColor(series, dark, background = false) ?: colors.colorTextSecondary
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),

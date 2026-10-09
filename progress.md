@@ -179,7 +179,9 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - [x] Energy gauges (self-sufficiency, grid neutrality, self-consumed solar with the battery tracked last in first out, low-carbon): golden-tested against the frontend's gauge cards for every period; drawn like `ha-gauge` (arc or levels with needle, fitted value text), info behind the info icon
 - [x] Gas, water and solar graphs (`EnergySourceGraphModel`), compare banner (`EnergyCompareModel`: switch to previous year/period, stop comparing) and grid balance (`EnergyGridBalanceModel`), golden-tested against the frontend's cards for every period
 - [ ] Solar forecast lines on the solar graph (`energy/solar_forecast`; the test instance has no forecast integration)
-- [ ] Other cards: devices (detail graph and bars), energy and water sankeys, power sources graph, power sankey, water flow sankey and the Now badges
+- [x] Device cards: the detail graph (devices by period without their included devices, untracked and over-reported consumption) and the devices graph (bars or donut, switched from the header), golden-tested against the frontend's cards for every period; device colours from the graph palette (`--color-N`, now extracted)
+- [ ] Devices graph: remember the chosen bar/donut mode across launches (the frontend keeps it in local storage)
+- [ ] Other cards: energy and water sankeys, power sources graph, power sankey, water flow sankey and the Now badges
 - [ ] Overview "Today's energy" summary (needs the energy data on the home dashboard)
 
 ### Later — Startup time

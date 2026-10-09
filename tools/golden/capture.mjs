@@ -344,6 +344,9 @@ const ENERGY_CARD_CAPTURES = [
   { name: "energy-water-graph", config: { type: "energy-water-graph" } },
   { name: "energy-solar-graph", config: { type: "energy-solar-graph" } },
   { name: "energy-grid-balance", config: { type: "energy-grid-balance" } },
+  { name: "energy-devices-detail-graph", config: { type: "energy-devices-detail-graph" } },
+  { name: "energy-devices-graph", config: { type: "energy-devices-graph", modes: ["bar"] } },
+  { name: "energy-devices-graph-pie", config: { type: "energy-devices-graph", modes: ["pie"] } },
   { name: "energy-self-sufficiency-gauge", config: { type: "energy-self-sufficiency-gauge" } },
   { name: "energy-grid-neutrality-gauge", config: { type: "energy-grid-neutrality-gauge" } },
   { name: "energy-solar-consumed-gauge", config: { type: "energy-solar-consumed-gauge" } },
@@ -432,7 +435,18 @@ async function captureEnergyCard(config) {
       message: gauge ? null : root().querySelector("ha-card")?.textContent.replace(/\s+/g, " ").trim() ?? null,
     };
   }
-  if (type.endsWith("-graph")) {
+  if (type === "energy-devices-graph") {
+    for (let i = 0; i < 50 && !el._chartData?.length; i++) await new Promise((r) => setTimeout(r, 100));
+    const item = (d) =>
+      d && typeof d === "object" && !Array.isArray(d)
+        ? { id: d.id ?? null, value: Array.isArray(d.value) ? d.value[0] : d.value ?? null, name: d.name ?? null }
+        : { id: null, value: d ?? null, name: null };
+    result = {
+      chartType: el._chartType ?? null,
+      series: (el._chartData ?? []).map((s) => ({ name: s.name ?? null, type: s.type, data: (s.data ?? []).map(item) })),
+      legend: (el._legendData ?? []).map((l) => ({ id: l.id ?? null, name: l.name ?? null, value: l.value ?? null })),
+    };
+  } else if (type.endsWith("-graph")) {
     // The chart's series as the card built them, and its axes
     for (let i = 0; i < 50 && !el._chartData?.length; i++) await new Promise((r) => setTimeout(r, 100));
     const options = root().querySelector("ha-chart-base")?.options ?? {};

@@ -215,9 +215,8 @@ private fun DrawScope.drawBars(layout: ChartGeometry, series: List<EnergyBarSeri
         s.points.filter { it.y != 0.0 }.forEach { outermost[Triple(s.compare, it.x, it.y > 0)] = s.id }
     }
     series.forEach { s ->
-        val variable = ENERGY_KIND_COLORS[s.kind] ?: return@forEach
-        val fill = energyColor(variable, dark, s.colorIndex, background = true, compare = s.compare)
-        val border = energyColor(variable, dark, s.colorIndex, background = false, compare = s.compare)
+        val fill = seriesColor(s, dark, background = true) ?: return@forEach
+        val border = seriesColor(s, dark, background = false) ?: return@forEach
         s.points.forEach { p ->
             if (p.y == 0.0) return@forEach
             val key = s.compare to p.x
