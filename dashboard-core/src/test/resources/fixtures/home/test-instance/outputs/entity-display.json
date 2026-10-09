@@ -1,5 +1,5 @@
 {
-  "now": "2026-10-09T10:35:23.925Z",
+  "now": "2026-10-09T11:49:03.517Z",
   "locale": {
     "language": "en",
     "number_format": "language",
@@ -329,7 +329,7 @@
     "sensor.sun_next_dawn": {
       "icon": "mdi:sun-clock",
       "state": "October 10, 2026 at 5:22 AM",
-      "secondary": "In 19 hours",
+      "secondary": "In 18 hours",
       "names": {
         "default": "Sun Next dawn",
         "entity": "Next dawn",
@@ -342,7 +342,7 @@
     "sensor.sun_next_dusk": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 5:33 PM",
-      "secondary": "In 7 hours",
+      "secondary": "In 6 hours",
       "names": {
         "default": "Sun Next dusk",
         "entity": "Next dusk",
@@ -355,7 +355,7 @@
     "sensor.sun_next_midnight": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 11:27 PM",
-      "secondary": "In 13 hours",
+      "secondary": "In 12 hours",
       "names": {
         "default": "Sun Next midnight",
         "entity": "Next midnight",
@@ -367,8 +367,8 @@
     },
     "sensor.sun_next_noon": {
       "icon": "mdi:sun-clock",
-      "state": "October 9, 2026 at 11:27 AM",
-      "secondary": "In 52 minutes",
+      "state": "October 10, 2026 at 11:27 AM",
+      "secondary": "Tomorrow",
       "names": {
         "default": "Sun Next noon",
         "entity": "Next noon",
@@ -381,7 +381,7 @@
     "sensor.sun_next_rising": {
       "icon": "mdi:sun-clock",
       "state": "October 10, 2026 at 5:57 AM",
-      "secondary": "In 19 hours",
+      "secondary": "In 18 hours",
       "names": {
         "default": "Sun Next rising",
         "entity": "Next rising",
@@ -394,7 +394,7 @@
     "sensor.sun_next_setting": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 4:59 PM",
-      "secondary": "In 6 hours",
+      "secondary": "In 5 hours",
       "names": {
         "default": "Sun Next setting",
         "entity": "Next setting",
@@ -460,8 +460,8 @@
     },
     "sensor.living_room_temperature": {
       "icon": "mdi:thermometer",
-      "state": "21.5 °C",
-      "secondary": "21.5 °C",
+      "state": "21.9 °C",
+      "secondary": "21.9 °C",
       "names": {
         "default": "Living room temperature",
         "entity": "Living room temperature",
@@ -538,8 +538,8 @@
     },
     "sensor.house_power": {
       "icon": "mdi:flash",
-      "state": "545 W",
-      "secondary": "545 W",
+      "state": "643 W",
+      "secondary": "643 W",
       "names": {
         "default": "House power",
         "entity": "House power",
@@ -551,8 +551,8 @@
     },
     "sensor.solar_power": {
       "icon": "mdi:flash",
-      "state": "2,965 W",
-      "secondary": "2,965 W",
+      "state": "2,667 W",
+      "secondary": "2,667 W",
       "names": {
         "default": "Solar power",
         "entity": "Solar power",
@@ -564,8 +564,8 @@
     },
     "sensor.grid_power": {
       "icon": "mdi:flash",
-      "state": "-615 W",
-      "secondary": "-615 W",
+      "state": "-317 W",
+      "secondary": "-317 W",
       "names": {
         "default": "Grid power",
         "entity": "Grid power",
@@ -590,8 +590,8 @@
     },
     "sensor.home_battery_charge": {
       "icon": "mdi:battery-80",
-      "state": "80%",
-      "secondary": "80%",
+      "state": "85%",
+      "secondary": "85%",
       "names": {
         "default": "Home battery charge",
         "entity": "Home battery charge",
@@ -1033,9 +1033,9 @@
       }
     },
     "calendar.calendar_1": {
-      "icon": "mdi:calendar-blank",
-      "state": "Off",
-      "secondary": "Off",
+      "icon": "mdi:calendar-check",
+      "state": "On",
+      "secondary": "On",
       "names": {
         "default": "Calendar 1",
         "entity": "Calendar 1",
@@ -1046,9 +1046,9 @@
       }
     },
     "calendar.calendar_2": {
-      "icon": "mdi:calendar-check",
-      "state": "On",
-      "secondary": "On",
+      "icon": "mdi:calendar-blank",
+      "state": "Off",
+      "secondary": "Off",
       "names": {
         "default": "Calendar 2",
         "entity": "Calendar 2",
@@ -1723,8 +1723,8 @@
     },
     "sensor.total_energy_kwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "176.00 kWh",
-      "secondary": "176.00 kWh",
+      "state": "183.00 kWh",
+      "secondary": "183.00 kWh",
       "names": {
         "default": "Total energy 1",
         "entity": "Total energy 1",
@@ -1749,8 +1749,8 @@
     },
     "sensor.total_gas_m3": {
       "icon": "mdi:meter-gas",
-      "state": "8.80 m³",
-      "secondary": "8.80 m³",
+      "state": "9.15 m³",
+      "secondary": "9.15 m³",
       "names": {
         "default": "Total gas 1",
         "entity": "Total gas 1",
@@ -1762,8 +1762,8 @@
     },
     "sensor.total_gas_ft3": {
       "icon": "mdi:meter-gas",
-      "state": "9.97 m³",
-      "secondary": "9.97 m³",
+      "state": "10.36 m³",
+      "secondary": "10.36 m³",
       "names": {
         "default": "Total gas 2",
         "entity": "Total gas 2",
@@ -2408,7 +2408,7 @@
         }
       },
       "name": "Living room temperature",
-      "secondary": "21.5 °C"
+      "secondary": "21.9 °C"
     },
     {
       "config": {
@@ -2680,7 +2680,7 @@
         }
       },
       "name": "Total energy 1",
-      "secondary": "176.00 kWh"
+      "secondary": "183.00 kWh"
     },
     {
       "config": {
@@ -2691,7 +2691,7 @@
         }
       },
       "name": "Total gas 1",
-      "secondary": "8.80 m³"
+      "secondary": "9.15 m³"
     },
     {
       "config": {

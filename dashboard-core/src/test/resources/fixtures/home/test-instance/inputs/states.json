@@ -495,12 +495,12 @@
       "next_dawn": "2026-10-10T05:22:17.733203+00:00",
       "next_dusk": "2026-10-09T17:33:47.367726+00:00",
       "next_midnight": "2026-10-09T23:27:26+00:00",
-      "next_noon": "2026-10-09T11:27:49+00:00",
+      "next_noon": "2026-10-10T11:27:33+00:00",
       "next_rising": "2026-10-10T05:57:05.237028+00:00",
       "next_setting": "2026-10-09T16:59:07.942658+00:00",
-      "elevation": 30.19,
-      "azimuth": 164.46,
-      "rising": true,
+      "elevation": 31.12,
+      "azimuth": 185.84,
+      "rising": false,
       "friendly_name": "Sun"
     },
     "context": {
@@ -558,7 +558,7 @@
   },
   "sensor.sun_next_noon": {
     "entity_id": "sensor.sun_next_noon",
-    "state": "2026-10-09T11:27:49+00:00",
+    "state": "2026-10-10T11:27:33+00:00",
     "attributes": {
       "device_class": "timestamp",
       "friendly_name": "Sun Next noon"
@@ -673,7 +673,7 @@
   },
   "sensor.living_room_temperature": {
     "entity_id": "sensor.living_room_temperature",
-    "state": "21.5",
+    "state": "21.9",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "°C",
@@ -775,7 +775,7 @@
   },
   "sensor.house_power": {
     "entity_id": "sensor.house_power",
-    "state": "545",
+    "state": "643",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -792,7 +792,7 @@
   },
   "sensor.solar_power": {
     "entity_id": "sensor.solar_power",
-    "state": "2965",
+    "state": "2667",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -809,7 +809,7 @@
   },
   "sensor.grid_power": {
     "entity_id": "sensor.grid_power",
-    "state": "-615",
+    "state": "-317",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -843,7 +843,7 @@
   },
   "sensor.home_battery_charge": {
     "entity_id": "sensor.home_battery_charge",
-    "state": "80",
+    "state": "85",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "%",
@@ -1377,8 +1377,8 @@
     "entity_id": "camera.demo_camera",
     "state": "streaming",
     "attributes": {
-      "access_token": "90bed31ee70996118e3602c5d5a06d7d8af843d9ebaf440f22f3849e8852246a",
-      "entity_picture": "/api/camera_proxy/camera.demo_camera?token=90bed31ee70996118e3602c5d5a06d7d8af843d9ebaf440f22f3849e8852246a",
+      "access_token": "d67cb8530839201dfd4e8244eafda09ee6ce6ea760fc9123a7c833a67f74eaf1",
+      "entity_picture": "/api/camera_proxy/camera.demo_camera?token=d67cb8530839201dfd4e8244eafda09ee6ce6ea760fc9123a7c833a67f74eaf1",
       "friendly_name": "Demo camera",
       "supported_features": 3
     },
@@ -1394,8 +1394,8 @@
     "entity_id": "camera.demo_camera_png",
     "state": "streaming",
     "attributes": {
-      "access_token": "33fa32745df2b2e56fbe150532e7c6e37b005d66333f31e11714710130a1134a",
-      "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=33fa32745df2b2e56fbe150532e7c6e37b005d66333f31e11714710130a1134a",
+      "access_token": "4359977d92497bb4a87c5593e2d1039a4b4492229ad548bb3f0d0bcf603255f",
+      "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=4359977d92497bb4a87c5593e2d1039a4b4492229ad548bb3f0d0bcf603255f",
       "friendly_name": "Demo camera png",
       "supported_features": 3
     },
@@ -1411,8 +1411,8 @@
     "entity_id": "camera.demo_camera_without_stream",
     "state": "streaming",
     "attributes": {
-      "access_token": "83bbea07b18833f5a557e2b61bfc73b27394fae3fbb883fc978567773688af14",
-      "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=83bbea07b18833f5a557e2b61bfc73b27394fae3fbb883fc978567773688af14",
+      "access_token": "bb87df36bb458f37816e983bcd4059a839bb08943a58806c9310f939f4b2c8e7",
+      "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=bb87df36bb458f37816e983bcd4059a839bb08943a58806c9310f939f4b2c8e7",
       "friendly_name": "Demo camera without stream",
       "supported_features": 1
     },
@@ -1426,7 +1426,7 @@
   },
   "calendar.calendar_1": {
     "entity_id": "calendar.calendar_1",
-    "state": "off",
+    "state": "on",
     "attributes": {
       "message": "Future Event",
       "all_day": false,
@@ -1446,7 +1446,7 @@
   },
   "calendar.calendar_2": {
     "entity_id": "calendar.calendar_2",
-    "state": "on",
+    "state": "off",
     "attributes": {
       "message": "Current Event",
       "all_day": false,
@@ -2666,7 +2666,7 @@
   },
   "sensor.total_energy_kwh": {
     "entity_id": "sensor.total_energy_kwh",
-    "state": "176.0",
+    "state": "183.0",
     "attributes": {
       "state_class": "total",
       "unit_of_measurement": "kWh",
@@ -2683,7 +2683,7 @@
   },
   "sensor.total_energy_mwh": {
     "entity_id": "sensor.total_energy_mwh",
-    "state": "0.0880000000000001",
+    "state": "0.0915000000000001",
     "attributes": {
       "state_class": "total",
       "unit_of_measurement": "MWh",
@@ -2700,7 +2700,7 @@
   },
   "sensor.total_gas_m3": {
     "entity_id": "sensor.total_gas_m3",
-    "state": "8.80000000000006",
+    "state": "9.15000000000006",
     "attributes": {
       "state_class": "total",
       "unit_of_measurement": "m³",
@@ -2717,7 +2717,7 @@
   },
   "sensor.total_gas_ft3": {
     "entity_id": "sensor.total_gas_ft3",
-    "state": "9.967530000384",
+    "state": "10.363965852672",
     "attributes": {
       "state_class": "total",
       "unit_of_measurement": "m³",
@@ -3370,16 +3370,16 @@
     "entity_id": "weather.forecast_native_test_home",
     "state": "rainy",
     "attributes": {
-      "temperature": 14.6,
-      "dew_point": 14.2,
+      "temperature": 15.8,
+      "dew_point": 14.8,
       "temperature_unit": "°C",
-      "humidity": 98,
+      "humidity": 94,
       "cloud_coverage": 100,
-      "uv_index": 2.1,
-      "pressure": 1007,
+      "uv_index": 2.5,
+      "pressure": 1006.7,
       "pressure_unit": "hPa",
-      "wind_bearing": 242.9,
-      "wind_speed": 28.4,
+      "wind_bearing": 252.8,
+      "wind_speed": 31,
       "wind_speed_unit": "km/h",
       "visibility_unit": "km",
       "precipitation_unit": "mm",

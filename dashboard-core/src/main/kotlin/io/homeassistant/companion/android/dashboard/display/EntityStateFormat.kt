@@ -144,7 +144,7 @@ private val DURATION_UNITS = setOf("min", "h", "d")
 internal val SENSOR_TIMESTAMP_DEVICE_CLASSES = setOf("timestamp", "uptime")
 
 /** Port of `SENSOR_NUMERIC_DEVICE_CLASSES` (src/data/sensor_numeric_device_classes.ts, generated from core). */
-private val SENSOR_NUMERIC_DEVICE_CLASSES = setOf(
+internal val SENSOR_NUMERIC_DEVICE_CLASSES = setOf(
     "absolute_humidity", "apparent_power", "aqi", "area", "atmospheric_pressure", "battery",
     "blood_glucose_concentration", "carbon_dioxide", "carbon_monoxide", "conductivity", "current", "data_rate",
     "data_size", "distance", "duration", "energy", "energy_distance", "energy_storage", "frequency", "gas",

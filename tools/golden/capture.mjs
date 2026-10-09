@@ -576,6 +576,84 @@ async function captureHomeEnergySummary() {
   return g.clone(result);
 }
 
+/** The entities whose more-info history is recorded: a mix of timelines, history lines and statistics. */
+const HISTORY_ENTITIES = [
+  "light.ceiling_lights",
+  "binary_sensor.office_occupancy",
+  "sensor.living_room_temperature",
+  "sensor.house_power",
+  "sensor.washer_power",
+  "sensor.lights_on",
+  "sensor.backup_backup_manager_state",
+  "sensor.sun_next_dawn",
+  "climate.hvac",
+  "climate.ecobee",
+  "humidifier.humidifier",
+  "input_number.bedroom_brightness",
+  "counter.coffee_cups",
+  "lock.front_door_deadbolt",
+  "cover.hall_window",
+  "device_tracker.demo_paulus",
+  "person.dev",
+];
+
+/**
+ * Renders the more-info dialog's history section (`ha-more-info-history`) for each of [entityIds] and returns what
+ * it fetched (the history stream's messages, or the statistics) and what it computed from them. Runs in the page.
+ */
+async function captureMoreInfoHistory(entityIds) {
+  const g = window.__golden;
+  const ha = document.querySelector("home-assistant");
+  // The section's code loads with the dialog's: open one once
+  if (!customElements.get("ha-more-info-history")) {
+    ha.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId: entityIds[0] }, bubbles: true, composed: true }));
+    for (let i = 0; i < 100 && !customElements.get("ha-more-info-history"); i++) await new Promise((r) => setTimeout(r, 100));
+    ha.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId: "" }, bubbles: true, composed: true }));
+    await new Promise((r) => setTimeout(r, 500));
+  }
+  const conn = ha.hass.connection;
+  const out = {};
+  for (const entityId of entityIds) {
+    const messages = [];
+    const requests = [];
+    const origSubscribe = conn.subscribeMessage;
+    const origSend = conn.sendMessagePromise;
+    conn.subscribeMessage = function (callback, params, options) {
+      requests.push(g.clone(params));
+      // When it came, which the stream's purge of old states counts back from
+      return origSubscribe.call(this, (m) => { messages.push({ ...g.clone(m), receivedAt: Date.now() }); callback(m); }, params, options);
+    };
+    conn.sendMessagePromise = async function (msg) {
+      const entry = { request: g.clone(msg) };
+      requests.push(entry.request);
+      const result = await origSend.call(this, msg);
+      entry.result = g.clone(result);
+      messages.push(entry);
+      return result;
+    };
+    const el = document.createElement("ha-more-info-history");
+    el.hass = ha.hass;
+    el.entityId = entityId;
+    ha.shadowRoot.appendChild(el);
+    for (let i = 0; i < 100 && !(el._stateHistory || el._statistics || el._error); i++) await new Promise((r) => setTimeout(r, 100));
+    await new Promise((r) => setTimeout(r, 500));
+    conn.subscribeMessage = origSubscribe;
+    conn.sendMessagePromise = origSend;
+    out[entityId] = {
+      requests,
+      messages,
+      state: g.clone(ha.hass.states[entityId] ?? null),
+      stateHistory: el._stateHistory ? g.clone(el._stateHistory) : null,
+      statistics: el._statistics ? g.clone(el._statistics) : null,
+      metadata: el._metadata ? g.clone(el._metadata) : null,
+      error: el._error ? g.clone(el._error) : null,
+      showMoreHref: el._showMoreHref ?? null,
+    };
+    el.remove();
+  }
+  return { capturedAt: new Date().toISOString(), unitSystem: g.clone(ha.hass.config.unit_system), entities: out };
+}
+
 /**
  * Loads the energy collection for each of [periods] and records the WS requests it made with their results (what
  * `getEnergyData` fetches), on the energy panel's page.
@@ -1088,6 +1166,9 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
     await page.evaluate(`window.captureEnergyCard = ${captureEnergyCard.toString()}; window.ENERGY_CARD_CAPTURES = ${JSON.stringify(ENERGY_CARD_CAPTURES)}; window.captureEnergyBadge = ${captureEnergyBadge.toString()}; window.captureHomeEnergySummary = ${captureHomeEnergySummary.toString()}; window.ENERGY_BADGES = ${JSON.stringify(ENERGY_BADGES)};`);
   }
   const energyData = renderedEnergy && variant === "admin" ? await page.evaluate(captureEnergyData, energyPeriods()) : null;
+  // The same for every user: recorded once
+  const historyData = variant === "admin" ? await page.evaluate(captureMoreInfoHistory, HISTORY_ENTITIES) : null;
+  if (historyData) console.log(`  recorded the history of ${Object.keys(historyData.entities).length} entities`);
   await page.evaluate(() => window.__golden.navigate("/home/overview"));
   await page.waitForTimeout(500);
 
@@ -1146,6 +1227,7 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
     write("energy/data.json", energyData, true);
     if (energyData.error) problems.push(`energy data: ${energyData.error}`);
   }
+  if (historyData) write("history/more-info.json", historyData, true);
   write("outputs/expanded.json", cap.expanded);
   write("outputs/entity-display.json", cap.display);
   write("outputs/cards.json", cap.cards);
