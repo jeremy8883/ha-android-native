@@ -1,5 +1,5 @@
 {
-  "now": "2026-10-09T07:38:41.373Z",
+  "now": "2026-10-09T07:47:09.420Z",
   "locale": {
     "language": "en",
     "number_format": "language",
@@ -432,8 +432,8 @@
     },
     "sensor.living_room_temperature": {
       "icon": "mdi:thermometer",
-      "state": "21.8 °C",
-      "secondary": "21.8 °C",
+      "state": "21.7 °C",
+      "secondary": "21.7 °C",
       "names": {
         "default": "Living room temperature",
         "entity": "Living room temperature",
@@ -445,8 +445,8 @@
     },
     "sensor.living_room_humidity": {
       "icon": "mdi:water-percent",
-      "state": "48%",
-      "secondary": "48%",
+      "state": "50%",
+      "secondary": "50%",
       "names": {
         "default": "Living room humidity",
         "entity": "Living room humidity",
@@ -510,8 +510,8 @@
     },
     "sensor.house_power": {
       "icon": "mdi:flash",
-      "state": "566 W",
-      "secondary": "566 W",
+      "state": "629 W",
+      "secondary": "629 W",
       "names": {
         "default": "House power",
         "entity": "House power",
@@ -523,8 +523,8 @@
     },
     "sensor.solar_power": {
       "icon": "mdi:flash",
-      "state": "2,442 W",
-      "secondary": "2,442 W",
+      "state": "2,509 W",
+      "secondary": "2,509 W",
       "names": {
         "default": "Solar power",
         "entity": "Solar power",
@@ -536,8 +536,8 @@
     },
     "sensor.grid_power": {
       "icon": "mdi:flash",
-      "state": "-92 W",
-      "secondary": "-92 W",
+      "state": "-159 W",
+      "secondary": "-159 W",
       "names": {
         "default": "Grid power",
         "entity": "Grid power",
@@ -575,8 +575,8 @@
     },
     "sensor.fridge_power": {
       "icon": "mdi:flash",
-      "state": "5 W",
-      "secondary": "5 W",
+      "state": "120 W",
+      "secondary": "120 W",
       "names": {
         "default": "Fridge power",
         "entity": "Fridge power",
@@ -717,9 +717,9 @@
       }
     },
     "binary_sensor.kitchen_motion": {
-      "icon": "mdi:motion-sensor",
-      "state": "Detected",
-      "secondary": "Detected",
+      "icon": "mdi:motion-sensor-off",
+      "state": "Clear",
+      "secondary": "Clear",
       "names": {
         "default": "Kitchen motion",
         "entity": "Kitchen motion",
@@ -1710,8 +1710,8 @@
     },
     "sensor.total_energy_kwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "159.00 kWh",
-      "secondary": "159.00 kWh",
+      "state": "159.50 kWh",
+      "secondary": "159.50 kWh",
       "names": {
         "default": "Total energy 1",
         "entity": "Total energy 1",
@@ -1736,8 +1736,8 @@
     },
     "sensor.total_gas_m3": {
       "icon": "mdi:meter-gas",
-      "state": "7.95 m³",
-      "secondary": "7.95 m³",
+      "state": "7.98 m³",
+      "secondary": "7.98 m³",
       "names": {
         "default": "Total gas 1",
         "entity": "Total gas 1",
@@ -1749,8 +1749,8 @@
     },
     "sensor.total_gas_ft3": {
       "icon": "mdi:meter-gas",
-      "state": "9.00 m³",
-      "secondary": "9.00 m³",
+      "state": "9.03 m³",
+      "secondary": "9.03 m³",
       "names": {
         "default": "Total gas 2",
         "entity": "Total gas 2",
@@ -2473,7 +2473,7 @@
         }
       },
       "name": "Living room temperature",
-      "secondary": "21.8 °C"
+      "secondary": "21.7 °C"
     },
     {
       "config": {
@@ -2484,7 +2484,7 @@
         }
       },
       "name": "Living room humidity",
-      "secondary": "48%"
+      "secondary": "50%"
     },
     {
       "config": {
@@ -2567,7 +2567,7 @@
         }
       },
       "name": "Kitchen motion",
-      "secondary": "Detected"
+      "secondary": "Clear"
     },
     {
       "config": {
@@ -2723,7 +2723,7 @@
         }
       },
       "name": "Total energy 1",
-      "secondary": "159.00 kWh"
+      "secondary": "159.50 kWh"
     },
     {
       "config": {
@@ -2734,7 +2734,7 @@
         }
       },
       "name": "Total gas 1",
-      "secondary": "7.95 m³"
+      "secondary": "7.98 m³"
     },
     {
       "config": {

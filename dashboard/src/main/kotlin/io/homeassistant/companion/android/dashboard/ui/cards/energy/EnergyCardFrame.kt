@@ -38,7 +38,7 @@ internal fun EnergyCardFrame(
     headerEnd: @Composable (EnergyData) -> Unit = {},
     content: @Composable ColumnScope.(EnergyData) -> Unit,
 ) {
-    val key = card.json.string("collection_key") ?: DEFAULT_ENERGY_COLLECTION_KEY
+    val key = card.collectionKey
     val collection by remember(key) { derivedStateOf { hass.value?.energy?.get(key) } }
     val colors = LocalHAColorScheme.current
     DashboardCardSurface(modifier) {
@@ -79,3 +79,6 @@ private fun Message(text: String) {
 }
 
 private const val LOADING = "ui.panel.lovelace.cards.energy.loading"
+
+/** The energy collection the card reads. */
+internal val CardConfig.collectionKey: String get() = json.string("collection_key") ?: DEFAULT_ENERGY_COLLECTION_KEY
