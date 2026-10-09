@@ -19,7 +19,7 @@ fun resolveShortcutItems(saved: JsonArray?): List<JsonObject> {
     for (item in saved.orEmpty().filterIsInstance<JsonObject>()) {
         if (item.string("type") == "summary") {
             val key = item.string("key")
-            if (key !in DEFAULT_SUMMARY_KEYS || !seenSummaryKeys.add(key!!)) continue
+            if (key == null || key !in DEFAULT_SUMMARY_KEYS || !seenSummaryKeys.add(key)) continue
         }
         result += item
     }

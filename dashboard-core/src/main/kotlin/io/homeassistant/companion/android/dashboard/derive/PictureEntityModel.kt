@@ -35,8 +35,8 @@ data class PictureEntityModel(
  * otherwise the configured image, an image entity's picture or a person's picture. `state_image` is not ported.
  */
 fun HassSnapshot.pictureEntityModel(card: CardConfig): PictureEntityModel? {
-    val entityId = card.entity ?: return null
-    val state = states[entityId] ?: return null
+    val state = card.entity?.let(states::get) ?: return null
+    val entityId = state.entityId
     val camera = cameraOf(card)
     val attributes = state.attributes
     val image = if (camera != null) {

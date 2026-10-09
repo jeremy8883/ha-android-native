@@ -9,23 +9,6 @@ import io.homeassistant.companion.android.dashboard.strategy.home.HomeSummary
 import java.math.BigDecimal
 
 /**
- * Display-ready content of the tile-style info cards (home summary, repairs, updates, discovered devices),
- * which upstream all draw with `ha-tile-container`.
- *
- * @property color the colour name (`amber`, `deep-orange`, `warning`, ...), as upstream sets `--tile-color`
- * @property secondary the summary line ("3 on", "2 updates"); empty when there is nothing to say
- * @property loading whether [secondary] is still being loaded
- */
-data class InfoTileModel(
-    val label: String,
-    val icon: String,
-    val color: String,
-    val secondary: String,
-    val loading: Boolean,
-    val vertical: Boolean,
-)
-
-/**
  * Derive a `home-summary` card, or `null` for an unknown `summary`.
  * Port of `HuiHomeSummaryCard` (frontend@20260624.6 src/panels/lovelace/cards/hui-home-summary-card.ts). Energy
  * needs the energy statistics, which are not fetched yet, so it stays loading.
@@ -45,46 +28,46 @@ fun HassSnapshot.homeSummaryModel(card: CardConfig): InfoTileModel? {
 /** Port of `_computeSummaryState`. */
 private fun HassSnapshot.summaryState(summary: HomeSummary): String {
     val entities by lazy { findEntities(states.keys.toList(), summary.filters) }
-    fun withState(vararg values: String) = entities.count { states[it]?.state in values }
-    fun count(key: String, count: Int) = localize("ui.card.home-summary.$key", mapOf("count" to count.toString()))
+    fun withState(value: String) = entities.count { states[it]?.state == value }
     return when (summary) {
-        HomeSummary.LIGHT -> withState("on").let {
-            if (it >
-                0
-            ) {
-                count("count_lights_on", it)
-            } else {
-                text("all_lights_off")
-            }
-        }
+        HomeSummary.LIGHT -> countOr("count_lights_on", withState("on"), "all_lights_off")
         HomeSummary.CLIMATE -> climateSummary()
-        HomeSummary.SECURITY -> {
-            val locks = entities.filter { it.substringBefore('.') == "lock" }
-            val alarms = entities.filter { it.substringBefore('.') == "alarm_control_panel" }
-            val unlocked = locks.count { states[it]?.state in UNSECURED_LOCK_STATES }
-            val disarmed = alarms.count { states[it]?.state == "disarmed" }
-            when {
-                locks.isEmpty() && alarms.isEmpty() -> ""
-                unlocked > 0 -> count("count_locks_unlocked", unlocked)
-                disarmed > 0 -> count("count_alarms_disarmed", disarmed)
-                else -> text("all_secure")
-            }
-        }
-        HomeSummary.MEDIA_PLAYERS ->
-            withState("playing").let { if (it > 0) count("count_media_playing", it) else text("no_media_playing") }
-        HomeSummary.MAINTENANCE -> {
-            val low = lowBatteryEntities(entities).size
-            val unavailable = entities.count { states[it]?.state == STATE_UNAVAILABLE }
-            val parts = listOfNotNull(
-                count("count_maintenance_low_battery_issues", low).takeIf { low > 0 },
-                count("count_maintenance_issues_unavailable_battery_entities", unavailable).takeIf { unavailable > 0 },
-            )
-            parts.joinToString(", ").ifEmpty { text("all_maintenance_good") }
-        }
+        HomeSummary.SECURITY -> securitySummary(entities)
+        HomeSummary.MEDIA_PLAYERS -> countOr("count_media_playing", withState("playing"), "no_media_playing")
+        HomeSummary.MAINTENANCE -> maintenanceSummary(entities)
         HomeSummary.ENERGY -> ""
-        HomeSummary.PERSONS ->
-            withState("home").let { if (it > 0) count("count_persons_home", it) else text("nobody_home") }
+        HomeSummary.PERSONS -> countOr("count_persons_home", withState("home"), "nobody_home")
     }
+}
+
+/** The `count` message [key] when [count] is above 0, otherwise the text [noneKey]. */
+private fun HassSnapshot.countOr(key: String, count: Int, noneKey: String): String =
+    if (count > 0) count(key, count) else text(noneKey)
+
+private fun HassSnapshot.count(key: String, count: Int) =
+    localize("ui.card.home-summary.$key", mapOf("count" to count.toString()))
+
+private fun HassSnapshot.securitySummary(entities: List<String>): String {
+    val locks = entities.filter { it.substringBefore('.') == "lock" }
+    val alarms = entities.filter { it.substringBefore('.') == "alarm_control_panel" }
+    val unlocked = locks.count { states[it]?.state in UNSECURED_LOCK_STATES }
+    val disarmed = alarms.count { states[it]?.state == "disarmed" }
+    return when {
+        locks.isEmpty() && alarms.isEmpty() -> ""
+        unlocked > 0 -> count("count_locks_unlocked", unlocked)
+        disarmed > 0 -> count("count_alarms_disarmed", disarmed)
+        else -> text("all_secure")
+    }
+}
+
+private fun HassSnapshot.maintenanceSummary(entities: List<String>): String {
+    val low = lowBatteryEntities(entities).size
+    val unavailable = entities.count { states[it]?.state == STATE_UNAVAILABLE }
+    val parts = listOfNotNull(
+        count("count_maintenance_low_battery_issues", low).takeIf { low > 0 },
+        count("count_maintenance_issues_unavailable_battery_entities", unavailable).takeIf { unavailable > 0 },
+    )
+    return parts.joinToString(", ").ifEmpty { text("all_maintenance_good") }
 }
 
 private fun HassSnapshot.text(key: String) = localize("ui.card.home-summary.$key")

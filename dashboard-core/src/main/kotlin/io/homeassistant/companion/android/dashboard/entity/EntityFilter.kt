@@ -31,32 +31,31 @@ data class EntityFilter(
  */
 fun HassSnapshot.matches(entityId: String, filter: EntityFilter): Boolean {
     val state = states[entityId] ?: return false
-    val domain = entityId.substringBefore('.')
-    if (filter.domains != null && domain !in filter.domains) return false
-    if (filter.hiddenDomains != null && domain in filter.hiddenDomains) return false
-    if (filter.deviceClasses != null &&
-        (state.attributes.string("device_class")?.ifEmpty { null } ?: DEVICE_CLASS_NONE) !in filter.deviceClasses
-    ) {
-        return false
-    }
-
-    val (entity, device, area, floor) = registries.entityContext(entityId)
-    if (entity?.hidden == true) return false
-    if (filter.floors != null && floor?.floorId !in filter.floors) return false
-    if (filter.areas != null && area?.areaId !in filter.areas) return false
-    if (filter.devices != null && device?.id !in filter.devices) return false
-    if (filter.labels != null && (entity == null || entity.labels.none { it in filter.labels })) return false
-    if (filter.entityCategories != null &&
-        (entity?.entityCategory?.ifEmpty { null } ?: ENTITY_CATEGORY_NONE) !in filter.entityCategories
-    ) {
-        return false
-    }
-    if (filter.hiddenPlatforms != null) {
-        if (entity == null) return false
-        if (entity.platform != null && entity.platform in filter.hiddenPlatforms) return false
-    }
-    return true
+    return matchesState(state, filter) && matchesRegistry(registries.entityContext(entityId), filter)
 }
+
+private fun matchesState(state: EntityState, filter: EntityFilter): Boolean {
+    val deviceClass = state.attributes.string("device_class")?.ifEmpty { null } ?: DEVICE_CLASS_NONE
+    return filter.domains.allows(state.domain) &&
+        filter.hiddenDomains?.contains(state.domain) != true &&
+        filter.deviceClasses.allows(deviceClass)
+}
+
+private fun matchesRegistry(context: EntityContext, filter: EntityFilter): Boolean {
+    val entity = context.entity
+    val category = entity?.entityCategory?.ifEmpty { null } ?: ENTITY_CATEGORY_NONE
+    return entity?.hidden != true &&
+        filter.floors.allows(context.floor?.floorId) &&
+        filter.areas.allows(context.area?.areaId) &&
+        filter.devices.allows(context.device?.id) &&
+        (filter.labels == null || entity?.labels?.any { it in filter.labels } == true) &&
+        filter.entityCategories.allows(category) &&
+        // Hiding platforms also hides entities without a registry entry
+        (filter.hiddenPlatforms == null || (entity != null && entity.platform !in filter.hiddenPlatforms))
+}
+
+/** Whether these criteria allow [value]: no criteria allow anything. */
+private fun <T> Set<T>?.allows(value: T): Boolean = this == null || value in this
 
 /** The entities of [entityIds] matching [filter], in order. */
 fun HassSnapshot.filterEntities(entityIds: List<String>, filter: EntityFilter): List<String> =

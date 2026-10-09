@@ -20,43 +20,35 @@ internal fun DisplayColor.toColor(): Color? {
 }
 
 /** The value of a frontend colour variable, following references to other variables. */
-internal fun resolveVariable(name: String, dark: Boolean): Color? {
-    var variable = name
-    repeat(MAX_REFERENCE_DEPTH) {
-        val value =
-            (if (dark) FRONTEND_DARK_COLORS[variable] else null) ?: FRONTEND_LIGHT_COLORS[variable] ?: return null
-        when (value) {
-            is FrontendColor.Hex -> return Color(value.argb)
-            is FrontendColor.Ref -> variable = value.variable
+internal fun resolveVariable(name: String, dark: Boolean): Color? =
+    generateSequence(name) { variable -> (frontendColor(variable, dark) as? FrontendColor.Ref)?.variable }
+        .take(MAX_REFERENCE_DEPTH)
+        .firstNotNullOfOrNull { variable ->
+            (frontendColor(variable, dark) as? FrontendColor.Hex)?.let { Color(it.argb) }
         }
-    }
-    return null
-}
+
+/** The frontend's value of [variable], the dark theme's first when [dark]. */
+private fun frontendColor(variable: String, dark: Boolean): FrontendColor? =
+    (if (dark) FRONTEND_DARK_COLORS[variable] else null) ?: FRONTEND_LIGHT_COLORS[variable]
 
 /** `#rgb`, `#rrggbb` and `rgb(r, g, b)` colours; others are not resolved. */
 internal fun parseCssColor(css: String): Color? {
     val text = css.trim()
-    HEX.matchEntire(text)?.let { match ->
-        val digits = match.groupValues[1].let {
-            if (it.length ==
-                SHORT_HEX
-            ) {
-                it.map { c -> "$c$c" }.joinToString("")
-            } else {
-                it
-            }
-        }
-        return Color(OPAQUE or digits.toLong(HEX_RADIX))
-    }
-    RGB.matchEntire(text)?.let { match ->
-        val (r, g, b) = match.destructured
-        return Color(
-            r.toInt().coerceIn(0, CHANNEL_MAX),
-            g.toInt().coerceIn(0, CHANNEL_MAX),
-            b.toInt().coerceIn(0, CHANNEL_MAX),
-        )
-    }
-    return null
+    return HEX.matchEntire(text)?.let { hexColor(it.groupValues[1]) } ?: RGB.matchEntire(text)?.let(::rgbColor)
+}
+
+private fun hexColor(hex: String): Color {
+    val digits = if (hex.length == SHORT_HEX) hex.map { c -> "$c$c" }.joinToString("") else hex
+    return Color(OPAQUE or digits.toLong(HEX_RADIX))
+}
+
+private fun rgbColor(match: MatchResult): Color {
+    val (r, g, b) = match.destructured
+    return Color(
+        r.toInt().coerceIn(0, CHANNEL_MAX),
+        g.toInt().coerceIn(0, CHANNEL_MAX),
+        b.toInt().coerceIn(0, CHANNEL_MAX),
+    )
 }
 
 private const val MAX_REFERENCE_DEPTH = 8

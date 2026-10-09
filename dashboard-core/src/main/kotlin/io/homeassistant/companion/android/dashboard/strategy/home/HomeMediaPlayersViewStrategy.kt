@@ -52,7 +52,7 @@ fun HassSnapshot.homeMediaPlayersView(): JsonObject {
             put("type", "heading")
             put("heading", localize("ui.panel.lovelace.strategy.home_media_players.$key"))
         }
-        sections += mediaSection(heading, unassigned)!!
+        mediaSection(heading, unassigned)?.let { sections += it }
     }
 
     return buildJsonObject {

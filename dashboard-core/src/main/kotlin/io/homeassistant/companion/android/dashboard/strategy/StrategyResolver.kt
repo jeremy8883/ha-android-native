@@ -22,14 +22,21 @@ import kotlinx.serialization.json.putJsonArray
  * `expandLovelaceConfigStrategies` (frontend@20260624.6 src/panels/lovelace/strategies/get-strategy.ts).
  * Returns `null` when the view's strategy is not ported yet; sections with unported strategies are kept as is.
  */
-fun HassSnapshot.expandView(view: ViewConfig, data: StrategyData): ViewConfig? {
-    val expanded = resolveStrategyView(view, data) ?: return null
-    val sections = expanded.json["sections"] as? JsonArray ?: return expanded
-    val newSections = sections.map { section ->
-        (section as? JsonObject)?.let { expandSection(it, data) } ?: section
+fun HassSnapshot.expandView(view: ViewConfig, data: StrategyData): ViewConfig? =
+    resolveStrategyView(view, data)?.let { expanded ->
+        val sections = expanded.json["sections"] as? JsonArray
+        val newSections = sections?.map { section ->
+            (section as? JsonObject)?.let { expandSection(it, data) }
+                ?: section
+        }
+        if (newSections ==
+            null
+        ) {
+            expanded
+        } else {
+            ViewConfig(JsonObject(expanded.json + ("sections" to JsonArray(newSections))))
+        }
     }
-    return ViewConfig(JsonObject(expanded.json + ("sections" to JsonArray(newSections))))
-}
 
 /**
  * Expand a strategy view: the view's other keys (title, path, subview, ...) overlaid by the generated ones, and
@@ -37,28 +44,31 @@ fun HassSnapshot.expandView(view: ViewConfig, data: StrategyData): ViewConfig? {
  */
 fun HassSnapshot.resolveStrategyView(view: ViewConfig, data: StrategyData = StrategyData.NONE): ViewConfig? {
     val strategy = view.strategy ?: return view
-    val generated = try {
-        when (strategy.string("type")) {
-            "home-area" -> homeAreaView(strategy.string("area"), strategy.boolean("home_panel") == true)
-            "home-overview" -> homeOverviewView(strategy, data)
-            "home-media-players" -> homeMediaPlayersView()
-            "home-other-devices" -> homeOtherDevicesView(strategy.boolean("home_panel") == true)
-            else -> return null
+    return viewGenerator(strategy, data)?.let { generate ->
+        val generated = try {
+            generate()
+        } catch (e: IllegalArgumentException) {
+            errorContent("view", e.message)
         }
-    } catch (e: IllegalArgumentException) {
-        errorContent("view", e.message)
+        ViewConfig(JsonObject(view.json.filterKeys { it != KEY_STRATEGY } + generated))
     }
-    return ViewConfig(JsonObject(view.json.filterKeys { it != KEY_STRATEGY } + generated))
 }
+
+/** What generates the view of [strategy], `null` when its type is not ported yet. */
+private fun HassSnapshot.viewGenerator(strategy: JsonObject, data: StrategyData): (() -> JsonObject)? =
+    when (strategy.string("type")) {
+        "home-area" -> { -> homeAreaView(strategy.string("area"), strategy.boolean("home_panel") == true) }
+        "home-overview" -> { -> homeOverviewView(strategy, data) }
+        "home-media-players" -> { -> homeMediaPlayersView() }
+        "home-other-devices" -> { -> homeOtherDevicesView(strategy.boolean("home_panel") == true) }
+        else -> null
+    }
 
 /** Port of `generateLovelaceSectionStrategy`; unported strategy types are returned unchanged. */
 private fun HassSnapshot.expandSection(section: JsonObject, data: StrategyData): JsonElement {
-    val strategy = section.obj(KEY_STRATEGY) ?: return section
+    val strategy = section.obj(KEY_STRATEGY)?.takeIf { it.string("type") == "common-controls" } ?: return section
     val generated = try {
-        when (strategy.string("type")) {
-            "common-controls" -> commonControlsSection(strategy, data.commonControls)
-            else -> return section
-        }
+        commonControlsSection(strategy, data.commonControls)
     } catch (e: IllegalArgumentException) {
         errorContent("section", e.message)
     }

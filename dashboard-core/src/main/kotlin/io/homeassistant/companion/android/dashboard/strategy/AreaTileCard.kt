@@ -29,7 +29,7 @@ fun HassSnapshot.areaTileCard(entityId: String, prefix: String, includeFeature: 
             put("show_state", false)
             put("show_name", false)
             putJsonObject("grid_options") {
-                put("columns", 6)
+                put("columns", CAMERA_COLUMNS)
                 put("rows", 2)
             }
         }
@@ -68,3 +68,6 @@ private fun EntityState.supportsTargetTemperature(): Boolean = (
             )
     ) ||
     (domain == "water_heater" && supportsFeature(EntityFeature.WATER_HEATER_TARGET_TEMPERATURE))
+
+/** Cameras take half a section's width. */
+private const val CAMERA_COLUMNS = 6

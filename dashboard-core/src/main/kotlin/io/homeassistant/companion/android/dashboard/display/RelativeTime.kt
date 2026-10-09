@@ -6,7 +6,6 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalAdjusters
 import kotlin.math.abs
-import kotlin.math.floor
 
 /**
  * [from] relative to [to]: "in 10 hours", "tomorrow", "6 years ago".
@@ -26,41 +25,43 @@ fun DisplayFormats.relativeTime(from: Instant, to: Instant, includeTense: Boolea
  */
 internal fun DisplayFormats.selectUnit(from: Instant, to: Instant): Pair<Long, RelativeUnit> {
     val secs = (from.toEpochMilli() - to.toEpochMilli()) / MS_PER_SECOND
-    if (abs(secs) < SECOND_THRESHOLD) return jsRound(secs) to RelativeUnit.SECOND
     val mins = secs / SECS_PER_MIN
-    if (abs(mins) < MINUTE_THRESHOLD) return jsRound(mins) to RelativeUnit.MINUTE
     val hours = secs / SECS_PER_HOUR
-    if (abs(hours) < HOUR_THRESHOLD) return jsRound(hours) to RelativeUnit.HOUR
+    return when {
+        abs(secs) < SECOND_THRESHOLD -> jsRound(secs) to RelativeUnit.SECOND
+        abs(mins) < MINUTE_THRESHOLD -> jsRound(mins) to RelativeUnit.MINUTE
+        abs(hours) < HOUR_THRESHOLD -> jsRound(hours) to RelativeUnit.HOUR
+        else -> calendarUnit(from, to, hours)
+    }
+}
 
+/** The calendar part of `selectUnit`, past the hour threshold: days, weeks, months or years apart. */
+private fun DisplayFormats.calendarUnit(from: Instant, to: Instant, hours: Double): Pair<Long, RelativeUnit> {
     val fromDate = from.atZone(zone).toLocalDate()
     val toDate = to.atZone(zone).toLocalDate()
     val days = ChronoUnit.DAYS.between(toDate, fromDate)
-    if (days == 0L) return jsRound(hours) to RelativeUnit.HOUR
-    if (abs(days) < DAY_THRESHOLD) return days to RelativeUnit.DAY
-
     val weekStart = DayOfWeek.of(firstWeekday)
     val weeks = ChronoUnit.DAYS.between(toDate.startOfWeek(weekStart), fromDate.startOfWeek(weekStart)) / DAYS_PER_WEEK
-    if (weeks == 0L) return days to RelativeUnit.DAY
-    if (abs(weeks) < WEEK_THRESHOLD) return weeks to RelativeUnit.WEEK
-
     val years = (fromDate.year - toDate.year).toLong()
     val months = years * MONTHS_PER_YEAR + fromDate.monthValue - toDate.monthValue
-    if (months == 0L) return weeks to RelativeUnit.WEEK
-    if (abs(months) < MONTH_THRESHOLD || years == 0L) return months to RelativeUnit.MONTH
-    return years to RelativeUnit.YEAR
+    return when {
+        days == 0L -> jsRound(hours) to RelativeUnit.HOUR
+        abs(days) < DAY_THRESHOLD -> days to RelativeUnit.DAY
+        weeks == 0L -> days to RelativeUnit.DAY
+        abs(weeks) < WEEK_THRESHOLD -> weeks to RelativeUnit.WEEK
+        months == 0L -> weeks to RelativeUnit.WEEK
+        abs(months) < MONTH_THRESHOLD || years == 0L -> months to RelativeUnit.MONTH
+        else -> years to RelativeUnit.YEAR
+    }
 }
 
 private fun LocalDate.startOfWeek(firstDay: DayOfWeek): LocalDate = with(TemporalAdjusters.previousOrSame(firstDay))
-
-/** JavaScript `Math.round`: halves round up, towards positive infinity. */
-private fun jsRound(value: Double): Long = floor(value + HALF).toLong()
 
 private const val MS_PER_SECOND = 1000.0
 private const val SECS_PER_MIN = 60
 private const val SECS_PER_HOUR = 3600
 private const val DAYS_PER_WEEK = 7
 private const val MONTHS_PER_YEAR = 12
-private const val HALF = 0.5
 private const val SECOND_THRESHOLD = 59
 private const val MINUTE_THRESHOLD = 59
 private const val HOUR_THRESHOLD = 22

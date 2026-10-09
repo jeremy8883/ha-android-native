@@ -22,25 +22,32 @@ fun EntityState.isUnavailableOrUnknown(): Boolean = state == STATE_UNAVAILABLE |
  * Whether [state] (default: the entity's current state) counts as "active", for example to colour it.
  * Port of `stateActive` (frontend@20260624.6 src/common/entity/state_active.ts).
  */
-fun EntityState.isActive(state: String = this.state): Boolean {
-    if (domain in TIMESTAMP_STATE_DOMAINS) return state != STATE_UNAVAILABLE
-    if (state == STATE_UNAVAILABLE || state == STATE_UNKNOWN) return false
+fun EntityState.isActive(state: String = this.state): Boolean = when {
+    domain in TIMESTAMP_STATE_DOMAINS -> state != STATE_UNAVAILABLE
+    state == STATE_UNAVAILABLE || state == STATE_UNKNOWN -> false
     // "off" is inactive for most domains; for alert it means acknowledged but still active
-    if (state == STATE_OFF && domain != "alert") return false
-
-    return when (domain) {
-        "alarm_control_panel" -> state != "disarmed"
-        "alert" -> state != "idle"
-        "cover", "valve" -> state != "closed"
-        "device_tracker", "person" -> state != "not_home"
-        "lawn_mower" -> state !in setOf("docked", "paused")
-        "lock" -> state != "locked"
-        "media_player" -> state != "standby"
-        "vacuum" -> state !in setOf("idle", "docked", "paused")
-        "plant" -> state == "problem"
-        "group" -> state in setOf("on", "home", "open", "locked", "problem")
-        "timer" -> state == "active"
-        "camera" -> state == "streaming"
-        else -> true
-    }
+    state == STATE_OFF && domain != "alert" -> false
+    else -> ACTIVE_STATES[domain]?.let { state in it } ?: INACTIVE_STATES[domain]?.let { state !in it } ?: true
 }
+
+/** The states in which an entity of these domains is inactive; any other is active. */
+private val INACTIVE_STATES = mapOf(
+    "alarm_control_panel" to setOf("disarmed"),
+    "alert" to setOf("idle"),
+    "cover" to setOf("closed"),
+    "valve" to setOf("closed"),
+    "device_tracker" to setOf("not_home"),
+    "person" to setOf("not_home"),
+    "lawn_mower" to setOf("docked", "paused"),
+    "lock" to setOf("locked"),
+    "media_player" to setOf("standby"),
+    "vacuum" to setOf("idle", "docked", "paused"),
+)
+
+/** The only states in which an entity of these domains is active. */
+private val ACTIVE_STATES = mapOf(
+    "plant" to setOf("problem"),
+    "group" to setOf("on", "home", "open", "locked", "problem"),
+    "timer" to setOf("active"),
+    "camera" to setOf("streaming"),
+)

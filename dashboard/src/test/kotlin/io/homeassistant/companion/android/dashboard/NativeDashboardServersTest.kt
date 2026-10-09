@@ -1,7 +1,7 @@
 package io.homeassistant.companion.android.dashboard
 
 import app.cash.turbine.test
-import io.homeassistant.companion.android.dashboard.data.DashboardRepository
+import io.homeassistant.companion.android.dashboard.data.ActiveServerRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -16,7 +16,7 @@ class NativeDashboardServersTest {
     @Test
     fun `Given another server activated when following the active server then it is the newly active one`() = runTest {
         var active = 1
-        val repository = mockk<DashboardRepository> {
+        val repository = mockk<ActiveServerRepository> {
             every { activeServer() } returns flowOf(1 to 2)
             coEvery { activeServerId() } answers { active }
             coEvery { activateServer(any()) } answers { active = firstArg() }

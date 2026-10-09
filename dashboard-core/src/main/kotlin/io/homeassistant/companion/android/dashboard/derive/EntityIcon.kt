@@ -16,48 +16,48 @@ import kotlinx.serialization.json.JsonObject
  *
  * @param stateValue display the icon for this state instead of the current one
  */
-fun HassSnapshot.entityIcon(entityId: String, configIcon: String? = null, stateValue: String? = null): String? {
-    configIcon?.ifEmpty { null }?.let { return it }
-    val state = states[entityId] ?: return null
-    return stateIconOrNull(state, stateValue) ?: fallbackDomainIcon(state.domain)
-}
+fun HassSnapshot.entityIcon(entityId: String, configIcon: String? = null, stateValue: String? = null): String? =
+    configIcon?.ifEmpty { null }
+        ?: states[entityId]?.let { state -> stateIconOrNull(state, stateValue) ?: fallbackDomainIcon(state.domain) }
 
 /** The icon from the registry, attributes or icon translations, or `null` when the domain fallback applies. */
-internal fun HassSnapshot.stateIconOrNull(state: EntityState, stateValue: String? = null): String? {
-    val entry = registries.entities[state.entityId]
-    entry?.icon?.ifEmpty { null }?.let { return it }
-    state.attributes.string("icon")?.ifEmpty { null }?.let { return it }
-    return translatedEntityIcon(state, stateValue)
-}
+internal fun HassSnapshot.stateIconOrNull(state: EntityState, stateValue: String? = null): String? =
+    registries.entities[state.entityId]?.icon?.ifEmpty { null }
+        ?: state.attributes.string("icon")?.ifEmpty { null }
+        ?: translatedEntityIcon(state, stateValue)
 
 /** Port of `getEntityIcon` (src/data/icons.ts), for an entity that has state. */
 private fun HassSnapshot.translatedEntityIcon(state: EntityState, stateValue: String?): String? {
-    val entry = registries.entities[state.entityId]
-    val domain = state.domain
     val value = stateValue ?: state.state
-    val platform = entry?.platform
-    val translationKey = entry?.translationKey
+    return platformIcon(state, value) ?: builtInStateIcon(state, value) ?: componentIcon(state, value)
+}
 
-    if (platform != null && translationKey != null && platform in config.components) {
-        icons.platforms.obj(platform)?.obj(domain)?.obj(translationKey)
-            ?.let { iconFromTranslations(value, it) }
-            ?.let { return it }
+/** The icon the entity's platform translates for its translation key, when the platform is loaded. */
+private fun HassSnapshot.platformIcon(state: EntityState, value: String): String? {
+    val entry = registries.entities[state.entityId]
+    val platform = entry?.platform?.takeIf { it in config.components }
+    val translationKey = entry?.translationKey
+    if (platform == null || translationKey == null) return null
+    return icons.platforms.obj(platform)?.obj(state.domain)?.obj(translationKey)?.let {
+        iconFromTranslations(value, it)
     }
-    builtInStateIcon(state, value)?.let { return it }
-    if (domain !in config.components) return null
-    val componentIcons = icons.entityComponent.obj(domain) ?: return null
+}
+
+/** The icon the entity's domain translates for its device class (or by default), when the domain is loaded. */
+private fun HassSnapshot.componentIcon(state: EntityState, value: String): String? {
+    val componentIcons = icons.entityComponent.obj(state.domain)?.takeIf { state.domain in config.components }
     val deviceClass = state.attributes.string("device_class")?.ifEmpty { null }
-    val translations = deviceClass?.let { componentIcons.obj(it) } ?: componentIcons.obj(DEFAULT_TRANSLATION)
+    val translations = deviceClass?.let { componentIcons?.obj(it) } ?: componentIcons?.obj(DEFAULT_TRANSLATION)
     return translations?.let { iconFromTranslations(value, it) }
 }
 
 /** Port of `getIconFromTranslations`: an exact state icon, else a range icon for numeric states, else the default. */
 private fun iconFromTranslations(state: String, translations: JsonObject): String? {
-    if (state.isNotEmpty()) translations.obj("state")?.string(state)?.let { return it }
+    val exact = if (state.isNotEmpty()) translations.obj("state")?.string(state) else null
     val range = translations.obj("range")
     val number = jsNumber(state)
-    if (range != null && !number.isNaN()) return iconFromRange(number, range) ?: translations.string("default")
-    return translations.string("default")
+    val ranged = if (range != null && !number.isNaN()) iconFromRange(number, range) else null
+    return exact ?: ranged ?: translations.string("default")
 }
 
 /** Port of `getIconFromRange`: the icon of the highest threshold not above [value]. */

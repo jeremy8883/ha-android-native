@@ -1,6 +1,6 @@
 package io.homeassistant.companion.android.dashboard
 
-import io.homeassistant.companion.android.dashboard.data.DashboardRepository
+import io.homeassistant.companion.android.dashboard.data.ActiveServerRepository
 import io.homeassistant.companion.android.dashboard.data.Fetched
 import io.homeassistant.companion.android.dashboard.navigation.PanelInfo
 import io.homeassistant.companion.android.dashboard.ui.isNativeDashboard
@@ -15,7 +15,7 @@ import timber.log.Timber
  * them. The panels are fetched once and again when a path's panel is unknown (a dashboard added since).
  */
 @Singleton
-class NativeDashboardPaths @Inject constructor(private val repository: DashboardRepository) {
+class NativeDashboardPaths @Inject constructor(private val repository: ActiveServerRepository) {
     private val mutex = Mutex()
     private var panels: Map<String, PanelInfo>? = null
 
@@ -26,20 +26,22 @@ class NativeDashboardPaths @Inject constructor(private val repository: Dashboard
      */
     suspend fun isNativeDashboard(path: String): Boolean {
         val query = path.substringAfter('?', "")
-        if (EDIT_PARAM.containsMatchIn(query) || MORE_INFO_PARAM.containsMatchIn(query)) return false
         val urlPath = path.substringBefore('?').removePrefix("/").substringBefore('/')
-        if (urlPath.isEmpty()) return false
-        val panel = mutex.withLock {
-            panels?.get(urlPath) ?: when (val loaded = repository.panels()) {
-                is Fetched.Success -> loaded.value.also { panels = it }[urlPath]
-                is Fetched.Failure -> {
-                    // Unknown, so the path stays in the web frontend, which can show it
-                    Timber.w("Failed to load the panels to tell whether /$urlPath is a dashboard: ${loaded.error}")
-                    null
-                }
+        val staysInWeb =
+            EDIT_PARAM.containsMatchIn(query) || MORE_INFO_PARAM.containsMatchIn(query) || urlPath.isEmpty()
+        return !staysInWeb && panel(urlPath)?.let(::isNativeDashboard) == true
+    }
+
+    /** The panel at [urlPath], loading the panels when it is unknown; `null` when there is none or they can't load. */
+    private suspend fun panel(urlPath: String): PanelInfo? = mutex.withLock {
+        panels?.get(urlPath) ?: when (val loaded = repository.panels()) {
+            is Fetched.Success -> loaded.value.also { panels = it }[urlPath]
+            is Fetched.Failure -> {
+                // Unknown, so the path stays in the web frontend, which can show it
+                Timber.w("Failed to load the panels to tell whether /$urlPath is a dashboard: ${loaded.error}")
+                null
             }
         }
-        return panel != null && isNativeDashboard(panel)
     }
 
     /** Forget the panels, for example after switching servers. */

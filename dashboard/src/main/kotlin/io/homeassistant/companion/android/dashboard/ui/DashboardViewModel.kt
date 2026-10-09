@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.ui
 
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -7,10 +8,12 @@ import io.homeassistant.companion.android.common.data.websocket.WebSocketState
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.action.Gesture
 import io.homeassistant.companion.android.dashboard.action.resolveAction
+import io.homeassistant.companion.android.dashboard.data.ActiveServerRepository
 import io.homeassistant.companion.android.dashboard.data.DashboardRepository
-import io.homeassistant.companion.android.dashboard.data.Fetched
+import io.homeassistant.companion.android.dashboard.data.LiveDataRepository
 import io.homeassistant.companion.android.dashboard.data.LoadError
 import io.homeassistant.companion.android.dashboard.data.Loadable
+import io.homeassistant.companion.android.dashboard.data.ServerActionsRepository
 import io.homeassistant.companion.android.dashboard.data.ServerInfo
 import io.homeassistant.companion.android.dashboard.data.SidebarData
 import io.homeassistant.companion.android.dashboard.data.StoredDashboardConfig
@@ -55,11 +58,13 @@ import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 import kotlin.time.toJavaInstant
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.channels.SendChannel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -84,8 +89,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import timber.log.Timber
 
 /** What the dashboard screen shows. */
 sealed interface DashboardUiState {
@@ -152,8 +155,30 @@ data class ViewTab(val title: String?, val icon: String?, val path: String)
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
-class DashboardViewModel @Inject constructor(private val repository: DashboardRepository, private val clock: Clock) :
-    ViewModel() {
+class DashboardViewModel @VisibleForTesting internal constructor(
+    private val repository: DashboardRepository,
+    live: LiveDataRepository,
+    private val activeServer: ActiveServerRepository,
+    serverActions: ServerActionsRepository,
+    clock: Clock,
+    private val dispatchers: DashboardDispatchers,
+) : ViewModel() {
+
+    @Inject
+    constructor(
+        repository: DashboardRepository,
+        live: LiveDataRepository,
+        activeServer: ActiveServerRepository,
+        serverActions: ServerActionsRepository,
+        clock: Clock,
+    ) : this(
+        repository,
+        live,
+        activeServer,
+        serverActions,
+        clock,
+        DashboardDispatchers(default = Dispatchers.Default, io = Dispatchers.IO),
+    )
 
     /** `null` is the default dashboard. */
     private val selectedDashboard = MutableStateFlow<String?>(null)
@@ -172,15 +197,15 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
 
     val selectedDashboardUrlPath: StateFlow<String?> = selectedDashboard
 
-    private val entityStates = repository.entityStates()
-        .flowOn(Dispatchers.Default)
+    private val entityStates = live.entityStates()
+        .flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), Loadable.Loading)
 
     private val serverInfo = repository.serverInfo()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), Loadable.Loading)
 
     // Reading the bundled resource touches disk, so never on the main thread
-    private val bundledLocalize = viewModelScope.async(Dispatchers.IO, start = CoroutineStart.LAZY) {
+    private val bundledLocalize = viewModelScope.async(dispatchers.io, start = CoroutineStart.LAZY) {
         // Bundled with the app, so missing only when the build is broken
         checkNotNull(JsonTranslations.bundled(BUNDLED_LANGUAGE)) { "Bundled frontend translations are missing" }
     }
@@ -220,7 +245,7 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         ) { server, (homeSettings, firstStates, entityDisplay) ->
             structureInputs(server, homeSettings, firstStates, entityDisplay)
         }
-    }.flowOn(Dispatchers.Default)
+    }.flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), Loadable.Loading)
 
     /** The navigation sidebar: the panels in the user's order, and which one is the default. */
@@ -229,16 +254,16 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
             data,
         ->
         combineLoadables(inputs, data, ::sidebarState)
-    }.flowOn(Dispatchers.Default)
+    }.flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), Loadable.Loading)
 
     // Live collections some cards show; only admins may read them, and the cards are hidden for others
     private val isAdmin = serverInfo.map { it.valueOrNull?.user?.isAdmin == true }.distinctUntilChanged()
     private val repairsIssues = isAdmin
-        .flatMapLatest { if (it) repository.repairsIssues() else flowOf(Loadable.Loading) }
+        .flatMapLatest { if (it) live.repairsIssues() else flowOf(Loadable.Loading) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), Loadable.Loading)
     private val discoveredFlows = isAdmin
-        .flatMapLatest { if (it) repository.discoveredFlows() else flowOf(Loadable.Loading) }
+        .flatMapLatest { if (it) live.discoveredFlows() else flowOf(Loadable.Loading) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), Loadable.Loading)
 
     /** The selected dashboard's stored config with the structure inputs, as one. */
@@ -260,11 +285,11 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
                 is Loadable.Ready -> loadable.value.first.toUiState(urlPath, loadable.value.second, stack)
             }
         }
-        .flowOn(Dispatchers.Default)
+        .flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), DashboardUiState.Loading)
 
     /** When the connection was lost, after a short grace so a quick reconnection doesn't show. */
-    private val offlineSince: Flow<Instant?> = repository.connectionStatus()
+    private val offlineSince: Flow<Instant?> = live.connectionStatus()
         .map { it?.state is WebSocketState.Closed }
         .distinctUntilChanged()
         .mapLatest { closed ->
@@ -306,7 +331,7 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
             if (requests.isEmpty()) {
                 flowOf(emptyMap())
             } else {
-                combine(requests.map { request -> repository.renderTemplate(request).map { request to it } }) {
+                combine(requests.map { request -> live.renderTemplate(request).map { request to it } }) {
                     it.toMap()
                 }.onStart { emit(emptyMap()) }
             }
@@ -318,28 +343,11 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
             inputs.hass.cameraSnapshotEntities(shownCards(state, withHeader = false))
         }
         .distinctUntilChanged()
-        .flatMapLatest { cameras -> if (cameras.isEmpty()) flowOf(emptyMap()) else cameraSnapshots(cameras) }
+        .flatMapLatest { cameras -> if (cameras.isEmpty()) flowOf(emptyMap()) else live.cameraSnapshots(cameras) }
         .onStart { emit(emptyMap()) }
 
-    /** The latest snapshots of [cameras], keeping a camera's last one while a new one can't be signed. */
-    private fun cameraSnapshots(cameras: Set<String>): Flow<Map<String, String>> = flow {
-        var paths = emptyMap<String, String>()
-        while (true) {
-            paths = cameras.mapNotNull { camera ->
-                when (val path = repository.cameraSnapshotPath(camera)) {
-                    is Fetched.Success -> camera to path.value
-                    is Fetched.Failure -> paths[camera]?.let { camera to it }.also {
-                        Timber.w("Failed to sign the snapshot path of $camera: ${path.error}")
-                    }
-                }
-            }.toMap()
-            emit(paths)
-            delay(CAMERA_REFRESH)
-        }
-    }
-
     /** The URL server paths (pictures, snapshots) are loaded from. */
-    val serverUrl: StateFlow<String?> = repository.serverUrl()
+    val serverUrl: StateFlow<String?> = live.serverUrl()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
 
     /** The latest snapshot for cards: structure inputs with live entity states and collections. */
@@ -358,7 +366,7 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
             templates = rendered,
             cameraImages = cameras,
         )
-    }.flowOn(Dispatchers.Default)
+    }.flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
 
     /** Load again what failed, now rather than at the next retry. */
@@ -388,6 +396,14 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
     /** One-off effects for the screen: messages, confirmations, links to open. */
     val events: Flow<DashboardEvent> = _events.receiveAsFlow()
 
+    private val actions = DashboardActions(
+        repository = serverActions,
+        events = _events,
+        language = BUNDLED_LANGUAGE,
+        localize = { hass.value?.localize ?: bundledLocalize.await() },
+        navigate = { path -> if (path.startsWith("/")) onOpenPath(path) else onNavigate(path) },
+    )
+
     /**
      * Handle [gesture] on a card element configured by [config] (see `cardActions`): resolve it against the
      * current state and run it, after asking for confirmation when the action wants it.
@@ -395,12 +411,12 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
     fun onGesture(config: JsonObject, gesture: Gesture) {
         val snapshot = hass.value ?: return
         viewModelScope.launch {
-            val resolved = withContext(Dispatchers.Default) { snapshot.resolveAction(config, gesture) } ?: return@launch
+            val resolved = withContext(dispatchers.default) { snapshot.resolveAction(config, gesture) } ?: return@launch
             val confirmation = resolved.confirmation
             if (confirmation != null) {
                 _events.send(DashboardEvent.Confirm(confirmation, resolved.action))
             } else {
-                run(resolved.action)
+                actions.run(resolved.action)
             }
         }
     }
@@ -409,7 +425,7 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
     fun onShowFullMoreInfo(entityId: String) {
         viewModelScope.launch {
             // The frontend's more-info dialog over the dashboard shown now, back to it natively once closed
-            val urlPath = selectedDashboard.value ?: loadedSidebar()?.defaultPanel ?: return@launch
+            val urlPath = selectedDashboard.value ?: sidebar.loaded(_events)?.defaultPanel ?: return@launch
             val encoded = java.net.URLEncoder.encode(entityId, Charsets.UTF_8)
             _events.send(DashboardEvent.OpenWeb("/$urlPath?$MORE_INFO_PARAM=$encoded"))
         }
@@ -421,93 +437,21 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
      */
     fun onOpenWebViaDeepLink(path: String) {
         viewModelScope.launch {
-            val serverId = repository.activeServerId() ?: return@launch
+            val serverId = activeServer.activeServerId() ?: return@launch
             val uri = "$DEEP_LINK_NAVIGATE/${path.removePrefix("/")}" +
                 (if ('?' in path) "&" else "?") + "$SERVER_ID_PARAM=$serverId"
             _events.send(DashboardEvent.OpenAppLink(uri))
         }
     }
 
-    /** Run [action] that a card control started directly, such as a tile feature. */
+    /** Run [action] that a card control started directly (such as a tile feature) or that the user confirmed. */
     fun onAction(action: CardAction) {
-        viewModelScope.launch { run(action) }
+        viewModelScope.launch { actions.run(action) }
     }
 
     /** Run [action] with the [code] the user entered for it. */
     fun onCodeEntered(action: CardAction.CallService, code: String) {
-        viewModelScope.launch { callService(action.withCode(code)) }
-    }
-
-    /** Run [action] once the user confirmed it. */
-    fun onConfirmed(action: CardAction) {
-        viewModelScope.launch { run(action) }
-    }
-
-    private suspend fun run(action: CardAction) {
-        when (action) {
-            is CardAction.Navigate -> if (action.path.startsWith(
-                    "/",
-                )
-            ) {
-                onOpenPath(action.path)
-            } else {
-                onNavigate(action.path)
-            }
-            is CardAction.CallService -> callProtectedService(action)
-            is CardAction.MoreInfo -> _events.send(DashboardEvent.MoreInfo(action.entityId))
-            is CardAction.OpenUrl -> _events.send(DashboardEvent.OpenUrl(action.url))
-            is CardAction.Failure -> _events.send(DashboardEvent.Message(action.message))
-            is CardAction.Assist -> _events.send(DashboardEvent.UnsupportedAction(ACTION_ASSIST))
-            is CardAction.FireDomEvent -> _events.send(DashboardEvent.UnsupportedAction(ACTION_FIRE_DOM_EVENT))
-        }
-    }
-
-    /** A service that may need a code: use the entity's default code, or ask the user, as upstream does. */
-    private suspend fun callProtectedService(call: CardAction.CallService) {
-        val code = call.code ?: return callService(call)
-        when (val defaultCode = repository.defaultCode(code.entityId, code.optionsDomain)) {
-            is Fetched.Failure -> showActionFailed(call, defaultCode.error)
-            // The server applies the default code itself
-            is Fetched.Success -> if (defaultCode.value != null) {
-                callService(call)
-            } else {
-                _events.send(DashboardEvent.EnterCode(call))
-            }
-        }
-    }
-
-    private suspend fun callService(call: CardAction.CallService) {
-        val error = repository.callService(call.domain, call.service, call.data, call.target) ?: return
-        Timber.w("Failed to perform the action ${call.domain}/${call.service}: $error")
-        showActionFailed(call, error)
-    }
-
-    /**
-     * Upstream's `notifyOnError` (connection-mixin.ts): a failure haptic and a 10s message, the integration's
-     * translation of the error when it has one, otherwise "Failed to perform the action light/turn_on. <why>". Nothing
-     * shows when the connection was lost to an action that restarts or stops Home Assistant.
-     */
-    private suspend fun showActionFailed(call: CardAction.CallService, error: LoadError) {
-        if (error == LoadError.NoResponse && call.willDisconnect()) return
-        val translated = (error as? LoadError.Server)?.translation?.let { translation ->
-            when (val message = repository.errorMessage(translation, BUNDLED_LANGUAGE)) {
-                is Fetched.Success -> message.value?.ifEmpty { null }
-                is Fetched.Failure -> null.also {
-                    Timber.w("Failed to load the translation of $translation: ${message.error}")
-                }
-            }
-        }
-        val text = translated ?: run {
-            val localize = hass.value?.localize ?: bundledLocalize.await()
-            val failed = localize(
-                "ui.notification_toast.action_failed",
-                mapOf("service" to "${call.domain}/${call.service}"),
-            )
-            val reason = (error as? LoadError.Server)?.message
-                ?: if (error == LoadError.NoResponse || error == LoadError.NoServer) CONNECTION_LOST else UNKNOWN_ERROR
-            "$failed $reason"
-        }
-        _events.send(DashboardEvent.ActionFailed(text))
+        viewModelScope.launch { actions.runWithCode(action, code) }
     }
 
     /**
@@ -517,7 +461,7 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
     fun onOpenPath(path: String) {
         viewModelScope.launch {
             // The panels decide what is a dashboard, so wait for them
-            val state = loadedSidebar() ?: return@launch
+            val state = sidebar.loaded(_events) ?: return@launch
             val segments = path.substringBefore('?').removePrefix("/").split('/').filter { it.isNotEmpty() }
             val urlPath = segments.firstOrNull() ?: state.defaultPanel
             val panel = state.panels[urlPath]
@@ -531,13 +475,6 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         }
     }
 
-    /** The sidebar once loaded, or `null` (with a message) when it couldn't be. */
-    private suspend fun loadedSidebar(): SidebarState? = when (val loaded = sidebar.first { it != Loadable.Loading }) {
-        is Loadable.Ready -> loaded.value
-        is Loadable.Failed -> null.also { _events.send(DashboardEvent.LoadFailed(loaded.error)) }
-        Loadable.Loading -> null
-    }
-
     /** @return whether a view was closed; the first view is implicit, so an empty stack shows it */
     fun onBack(): Boolean {
         if (viewStack.value.isEmpty()) return false
@@ -545,6 +482,17 @@ class DashboardViewModel @Inject constructor(private val repository: DashboardRe
         return true
     }
 }
+
+/** The dispatchers derivations run on: [default] for computing, [io] for reading bundled resources. */
+data class DashboardDispatchers(val default: CoroutineDispatcher, val io: CoroutineDispatcher)
+
+/** The sidebar once loaded, or `null` (with a message through [events]) when it couldn't be. */
+private suspend fun StateFlow<Loadable<SidebarState>>.loaded(events: SendChannel<DashboardEvent>): SidebarState? =
+    when (val loaded = first { it != Loadable.Loading }) {
+        is Loadable.Ready -> loaded.value
+        is Loadable.Failed -> null.also { events.send(DashboardEvent.LoadFailed(loaded.error)) }
+        Loadable.Loading -> null
+    }
 
 private data class StructureInputs(
     val hass: HassSnapshot,
@@ -657,33 +605,9 @@ private val CLOCK_TICK = 15.seconds
 /** How long the connection may be lost before the dashboard shows it, as the frontend's disconnect toast waits. */
 private val OFFLINE_GRACE = 1.seconds
 
-/** What upstream's action failure toast says when the server gave no reason (connection-mixin.ts). */
-private const val UNKNOWN_ERROR = "unknown error"
-private const val CONNECTION_LOST = "connection lost"
-
-/** How often camera snapshots are refreshed (`UPDATE_INTERVAL` of src/panels/lovelace/components/hui-image.ts). */
-private val CAMERA_REFRESH = 10.seconds
-
 /** The language of the bundled frontend strings; server translations are fetched in the same language. */
 private const val BUNDLED_LANGUAGE = "en"
 
-private const val ACTION_ASSIST = "assist"
-private const val ACTION_FIRE_DOM_EVENT = "fire-dom-event"
-
-/** Port of `serviceCallWillDisconnect` (src/data/service.ts): actions after which the connection is expected to drop. */
-private fun CardAction.CallService.willDisconnect(): Boolean =
-    (domain == "homeassistant" && service in setOf("restart", "stop")) ||
-        (
-            domain == "update" &&
-                service == "install" &&
-                data?.string("entity_id") in setOf(
-                    "update.home_assistant_core_update",
-                    "update.home_assistant_operating_system_update",
-                )
-            )
-
-private fun CardAction.CallService.withCode(code: String) =
-    copy(data = JsonObject(data.orEmpty() + ("code" to JsonPrimitive(code))), code = null)
 private const val DEEP_LINK_NAVIGATE = "homeassistant://navigate"
 private const val MORE_INFO_PARAM = "more-info-entity-id"
 private const val SERVER_ID_PARAM = "server_id"

@@ -5,6 +5,7 @@ import io.homeassistant.companion.android.dashboard.action.CodeRequest
 import io.homeassistant.companion.android.dashboard.action.ElementActions
 import io.homeassistant.companion.android.dashboard.action.cardActions
 import io.homeassistant.companion.android.dashboard.action.toggleEntity
+import io.homeassistant.companion.android.dashboard.display.StateDisplayOptions
 import io.homeassistant.companion.android.dashboard.display.formatEntityState
 import io.homeassistant.companion.android.dashboard.display.stateDisplay
 import io.homeassistant.companion.android.dashboard.entity.EntityState
@@ -105,7 +106,7 @@ private fun HassSnapshot.entityRow(config: JsonObject, now: Instant): EntityRowM
  */
 private fun HassSnapshot.rowStateText(state: EntityState, config: JsonObject, now: Instant): String =
     if (state.domain == "sensor") {
-        stateDisplay(state, JsonPrimitive("state"), now, timeFormat = config.string("time_format"))
+        stateDisplay(state, JsonPrimitive("state"), now, StateDisplayOptions(timeFormat = config.string("time_format")))
     } else {
         formatEntityState(state)
     }

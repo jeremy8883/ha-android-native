@@ -45,7 +45,7 @@ fun HassSnapshot.homeOtherDevicesView(homePanel: Boolean): JsonObject {
         put("type", "sections")
         putJsonObject("header") { put("badges_position", "bottom") }
         // Between 2 and 3 columns; the max defines the width of the header
-        put("max_columns", sections.size.coerceIn(2, 3))
+        put("max_columns", sections.size.coerceIn(2, MAX_COLUMNS))
         put("sections", JsonArray(sections))
     }
 }
@@ -112,3 +112,6 @@ private fun HassSnapshot.allOrganizedView(): JsonObject = buildJsonObject {
         }
     }
 }
+
+/** The most columns the view has. */
+private const val MAX_COLUMNS = 3

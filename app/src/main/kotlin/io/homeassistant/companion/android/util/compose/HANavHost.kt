@@ -30,6 +30,7 @@ import io.homeassistant.companion.android.onboarding.onboarding
 import io.homeassistant.companion.android.onboarding.sethomenetwork.navigation.navigateToSetHomeNetworkRoute
 import io.homeassistant.companion.android.onboarding.sethomenetwork.navigation.setHomeNetworkScreen
 import io.homeassistant.companion.android.onboarding.wearOnboarding
+import io.homeassistant.companion.android.settings.SettingsActivity
 import io.homeassistant.companion.android.settings.navigation.navigateToSettings
 import io.homeassistant.companion.android.settings.server.ServerChooserFragment
 
@@ -110,31 +111,46 @@ internal fun HANavHost(
                     wearNameToOnboard = startDestination.wearName,
                 )
             }
-            val frontendCallbacks = FrontendCallbacks(
-                onOpenExternalLink = { uri ->
-                    navController.navigateToUri(uri.toString(), onShowSnackbar)
-                },
-                onNavigateToSettings = {
-                    navController.navigateToSettings(it)
-                },
-                onSecurityLevelHelpClick = {
-                    navController.navigateToUri(URL_SECURITY_LEVEL_DOCUMENTATION, onShowSnackbar)
-                },
-                onOpenLocationSettings = {
+            // Named apart from the callbacks' own methods, which would otherwise call themselves
+            val showSnackbar = onShowSnackbar
+            val requestFullscreen = onRequestFullscreen
+            val pipReadinessChanged = onPipReadinessChanged
+            val frontendCallbacks = object : FrontendCallbacks {
+                override suspend fun onOpenExternalLink(uri: Uri) =
+                    navController.navigateToUri(uri.toString(), showSnackbar)
+
+                override fun onNavigateToSettings(deeplink: SettingsActivity.Deeplink?) =
+                    navController.navigateToSettings(deeplink)
+
+                override suspend fun onSecurityLevelHelpClick() =
+                    navController.navigateToUri(URL_SECURITY_LEVEL_DOCUMENTATION, showSnackbar)
+
+                override fun onOpenLocationSettings() {
                     activity?.let { openSystemLocationSettings(it) }
-                },
-                onConfigureHomeNetwork = { serverId ->
+                }
+
+                override fun onConfigureHomeNetwork(serverId: Int) =
                     navController.navigateToSetHomeNetworkRoute(serverId)
-                },
-                onShowSnackbar = onShowSnackbar,
-                onShowServerSwitcher = { onServerSelected -> showServerSwitcher(activity, onServerSelected) },
-                onLaunchApp = { packageName -> navController.launchAppOrStore(packageName, onShowSnackbar) },
-                onLaunchIntent = { intentUri -> navController.launchIntentUri(intentUri, onShowSnackbar) },
-                onOpenSecuritySettings = { navController.openSecuritySettings(onShowSnackbar) },
-                onUpdateWebView = { navController.updateSystemWebView(onShowSnackbar) },
-                onRequestFullscreen = onRequestFullscreen,
-                onPipReadinessChanged = onPipReadinessChanged,
-            )
+
+                override suspend fun onShowSnackbar(message: String, action: String?) = showSnackbar(message, action)
+
+                override fun onShowServerSwitcher(onServerSelected: (Int) -> Unit) =
+                    showServerSwitcher(activity, onServerSelected)
+
+                override suspend fun onLaunchApp(packageName: String) =
+                    navController.launchAppOrStore(packageName, showSnackbar)
+
+                override suspend fun onLaunchIntent(intentUri: String) =
+                    navController.launchIntentUri(intentUri, showSnackbar)
+
+                override suspend fun onOpenSecuritySettings() = navController.openSecuritySettings(showSnackbar)
+
+                override suspend fun onUpdateWebView() = navController.updateSystemWebView(showSnackbar)
+
+                override fun onRequestFullscreen(fullscreen: Boolean) = requestFullscreen(fullscreen)
+
+                override fun onPipReadinessChanged(readiness: PipReadiness?) = pipReadinessChanged(readiness)
+            }
             nativeDashboardScreen(frontendCallbacks = frontendCallbacks)
             frontendScreen(navController = navController, callbacks = frontendCallbacks)
             changelogScreen(
@@ -146,7 +162,7 @@ internal fun HANavHost(
                     navController.popBackStack<FrontendRoute>(inclusive = false)
                 },
                 onHelpClick = {
-                    navController.navigateToUri(URL_SECURITY_LEVEL_DOCUMENTATION, onShowSnackbar)
+                    navController.navigateToUri(URL_SECURITY_LEVEL_DOCUMENTATION, showSnackbar)
                 },
             )
 

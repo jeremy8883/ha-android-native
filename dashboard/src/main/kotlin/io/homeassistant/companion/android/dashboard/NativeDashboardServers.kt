@@ -1,6 +1,6 @@
 package io.homeassistant.companion.android.dashboard
 
-import io.homeassistant.companion.android.dashboard.data.DashboardRepository
+import io.homeassistant.companion.android.dashboard.data.ActiveServerRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.update
  */
 @Singleton
 class NativeDashboardServers @Inject constructor(
-    private val repository: DashboardRepository,
+    private val repository: ActiveServerRepository,
     private val paths: NativeDashboardPaths,
 ) {
     // Activating a server doesn't change the servers, so the active one is read again on each activation

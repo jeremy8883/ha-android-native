@@ -39,8 +39,7 @@ data class MarkdownModel(val title: String?, val textOnly: Boolean, val content:
  * name). Port of `HuiMarkdownCard._tryConnect` (frontend@20260624.6 src/panels/lovelace/cards/hui-markdown-card.ts).
  */
 fun HassSnapshot.markdownTemplate(card: CardConfig): TemplateRequest? {
-    if (card.type != MARKDOWN) return null
-    val content = card.json.string("content") ?: return null
+    val content = card.json.string("content")?.takeIf { card.type == MARKDOWN } ?: return null
     return TemplateRequest(
         template = content,
         entityIds = card.json["entity_id"],

@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.dashboard.action.cardActions
+import io.homeassistant.companion.android.dashboard.derive.InfoTileModel
 import io.homeassistant.companion.android.dashboard.derive.discoveredDevicesModel
 import io.homeassistant.companion.android.dashboard.derive.homeSummaryModel
 import io.homeassistant.companion.android.dashboard.derive.repairsModel
@@ -43,20 +44,41 @@ internal fun DashboardCard(
             onAction = interactions.onAction,
         )
         CARD_HEADING -> HeadingCard(card, hass, now, interactions, cardModifier)
-        CARD_AREA -> AreaCard(card, hass, cardModifier)
-        CARD_MARKDOWN -> MarkdownCard(card, hass, cardModifier)
         CARD_ENTITIES -> EntitiesCard(card, hass, now, interactions, modifier)
-        CARD_MEDIA_CONTROL -> MediaControlCard(card, hass, interactions, cardModifier)
-        CARD_EMPTY_STATE -> EmptyStateCard(card, interactions, modifier)
-        CARD_SHORTCUT -> ShortcutCard(card, hass, cardModifier)
-        CARD_PICTURE_ENTITY -> PictureEntityCard(card, hass, interactions, modifier)
-        CARD_HOME_SUMMARY -> InfoTileCard(card, hass, cardModifier) { homeSummaryModel(it) }
-        CARD_REPAIRS -> InfoTileCard(card, hass, cardModifier) { repairsModel(it) }
-        CARD_UPDATES -> InfoTileCard(card, hass, cardModifier) { updatesModel(it) }
-        CARD_DISCOVERED_DEVICES -> InfoTileCard(card, hass, cardModifier) { discoveredDevicesModel(it) }
+        else -> OtherCard(card, hass, interactions, modifier, cardModifier)
+    }
+}
+
+/** The card types that don't need the current time; [cardModifier] carries the card's own gestures. */
+@Composable
+private fun OtherCard(
+    card: CardConfig,
+    hass: State<HassSnapshot?>,
+    interactions: CardInteractions,
+    modifier: Modifier,
+    cardModifier: Modifier,
+) {
+    val infoTile = INFO_TILES[card.type]
+    when {
+        infoTile != null -> InfoTileCard(card, hass, cardModifier, infoTile)
+        card.type == CARD_AREA -> AreaCard(card, hass, cardModifier)
+        card.type == CARD_MARKDOWN -> MarkdownCard(card, hass, cardModifier)
+        card.type == CARD_MEDIA_CONTROL -> MediaControlCard(card, hass, interactions, cardModifier)
+        card.type == CARD_EMPTY_STATE -> EmptyStateCard(card, interactions, modifier)
+        card.type == CARD_SHORTCUT -> ShortcutCard(card, hass, cardModifier)
+        card.type == CARD_PICTURE_ENTITY -> PictureEntityCard(card, hass, interactions, modifier)
         else -> UnsupportedCard(card.type.orEmpty(), cardModifier)
     }
 }
+
+/** The cards shown as an info tile, with how each derives it. */
+private val INFO_TILES: Map<String, HassSnapshot.(CardConfig) -> InfoTileModel?> = mapOf(
+    CARD_HOME_SUMMARY to { homeSummaryModel(it) },
+    CARD_REPAIRS to { repairsModel(it) },
+    CARD_UPDATES to { updatesModel(it) },
+    CARD_DISCOVERED_DEVICES to { discoveredDevicesModel(it) },
+)
+
 private const val CARD_TILE = "tile"
 private const val CARD_HEADING = "heading"
 private const val CARD_AREA = "area"

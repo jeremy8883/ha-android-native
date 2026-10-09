@@ -59,8 +59,7 @@ fun cardGroups(view: ViewConfig): List<CardGroup> = when (view.viewType) {
  * visibility check in src/panels/lovelace/cards/hui-card.ts, plus cards that hide themselves ([cardHidesItself]).
  */
 fun HassSnapshot.visibleCards(group: CardGroup, context: ConditionContext): List<CardConfig>? {
-    if (group.disabled) return null
-    if (group.visibility.isNotEmpty() && !conditionsMet(group.visibility, context)) return null
+    if (group.disabled || (group.visibility.isNotEmpty() && !conditionsMet(group.visibility, context))) return null
     val cards = group.cards.filter { card ->
         (card.visibility.isEmpty() || conditionsMet(card.visibility, context.copy(entityId = card.entity))) &&
             conditionalCardShown(card, context) &&

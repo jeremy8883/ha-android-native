@@ -6,6 +6,7 @@ import io.homeassistant.companion.android.dashboard.action.elementActions
 import io.homeassistant.companion.android.dashboard.action.hasAction
 import io.homeassistant.companion.android.dashboard.condition.ConditionContext
 import io.homeassistant.companion.android.dashboard.condition.conditionsMet
+import io.homeassistant.companion.android.dashboard.display.StateDisplayOptions
 import io.homeassistant.companion.android.dashboard.display.stateDisplay
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -115,7 +116,7 @@ private fun HassSnapshot.entityBadge(badge: JsonObject, now: Instant): HeadingBa
         name = name,
         icon = if (badge.boolean("show_icon") != false) entityIcon(entityId, badge.string("icon")) else null,
         state = if (badge.boolean("show_state") != false) {
-            stateDisplay(state, badge["state_content"], now, name = name, dashUnavailable = true)
+            stateDisplay(state, badge["state_content"], now, StateDisplayOptions(name = name, dashUnavailable = true))
         } else {
             null
         },

@@ -7,21 +7,6 @@ import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
 import java.text.Normalizer
 
-/** A colour as the frontend expresses it, for the theme layer to resolve. */
-sealed interface DisplayColor {
-    /** A theme colour name such as `red` or `primary` (the frontend's `var(--red-color)`). */
-    data class Theme(val name: String) : DisplayColor
-
-    /** A CSS colour given literally, for example `#ff0000` or `rgb(255, 0, 0)`. */
-    data class Literal(val css: String) : DisplayColor
-
-    /**
-     * The colour of an entity's state: the first of these theme variables that is defined, without the leading
-     * `--` (for example `state-light-on-color`, `state-light-active-color`, `state-active-color`).
-     */
-    data class State(val variables: List<String>) : DisplayColor
-}
-
 /**
  * Port of `computeCssColor` (frontend@20260624.6 src/common/color/compute-color.ts): theme colour names become
  * [DisplayColor.Theme], anything else is a literal CSS colour.
@@ -40,22 +25,24 @@ fun cssColor(color: String): DisplayColor = if (color in THEME_COLORS ||
  */
 fun stateColor(state: EntityState, stateValue: String? = null): DisplayColor? {
     val value = stateValue ?: state.state
-    if (value == STATE_UNAVAILABLE) return DisplayColor.State(listOf("state-unavailable-color"))
-    val domain = state.domain
     val deviceClass = state.attributes.string("device_class")
-    if (domain == "sensor" && deviceClass == "battery") {
-        batteryColorVariable(value)?.let { return DisplayColor.State(listOf(it)) }
+    val battery = if (state.domain == "sensor" && deviceClass == "battery") batteryColorVariable(value) else null
+    // A group of entities of one coloured domain takes that domain's colours
+    val colorDomain = (if (state.domain == "group") groupDomain(state) else null)
+        ?.takeIf { it in STATE_COLORED_DOMAINS } ?: state.domain
+    return when {
+        value == STATE_UNAVAILABLE -> DisplayColor.State(listOf("state-unavailable-color"))
+        battery != null -> DisplayColor.State(listOf(battery))
+        colorDomain in STATE_COLORED_DOMAINS ->
+            DisplayColor.State(domainColorVariables(colorDomain, deviceClass, value, state.isActive(value)))
+        else -> null
     }
-    if (domain == "group") {
-        val groupDomain = state.attributes.array("entity_id")?.mapNotNull { it.stringOrNull?.substringBefore('.') }
-            ?.distinct()?.singleOrNull()
-        if (groupDomain != null && groupDomain in STATE_COLORED_DOMAINS) {
-            return DisplayColor.State(domainColorVariables(groupDomain, deviceClass, value, state.isActive(value)))
-        }
-    }
-    if (domain !in STATE_COLORED_DOMAINS) return null
-    return DisplayColor.State(domainColorVariables(domain, deviceClass, value, state.isActive(value)))
 }
+
+/** The one domain of a group's entities, `null` when they are of several. */
+private fun groupDomain(state: EntityState): String? = state.attributes.array("entity_id")?.mapNotNull {
+    it.stringOrNull?.substringBefore('.')
+}?.distinct()?.singleOrNull()
 
 /** Port of `domainColorProperties`. */
 private fun domainColorVariables(domain: String, deviceClass: String?, state: String, active: Boolean): List<String> {
@@ -119,8 +106,8 @@ private val STATE_COLORED_DOMAINS = setOf(
  * src/panels/lovelace/heading-badges/hui-entity-heading-badge.ts).
  */
 fun lightColor(state: EntityState): DisplayColor? {
-    if (state.domain != "light") return null
-    val rgb = state.attributes.array("rgb_color")?.map { jsNumber(it) }?.takeIf { it.size == RGB_SIZE } ?: return null
+    val rgb = state.attributes.array("rgb_color")?.map { jsNumber(it) }
+        ?.takeIf { state.domain == "light" && it.size == RGB_SIZE } ?: return null
     val hsv = rgb2hsv(rgb[0], rgb[1], rgb[2])
     if (hsv[1] < MIN_SATURATION) {
         // Very light colours (white) get a fixed value instead of more saturation
@@ -147,9 +134,9 @@ private fun hsv2rgb(hsv: DoubleArray): DoubleArray {
     val (h, s, v) = Triple(hsv[0], hsv[1], hsv[2])
     fun f(n: Int): Double {
         val k = (n + h / DEGREES_PER_SECTOR) % SECTORS
-        return v - v * s * maxOf(minOf(k, 4 - k, 1.0), 0.0)
+        return v - v * s * maxOf(minOf(k, HSV_RAMP_END - k, 1.0), 0.0)
     }
-    return doubleArrayOf(f(5), f(3), f(1))
+    return doubleArrayOf(f(HSV_RED), f(HSV_GREEN), f(HSV_BLUE))
 }
 
 /** Port of `rgb2hex`. */
@@ -158,6 +145,12 @@ private fun rgb2hex(rgb: DoubleArray): String = "#" + rgb.joinToString("") {
 }
 
 private const val RGB_SIZE = 3
+
+// The `n` of each channel and the end of the ramp in upstream's `hsv2rgb` formula
+private const val HSV_RED = 5
+private const val HSV_GREEN = 3
+private const val HSV_BLUE = 1
+private const val HSV_RAMP_END = 4
 private const val RGB_MAX = 255.0
 private const val HEX_RADIX = 16
 private const val DEGREES_PER_SECTOR = 60

@@ -56,10 +56,9 @@ internal data class FrontendRoute
     val target: FrontendTarget get() = FrontendTarget.fromRawPath(rawPath)
 
     /** The arguments navigating to this route gives, for a [FrontendViewModel] created outside its destination. */
-    fun toArguments(): Bundle = bundleOf(
-        *listOfNotNull(rawPath?.let { RAW_PATH_ARGUMENT to it }).toTypedArray(),
-        SERVER_ID_ARGUMENT to serverId,
-    )
+    fun toArguments(): Bundle = bundleOf(SERVER_ID_ARGUMENT to serverId).apply {
+        rawPath?.let { putString(RAW_PATH_ARGUMENT, it) }
+    }
 }
 
 // The property names of FrontendRoute, which the route serializer uses as argument keys
@@ -74,37 +73,49 @@ internal fun NavController.navigateToFrontend(
     navigate(FrontendRoute(target, serverId), navOptions)
 }
 
-/**
- * What the frontend asks of the app, shared by every place hosting it.
- *
- * @param onOpenExternalLink Callback to open external links (required for V2)
- * @param onNavigateToSettings Callback to navigate to settings
- * @param onSecurityLevelHelpClick Callback when user taps help on security level screen
- * @param onOpenLocationSettings Callback to open location settings
- * @param onConfigureHomeNetwork Callback to configure home network (receives serverId)
- * @param onShowSnackbar Callback to show snackbar messages
- * @param onShowServerSwitcher Callback to display the server switcher bottom sheet. Receives an
- *   `onServerSelected` callback that must be invoked with the chosen server ID.
- * @param onLaunchApp Callback to launch an installed app (or its store page) by package name
- * @param onLaunchIntent Callback to launch an Android `intent:` URI
- * @param onOpenSecuritySettings Callback to open the OS security settings (client-certificate installation)
- * @param onUpdateWebView Callback to open the current WebView provider's update page
- */
-internal class FrontendCallbacks(
-    val onOpenExternalLink: suspend (Uri) -> Unit = {},
-    val onNavigateToSettings: (SettingsActivity.Deeplink?) -> Unit,
-    val onSecurityLevelHelpClick: suspend () -> Unit,
-    val onOpenLocationSettings: () -> Unit,
-    val onConfigureHomeNetwork: (serverId: Int) -> Unit,
-    val onShowSnackbar: suspend (message: String, action: String?) -> Boolean,
-    val onShowServerSwitcher: (onServerSelected: (Int) -> Unit) -> Unit,
-    val onLaunchApp: suspend (packageName: String) -> Unit = {},
-    val onLaunchIntent: suspend (intentUri: String) -> Unit = {},
-    val onOpenSecuritySettings: suspend () -> Unit = {},
-    val onUpdateWebView: suspend () -> Unit = {},
-    val onRequestFullscreen: (Boolean) -> Unit = {},
-    val onPipReadinessChanged: (PipReadiness?) -> Unit = {},
-)
+/** What the frontend asks of the app, shared by every place hosting it. */
+internal interface FrontendCallbacks :
+    FrontendLinkCallbacks,
+    FrontendWindowCallbacks
+
+/** Where the frontend sends the user: links, settings and other apps. */
+internal interface FrontendLinkCallbacks {
+    /** Open an external link (required for V2). */
+    suspend fun onOpenExternalLink(uri: Uri) {}
+
+    fun onNavigateToSettings(deeplink: SettingsActivity.Deeplink?)
+
+    /** The user tapped help on the security level screen. */
+    suspend fun onSecurityLevelHelpClick()
+
+    fun onOpenLocationSettings()
+
+    fun onConfigureHomeNetwork(serverId: Int)
+
+    /** Launch an installed app (or its store page) by package name. */
+    suspend fun onLaunchApp(packageName: String) {}
+
+    /** Launch an Android `intent:` URI. */
+    suspend fun onLaunchIntent(intentUri: String) {}
+
+    /** Open the OS security settings (client-certificate installation). */
+    suspend fun onOpenSecuritySettings() {}
+
+    /** Open the current WebView provider's update page. */
+    suspend fun onUpdateWebView() {}
+}
+
+/** What the frontend changes in the app around it: messages, the server picker, fullscreen and picture-in-picture. */
+internal interface FrontendWindowCallbacks {
+    suspend fun onShowSnackbar(message: String, action: String?): Boolean
+
+    /** Display the server switcher bottom sheet; [onServerSelected] must be invoked with the chosen server ID. */
+    fun onShowServerSwitcher(onServerSelected: (Int) -> Unit)
+
+    fun onRequestFullscreen(fullscreen: Boolean) {}
+
+    fun onPipReadinessChanged(readiness: PipReadiness?) {}
+}
 
 /**
  * Registers the frontend/webview destination for the Home Assistant app.
@@ -151,8 +162,8 @@ internal fun FrontendContent(
     FrontendEventHandler(
         events = viewModel.events,
         onShowNativeNavigation = onShowNativeNavigation,
-        onShowSnackbar = callbacks.onShowSnackbar,
-        onNavigateToSettings = callbacks.onNavigateToSettings,
+        onShowSnackbar = callbacks::onShowSnackbar,
+        onNavigateToSettings = callbacks::onNavigateToSettings,
         onRelaunch = {
             // Clear the task so the relaunch starts from scratch and back can't return to
             // the pre-relaunch state (e.g. after removing the server or clearing credentials).
@@ -173,7 +184,7 @@ internal fun FrontendContent(
                 ),
             )
         },
-        onOpenExternalLink = callbacks.onOpenExternalLink,
+        onOpenExternalLink = callbacks::onOpenExternalLink,
         onShowServerSwitcher = onShowServerSwitcher,
         onNavigateToNfcWrite = { messageId, tagId ->
             nfcWriteLauncher.launch(WriteNfcTag.Input(tagId = tagId, messageId = messageId))
@@ -181,26 +192,26 @@ internal fun FrontendContent(
         onLaunchMatterThreadIntent = { intentSender ->
             matterThreadIntentLauncher.launch(IntentSenderRequest.Builder(intentSender).build())
         },
-        onRequestFullscreen = callbacks.onRequestFullscreen,
+        onRequestFullscreen = callbacks::onRequestFullscreen,
         onNavigateToWidgetConfig = { entityId, widgetType ->
             context.startActivity(widgetType.toConfigureIntent(context, entityId))
         },
-        onLaunchApp = callbacks.onLaunchApp,
-        onLaunchIntent = callbacks.onLaunchIntent,
-        onOpenSecuritySettings = callbacks.onOpenSecuritySettings,
-        onUpdateWebView = callbacks.onUpdateWebView,
+        onLaunchApp = callbacks::onLaunchApp,
+        onLaunchIntent = callbacks::onLaunchIntent,
+        onOpenSecuritySettings = callbacks::onOpenSecuritySettings,
+        onUpdateWebView = callbacks::onUpdateWebView,
     )
 
     FrontendScreen(
         viewModel = viewModel,
-        onOpenExternalLink = callbacks.onOpenExternalLink,
-        onBlockInsecureHelpClick = callbacks.onSecurityLevelHelpClick,
+        onOpenExternalLink = callbacks::onOpenExternalLink,
+        onBlockInsecureHelpClick = callbacks::onSecurityLevelHelpClick,
         onOpenSettings = { callbacks.onNavigateToSettings(null) },
-        onOpenLocationSettings = callbacks.onOpenLocationSettings,
-        onConfigureHomeNetwork = callbacks.onConfigureHomeNetwork,
-        onSecurityLevelHelpClick = callbacks.onSecurityLevelHelpClick,
-        onShowSnackbar = callbacks.onShowSnackbar,
-        onPipReadinessChanged = callbacks.onPipReadinessChanged,
+        onOpenLocationSettings = callbacks::onOpenLocationSettings,
+        onConfigureHomeNetwork = callbacks::onConfigureHomeNetwork,
+        onSecurityLevelHelpClick = callbacks::onSecurityLevelHelpClick,
+        onShowSnackbar = callbacks::onShowSnackbar,
+        onPipReadinessChanged = callbacks::onPipReadinessChanged,
     )
 }
 

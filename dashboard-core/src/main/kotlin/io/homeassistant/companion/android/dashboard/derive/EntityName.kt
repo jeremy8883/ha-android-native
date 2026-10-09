@@ -33,18 +33,20 @@ private val PREFIX_SUFFIXES = listOf(" ", ": ", " - ")
  * capitalised unless it already has upper case; `null` when the prefix is not there or nothing would remain.
  * Port of `stripPrefixFromEntityName` (src/common/entity/strip_prefix_from_entity_name.ts).
  */
-fun stripPrefixFromEntityName(entityName: String, prefix: String): String? {
-    val lowerName = entityName.lowercase()
-    for (suffix in PREFIX_SUFFIXES) {
+fun stripPrefixFromEntityName(entityName: String, prefix: String): String? =
+    PREFIX_SUFFIXES.firstNotNullOfOrNull { suffix ->
         val prefixWithSuffix = prefix.lowercase() + suffix
-        if (!lowerName.startsWith(prefixWithSuffix)) continue
-        val newName = entityName.substring(prefixWithSuffix.length)
-        if (newName.isEmpty()) continue
-        // Upstream checks `newName.substr(0, newName.indexOf(" "))`, which is "" when there is no space
-        val firstWord = newName.indexOf(' ').let { if (it < 0) "" else newName.substring(0, it) }
-        return if (firstWord.lowercase() != firstWord) newName else newName[0].uppercaseChar() + newName.substring(1)
+        entityName.takeIf { it.lowercase().startsWith(prefixWithSuffix) }
+            ?.substring(prefixWithSuffix.length)
+            ?.ifEmpty { null }
+            ?.let(::capitalizeFirstWord)
     }
-    return null
+
+/** [name] with its first letter capitalised, unless its first word already has upper case. */
+private fun capitalizeFirstWord(name: String): String {
+    // Upstream checks `newName.substr(0, newName.indexOf(" "))`, which is "" when there is no space
+    val firstWord = name.indexOf(' ').let { if (it < 0) "" else name.substring(0, it) }
+    return if (firstWord.lowercase() != firstWord) name else name[0].uppercaseChar() + name.substring(1)
 }
 
 /**
@@ -54,25 +56,25 @@ fun stripPrefixFromEntityName(entityName: String, prefix: String): String? {
  *
  * Port of `computeEntityNameDisplay` (frontend@20260624.6 src/common/entity/compute_entity_name_display.ts).
  */
-fun HassSnapshot.entityNameDisplay(state: EntityState, name: JsonElement?, separator: String = " "): String {
-    if (name is JsonPrimitive && name.isString) return name.content
-    if (name == null || !jsTruthy(name)) return state.stateName()
+fun HassSnapshot.entityNameDisplay(state: EntityState, name: JsonElement?, separator: String = " "): String = when {
+    name is JsonPrimitive && name.isString -> name.content
+    name == null || !jsTruthy(name) -> state.stateName()
+    else -> itemsNameDisplay(state, (name as? JsonArray)?.toList() ?: listOf(name), separator)
+}
 
-    var items = (name as? JsonArray)?.toList() ?: listOf(name)
+private fun HassSnapshot.itemsNameDisplay(state: EntityState, items: List<JsonElement>, separator: String): String {
     val types = items.map { (it as? JsonObject)?.string("type") }
-    if (types.all {
-            it == NAME_TEXT
-        }
-    ) {
+    if (types.all { it == NAME_TEXT }) {
         return items.joinToString(separator) { (it as JsonObject).string(NAME_TEXT).orEmpty() }
     }
-
-    if (entityName(state) == null && NAME_DEVICE !in types) {
-        items = items.map { item -> if ((item as? JsonObject)?.string("type") == NAME_ENTITY) DEVICE_ITEM else item }
+    // An entity named after its device shows the device name
+    val named = if (entityName(state) == null && NAME_DEVICE !in types) {
+        items.map { item -> if ((item as? JsonObject)?.string("type") == NAME_ENTITY) DEVICE_ITEM else item }
+    } else {
+        items
     }
-    val names = entityNameList(state, items)
-    if (names.size == 1) return names[0].orEmpty()
-    return names.filterNot { it.isNullOrEmpty() }.joinToString(separator)
+    val names = entityNameList(state, named)
+    return names.singleOrNull()?.orEmpty() ?: names.filterNot { it.isNullOrEmpty() }.joinToString(separator)
 }
 
 /** Port of `computeEntityNameList`: the name of each item, `null` when it has none. */
@@ -98,9 +100,10 @@ private fun HassSnapshot.entityNameList(state: EntityState, items: List<JsonElem
 fun HassSnapshot.entityName(state: EntityState): String? {
     val entry = registries.entities[state.entityId] ?: return state.stateName()
     val name = entry.name?.ifEmpty { null }
-    val device = entry.deviceId?.let { registries.devices[it] } ?: return name
-    val deviceName = device.deviceName()
+    val device = entry.deviceId?.let { registries.devices[it] }
+    val deviceName = device?.deviceName()
     return when {
+        device == null -> name
         deviceName == name -> null
         deviceName != null && name != null -> stripPrefixFromEntityName(name, deviceName) ?: name
         else -> name

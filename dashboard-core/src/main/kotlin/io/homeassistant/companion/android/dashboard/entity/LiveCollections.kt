@@ -22,10 +22,13 @@ fun activeRepairsIssues(result: JsonObject): List<JsonObject> =
  * sources are kept. Port of the handler in `HuiDiscoveredDevicesCard.hassSubscribe`
  * (src/panels/lovelace/cards/hui-discovered-devices-card.ts). `null` when [event] is not a list of messages.
  */
-fun applyConfigFlowMessages(current: List<JsonObject>?, event: JsonElement): List<JsonObject>? {
-    val messages = (event as? JsonArray)?.filterIsInstance<JsonObject>() ?: return null
-    // As upstream, no messages means no flows
-    if (messages.isEmpty()) return emptyList()
+fun applyConfigFlowMessages(current: List<JsonObject>?, event: JsonElement): List<JsonObject>? =
+    (event as? JsonArray)?.filterIsInstance<JsonObject>()?.let { messages ->
+        // As upstream, no messages means no flows
+        if (messages.isEmpty()) emptyList() else applyMessages(current, messages)
+    }
+
+private fun applyMessages(current: List<JsonObject>?, messages: List<JsonObject>): List<JsonObject> {
     var flows = current
     var fullUpdate = false
     val added = mutableListOf<JsonObject>()
@@ -40,8 +43,11 @@ fun applyConfigFlowMessages(current: List<JsonObject>?, event: JsonElement): Lis
             }
         }
     }
-    if (added.isEmpty() && !fullUpdate) return flows.orEmpty()
-    return (if (fullUpdate) emptyList() else flows.orEmpty()) + added
+    return when {
+        added.isEmpty() && !fullUpdate -> flows.orEmpty()
+        fullUpdate -> added
+        else -> flows.orEmpty() + added
+    }
 }
 
 /** Port of `DISCOVERY_SOURCES` (src/data/config_flow.ts). */

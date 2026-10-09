@@ -23,15 +23,22 @@ private fun matchesAlternative(query: String, screen: ScreenInfo): Boolean {
 }
 
 private fun matchesFeature(feature: String, screen: ScreenInfo): Boolean {
-    val (name, value) = feature.split(':', limit = 2).map { it.trim() }.takeIf { it.size == 2 } ?: return false
-    if (name == "orientation") {
-        val portrait = screen.heightDp >= screen.widthDp
-        return when (value) {
-            "portrait" -> portrait
-            "landscape" -> !portrait
-            else -> false
-        }
+    val parts = feature.split(':', limit = 2).map { it.trim() }
+    if (parts.size != 2) return false
+    val (name, value) = parts
+    return if (name == "orientation") matchesOrientation(value, screen) else matchesSize(name, value, screen)
+}
+
+private fun matchesOrientation(value: String, screen: ScreenInfo): Boolean {
+    val portrait = screen.heightDp >= screen.widthDp
+    return when (value) {
+        "portrait" -> portrait
+        "landscape" -> !portrait
+        else -> false
     }
+}
+
+private fun matchesSize(name: String, value: String, screen: ScreenInfo): Boolean {
     val px = value.removeSuffix("px").trim().toDoubleOrNull() ?: return false
     return when (name) {
         "min-width" -> screen.widthDp >= px

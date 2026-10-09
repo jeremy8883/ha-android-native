@@ -34,14 +34,6 @@ fun HassSnapshot.commonControlsSection(config: JsonObject, predicted: List<Strin
 
     val limit = config.number("limit")?.toInt() ?: DEFAULT_LIMIT
     val included = config.stringList("include_entities").filter { it in states }
-
-    // Pinned entities already fill the section
-    if (included.size >= limit) return gridSection(cards + included.take(limit).map(::commonControlTile))
-
-    if ("usage_prediction" !in this.config.components) {
-        return disabledMessage(cards, "ui.panel.lovelace.strategy.common_controls.not_loaded", config)
-    }
-
     val excluded = config.stringList("exclude_entities")
     val predictedEntities = predicted.orEmpty().filter { entityId ->
         entityId in states &&
@@ -50,9 +42,14 @@ fun HassSnapshot.commonControlsSection(config: JsonObject, predicted: List<Strin
             entityId !in included
     }
     val entities = (included + predictedEntities).take(limit)
-    if (entities.isEmpty()) return disabledMessage(cards, "ui.panel.lovelace.strategy.common_controls.no_data", config)
-
-    return gridSection(cards + entities.map(::commonControlTile))
+    return when {
+        // Pinned entities already fill the section
+        included.size >= limit -> gridSection(cards + included.take(limit).map(::commonControlTile))
+        "usage_prediction" !in this.config.components ->
+            disabledMessage(cards, "ui.panel.lovelace.strategy.common_controls.not_loaded", config)
+        entities.isEmpty() -> disabledMessage(cards, "ui.panel.lovelace.strategy.common_controls.no_data", config)
+        else -> gridSection(cards + entities.map(::commonControlTile))
+    }
 }
 
 /** Port of `toTileCard`. */

@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard.strategy.home
 
 import io.homeassistant.companion.android.dashboard.derive.deviceName
+import io.homeassistant.companion.android.dashboard.entity.AreaEntry
 import io.homeassistant.companion.android.dashboard.entity.ENTITY_CATEGORY_NONE
 import io.homeassistant.companion.android.dashboard.entity.EntityFilter
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -10,7 +11,6 @@ import io.homeassistant.companion.android.dashboard.entity.findEntities
 import io.homeassistant.companion.android.dashboard.strategy.areaTileCard
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonObjectBuilder
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.add
 import kotlinx.serialization.json.addJsonObject
@@ -33,108 +33,118 @@ import kotlinx.serialization.json.putJsonObject
 fun HassSnapshot.homeAreaView(areaId: String?, homePanel: Boolean): JsonObject {
     requireNotNull(areaId) { "Area not provided" }
     val area = requireNotNull(registries.areas[areaId]) { "Unknown area" }
-
-    val badges = buildJsonArray {
-        area.temperatureEntityId?.let {
-            addJsonObject {
-                put("entity", it)
-                put("type", "entity")
-                put("color", "red")
-            }
-        }
-        area.humidityEntityId?.let {
-            addJsonObject {
-                put("entity", it)
-                put("type", "entity")
-                put("color", "indigo")
-            }
-        }
-    }
     val tile = { entityId: String -> areaTileCard(entityId, area.name, includeFeature = true) }
-
     val areaEntities = filterEntities(states.keys.toList(), EntityFilter(areas = setOf(areaId)))
     val bySummary = HomeSummary.entries.associateWith { findEntities(areaEntities, it.filters) }
+    val sections = summarySections(bySummary, areaId, tile) + entitySections(areaEntities, bySummary, tile)
+    if (sections.isEmpty()) return emptyAreaView(area.icon, homePanel)
+    // Take the full width with a single section to avoid a narrow header on desktop
+    val shown = sections.singleOrNull()?.let { listOf(JsonObject(it + ("column_span" to JsonPrimitive(2)))) }
+        ?: sections
+    return buildJsonObject {
+        put("type", "sections")
+        putJsonObject("header") { put("badges_position", "bottom") }
+        // Between 2 and 3 columns; the max defines the width of the header
+        put("max_columns", shown.size.coerceIn(2, MAX_COLUMNS))
+        put("sections", JsonArray(shown))
+        put("badges", areaBadges(area))
+    }
+}
 
-    val sections = mutableListOf<JsonObject>()
+/** The area's temperature and humidity, as badges. */
+private fun areaBadges(area: AreaEntry) = buildJsonArray {
+    area.temperatureEntityId?.let {
+        addJsonObject {
+            put("entity", it)
+            put("type", "entity")
+            put("color", "red")
+        }
+    }
+    area.humidityEntityId?.let {
+        addJsonObject {
+            put("entity", it)
+            put("type", "entity")
+            put("color", "indigo")
+        }
+    }
+}
+
+/** A section for each summary (lights, climate, security, media) the area has entities for. */
+private fun HassSnapshot.summarySections(
+    bySummary: Map<HomeSummary, List<String>>,
+    areaId: String,
+    tile: (String) -> JsonObject,
+): List<JsonObject> = listOfNotNull(
     bySummary.getValue(HomeSummary.LIGHT).takeIf { it.isNotEmpty() }?.let { lights ->
-        sections += gridSection(listOf(lightsHeading(lights, areaId)) + lights.map(tile))
-    }
+        gridSection(listOf(lightsHeading(lights, areaId)) + lights.map(tile))
+    },
     bySummary.getValue(HomeSummary.CLIMATE).takeIf { it.isNotEmpty() }?.let { climate ->
-        sections += gridSection(listOf(summaryHeading(HomeSummary.CLIMATE, panelPath = "climate")) + climate.map(tile))
-    }
+        gridSection(listOf(summaryHeading(HomeSummary.CLIMATE, panelPath = "climate")) + climate.map(tile))
+    },
     bySummary.getValue(HomeSummary.SECURITY).takeIf { it.isNotEmpty() }?.let { security ->
-        sections +=
-            gridSection(listOf(summaryHeading(HomeSummary.SECURITY, panelPath = "security")) + security.map(tile))
-    }
+        gridSection(listOf(summaryHeading(HomeSummary.SECURITY, panelPath = "security")) + security.map(tile))
+    },
     bySummary.getValue(HomeSummary.MEDIA_PLAYERS).takeIf { it.isNotEmpty() }?.let { media ->
         val heading = heading(
             HomeSummary.MEDIA_PLAYERS.label(localize),
             HomeSummary.MEDIA_PLAYERS.icon,
             navigate("media-players?historyBack=1"),
         )
-        sections += gridSection(listOf(heading) + media.map(tile))
-    }
+        gridSection(listOf(heading) + media.map(tile))
+    },
+)
 
+/** Scenes, the entities of no summary by device, then automations. */
+private fun HassSnapshot.entitySections(
+    areaEntities: List<String>,
+    bySummary: Map<HomeSummary, List<String>>,
+    tile: (String) -> JsonObject,
+): List<JsonObject> {
     val summaryEntities = bySummary.filterKeys { it != HomeSummary.MAINTENANCE }.values.flatten().toSet()
-
-    val scenes =
-        filterEntities(
-            areaEntities,
-            EntityFilter(domains = setOf("scene"), entityCategories = setOf(ENTITY_CATEGORY_NONE)),
-        )
-    if (scenes.isNotEmpty()) {
-        val heading = heading(
-            localize("ui.panel.lovelace.strategy.home.scenes"),
-            "mdi:palette",
-            navigate("/config/scene/dashboard").takeIf { user?.isAdmin == true },
-        )
-        sections += gridSection(listOf(heading) + scenes.map(tile))
-    }
-
-    val automations =
-        filterEntities(
-            areaEntities,
-            EntityFilter(domains = setOf("automation"), entityCategories = setOf(ENTITY_CATEGORY_NONE)),
-        )
+    val scenes = filterEntities(
+        areaEntities,
+        EntityFilter(domains = setOf("scene"), entityCategories = setOf(ENTITY_CATEGORY_NONE)),
+    )
+    val automations = filterEntities(
+        areaEntities,
+        EntityFilter(domains = setOf("automation"), entityCategories = setOf(ENTITY_CATEGORY_NONE)),
+    )
     val otherEntities = areaEntities.filter { it !in summaryEntities && it !in scenes && it !in automations }
     val deviceSections = deviceSections(otherEntities, tile)
-    if (deviceSections.isNotEmpty()) {
-        sections += buildJsonObject {
-            put("type", "grid")
-            put("column_span", 3)
-            putJsonArray("cards") {
-                addJsonObject {
-                    put("type", "heading")
-                    put("heading_style", "subtitle")
-                    put("heading", "")
-                }
-            }
+    val adminLink = { path: String -> navigate(path).takeIf { user?.isAdmin == true } }
+    return listOfNotNull(
+        scenes.takeIf { it.isNotEmpty() }?.let {
+            val heading = heading(
+                localize("ui.panel.lovelace.strategy.home.scenes"),
+                "mdi:palette",
+                adminLink("/config/scene/dashboard"),
+            )
+            gridSection(listOf(heading) + it.map(tile))
+        },
+        DEVICES_DIVIDER.takeIf { deviceSections.isNotEmpty() },
+    ) + deviceSections + listOfNotNull(
+        // Automations come last
+        automations.takeIf { it.isNotEmpty() }?.let {
+            val heading = heading(
+                localize("ui.panel.lovelace.strategy.home.automations"),
+                "mdi:robot",
+                adminLink("/config/automation/dashboard"),
+            )
+            gridSection(listOf(heading) + it.map(tile))
+        },
+    )
+}
+
+/** A full-width empty subtitle heading before the device sections. */
+private val DEVICES_DIVIDER = buildJsonObject {
+    put("type", "grid")
+    put("column_span", MAX_COLUMNS)
+    putJsonArray("cards") {
+        addJsonObject {
+            put("type", "heading")
+            put("heading_style", "subtitle")
+            put("heading", "")
         }
-        sections += deviceSections
-    }
-
-    // Automations come last
-    if (automations.isNotEmpty()) {
-        val heading = heading(
-            localize("ui.panel.lovelace.strategy.home.automations"),
-            "mdi:robot",
-            navigate("/config/automation/dashboard").takeIf { user?.isAdmin == true },
-        )
-        sections += gridSection(listOf(heading) + automations.map(tile))
-    }
-
-    if (sections.isEmpty()) return emptyAreaView(area.icon, homePanel)
-
-    // Take the full width with a single section to avoid a narrow header on desktop
-    if (sections.size == 1) sections[0] = JsonObject(sections[0] + ("column_span" to JsonPrimitive(2)))
-
-    return buildJsonObject {
-        put("type", "sections")
-        putJsonObject("header") { put("badges_position", "bottom") }
-        // Between 2 and 3 columns; the max defines the width of the header
-        put("max_columns", sections.size.coerceIn(2, 3))
-        put("sections", JsonArray(sections))
-        put("badges", badges)
     }
 }
 
@@ -265,25 +275,7 @@ private fun HassSnapshot.emptyAreaView(areaIcon: String?, homePanel: Boolean): J
     }
 }
 
-internal fun gridSection(cards: List<JsonObject>): JsonObject = buildJsonObject {
-    put("type", "grid")
-    put("cards", JsonArray(cards))
-}
-
-internal fun heading(text: String, icon: String, tapAction: JsonObject?): JsonObject = buildJsonObject {
-    put("type", "heading")
-    put("heading", text)
-    put("icon", icon)
-    tapAction?.let { putTapAction(it) }
-}
-
-internal fun navigate(path: String): JsonObject = buildJsonObject {
-    put("action", "navigate")
-    put("navigation_path", path)
-}
-
-internal fun JsonObjectBuilder.putTapAction(action: JsonObject) {
-    put("tap_action", action)
-}
-
 private const val UNASSIGNED_DEVICE = "unassigned"
+
+/** The most columns an area view has (and the span of a full-width section). */
+private const val MAX_COLUMNS = 3

@@ -162,6 +162,12 @@ Update it in the same commit as the work it describes.
 
 ## Handover notes
 
+### 2026-10-09: detekt clean (Opus)
+- `detektMain` passes for `:dashboard-core`, `:dashboard` and `:app` (was 136 findings), with no suppressions or config changes; commit gate is now ktlint + detekt + tests.
+- `:dashboard` data is split by concern: `DashboardRepository` (configs, registries, server info, translations), `LiveDataRepository` (states, live collections, templates, cameras, connection), `ServerActionsRepository` (service calls), `ActiveServerRepository` (active server, panels), sharing `ServerSessions` (view-model scoped, carries the user's retries). `DashboardActions` runs card actions for the view model.
+- `FrontendCallbacks` is an interface (`FrontendLinkCallbacks` + `FrontendWindowCallbacks`), implemented in `HANavHost`; `NativeDashboardShell` keeps its state in `ShellState`.
+- Core files were split by topic (formatting, tile features, home strategy parts); behaviour unchanged (golden tests).
+
 ### 2026-10-09: failures are not empty (Opus)
 - The "all rooms empty" bug: after the app was in the background for more than 5s, the dashboard's flows restarted and fetched the registries again, often before the connection was back; the failed requests became empty lists. Data now goes through `Loadable` and `KeptData`, and keeps its last value per server (`LoadedData`).
 - `DashboardRepository` returns `Flow<Loadable<T>>` for every piece of data and `Fetched<T>` for one-off requests; `dashboards()` (unused) is gone. `DashboardViewModel.status` carries refreshing, offline and refresh errors for the screen; `sidebar` is a `Loadable` and the drawer shows its loading and failure.

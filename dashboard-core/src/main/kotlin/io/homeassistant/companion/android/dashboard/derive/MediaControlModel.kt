@@ -40,8 +40,8 @@ data class MediaControl(val label: String, val icon: String, val action: CardAct
  * The progress bar and browse-media button are not ported yet.
  */
 fun HassSnapshot.mediaControlModel(card: CardConfig): MediaControlModel? {
-    val entityId = card.entity ?: return null
-    val state = states[entityId] ?: return null
+    val state = card.entity?.let(states::get) ?: return null
+    val entityId = state.entityId
     val unavailable = state.state == STATE_UNAVAILABLE || state.state == STATE_UNKNOWN
     val title = cleanupMediaTitle(state.attributes.string("media_title"))
     val description = mediaDescription(state)
@@ -72,37 +72,50 @@ fun HassSnapshot.mediaControlModel(card: CardConfig): MediaControlModel? {
 
 /** Port of `computeMediaControls` without the extended (shuffle and repeat) controls: icon and service pairs. */
 private fun mediaControls(state: EntityState): List<Pair<String, String>> {
-    if (state.state == STATE_UNAVAILABLE) return emptyList()
     val assumed = (state.attributes["assumed_state"] as? JsonPrimitive)?.content == "true"
+    return when {
+        state.state == STATE_UNAVAILABLE -> emptyList()
+        !state.isActive() && !assumed ->
+            listOfNotNull(("mdi:power-standby" to "turn_on").takeIf { state.supportsFeature(TURN_ON) })
+        else -> activeMediaControls(state, assumed)
+    }
+}
+
+private fun activeMediaControls(state: EntityState, assumed: Boolean): List<Pair<String, String>> {
     fun supports(feature: Int) = state.supportsFeature(feature)
-    if (!state.isActive() && !assumed) {
-        return if (supports(TURN_ON)) listOf("mdi:power-standby" to "turn_on") else emptyList()
-    }
+    val playingOrPaused = state.state == "playing" || state.state == "paused" || assumed
+    return listOfNotNull(
+        ("mdi:power-on" to "turn_on").takeIf { assumed && supports(TURN_ON) },
+        ((if (assumed) "mdi:power-off" else "mdi:power-standby") to "turn_off").takeIf { supports(TURN_OFF) },
+        ("mdi:skip-previous" to "media_previous_track").takeIf { playingOrPaused && supports(PREVIOUS_TRACK) },
+        if (assumed) null else playPauseControl(state),
+        ("mdi:play" to "media_play").takeIf { assumed && supports(PLAY) },
+        ("mdi:pause" to "media_pause").takeIf { assumed && supports(PAUSE) },
+        ("mdi:stop" to "media_stop").takeIf { assumed && supports(STOP) },
+        ("mdi:skip-next" to "media_next_track").takeIf { playingOrPaused && supports(NEXT_TRACK) },
+    )
+}
+
+/** The play/pause button of a player whose state is known (not assumed), when it has one. */
+private fun playPauseControl(state: EntityState): Pair<String, String>? {
     val value = state.state
-    val playingOrPaused = value == "playing" || value == "paused" || assumed
-    val buttons = mutableListOf<Pair<String, String>>()
-    if (assumed && supports(TURN_ON)) buttons += "mdi:power-on" to "turn_on"
-    if (supports(TURN_OFF)) buttons += (if (assumed) "mdi:power-off" else "mdi:power-standby") to "turn_off"
-    if (playingOrPaused && supports(PREVIOUS_TRACK)) buttons += "mdi:skip-previous" to "media_previous_track"
-    val canPlayPause = !assumed &&
-        (
-            (value == "playing" && (supports(PAUSE) || supports(STOP))) ||
-                ((value == "paused" || value == "idle") && supports(PLAY)) ||
-                (value == "on" && (supports(PLAY) || supports(PAUSE)))
-            )
-    if (canPlayPause) {
-        buttons += when {
-            value == "on" -> "mdi:play-pause" to "media_play"
-            value != "playing" -> "mdi:play" to "media_play"
-            supports(PAUSE) -> "mdi:pause" to "media_pause"
-            else -> "mdi:stop" to "media_stop"
-        }
+    return when {
+        !canPlayPause(state) -> null
+        value == "on" -> "mdi:play-pause" to "media_play"
+        value != "playing" -> "mdi:play" to "media_play"
+        state.supportsFeature(PAUSE) -> "mdi:pause" to "media_pause"
+        else -> "mdi:stop" to "media_stop"
     }
-    if (assumed && supports(PLAY)) buttons += "mdi:play" to "media_play"
-    if (assumed && supports(PAUSE)) buttons += "mdi:pause" to "media_pause"
-    if (assumed && supports(STOP)) buttons += "mdi:stop" to "media_stop"
-    if (playingOrPaused && supports(NEXT_TRACK)) buttons += "mdi:skip-next" to "media_next_track"
-    return buttons
+}
+
+private fun canPlayPause(state: EntityState): Boolean {
+    fun supports(feature: Int) = state.supportsFeature(feature)
+    return when (state.state) {
+        "playing" -> supports(PAUSE) || supports(STOP)
+        "paused", "idle" -> supports(PLAY)
+        "on" -> supports(PLAY) || supports(PAUSE)
+        else -> false
+    }
 }
 
 /** Port of `computeMediaDescription`. */

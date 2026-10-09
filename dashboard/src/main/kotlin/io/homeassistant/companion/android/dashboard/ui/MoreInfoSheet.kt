@@ -79,7 +79,6 @@ internal fun MoreInfoSheet(
 
 @Composable
 private fun MoreInfoContent(model: MoreInfoModel, interactions: CardInteractions, onShowFull: () -> Unit) {
-    val colors = LocalHAColorScheme.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -88,47 +87,8 @@ private fun MoreInfoContent(model: MoreInfoModel, interactions: CardInteractions
             .navigationBarsPadding(),
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            DashboardIcon(
-                name = model.icon,
-                tint = if (model.active) colors.colorFillPrimaryLoudResting else colors.colorTextSecondary,
-                modifier = Modifier.size(HASize.X3L),
-            )
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    model.name,
-                    style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start),
-                    color = colors.colorTextPrimary,
-                )
-                model.context?.let { Text(it, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start)) }
-            }
-            model.toggle?.let { toggle ->
-                EntityToggle(
-                    checked = model.active,
-                    updatedAt = model.updatedAt,
-                    onToggle = { interactions.onAction(toggle) },
-                )
-            }
-        }
-        Column {
-            Text(
-                model.state,
-                style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start),
-                color = colors.colorTextPrimary,
-            )
-            Text(
-                stringResource(
-                    R.string.native_dashboard_more_info_changed,
-                    model.changed.replaceFirstChar {
-                        it.lowercaseChar()
-                    },
-                ),
-                style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
-            )
-        }
+        MoreInfoHeader(model, interactions)
+        MoreInfoState(model)
         model.controls.forEach { TileFeatureControl(it, available = true, onAction = interactions.onAction) }
         model.media?.let { media ->
             Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
@@ -137,32 +97,79 @@ private fun MoreInfoContent(model: MoreInfoModel, interactions: CardInteractions
                 }
             }
         }
-        if (model.attributes.isNotEmpty()) {
-            Text(
-                stringResource(R.string.native_dashboard_more_info_attributes),
-                style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
-                color = colors.colorTextPrimary,
-            )
-            model.attributes.forEach { (name, value) ->
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text(
-                        name,
-                        style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
-                        modifier = Modifier.weight(1f),
-                    )
-                    Text(
-                        value,
-                        style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.End),
-                        color = colors.colorTextPrimary,
-                    )
-                }
-            }
-        }
+        if (model.attributes.isNotEmpty()) MoreInfoAttributes(model.attributes)
         HAPlainButton(
             stringResource(R.string.native_dashboard_more_info_full),
             onShowFull,
             modifier = Modifier.align(Alignment.End),
         )
+    }
+}
+
+/** The entity's icon, name and context, with its switch when it turns on and off. */
+@Composable
+private fun MoreInfoHeader(model: MoreInfoModel, interactions: CardInteractions) {
+    val colors = LocalHAColorScheme.current
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        DashboardIcon(
+            name = model.icon,
+            tint = if (model.active) colors.colorFillPrimaryLoudResting else colors.colorTextSecondary,
+            modifier = Modifier.size(HASize.X3L),
+        )
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                model.name,
+                style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start),
+                color = colors.colorTextPrimary,
+            )
+            model.context?.let { Text(it, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start)) }
+        }
+        model.toggle?.let { toggle ->
+            EntityToggle(checked = model.active, updatedAt = model.updatedAt, onToggle = {
+                interactions.onAction(toggle)
+            })
+        }
+    }
+}
+
+/** The state, and when it last changed. */
+@Composable
+private fun MoreInfoState(model: MoreInfoModel) {
+    Column {
+        Text(
+            model.state,
+            style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start),
+            color = LocalHAColorScheme.current.colorTextPrimary,
+        )
+        Text(
+            stringResource(
+                R.string.native_dashboard_more_info_changed,
+                model.changed.replaceFirstChar {
+                    it.lowercaseChar()
+                },
+            ),
+            style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+        )
+    }
+}
+
+/** The displayable attributes, as name and formatted value. */
+@Composable
+private fun MoreInfoAttributes(attributes: List<Pair<String, String>>) {
+    val colors = LocalHAColorScheme.current
+    Text(
+        stringResource(R.string.native_dashboard_more_info_attributes),
+        style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+        color = colors.colorTextPrimary,
+    )
+    attributes.forEach { (name, value) ->
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(name, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start), modifier = Modifier.weight(1f))
+            Text(value, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.End), color = colors.colorTextPrimary)
+        }
     }
 }
 

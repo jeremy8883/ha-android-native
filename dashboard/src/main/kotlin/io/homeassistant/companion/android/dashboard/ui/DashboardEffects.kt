@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard.ui
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -20,6 +21,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.res.stringResource
 import io.homeassistant.companion.android.common.R as commonR
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
@@ -51,68 +53,21 @@ internal fun DashboardEffects(
     val uriHandler = LocalUriHandler.current
     var confirm by remember { mutableStateOf<DashboardEvent.Confirm?>(null) }
     var codeFor by remember { mutableStateOf<CardAction.CallService?>(null) }
-    // The events are collected once, so they reach the latest callbacks through these
-    val currentOnMoreInfo by rememberUpdatedState(onMoreInfo)
-    val currentOnOpenWeb by rememberUpdatedState(onOpenWeb)
-    val currentOnShowDashboard by rememberUpdatedState(onShowDashboard)
+    // The events are collected once, so they reach the latest callbacks through this
+    val navigation by rememberUpdatedState(NavigationCallbacks(onMoreInfo, onOpenWeb, onShowDashboard))
 
     LaunchedEffect(events) {
         events.collect { event ->
-            val message = when (event) {
-                is DashboardEvent.Message -> event.text
-                is DashboardEvent.ActionFailed -> {
-                    performFailureHaptic(view)
-                    // Upstream shows it for 10s, a long snackbar's duration
-                    launch { snackbar.showSnackbar(event.text, duration = SnackbarDuration.Long) }
-                    null
-                }
-                is DashboardEvent.MoreInfo -> {
-                    currentOnMoreInfo(event.entityId)
-                    null
-                }
-                is DashboardEvent.OpenAppLink -> {
-                    // The app's own link handler, so the link never leaves the app
-                    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(event.uri)).setPackage(context.packageName)
-                    try {
-                        context.startActivity(intent)
-                    } catch (e: ActivityNotFoundException) {
-                        Timber.w(e, "No activity handles the app link")
+            when (event) {
+                is DashboardEvent.Confirm -> confirm = event
+                is DashboardEvent.EnterCode -> codeFor = event.action
+                else -> if (!navigate(event, context, uriHandler, navigation)) {
+                    // Don't hold up later events while a snackbar is shown
+                    messageFor(event, context, view)?.let { (text, duration) ->
+                        launch { snackbar.showSnackbar(text, duration = duration) }
                     }
-                    null
-                }
-                is DashboardEvent.OpenWeb -> {
-                    currentOnOpenWeb(event.path)
-                    null
-                }
-                DashboardEvent.ShowDashboard -> {
-                    currentOnShowDashboard()
-                    null
-                }
-                is DashboardEvent.LoadFailed ->
-                    context.getString(R.string.native_dashboard_load_failed, context.loadErrorText(event.error))
-                is DashboardEvent.UnsupportedAction ->
-                    context.getString(R.string.native_dashboard_action_unsupported, event.type)
-                is DashboardEvent.EnterCode -> {
-                    codeFor = event.action
-                    null
-                }
-                is DashboardEvent.Confirm -> {
-                    confirm = event
-                    null
-                }
-                is DashboardEvent.OpenUrl -> {
-                    try {
-                        uriHandler.openUri(event.url)
-                    } catch (e: IllegalArgumentException) {
-                        Timber.w(e, "Cannot open the URL of a card action")
-                    } catch (e: ActivityNotFoundException) {
-                        Timber.w(e, "No app opens the URL of a card action")
-                    }
-                    null
                 }
             }
-            // Don't hold up later events while a snackbar is shown
-            if (message != null) launch { snackbar.showSnackbar(message) }
         }
     }
 
@@ -154,3 +109,66 @@ private fun performFailureHaptic(view: View) {
         view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
     }
 }
+
+/** Where navigation events lead. */
+private data class NavigationCallbacks(
+    val onMoreInfo: (String) -> Unit,
+    val onOpenWeb: (String) -> Unit,
+    val onShowDashboard: () -> Unit,
+)
+
+/** Follow [event] when it navigates somewhere. @return whether it did */
+private fun navigate(
+    event: DashboardEvent,
+    context: Context,
+    uriHandler: UriHandler,
+    callbacks: NavigationCallbacks,
+): Boolean {
+    when (event) {
+        is DashboardEvent.MoreInfo -> callbacks.onMoreInfo(event.entityId)
+        is DashboardEvent.OpenWeb -> callbacks.onOpenWeb(event.path)
+        DashboardEvent.ShowDashboard -> callbacks.onShowDashboard()
+        is DashboardEvent.OpenAppLink -> openAppLink(context, event.uri)
+        is DashboardEvent.OpenUrl -> openUrl(uriHandler, event.url)
+        else -> return false
+    }
+    return true
+}
+
+/** Open [uri] with the app's own link handler, so the link never leaves the app. */
+private fun openAppLink(context: Context, uri: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri)).setPackage(context.packageName)
+    try {
+        context.startActivity(intent)
+    } catch (e: ActivityNotFoundException) {
+        Timber.w(e, "No activity handles the app link")
+    }
+}
+
+private fun openUrl(uriHandler: UriHandler, url: String) {
+    try {
+        uriHandler.openUri(url)
+    } catch (e: IllegalArgumentException) {
+        Timber.w(e, "Cannot open the URL of a card action")
+    } catch (e: ActivityNotFoundException) {
+        Timber.w(e, "No app opens the URL of a card action")
+    }
+}
+
+/** The message [event] shows, and for how long; `null` when it isn't a message. A failed action is felt too. */
+private fun messageFor(event: DashboardEvent, context: Context, view: View): Pair<String, SnackbarDuration>? =
+    when (event) {
+        is DashboardEvent.Message -> event.text to SnackbarDuration.Short
+        is DashboardEvent.ActionFailed -> {
+            performFailureHaptic(view)
+            // Upstream shows it for 10s, a long snackbar's duration
+            event.text to SnackbarDuration.Long
+        }
+        is DashboardEvent.LoadFailed -> context.getString(
+            R.string.native_dashboard_load_failed,
+            context.loadErrorText(event.error),
+        ) to SnackbarDuration.Short
+        is DashboardEvent.UnsupportedAction ->
+            context.getString(R.string.native_dashboard_action_unsupported, event.type) to SnackbarDuration.Short
+        else -> null
+    }

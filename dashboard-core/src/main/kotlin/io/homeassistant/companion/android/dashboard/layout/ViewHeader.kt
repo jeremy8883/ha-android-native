@@ -11,7 +11,9 @@ import io.homeassistant.companion.android.dashboard.derive.entityNameDisplay
 import io.homeassistant.companion.android.dashboard.derive.isActive
 import io.homeassistant.companion.android.dashboard.derive.lightColor
 import io.homeassistant.companion.android.dashboard.derive.stateColor
+import io.homeassistant.companion.android.dashboard.display.StateDisplayOptions
 import io.homeassistant.companion.android.dashboard.display.stateDisplay
+import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.ViewConfig
@@ -95,7 +97,7 @@ private fun HassSnapshot.viewBadge(badge: JsonObject, now: Instant): ViewBadgeMo
     val entityId = badge.string("entity").orEmpty()
     // `tap_action` defaults to more-info, like the tile card
     val actions = cardActions(CardConfig(JsonObject(badge + ("type" to JsonPrimitive("tile"))))).card
-    val state = states[entityId] ?: return ViewBadgeModel(
+    return states[entityId]?.let { entityBadge(badge, it, actions, now) } ?: ViewBadgeModel(
         entityId,
         "mdi:alert-circle",
         null,
@@ -105,17 +107,29 @@ private fun HassSnapshot.viewBadge(badge: JsonObject, now: Instant): ViewBadgeMo
         true,
         actions,
     )
+}
+
+private fun HassSnapshot.entityBadge(
+    badge: JsonObject,
+    state: EntityState,
+    actions: ElementActions,
+    now: Instant,
+): ViewBadgeModel {
     val legacyType = badge.string("display_type")
     val showName = badge.boolean("show_name") ?: (legacyType == "complete")
     val showState = badge.boolean("show_state") ?: (legacyType != "minimal")
     val showIcon = badge.boolean("show_icon") ?: true
     val name = entityNameDisplay(state, badge["name"])
-    val stateText =
-        stateDisplay(state, badge["state_content"], now, name = name, timeFormat = badge.string("time_format"))
+    val stateText = stateDisplay(
+        state,
+        badge["state_content"],
+        now,
+        StateDisplayOptions(name = name, timeFormat = badge.string("time_format")),
+    )
     val color = badge.string("color")?.ifEmpty { null }
     return ViewBadgeModel(
-        entityId = entityId,
-        icon = if (showIcon) entityIcon(entityId, badge.string("icon")) else null,
+        entityId = state.entityId,
+        icon = if (showIcon) entityIcon(state.entityId, badge.string("icon")) else null,
         label = name.takeIf { showState && showName },
         content = if (showState) stateText else name.takeIf { showName },
         color = if (color !=

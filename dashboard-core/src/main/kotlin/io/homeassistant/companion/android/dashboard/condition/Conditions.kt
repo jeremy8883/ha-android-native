@@ -8,10 +8,7 @@ import io.homeassistant.companion.android.dashboard.model.jsString
 import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
-import java.time.LocalTime
 import java.time.ZonedDateTime
-import java.time.format.TextStyle
-import java.util.Locale
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
@@ -45,23 +42,30 @@ data class ScreenInfo(val widthDp: Int, val heightDp: Int)
 fun HassSnapshot.conditionsMet(conditions: List<JsonObject>, context: ConditionContext): Boolean =
     conditions.all { conditionMet(it, context) }
 
-private fun HassSnapshot.conditionMet(condition: JsonObject, context: ConditionContext): Boolean {
-    if (!condition.has("condition")) return stateCondition(condition, context)
-    val nested = { condition.objects("conditions") }
-    return when (condition.string("condition")) {
+private fun HassSnapshot.conditionMet(condition: JsonObject, context: ConditionContext): Boolean =
+    when (val type = if (condition.has("condition")) condition.string("condition") else null) {
         "view_columns" -> viewColumnsCondition(condition, context)
         "time" -> timeCondition(condition, context.now)
-        "screen" -> condition.string("media_query")?.let { query ->
-            context.screen?.let { matchesMediaQuery(query, it) }
-        } ==
-            true
+        "screen" -> screenCondition(condition, context)
         "user" -> user?.id?.let { id -> condition.array("users")?.any { it.stringOrNull == id } } == true
         "location" -> locationCondition(condition)
         "numeric_state" -> numericStateCondition(condition, context)
-        "and" -> !condition.has("conditions") || conditionsMet(nested(), context)
-        "not" -> !condition.has("conditions") || !conditionsMet(nested(), context)
-        "or" -> !condition.has("conditions") || nested().any { conditionsMet(listOf(it), context) }
+        "and", "not", "or" -> logicCondition(type, condition, context)
         else -> stateCondition(condition, context)
+    }
+
+/** Port of `checkScreenCondition`. */
+private fun screenCondition(condition: JsonObject, context: ConditionContext): Boolean =
+    condition.string("media_query")?.let { query -> context.screen?.let { matchesMediaQuery(query, it) } } == true
+
+/** Ports of `checkAndCondition`, `checkNotCondition` and `checkOrCondition`; without conditions they are met. */
+private fun HassSnapshot.logicCondition(type: String, condition: JsonObject, context: ConditionContext): Boolean {
+    if (!condition.has("conditions")) return true
+    val nested = condition.objects("conditions")
+    return when (type) {
+        "and" -> conditionsMet(nested, context)
+        "not" -> !conditionsMet(nested, context)
+        else -> nested.any { conditionsMet(listOf(it), context) }
     }
 }
 
@@ -121,37 +125,8 @@ private fun viewColumnsCondition(condition: JsonObject, context: ConditionContex
 /** Port of `checkLocationCondition`: the state of the current user's person entity. */
 private fun HassSnapshot.locationCondition(condition: JsonObject): Boolean {
     val userId = user?.id ?: return false
-    val person =
-        states.values.firstOrNull { it.domain == "person" && it.attributes.string("user_id") == userId } ?: return false
-    return condition.array("locations")?.any { it.stringOrNull == person.state } == true
-}
-
-/** Port of `checkTimeInRange` (src/common/datetime/check_time.ts). Without a clock the condition is not met. */
-private fun timeCondition(condition: JsonObject, now: ZonedDateTime?): Boolean {
-    now ?: return false
-    val weekdays = condition.array("weekdays")?.mapNotNull { it.stringOrNull }.orEmpty()
-    if (weekdays.isNotEmpty()) {
-        val today = now.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.ENGLISH).lowercase()
-        if (today !in weekdays) return false
-    }
-    val after = condition.string("after")?.ifEmpty { null }?.let(::parseTime)
-    val before = condition.string("before")?.ifEmpty { null }?.let(::parseTime)
-    val time = now.toLocalTime()
-    return when {
-        after != null && before != null && before < after -> time >= after || time <= before // crosses midnight
-        after != null && before != null -> time in after..before
-        after != null -> time >= after
-        before != null -> time <= before
-        else -> true
-    }
-}
-
-private fun parseTime(value: String): LocalTime? {
-    val parts = value.split(':').map { it.trim().toIntOrNull() }
-    val hours = parts.getOrNull(0) ?: return null
-    val minutes = parts.getOrNull(1) ?: return null
-    val seconds = if (parts.size == 3) parts[2] ?: return null else 0
-    return runCatching { LocalTime.of(hours, minutes, seconds) }.getOrNull()
+    val person = states.values.firstOrNull { it.domain == "person" && it.attributes.string("user_id") == userId }
+    return person != null && condition.array("locations")?.any { it.stringOrNull == person.state } == true
 }
 
 /** Port of `getValueFromEntityId`: the state of [value] when it is the id of an existing entity. */

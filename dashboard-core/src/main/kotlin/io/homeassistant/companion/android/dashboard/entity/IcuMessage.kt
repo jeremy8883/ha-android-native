@@ -45,49 +45,56 @@ private class IcuParser(private val text: String, private val args: Map<String, 
     private fun argument(pound: String?): String {
         val name = token()
         skipSpaces()
-        if (peek() == '}') {
-            pos++
-            return args[name].orEmpty()
+        val type = if (peek() == '}') {
+            null
+        } else {
+            expect(',')
+            token().also { skipSpaces() }
         }
-        expect(',')
-        val type = token()
-        skipSpaces()
-        if (type != PLURAL && type != SELECT && type != SELECT_ORDINAL) {
-            // {n, number} and similar: the value as given
-            skipTo('}')
-            pos++
-            return args[name].orEmpty()
+        return when (type) {
+            PLURAL, SELECT, SELECT_ORDINAL -> {
+                expect(',')
+                selectedOption(type, args[name].orEmpty(), pound)
+            }
+            else -> {
+                // {n} and {n, number} and similar: the value as given
+                skipTo('}')
+                pos++
+                args[name].orEmpty()
+            }
         }
-        expect(',')
-        val value = args[name].orEmpty()
+    }
+
+    /** The option of a plural or select argument that [value] selects, after the type's comma. */
+    private fun selectedOption(type: String, value: String, pound: String?): String {
+        val (offset, options) = options(type, value, pound)
+        if (type == SELECT) return options[value] ?: options[OTHER].orEmpty()
+        val number = value.toDoubleOrNull()
+        val exact = number?.let { options["=${formatPound(it)}"] }
+        return exact ?: options[pluralCategory(number?.minus(offset))] ?: options[OTHER].orEmpty()
+    }
+
+    /** The options of a plural or select argument by key, with its offset; consumes its closing brace. */
+    private fun options(type: String, value: String, pound: String?): Pair<Double, Map<String, String>> {
         var offset = 0.0
         val options = linkedMapOf<String, String>()
-        while (true) {
-            skipSpaces()
-            if (peek() == '}') {
-                pos++
-                break
-            }
+        skipSpaces()
+        while (peek() != '}') {
             val key = token()
             if (key.startsWith("offset:")) {
                 offset = key.removePrefix("offset:").toDouble()
-                continue
+            } else {
+                skipSpaces()
+                expect('{')
+                val number = value.toDoubleOrNull()?.minus(offset)
+                val innerPound = if (type == SELECT) pound else number?.let(::formatPound) ?: value
+                options[key] = message(innerPound, untilBrace = true)
+                pos++
             }
             skipSpaces()
-            expect('{')
-            val number = value.toDoubleOrNull()?.minus(offset)
-            val innerPound = if (type == SELECT) pound else number?.let(::formatPound) ?: value
-            options[key] = message(innerPound, untilBrace = true)
-            pos++
         }
-        return when (type) {
-            SELECT -> options[value] ?: options[OTHER].orEmpty()
-            else -> {
-                val number = value.toDoubleOrNull()
-                val exact = number?.let { options["=${formatPound(it)}"] }
-                exact ?: options[pluralCategory(number?.minus(offset))] ?: options[OTHER].orEmpty()
-            }
-        }
+        pos++
+        return offset to options
     }
 
     private fun token(): String {

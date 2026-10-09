@@ -6,18 +6,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import io.homeassistant.companion.android.dashboard.NativeDashboardPaths
-import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
-
-/** Exposes [NativeDashboardPaths] to the frontend destination. */
-@HiltViewModel
-internal class NativeDashboardHandOffViewModel @Inject constructor(val paths: NativeDashboardPaths) : ViewModel()
 
 /**
  * Hands the web frontend over to the native dashboards when it navigates to a dashboard they show: a link, the
@@ -32,7 +24,7 @@ internal fun NativeDashboardHandOff(frontendRoute: StateFlow<String?>, onNativeD
     val currentOnNativeDashboard by rememberUpdatedState(onNativeDashboard)
     LaunchedEffect(frontendRoute) {
         frontendRoute.filterNotNull()
-            .map { url -> Uri.parse(url).let { uri -> uri.path.orEmpty() + (uri.query?.let { "?$it" } ?: "") } }
+            .map { url -> Uri.parse(url).let { uri -> uri.path.orEmpty() + uri.query?.let { "?$it" }.orEmpty() } }
             .distinctUntilChanged()
             .collect { path ->
                 if (viewModel.paths.isNativeDashboard(path)) currentOnNativeDashboard(path)

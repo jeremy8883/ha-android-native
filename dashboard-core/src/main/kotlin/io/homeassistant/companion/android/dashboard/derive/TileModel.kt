@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.derive
 
+import io.homeassistant.companion.android.dashboard.display.StateDisplayOptions
 import io.homeassistant.companion.android.dashboard.display.stateDisplay
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.feature.TileFeature
@@ -34,8 +35,8 @@ data class TileModel(
  * @param now the time relative times are shown against
  */
 fun HassSnapshot.tileModel(card: CardConfig, now: Instant): TileModel? {
-    val entityId = card.entity ?: return null
-    val entity = states[entityId] ?: return null
+    val entity = card.entity?.let(states::get) ?: return null
+    val entityId = entity.entityId
     val hideState = card.json.boolean("hide_state") == true
     return TileModel(
         entityId = entityId,
@@ -43,7 +44,12 @@ fun HassSnapshot.tileModel(card: CardConfig, now: Instant): TileModel? {
         state = if (hideState) {
             null
         } else {
-            stateDisplay(entity, card.json["state_content"], now, timeFormat = card.json.string("time_format"))
+            stateDisplay(
+                entity,
+                card.json["state_content"],
+                now,
+                StateDisplayOptions(timeFormat = card.json.string("time_format")),
+            )
         },
         icon = entityIcon(entityId, configIcon = card.json.string("icon")),
         active = entity.isActive(),

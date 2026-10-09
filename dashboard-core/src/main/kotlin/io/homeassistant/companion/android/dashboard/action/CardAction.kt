@@ -87,31 +87,13 @@ fun HassSnapshot.resolveAction(config: JsonObject, gesture: Gesture): ResolvedAc
     return ResolvedAction(action, confirmationFor(actionConfig, action))
 }
 
-private fun HassSnapshot.actionFor(config: JsonObject, actionConfig: JsonObject): CardAction? {
-    fun failure(key: String) = CardAction.Failure(localize("ui.panel.lovelace.cards.actions.$key"))
-    return when (actionConfig.string("action")) {
-        ACTION_MORE_INFO -> {
-            val entityId = actionConfig.string("entity")?.ifEmpty { null }
-                ?: listOf("entity", "camera_image", "image_entity").firstNotNullOfOrNull {
-                    config.string(it)?.ifEmpty { null }
-                }
-            entityId?.let { CardAction.MoreInfo(it) } ?: failure("no_entity_more_info")
-        }
-        "navigate" -> actionConfig.string("navigation_path")?.ifEmpty { null }
-            ?.let { CardAction.Navigate(it, actionConfig.boolean("navigation_replace") == true) }
-            ?: failure("no_navigation_path")
-        "url" -> actionConfig.string("url_path")?.ifEmpty { null }?.let { CardAction.OpenUrl(it) } ?: failure("no_url")
-        "toggle" -> config.string("entity")?.ifEmpty { null }?.let { toggleEntity(it) } ?: failure("no_entity_toggle")
-        "perform-action", "call-service" -> {
-            val name = (actionConfig.string("perform_action") ?: actionConfig.string("service"))?.ifEmpty { null }
-                ?: return failure("no_action")
-            CardAction.CallService(
-                domain = name.substringBefore('.'),
-                service = name.substringAfter('.', ""),
-                data = actionConfig.obj("data") ?: actionConfig.obj("service_data"),
-                target = actionConfig.obj("target"),
-            )
-        }
+private fun HassSnapshot.actionFor(config: JsonObject, actionConfig: JsonObject): CardAction? =
+    when (actionConfig.string("action")) {
+        ACTION_MORE_INFO -> moreInfoAction(config, actionConfig)
+        "navigate" -> navigateAction(actionConfig)
+        "url" -> actionConfig.nonEmpty("url_path")?.let { CardAction.OpenUrl(it) } ?: actionFailure("no_url")
+        "toggle" -> toggleAction(config)
+        "perform-action", "call-service" -> performAction(actionConfig)
         "assist" -> CardAction.Assist(
             pipelineId = actionConfig.string("pipeline_id") ?: "last_used",
             startListening = actionConfig.boolean("start_listening") == true,
@@ -119,7 +101,35 @@ private fun HassSnapshot.actionFor(config: JsonObject, actionConfig: JsonObject)
         "fire-dom-event" -> CardAction.FireDomEvent(actionConfig)
         else -> null
     }
+
+private fun HassSnapshot.actionFailure(key: String) =
+    CardAction.Failure(localize("ui.panel.lovelace.cards.actions.$key"))
+
+private fun HassSnapshot.navigateAction(actionConfig: JsonObject): CardAction = actionConfig.nonEmpty("navigation_path")
+    ?.let { CardAction.Navigate(it, actionConfig.boolean("navigation_replace") == true) }
+    ?: actionFailure("no_navigation_path")
+
+private fun HassSnapshot.toggleAction(config: JsonObject): CardAction =
+    config.nonEmpty("entity")?.let { toggleEntity(it) } ?: actionFailure("no_entity_toggle")
+
+private fun HassSnapshot.moreInfoAction(config: JsonObject, actionConfig: JsonObject): CardAction {
+    val entityId = actionConfig.nonEmpty("entity")
+        ?: listOf("entity", "camera_image", "image_entity").firstNotNullOfOrNull { config.nonEmpty(it) }
+    return entityId?.let { CardAction.MoreInfo(it) } ?: actionFailure("no_entity_more_info")
 }
+
+private fun HassSnapshot.performAction(actionConfig: JsonObject): CardAction =
+    (actionConfig.string("perform_action") ?: actionConfig.string("service"))?.ifEmpty { null }?.let { name ->
+        CardAction.CallService(
+            domain = name.substringBefore('.'),
+            service = name.substringAfter('.', ""),
+            data = actionConfig.obj("data") ?: actionConfig.obj("service_data"),
+            target = actionConfig.obj("target"),
+        )
+    } ?: actionFailure("no_action")
+
+/** The string at [key], `null` when missing or empty. */
+private fun JsonObject.nonEmpty(key: String): String? = string(key)?.ifEmpty { null }
 
 /**
  * The confirmation [actionConfig] asks for, unless the current user is exempt. `confirmation: true` uses the
@@ -127,10 +137,10 @@ private fun HassSnapshot.actionFor(config: JsonObject, actionConfig: JsonObject)
  * instead (for example "Perform action"), until those translations are loaded.
  */
 private fun HassSnapshot.confirmationFor(actionConfig: JsonObject, action: CardAction): Confirmation? {
-    val confirmation = actionConfig["confirmation"]?.takeIf(::jsTruthy) ?: return null
+    val confirmation = actionConfig["confirmation"]?.takeIf(::jsTruthy)
     val options = confirmation as? JsonObject ?: JsonObject(emptyMap())
-    if (options.objects("exemptions").any { it.string("user") == user?.id }) return null
-    if (action is CardAction.Failure) return null
+    val exempt = options.objects("exemptions").any { it.string("user") == user?.id }
+    if (confirmation == null || exempt || action is CardAction.Failure) return null
     val type = actionConfig.string("action").orEmpty()
     val actionName = localize("ui.panel.lovelace.editor.action-editor.actions.$type").ifEmpty { type }
     return Confirmation(
