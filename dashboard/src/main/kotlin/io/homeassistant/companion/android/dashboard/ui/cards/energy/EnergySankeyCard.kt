@@ -13,6 +13,7 @@ import io.homeassistant.companion.android.common.compose.theme.LocalHAColorSchem
 import io.homeassistant.companion.android.dashboard.energy.EnergyData
 import io.homeassistant.companion.android.dashboard.energy.SankeyData
 import io.homeassistant.companion.android.dashboard.energy.energySankey
+import io.homeassistant.companion.android.dashboard.energy.waterSankey
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.boolean
@@ -33,8 +34,26 @@ internal fun EnergySankeyCard(
 ) {
     val groupByFloor = card.json.boolean("group_by_floor") == true
     val groupByArea = card.json.boolean("group_by_area") == true
-    SankeyCard(card, hass, interactions, modifier, unit = KWH) { snapshot, data ->
+    SankeyCard(card, hass, interactions, modifier, unit = { KWH }) { snapshot, data ->
         snapshot.energySankey(data, groupByFloor, groupByArea)
+    }
+}
+
+/**
+ * The water sankey: from the water sources to the devices, by floor and area. Port of the rendering of
+ * `hui-water-sankey-card` (frontend@20260624.6).
+ */
+@Composable
+internal fun WaterSankeyCard(
+    card: CardConfig,
+    hass: State<HassSnapshot?>,
+    interactions: CardInteractions,
+    modifier: Modifier = Modifier,
+) {
+    val groupByFloor = card.json.boolean("group_by_floor") == true
+    val groupByArea = card.json.boolean("group_by_area") == true
+    SankeyCard(card, hass, interactions, modifier, unit = { it.waterUnit }) { snapshot, data ->
+        snapshot.waterSankey(data, groupByFloor, groupByArea)
     }
 }
 
@@ -45,7 +64,7 @@ internal fun SankeyCard(
     hass: State<HassSnapshot?>,
     interactions: CardInteractions,
     modifier: Modifier,
-    unit: String,
+    unit: (EnergyData) -> String,
     data: (HassSnapshot, EnergyData) -> SankeyData,
 ) {
     val snapshot = hass.value ?: return
@@ -62,7 +81,7 @@ internal fun SankeyCard(
                 vertical = vertical,
                 formatValue = { value ->
                     val digits = if (value < SMALL) SMALL_DIGITS else DEFAULT_DIGITS
-                    "${snapshot.formats.number(BigDecimal.valueOf(value), 0, digits)} $unit"
+                    "${snapshot.formats.number(BigDecimal.valueOf(value), 0, digits)} ${unit(energy)}"
                 },
                 onOpen = { interactions.openMoreInfo(it) },
                 modifier = Modifier.padding(HADimens.SPACE4),

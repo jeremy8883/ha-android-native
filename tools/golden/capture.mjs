@@ -349,6 +349,7 @@ const ENERGY_CARD_CAPTURES = [
   { name: "energy-devices-graph-pie", config: { type: "energy-devices-graph", modes: ["pie"] } },
   { name: "energy-sankey", config: { type: "energy-sankey", group_by_floor: true, group_by_area: true } },
   { name: "energy-sankey-flat", config: { type: "energy-sankey", group_by_floor: false, group_by_area: false } },
+  { name: "water-sankey", config: { type: "water-sankey", group_by_floor: true, group_by_area: true } },
   { name: "energy-self-sufficiency-gauge", config: { type: "energy-self-sufficiency-gauge" } },
   { name: "energy-grid-neutrality-gauge", config: { type: "energy-grid-neutrality-gauge" } },
   { name: "energy-solar-consumed-gauge", config: { type: "energy-solar-consumed-gauge" } },

@@ -30,6 +30,7 @@ internal fun EnergyCard(
         DEVICES_DETAIL_GRAPH -> EnergyDevicesDetailGraphCard(card, hass, modifier)
         DEVICES_GRAPH -> EnergyDevicesGraphCard(card, hass, interactions, modifier)
         SANKEY -> EnergySankeyCard(card, hass, interactions, modifier)
+        WATER_SANKEY -> WaterSankeyCard(card, hass, interactions, modifier)
         in GAUGES -> EnergyGaugeCard(card, hass, GAUGES.getValue(type), modifier)
         in SOURCE_GRAPHS -> EnergySourceGraphCard(card, hass, SOURCE_GRAPHS.getValue(type), modifier)
     }
@@ -44,6 +45,7 @@ private const val SOURCES_TABLE = "energy-sources-table"
 private const val DEVICES_DETAIL_GRAPH = "energy-devices-detail-graph"
 private const val DEVICES_GRAPH = "energy-devices-graph"
 private const val SANKEY = "energy-sankey"
+private const val WATER_SANKEY = "water-sankey"
 private val GAUGES = EnergyGaugeType.entries.associateBy { it.cardType }
 private val SOURCE_GRAPHS = SourceGraphKind.entries.associateBy { "energy-${it.kind}-graph" }
 
@@ -58,4 +60,5 @@ internal val ENERGY_CARD_TYPES: Set<String> = setOf(
     DEVICES_DETAIL_GRAPH,
     DEVICES_GRAPH,
     SANKEY,
+    WATER_SANKEY,
 ) + GAUGES.keys + SOURCE_GRAPHS.keys

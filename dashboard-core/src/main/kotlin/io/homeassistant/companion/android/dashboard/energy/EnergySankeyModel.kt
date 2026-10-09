@@ -16,32 +16,46 @@ fun HassSnapshot.energySankey(data: EnergyData, groupByFloor: Boolean, groupByAr
     val home = SankeyNode(HOME, config.locationName.orEmpty(), max(0.0, consumption.usedTotal), PRIMARY, 1)
     builder.nodes += home
     builder.sources(data.prefs.energySources, sums, consumption)
-    val devices = deviceNodes(data)
-    devices.forEach { device -> device.parent?.let { builder.links += SankeyLink(it, device.node.id) } }
-    val topLevel = devices.filter { it.parent == null }.map { it.node }
-    builder.flowToDevices(topLevel, groupByFloor, groupByArea)
-    val sections =
-        deviceSections(devices.mapNotNull { d -> d.parent?.let { d.node.id to it } }.toMap(), devices.map { it.node })
-    sections.forEachIndexed { index, section ->
-        section.forEach { builder.nodes += it.copy(index = DEVICE_INDEX + index) }
-    }
-    val untracked = home.value - topLevel.sumOf { it.value }
-    if (untracked > 0) {
-        builder.nodes += SankeyNode(
-            id = UNTRACKED_ID,
-            label = localize("ui.panel.lovelace.cards.energy.energy_devices_detail_graph.untracked_consumption"),
-            value = untracked,
-            color = SankeyColor.Variable("state-unavailable-color"),
-            index = DEVICE_INDEX - 1 + sections.size,
-        )
-        builder.links += SankeyLink(HOME, UNTRACKED_ID, untracked)
-    }
+    builder.devices(deviceNodes(data, data.prefs.deviceConsumption), home.value, groupByFloor, groupByArea)
     return SankeyData(builder.nodes, builder.links)
 }
 
-/** The devices with at least 0.01 kWh, with the device they're included in. */
-private fun HassSnapshot.deviceNodes(data: EnergyData): List<DeviceNode> =
-    data.prefs.deviceConsumption.mapIndexedNotNull { index, device ->
+/**
+ * The water sankey: from the water sources to the home, then by floor and area to the devices, and what no device
+ * accounts for. Port of `HuiWaterSankeyCard.render` (frontend@20260624.6
+ * src/panels/lovelace/cards/water/hui-water-sankey-card.ts).
+ */
+fun HassSnapshot.waterSankey(data: EnergyData, groupByFloor: Boolean, groupByArea: Boolean): SankeyData {
+    fun growth(id: String) = statisticsSumGrowth(data.stats, listOf(id)) ?: 0.0
+    val sources = data.prefs.energySources.filterIsInstance<EnergySource.Utility>().filter {
+        it.type ==
+            UtilityType.WATER
+    }
+    // Devices included in another are counted in it already
+    val downstream = data.prefs.deviceConsumptionWater.filter {
+        it.includedInStat == null
+    }.sumOf { growth(it.statConsumption) }
+    val supply = sources.sumOf { growth(it.statEnergyFrom) }
+    val builder = SankeyBuilder(this)
+    val home = SankeyNode(HOME, config.locationName.orEmpty(), max(0.0, max(downstream, supply)), PRIMARY, 1)
+    builder.nodes += home
+    sources.forEach { source ->
+        val value = growth(source.statEnergyFrom)
+        if (value < MIN_DEVICE) return@forEach
+        val id = "source-${source.statEnergyFrom}"
+        val label =
+            source.name?.ifEmpty { null }
+                ?: statisticLabel(source.statEnergyFrom, data.statsMetadata[source.statEnergyFrom])
+        builder.nodes += SankeyNode(id, label, value, SankeyColor.Variable("energy-water-color"), 0)
+        builder.links += SankeyLink(id, HOME, value)
+    }
+    builder.devices(deviceNodes(data, data.prefs.deviceConsumptionWater), home.value, groupByFloor, groupByArea)
+    return SankeyData(builder.nodes, builder.links)
+}
+
+/** The [devices] with at least 0.01 (kWh or volume), with the device they're included in. */
+private fun HassSnapshot.deviceNodes(data: EnergyData, devices: List<DeviceConsumption>): List<DeviceNode> =
+    devices.mapIndexedNotNull { index, device ->
         val value = statisticsSumGrowth(data.stats, listOf(device.statConsumption)) ?: 0.0
         if (value < MIN_DEVICE) return@mapIndexedNotNull null
         val label =
@@ -100,10 +114,41 @@ internal class SankeyBuilder(private val hass: HassSnapshot) {
     )
 
     /**
+     * The devices: from the device they're included in or (grouped by floor and area) from the home, in columns by
+     * inclusion, and what of the home's [homeValue] no device accounts for.
+     */
+    fun devices(devices: List<DeviceNode>, homeValue: Double, groupByFloor: Boolean, groupByArea: Boolean) {
+        devices.forEach { device -> device.parent?.let { links += SankeyLink(it, device.node.id) } }
+        val topLevel = devices.filter { it.parent == null }.map { it.node }
+        flowToDevices(topLevel, groupByFloor, groupByArea)
+        val sections =
+            deviceSections(
+                devices.mapNotNull { d ->
+                    d.parent?.let { d.node.id to it }
+                }.toMap(),
+                devices.map { it.node },
+            )
+        sections.forEachIndexed { index, section -> section.forEach { nodes += it.copy(index = DEVICE_INDEX + index) } }
+        val untracked = homeValue - topLevel.sumOf { it.value }
+        if (untracked > 0) {
+            nodes += SankeyNode(
+                id = UNTRACKED_ID,
+                label = hass.localize(
+                    "ui.panel.lovelace.cards.energy.energy_devices_detail_graph.untracked_consumption",
+                ),
+                value = untracked,
+                color = SankeyColor.Variable("state-unavailable-color"),
+                index = DEVICE_INDEX - 1 + sections.size,
+            )
+            links += SankeyLink(HOME, UNTRACKED_ID, untracked)
+        }
+    }
+
+    /**
      * The flows from the home to the devices without a parent: through their floor and area when grouping, straight
      * otherwise.
      */
-    fun flowToDevices(devices: List<SankeyNode>, groupByFloor: Boolean, groupByArea: Boolean) {
+    private fun flowToDevices(devices: List<SankeyNode>, groupByFloor: Boolean, groupByArea: Boolean) {
         if (!groupByArea && !groupByFloor) {
             devices.forEach { links += SankeyLink(HOME, it.id, it.value) }
             return
@@ -148,7 +193,7 @@ internal class SankeyBuilder(private val hass: HassSnapshot) {
     }
 }
 
-private class DeviceNode(val node: SankeyNode, val parent: String?)
+internal class DeviceNode(val node: SankeyNode, val parent: String?)
 
 internal class AreaGroup(var value: Double = 0.0, val devices: MutableList<SankeyNode> = mutableListOf())
 

@@ -15,11 +15,16 @@ class EnergySankeyGoldenTest {
 
     @TestFactory
     fun `Given a period's data when computing the energy sankey then it has the frontend's nodes and flows`(): List<DynamicTest> = energy.periods.flatMap { recorded ->
-        listOf("energy-sankey" to true, "energy-sankey-flat" to false).map { (name, grouped) ->
+        listOf("energy-sankey" to true, "energy-sankey-flat" to false, "water-sankey" to true).map { (name, grouped) ->
             DynamicTest.dynamicTest("${recorded.name} $name") {
                 val expected = recorded.card(name)
 
-                val sankey = energy.fixture.hass.energySankey(recorded.data, grouped, grouped)
+                val hass = energy.fixture.hass
+                val sankey = if (name.startsWith("water")) {
+                    hass.waterSankey(recorded.data, grouped, grouped)
+                } else {
+                    hass.energySankey(recorded.data, grouped, grouped)
+                }
 
                 val data = expected.obj("data")!!
                 assertEquals(
