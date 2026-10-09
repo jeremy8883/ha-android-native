@@ -21,8 +21,8 @@ import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 
 /**
- * A server with its user's avatar, name and user, as the companion app's server chooser shows it (`ServerChooserRow`),
- * with [trailing] content such as a log out button.
+ * A server with its user's avatar, name and user, like the companion app's server chooser (`ServerChooserRow`),
+ * plus the address, with [trailing] content such as a log out button.
  */
 @Composable
 internal fun ServerRow(
@@ -55,6 +55,18 @@ internal fun ServerRow(
                 Text(
                     text = it,
                     style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+            // The address tells apart servers with the same name (the server's own name, often "Home")
+            if (server.address.isNotBlank()) {
+                Text(
+                    text = server.address,
+                    style = HATextStyle.BodyMedium.copy(
+                        color = LocalHAColorScheme.current.colorTextSecondary,
+                        textAlign = TextAlign.Start,
+                    ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
