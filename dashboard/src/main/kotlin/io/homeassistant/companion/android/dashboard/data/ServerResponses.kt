@@ -26,7 +26,10 @@ data class EntityResources(val icons: IconResources, val translations: Map<Strin
 data class SidebarData(val userCore: JsonObject?, val systemCore: JsonObject?, val sidebar: JsonObject?)
 
 /** The results of several requests as one object by part, or the first failure. */
-fun bundle(vararg parts: Pair<String, Fetched<JsonElement?>>): Fetched<JsonObject> {
+fun bundle(vararg parts: Pair<String, Fetched<JsonElement?>>): Fetched<JsonObject> = bundle(parts.asList())
+
+/** The results of several requests as one object by part, or the first failure. */
+fun bundle(parts: List<Pair<String, Fetched<JsonElement?>>>): Fetched<JsonObject> {
     parts.firstNotNullOfOrNull { (_, part) -> part as? Fetched.Failure }?.let { return it }
     return Fetched.Success(
         JsonObject(parts.associate { (name, part) -> name to ((part as Fetched.Success).value ?: JsonNull) }),
@@ -41,6 +44,7 @@ internal const val USER = "user"
 internal const val CONFIG = "config"
 internal const val PANELS = "panels"
 internal const val ENERGY_PREFS = "energy_prefs"
+internal const val ENERGY_SETTINGS = "energy_settings"
 internal const val COMMON_CONTROLS = "common_controls"
 internal const val COMPONENT_ICONS = "component_icons"
 internal const val ENTITY_ICONS = "entity_icons"
@@ -68,11 +72,16 @@ internal fun parseRegistries(bundle: JsonObject): Fetched<Registries> =
         }
     }
 
-/** Energy preferences and common controls are absent (`null`) when not loaded or refused, as upstream treats them. */
+/**
+ * Energy preferences and settings and common controls are absent (`null`) when not loaded or refused, as upstream
+ * treats them.
+ */
 internal fun parseStrategyData(bundle: JsonObject): Fetched<StrategyData> = Fetched.Success(
     StrategyData(
         energyPrefs = bundle[ENERGY_PREFS] as? JsonObject,
         commonControls = (bundle[COMMON_CONTROLS] as? JsonObject)?.array("entities")?.mapNotNull { it.stringOrNull },
+        energyHiddenCards = (bundle[ENERGY_SETTINGS] as? JsonObject)?.obj("value")?.array("hidden_cards")
+            ?.mapNotNull { it.stringOrNull },
     ),
 )
 

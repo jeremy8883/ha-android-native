@@ -58,6 +58,9 @@ internal class ServerSession(
 ) {
     val connection = webSocket.connectionStatus()
 
+    /** Where [name] of this server is kept, written to the cache with [codec]. */
+    fun <T> keeper(name: String, codec: CacheCodec<T>): ValueKeeper<T> = loadedData.keeper(serverId, name, codec)
+
     /**
      * [name], kept up to date (see [KeptData.fetched]) as the raw responses [fetch] gathers and read with [parse], both
      * when loaded and when read back from the cache. Loaded again on each [refreshes] emission and on the user's

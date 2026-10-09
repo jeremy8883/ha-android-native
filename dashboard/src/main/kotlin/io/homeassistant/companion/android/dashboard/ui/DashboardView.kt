@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -43,7 +44,9 @@ import io.homeassistant.companion.android.dashboard.layout.SectionLayout
 import io.homeassistant.companion.android.dashboard.layout.SidebarLayout
 import io.homeassistant.companion.android.dashboard.layout.viewLayout
 import io.homeassistant.companion.android.dashboard.layout.viewSidebar
+import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.ViewConfig
+import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardCard
 import io.homeassistant.companion.android.dashboard.ui.cards.LocalConditionContext
@@ -242,3 +245,21 @@ private const val NARROW_WIDTH_DP = 600
 
 /** About the offline bar's height with its margins. */
 private val BOTTOM_BAR_CLEARANCE = 80.dp
+
+/** The [view]'s footer card (`footer.card`), if it has one: the energy views' date selection. */
+@Composable
+internal fun ViewFooter(
+    view: ViewConfig,
+    hass: State<HassSnapshot?>,
+    now: State<ZonedDateTime?>,
+    interactions: CardInteractions,
+) {
+    val card = remember(view) { view.json.obj("footer")?.obj("card")?.let(::CardConfig) } ?: return
+    DashboardCard(
+        card = card,
+        hass = hass,
+        now = now,
+        interactions = interactions,
+        modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(HADimens.SPACE2),
+    )
+}

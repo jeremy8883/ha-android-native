@@ -21,6 +21,7 @@ SUBTREES = [
     "ui.panel.lovelace.cards.actions",
     "ui.panel.lovelace.components",
     "ui.panel.lovelace.editor.action-editor.actions",
+    "ui.components.date-range-picker",
     "ui.panel.energy",
     "ui.panel.lovelace.strategy",
     "ui.panel.page-authorize",

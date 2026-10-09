@@ -4,12 +4,28 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.NumberFormat
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.Currency
 import java.util.Locale
+
+/** The parts of a date the period selector shows (src/common/datetime/format_date.ts). */
+enum class DatePart {
+    /** `formatDateVeryShort`: "Oct 9". */
+    DAY_MONTH_SHORT,
+
+    /** `formatDateMonth`: "October". */
+    MONTH,
+
+    /** `formatDateMonthShort`: "Oct". */
+    MONTH_SHORT,
+
+    /** `formatDateYear`: "2026". */
+    YEAR,
+}
 
 /** A unit of relative time, as `Intl.RelativeTimeFormat` takes it. */
 enum class RelativeUnit { SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR }
@@ -42,6 +58,9 @@ interface DisplayFormats {
 
     /** `formatTime`: "12:00 PM". */
     fun time(instant: Instant, zone: ZoneId = this.zone): String
+
+    /** A date shown as [part] alone, such as "Oct 9" or "2026". */
+    fun datePart(date: LocalDate, part: DatePart): String
 
     /** `Intl.RelativeTimeFormat` with `numeric: "auto"`: "tomorrow", "in 10 hours", "6 years ago". */
     fun relative(value: Long, unit: RelativeUnit): String
@@ -92,6 +111,9 @@ class JdkDisplayFormats(private val locale: Locale, override val zone: ZoneId) :
 
     override fun time(instant: Instant, zone: ZoneId): String = format(TIME, instant, zone)
 
+    override fun datePart(date: LocalDate, part: DatePart): String =
+        DATE_PARTS.getValue(part).withLocale(locale).format(date)
+
     private fun format(formatter: DateTimeFormatter, instant: Instant, zone: ZoneId): String =
         // Newer CLDR puts a narrow no-break space before AM/PM, browsers a plain one
         formatter.withLocale(locale).format(instant.atZone(zone)).replace(NARROW_NO_BREAK_SPACE, ' ')
@@ -115,6 +137,14 @@ class JdkDisplayFormats(private val locale: Locale, override val zone: ZoneId) :
         private val DATE = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)
         private val TIME_SECONDS = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)
         private val TIME = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+
+        // English patterns of the frontend's `Intl` options; the month names follow the locale
+        private val DATE_PARTS = mapOf(
+            DatePart.DAY_MONTH_SHORT to DateTimeFormatter.ofPattern("MMM d"),
+            DatePart.MONTH to DateTimeFormatter.ofPattern("LLLL"),
+            DatePart.MONTH_SHORT to DateTimeFormatter.ofPattern("LLL"),
+            DatePart.YEAR to DateTimeFormatter.ofPattern("y"),
+        )
 
         // CLDR English phrases that `numeric: "auto"` uses instead of numbers
         private val AUTO_PHRASES = mapOf(

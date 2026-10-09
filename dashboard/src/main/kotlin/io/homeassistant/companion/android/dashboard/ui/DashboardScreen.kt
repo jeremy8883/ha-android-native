@@ -72,7 +72,7 @@ internal fun DashboardScreen(
         viewModel = viewModel,
     )
     val snackbar = remember { SnackbarHostState() }
-    val interactions = remember(viewModel) { CardInteractions(viewModel::onGesture, viewModel::onAction) }
+    val interactions = rememberCardInteractions(viewModel)
     var moreInfo by rememberSaveable { mutableStateOf<String?>(null) }
     DashboardMessages(viewModel, snackbar, onOpenWeb, onMoreInfo = { moreInfo = it })
     val drawerState = rememberDrawerState(DrawerValue.Closed)
@@ -243,6 +243,8 @@ internal fun DashboardScreenContent(
         snackbarHost = {
             DashboardBottomBars(snackbar, status.offline, status.updatedAt.takeIf { content != null }, now)
         },
+        // A view's footer (the energy date selection) stays at the bottom, below the messages
+        bottomBar = { content?.view?.let { ViewFooter(it, hass, now, interactions) } },
         topBar = {
             val title = @Composable {
                 Text(
@@ -314,3 +316,9 @@ private fun DashboardScreenNotFoundPreview() {
 }
 
 private const val MENU_ICON = "mdi:menu"
+
+/** What the cards report, to [viewModel]. */
+@Composable
+private fun rememberCardInteractions(viewModel: DashboardViewModel) = remember(viewModel) {
+    CardInteractions(viewModel::onGesture, viewModel::onAction, viewModel::onEnergyChange)
+}

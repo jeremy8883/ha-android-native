@@ -14,8 +14,8 @@ import kotlinx.serialization.json.putJsonObject
 const val ENERGY_PANEL = "energy"
 
 /** The data the energy views' cards read, by collection; the "Now" view has its own, real-time one. */
-internal const val DEFAULT_ENERGY_COLLECTION_KEY = "energy_dashboard"
-internal const val DEFAULT_POWER_COLLECTION_KEY = "energy_dashboard_now"
+const val DEFAULT_ENERGY_COLLECTION_KEY = "energy_dashboard"
+const val DEFAULT_POWER_COLLECTION_KEY = "energy_dashboard_now"
 
 /**
  * The energy panel's dashboard: a view for each kind of source configured, the overview first when there are

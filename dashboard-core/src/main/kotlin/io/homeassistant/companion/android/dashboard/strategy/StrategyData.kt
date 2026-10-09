@@ -9,8 +9,14 @@ import kotlinx.serialization.json.JsonObject
  *
  * @property energyPrefs the `energy/get_prefs` result, or `null` when energy is not configured
  * @property commonControls entity ids from `usage_prediction/common_control`, or `null` when unavailable
+ * @property energyHiddenCards the energy cards the user hid (the `energy` system data's `hidden_cards`), which the
+ * energy panel passes to its strategy
  */
-data class StrategyData(val energyPrefs: JsonObject?, val commonControls: List<String>?) {
+data class StrategyData(
+    val energyPrefs: JsonObject?,
+    val commonControls: List<String>?,
+    val energyHiddenCards: List<String>? = null,
+) {
     /** [energyPrefs] read as [EnergyPreferences]. */
     fun energyPreferences(): EnergyPreferences? = energyPrefs?.let(EnergyPreferences::fromJson)
 

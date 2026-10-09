@@ -9,6 +9,7 @@ import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.action.Gesture
 import io.homeassistant.companion.android.dashboard.action.resolveAction
 import io.homeassistant.companion.android.dashboard.data.DashboardRepository
+import io.homeassistant.companion.android.dashboard.data.EnergyRepository
 import io.homeassistant.companion.android.dashboard.data.LiveDataRepository
 import io.homeassistant.companion.android.dashboard.data.LoadError
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -24,6 +25,8 @@ import io.homeassistant.companion.android.dashboard.derive.TemplateResult
 import io.homeassistant.companion.android.dashboard.derive.cameraSnapshotEntities
 import io.homeassistant.companion.android.dashboard.derive.templateRequests
 import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
+import io.homeassistant.companion.android.dashboard.energy.EnergyCollection
+import io.homeassistant.companion.android.dashboard.energy.energyEnvironment
 import io.homeassistant.companion.android.dashboard.entity.EntityStates
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.IconResources
@@ -47,6 +50,8 @@ import io.homeassistant.companion.android.dashboard.navigation.SidebarSettings
 import io.homeassistant.companion.android.dashboard.navigation.defaultPanelUrlPath
 import io.homeassistant.companion.android.dashboard.navigation.sidebarItems
 import io.homeassistant.companion.android.dashboard.strategy.StrategyData
+import io.homeassistant.companion.android.dashboard.strategy.energy.ENERGY_PANEL
+import io.homeassistant.companion.android.dashboard.strategy.energy.energyDashboard
 import io.homeassistant.companion.android.dashboard.strategy.expandView
 import io.homeassistant.companion.android.dashboard.strategy.home.HomeDashboardConfig
 import io.homeassistant.companion.android.dashboard.strategy.home.homeDashboard
@@ -167,6 +172,7 @@ class DashboardViewModel @VisibleForTesting internal constructor(
     private val repository: DashboardRepository,
     live: LiveDataRepository,
     serverActions: ServerActionsRepository,
+    energyRepository: EnergyRepository,
     clock: Clock,
     private val dispatchers: DashboardDispatchers,
 ) : ViewModel() {
@@ -176,11 +182,13 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         repository: DashboardRepository,
         live: LiveDataRepository,
         serverActions: ServerActionsRepository,
+        energyRepository: EnergyRepository,
         clock: Clock,
     ) : this(
         repository,
         live,
         serverActions,
+        energyRepository,
         clock,
         DashboardDispatchers(default = Dispatchers.Default, io = Dispatchers.IO),
     )
@@ -282,8 +290,8 @@ class DashboardViewModel @VisibleForTesting internal constructor(
     private val dashboard: StateFlow<Pair<String?, Loadable<Pair<StoredDashboardConfig, StructureInputs>>>?> =
         selectedDashboard
             .flatMapLatest { urlPath ->
-                // Summary panels are generated, never stored
-                val config = if (urlPath in SUMMARY_PANELS) {
+                // Summary panels and the energy panel are generated, never stored
+                val config = if (urlPath in SUMMARY_PANELS || urlPath == ENERGY_PANEL) {
                     flowOf(Loadable.Ready(StoredDashboardConfig.NotStored))
                 } else {
                     repository.dashboardConfig(urlPath)
@@ -381,6 +389,22 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         .flatMapLatest { cameras -> if (cameras.isEmpty()) flowOf(emptyMap()) else live.cameraSnapshots(cameras) }
         .onStart { emit(emptyMap()) }
 
+    private val energy = EnergyCollections(energyRepository)
+
+    /** The energy collections the shown view's cards read, with their data. */
+    private val energyCollections: Flow<Map<String, EnergyCollection>> = energy.collections(
+        keys = uiState.map { state ->
+            energyCollectionKeys(shownCards(state, withHeader = false), (state as? DashboardUiState.Content)?.view)
+        }.distinctUntilChanged(),
+        prefs = structureInputs.map { it.valueOrNull?.strategyData?.energyPrefs }.distinctUntilChanged(),
+        environment = structureInputs.map { loadable ->
+            loadable.valueOrNull?.let { inputs ->
+                inputs.strategyData.energyPreferences()?.let(inputs.hass::energyEnvironment)
+            }
+        }.distinctUntilChanged(),
+        now = now,
+    ).onStart { emit(emptyMap()) }
+
     /** The URL server paths (pictures, snapshots) are loaded from. */
     val serverUrl: StateFlow<String?> = live.serverUrl()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
@@ -391,8 +415,8 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         entityStates.mapNotNull { it.valueOrNull },
         repairsIssues,
         discoveredFlows,
-        combine(templates, cameraImages, ::Pair),
-    ) { inputs, states, repairs, flows, (rendered, cameras) ->
+        combine(templates, cameraImages, energyCollections, ::Triple),
+    ) { inputs, states, repairs, flows, (rendered, cameras, energyCollections) ->
         inputs.hass.copy(
             states = states,
             // Not loaded (or not readable) collections stay `null`, never empty
@@ -400,12 +424,18 @@ class DashboardViewModel @VisibleForTesting internal constructor(
             discoveredFlows = flows.valueOrNull,
             templates = rendered,
             cameraImages = cameras,
+            energy = energyCollections,
         )
     }.flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
 
     /** Load again what failed, now rather than at the next retry. */
     fun onRetry() = repository.retry()
+
+    /** Change the period or comparison of the energy collection [collectionKey], as its date selection chose. */
+    internal fun onEnergyChange(collectionKey: String, change: EnergyChange) {
+        now.value?.let { energy.change(collectionKey, change, it) }
+    }
 
     fun onSelectDashboard(urlPath: String?) {
         returnPoints.value = emptyList()
@@ -642,6 +672,9 @@ private fun StoredDashboardConfig.toUiState(
             .toContent(inputs, stack)
         // Like the frontend's panels, generated from the current registries
         in SUMMARY_PANELS -> DashboardConfig(inputs.hass.summaryPanelDashboard(urlPath)).toContent(inputs, stack)
+        ENERGY_PANEL -> DashboardConfig(
+            inputs.hass.energyDashboard(inputs.strategyData.energyPreferences(), inputs.strategyData.energyHiddenCards),
+        ).toContent(inputs, stack)
         else -> DashboardUiState.NotFound
     }
     is StoredDashboardConfig.Stored -> config.toContent(inputs, stack)
@@ -697,11 +730,13 @@ data class SidebarState(
 )
 
 /**
- * Whether [panel] is a dashboard the native renderer shows: the home dashboard, Lovelace dashboards, and the summary
- * panels (lights, climate, security, maintenance), which are generated dashboards too.
+ * Whether [panel] is a dashboard the native renderer shows: the home dashboard, Lovelace dashboards, the summary
+ * panels (lights, climate, security, maintenance) and the energy panel, which are generated dashboards too.
  */
-internal fun isNativeDashboard(panel: PanelInfo): Boolean =
-    panel.componentName == HOME_PANEL || panel.componentName == LOVELACE_PANEL || panel.componentName in SUMMARY_PANELS
+internal fun isNativeDashboard(panel: PanelInfo): Boolean = panel.componentName == HOME_PANEL ||
+    panel.componentName == LOVELACE_PANEL ||
+    panel.componentName in SUMMARY_PANELS ||
+    panel.componentName == ENERGY_PANEL
 
 private const val HOME_PANEL = "home"
 private const val LOVELACE_PANEL = "lovelace"

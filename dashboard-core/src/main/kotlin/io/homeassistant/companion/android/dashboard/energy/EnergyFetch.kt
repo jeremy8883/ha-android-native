@@ -1,6 +1,5 @@
 package io.homeassistant.companion.android.dashboard.energy
 
-import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
 import java.time.Instant
@@ -85,18 +84,19 @@ data class EnergyFetchPlan(
 data class EnergyRequest(val period: EnergyPeriod, val compareMode: CompareMode?, val zone: ZoneId)
 
 /** Plan what to fetch for [request], knowing [info] and the [metadata] of the statistics (`[]` when none). */
-fun HassSnapshot.planEnergyFetch(
+fun planEnergyFetch(
     prefs: EnergyPreferences,
     info: EnergyInfo,
     metadata: List<StatisticsMetadata>,
     request: EnergyRequest,
+    environment: EnergyEnvironment,
 ): EnergyFetchPlan {
     val metadataById = metadata.associateBy { it.statisticId }
     val energyIds = prefs.referencedStatisticIds(info, ENERGY_TYPES)
     val powerIds = prefs.referencedPowerStatisticIds()
     val waterIds = prefs.referencedStatisticIds(info, setOf(WATER))
-    val gasUnit = energyGasUnit(prefs, metadataById)
-    val waterUnit = energyWaterUnit(prefs, metadataById)
+    val gasUnit = environment.energyGasUnit(prefs, metadataById)
+    val waterUnit = environment.energyWaterUnit(prefs, metadataById)
     val energyUnits = buildJsonObject {
         put("energy", "kWh")
         if (gasUnit in VOLUME_UNITS) put("volume", gasUnit)
@@ -113,7 +113,7 @@ fun HassSnapshot.planEnergyFetch(
     }
     fun statistics(ids: List<String>, on: EnergyPeriod, granularity: StatisticPeriod, units: JsonObject, type: String) =
         ids.takeIf { it.isNotEmpty() }?.let { statisticsCommand(it, TimeRange(on, zone), granularity, units, type) }
-    val co2 = co2SignalEntity()
+    val co2 = environment.co2SignalEntity
     val consumptionIds = prefs.energySources.filterIsInstance<EnergySource.Grid>().mapNotNull { it.statEnergyFrom }
     fun fossil(on: EnergyPeriod) = co2?.let { fossilCommand(TimeRange(on, zone), consumptionIds, it, coarse) }
     return EnergyFetchPlan(
@@ -151,12 +151,6 @@ fun suggestedPeriod(period: EnergyPeriod, fine: Boolean): StatisticPeriod {
         else -> StatisticPeriod.HOUR
     }
 }
-
-/** The first CO2 Signal entity giving the fossil fuel percentage, as `getEnergyData` finds it. */
-private fun HassSnapshot.co2SignalEntity(): String? = registries.entities.values.firstOrNull { entry ->
-    entry.platform == "co2signal" &&
-        states[entry.entityId]?.attributes?.get("unit_of_measurement")?.stringOrNull == "%"
-}?.entityId
 
 /** The instants of a period's start and end, as JavaScript writes them. */
 private class TimeRange(period: EnergyPeriod, zone: ZoneId) {

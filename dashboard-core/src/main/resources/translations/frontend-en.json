@@ -325,6 +325,31 @@
     "twice_daily": "Twice daily"
    }
   },
+  "components": {
+   "date-range-picker": {
+    "end_date": "End date",
+    "ranges": {
+     "now-12h": "Last 12 hours",
+     "now-12m": "Last 12 months",
+     "now-1h": "Last hour",
+     "now-24h": "Last 24 hours",
+     "now-30d": "Last 30 days",
+     "now-365d": "Last 365 days",
+     "now-7d": "Last 7 days",
+     "this_month": "This month",
+     "this_quarter": "This quarter",
+     "this_week": "This week",
+     "this_year": "This year",
+     "today": "Today",
+     "yesterday": "Yesterday"
+    },
+    "select": "Select",
+    "select_date_range": "Select time period",
+    "start_date": "Start date",
+    "time_from": "Time from",
+    "time_to": "Time to"
+   }
+  },
   "notification_toast": {
    "action_failed": "Failed to perform the action {service}.",
    "connection_lost": "Connection lost. Reconnecting…",

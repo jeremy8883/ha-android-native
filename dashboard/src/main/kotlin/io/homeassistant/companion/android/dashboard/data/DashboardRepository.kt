@@ -77,6 +77,12 @@ class DashboardRepository @Inject constructor(private val sessions: ServerSessio
                 } else {
                     Fetched.Success(null)
                 },
+                // The energy panel reads its settings that way too (ha-panel-energy.ts _loadSystemData)
+                ENERGY_SETTINGS to if ("energy" in components) {
+                    session.request("frontend/get_system_data", mapOf("key" to "energy")).absentWhenRefused()
+                } else {
+                    Fetched.Success(null)
+                },
                 // Upstream fails the common controls section when the prediction is refused; it is left out instead
                 COMMON_CONTROLS to if ("usage_prediction" in components) {
                     session.request("usage_prediction/common_control").absentWhenRefused()

@@ -4,6 +4,7 @@ import io.homeassistant.companion.android.dashboard.derive.TemplateRequest
 import io.homeassistant.companion.android.dashboard.derive.TemplateResult
 import io.homeassistant.companion.android.dashboard.display.DisplayFormats
 import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
+import io.homeassistant.companion.android.dashboard.energy.EnergyCollection
 import kotlinx.serialization.json.JsonObject
 
 /** Looks up a frontend translation by key, for example `panel.light`. Returns "" when unknown. */
@@ -53,6 +54,7 @@ data class HassConfig(
  * @property discoveredFlows config flows started by discovery; `null` while loading
  * @property templates the latest rendering of the templates cards asked for (`render_template`)
  * @property cameraImages signed snapshot paths of the cameras cards show, by entity id
+ * @property energy the energy collections the shown cards read, by collection key
  */
 data class HassSnapshot(
     val states: EntityStates,
@@ -67,4 +69,5 @@ data class HassSnapshot(
     val discoveredFlows: List<JsonObject>? = null,
     val templates: Map<TemplateRequest, TemplateResult> = emptyMap(),
     val cameraImages: Map<String, String> = emptyMap(),
+    val energy: Map<String, EnergyCollection> = emptyMap(),
 )

@@ -30,7 +30,7 @@ class EnergyFetchGoldenTest {
             val info = EnergyInfo.fromJson(requests.result("energy/info") as JsonObject)
             val metadata = parseStatisticsMetadata(requests.result("recorder/get_statistics_metadata") as JsonArray)
 
-            val plan = fixture.hass.planEnergyFetch(prefs, info, metadata, recorded.request())
+            val plan = planEnergyFetch(prefs, info, metadata, recorded.request(), fixture.hass.energyEnvironment(prefs))
 
             assertEquals(
                 requests.map { it.obj("request")!!.withoutId() },
@@ -45,7 +45,7 @@ class EnergyFetchGoldenTest {
             val requests = recorded.objects("requests")
             val info = EnergyInfo.fromJson(requests.result("energy/info") as JsonObject)
             val metadata = parseStatisticsMetadata(requests.result("recorder/get_statistics_metadata") as JsonArray)
-            val plan = fixture.hass.planEnergyFetch(prefs, info, metadata, recorded.request())
+            val plan = planEnergyFetch(prefs, info, metadata, recorded.request(), fixture.hass.energyEnvironment(prefs))
             fun result(command: WsCommand?) = command?.let { c ->
                 requests.first { it.obj("request")!!.withoutId() == c.message() }["result"] as JsonObject
             }
