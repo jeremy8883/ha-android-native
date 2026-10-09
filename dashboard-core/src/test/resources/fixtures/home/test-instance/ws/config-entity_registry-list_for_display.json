@@ -960,6 +960,7 @@
       {
         "ei": "sensor.fridge_power",
         "pl": "template",
+        "ai": "kitchen",
         "lb": [],
         "en": "Fridge power",
         "dp": 0
@@ -974,6 +975,7 @@
       {
         "ei": "sensor.office_circuit_power",
         "pl": "template",
+        "ai": "office",
         "lb": [],
         "en": "Office circuit power",
         "dp": 0
@@ -981,6 +983,7 @@
       {
         "ei": "sensor.office_computer_power",
         "pl": "template",
+        "ai": "office",
         "lb": [],
         "en": "Office computer power",
         "dp": 0
@@ -1002,6 +1005,7 @@
       {
         "ei": "sensor.shower_flow",
         "pl": "template",
+        "ai": "bedroom",
         "lb": [],
         "en": "Shower flow",
         "dp": 0
@@ -1009,6 +1013,7 @@
       {
         "ei": "sensor.garden_tap_flow",
         "pl": "template",
+        "ai": "garden",
         "lb": [],
         "en": "Garden tap flow",
         "dp": 0

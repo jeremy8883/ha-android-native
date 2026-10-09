@@ -992,6 +992,13 @@
             },
             {
               "type": "tile",
+              "entity": "sensor.fridge_power",
+              "name": {
+                "type": "entity"
+              }
+            },
+            {
+              "type": "tile",
               "entity": "binary_sensor.kitchen_motion",
               "name": {
                 "type": "entity"
@@ -1212,6 +1219,13 @@
             {
               "type": "tile",
               "entity": "sensor.bedroom_temperature",
+              "name": {
+                "type": "entity"
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.shower_flow",
               "name": {
                 "type": "entity"
               }
@@ -1601,6 +1615,20 @@
             },
             {
               "type": "tile",
+              "entity": "sensor.office_circuit_power",
+              "name": {
+                "type": "entity"
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.office_computer_power",
+              "name": {
+                "type": "entity"
+              }
+            },
+            {
+              "type": "tile",
               "entity": "binary_sensor.office_occupancy",
               "name": {
                 "type": "entity"
@@ -1813,6 +1841,13 @@
             {
               "type": "tile",
               "entity": "sensor.garden_temperature",
+              "name": {
+                "type": "entity"
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "sensor.garden_tap_flow",
               "name": {
                 "type": "entity"
               }

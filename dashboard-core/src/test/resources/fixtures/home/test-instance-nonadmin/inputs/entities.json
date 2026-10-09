@@ -950,6 +950,7 @@
   },
   "sensor.fridge_power": {
     "entity_id": "sensor.fridge_power",
+    "area_id": "kitchen",
     "labels": [],
     "platform": "template",
     "name": "Fridge power",
@@ -964,6 +965,7 @@
   },
   "sensor.office_circuit_power": {
     "entity_id": "sensor.office_circuit_power",
+    "area_id": "office",
     "labels": [],
     "platform": "template",
     "name": "Office circuit power",
@@ -971,6 +973,7 @@
   },
   "sensor.office_computer_power": {
     "entity_id": "sensor.office_computer_power",
+    "area_id": "office",
     "labels": [],
     "platform": "template",
     "name": "Office computer power",
@@ -992,6 +995,7 @@
   },
   "sensor.shower_flow": {
     "entity_id": "sensor.shower_flow",
+    "area_id": "bedroom",
     "labels": [],
     "platform": "template",
     "name": "Shower flow",
@@ -999,6 +1003,7 @@
   },
   "sensor.garden_tap_flow": {
     "entity_id": "sensor.garden_tap_flow",
+    "area_id": "garden",
     "labels": [],
     "platform": "template",
     "name": "Garden tap flow",

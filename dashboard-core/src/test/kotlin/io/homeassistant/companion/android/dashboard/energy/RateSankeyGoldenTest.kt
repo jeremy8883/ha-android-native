@@ -25,7 +25,7 @@ class RateSankeyGoldenTest {
             DynamicTest.dynamicTest(name) {
                 val expected = recorded.card(name)
                 val hass = expected.hass()
-                val grouped = name in GROUPED
+                val grouped = name !in FLAT
                 val sankey = if (name.startsWith("power")) {
                     hass.powerSankey(energy.prefs, grouped, grouped)
                 } else {
@@ -63,7 +63,7 @@ class RateSankeyGoldenTest {
     }
 
     private companion object {
-        /** The captures configured with `group_by_floor` and `group_by_area` (tools/golden/capture.mjs). */
-        val GROUPED = setOf("power-sankey", "power-sankey-charging", "water-flow-sankey", "water-flow-sankey-flowing")
+        /** The captures configured without `group_by_floor` and `group_by_area`, which default to true (capture.mjs). */
+        val FLAT = setOf("power-sankey-evening")
     }
 }

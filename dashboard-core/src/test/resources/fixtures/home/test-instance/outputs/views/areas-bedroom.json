@@ -215,6 +215,13 @@
           "name": {
             "type": "entity"
           }
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.shower_flow",
+          "name": {
+            "type": "entity"
+          }
         }
       ]
     }

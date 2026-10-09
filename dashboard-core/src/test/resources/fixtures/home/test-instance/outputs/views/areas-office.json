@@ -207,6 +207,20 @@
         },
         {
           "type": "tile",
+          "entity": "sensor.office_circuit_power",
+          "name": {
+            "type": "entity"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.office_computer_power",
+          "name": {
+            "type": "entity"
+          }
+        },
+        {
+          "type": "tile",
           "entity": "binary_sensor.office_occupancy",
           "name": {
             "type": "entity"

@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-09T06:40:43.799Z",
+  "capture_date": "2026-10-09T10:27:59.799Z",
   "user": {
     "name": "Golden Viewer",
     "is_admin": false
@@ -147,8 +147,8 @@
     },
     {
       "path": "inputs/entities.json",
-      "bytes": 28858,
-      "sha256": "87ea542ac44ee62cfeb40ced76c2db97c155d4eef24afcf007d1805b7d475b0b"
+      "bytes": 28985,
+      "sha256": "34d999c77f2fd580140e9120fc6539b1cedf1274fbf60013f28a8718cdb3463c"
     },
     {
       "path": "inputs/floors.json",
@@ -197,8 +197,8 @@
     },
     {
       "path": "inputs/states.json",
-      "bytes": 95159,
-      "sha256": "73ceb08a4e64a79841fbd960f919ce0cb508454af5dfaf972cf2c5c9132c4970"
+      "bytes": 95173,
+      "sha256": "93f49a5faddccce7d2e038365eed28773682c10110b772f7dd1e6dd858321449"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -267,13 +267,13 @@
     },
     {
       "path": "outputs/entity-display.json",
-      "bytes": 73526,
-      "sha256": "ef4cdc07a899ba7a89d4eaf3335209689ecb0dd7f8f526eff42c55ada576eb8d"
+      "bytes": 74749,
+      "sha256": "6adb5d98dc1e645cbc9b7339be6e299b1f4f0f7f27a360d0320dc445ca0317a2"
     },
     {
       "path": "outputs/expanded.json",
-      "bytes": 67163,
-      "sha256": "acf0a4de015bd8c6caa2a255d77efb3398aa91856345f0b2b6a2d7861262ea51"
+      "bytes": 68077,
+      "sha256": "8aa708e2533a21a348fc26f6e138381641c18797599489b2e88304445cc50ceb"
     },
     {
       "path": "outputs/panels/climate.json",
@@ -302,8 +302,8 @@
     },
     {
       "path": "outputs/views/areas-bedroom.json",
-      "bytes": 5112,
-      "sha256": "a79c94991bc1fe553d01e90ae4dc79a019046ed885fd51b409fab224cd224526"
+      "bytes": 5262,
+      "sha256": "fc68fad830ff48e4a46fb3c4848bc14835a3bade9d78cf8cea025b1792767694"
     },
     {
       "path": "outputs/views/areas-garage.json",
@@ -312,8 +312,8 @@
     },
     {
       "path": "outputs/views/areas-garden.json",
-      "bytes": 4161,
-      "sha256": "9e38a2f37639281b08468dafef37b9973f815cecb1817073b759eeae1539fe41"
+      "bytes": 4315,
+      "sha256": "eb0282ba03b2640d1351c91652c3895d864c6e8f4c0df56338a116d6e8c432e5"
     },
     {
       "path": "outputs/views/areas-hallway.json",
@@ -322,8 +322,8 @@
     },
     {
       "path": "outputs/views/areas-kitchen.json",
-      "bytes": 4837,
-      "sha256": "e566dcf644bd523d8ec4d5fc69e308408c5dc4203e401df4e8a8c2ed65329a08"
+      "bytes": 4988,
+      "sha256": "ded57db395cea28ee581025e1e54766638443a4948ba29e3cf950688a6a338c7"
     },
     {
       "path": "outputs/views/areas-living_room.json",
@@ -332,8 +332,8 @@
     },
     {
       "path": "outputs/views/areas-office.json",
-      "bytes": 4864,
-      "sha256": "cc23d5d3d6d2c4a203eab1ea4ee85a0a1eff71011ebff924f2ac7ddb3e8c2d33"
+      "bytes": 5183,
+      "sha256": "7a60c27f88b51af173da51a75e92901e2c67d4efed036310f6790de81084cbed"
     },
     {
       "path": "outputs/views/media-players.json",
@@ -372,8 +372,8 @@
     },
     {
       "path": "ws/config-entity_registry-list_for_display.json",
-      "bytes": 23976,
-      "sha256": "644c87d8ba5c2114b8a9beb9be96e6f380f91b018adfaa6b019700228d5cfdbf"
+      "bytes": 24098,
+      "sha256": "96977b91d4fcac1996496be5ca5dab2cc16bcd965133d015cb0f4740e49b430a"
     },
     {
       "path": "ws/config-floor_registry-list.json",
@@ -442,8 +442,8 @@
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 106077,
-      "sha256": "bdb6d834961cf09bfc72dd6a9729175e4b548edac29480a1768984dd3197d0c5"
+      "bytes": 106091,
+      "sha256": "d4786b652761806eec1db787550db79799dc2988c9a617eab2afa95c6f55267e"
     },
     {
       "path": "ws/manifest-get-frontend.json",

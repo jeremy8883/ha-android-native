@@ -56,8 +56,9 @@ private fun EnergySankeyCard(
     interactions: CardInteractions,
     modifier: Modifier = Modifier,
 ) {
-    val groupByFloor = card.json.boolean("group_by_floor") == true
-    val groupByArea = card.json.boolean("group_by_area") == true
+    // Grouped unless the card says otherwise (DEFAULT_CONFIG)
+    val groupByFloor = card.json.boolean("group_by_floor") != false
+    val groupByArea = card.json.boolean("group_by_area") != false
     val spec = SankeySpec(
         format = { snapshot, _ -> { value -> snapshot.formats.amount(value, KWH) } },
         data = { snapshot, data -> snapshot.energySankey(data, groupByFloor, groupByArea) },
@@ -76,8 +77,9 @@ private fun WaterSankeyCard(
     interactions: CardInteractions,
     modifier: Modifier = Modifier,
 ) {
-    val groupByFloor = card.json.boolean("group_by_floor") == true
-    val groupByArea = card.json.boolean("group_by_area") == true
+    // Grouped unless the card says otherwise (DEFAULT_CONFIG)
+    val groupByFloor = card.json.boolean("group_by_floor") != false
+    val groupByArea = card.json.boolean("group_by_area") != false
     val spec = SankeySpec(
         format = { snapshot, data -> { value -> snapshot.formats.amount(value, data.waterUnit) } },
         data = { snapshot, data -> snapshot.waterSankey(data, groupByFloor, groupByArea) },
@@ -96,8 +98,9 @@ private fun PowerSankeyCard(
     interactions: CardInteractions,
     modifier: Modifier = Modifier,
 ) {
-    val groupByFloor = card.json.boolean("group_by_floor") == true
-    val groupByArea = card.json.boolean("group_by_area") == true
+    // Grouped unless the card says otherwise (DEFAULT_CONFIG)
+    val groupByFloor = card.json.boolean("group_by_floor") != false
+    val groupByArea = card.json.boolean("group_by_area") != false
     val spec = SankeySpec(
         format = { snapshot, _ -> { value -> snapshot.formats.powerShort(value) } },
         data = { snapshot, data -> snapshot.powerSankey(data.prefs, groupByFloor, groupByArea) },
@@ -117,8 +120,9 @@ private fun WaterFlowSankeyCard(
     interactions: CardInteractions,
     modifier: Modifier = Modifier,
 ) {
-    val groupByFloor = card.json.boolean("group_by_floor") == true
-    val groupByArea = card.json.boolean("group_by_area") == true
+    // Grouped unless the card says otherwise (DEFAULT_CONFIG)
+    val groupByFloor = card.json.boolean("group_by_floor") != false
+    val groupByArea = card.json.boolean("group_by_area") != false
     val spec = SankeySpec(
         format = { snapshot, _ ->
             val metric = snapshot.config.unitSystem["length"] == METRIC_LENGTH

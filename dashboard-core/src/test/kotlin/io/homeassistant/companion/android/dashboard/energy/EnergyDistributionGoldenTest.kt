@@ -31,10 +31,12 @@ class EnergyDistributionGoldenTest {
             assertEquals(expected.string("batterySoc")?.ifEmpty { null }, model.battery?.stateOfCharge)
             assertEquals(expected["waterBelow"].toString() == "true", model.waterBelow)
             assertRing(expected.objects("ring").associate { it.string("class") to it.string("dasharray") }, model)
-            assertEquals(
-                expected.objects("flows").associate { FLOW_CLASSES.getValue(it.string("class")!!) to it.string("dur") },
-                model.flows.mapValues { (_, seconds) -> "${seconds.jsString()}s" },
-            )
+            // Durations to the last bit can differ by the order sums are added in
+            val flows = expected.objects("flows").associate {
+                FLOW_CLASSES.getValue(it.string("class")!!) to it.string("dur")!!.removeSuffix("s").toDouble()
+            }
+            assertEquals(flows.keys, model.flows.keys)
+            flows.forEach { (flow, seconds) -> assertEquals(seconds, model.flows.getValue(flow), TOLERANCE, "$flow") }
         }
     }
 
@@ -52,9 +54,6 @@ class EnergyDistributionGoldenTest {
             assertEquals(dash, actual.getValue(cls!!) * CIRCUMFERENCE, TOLERANCE, "ring $cls")
         }
     }
-
-    /** JavaScript's shortest representation of a number. */
-    private fun Double.jsString(): String = if (this == Math.floor(this) && !isInfinite()) toLong().toString() else toString()
 
     private companion object {
         const val CIRCUMFERENCE = 238.76104

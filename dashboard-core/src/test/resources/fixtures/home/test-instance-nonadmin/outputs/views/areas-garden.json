@@ -200,6 +200,13 @@
         },
         {
           "type": "tile",
+          "entity": "sensor.garden_tap_flow",
+          "name": {
+            "type": "entity"
+          }
+        },
+        {
+          "type": "tile",
           "entity": "switch.garden_irrigation",
           "name": {
             "type": "entity"

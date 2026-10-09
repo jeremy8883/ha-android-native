@@ -1,5 +1,5 @@
 {
-  "now": "2026-10-09T06:40:40.460Z",
+  "now": "2026-10-09T10:27:56.127Z",
   "locale": {
     "language": "en",
     "number_format": "language",
@@ -329,7 +329,7 @@
     "sensor.sun_next_dawn": {
       "icon": "mdi:sun-clock",
       "state": "October 10, 2026 at 5:22 AM",
-      "secondary": "Tomorrow",
+      "secondary": "In 19 hours",
       "names": {
         "default": "Sun Next dawn",
         "entity": "Next dawn",
@@ -342,7 +342,7 @@
     "sensor.sun_next_dusk": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 5:33 PM",
-      "secondary": "In 11 hours",
+      "secondary": "In 7 hours",
       "names": {
         "default": "Sun Next dusk",
         "entity": "Next dusk",
@@ -355,7 +355,7 @@
     "sensor.sun_next_midnight": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 11:27 PM",
-      "secondary": "In 17 hours",
+      "secondary": "In 13 hours",
       "names": {
         "default": "Sun Next midnight",
         "entity": "Next midnight",
@@ -368,7 +368,7 @@
     "sensor.sun_next_noon": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 11:27 AM",
-      "secondary": "In 5 hours",
+      "secondary": "In 1 hour",
       "names": {
         "default": "Sun Next noon",
         "entity": "Next noon",
@@ -381,7 +381,7 @@
     "sensor.sun_next_rising": {
       "icon": "mdi:sun-clock",
       "state": "October 10, 2026 at 5:57 AM",
-      "secondary": "Tomorrow",
+      "secondary": "In 19 hours",
       "names": {
         "default": "Sun Next rising",
         "entity": "Next rising",
@@ -394,7 +394,7 @@
     "sensor.sun_next_setting": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 4:59 PM",
-      "secondary": "In 10 hours",
+      "secondary": "In 7 hours",
       "names": {
         "default": "Sun Next setting",
         "entity": "Next setting",
@@ -432,8 +432,8 @@
     },
     "sensor.living_room_temperature": {
       "icon": "mdi:thermometer",
-      "state": "21.0 °C",
-      "secondary": "21.0 °C",
+      "state": "21.7 °C",
+      "secondary": "21.7 °C",
       "names": {
         "default": "Living room temperature",
         "entity": "Living room temperature",
@@ -445,8 +445,8 @@
     },
     "sensor.living_room_humidity": {
       "icon": "mdi:water-percent",
-      "state": "50%",
-      "secondary": "50%",
+      "state": "51%",
+      "secondary": "51%",
       "names": {
         "default": "Living room humidity",
         "entity": "Living room humidity",
@@ -510,8 +510,8 @@
     },
     "sensor.house_power": {
       "icon": "mdi:flash",
-      "state": "580 W",
-      "secondary": "580 W",
+      "state": "489 W",
+      "secondary": "489 W",
       "names": {
         "default": "House power",
         "entity": "House power",
@@ -523,8 +523,8 @@
     },
     "sensor.solar_power": {
       "icon": "mdi:flash",
-      "state": "1,928 W",
-      "secondary": "1,928 W",
+      "state": "2,979 W",
+      "secondary": "2,979 W",
       "names": {
         "default": "Solar power",
         "entity": "Solar power",
@@ -536,8 +536,8 @@
     },
     "sensor.grid_power": {
       "icon": "mdi:flash",
-      "state": "0 W",
-      "secondary": "0 W",
+      "state": "-629 W",
+      "secondary": "-629 W",
       "names": {
         "default": "Grid power",
         "entity": "Grid power",
@@ -549,8 +549,8 @@
     },
     "sensor.home_battery_power": {
       "icon": "mdi:flash",
-      "state": "-1,178 W",
-      "secondary": "-1,178 W",
+      "state": "-2,000 W",
+      "secondary": "-2,000 W",
       "names": {
         "default": "Home battery power",
         "entity": "Home battery power",
@@ -561,9 +561,9 @@
       }
     },
     "sensor.home_battery_charge": {
-      "icon": "mdi:battery-40",
-      "state": "46%",
-      "secondary": "46%",
+      "icon": "mdi:battery-80",
+      "state": "80%",
+      "secondary": "80%",
       "names": {
         "default": "Home battery charge",
         "entity": "Home battery charge",
@@ -581,8 +581,8 @@
         "default": "Fridge power",
         "entity": "Fridge power",
         "device": "",
-        "area": "",
-        "floor": "",
+        "area": "Kitchen",
+        "floor": "Ground floor",
         "device_entity": "Fridge power"
       }
     },
@@ -601,34 +601,34 @@
     },
     "sensor.office_circuit_power": {
       "icon": "mdi:flash",
-      "state": "15 W",
-      "secondary": "15 W",
+      "state": "160 W",
+      "secondary": "160 W",
       "names": {
         "default": "Office circuit power",
         "entity": "Office circuit power",
         "device": "",
-        "area": "",
-        "floor": "",
+        "area": "Office",
+        "floor": "First floor",
         "device_entity": "Office circuit power"
       }
     },
     "sensor.office_computer_power": {
       "icon": "mdi:flash",
-      "state": "3 W",
-      "secondary": "3 W",
+      "state": "120 W",
+      "secondary": "120 W",
       "names": {
         "default": "Office computer power",
         "entity": "Office computer power",
         "device": "",
-        "area": "",
-        "floor": "",
+        "area": "Office",
+        "floor": "First floor",
         "device_entity": "Office computer power"
       }
     },
     "sensor.gas_flow": {
       "icon": "mdi:pipe-valve",
-      "state": "1 m³/h",
-      "secondary": "1 m³/h",
+      "state": "0 m³/h",
+      "secondary": "0 m³/h",
       "names": {
         "default": "Gas flow",
         "entity": "Gas flow",
@@ -659,8 +659,8 @@
         "default": "Shower flow",
         "entity": "Shower flow",
         "device": "",
-        "area": "",
-        "floor": "",
+        "area": "Bedroom",
+        "floor": "First floor",
         "device_entity": "Shower flow"
       }
     },
@@ -672,8 +672,8 @@
         "default": "Garden tap flow",
         "entity": "Garden tap flow",
         "device": "",
-        "area": "",
-        "floor": "",
+        "area": "Garden",
+        "floor": "Outside",
         "device_entity": "Garden tap flow"
       }
     },
@@ -717,9 +717,9 @@
       }
     },
     "binary_sensor.kitchen_motion": {
-      "icon": "mdi:motion-sensor",
-      "state": "Detected",
-      "secondary": "Detected",
+      "icon": "mdi:motion-sensor-off",
+      "state": "Clear",
+      "secondary": "Clear",
       "names": {
         "default": "Kitchen motion",
         "entity": "Kitchen motion",
@@ -1033,9 +1033,9 @@
       }
     },
     "calendar.calendar_2": {
-      "icon": "mdi:calendar-check",
-      "state": "On",
-      "secondary": "On",
+      "icon": "mdi:calendar-blank",
+      "state": "Off",
+      "secondary": "Off",
       "names": {
         "default": "Calendar 2",
         "entity": "Calendar 2",
@@ -1710,8 +1710,8 @@
     },
     "sensor.total_energy_kwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "153.00 kWh",
-      "secondary": "153.00 kWh",
+      "state": "176.00 kWh",
+      "secondary": "176.00 kWh",
       "names": {
         "default": "Total energy 1",
         "entity": "Total energy 1",
@@ -1723,8 +1723,8 @@
     },
     "sensor.total_energy_mwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "0.08 MWh",
-      "secondary": "0.08 MWh",
+      "state": "0.09 MWh",
+      "secondary": "0.09 MWh",
       "names": {
         "default": "Total energy 2",
         "entity": "Total energy 2",
@@ -1736,8 +1736,8 @@
     },
     "sensor.total_gas_m3": {
       "icon": "mdi:meter-gas",
-      "state": "7.65 m³",
-      "secondary": "7.65 m³",
+      "state": "8.80 m³",
+      "secondary": "8.80 m³",
       "names": {
         "default": "Total gas 1",
         "entity": "Total gas 1",
@@ -1749,8 +1749,8 @@
     },
     "sensor.total_gas_ft3": {
       "icon": "mdi:meter-gas",
-      "state": "8.66 m³",
-      "secondary": "8.66 m³",
+      "state": "9.97 m³",
+      "secondary": "9.97 m³",
       "names": {
         "default": "Total gas 2",
         "entity": "Total gas 2",
@@ -2408,7 +2408,7 @@
         }
       },
       "name": "Living room temperature",
-      "secondary": "21.0 °C"
+      "secondary": "21.7 °C"
     },
     {
       "config": {
@@ -2419,7 +2419,7 @@
         }
       },
       "name": "Living room humidity",
-      "secondary": "50%"
+      "secondary": "51%"
     },
     {
       "config": {
@@ -2496,13 +2496,24 @@
     {
       "config": {
         "type": "tile",
+        "entity": "sensor.fridge_power",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Fridge power",
+      "secondary": "120 W"
+    },
+    {
+      "config": {
+        "type": "tile",
         "entity": "binary_sensor.kitchen_motion",
         "name": {
           "type": "entity"
         }
       },
       "name": "Kitchen motion",
-      "secondary": "Detected"
+      "secondary": "Clear"
     },
     {
       "config": {
@@ -2597,6 +2608,17 @@
     {
       "config": {
         "type": "tile",
+        "entity": "sensor.shower_flow",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Shower flow",
+      "secondary": "0 L/min"
+    },
+    {
+      "config": {
+        "type": "tile",
         "entity": "water_heater.demo_water_heater",
         "features": [
           {
@@ -2658,7 +2680,7 @@
         }
       },
       "name": "Total energy 1",
-      "secondary": "153.00 kWh"
+      "secondary": "176.00 kWh"
     },
     {
       "config": {
@@ -2669,7 +2691,7 @@
         }
       },
       "name": "Total gas 1",
-      "secondary": "7.65 m³"
+      "secondary": "8.80 m³"
     },
     {
       "config": {
@@ -2772,6 +2794,28 @@
       },
       "name": "Office temperature",
       "secondary": "22.8 °C"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.office_circuit_power",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Office circuit power",
+      "secondary": "160 W"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.office_computer_power",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Office computer power",
+      "secondary": "120 W"
     },
     {
       "config": {
@@ -2888,6 +2932,17 @@
       },
       "name": "Garden temperature",
       "secondary": "13.2 °C"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "sensor.garden_tap_flow",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Garden tap flow",
+      "secondary": "0 L/min"
     },
     {
       "config": {

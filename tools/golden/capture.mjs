@@ -357,7 +357,7 @@ const ENERGY_CARD_CAPTURES = [
   // fixtures cover what the time of the capture doesn't: discharging, grid charging, small consumers, water flowing
   {
     name: "power-sankey-evening",
-    config: { type: "power-sankey" },
+    config: { type: "power-sankey", group_by_floor: false, group_by_area: false },
     states: { "sensor.solar_power": "0", "sensor.grid_power": "400", "sensor.home_battery_power": "900", "sensor.fridge_power": "0.5", "sensor.washer_power": "0.4", "sensor.office_circuit_power": "15", "sensor.office_computer_power": "1" },
   },
   {

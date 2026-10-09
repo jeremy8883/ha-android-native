@@ -525,8 +525,8 @@
         "next_noon": "2026-10-09T11:27:49+00:00",
         "next_rising": "2026-10-10T05:57:05.237028+00:00",
         "next_setting": "2026-10-09T16:59:07.942658+00:00",
-        "elevation": 28.71,
-        "azimuth": 156.37,
+        "elevation": 29.79,
+        "azimuth": 161.93,
         "rising": true,
         "friendly_name": "Sun"
       },
@@ -669,7 +669,7 @@
     },
     {
       "entity_id": "sensor.living_room_temperature",
-      "state": "21.4",
+      "state": "21.7",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "°C",
@@ -687,7 +687,7 @@
     },
     {
       "entity_id": "sensor.living_room_humidity",
-      "state": "49",
+      "state": "51",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "%",
@@ -777,7 +777,7 @@
     },
     {
       "entity_id": "sensor.house_power",
-      "state": "328",
+      "state": "489",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -795,7 +795,7 @@
     },
     {
       "entity_id": "sensor.solar_power",
-      "state": "3000",
+      "state": "2979",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -813,7 +813,7 @@
     },
     {
       "entity_id": "sensor.grid_power",
-      "state": "-650",
+      "state": "-629",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -1058,7 +1058,7 @@
     },
     {
       "entity_id": "binary_sensor.kitchen_motion",
-      "state": "on",
+      "state": "off",
       "attributes": {
         "device_class": "motion",
         "friendly_name": "Kitchen motion"
@@ -1440,8 +1440,8 @@
       "entity_id": "camera.demo_camera",
       "state": "streaming",
       "attributes": {
-        "access_token": "16b4c8a8c5410402d7e29e4f743cbfa64e7b001d4065ce72c2b5bb393f4c1f6c",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera?token=16b4c8a8c5410402d7e29e4f743cbfa64e7b001d4065ce72c2b5bb393f4c1f6c",
+        "access_token": "7636abafb354897868bf37384877ef3c8f69886b6e974ca69bca42d19351a1ef",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera?token=7636abafb354897868bf37384877ef3c8f69886b6e974ca69bca42d19351a1ef",
         "friendly_name": "Demo camera",
         "supported_features": 3
       },
@@ -1458,8 +1458,8 @@
       "entity_id": "camera.demo_camera_png",
       "state": "streaming",
       "attributes": {
-        "access_token": "a3603bb91666ebe7b281eb09aa630c4ce32f08fadc2339dc1a814f66c4de739",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=a3603bb91666ebe7b281eb09aa630c4ce32f08fadc2339dc1a814f66c4de739",
+        "access_token": "fe1a9b82156aec6373839f4e38796c729a30c093237bfe6b3af98adaca195d2",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=fe1a9b82156aec6373839f4e38796c729a30c093237bfe6b3af98adaca195d2",
         "friendly_name": "Demo camera png",
         "supported_features": 3
       },
@@ -1476,8 +1476,8 @@
       "entity_id": "camera.demo_camera_without_stream",
       "state": "streaming",
       "attributes": {
-        "access_token": "2854bf0816c21d9a38e7bcf88075e15939ac70bf4e870408351f635264581436",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=2854bf0816c21d9a38e7bcf88075e15939ac70bf4e870408351f635264581436",
+        "access_token": "d8952fbcc8d3e4a6e756eeec9c4251a70c36084d8c5917ba86ccb6f0cc66f5eb",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=d8952fbcc8d3e4a6e756eeec9c4251a70c36084d8c5917ba86ccb6f0cc66f5eb",
         "friendly_name": "Demo camera without stream",
         "supported_features": 1
       },
@@ -2785,7 +2785,7 @@
     },
     {
       "entity_id": "sensor.total_energy_kwh",
-      "state": "173.5",
+      "state": "175.5",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "kWh",
@@ -2803,7 +2803,7 @@
     },
     {
       "entity_id": "sensor.total_energy_mwh",
-      "state": "0.0867500000000001",
+      "state": "0.0877500000000001",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "MWh",
@@ -2821,7 +2821,7 @@
     },
     {
       "entity_id": "sensor.total_gas_m3",
-      "state": "8.67500000000006",
+      "state": "8.77500000000006",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "m³",
@@ -2839,7 +2839,7 @@
     },
     {
       "entity_id": "sensor.total_gas_ft3",
-      "state": "9.825945767424",
+      "state": "9.939213153792",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "m³",

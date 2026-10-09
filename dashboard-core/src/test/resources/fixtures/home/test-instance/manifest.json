@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-09T10:05:02.110Z",
+  "capture_date": "2026-10-09T10:27:49.975Z",
   "user": {
     "name": "Dev",
     "is_admin": true
@@ -132,8 +132,8 @@
   "files": [
     {
       "path": "energy/data.json",
-      "bytes": 1697160,
-      "sha256": "4910330e07310114fa8b4d67902b91046b6d7193230692a8895351bc21ddbf88"
+      "bytes": 1735424,
+      "sha256": "0a28878194670a8c797a0757954c17d24ad3688ca681bd83b28f98d324621660"
     },
     {
       "path": "inputs/areas.json",
@@ -152,8 +152,8 @@
     },
     {
       "path": "inputs/entities.json",
-      "bytes": 28858,
-      "sha256": "87ea542ac44ee62cfeb40ced76c2db97c155d4eef24afcf007d1805b7d475b0b"
+      "bytes": 28985,
+      "sha256": "34d999c77f2fd580140e9120fc6539b1cedf1274fbf60013f28a8718cdb3463c"
     },
     {
       "path": "inputs/floors.json",
@@ -202,8 +202,8 @@
     },
     {
       "path": "inputs/states.json",
-      "bytes": 95170,
-      "sha256": "f5cc238c112e42f489cf331b1bda8cd71e3e76e8cc8c84c8190447e82ee6313b"
+      "bytes": 95171,
+      "sha256": "e5008f009e54a811ff867afd106c3c41366954eeabf13f5321b17e73fbeb471f"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -272,13 +272,13 @@
     },
     {
       "path": "outputs/entity-display.json",
-      "bytes": 73543,
-      "sha256": "5415a8732d766bd0e17916d4341876d849f592082f1d55865704f651ac00eb6f"
+      "bytes": 74749,
+      "sha256": "873d14c65344b67dd693ad93905d8d2ae4f42c28b624caf2943a36076d0ca4a1"
     },
     {
       "path": "outputs/expanded.json",
-      "bytes": 81069,
-      "sha256": "955cff6b40eaeff45415cb515f5f990ca2bcd1d07bac3ec3d02eec3c83623826"
+      "bytes": 81983,
+      "sha256": "28d507a4c67fb432bbd0142176b1415ec18ed6c2323d359775132c2b597d9f8a"
     },
     {
       "path": "outputs/panels/climate.json",
@@ -307,8 +307,8 @@
     },
     {
       "path": "outputs/views/areas-bedroom.json",
-      "bytes": 5274,
-      "sha256": "fd085c47023ff6d07612156d28a3beec6469ceda58386d26fb38954c8590d099"
+      "bytes": 5424,
+      "sha256": "a3605b10ac608caf5183f9b8ac886baa74bdd55122011eb2815483bc790818f0"
     },
     {
       "path": "outputs/views/areas-garage.json",
@@ -317,8 +317,8 @@
     },
     {
       "path": "outputs/views/areas-garden.json",
-      "bytes": 5295,
-      "sha256": "7b339e4cbb7a6e9209e548b92848984465a63ff5754a54170119c3b0ac44d095"
+      "bytes": 5449,
+      "sha256": "d7075d2402dd5e392780ff749be33acda9adbd8aea21255d9e3dd429781e0604"
     },
     {
       "path": "outputs/views/areas-hallway.json",
@@ -327,8 +327,8 @@
     },
     {
       "path": "outputs/views/areas-kitchen.json",
-      "bytes": 4999,
-      "sha256": "01635a26e580d2c8c371199ad5fc1ed0fc077e8bdb4ad7e510e4057b26e605a7"
+      "bytes": 5150,
+      "sha256": "5f0fbab62d10939b45a1f1dd0fafbbb472c8949c2f2ed033af5b708f4f509d5c"
     },
     {
       "path": "outputs/views/areas-living_room.json",
@@ -337,8 +337,8 @@
     },
     {
       "path": "outputs/views/areas-office.json",
-      "bytes": 5188,
-      "sha256": "fc76922c914627addbbb59bb75d2c2d97ecaf7b505170ea9b98ca75d64267427"
+      "bytes": 5507,
+      "sha256": "8b08223c93f63fbe48b7b1fe9d28da779f955c512b3fbabc6a11d8a4e6654cd0"
     },
     {
       "path": "outputs/views/media-players.json",
@@ -377,8 +377,8 @@
     },
     {
       "path": "ws/config-entity_registry-list_for_display.json",
-      "bytes": 23976,
-      "sha256": "644c87d8ba5c2114b8a9beb9be96e6f380f91b018adfaa6b019700228d5cfdbf"
+      "bytes": 24098,
+      "sha256": "96977b91d4fcac1996496be5ca5dab2cc16bcd965133d015cb0f4740e49b430a"
     },
     {
       "path": "ws/config-floor_registry-list.json",
@@ -447,8 +447,8 @@
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 106088,
-      "sha256": "8a874e108b003357495ef9b9a3f496f09583e769eaab194174e37fa34c9d75d1"
+      "bytes": 106089,
+      "sha256": "505b224e3a5c5b527349e855b67666ca0a08b81a6b7da6e6b06002d749c73fc2"
     },
     {
       "path": "ws/manifest-get-frontend.json",

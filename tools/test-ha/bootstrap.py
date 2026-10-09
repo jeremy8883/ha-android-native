@@ -228,6 +228,13 @@ ENTITY_AREAS: dict[str, str] = {
     "sensor.office_temperature": "office",
     "water_heater.demo_water_heater": "garage",
     "binary_sensor.garage_door_contact": "garage",
+    # The energy devices' power and flow sensors, so the sankeys group them by floor and area: two floors, an
+    # area without a level (the garden is outside), and the washer left without an area
+    "sensor.fridge_power": "kitchen",
+    "sensor.office_circuit_power": "office",
+    "sensor.office_computer_power": "office",
+    "sensor.shower_flow": "bedroom",
+    "sensor.garden_tap_flow": "garden",
     "sensor.garage_battery": "garage",
     "timer.laundry": "garage",
     "switch.garden_irrigation": "garden",

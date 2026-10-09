@@ -203,6 +203,13 @@
         },
         {
           "type": "tile",
+          "entity": "sensor.fridge_power",
+          "name": {
+            "type": "entity"
+          }
+        },
+        {
+          "type": "tile",
           "entity": "binary_sensor.kitchen_motion",
           "name": {
             "type": "entity"
