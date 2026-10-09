@@ -7,6 +7,7 @@ import android.os.Build
 import android.provider.Settings
 import androidx.media3.datasource.DataSource
 import dagger.Binds
+import dagger.BindsOptionalOf
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,6 +44,7 @@ import io.homeassistant.companion.android.di.qualifiers.NamedOsVersion
 import io.homeassistant.companion.android.di.qualifiers.NamedSessionStorage
 import io.homeassistant.companion.android.di.qualifiers.NamedThemesStorage
 import io.homeassistant.companion.android.di.qualifiers.NamedWearStorage
+import io.homeassistant.companion.android.di.qualifiers.WebViewCookies
 import java.util.UUID
 import javax.inject.Singleton
 import kotlinx.coroutines.Dispatchers
@@ -186,6 +188,10 @@ internal abstract class DataModule {
 
     @Multibinds
     abstract fun bindOkHttpClientConfigurator(): Set<@JvmSuppressWildcards OkHttpConfigurator>
+
+    @BindsOptionalOf
+    @WebViewCookies
+    abstract fun optionalWebViewCookies(): Boolean
 }
 
 interface OkHttpConfigurator : (OkHttpClient.Builder) -> Unit

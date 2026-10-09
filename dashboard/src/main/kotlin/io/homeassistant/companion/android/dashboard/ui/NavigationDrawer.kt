@@ -41,6 +41,8 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
  * @param drawerState the drawer's state, which back closes (with Material's predictive back animation)
  * @param sidebar the panels, or why they couldn't be loaded, with [onRetry] to try again
  * @param onSwitchServer shows the server picker; `null` hides the entry (a single server)
+ * @param onOpenSettings opens the app's own settings, in place of the frontend's Settings and profile; `null` keeps
+ *   those
  * @param onOpen called with the path of the chosen entry
  */
 @Composable
@@ -49,6 +51,7 @@ internal fun NavigationDrawerContent(
     sidebar: Loadable<SidebarState>,
     selected: String?,
     onSwitchServer: (() -> Unit)? = null,
+    onOpenSettings: (() -> Unit)? = null,
     onRetry: () -> Unit = {},
     onOpen: (String) -> Unit,
 ) {
@@ -101,20 +104,24 @@ internal fun NavigationDrawerContent(
         }
         HorizontalDivider()
         Column(modifier = Modifier.padding(vertical = HADimens.SPACE2)) {
-            if (sidebar.valueOrNull?.isAdmin == true) {
-                Entry(CONFIG_PANEL, stringResource(R.string.native_dashboard_settings), SETTINGS_ICON)
+            @Composable
+            fun Action(label: String, icon: String, onClick: () -> Unit) = NavigationDrawerItem(
+                label = { Text(label, style = HATextStyle.Body) },
+                icon = { DashboardIcon(icon, colors.colorTextSecondary, Modifier.size(HASize.X2L)) },
+                selected = false,
+                onClick = onClick,
+                colors = itemColors,
+                modifier = Modifier.padding(horizontal = HADimens.SPACE2),
+            )
+            if (onOpenSettings != null) {
+                Action(stringResource(R.string.native_dashboard_settings), SETTINGS_ICON, onOpenSettings)
+            } else {
+                if (sidebar.valueOrNull?.isAdmin == true) {
+                    Entry(CONFIG_PANEL, stringResource(R.string.native_dashboard_settings), SETTINGS_ICON)
+                }
+                Entry(PROFILE_PANEL, stringResource(R.string.native_dashboard_profile), PROFILE_ICON)
             }
-            Entry(PROFILE_PANEL, stringResource(R.string.native_dashboard_profile), PROFILE_ICON)
-            onSwitchServer?.let { switch ->
-                NavigationDrawerItem(
-                    label = { Text(stringResource(R.string.native_dashboard_switch_server), style = HATextStyle.Body) },
-                    icon = { DashboardIcon(SERVER_ICON, colors.colorTextSecondary, Modifier.size(HASize.X2L)) },
-                    selected = false,
-                    onClick = switch,
-                    colors = itemColors,
-                    modifier = Modifier.padding(horizontal = HADimens.SPACE2),
-                )
-            }
+            onSwitchServer?.let { Action(stringResource(R.string.native_dashboard_switch_server), SERVER_ICON, it) }
         }
         Spacer(modifier = Modifier.padding(bottom = HADimens.SPACE2))
     }

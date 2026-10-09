@@ -115,11 +115,23 @@ Update it in the same commit as the work it describes.
 - [x] Action failures like upstream: translated exception messages, 10s message, haptic, toggles flip back after 2s without a state update
 - [x] Offline, controls stay enabled and a failed action says so (decided 2026-10-09, instead of disabling them)
 
+### The dashboard app (`:dashboard-app`, `net.jeremycasey.homeassistantnative`)
+Decided 2026-10-09: the native dashboards are an app of their own, installed alongside the companion app (which keeps notifications, location and setup), also meant for family members who only control devices. It lives in this fork and builds on `:dashboard` and `:common`; the companion app's own module (`:app`) goes back to upstream.
+- [x] Module, own app id, Hilt bindings `:common` needs (`AppModule`), no WebView: HTTP calls opt out of WebView cookies (`@WebViewCookies` in `:common`), so starting the app doesn't load the WebView
+- [x] Native login through Home Assistant's login API (`login/`): server discovery (copy of the companion app's `HomeAssistantSearcher`) or an address, the server's login forms (password, two-factor, trusted networks), then the code exchanged as the companion app does; no mobile device registration
+- [x] Drawer Settings entry: servers (switch, add, log out, which revokes the session), server switcher sheet
+- [x] Pages the dashboards don't show open in the companion app (`homeassistant://navigate`), or the browser without it
+- [ ] Revert the native dashboard integration in `:app` (one new commit, no history rewrite)
+- [ ] Edit a server's name and addresses (internal URL, home networks) in Settings
+- [ ] Client certificates (mTLS) in the native login: pick one with `KeyChain` when the server asks
+- [ ] Sign in with the browser for servers behind a web sign-in page (Cloudflare Access, Authelia...); ideally detect when it's needed and offer it automatically
+- [ ] WebView fallback for cards not drawn natively yet, created only when a dashboard has one
+- [ ] Widgets and notification-drawer actions, ported from the companion app
+
 ### Later — Startup time
-- [ ] Cold launch straight to the dashboard: the splash is held by `LaunchViewModel` until the session is read (`getServerConnectedAndRegistered`, ~130–240ms in a release-like build) and the network reports READY; `CONNECTING` keeps the splash and `UNAVAILABLE` shows NetworkUnavailable instead of the dashboard
-- [ ] Don't start Chromium at launch: `CookieJarCookieManagerShim` (`:common`, OkHttp cookies backed by `CookieManager`) and `configureWebViewDebugging` both load the WebView before any web page is opened
+- [ ] Cold launch straight to the dashboard: the dashboard app has no splash wait (it starts from the cache); measure it on a release-like build on a real device
+- [x] Don't start Chromium at launch (dashboard app: no WebView cookies)
 - [ ] Baseline profile (none in the project yet)
-- [ ] Measure on a release-like build on a real device and network; debug builds are about 3x slower to start
 
 ### Step 7 — Tests
 - [ ] JSON fixtures (real dashboards) and deserialization

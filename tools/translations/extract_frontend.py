@@ -22,6 +22,7 @@ SUBTREES = [
     "ui.panel.lovelace.components",
     "ui.panel.lovelace.editor.action-editor.actions",
     "ui.panel.lovelace.strategy",
+    "ui.panel.page-authorize",
 ]
 
 OUT_DIR = Path(__file__).resolve().parents[2] / "dashboard-core/src/main/resources/translations"

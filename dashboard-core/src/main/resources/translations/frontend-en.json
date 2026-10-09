@@ -469,6 +469,117 @@
       "other_devices": "Other devices"
      }
     }
+   },
+   "page-authorize": {
+    "abort_intro": "Login aborted",
+    "authorizing": "Log in to your Home Assistant instance",
+    "authorizing_app": "You're about to give the Home Assistant Companion app for {app} access to your Home Assistant instance.",
+    "authorizing_client": "You're about to give {clientId} access to your Home Assistant instance.",
+    "forgot_password": "Forgot password?",
+    "form": {
+     "error": "Error: {error}",
+     "error_required": "Required",
+     "hide_password": "Hide password",
+     "next": "Log in",
+     "previous": "Previous",
+     "providers": {
+      "command_line": {
+       "abort": {
+        "login_expired": "Session expired, please log in again."
+       },
+       "error": {
+        "invalid_auth": "Invalid username or password",
+        "invalid_code": "Invalid authentication code"
+       },
+       "step": {
+        "init": {
+         "data": {
+          "password": "Password",
+          "username": "Username"
+         }
+        },
+        "mfa": {
+         "data": {
+          "code": "Two-factor authentication code"
+         },
+         "description": "Open the {mfa_module_name} on your device to view your two-factor authentication code."
+        }
+       }
+      },
+      "homeassistant": {
+       "abort": {
+        "login_expired": "Session expired, please log in again."
+       },
+       "error": {
+        "invalid_auth": "Invalid username or password",
+        "invalid_code": "Invalid authentication code"
+       },
+       "step": {
+        "init": {
+         "data": {
+          "password": "Password",
+          "username": "Username"
+         }
+        },
+        "mfa": {
+         "data": {
+          "code": "Two-factor authentication code"
+         },
+         "description": "Open the {mfa_module_name} on your device to view your two-factor authentication code."
+        }
+       }
+      },
+      "legacy_api_password": {
+       "abort": {
+        "login_expired": "Session expired, please log in again.",
+        "no_api_password_set": "You don't have an API password configured."
+       },
+       "error": {
+        "invalid_auth": "Invalid API password",
+        "invalid_code": "Invalid authentication code"
+       },
+       "step": {
+        "init": {
+         "data": {
+          "password": "API password"
+         },
+         "description": "Please input the API password in your HTTP configuration:"
+        },
+        "mfa": {
+         "data": {
+          "code": "Two-factor authentication code"
+         },
+         "description": "Open the {mfa_module_name} on your device to view your two-factor authentication code."
+        }
+       }
+      },
+      "trusted_networks": {
+       "abort": {
+        "not_allowed": "Your computer is not allowed."
+       },
+       "step": {
+        "init": {
+         "data": {
+          "user": "User"
+         },
+         "description": "Please select a user you want to log in as:"
+        }
+       }
+      }
+     },
+     "show_password": "Show password",
+     "start_over": "Start over",
+     "unknown_error": "Something went wrong",
+     "working": "Please wait"
+    },
+    "help": "Help",
+    "initializing": "Initializing",
+    "just_checking": "Just checking",
+    "other_options": "Other login options",
+    "pick_auth_provider": "Or log in with",
+    "store_token": "Keep me logged in",
+    "welcome_home": "Welcome home!",
+    "who_is_logging_in": "Who is logging in?"
    }
   }
  }

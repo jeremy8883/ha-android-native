@@ -8,6 +8,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import io.homeassistant.companion.android.common.BuildConfig
 import io.homeassistant.companion.android.common.util.kotlinJsonMapper
 import io.homeassistant.companion.android.di.OkHttpConfigurator
+import io.homeassistant.companion.android.di.qualifiers.WebViewCookies
+import java.util.Optional
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -33,6 +35,7 @@ class HomeAssistantApis @Inject constructor(
     private val tlsHelper: TLSHelper,
     @ApplicationContext private val appContext: Context,
     private val configurators: Set<@JvmSuppressWildcards OkHttpConfigurator>,
+    @param:WebViewCookies private val webViewCookies: Optional<Boolean>,
 ) {
     companion object {
         private const val LOCAL_HOST = "http://localhost/"
@@ -93,7 +96,7 @@ class HomeAssistantApis @Inject constructor(
         }
 
         val isWear = appContext.packageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)
-        if (!isWear) {
+        if (!isWear && webViewCookies.orElse(true)) {
             var cookieManager: CookieManager? = null
             try {
                 cookieManager = CookieManager.getInstance()

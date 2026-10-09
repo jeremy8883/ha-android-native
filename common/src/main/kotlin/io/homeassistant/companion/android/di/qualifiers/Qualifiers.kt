@@ -86,3 +86,11 @@ annotation class LocationTrackingSupport
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class IsAutomotive
+
+/**
+ * Qualifier for an optional [Boolean] dependency telling whether HTTP calls share the WebView's cookies; when unbound
+ * they do. An app that shows no WebView can bind it to `false`, so starting it doesn't load the WebView.
+ */
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class WebViewCookies

@@ -56,6 +56,7 @@ internal fun DashboardScreen(
     request: NativeDashboardRequest = NativeDashboardRequest(),
     onSwitchServer: (() -> Unit)? = null,
     web: NativeDashboardWeb? = null,
+    onOpenSettings: (() -> Unit)? = null,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val selectedDashboard by viewModel.selectedDashboardUrlPath.collectAsStateWithLifecycle()
@@ -91,6 +92,7 @@ internal fun DashboardScreen(
                     selected = if (web?.visible == true) web.panel else selectedDashboard,
                     selectsDefault = !webVisible,
                     onSwitchServer = onSwitchServer,
+                    onOpenSettings = onOpenSettings,
                 )
             },
             web = web,
@@ -175,6 +177,7 @@ private fun DashboardDrawer(
     selected: String?,
     selectsDefault: Boolean,
     onSwitchServer: (() -> Unit)?,
+    onOpenSettings: (() -> Unit)?,
 ) {
     val sidebar by viewModel.sidebar.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
@@ -184,6 +187,7 @@ private fun DashboardDrawer(
         selected = selected ?: sidebar.valueOrNull?.defaultPanel?.takeIf { selectsDefault },
         onRetry = viewModel::onRetry,
         onSwitchServer = onSwitchServer?.let { switch -> closingDrawer(drawerState, scope, switch) },
+        onOpenSettings = onOpenSettings?.let { open -> closingDrawer(drawerState, scope, open) },
         onOpen = closingDrawer(drawerState, scope, viewModel::onOpenPath),
     )
 }

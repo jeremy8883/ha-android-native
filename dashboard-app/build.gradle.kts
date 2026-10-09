@@ -26,4 +26,10 @@ android {
 dependencies {
     implementation(project(":common"))
     implementation(project(":dashboard"))
+    implementation(project(":dashboard-core"))
+
+    implementation(libs.activity.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.navigation.compose)
+    implementation(libs.kotlinx.coroutines.core)
 }

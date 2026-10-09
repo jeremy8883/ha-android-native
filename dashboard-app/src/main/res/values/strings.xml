@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">Home Assistant Native</string>
+    <string name="login_title">Connect to Home Assistant</string>
+    <string name="login_found">Found on your network</string>
+    <string name="login_searching">Searching your network…</string>
+    <string name="login_search_failed">Couldn\'t search your network. Enter your server\'s address instead.</string>
+    <string name="login_address">Server address</string>
+    <string name="login_address_example">homeassistant.local:8123</string>
+    <string name="login_connect">Connect</string>
+    <string name="login_signing_in">Signing in…</string>
+    <string name="login_error_address">Enter an address such as homeassistant.local:8123</string>
+    <string name="login_error_unreachable">Couldn\'t reach Home Assistant at this address</string>
+    <string name="login_error_onboarding">This Home Assistant hasn\'t finished its setup yet</string>
+    <string name="login_error_server">Home Assistant refused: %1$s</string>
+    <string name="login_error_unexpected">This doesn\'t look like a Home Assistant server, or it asks for a sign-in this app doesn\'t support yet</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_servers">Servers</string>
+    <string name="settings_active">Current</string>
+    <string name="settings_add_server">Add server</string>
+    <string name="settings_log_out">Log out</string>
+    <string name="settings_log_out_title">Log out of %1$s?</string>
+    <string name="settings_log_out_text">This app forgets the server. The companion app and other devices stay logged in.</string>
 </resources>
