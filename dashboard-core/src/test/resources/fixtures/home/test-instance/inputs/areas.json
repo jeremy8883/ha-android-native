@@ -76,5 +76,18 @@
     "temperature_entity_id": null,
     "created_at": 1791433963.283776,
     "modified_at": 1791433963.283777
+  },
+  "hallway": {
+    "aliases": [],
+    "area_id": "hallway",
+    "floor_id": null,
+    "humidity_entity_id": null,
+    "icon": "mdi:door",
+    "labels": [],
+    "name": "Hallway",
+    "picture": null,
+    "temperature_entity_id": null,
+    "created_at": 1791517910.61028,
+    "modified_at": 1791517910.610284
   }
 }

@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-08T09:42:43.829Z",
+  "capture_date": "2026-10-09T03:52:12.364Z",
   "user": {
     "name": "Golden Viewer",
     "is_admin": false
@@ -76,11 +76,31 @@
       "ok": true
     },
     {
+      "what": "view areas-hallway == hui-view._config (+type)",
+      "ok": true
+    },
+    {
       "what": "view media-players == hui-view._config (+type)",
       "ok": true
     },
     {
       "what": "view other-devices == hui-view._config (+type)",
+      "ok": true
+    },
+    {
+      "what": "panel light == ha-panel-light._lovelace.config.views[0]",
+      "ok": true
+    },
+    {
+      "what": "panel climate == ha-panel-climate._lovelace.config.views[0]",
+      "ok": true
+    },
+    {
+      "what": "panel security == ha-panel-security._lovelace.config.views[0]",
+      "ok": true
+    },
+    {
+      "what": "panel maintenance == ha-panel-maintenance._lovelace.config.views[0]",
       "ok": true
     }
   ],
@@ -88,18 +108,18 @@
   "files": [
     {
       "path": "inputs/areas.json",
-      "bytes": 2046,
-      "sha256": "bb11c79870ca61993ef5541d8438236f604bec8e0683b3f7716e841796ba8dc1"
+      "bytes": 2359,
+      "sha256": "3161dd0d54dc893837b5c749b7f86dcdfe348758c2d281decf0b102ba9ccf2bb"
     },
     {
       "path": "inputs/config.json",
       "bytes": 4097,
-      "sha256": "9175b9ad2f66e015ef6f23cd7a58cd2d2a1ce29108c478c6aac48409b5fd7268"
+      "sha256": "1b25f8aad26294c92e621eea6e9a7ed7c961048f408e2b79c59f686d10ab4beb"
     },
     {
       "path": "inputs/devices.json",
-      "bytes": 53151,
-      "sha256": "357d2176c07050628d8751531914ce4e1824ec880a8c959c9902ab9ee63a2f15"
+      "bytes": 53148,
+      "sha256": "cbcfdf644b4fe23d02ddf95adfddafc8218ad50b375ca57accb4d7b28d16e1b9"
     },
     {
       "path": "inputs/entities.json",
@@ -133,13 +153,13 @@
     },
     {
       "path": "inputs/localize.json",
-      "bytes": 1492,
-      "sha256": "23c720fe90a7018f057d78e23e31aa2b15969efbf6c0a620e4fcac6bbd745ba7"
+      "bytes": 2408,
+      "sha256": "143bfd9e95f023ea076122b4a52d5b0ec14377ba8e692076a98338b5a109dd24"
     },
     {
       "path": "inputs/panels.json",
       "bytes": 4660,
-      "sha256": "a8411b5ff87d4253bfd49461a35e52397784cc111fd711546f17fd4b1be55355"
+      "sha256": "be31032b553ae06f672e7409e34e52ebe6979ac9291a1c0b6b99d91d91aeeb74"
     },
     {
       "path": "inputs/selectedLanguage.json",
@@ -153,8 +173,8 @@
     },
     {
       "path": "inputs/states.json",
-      "bytes": 89372,
-      "sha256": "77e66516fda35f52a8a2500d8dbaa3eb0c07f1fec21698b381e81a8d4f2a8330"
+      "bytes": 89373,
+      "sha256": "acf4960f41323574ff2905c1cc746f27a4356610f6f657446c5a6d1627605b1e"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -188,18 +208,38 @@
     },
     {
       "path": "outputs/dashboard.json",
-      "bytes": 1964,
-      "sha256": "7c57c4e1e9ba93c81bc58fd9d29be00db99f283f9c9b970c0dbb24b0ae2e3051"
+      "bytes": 2168,
+      "sha256": "15ca26919e428160cba93a6c7da514abb5ced8afbb978942e779d0361b1293a4"
     },
     {
       "path": "outputs/entity-display.json",
-      "bytes": 69711,
-      "sha256": "434b1bb83b0c96b276d93ca4af2194dbbc4019f53f128f762b0e6276215ccbfc"
+      "bytes": 69654,
+      "sha256": "d36a98a484d90ee4a96856ee50cfa00e10155d22854b047e4ebfed8e956f1c41"
     },
     {
       "path": "outputs/expanded.json",
-      "bytes": 65397,
-      "sha256": "a522c470d198df624711ccd4b6af1caf0ce7d80466ae10e03c0a058d624f4d65"
+      "bytes": 66464,
+      "sha256": "b3f0c0ff0d81ae6fda2c005092247ee51b927255557bf221d03e24590f3e896d"
+    },
+    {
+      "path": "outputs/panels/climate.json",
+      "bytes": 6560,
+      "sha256": "97cdac631628fb7e86217e771eff5637c3e72c9a764a60748653baf528636eb7"
+    },
+    {
+      "path": "outputs/panels/light.json",
+      "bytes": 14149,
+      "sha256": "f2b7230e2a97c227dac84fb75714687a3f23d2f796f12fe759ab426351f9fd32"
+    },
+    {
+      "path": "outputs/panels/maintenance.json",
+      "bytes": 2030,
+      "sha256": "33d6d245dfa8557e23bbfd4ab871b6d5b938fa25b069ab92ded7712e28ba9843"
+    },
+    {
+      "path": "outputs/panels/security.json",
+      "bytes": 5333,
+      "sha256": "f982bf14aad49dc752146eef8056a24f89a9a32d4eeb12f2016f571bc88704de"
     },
     {
       "path": "outputs/sections/overview/0-common-controls.json",
@@ -218,18 +258,23 @@
     },
     {
       "path": "outputs/views/areas-garden.json",
-      "bytes": 6336,
-      "sha256": "f2b59fbda666f6c57a2dac15bc4bc0463b6cc0fe60dc3a3d8b34da9fd8ab5ac5"
+      "bytes": 4161,
+      "sha256": "9e38a2f37639281b08468dafef37b9973f815cecb1817073b759eeae1539fe41"
+    },
+    {
+      "path": "outputs/views/areas-hallway.json",
+      "bytes": 2881,
+      "sha256": "7a68d6a11767a1b6284114eac88be9e4cdccbfb5576d42777cd436d62a79573c"
     },
     {
       "path": "outputs/views/areas-kitchen.json",
       "bytes": 4837,
-      "sha256": "e566dcf644bd523d8ec4d5fc69e308408c5dc4203e401df4e8a8c2ed65329a08"
+      "sha256": "24af5b4d0700ff0c9e7c4fb4fb95cd60b862227d375cb804e7a06d3f72bb5475"
     },
     {
       "path": "outputs/views/areas-living_room.json",
-      "bytes": 7131,
-      "sha256": "4245ad8d42e16d7d212d14a2191f4d8b1054f4049fd69763d75d3eeecf38472a"
+      "bytes": 6938,
+      "sha256": "4534d41af029c4c1bc5cfd5dceec0b5cc72f626b99f6655555ad4600f1bfbec3"
     },
     {
       "path": "outputs/views/areas-office.json",
@@ -248,8 +293,8 @@
     },
     {
       "path": "outputs/views/overview.json",
-      "bytes": 10449,
-      "sha256": "476c18cd21040a41fc49b478d9a4f3284c01f0e0d578822b1049f74801b5bbd4"
+      "bytes": 10834,
+      "sha256": "9a37914c37e6c600bf4f4e3137805d8488fdc5e199b331837e656dc3940fa6e0"
     },
     {
       "path": "ws/auth-current_user.json",
@@ -263,13 +308,13 @@
     },
     {
       "path": "ws/config-area_registry-list.json",
-      "bytes": 2213,
-      "sha256": "5f93217c4ccb6b60f18257f4ef2ed81c02306e4d895af8f25c15be0670f4b6d5"
+      "bytes": 2541,
+      "sha256": "26a396d672ca6f999a7cf0098a8c5c4dce04a71813ebd4c0be4943677cbf2afa"
     },
     {
       "path": "ws/config-device_registry-list.json",
-      "bytes": 55373,
-      "sha256": "6b0460e71c9f6adcf306dd2b7de7c855f30e243818e8b701c3b28a78f271b40f"
+      "bytes": 55370,
+      "sha256": "a9b62e0e314b5538c0ddba5038af9013a812df00faafb660b18c5732843225e9"
     },
     {
       "path": "ws/config-entity_registry-list_for_display.json",
@@ -289,12 +334,12 @@
     {
       "path": "ws/frontend-get_icons-entity_component.json",
       "bytes": 28770,
-      "sha256": "80490f445255b60210762aaf4cdad0fb298f482ad16e69fa204924cd22c6994d"
+      "sha256": "ae782a907ce4e7697a7af27a8eb4a17bfc9a6d13a5719d242926a91c0ab6ca06"
     },
     {
       "path": "ws/frontend-get_icons-entity.json",
       "bytes": 4283,
-      "sha256": "9f3828549c200c62ecaf35b40172db59b81bbbcb0070b951ebf9095b5428ceaf"
+      "sha256": "858a3471ab4093d0ee873e8fed8babbda5922a21413628d61eafb979a33daaf7"
     },
     {
       "path": "ws/frontend-get_system_data-core.json",
@@ -309,12 +354,12 @@
     {
       "path": "ws/frontend-get_translations-entity_component.json",
       "bytes": 66502,
-      "sha256": "667f1482e40429a120ed150ce1323301df8b1c47c510dfe97c167c9c48659b41"
+      "sha256": "8058230c7f01778ef31d45484de4fdf0bd4f4a67e2b51567eca98a3d376feb86"
     },
     {
       "path": "ws/frontend-get_translations-entity.json",
       "bytes": 7454,
-      "sha256": "52f5e3a2e7cd1b5378cc0c8c0447df5f6a08ec51e0b458ad44e298b8ee442ea3"
+      "sha256": "700f8d9708c1459ebc9dabd58ac90fb13d7d566feb68de2d51b9cb2429d1326d"
     },
     {
       "path": "ws/frontend-get_user_data-core.json",
@@ -329,17 +374,17 @@
     {
       "path": "ws/get_config.json",
       "bytes": 4604,
-      "sha256": "2eda47e1e3cb2e3518c22bb1509c71bc42ca71c4c5039b17e864eb759bc41885"
+      "sha256": "92ecc6ecc13e227d595cb5cddd60d5a7f418e84756dd72cf6da718714c0b912c"
     },
     {
       "path": "ws/get_panels.json",
       "bytes": 5105,
-      "sha256": "6bc17995e1bd75dad077b396256c58a67a9aec60cd1e019636983a627dc4727d"
+      "sha256": "09c3574a9e202b858f0f12d9dc7d134e0b487b56fd63c435f718e5311d7bdd4e"
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 99557,
-      "sha256": "ac4e49d2cf52d670a14ae6fe68e4b55b1617b7d73fdb40bce42a80ae1c7505cc"
+      "bytes": 99558,
+      "sha256": "a169c57768b50d79523ba73d27ed3c48a78871abd4cc5ce8d0900ee8ca51052f"
     },
     {
       "path": "ws/manifest-get-frontend.json",

@@ -1,0 +1,523 @@
+{
+  "type": "sections",
+  "max_columns": 2,
+  "sections": [
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Ground floor",
+          "icon": "mdi:home-floor-0"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Living Room",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-living_room"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "text": "Off",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_on",
+                "target": {
+                  "area_id": "living_room"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "view_columns",
+                  "max": 1
+                },
+                {
+                  "condition": "not",
+                  "conditions": [
+                    {
+                      "condition": "or",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "light.ceiling_lights",
+                          "state": "on"
+                        },
+                        {
+                          "condition": "state",
+                          "entity": "light.living_room_rgbww_lights",
+                          "state": "on"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "color": "orange",
+              "text": "On",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_off",
+                "target": {
+                  "area_id": "living_room"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "view_columns",
+                  "max": 1
+                },
+                {
+                  "condition": "or",
+                  "conditions": [
+                    {
+                      "condition": "state",
+                      "entity": "light.ceiling_lights",
+                      "state": "on"
+                    },
+                    {
+                      "condition": "state",
+                      "entity": "light.living_room_rgbww_lights",
+                      "state": "on"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "toggle-group",
+          "color": "amber",
+          "entities": [
+            "light.ceiling_lights",
+            "light.living_room_rgbww_lights"
+          ],
+          "visibility": [
+            {
+              "condition": "view_columns",
+              "min": 2
+            }
+          ],
+          "grid_options": {
+            "columns": 6,
+            "rows": 1
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "light.ceiling_lights"
+        },
+        {
+          "type": "tile",
+          "entity": "light.living_room_rgbww_lights"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Kitchen",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-kitchen"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "text": "Off",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_on",
+                "target": {
+                  "area_id": "kitchen"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "view_columns",
+                  "max": 1
+                },
+                {
+                  "condition": "not",
+                  "conditions": [
+                    {
+                      "condition": "or",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "light.kitchen_lights",
+                          "state": "on"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "color": "orange",
+              "text": "On",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_off",
+                "target": {
+                  "area_id": "kitchen"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "view_columns",
+                  "max": 1
+                },
+                {
+                  "condition": "or",
+                  "conditions": [
+                    {
+                      "condition": "state",
+                      "entity": "light.kitchen_lights",
+                      "state": "on"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "toggle-group",
+          "color": "amber",
+          "entities": [
+            "light.kitchen_lights"
+          ],
+          "visibility": [
+            {
+              "condition": "view_columns",
+              "min": 2
+            }
+          ],
+          "grid_options": {
+            "columns": 6,
+            "rows": 1
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "light.kitchen_lights"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "First floor",
+          "icon": "mdi:home-floor-1"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Bedroom",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-bedroom"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "text": "Off",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_on",
+                "target": {
+                  "area_id": "bedroom"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "view_columns",
+                  "max": 1
+                },
+                {
+                  "condition": "not",
+                  "conditions": [
+                    {
+                      "condition": "or",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "light.bed_light",
+                          "state": "on"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "color": "orange",
+              "text": "On",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_off",
+                "target": {
+                  "area_id": "bedroom"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "view_columns",
+                  "max": 1
+                },
+                {
+                  "condition": "or",
+                  "conditions": [
+                    {
+                      "condition": "state",
+                      "entity": "light.bed_light",
+                      "state": "on"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "toggle-group",
+          "color": "amber",
+          "entities": [
+            "light.bed_light"
+          ],
+          "visibility": [
+            {
+              "condition": "view_columns",
+              "min": 2
+            }
+          ],
+          "grid_options": {
+            "columns": 6,
+            "rows": 1
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "light.bed_light"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Office",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-office"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "text": "Off",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_on",
+                "target": {
+                  "area_id": "office"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "view_columns",
+                  "max": 1
+                },
+                {
+                  "condition": "not",
+                  "conditions": [
+                    {
+                      "condition": "or",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "light.office_rgbw_lights",
+                          "state": "on"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "color": "orange",
+              "text": "On",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_off",
+                "target": {
+                  "area_id": "office"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "view_columns",
+                  "max": 1
+                },
+                {
+                  "condition": "or",
+                  "conditions": [
+                    {
+                      "condition": "state",
+                      "entity": "light.office_rgbw_lights",
+                      "state": "on"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "toggle-group",
+          "color": "amber",
+          "entities": [
+            "light.office_rgbw_lights"
+          ],
+          "visibility": [
+            {
+              "condition": "view_columns",
+              "min": 2
+            }
+          ],
+          "grid_options": {
+            "columns": 6,
+            "rows": 1
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "light.office_rgbw_lights"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Other areas"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Hallway",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-hallway"
+          },
+          "badges": [
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "text": "Off",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_on",
+                "target": {
+                  "area_id": "hallway"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "view_columns",
+                  "max": 1
+                },
+                {
+                  "condition": "not",
+                  "conditions": [
+                    {
+                      "condition": "or",
+                      "conditions": [
+                        {
+                          "condition": "state",
+                          "entity": "light.entrance_color_white_lights",
+                          "state": "on"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "button",
+              "icon": "mdi:power",
+              "color": "orange",
+              "text": "On",
+              "tap_action": {
+                "action": "perform-action",
+                "perform_action": "light.turn_off",
+                "target": {
+                  "area_id": "hallway"
+                }
+              },
+              "visibility": [
+                {
+                  "condition": "view_columns",
+                  "max": 1
+                },
+                {
+                  "condition": "or",
+                  "conditions": [
+                    {
+                      "condition": "state",
+                      "entity": "light.entrance_color_white_lights",
+                      "state": "on"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "toggle-group",
+          "color": "amber",
+          "entities": [
+            "light.entrance_color_white_lights"
+          ],
+          "visibility": [
+            {
+              "condition": "view_columns",
+              "min": 2
+            }
+          ],
+          "grid_options": {
+            "columns": 6,
+            "rows": 1
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "light.entrance_color_white_lights"
+        }
+      ]
+    }
+  ]
+}

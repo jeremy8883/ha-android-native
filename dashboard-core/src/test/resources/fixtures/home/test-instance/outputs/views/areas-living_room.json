@@ -140,15 +140,6 @@
         },
         {
           "type": "tile",
-          "entity": "cover.hall_window",
-          "features": [
-            {
-              "type": "cover-open-close"
-            }
-          ]
-        },
-        {
-          "type": "tile",
           "entity": "cover.living_room_window",
           "name": "Window",
           "features": [

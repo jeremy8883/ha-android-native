@@ -319,7 +319,7 @@
       "via_device_id": null
     },
     {
-      "area_id": "living_room",
+      "area_id": "hallway",
       "configuration_url": null,
       "config_entries": [
         "01M4CWHWMEDWDVBA64BRF3YHDH"
@@ -345,7 +345,7 @@
       "manufacturer": null,
       "model": null,
       "model_id": null,
-      "modified_at": 1791433963.289966,
+      "modified_at": 1791517910.612956,
       "name_by_user": null,
       "name": "Hall Window",
       "primary_config_entry": "01M4CWHWMEDWDVBA64BRF3YHDH",
@@ -704,7 +704,7 @@
       "via_device_id": null
     },
     {
-      "area_id": "garden",
+      "area_id": "hallway",
       "configuration_url": null,
       "config_entries": [
         "01M4CWHWMEDWDVBA64BRF3YHDH"
@@ -730,7 +730,7 @@
       "manufacturer": null,
       "model": null,
       "model_id": null,
-      "modified_at": 1791433963.293918,
+      "modified_at": 1791517910.615137,
       "name_by_user": null,
       "name": "Entrance Color + White Lights",
       "primary_config_entry": "01M4CWHWMEDWDVBA64BRF3YHDH",

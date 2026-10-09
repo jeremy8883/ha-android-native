@@ -9,6 +9,10 @@ import io.homeassistant.companion.android.dashboard.strategy.home.homeAreaView
 import io.homeassistant.companion.android.dashboard.strategy.home.homeMediaPlayersView
 import io.homeassistant.companion.android.dashboard.strategy.home.homeOtherDevicesView
 import io.homeassistant.companion.android.dashboard.strategy.home.homeOverviewView
+import io.homeassistant.companion.android.dashboard.strategy.summary.climateView
+import io.homeassistant.companion.android.dashboard.strategy.summary.lightView
+import io.homeassistant.companion.android.dashboard.strategy.summary.maintenanceView
+import io.homeassistant.companion.android.dashboard.strategy.summary.securityView
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -61,6 +65,10 @@ private fun HassSnapshot.viewGenerator(strategy: JsonObject, data: StrategyData)
         "home-overview" -> { -> homeOverviewView(strategy, data) }
         "home-media-players" -> { -> homeMediaPlayersView() }
         "home-other-devices" -> { -> homeOtherDevicesView(strategy.boolean("home_panel") == true) }
+        "light" -> { -> lightView() }
+        "climate" -> { -> climateView() }
+        "security" -> { -> securityView() }
+        "maintenance" -> { -> maintenanceView() }
         else -> null
     }
 

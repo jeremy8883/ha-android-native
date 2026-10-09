@@ -252,6 +252,27 @@ async function visitView(page, path, strategyType) {
   });
 }
 
+// The built-in panels that show one generated view (src/panels/{light,climate,security,maintenance}).
+const SUMMARY_PANELS = ["light", "climate", "security", "maintenance"];
+
+/**
+ * Navigates in-app to the summary panel /<panel> (loading its view strategy chunk) and returns the view the panel
+ * generated itself (`ha-panel-<panel>._lovelace.config.views[0]`).
+ */
+async function visitSummaryPanel(page, panel) {
+  await page.evaluate((p) => window.__golden.navigate(`/${p}`), panel);
+  await page.waitForFunction(
+    (p) => {
+      if (!customElements.get(`${p}-view-strategy`)) return false;
+      const el = window.__golden.deepAll(`ha-panel-${p}`)[0];
+      return !!el?._lovelace?.config?.views?.[0];
+    },
+    panel,
+    { timeout: 30000, polling: 250 }
+  );
+  return page.evaluate((p) => window.__golden.clone(window.__golden.deepAll(`ha-panel-${p}`)[0]._lovelace.config.views[0]), panel);
+}
+
 /** The capture proper. Runs in the page with one consistent `hass` snapshot. */
 async function captureInPage() {
   const g = window.__golden;
@@ -513,6 +534,13 @@ async function captureInPage() {
     }
   }
 
+  // The summary panels' views, generated like the panels do (generateLovelaceViewStrategy on {strategy: {type}})
+  const panelViews = {};
+  for (const p of ["light", "climate", "security", "maintenance"]) {
+    if (!hass.panels[p] || !customElements.get(`${p}-view-strategy`)) continue;
+    panelViews[p] = await run("view", { strategy: { type: p } }, `panel:${p}`);
+  }
+
   // Fully expanded config, like expandLovelaceConfigStrategies() would produce.
   let expanded = null;
   if (dashboard.config) {
@@ -580,6 +608,7 @@ async function captureInPage() {
     dashboard,
     views,
     sections,
+    panelViews,
     expanded,
     display,
     cards,
@@ -666,6 +695,12 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
     renderedViews[path] = await visitView(page, path, v.strategy?.type);
     console.log(`  visited /home/${path}`);
   }
+  const renderedPanels = {};
+  const availablePanels = await page.evaluate(() => Object.keys(document.querySelector("home-assistant").hass.panels));
+  for (const p of SUMMARY_PANELS.filter((it) => availablePanels.includes(it))) {
+    renderedPanels[p] = await visitSummaryPanel(page, p);
+    console.log(`  visited /${p}`);
+  }
   await page.evaluate(() => window.__golden.navigate("/home/overview"));
   await page.waitForTimeout(500);
 
@@ -707,6 +742,10 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
     });
     if (s.error) problems.push(`section ${s.view}#${s.index}: ${s.error}`);
   }
+  for (const [p, res] of Object.entries(cap.panelViews)) {
+    write(`outputs/panels/${sanitizeFile(p)}.json`, res.config ?? { error: res.error });
+    if (res.error) problems.push(`panel ${p}: ${res.error}`);
+  }
   write("outputs/expanded.json", cap.expanded);
   write("outputs/entity-display.json", cap.display);
   write("outputs/cards.json", cap.cards);
@@ -738,6 +777,13 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
         theirs: rs.expanded,
       });
     }
+  }
+
+  for (const p of SUMMARY_PANELS) {
+    const ours = cap.panelViews[p]?.config ?? null;
+    const theirs = renderedPanels[p] ?? null;
+    if (!ours && !theirs) continue;
+    checks.push({ what: `panel ${p} == ha-panel-${p}._lovelace.config.views[0]`, ok: sameJson(ours, theirs), ours, theirs });
   }
 
   const manifest = {

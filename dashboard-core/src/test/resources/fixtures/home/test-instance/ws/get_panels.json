@@ -14,6 +14,32 @@
       "config_panel_domain": null,
       "show_in_sidebar": true
     },
+    "map": {
+      "component_name": "lovelace",
+      "icon": "mdi:map",
+      "title": "Map",
+      "default_visible": true,
+      "config": {
+        "mode": "storage"
+      },
+      "url_path": "map",
+      "require_admin": false,
+      "config_panel_domain": null,
+      "show_in_sidebar": true
+    },
+    "dashboard-test": {
+      "component_name": "lovelace",
+      "icon": "mdi:test-tube",
+      "title": "Test dashboard",
+      "default_visible": true,
+      "config": {
+        "mode": "storage"
+      },
+      "url_path": "dashboard-test",
+      "require_admin": false,
+      "config_panel_domain": null,
+      "show_in_sidebar": true
+    },
     "lovelace": {
       "component_name": "lovelace",
       "icon": null,
@@ -113,17 +139,6 @@
       "config_panel_domain": null,
       "show_in_sidebar": true
     },
-    "logbook": {
-      "component_name": "logbook",
-      "icon": "mdi:format-list-bulleted-type",
-      "title": "logbook",
-      "default_visible": true,
-      "config": null,
-      "url_path": "logbook",
-      "require_admin": false,
-      "config_panel_domain": null,
-      "show_in_sidebar": true
-    },
     "history": {
       "component_name": "history",
       "icon": "mdi:chart-box",
@@ -131,6 +146,17 @@
       "default_visible": true,
       "config": null,
       "url_path": "history",
+      "require_admin": false,
+      "config_panel_domain": null,
+      "show_in_sidebar": true
+    },
+    "logbook": {
+      "component_name": "logbook",
+      "icon": "mdi:format-list-bulleted-type",
+      "title": "logbook",
+      "default_visible": true,
+      "config": null,
+      "url_path": "logbook",
       "require_admin": false,
       "config_panel_domain": null,
       "show_in_sidebar": true
@@ -157,19 +183,6 @@
       "config_panel_domain": null,
       "show_in_sidebar": true
     },
-    "map": {
-      "component_name": "lovelace",
-      "icon": "mdi:map",
-      "title": "Map",
-      "default_visible": true,
-      "config": {
-        "mode": "storage"
-      },
-      "url_path": "map",
-      "require_admin": false,
-      "config_panel_domain": null,
-      "show_in_sidebar": true
-    },
     "calendar": {
       "component_name": "calendar",
       "icon": "mdi:calendar",
@@ -188,19 +201,6 @@
       "default_visible": true,
       "config": null,
       "url_path": "todo",
-      "require_admin": false,
-      "config_panel_domain": null,
-      "show_in_sidebar": true
-    },
-    "dashboard-test": {
-      "component_name": "lovelace",
-      "icon": "mdi:test-tube",
-      "title": "Test dashboard",
-      "default_visible": true,
-      "config": {
-        "mode": "storage"
-      },
-      "url_path": "dashboard-test",
       "require_admin": false,
       "config_panel_domain": null,
       "show_in_sidebar": true

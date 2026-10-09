@@ -1,5 +1,5 @@
 {
-  "now": "2026-10-08T09:42:32.715Z",
+  "now": "2026-10-09T03:52:00.065Z",
   "locale": {
     "language": "en",
     "number_format": "language",
@@ -75,19 +75,95 @@
         "device_entity": "Home Assistant"
       }
     },
-    "timer.laundry": {
-      "icon": {
-        "fallback": true
-      },
+    "event.backup_automatic_backup": {
+      "icon": "mdi:database",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Backup Automatic backup",
+        "entity": "Automatic backup",
+        "device": "Backup",
+        "area": "",
+        "floor": "",
+        "device_entity": "Backup Automatic backup"
+      }
+    },
+    "sensor.backup_backup_manager_state": {
+      "icon": "mdi:eye",
       "state": "Idle",
       "secondary": "Idle",
       "names": {
-        "default": "Laundry",
-        "entity": "Laundry",
+        "default": "Backup Backup Manager state",
+        "entity": "Manager state",
+        "device": "Backup",
+        "area": "",
+        "floor": "",
+        "device_entity": "Backup Manager state"
+      }
+    },
+    "sensor.backup_next_scheduled_automatic_backup": {
+      "icon": "mdi:clock",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Backup Next scheduled automatic backup",
+        "entity": "Next scheduled automatic backup",
+        "device": "Backup",
+        "area": "",
+        "floor": "",
+        "device_entity": "Backup Next scheduled automatic backup"
+      }
+    },
+    "sensor.backup_last_successful_automatic_backup": {
+      "icon": "mdi:clock",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Backup Last successful automatic backup",
+        "entity": "Last successful automatic backup",
+        "device": "Backup",
+        "area": "",
+        "floor": "",
+        "device_entity": "Backup Last successful automatic backup"
+      }
+    },
+    "sensor.backup_last_attempted_automatic_backup": {
+      "icon": "mdi:clock",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Backup Last attempted automatic backup",
+        "entity": "Last attempted automatic backup",
+        "device": "Backup",
+        "area": "",
+        "floor": "",
+        "device_entity": "Backup Last attempted automatic backup"
+      }
+    },
+    "zone.home": {
+      "icon": "mdi:home",
+      "state": "0",
+      "secondary": "0",
+      "names": {
+        "default": "Native Test Home",
+        "entity": "Native Test Home",
         "device": "",
-        "area": "Garage",
-        "floor": "Ground floor",
-        "device_entity": "Laundry"
+        "area": "",
+        "floor": "",
+        "device_entity": "Native Test Home"
+      }
+    },
+    "person.dev": {
+      "icon": "mdi:account",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Dev",
+        "entity": "Dev",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Dev"
       }
     },
     "input_number.target_humidity": {
@@ -170,49 +246,64 @@
         "device_entity": "Doorbell test"
       }
     },
-    "zone.home": {
-      "icon": "mdi:home",
-      "state": "0",
-      "secondary": "0",
+    "timer.laundry": {
+      "icon": {
+        "fallback": true
+      },
+      "state": "Idle",
+      "secondary": "Idle",
       "names": {
-        "default": "Native Test Home",
-        "entity": "Native Test Home",
+        "default": "Laundry",
+        "entity": "Laundry",
         "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Native Test Home"
-      }
-    },
-    "person.dev": {
-      "icon": "mdi:account",
-      "state": "Unknown",
-      "secondary": "Unknown",
-      "names": {
-        "default": "Dev",
-        "entity": "Dev",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Dev"
-      }
-    },
-    "counter.coffee_cups": {
-      "icon": "mdi:coffee",
-      "state": "0",
-      "secondary": "0",
-      "names": {
-        "default": "Coffee cups",
-        "entity": "Coffee cups",
-        "device": "",
-        "area": "Kitchen",
+        "area": "Garage",
         "floor": "Ground floor",
-        "device_entity": "Coffee cups"
+        "device_entity": "Laundry"
+      }
+    },
+    "device_tracker.demo_paulus": {
+      "icon": "mdi:account-arrow-right",
+      "state": "Away",
+      "secondary": "Away",
+      "names": {
+        "default": "Paulus",
+        "entity": "Paulus",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Paulus"
+      }
+    },
+    "device_tracker.demo_anne_therese": {
+      "icon": "mdi:account-arrow-right",
+      "state": "Away",
+      "secondary": "Away",
+      "names": {
+        "default": "Anne Therese",
+        "entity": "Anne Therese",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Anne Therese"
+      }
+    },
+    "device_tracker.demo_home_boy": {
+      "icon": "mdi:account",
+      "state": "Home",
+      "secondary": "Home",
+      "names": {
+        "default": "Home Boy",
+        "entity": "Home Boy",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Home Boy"
       }
     },
     "sun.sun": {
-      "icon": "mdi:white-balance-sunny",
-      "state": "Above horizon",
-      "secondary": "Above horizon",
+      "icon": "mdi:weather-night",
+      "state": "Below horizon",
+      "secondary": "Below horizon",
       "names": {
         "default": "Sun",
         "entity": "Sun",
@@ -225,7 +316,7 @@
     "sensor.sun_next_dawn": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 5:20 AM",
-      "secondary": "In 20 hours",
+      "secondary": "In 1 hour",
       "names": {
         "default": "Sun Next dawn",
         "entity": "Next dawn",
@@ -237,8 +328,8 @@
     },
     "sensor.sun_next_dusk": {
       "icon": "mdi:sun-clock",
-      "state": "October 8, 2026 at 5:36 PM",
-      "secondary": "In 8 hours",
+      "state": "October 9, 2026 at 5:33 PM",
+      "secondary": "In 14 hours",
       "names": {
         "default": "Sun Next dusk",
         "entity": "Next dusk",
@@ -250,8 +341,8 @@
     },
     "sensor.sun_next_midnight": {
       "icon": "mdi:sun-clock",
-      "state": "October 8, 2026 at 11:27 PM",
-      "secondary": "In 14 hours",
+      "state": "October 9, 2026 at 11:27 PM",
+      "secondary": "In 20 hours",
       "names": {
         "default": "Sun Next midnight",
         "entity": "Next midnight",
@@ -263,8 +354,8 @@
     },
     "sensor.sun_next_noon": {
       "icon": "mdi:sun-clock",
-      "state": "October 8, 2026 at 11:28 AM",
-      "secondary": "In 2 hours",
+      "state": "October 9, 2026 at 11:27 AM",
+      "secondary": "In 8 hours",
       "names": {
         "default": "Sun Next noon",
         "entity": "Next noon",
@@ -277,7 +368,7 @@
     "sensor.sun_next_rising": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 5:55 AM",
-      "secondary": "In 20 hours",
+      "secondary": "In 2 hours",
       "names": {
         "default": "Sun Next rising",
         "entity": "Next rising",
@@ -289,8 +380,8 @@
     },
     "sensor.sun_next_setting": {
       "icon": "mdi:sun-clock",
-      "state": "October 8, 2026 at 5:01 PM",
-      "secondary": "In 7 hours",
+      "state": "October 9, 2026 at 4:59 PM",
+      "secondary": "In 13 hours",
       "names": {
         "default": "Sun Next setting",
         "entity": "Next setting",
@@ -311,21 +402,6 @@
         "area": "",
         "floor": "",
         "device_entity": "Wake-up time"
-      }
-    },
-    "input_text.welcome_message": {
-      "icon": {
-        "fallback": true
-      },
-      "state": "Hello from the test instance",
-      "secondary": "Hello from the test instance",
-      "names": {
-        "default": "Welcome message",
-        "entity": "Welcome message",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Welcome message"
       }
     },
     "lock.front_door_deadbolt": {
@@ -356,8 +432,8 @@
     },
     "sensor.living_room_temperature": {
       "icon": "mdi:thermometer",
-      "state": "21.2 °C",
-      "secondary": "21.2 °C",
+      "state": "21.1 °C",
+      "secondary": "21.1 °C",
       "names": {
         "default": "Living room temperature",
         "entity": "Living room temperature",
@@ -369,8 +445,8 @@
     },
     "sensor.living_room_humidity": {
       "icon": "mdi:water-percent",
-      "state": "45%",
-      "secondary": "45%",
+      "state": "47%",
+      "secondary": "47%",
       "names": {
         "default": "Living room humidity",
         "entity": "Living room humidity",
@@ -434,8 +510,8 @@
     },
     "sensor.house_power": {
       "icon": "mdi:flash",
-      "state": "594 W",
-      "secondary": "594 W",
+      "state": "657 W",
+      "secondary": "657 W",
       "names": {
         "default": "House power",
         "entity": "House power",
@@ -485,9 +561,9 @@
       }
     },
     "binary_sensor.kitchen_motion": {
-      "icon": "mdi:motion-sensor",
-      "state": "Detected",
-      "secondary": "Detected",
+      "icon": "mdi:motion-sensor-off",
+      "state": "Clear",
+      "secondary": "Clear",
       "names": {
         "default": "Kitchen motion",
         "entity": "Kitchen motion",
@@ -549,6 +625,112 @@
         "device_entity": "Garden irrigation"
       }
     },
+    "counter.coffee_cups": {
+      "icon": "mdi:coffee",
+      "state": "0",
+      "secondary": "0",
+      "names": {
+        "default": "Coffee cups",
+        "entity": "Coffee cups",
+        "device": "",
+        "area": "Kitchen",
+        "floor": "Ground floor",
+        "device_entity": "Coffee cups"
+      }
+    },
+    "input_text.welcome_message": {
+      "icon": {
+        "fallback": true
+      },
+      "state": "Hello from the test instance",
+      "secondary": "Hello from the test instance",
+      "names": {
+        "default": "Welcome message",
+        "entity": "Welcome message",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Welcome message"
+      }
+    },
+    "device_tracker.sdk_gphone64_x86_64": {
+      "icon": "mdi:account",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "sdk_gphone64_x86_64",
+        "entity": "sdk_gphone64_x86_64",
+        "device": "sdk_gphone64_x86_64",
+        "area": "",
+        "floor": "",
+        "device_entity": "sdk_gphone64_x86_64"
+      }
+    },
+    "notify.sdk_gphone64_x86_64": {
+      "icon": "mdi:cellphone-message",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "sdk_gphone64_x86_64",
+        "entity": "sdk_gphone64_x86_64",
+        "device": "sdk_gphone64_x86_64",
+        "area": "",
+        "floor": "",
+        "device_entity": "sdk_gphone64_x86_64"
+      }
+    },
+    "sensor.sdk_gphone64_x86_64_battery_level": {
+      "icon": "mdi:battery",
+      "state": "100%",
+      "secondary": "100%",
+      "names": {
+        "default": "sdk_gphone64_x86_64 Battery level",
+        "entity": "Battery level",
+        "device": "sdk_gphone64_x86_64",
+        "area": "",
+        "floor": "",
+        "device_entity": "sdk_gphone64_x86_64 Battery level"
+      }
+    },
+    "sensor.sdk_gphone64_x86_64_battery_state": {
+      "icon": "mdi:battery",
+      "state": "not_charging",
+      "secondary": "not_charging",
+      "names": {
+        "default": "sdk_gphone64_x86_64 Battery state",
+        "entity": "Battery state",
+        "device": "sdk_gphone64_x86_64",
+        "area": "",
+        "floor": "",
+        "device_entity": "sdk_gphone64_x86_64 Battery state"
+      }
+    },
+    "sensor.sdk_gphone64_x86_64_charger_type": {
+      "icon": "mdi:battery",
+      "state": "none",
+      "secondary": "none",
+      "names": {
+        "default": "sdk_gphone64_x86_64 Charger type",
+        "entity": "Charger type",
+        "device": "sdk_gphone64_x86_64",
+        "area": "",
+        "floor": "",
+        "device_entity": "sdk_gphone64_x86_64 Charger type"
+      }
+    },
+    "tts.google_translate_en_com": {
+      "icon": "mdi:speaker-message",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Google Translate en com",
+        "entity": "Google Translate en com",
+        "device": "Google Translate en com",
+        "area": "",
+        "floor": "",
+        "device_entity": "Google Translate en com"
+      }
+    },
     "image_processing.demo_face": {
       "icon": {
         "fallback": true
@@ -562,45 +744,6 @@
         "area": "",
         "floor": "",
         "device_entity": "Demo Face"
-      }
-    },
-    "device_tracker.demo_paulus": {
-      "icon": "mdi:account-arrow-right",
-      "state": "Away",
-      "secondary": "Away",
-      "names": {
-        "default": "Paulus",
-        "entity": "Paulus",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Paulus"
-      }
-    },
-    "device_tracker.demo_anne_therese": {
-      "icon": "mdi:account-arrow-right",
-      "state": "Away",
-      "secondary": "Away",
-      "names": {
-        "default": "Anne Therese",
-        "entity": "Anne Therese",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Anne Therese"
-      }
-    },
-    "device_tracker.demo_home_boy": {
-      "icon": "mdi:account",
-      "state": "Home",
-      "secondary": "Home",
-      "names": {
-        "default": "Home Boy",
-        "entity": "Home Boy",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Home Boy"
       }
     },
     "air_quality.demo_air_quality_home": {
@@ -819,8 +962,8 @@
         "default": "Hall Window",
         "entity": "Hall Window",
         "device": "Hall Window",
-        "area": "Living Room",
-        "floor": "Ground floor",
+        "area": "Hallway",
+        "floor": "",
         "device_entity": "Hall Window"
       }
     },
@@ -1079,8 +1222,8 @@
         "default": "Entrance Color + White Lights",
         "entity": "Entrance Color + White Lights",
         "device": "Entrance Color + White Lights",
-        "area": "Garden",
-        "floor": "Outside",
+        "area": "Hallway",
+        "floor": "",
         "device_entity": "Entrance Color + White Lights"
       }
     },
@@ -1424,8 +1567,8 @@
     },
     "sensor.total_energy_kwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "30.50 kWh",
-      "secondary": "30.50 kWh",
+      "state": "136.50 kWh",
+      "secondary": "136.50 kWh",
       "names": {
         "default": "Total energy 1",
         "entity": "Total energy 1",
@@ -1437,8 +1580,8 @@
     },
     "sensor.total_energy_mwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "0.02 MWh",
-      "secondary": "0.02 MWh",
+      "state": "0.07 MWh",
+      "secondary": "0.07 MWh",
       "names": {
         "default": "Total energy 2",
         "entity": "Total energy 2",
@@ -1450,8 +1593,8 @@
     },
     "sensor.total_gas_m3": {
       "icon": "mdi:meter-gas",
-      "state": "1.53 m³",
-      "secondary": "1.53 m³",
+      "state": "6.83 m³",
+      "secondary": "6.83 m³",
       "names": {
         "default": "Total gas 1",
         "entity": "Total gas 1",
@@ -1463,8 +1606,8 @@
     },
     "sensor.total_gas_ft3": {
       "icon": "mdi:meter-gas",
-      "state": "1.73 m³",
-      "secondary": "1.73 m³",
+      "state": "7.73 m³",
+      "secondary": "7.73 m³",
       "names": {
         "default": "Total gas 2",
         "entity": "Total gas 2",
@@ -1527,9 +1670,9 @@
       }
     },
     "switch.decorative_lights": {
-      "icon": "mdi:toggle-switch-variant-off",
-      "state": "Off",
-      "secondary": "Off",
+      "icon": "mdi:toggle-switch-variant",
+      "state": "On",
+      "secondary": "On",
       "names": {
         "default": "Decorative Lights",
         "entity": "Decorative Lights",
@@ -1877,23 +2020,10 @@
         "device_entity": "Shopping List"
       }
     },
-    "tts.google_translate_en_com": {
-      "icon": "mdi:speaker-message",
-      "state": "Unknown",
-      "secondary": "Unknown",
-      "names": {
-        "default": "Google Translate en com",
-        "entity": "Google Translate en com",
-        "device": "Google Translate en com",
-        "area": "",
-        "floor": "",
-        "device_entity": "Google Translate en com"
-      }
-    },
     "weather.forecast_native_test_home": {
-      "icon": "mdi:weather-partly-cloudy",
-      "state": "Partly cloudy",
-      "secondary": "Partly cloudy",
+      "icon": "mdi:weather-rainy",
+      "state": "Rainy",
+      "secondary": "Rainy",
       "names": {
         "default": "Forecast Native Test Home",
         "entity": "Native Test Home",
@@ -1901,136 +2031,6 @@
         "area": "",
         "floor": "",
         "device_entity": "Forecast Native Test Home"
-      }
-    },
-    "event.backup_automatic_backup": {
-      "icon": "mdi:database",
-      "state": "Unknown",
-      "secondary": "Unknown",
-      "names": {
-        "default": "Backup Automatic backup",
-        "entity": "Automatic backup",
-        "device": "Backup",
-        "area": "",
-        "floor": "",
-        "device_entity": "Backup Automatic backup"
-      }
-    },
-    "sensor.backup_backup_manager_state": {
-      "icon": "mdi:eye",
-      "state": "Idle",
-      "secondary": "Idle",
-      "names": {
-        "default": "Backup Backup Manager state",
-        "entity": "Manager state",
-        "device": "Backup",
-        "area": "",
-        "floor": "",
-        "device_entity": "Backup Manager state"
-      }
-    },
-    "sensor.backup_next_scheduled_automatic_backup": {
-      "icon": "mdi:clock",
-      "state": "Unknown",
-      "secondary": "Unknown",
-      "names": {
-        "default": "Backup Next scheduled automatic backup",
-        "entity": "Next scheduled automatic backup",
-        "device": "Backup",
-        "area": "",
-        "floor": "",
-        "device_entity": "Backup Next scheduled automatic backup"
-      }
-    },
-    "sensor.backup_last_successful_automatic_backup": {
-      "icon": "mdi:clock",
-      "state": "Unknown",
-      "secondary": "Unknown",
-      "names": {
-        "default": "Backup Last successful automatic backup",
-        "entity": "Last successful automatic backup",
-        "device": "Backup",
-        "area": "",
-        "floor": "",
-        "device_entity": "Backup Last successful automatic backup"
-      }
-    },
-    "sensor.backup_last_attempted_automatic_backup": {
-      "icon": "mdi:clock",
-      "state": "Unknown",
-      "secondary": "Unknown",
-      "names": {
-        "default": "Backup Last attempted automatic backup",
-        "entity": "Last attempted automatic backup",
-        "device": "Backup",
-        "area": "",
-        "floor": "",
-        "device_entity": "Backup Last attempted automatic backup"
-      }
-    },
-    "device_tracker.sdk_gphone64_x86_64": {
-      "icon": "mdi:account",
-      "state": "Unknown",
-      "secondary": "Unknown",
-      "names": {
-        "default": "sdk_gphone64_x86_64",
-        "entity": "sdk_gphone64_x86_64",
-        "device": "sdk_gphone64_x86_64",
-        "area": "",
-        "floor": "",
-        "device_entity": "sdk_gphone64_x86_64"
-      }
-    },
-    "notify.sdk_gphone64_x86_64": {
-      "icon": "mdi:cellphone-message",
-      "state": "Unknown",
-      "secondary": "Unknown",
-      "names": {
-        "default": "sdk_gphone64_x86_64",
-        "entity": "sdk_gphone64_x86_64",
-        "device": "sdk_gphone64_x86_64",
-        "area": "",
-        "floor": "",
-        "device_entity": "sdk_gphone64_x86_64"
-      }
-    },
-    "sensor.sdk_gphone64_x86_64_battery_level": {
-      "icon": "mdi:battery",
-      "state": "100%",
-      "secondary": "100%",
-      "names": {
-        "default": "sdk_gphone64_x86_64 Battery level",
-        "entity": "Battery level",
-        "device": "sdk_gphone64_x86_64",
-        "area": "",
-        "floor": "",
-        "device_entity": "sdk_gphone64_x86_64 Battery level"
-      }
-    },
-    "sensor.sdk_gphone64_x86_64_battery_state": {
-      "icon": "mdi:battery",
-      "state": "not_charging",
-      "secondary": "not_charging",
-      "names": {
-        "default": "sdk_gphone64_x86_64 Battery state",
-        "entity": "Battery state",
-        "device": "sdk_gphone64_x86_64",
-        "area": "",
-        "floor": "",
-        "device_entity": "sdk_gphone64_x86_64 Battery state"
-      }
-    },
-    "sensor.sdk_gphone64_x86_64_charger_type": {
-      "icon": "mdi:battery",
-      "state": "none",
-      "secondary": "none",
-      "names": {
-        "default": "sdk_gphone64_x86_64 Charger type",
-        "entity": "Charger type",
-        "device": "sdk_gphone64_x86_64",
-        "area": "",
-        "floor": "",
-        "device_entity": "sdk_gphone64_x86_64 Charger type"
       }
     }
   },
@@ -2090,54 +2090,15 @@
     {
       "config": {
         "type": "tile",
-        "entity": "switch.decorative_lights",
+        "entity": "select.speed",
         "state_content": [
           "state",
           "area_name"
         ],
         "show_entity_picture": true
       },
-      "name": "Decorative Lights",
-      "secondary": "Off · Living Room"
-    },
-    {
-      "config": {
-        "type": "tile",
-        "entity": "fan.living_room_fan",
-        "state_content": [
-          "state",
-          "area_name"
-        ],
-        "show_entity_picture": true
-      },
-      "name": "Living Room Fan",
-      "secondary": "Off · Living Room"
-    },
-    {
-      "config": {
-        "type": "tile",
-        "entity": "cover.kitchen_window",
-        "state_content": [
-          "state",
-          "area_name"
-        ],
-        "show_entity_picture": true
-      },
-      "name": "Kitchen Window",
-      "secondary": "Closed · Kitchen"
-    },
-    {
-      "config": {
-        "type": "tile",
-        "entity": "input_boolean.guest_mode",
-        "state_content": [
-          "state",
-          "area_name"
-        ],
-        "show_entity_picture": true
-      },
-      "name": "Guest mode",
-      "secondary": "Off"
+      "name": "Speed",
+      "secondary": "Ridiculous speed"
     },
     {
       "config": {
@@ -2232,19 +2193,6 @@
     {
       "config": {
         "type": "tile",
-        "entity": "cover.hall_window",
-        "features": [
-          {
-            "type": "cover-open-close"
-          }
-        ]
-      },
-      "name": "Hall Window",
-      "secondary": "Open · 10%"
-    },
-    {
-      "config": {
-        "type": "tile",
         "entity": "cover.living_room_window",
         "name": "Window",
         "features": [
@@ -2319,7 +2267,7 @@
         }
       },
       "name": "Decorative Lights",
-      "secondary": "Off"
+      "secondary": "On"
     },
     {
       "config": {
@@ -2330,7 +2278,7 @@
         }
       },
       "name": "Living room temperature",
-      "secondary": "21.2 °C"
+      "secondary": "21.1 °C"
     },
     {
       "config": {
@@ -2341,7 +2289,7 @@
         }
       },
       "name": "Living room humidity",
-      "secondary": "45%"
+      "secondary": "47%"
     },
     {
       "config": {
@@ -2407,6 +2355,17 @@
     {
       "config": {
         "type": "tile",
+        "entity": "binary_sensor.kitchen_motion",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Kitchen motion",
+      "secondary": "Clear"
+    },
+    {
+      "config": {
+        "type": "tile",
         "entity": "counter.coffee_cups",
         "name": {
           "type": "entity"
@@ -2414,17 +2373,6 @@
       },
       "name": "Coffee cups",
       "secondary": "0"
-    },
-    {
-      "config": {
-        "type": "tile",
-        "entity": "binary_sensor.kitchen_motion",
-        "name": {
-          "type": "entity"
-        }
-      },
-      "name": "Kitchen motion",
-      "secondary": "Detected"
     },
     {
       "config": {
@@ -2580,7 +2528,7 @@
         }
       },
       "name": "Total energy 1",
-      "secondary": "30.50 kWh"
+      "secondary": "136.50 kWh"
     },
     {
       "config": {
@@ -2591,7 +2539,7 @@
         }
       },
       "name": "Total gas 1",
-      "secondary": "1.53 m³"
+      "secondary": "6.83 m³"
     },
     {
       "config": {
@@ -2709,19 +2657,6 @@
     {
       "config": {
         "type": "tile",
-        "entity": "light.entrance_color_white_lights",
-        "features": [
-          {
-            "type": "light-brightness"
-          }
-        ]
-      },
-      "name": "Entrance Color + White Lights",
-      "secondary": "71%"
-    },
-    {
-      "config": {
-        "type": "tile",
         "entity": "cover.pergola_roof"
       },
       "name": "Pergola Roof",
@@ -2834,6 +2769,32 @@
       },
       "name": "Garden irrigation",
       "secondary": "Off"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "light.entrance_color_white_lights",
+        "features": [
+          {
+            "type": "light-brightness"
+          }
+        ]
+      },
+      "name": "Entrance Color + White Lights",
+      "secondary": "71%"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "cover.hall_window",
+        "features": [
+          {
+            "type": "cover-open-close"
+          }
+        ]
+      },
+      "name": "Hall Window",
+      "secondary": "Open · 10%"
     }
   ]
 }

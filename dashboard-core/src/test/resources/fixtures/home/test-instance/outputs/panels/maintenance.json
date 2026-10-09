@@ -1,0 +1,93 @@
+{
+  "type": "sections",
+  "max_columns": 2,
+  "sections": [
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Ground floor",
+          "icon": "mdi:home-floor-0"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Living Room",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-living_room"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.carbon_dioxide_battery",
+          "name": {
+            "type": "device"
+          }
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Garage",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-garage"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.garage_battery",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Outside",
+          "icon": "mdi:tree"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Garden",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-garden"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.outside_temperature_battery",
+          "name": {
+            "type": "device"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Other devices"
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.sdk_gphone64_x86_64_battery_level",
+          "name": {
+            "type": "device"
+          }
+        }
+      ]
+    }
+  ]
+}

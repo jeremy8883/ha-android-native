@@ -1,0 +1,220 @@
+{
+  "type": "sections",
+  "max_columns": 3,
+  "sections": [
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Ground floor",
+          "icon": "mdi:home-floor-0"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Living Room",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-living_room"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "alarm_control_panel.security"
+        },
+        {
+          "type": "tile",
+          "entity": "lock.front_door_deadbolt"
+        },
+        {
+          "type": "tile",
+          "entity": "binary_sensor.front_door"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Kitchen",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-kitchen"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "lock.back_door_lock"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Garage",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-garage"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "cover.garage_door"
+        },
+        {
+          "type": "tile",
+          "entity": "binary_sensor.garage_door_contact"
+        },
+        {
+          "type": "tile",
+          "entity": "binary_sensor.basement_floor_wet"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "First floor",
+          "icon": "mdi:home-floor-1"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Bedroom",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-bedroom"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "binary_sensor.bedroom_window"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Outside",
+          "icon": "mdi:tree"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Garden",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-garden"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "binary_sensor.garden_leak"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Other devices"
+        },
+        {
+          "type": "picture-entity",
+          "entity": "camera.demo_camera",
+          "show_state": false,
+          "show_name": false,
+          "grid_options": {
+            "columns": 6,
+            "rows": 2
+          }
+        },
+        {
+          "type": "picture-entity",
+          "entity": "camera.demo_camera_png",
+          "show_state": false,
+          "show_name": false,
+          "grid_options": {
+            "columns": 6,
+            "rows": 2
+          }
+        },
+        {
+          "type": "picture-entity",
+          "entity": "camera.demo_camera_without_stream",
+          "show_state": false,
+          "show_name": false,
+          "grid_options": {
+            "columns": 6,
+            "rows": 2
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "lock.front_door"
+        },
+        {
+          "type": "tile",
+          "entity": "lock.kitchen_door"
+        },
+        {
+          "type": "tile",
+          "entity": "lock.poorly_installed_door"
+        },
+        {
+          "type": "tile",
+          "entity": "lock.openable_lock"
+        }
+      ]
+    }
+  ],
+  "sidebar": {
+    "sections": [
+      {
+        "type": "grid",
+        "cards": [
+          {
+            "type": "heading",
+            "heading": "Activity",
+            "heading_style": "title"
+          },
+          {
+            "type": "logbook",
+            "target": {
+              "entity_id": [
+                "camera.demo_camera",
+                "camera.demo_camera_png",
+                "camera.demo_camera_without_stream",
+                "alarm_control_panel.security",
+                "lock.front_door_deadbolt",
+                "lock.back_door_lock",
+                "lock.front_door",
+                "lock.kitchen_door",
+                "lock.poorly_installed_door",
+                "lock.openable_lock",
+                "cover.garage_door",
+                "binary_sensor.front_door",
+                "binary_sensor.garage_door_contact",
+                "binary_sensor.bedroom_window",
+                "binary_sensor.garden_leak",
+                "binary_sensor.basement_floor_wet",
+                "person.dev"
+              ]
+            },
+            "hours_to_show": 24,
+            "grid_options": {
+              "columns": 12
+            }
+          }
+        ]
+      }
+    ],
+    "content_label": "Devices",
+    "sidebar_label": "Activity"
+  }
+}

@@ -282,8 +282,23 @@
       "cards": [
         {
           "type": "heading",
-          "heading": "Devices",
+          "heading": "Other areas",
           "heading_style": "title"
+        },
+        {
+          "type": "area",
+          "area": "hallway",
+          "display_type": "compact",
+          "sensor_classes": [],
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "areas-hallway"
+          },
+          "vertical": true,
+          "grid_options": {
+            "rows": 2,
+            "columns": 4
+          }
         },
         {
           "type": "tile",

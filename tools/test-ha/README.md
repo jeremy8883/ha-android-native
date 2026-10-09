@@ -36,7 +36,7 @@ python3 tools/ha-probe/ha_ro.py call call_service \
   - Onboarding over REST (`/api/onboarding/users` → `/auth/token` → `core_config`, `analytics`,
     `integration`).
   - Creates the long-lived token over WS.
-  - Seeds 3 floors and 6 areas, and assigns demo devices and entities to areas.
+  - Seeds 3 floors and 7 areas (one without a floor), and assigns demo devices and entities to areas.
   - Creates the storage dashboard `dashboard-test` (from `dashboard-test.json`).
   - Sets `frontend/set_system_data home` favorites.
   - On first run only, makes a few service calls so `usage_prediction/common_control` returns data.

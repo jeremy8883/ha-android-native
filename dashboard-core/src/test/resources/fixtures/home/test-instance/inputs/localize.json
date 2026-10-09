@@ -10,6 +10,11 @@
     "result": "Devices"
   },
   {
+    "key": "ui.panel.lovelace.strategy.home.other_areas",
+    "args": [],
+    "result": "Other areas"
+  },
+  {
     "key": "ui.panel.lovelace.strategy.home.favorites",
     "args": [],
     "result": "Favorites"
@@ -77,5 +82,40 @@
     "key": "ui.panel.lovelace.strategy.home-other-devices.assign_area",
     "args": [],
     "result": "Assign area"
+  },
+  {
+    "key": "component.sensor.entity_component.temperature.name",
+    "args": [],
+    "result": "Temperature"
+  },
+  {
+    "key": "component.sensor.entity_component.humidity.name",
+    "args": [],
+    "result": "Humidity"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.climate.other_devices",
+    "args": [],
+    "result": "Other devices"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.security.other_devices",
+    "args": [],
+    "result": "Other devices"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.security.activity",
+    "args": [],
+    "result": "Activity"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.security.devices",
+    "args": [],
+    "result": "Devices"
+  },
+  {
+    "key": "ui.panel.lovelace.strategy.maintenance.other_devices",
+    "args": [],
+    "result": "Other devices"
   }
 ]

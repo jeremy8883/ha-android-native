@@ -1,0 +1,294 @@
+{
+  "type": "sections",
+  "max_columns": 2,
+  "sections": [
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Ground floor",
+          "icon": "mdi:home-floor-0"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Living Room",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-living_room"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.living_room_temperature",
+          "name": "Temperature",
+          "features": [
+            {
+              "type": "trend-graph"
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.living_room_humidity",
+          "name": "Humidity",
+          "features": [
+            {
+              "type": "trend-graph"
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "climate.heatpump",
+          "features": [
+            {
+              "type": "target-temperature"
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "fan.living_room_fan",
+          "features": [
+            {
+              "type": "fan-speed"
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "cover.living_room_window",
+          "features": [
+            {
+              "type": "cover-open-close"
+            }
+          ]
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Kitchen",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-kitchen"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "cover.kitchen_window",
+          "features": [
+            {
+              "type": "cover-open-close"
+            }
+          ]
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Garage",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-garage"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "water_heater.demo_water_heater",
+          "features": [
+            {
+              "type": "target-temperature"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "First floor",
+          "icon": "mdi:home-floor-1"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Bedroom",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-bedroom"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.bedroom_temperature",
+          "name": "Temperature",
+          "features": [
+            {
+              "type": "trend-graph"
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "climate.ecobee",
+          "features": [
+            {
+              "type": "target-temperature"
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "fan.ceiling_fan",
+          "features": [
+            {
+              "type": "fan-speed"
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "binary_sensor.bedroom_window"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Office",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-office"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "sensor.office_temperature",
+          "name": "Temperature",
+          "features": [
+            {
+              "type": "trend-graph"
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "climate.hvac",
+          "features": [
+            {
+              "type": "target-temperature"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Outside",
+          "icon": "mdi:tree"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Garden",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-garden"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "cover.pergola_roof"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Other areas"
+        },
+        {
+          "heading_style": "subtitle",
+          "type": "heading",
+          "heading": "Hallway",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/home/areas-hallway"
+          }
+        },
+        {
+          "type": "tile",
+          "entity": "cover.hall_window",
+          "features": [
+            {
+              "type": "cover-open-close"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 2,
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Other devices"
+        },
+        {
+          "type": "tile",
+          "entity": "humidifier.humidifier"
+        },
+        {
+          "type": "tile",
+          "entity": "humidifier.dehumidifier"
+        },
+        {
+          "type": "tile",
+          "entity": "humidifier.hygrostat"
+        },
+        {
+          "type": "tile",
+          "entity": "fan.percentage_full_fan",
+          "features": [
+            {
+              "type": "fan-speed"
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "fan.percentage_limited_fan",
+          "features": [
+            {
+              "type": "fan-speed"
+            }
+          ]
+        },
+        {
+          "type": "tile",
+          "entity": "fan.preset_only_limited_fan"
+        },
+        {
+          "type": "tile",
+          "entity": "water_heater.demo_water_heater_celsius",
+          "features": [
+            {
+              "type": "target-temperature"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

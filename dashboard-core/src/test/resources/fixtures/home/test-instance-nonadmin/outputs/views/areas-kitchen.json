@@ -192,14 +192,14 @@
         },
         {
           "type": "tile",
-          "entity": "counter.coffee_cups",
+          "entity": "binary_sensor.kitchen_motion",
           "name": {
             "type": "entity"
           }
         },
         {
           "type": "tile",
-          "entity": "binary_sensor.kitchen_motion",
+          "entity": "counter.coffee_cups",
           "name": {
             "type": "entity"
           }

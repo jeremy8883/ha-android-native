@@ -161,6 +161,8 @@ AREAS = [  # area_id (derived from name by HA), name, floor_id, icon
     ("bedroom", "Bedroom", "first_floor", "mdi:bed"),
     ("office", "Office", "first_floor", "mdi:desk"),
     ("garden", "Garden", "outside", "mdi:flower"),
+    # Without a floor, so views list "other areas" too
+    ("hallway", "Hallway", None, "mdi:door"),
 ]
 
 # Demo device name -> area. Devices not listed stay unassigned on purpose
@@ -170,7 +172,7 @@ DEVICE_AREAS: dict[str, str] = {
     "Living Room RGBWW Lights": "living_room",
     "Ceiling Lights": "living_room",
     "Living Room Window": "living_room",
-    "Hall Window": "living_room",
+    "Hall Window": "hallway",
     "HeatPump": "living_room",
     "Decorative Lights": "living_room",
     "Carbon dioxide": "living_room",
@@ -191,7 +193,7 @@ DEVICE_AREAS: dict[str, str] = {
     "Total gas 1": "garage",
     "Basement Floor Wet": "garage",
     "Demo vacuum 0 ground floor": "garage",
-    "Entrance Color + White Lights": "garden",
+    "Entrance Color + White Lights": "hallway",
     "Outside Temperature": "garden",
     "Outside Humidity": "garden",
     "Movement Backyard": "garden",
@@ -290,7 +292,8 @@ async def seed_structure(ws: Ws) -> None:
     areas = {a["area_id"]: a for a in await ws.call("config/area_registry/list")}
     for area_id, name, floor_id, icon in AREAS:
         if area_id not in areas:
-            created = await ws.call("config/area_registry/create", name=name, floor_id=floor_id, icon=icon)
+            floor = {"floor_id": floor_id} if floor_id else {}
+            created = await ws.call("config/area_registry/create", name=name, icon=icon, **floor)
             assert created["area_id"] == area_id, created
             log(f"area created: {area_id}")
         elif areas[area_id].get("floor_id") != floor_id or areas[area_id].get("icon") != icon:
