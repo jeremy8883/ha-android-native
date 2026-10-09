@@ -85,6 +85,7 @@ class GoldenFixture(variant: String) {
                 components = config["components"]?.jsonArray?.mapNotNull { it.stringOrNull }?.toSet().orEmpty(),
                 unitSystem = config.obj("unit_system")?.mapValues { unit -> unit.value.stringOrNull.orEmpty() }.orEmpty(),
                 locationName = config.string("location_name"),
+                currency = config.string("currency"),
             ),
             panels = wsResult("get_panels").jsonObject.keys,
             // then the bundled frontend strings the app ships, then the server's entity translations

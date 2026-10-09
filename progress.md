@@ -175,7 +175,8 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - [x] Date selection footer: previous/next, ranges menu, now, compare (no free date range picker yet)
 - [x] Energy distribution card: `EnergyDistributionModel` (sums and consumption split ported from `data/energy.ts`) golden-tested against the frontend card's amounts, home ring and flow speeds for six periods; drawn with the frontend's SVG geometry and moving dots
 - [x] Energy usage graph: series ported from `hui-energy-usage-graph-card` (incl. compare, grid-to-battery split, colour shading per source) golden-tested against the frontend chart's series; drawn by `EnergyBarChartView` (Canvas: stacked bars above/below zero, compare stacks side by side, rounded caps, round value ticks, time axis, tap tooltip, toggling legend). Vico was considered but can't stack and group bars together, so the energy bar charts are drawn directly
-- [ ] Other cards, most useful first: sources table, gauges, devices, gas/water/solar graphs, compare, grid balance, sankeys, power sources graph and the Now badges
+- [x] Energy sources table: `EnergySourcesTableModel` golden-tested against the frontend table's rows for every period and five configs (all, totals only, electricity, gas, water); scrolls sideways when the compared columns don't fit, rows open more-info
+- [ ] Other cards, most useful first: gauges, devices, gas/water/solar graphs, compare, grid balance, sankeys, power sources graph and the Now badges
 - [ ] Overview "Today's energy" summary (needs the energy data on the home dashboard)
 
 ### Later — Startup time

@@ -32,6 +32,8 @@ data class HassConfig(
     val unitSystem: Map<String, String> = emptyMap(),
     /** `location_name`: the home's name. */
     val locationName: String? = null,
+    /** `currency`: the ISO 4217 code costs are in, such as "EUR". */
+    val currency: String? = null,
 ) {
     /** `unit_system.temperature`, for example "°C". */
     val temperatureUnit: String? get() = unitSystem["temperature"]

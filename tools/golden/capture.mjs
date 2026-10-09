@@ -332,22 +332,31 @@ function energyPeriods(now = new Date()) {
 }
 
 /** The energy cards whose displayed values are recorded for each period. */
-const ENERGY_CARD_CAPTURES = ["energy-distribution", "energy-usage-graph"];
+const ENERGY_CARD_CAPTURES = [
+  { name: "energy-distribution", config: { type: "energy-distribution" } },
+  { name: "energy-usage-graph", config: { type: "energy-usage-graph" } },
+  { name: "energy-sources-table", config: { type: "energy-sources-table" } },
+  { name: "energy-sources-table-totals", config: { type: "energy-sources-table", show_only_totals: true } },
+  { name: "energy-sources-table-electricity", config: { type: "energy-sources-table", types: ["grid", "solar", "battery"] } },
+  { name: "energy-sources-table-gas", config: { type: "energy-sources-table", types: ["gas"] } },
+  { name: "energy-sources-table-water", config: { type: "energy-sources-table", types: ["water"] } },
+];
 
 /**
  * Renders the energy card [type] on the default collection and returns what it shows. Runs in the page, where it
  * is installed as a global so that `captureEnergyData` can call it.
  */
-async function captureEnergyCard(type) {
+async function captureEnergyCard(config) {
   const g = window.__golden;
+  const type = config.type;
   const hass = document.querySelector("home-assistant").hass;
   const el = document.createElement(`hui-${type}-card`);
   el.hass = hass;
-  el.setConfig({ type, collection_key: "energy_dashboard" });
+  el.setConfig({ ...config, collection_key: "energy_dashboard" });
   // Inside <home-assistant>, which provides the contexts cards read (the theme for charts)
   document.querySelector("home-assistant").shadowRoot.appendChild(el);
   const root = () => el.shadowRoot;
-  for (let i = 0; i < 100 && !root()?.querySelector(".card-content, ha-chart-base"); i++) await new Promise((r) => setTimeout(r, 100));
+  for (let i = 0; i < 100 && !root()?.querySelector(".card-content, ha-chart-base, table"); i++) await new Promise((r) => setTimeout(r, 100));
   await new Promise((r) => setTimeout(r, 300));
   const text = (sel) => {
     const n = root().querySelector(sel);
@@ -378,6 +387,15 @@ async function captureEnergyCard(type) {
         dur: c.querySelector("animateMotion")?.getAttribute("dur") ?? null,
       })),
       waterBelow: !!root().querySelector(".water.bottom"),
+    };
+  }
+  if (type === "energy-sources-table") {
+    result = {
+      rows: [...root().querySelectorAll("tr")].map((tr) => ({
+        total: tr.classList.contains("total"),
+        bullet: !!tr.querySelector(".bullet"),
+        cells: [...tr.children].map((c) => c.textContent.replace(/\s+/g, " ").trim()),
+      })),
     };
   }
   if (type.endsWith("-graph")) {
@@ -438,7 +456,7 @@ async function captureEnergyData(periods) {
       // What the collection fetched; rendering the cards below must not add to it
       const requests = log.map((e) => g.clone(e));
       const cards = {};
-      for (const type of ENERGY_CARD_CAPTURES) cards[type] = await captureEnergyCard(type);
+      for (const { name, config } of ENERGY_CARD_CAPTURES) cards[name] = await captureEnergyCard(config);
       out.push({
         ...p,
         cards,

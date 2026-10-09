@@ -19,6 +19,7 @@ import io.homeassistant.companion.android.dashboard.layout.conditionalInnerCard
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.cards.energy.EnergyDateSelectionCard
 import io.homeassistant.companion.android.dashboard.ui.cards.energy.EnergyDistributionCard
+import io.homeassistant.companion.android.dashboard.ui.cards.energy.EnergySourcesTableCard
 import io.homeassistant.companion.android.dashboard.ui.cards.energy.EnergyUsageGraphCard
 import java.time.ZonedDateTime
 
@@ -51,6 +52,7 @@ internal fun DashboardCard(
         CARD_ENERGY_DATE_SELECTION -> EnergyDateSelectionCard(card, hass, now, interactions, modifier)
         CARD_ENERGY_DISTRIBUTION -> EnergyDistributionCard(card, hass, now, modifier)
         CARD_ENERGY_USAGE_GRAPH -> EnergyUsageGraphCard(card, hass, now, modifier)
+        CARD_ENERGY_SOURCES_TABLE -> EnergySourcesTableCard(card, hass, interactions, modifier)
         else -> OtherCard(card, hass, interactions, modifier, cardModifier)
     }
 }
@@ -89,6 +91,7 @@ private const val CARD_TILE = "tile"
 private const val CARD_ENERGY_DATE_SELECTION = "energy-date-selection"
 private const val CARD_ENERGY_DISTRIBUTION = "energy-distribution"
 private const val CARD_ENERGY_USAGE_GRAPH = "energy-usage-graph"
+private const val CARD_ENERGY_SOURCES_TABLE = "energy-sources-table"
 private const val CARD_HEADING = "heading"
 private const val CARD_AREA = "area"
 private const val CARD_HOME_SUMMARY = "home-summary"
