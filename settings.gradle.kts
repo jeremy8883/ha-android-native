@@ -9,6 +9,7 @@ include(
     ":provides-sensor-processor",
     ":dashboard-core",
     ":dashboard",
+    ":dashboard-app",
 )
 
 rootProject.name = "home-assistant-android"

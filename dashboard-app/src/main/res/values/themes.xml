@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- The screens are Compose, themed by HATheme; this only covers the window before they draw. -->
+    <style name="Theme.HomeAssistantNative" parent="android:Theme.Material.Light.NoActionBar" />
+</resources>
