@@ -13,10 +13,7 @@ import kotlinx.coroutines.flow.update
  * it together.
  */
 @Singleton
-class NativeDashboardServers @Inject constructor(
-    private val repository: ActiveServerRepository,
-    private val paths: NativeDashboardPaths,
-) {
+class NativeDashboardServers @Inject constructor(private val repository: ActiveServerRepository) {
     // Activating a server doesn't change the servers, so the active one is read again on each activation
     private val activations = MutableStateFlow(0)
 
@@ -28,7 +25,6 @@ class NativeDashboardServers @Inject constructor(
     /** Make [serverId] the active server, which the native dashboards then show. */
     suspend fun activate(serverId: Int) {
         repository.activateServer(serverId)
-        paths.reset()
         activations.update { it + 1 }
     }
 

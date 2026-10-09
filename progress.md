@@ -121,7 +121,7 @@ Decided 2026-10-09: the native dashboards are an app of their own, installed alo
 - [x] Native login through Home Assistant's login API (`login/`): server discovery (copy of the companion app's `HomeAssistantSearcher`) or an address, the server's login forms (password, two-factor, trusted networks), then the code exchanged as the companion app does; no mobile device registration
 - [x] Drawer Settings entry: servers (switch, add, log out, which revokes the session), server switcher sheet
 - [x] Pages the dashboards don't show open in the companion app (`homeassistant://navigate`), or the browser without it
-- [ ] Revert the native dashboard integration in `:app` (one new commit, no history rewrite)
+- [x] Revert the native dashboard integration in `:app` (`bd0c95983`; `app/` is as at the branch point); the web layer, hand-off and standalone debug activity are gone from `:dashboard` too
 - [ ] Edit a server's name and addresses (internal URL, home networks) in Settings
 - [ ] Client certificates (mTLS) in the native login: pick one with `KeyChain` when the server asks
 - [ ] Sign in with the browser for servers behind a web sign-in page (Cloudflare Access, Authelia...); ideally detect when it's needed and offer it automatically

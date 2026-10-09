@@ -3,7 +3,6 @@ package io.homeassistant.companion.android.dashboard
 import app.cash.turbine.test
 import io.homeassistant.companion.android.dashboard.data.ActiveServerRepository
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -21,14 +20,12 @@ class NativeDashboardServersTest {
             coEvery { activeServerId() } answers { active }
             coEvery { activateServer(any()) } answers { active = firstArg() }
         }
-        val paths = mockk<NativeDashboardPaths>(relaxed = true)
-        val servers = NativeDashboardServers(repository, paths)
+        val servers = NativeDashboardServers(repository)
 
         servers.activeServer.test {
             assertEquals(NativeDashboardServers.ActiveServer(serverId = 1, serverCount = 2), awaitItem())
             servers.activate(2)
             assertEquals(NativeDashboardServers.ActiveServer(serverId = 2, serverCount = 2), awaitItem())
         }
-        coVerify { paths.reset() }
     }
 }

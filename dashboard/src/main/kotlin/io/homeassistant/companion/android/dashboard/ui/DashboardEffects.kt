@@ -2,8 +2,6 @@ package io.homeassistant.companion.android.dashboard.ui
 
 import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.view.HapticFeedbackConstants
 import android.view.View
@@ -36,7 +34,6 @@ import timber.log.Timber
  * Shows the dashboard's one-off [events]: messages as snackbars, confirmations as a dialog, links in the browser.
  *
  * @param onConfirmed runs an action the user confirmed
- * @param onShowDashboard shows the native dashboards in place of the web frontend, once one was opened
  */
 @Composable
 internal fun DashboardEffects(
@@ -46,7 +43,6 @@ internal fun DashboardEffects(
     onCodeEntered: (CardAction.CallService, String) -> Unit,
     onMoreInfo: (String) -> Unit,
     onOpenWeb: (String) -> Unit,
-    onShowDashboard: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val view = LocalView.current
@@ -54,14 +50,14 @@ internal fun DashboardEffects(
     var confirm by remember { mutableStateOf<DashboardEvent.Confirm?>(null) }
     var codeFor by remember { mutableStateOf<CardAction.CallService?>(null) }
     // The events are collected once, so they reach the latest callbacks through this
-    val navigation by rememberUpdatedState(NavigationCallbacks(onMoreInfo, onOpenWeb, onShowDashboard))
+    val navigation by rememberUpdatedState(NavigationCallbacks(onMoreInfo, onOpenWeb))
 
     LaunchedEffect(events) {
         events.collect { event ->
             when (event) {
                 is DashboardEvent.Confirm -> confirm = event
                 is DashboardEvent.EnterCode -> codeFor = event.action
-                else -> if (!navigate(event, context, uriHandler, navigation)) {
+                else -> if (!navigate(event, uriHandler, navigation)) {
                     // Don't hold up later events while a snackbar is shown
                     messageFor(event, context, view)?.let { (text, duration) ->
                         launch { snackbar.showSnackbar(text, duration = duration) }
@@ -111,38 +107,17 @@ private fun performFailureHaptic(view: View) {
 }
 
 /** Where navigation events lead. */
-private data class NavigationCallbacks(
-    val onMoreInfo: (String) -> Unit,
-    val onOpenWeb: (String) -> Unit,
-    val onShowDashboard: () -> Unit,
-)
+private data class NavigationCallbacks(val onMoreInfo: (String) -> Unit, val onOpenWeb: (String) -> Unit)
 
 /** Follow [event] when it navigates somewhere. @return whether it did */
-private fun navigate(
-    event: DashboardEvent,
-    context: Context,
-    uriHandler: UriHandler,
-    callbacks: NavigationCallbacks,
-): Boolean {
+private fun navigate(event: DashboardEvent, uriHandler: UriHandler, callbacks: NavigationCallbacks): Boolean {
     when (event) {
         is DashboardEvent.MoreInfo -> callbacks.onMoreInfo(event.entityId)
         is DashboardEvent.OpenWeb -> callbacks.onOpenWeb(event.path)
-        DashboardEvent.ShowDashboard -> callbacks.onShowDashboard()
-        is DashboardEvent.OpenAppLink -> openAppLink(context, event.uri)
         is DashboardEvent.OpenUrl -> openUrl(uriHandler, event.url)
         else -> return false
     }
     return true
-}
-
-/** Open [uri] with the app's own link handler, so the link never leaves the app. */
-private fun openAppLink(context: Context, uri: String) {
-    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri)).setPackage(context.packageName)
-    try {
-        context.startActivity(intent)
-    } catch (e: ActivityNotFoundException) {
-        Timber.w(e, "No activity handles the app link")
-    }
 }
 
 private fun openUrl(uriHandler: UriHandler, url: String) {

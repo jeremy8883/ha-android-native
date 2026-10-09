@@ -8,7 +8,6 @@ import io.homeassistant.companion.android.common.data.websocket.WebSocketState
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.action.Gesture
 import io.homeassistant.companion.android.dashboard.action.resolveAction
-import io.homeassistant.companion.android.dashboard.data.ActiveServerRepository
 import io.homeassistant.companion.android.dashboard.data.DashboardRepository
 import io.homeassistant.companion.android.dashboard.data.LiveDataRepository
 import io.homeassistant.companion.android.dashboard.data.LoadError
@@ -158,7 +157,6 @@ data class ViewTab(val title: String?, val icon: String?, val path: String)
 class DashboardViewModel @VisibleForTesting internal constructor(
     private val repository: DashboardRepository,
     live: LiveDataRepository,
-    private val activeServer: ActiveServerRepository,
     serverActions: ServerActionsRepository,
     clock: Clock,
     private val dispatchers: DashboardDispatchers,
@@ -168,13 +166,11 @@ class DashboardViewModel @VisibleForTesting internal constructor(
     constructor(
         repository: DashboardRepository,
         live: LiveDataRepository,
-        activeServer: ActiveServerRepository,
         serverActions: ServerActionsRepository,
         clock: Clock,
     ) : this(
         repository,
         live,
-        activeServer,
         serverActions,
         clock,
         DashboardDispatchers(default = Dispatchers.Default, io = Dispatchers.IO),
@@ -431,19 +427,6 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         }
     }
 
-    /**
-     * Open [path] in the web frontend through the app's `homeassistant://navigate/<path>` deep link, for hosts that
-     * do not navigate to the frontend themselves (the standalone debug activity).
-     */
-    fun onOpenWebViaDeepLink(path: String) {
-        viewModelScope.launch {
-            val serverId = activeServer.activeServerId() ?: return@launch
-            val uri = "$DEEP_LINK_NAVIGATE/${path.removePrefix("/")}" +
-                (if ('?' in path) "&" else "?") + "$SERVER_ID_PARAM=$serverId"
-            _events.send(DashboardEvent.OpenAppLink(uri))
-        }
-    }
-
     /** Run [action] that a card control started directly (such as a tile feature) or that the user confirmed. */
     fun onAction(action: CardAction) {
         viewModelScope.launch { actions.run(action) }
@@ -471,7 +454,6 @@ class DashboardViewModel @VisibleForTesting internal constructor(
             }
             selectedDashboard.value = if (urlPath == HOME_PANEL) null else urlPath
             viewStack.value = segments.drop(1).take(1)
-            _events.send(DashboardEvent.ShowDashboard)
         }
     }
 
@@ -608,9 +590,7 @@ private val OFFLINE_GRACE = 1.seconds
 /** The language of the bundled frontend strings; server translations are fetched in the same language. */
 private const val BUNDLED_LANGUAGE = "en"
 
-private const val DEEP_LINK_NAVIGATE = "homeassistant://navigate"
 private const val MORE_INFO_PARAM = "more-info-entity-id"
-private const val SERVER_ID_PARAM = "server_id"
 
 /** The navigation sidebar's entries and what paths they lead to. */
 data class SidebarState(

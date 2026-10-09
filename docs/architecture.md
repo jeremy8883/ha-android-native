@@ -201,48 +201,23 @@ Full tables are in frontend-lovelace.md §4 and §12.8. M1 targets:
 7. **The `:common` WS patch** has to be carried on every upstream merge until (if ever) it's accepted upstream.
 8. **Heavy-data cards** (history, statistics, energy, camera): deferred, with WebView fallback in the meantime.
 
-## 10. Native dashboards inside the app: navigation and the web hand-off
+## 10. The dashboard app (`:dashboard-app`)
 
-Goal: dashboards are native (instant, offline); every other page stays the web frontend in the WebView.
+Decided 2026-10-09: the native dashboards are an app of their own (`net.jeremycasey.homeassistantnative`), installed
+alongside the companion app, which keeps notifications, location, widgets and setup. The fork stays (for `:common`:
+servers, sessions, the WebSocket, the theme), but the companion app's module (`app/`) is back to upstream; an earlier
+integration inside it (a native start screen, a shared WebView shell, the web hand-off) was undone in `bd0c95983`.
 
-**Pieces that already exist**
-
-- The frontend's external-app mode: with `hasSidebar: true` in the app's `config/get` answer it hides its own sidebar,
-  and its menu button sends `sidebar/show` to the app (the iOS app works this way).
-- The `navigate` command (HA 2025.6+) moves the frontend to a path; `homeassistant://navigate/<path>` deep links
-  (and `?more-info-entity-id=`) reach the frontend through `LinkHandler` → `LaunchActivity` → `FrontendRoute`.
-- `HAWebViewClient.doUpdateVisitedHistory` sees every route change of the frontend (it changes routes without
-  reloading).
-
-**Design**
-
-1. One router decides, per path, native or web: a path whose panel is a dashboard the native renderer supports
-   (`home`, `lovelace`, storage dashboards, and their views) is native; anything else is the WebView at that path.
-2. Native dashboards are a destination of the app's nav graph (`NativeDashboardRoute` next to `FrontendRoute`), and
-   the start destination when the feature is on.
-3. The native screen has the navigation drawer: a port of `ha-sidebar` (`dashboard-core` `navigation/Sidebar.kt`,
-   golden-tested). Dashboards switch natively; other panels, Settings and the profile open the WebView at their path.
-4. In the WebView the frontend hides its sidebar (`hasSidebar`); its menu button (`sidebar/show`) returns to the
-   native screen with the drawer open. A route change to a dashboard path (a link, the frontend's back) returns to
-   the native dashboard too.
-5. Native actions that navigate outside the dashboard (`/config/...`) and the more-info "More details" open the
-   WebView at that path.
-6. The native dashboards and the frontend share one destination (`NativeDashboardShell`), so one WebView is kept
-   between web visits. It is created lazily, on the first page opened in it (never at launch, no preloading), and
-   then kept loaded but hidden while the native dashboards show. Later pages open in it with the frontend's
-   `navigate` command after clearing its history, so they don't load the frontend again (servers before 2025.6
-   load it again). System back goes through the WebView history first, then back to the native dashboards. The
-   hidden layer is laid out but not placed (not drawn, no touches), and its back handlers sit on a disabled child
-   `NavigationEventDispatcher`. Switching the active server drops the frontend; the next web page creates a new one.
-   The frontend destination (`FrontendRoute`) is still used for links to a server that isn't the active one, and
-   with the flag off.
-
-Everything is behind `WIPFeature.USE_NATIVE_DASHBOARD` (debug builds) while it settles; with it off the app is
-unchanged.
-
-**Phases**: A) native start screen with the drawer, web for other panels, `hasSidebar` and `sidebar/show`;
-B) route changes inside the WebView back to native, native `/...` navigation to the WebView; C) deep links start
-native, top-level back behaviour, server switching. All three are in, and so is the WebView kept alive across web
-visits. Still to do: the offline behaviour. Possible later: pausing the hidden frontend (it keeps its JavaScript and
-connection running while the native dashboards show), and preloading it when the app is idle.
-
+- **No WebView.** HTTP calls don't use WebView cookies (`@WebViewCookies`, bound to `false`), so starting the app
+  doesn't load the WebView. Pages the dashboards don't show open in the companion app (`homeassistant://navigate/...`),
+  or in the browser when it isn't installed.
+- **Native login** (`login/`): Home Assistant's login API, which its login page uses (`/auth/providers`,
+  `/auth/login_flow`): the server's own forms (password, two-factor, trusted networks) with the frontend's texts
+  (`ui.panel.page-authorize`), as the companion app's client (`https://home-assistant.io/android` with its
+  redirect URI, which core allows); the code is exchanged by `:common`'s `ServerRegistrationRepository`. Server
+  discovery is a copy of the companion app's `HomeAssistantSearcher`. The app doesn't register as a mobile device; it
+  reads the server's name, version and user itself (`AddServer`).
+- **Settings** (drawer): the servers, to switch to, add, or log out of (revoking the session), and a server switcher
+  sheet.
+- **Upstream sync:** dashboard behaviour follows home-assistant/frontend releases (ported code cites its source);
+  `:common` follows merges of upstream android `main`, which stay cheap because `app/` is untouched.

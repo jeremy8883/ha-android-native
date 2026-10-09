@@ -36,7 +36,6 @@ import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.HAThemeForPreview
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.NativeDashboardRequest
-import io.homeassistant.companion.android.dashboard.NativeDashboardWeb
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.data.valueOrNull
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -52,10 +51,9 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun DashboardScreen(
     viewModel: DashboardViewModel,
-    onOpenWeb: ((String) -> Unit)? = null,
+    onOpenWeb: (String) -> Unit,
     request: NativeDashboardRequest = NativeDashboardRequest(),
     onSwitchServer: (() -> Unit)? = null,
-    web: NativeDashboardWeb? = null,
     onOpenSettings: (() -> Unit)? = null,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -65,9 +63,7 @@ internal fun DashboardScreen(
     val now = viewModel.now.collectAsStateWithLifecycle()
     val status by viewModel.status.collectAsStateWithLifecycle()
     val content = uiState as? DashboardUiState.Content
-    val webVisible = web?.visible == true
     DashboardBackHandlers(
-        enabled = !webVisible,
         isSubview = content?.isSubview == true,
         isDefaultDashboard = selectedDashboard == null,
         viewModel = viewModel,
@@ -75,7 +71,7 @@ internal fun DashboardScreen(
     val snackbar = remember { SnackbarHostState() }
     val interactions = remember(viewModel) { CardInteractions(viewModel::onGesture, viewModel::onAction) }
     var moreInfo by rememberSaveable { mutableStateOf<String?>(null) }
-    DashboardMessages(viewModel, snackbar, onOpenWeb, web, onMoreInfo = { moreInfo = it })
+    DashboardMessages(viewModel, snackbar, onOpenWeb, onMoreInfo = { moreInfo = it })
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     ApplyRequest(request, viewModel::onOpenPath, onMoreInfo = { moreInfo = it }, drawerState = drawerState)
     val scope = rememberCoroutineScope()
@@ -83,19 +79,16 @@ internal fun DashboardScreen(
     CompositionLocalProvider(LocalServerUrl provides serverUrl) {
         DashboardLayers(
             drawerState = drawerState,
-            // The frontend has its own gestures, so over it the drawer only opens from its menu button
-            gesturesEnabled = drawerState.isOpen || (!webVisible && content?.isSubview != true),
+            gesturesEnabled = drawerState.isOpen || content?.isSubview != true,
             drawer = {
                 DashboardDrawer(
                     drawerState = drawerState,
                     viewModel = viewModel,
-                    selected = if (web?.visible == true) web.panel else selectedDashboard,
-                    selectsDefault = !webVisible,
+                    selected = selectedDashboard,
                     onSwitchServer = onSwitchServer,
                     onOpenSettings = onOpenSettings,
                 )
             },
-            web = web,
         ) {
             DashboardScreenContent(
                 uiState = uiState,
@@ -125,8 +118,7 @@ internal fun DashboardScreen(
 private fun DashboardMessages(
     viewModel: DashboardViewModel,
     snackbar: SnackbarHostState,
-    onOpenWeb: ((String) -> Unit)?,
-    web: NativeDashboardWeb?,
+    onOpenWeb: (String) -> Unit,
     onMoreInfo: (String) -> Unit,
 ) {
     RefreshErrorMessages(
@@ -142,40 +134,32 @@ private fun DashboardMessages(
         onConfirmed = viewModel::onAction,
         onCodeEntered = viewModel::onCodeEntered,
         onMoreInfo = onMoreInfo,
-        onOpenWeb = onOpenWeb ?: viewModel::onOpenWebViaDeepLink,
-        onShowDashboard = { web?.onShowDashboard?.invoke() },
+        onOpenWeb = onOpenWeb,
     )
 }
 
-/**
- * The native dashboards ([native]) and the web frontend ([web]) in the same place, under the navigation drawer; back
- * presses go to the drawer while it is open.
- */
+/** The native dashboards ([native]) under the navigation drawer; back presses go to the drawer while it is open. */
 @Composable
 private fun DashboardLayers(
     drawerState: DrawerState,
     gesturesEnabled: Boolean,
     drawer: @Composable () -> Unit,
-    web: NativeDashboardWeb?,
     native: @Composable () -> Unit,
 ) {
     ModalNavigationDrawer(drawerState = drawerState, gesturesEnabled = gesturesEnabled, drawerContent = drawer) {
-        val drawerClosed = drawerState.isClosed
-        ScreenLayer(visible = web?.visible != true, backEnabled = drawerClosed, content = native)
-        web?.let { ScreenLayer(visible = it.visible, backEnabled = drawerClosed, content = it.content) }
+        native()
     }
 }
 
 /**
- * The navigation drawer's content, closing as an entry is chosen. [selected] is the panel shown; when `null`, the
- * default dashboard if [selectsDefault].
+ * The navigation drawer's content, closing as an entry is chosen. [selected] is the dashboard shown, `null` for the
+ * default one.
  */
 @Composable
 private fun DashboardDrawer(
     drawerState: DrawerState,
     viewModel: DashboardViewModel,
     selected: String?,
-    selectsDefault: Boolean,
     onSwitchServer: (() -> Unit)?,
     onOpenSettings: (() -> Unit)?,
 ) {
@@ -184,7 +168,7 @@ private fun DashboardDrawer(
     NavigationDrawerContent(
         drawerState = drawerState,
         sidebar = sidebar,
-        selected = selected ?: sidebar.valueOrNull?.defaultPanel?.takeIf { selectsDefault },
+        selected = selected ?: sidebar.valueOrNull?.defaultPanel,
         onRetry = viewModel::onRetry,
         onSwitchServer = onSwitchServer?.let { switch -> closingDrawer(drawerState, scope, switch) },
         onOpenSettings = onOpenSettings?.let { open -> closingDrawer(drawerState, scope, open) },
@@ -194,17 +178,12 @@ private fun DashboardDrawer(
 
 /**
  * Back closes a subview, and from another dashboard returns to the default one before leaving, like other top-level
- * destinations; [enabled] while the dashboards show.
+ * destinations.
  */
 @Composable
-private fun DashboardBackHandlers(
-    enabled: Boolean,
-    isSubview: Boolean,
-    isDefaultDashboard: Boolean,
-    viewModel: DashboardViewModel,
-) {
-    BackHandler(enabled = enabled && isSubview) { viewModel.onBack() }
-    BackHandler(enabled = enabled && !isSubview && !isDefaultDashboard) { viewModel.onSelectDashboard(null) }
+private fun DashboardBackHandlers(isSubview: Boolean, isDefaultDashboard: Boolean, viewModel: DashboardViewModel) {
+    BackHandler(enabled = isSubview) { viewModel.onBack() }
+    BackHandler(enabled = !isSubview && !isDefaultDashboard) { viewModel.onSelectDashboard(null) }
 }
 
 /** Apply [request] once: open its path, more-info or the drawer. Saved, so it isn't applied again when recreated. */
