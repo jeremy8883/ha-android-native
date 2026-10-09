@@ -11,7 +11,9 @@ import coil3.network.NetworkRequest
 import coil3.network.NetworkResponse
 import coil3.network.okhttp.asNetworkClient
 import dagger.hilt.android.HiltAndroidApp
+import io.homeassistant.companion.android.common.data.servers.ServerManager
 import io.homeassistant.companion.android.common.util.di.SuspendProvider
+import io.homeassistant.companion.android.dashboard.data.LoadedData
 import javax.inject.Inject
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.MainScope
@@ -26,6 +28,12 @@ class DashboardApplication : Application() {
     @Inject
     lateinit var okHttpClientProvider: SuspendProvider<OkHttpClient>
 
+    @Inject
+    lateinit var serverManager: ServerManager
+
+    @Inject
+    lateinit var loadedData: LoadedData
+
     override fun onCreate() {
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
         // As the companion app (HomeAssistantApplication): images load through the app's HTTP client (its TLS and
@@ -34,6 +42,8 @@ class DashboardApplication : Application() {
         initializeCoil { networkClient.await() }
         super.onCreate()
         MainScope().launch { networkClient.complete(okHttpClientProvider().asNetworkClient()) }
+        // The dashboards' cache is read while the screen is being set up, so they show at once
+        MainScope().launch { serverManager.getServer()?.id?.let(loadedData::preload) }
     }
 }
 

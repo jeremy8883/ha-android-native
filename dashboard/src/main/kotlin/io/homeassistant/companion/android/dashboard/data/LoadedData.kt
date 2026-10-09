@@ -16,8 +16,10 @@ import kotlin.time.Clock
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -51,6 +53,9 @@ class LoadedData @VisibleForTesting internal constructor(
     )
 
     private val memory = ConcurrentHashMap<Key, Kept<*>>()
+
+    /** What is cached for each server, read once (see [cached]). */
+    private val cache = ConcurrentHashMap<Int, Deferred<CachedServer>>()
     private val pendingWrites = ConcurrentHashMap.newKeySet<Key>()
 
     /** The states last written for each server, to write only what changed since. */
@@ -59,6 +64,14 @@ class LoadedData @VisibleForTesting internal constructor(
 
     init {
         scope.launch { serverIds.distinctUntilChanged().collect(::forgetRemovedServers) }
+    }
+
+    /**
+     * Start reading [serverId]'s cache now, before anything asks for it, so that it is ready (or nearly) when the
+     * dashboards do. Meant for when the app starts, while its screens are still being set up.
+     */
+    fun preload(serverId: Int) {
+        cached(serverId)
     }
 
     /** Where [name] (for example `registries`) of [serverId] is kept, written to the cache with [codec]. */
@@ -79,7 +92,8 @@ class LoadedData @VisibleForTesting internal constructor(
     fun statesKeeper(serverId: Int): ValueKeeper<EntityStates> = object : ValueKeeper<EntityStates> {
         private val key = Key(serverId, STATES)
 
-        override suspend fun get(): Kept<EntityStates>? = memory(key) ?: readStates(serverId)
+        override suspend fun get(): Kept<EntityStates>? =
+            memory(key) ?: cached(serverId).await().states?.also { memory.putIfAbsent(key, it) }
 
         override fun put(value: EntityStates) {
             memory[key] = Kept(value, clock.now())
@@ -91,7 +105,7 @@ class LoadedData @VisibleForTesting internal constructor(
     private fun <T> memory(key: Key): Kept<T>? = memory[key] as Kept<T>?
 
     private suspend fun <T> read(key: Key, codec: CacheCodec<T>): Kept<T>? {
-        val cached = dao.value(key.serverId, key.name) ?: return null
+        val cached = cached(key.serverId).await().values[key.name] ?: return null
         return codec.decode(cached.json)
             ?.let {
                 Kept(it, Instant.fromEpochMilliseconds(cached.savedAt)).also { kept -> memory.putIfAbsent(key, kept) }
@@ -99,8 +113,24 @@ class LoadedData @VisibleForTesting internal constructor(
             ?: null.also { Timber.w("Ignoring cached ${key.name}, which can't be read") }
     }
 
-    private suspend fun readStates(serverId: Int): Kept<EntityStates>? {
-        val saved = dao.value(serverId, STATES) ?: return null
+    /**
+     * What is cached for [serverId], read from the database once, all at once: everything cached is needed when the
+     * dashboards start. A failed read is tried again the next time.
+     */
+    private fun cached(serverId: Int): Deferred<CachedServer> = cache.computeIfAbsent(serverId) {
+        scope.async {
+            try {
+                val values = dao.values(serverId).associateBy { it.name }
+                CachedServer(values, values[STATES]?.let { saved -> readStates(serverId, saved) })
+            } catch (e: IllegalStateException) {
+                // Room reports database failures this way
+                cache.remove(serverId)
+                throw e
+            }
+        }
+    }
+
+    private suspend fun readStates(serverId: Int, saved: CachedValue): Kept<EntityStates> {
         val rows = dao.states(serverId)
         val compressed = rows.mapNotNull { row ->
             decodeObject(row.json)?.let { row.entityId to it }
@@ -108,9 +138,7 @@ class LoadedData @VisibleForTesting internal constructor(
         }.toMap()
         val states = applyEntityEvent(emptyMap(), JsonObject(mapOf("a" to JsonObject(compressed))))
         writtenStates[serverId] = states
-        return Kept(states, Instant.fromEpochMilliseconds(saved.savedAt)).also {
-            memory.putIfAbsent(Key(serverId, STATES), it)
-        }
+        return Kept(states, Instant.fromEpochMilliseconds(saved.savedAt))
     }
 
     /** Write [key]'s latest value with [write] shortly, unless a write is already on its way. */
@@ -149,12 +177,16 @@ class LoadedData @VisibleForTesting internal constructor(
         removed.forEach { serverId ->
             Timber.i("Forgetting the cached dashboard data of removed server $serverId")
             memory.keys.removeAll { it.serverId == serverId }
+            cache.remove(serverId)?.cancel()
             writtenStates.remove(serverId)
             dao.deleteServer(serverId)
         }
     }
 
     private data class Key(val serverId: Int, val name: String)
+
+    /** A server's cached values by name, and its cached states. */
+    private class CachedServer(val values: Map<String, CachedValue>, val states: Kept<EntityStates>?)
 
     internal companion object {
         private const val STATES = "states"

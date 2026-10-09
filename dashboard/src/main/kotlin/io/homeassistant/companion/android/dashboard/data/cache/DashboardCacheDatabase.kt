@@ -38,8 +38,8 @@ data class CachedEntityState(
 
 @Dao
 interface DashboardCacheDao {
-    @Query("SELECT * FROM cached_value WHERE server_id = :serverId AND name = :name")
-    suspend fun value(serverId: Int, name: String): CachedValue?
+    @Query("SELECT * FROM cached_value WHERE server_id = :serverId")
+    suspend fun values(serverId: Int): List<CachedValue>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun putValue(value: CachedValue)

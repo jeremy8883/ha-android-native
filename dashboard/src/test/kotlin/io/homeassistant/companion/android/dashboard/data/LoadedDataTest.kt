@@ -23,14 +23,15 @@ class LoadedDataTest {
         val values = mutableMapOf<Pair<Int, String>, CachedValue>()
         val states = mutableMapOf<Pair<Int, String>, CachedEntityState>()
         var stateWrites = 0
+        var reads = 0
 
-        override suspend fun value(serverId: Int, name: String) = values[serverId to name]
+        override suspend fun values(serverId: Int) = values.values.filter { it.serverId == serverId }.also { reads++ }
 
         override suspend fun putValue(value: CachedValue) {
             values[value.serverId to value.name] = value
         }
 
-        override suspend fun states(serverId: Int) = states.values.filter { it.serverId == serverId }
+        override suspend fun states(serverId: Int) = states.values.filter { it.serverId == serverId }.also { reads++ }
 
         override suspend fun putStates(states: List<CachedEntityState>) {
             stateWrites += states.size
@@ -76,6 +77,24 @@ class LoadedDataTest {
         val kept = loadedData().keeper(SERVER, "registries", TextCodec).get()
 
         assertEquals(Kept("areas", NOW), kept)
+    }
+
+    @Test
+    fun `Given the cache preloaded when values are asked for then they come from what was preloaded`() = runTest {
+        dao.putValue(CachedValue(SERVER, "registries", "\"areas\"", savedAt = NOW.toEpochMilliseconds()))
+        dao.putValue(CachedValue(SERVER, "panels", "\"lovelace\"", savedAt = NOW.toEpochMilliseconds()))
+        dao.putStates(listOf(CachedEntityState(SERVER, "light.kitchen", "{\"s\":\"on\"}")))
+        dao.putValue(CachedValue(SERVER, "states", "{}", savedAt = NOW.toEpochMilliseconds()))
+        val loadedData = loadedData()
+
+        loadedData.preload(SERVER)
+        runCurrent()
+        val readsToPreload = dao.reads
+
+        assertEquals(Kept("areas", NOW), loadedData.keeper(SERVER, "registries", TextCodec).get())
+        assertEquals(Kept("lovelace", NOW), loadedData.keeper(SERVER, "panels", TextCodec).get())
+        assertEquals("on", loadedData.statesKeeper(SERVER).get()?.value?.get("light.kitchen")?.state)
+        assertEquals(readsToPreload, dao.reads)
     }
 
     @Test
