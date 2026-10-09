@@ -1,5 +1,5 @@
 {
-  "now": "2026-10-09T10:27:56.127Z",
+  "now": "2026-10-09T10:32:44.636Z",
   "locale": {
     "language": "en",
     "number_format": "language",
@@ -153,6 +153,34 @@
         "device_entity": "Native Test Home"
       }
     },
+    "input_number.target_humidity": {
+      "icon": "mdi:water-percent",
+      "state": "30%",
+      "secondary": "30%",
+      "names": {
+        "default": "Target humidity",
+        "entity": "Target humidity",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Target humidity"
+      }
+    },
+    "input_number.bedroom_brightness": {
+      "icon": {
+        "fallback": true
+      },
+      "state": "0%",
+      "secondary": "0%",
+      "names": {
+        "default": "Bedroom brightness",
+        "entity": "Bedroom brightness",
+        "device": "",
+        "area": "Bedroom",
+        "floor": "First floor",
+        "device_entity": "Bedroom brightness"
+      }
+    },
     "input_select.house_mode": {
       "icon": "mdi:home-switch",
       "state": "Home",
@@ -203,34 +231,6 @@
         "area": "",
         "floor": "",
         "device_entity": "Vacation mode"
-      }
-    },
-    "input_number.target_humidity": {
-      "icon": "mdi:water-percent",
-      "state": "30%",
-      "secondary": "30%",
-      "names": {
-        "default": "Target humidity",
-        "entity": "Target humidity",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Target humidity"
-      }
-    },
-    "input_number.bedroom_brightness": {
-      "icon": {
-        "fallback": true
-      },
-      "state": "0%",
-      "secondary": "0%",
-      "names": {
-        "default": "Bedroom brightness",
-        "entity": "Bedroom brightness",
-        "device": "",
-        "area": "Bedroom",
-        "floor": "First floor",
-        "device_entity": "Bedroom brightness"
       }
     },
     "person.dev": {
@@ -368,7 +368,7 @@
     "sensor.sun_next_noon": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 11:27 AM",
-      "secondary": "In 1 hour",
+      "secondary": "In 55 minutes",
       "names": {
         "default": "Sun Next noon",
         "entity": "Next noon",
@@ -394,7 +394,7 @@
     "sensor.sun_next_setting": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 4:59 PM",
-      "secondary": "In 7 hours",
+      "secondary": "In 6 hours",
       "names": {
         "default": "Sun Next setting",
         "entity": "Next setting",
@@ -402,6 +402,34 @@
         "area": "",
         "floor": "",
         "device_entity": "Sun Next setting"
+      }
+    },
+    "input_datetime.wake_up": {
+      "icon": "mdi:clock",
+      "state": "7:00 AM",
+      "secondary": "7:00 AM",
+      "names": {
+        "default": "Wake-up time",
+        "entity": "Wake-up time",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Wake-up time"
+      }
+    },
+    "input_text.welcome_message": {
+      "icon": {
+        "fallback": true
+      },
+      "state": "Hello from the test instance",
+      "secondary": "Hello from the test instance",
+      "names": {
+        "default": "Welcome message",
+        "entity": "Welcome message",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Welcome message"
       }
     },
     "lock.front_door_deadbolt": {
@@ -432,8 +460,8 @@
     },
     "sensor.living_room_temperature": {
       "icon": "mdi:thermometer",
-      "state": "21.7 °C",
-      "secondary": "21.7 °C",
+      "state": "21.2 °C",
+      "secondary": "21.2 °C",
       "names": {
         "default": "Living room temperature",
         "entity": "Living room temperature",
@@ -445,8 +473,8 @@
     },
     "sensor.living_room_humidity": {
       "icon": "mdi:water-percent",
-      "state": "51%",
-      "secondary": "51%",
+      "state": "49%",
+      "secondary": "49%",
       "names": {
         "default": "Living room humidity",
         "entity": "Living room humidity",
@@ -510,8 +538,8 @@
     },
     "sensor.house_power": {
       "icon": "mdi:flash",
-      "state": "489 W",
-      "secondary": "489 W",
+      "state": "524 W",
+      "secondary": "524 W",
       "names": {
         "default": "House power",
         "entity": "House power",
@@ -523,8 +551,8 @@
     },
     "sensor.solar_power": {
       "icon": "mdi:flash",
-      "state": "2,979 W",
-      "secondary": "2,979 W",
+      "state": "2,971 W",
+      "secondary": "2,971 W",
       "names": {
         "default": "Solar power",
         "entity": "Solar power",
@@ -536,8 +564,8 @@
     },
     "sensor.grid_power": {
       "icon": "mdi:flash",
-      "state": "-629 W",
-      "secondary": "-629 W",
+      "state": "-621 W",
+      "secondary": "-621 W",
       "names": {
         "default": "Grid power",
         "entity": "Grid power",
@@ -575,8 +603,8 @@
     },
     "sensor.fridge_power": {
       "icon": "mdi:flash",
-      "state": "120 W",
-      "secondary": "120 W",
+      "state": "5 W",
+      "secondary": "5 W",
       "names": {
         "default": "Fridge power",
         "entity": "Fridge power",
@@ -717,9 +745,9 @@
       }
     },
     "binary_sensor.kitchen_motion": {
-      "icon": "mdi:motion-sensor-off",
-      "state": "Clear",
-      "secondary": "Clear",
+      "icon": "mdi:motion-sensor",
+      "state": "Detected",
+      "secondary": "Detected",
       "names": {
         "default": "Kitchen motion",
         "entity": "Kitchen motion",
@@ -779,34 +807,6 @@
         "area": "Garden",
         "floor": "Outside",
         "device_entity": "Garden irrigation"
-      }
-    },
-    "input_datetime.wake_up": {
-      "icon": "mdi:clock",
-      "state": "7:00 AM",
-      "secondary": "7:00 AM",
-      "names": {
-        "default": "Wake-up time",
-        "entity": "Wake-up time",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Wake-up time"
-      }
-    },
-    "input_text.welcome_message": {
-      "icon": {
-        "fallback": true
-      },
-      "state": "Hello from the test instance",
-      "secondary": "Hello from the test instance",
-      "names": {
-        "default": "Welcome message",
-        "entity": "Welcome message",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Welcome message"
       }
     },
     "device_tracker.sdk_gphone64_x86_64": {
@@ -872,6 +872,19 @@
         "area": "",
         "floor": "",
         "device_entity": "sdk_gphone64_x86_64 Charger type"
+      }
+    },
+    "todo.shopping_list": {
+      "icon": "mdi:cart",
+      "state": "0",
+      "secondary": "0",
+      "names": {
+        "default": "Shopping List",
+        "entity": "Shopping List",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Shopping List"
       }
     },
     "image_processing.demo_face": {
@@ -1033,9 +1046,9 @@
       }
     },
     "calendar.calendar_2": {
-      "icon": "mdi:calendar-blank",
-      "state": "Off",
-      "secondary": "Off",
+      "icon": "mdi:calendar-check",
+      "state": "On",
+      "secondary": "On",
       "names": {
         "default": "Calendar 2",
         "entity": "Calendar 2",
@@ -1710,8 +1723,8 @@
     },
     "sensor.total_energy_kwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "176.00 kWh",
-      "secondary": "176.00 kWh",
+      "state": "175.50 kWh",
+      "secondary": "175.50 kWh",
       "names": {
         "default": "Total energy 1",
         "entity": "Total energy 1",
@@ -1736,8 +1749,8 @@
     },
     "sensor.total_gas_m3": {
       "icon": "mdi:meter-gas",
-      "state": "8.80 m³",
-      "secondary": "8.80 m³",
+      "state": "8.78 m³",
+      "secondary": "8.78 m³",
       "names": {
         "default": "Total gas 1",
         "entity": "Total gas 1",
@@ -1749,8 +1762,8 @@
     },
     "sensor.total_gas_ft3": {
       "icon": "mdi:meter-gas",
-      "state": "9.97 m³",
-      "secondary": "9.97 m³",
+      "state": "9.94 m³",
+      "secondary": "9.94 m³",
       "names": {
         "default": "Total gas 2",
         "entity": "Total gas 2",
@@ -2163,19 +2176,6 @@
         "device_entity": "Google Translate en com"
       }
     },
-    "todo.shopping_list": {
-      "icon": "mdi:cart",
-      "state": "0",
-      "secondary": "0",
-      "names": {
-        "default": "Shopping List",
-        "entity": "Shopping List",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Shopping List"
-      }
-    },
     "weather.forecast_native_test_home": {
       "icon": "mdi:weather-rainy",
       "state": "Rainy",
@@ -2408,7 +2408,7 @@
         }
       },
       "name": "Living room temperature",
-      "secondary": "21.7 °C"
+      "secondary": "21.2 °C"
     },
     {
       "config": {
@@ -2419,7 +2419,7 @@
         }
       },
       "name": "Living room humidity",
-      "secondary": "51%"
+      "secondary": "49%"
     },
     {
       "config": {
@@ -2502,7 +2502,7 @@
         }
       },
       "name": "Fridge power",
-      "secondary": "120 W"
+      "secondary": "5 W"
     },
     {
       "config": {
@@ -2513,7 +2513,7 @@
         }
       },
       "name": "Kitchen motion",
-      "secondary": "Clear"
+      "secondary": "Detected"
     },
     {
       "config": {
@@ -2680,7 +2680,7 @@
         }
       },
       "name": "Total energy 1",
-      "secondary": "176.00 kWh"
+      "secondary": "175.50 kWh"
     },
     {
       "config": {
@@ -2691,7 +2691,7 @@
         }
       },
       "name": "Total gas 1",
-      "secondary": "8.80 m³"
+      "secondary": "8.78 m³"
     },
     {
       "config": {

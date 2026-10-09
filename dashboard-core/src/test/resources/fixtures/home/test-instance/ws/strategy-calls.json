@@ -14,16 +14,18 @@
           "stat_compensation": "test:grid_compensation",
           "stat_rate": "sensor.grid_power",
           "cost_adjustment_day": 0,
-          "entity_energy_price": null,
-          "number_energy_price": null,
           "number_energy_price_export": null,
-          "entity_energy_price_export": null
+          "entity_energy_price": null,
+          "entity_energy_price_export": null,
+          "number_energy_price": null
         },
         {
           "type": "solar",
           "stat_energy_from": "test:solar",
           "stat_rate": "sensor.solar_power",
-          "config_entry_solar_forecast": null
+          "config_entry_solar_forecast": [
+            "01M4G3D3BAN667CNYZNN3XRZZW"
+          ]
         },
         {
           "type": "battery",

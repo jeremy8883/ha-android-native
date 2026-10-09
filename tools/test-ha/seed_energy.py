@@ -6,7 +6,8 @@ Imports 60 days of hourly history and saves energy preferences using every sourc
   statistics (`test:*`, they have no entity);
 - devices, with one included in another (office computer in the office circuit), and water devices;
 - the power and flow template sensors of config/configuration.yaml as `stat_rate`, with their hourly
-  mean history imported so the power charts have data before the recorder compiles its own.
+  mean history imported so the power charts have data before the recorder compiles its own;
+- the solar forecast of the test_solar_forecast custom integration, whose entry it creates when missing.
 
 The energy follows a deterministic daily profile (seeded random weather and noise) so the frontend and
 the native app can be compared on the same numbers. Only ever connects to localhost.
@@ -225,6 +226,37 @@ async def import_history(ws: Ws) -> None:
     log(f"imported {hours} hours of {len(METERS)} meters and {len(RATES)} rates")
 
 
+FORECAST_DOMAIN = "test_solar_forecast"
+
+
+async def forecast_entry(ws: Ws, session: aiohttp.ClientSession, base: str, token: str) -> str:
+    """The config entry of the test solar forecast (config/custom_components), created when missing."""
+    entries = await ws.call("config_entries/get", domain=FORECAST_DOMAIN)
+    if entries:
+        return entries[0]["entry_id"]
+    async with session.post(
+        f"{base}/api/config/config_entries/flow",
+        json={"handler": FORECAST_DOMAIN},
+        headers={"Authorization": f"Bearer {token}"},
+    ) as response:
+        response.raise_for_status()
+        result = await response.json()
+    assert result["type"] == "create_entry", result
+    log("created the solar forecast entry")
+    return result["result"]["entry_id"]
+
+
+async def save_prefs(ws: Ws, session: aiohttp.ClientSession, base: str, token: str) -> None:
+    """Saves ENERGY_PREFS, with the solar source forecast by the test solar forecast."""
+    entry_id = await forecast_entry(ws, session, base, token)
+    sources = [
+        {**source, "config_entry_solar_forecast": [entry_id]} if source["type"] == "solar" else source
+        for source in ENERGY_PREFS["energy_sources"]
+    ]
+    await ws.call("energy/save_prefs", **{**ENERGY_PREFS, "energy_sources": sources})
+    log("saved energy preferences")
+
+
 async def main(base: str) -> None:
     if urlparse(base).hostname not in {"localhost", "127.0.0.1", "::1"}:
         sys.exit("refused: seed_energy only targets localhost")
@@ -234,8 +266,7 @@ async def main(base: str) -> None:
     async with aiohttp.ClientSession() as session:
         ws = await Ws.connect(session, base, token)
         await import_history(ws)
-        await ws.call("energy/save_prefs", **ENERGY_PREFS)
-        log("saved energy preferences")
+        await save_prefs(ws, session, base, token)
         await ws.ws.close()
 
 

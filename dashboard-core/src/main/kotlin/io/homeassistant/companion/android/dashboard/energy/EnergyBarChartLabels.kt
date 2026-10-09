@@ -108,25 +108,39 @@ fun DisplayFormats.valueLabel(value: Double, digits: Int): String =
  * What a period's tooltip shows: its time and each series' value, with the total of the positive bars when there
  * are several. Port of `formatTooltip`.
  */
-data class EnergyTooltip(val title: String, val rows: List<EnergyTooltipRow>, val total: Double?)
+data class EnergyTooltip(
+    val title: String,
+    val rows: List<EnergyTooltipRow>,
+    val total: Double?,
+    val lineRows: List<EnergyTooltipLineRow> = emptyList(),
+)
 
 /** A series' value in a tooltip. */
 data class EnergyTooltipRow(val series: EnergyBarSeries, val value: String)
 
+/** A line's value in a tooltip, after the bars'. */
+data class EnergyTooltipLineRow(val line: EnergyLineSeries, val value: String)
+
 /** The tooltip of the bars of [series] that start at [start], or `null` when they are all 0. */
 fun DisplayFormats.energyTooltip(chart: EnergyBarChart, series: List<EnergyBarSeries>, start: Long): EnergyTooltip? {
     val bars = series.mapNotNull { s -> s.points.firstOrNull { it.start == start }?.let { s to it } }
-    val rows = bars.mapNotNull { (s, bar) ->
-        val digits = if (bar.y < SMALL_VALUE) SMALL_DIGITS else DEFAULT_DIGITS
-        val text = number(BigDecimal.valueOf(bar.y), 0, digits)
-        if (text == "0") null else EnergyTooltipRow(s, "$text ${chart.unit}")
+    fun value(y: Double): String? {
+        val text = number(BigDecimal.valueOf(y), 0, if (y < SMALL_VALUE) SMALL_DIGITS else DEFAULT_DIGITS)
+        return if (text == "0") null else "$text ${chart.unit}"
     }
-    if (rows.isEmpty()) return null
+    val rows = bars.mapNotNull { (s, bar) -> value(bar.y)?.let { EnergyTooltipRow(s, it) } }
+    // The lines' points at the bars' place
+    val x = bars.firstOrNull()?.second?.x
+    val lineRows = chart.lines.mapNotNull { line ->
+        line.points.firstOrNull { it.x == x }?.let { point -> value(point.y)?.let { EnergyTooltipLineRow(line, it) } }
+    }
+    if (rows.isEmpty() && lineRows.isEmpty()) return null
     val positives = bars.filter { (s, bar) -> bar.y > 0 && rows.any { it.series == s } }.map { it.second.y }
     return EnergyTooltip(
         title = tooltipTitle(chart, start),
         rows = rows,
         total = positives.sum().takeIf { positives.size > 1 && it != 0.0 },
+        lineRows = lineRows,
     )
 }
 

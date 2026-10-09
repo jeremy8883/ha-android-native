@@ -519,6 +519,10 @@ async function captureEnergyCard(config, states, units) {
       xMax: date(options.xAxis?.max),
     };
   }
+  // The forecasts the solar graph fetched itself (energy/solar_forecast, not part of the collection's requests)
+  if (type === "energy-solar-graph") {
+    result = { ...result, forecasts: g.clone(await hass.callWS({ type: "energy/solar_forecast" })) };
+  }
   // The live states the card read, for the cards built from them
   if (["power-sankey", "water-flow-sankey", "power-sources-graph"].includes(type)) {
     const ids = Object.keys(hass.states).filter((id) => /_(power|flow)$/.test(id));

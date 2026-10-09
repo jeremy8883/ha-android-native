@@ -12,7 +12,8 @@ import kotlin.math.max
 // frontend@20260624.6 src/panels/lovelace/cards/energy/common/energy-chart-options.ts.
 
 /**
- * A bar chart of energy by period: [series] stacked in order, the compared period's beside the shown one's.
+ * A bar chart of energy by period: [series] stacked in order, the compared period's beside the shown one's, and
+ * [lines] over them (the solar forecast).
  *
  * @property xMin the time axis's start, epoch ms
  * @property xMax the time axis's end, epoch ms
@@ -28,10 +29,17 @@ data class EnergyBarChart(
     val unit: String,
     val compare: Boolean,
     val showCompareYear: Boolean = false,
+    val lines: List<EnergyLineSeries> = emptyList(),
 ) {
-    /** Whether no series has any bar, which upstream shows as "no data". */
-    val isEmpty: Boolean get() = series.all { it.points.isEmpty() }
+    /** Whether no series has any bar or point, which upstream shows as "no data". */
+    val isEmpty: Boolean get() = series.all { it.points.isEmpty() } && lines.all { it.points.isEmpty() }
 }
+
+/** A dashed line over the bars, in the theme's [color] variable. */
+data class EnergyLineSeries(val id: String, val name: String, val color: String, val points: List<EnergyLinePoint>)
+
+/** A point of an [EnergyLineSeries]: [y] at [x], epoch ms. */
+data class EnergyLinePoint(val x: Long, val y: Double)
 
 /**
  * One series of bars.

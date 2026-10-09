@@ -19,6 +19,7 @@ import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
@@ -32,11 +33,14 @@ import io.homeassistant.companion.android.common.compose.theme.LocalHAColorSchem
 import io.homeassistant.companion.android.dashboard.display.DisplayFormats
 import io.homeassistant.companion.android.dashboard.energy.EnergyBarChart
 import io.homeassistant.companion.android.dashboard.energy.EnergyBarSeries
+import io.homeassistant.companion.android.dashboard.energy.EnergyLineSeries
 import io.homeassistant.companion.android.dashboard.energy.EnergyTooltip
+import io.homeassistant.companion.android.dashboard.energy.StatisticPeriod
 import io.homeassistant.companion.android.dashboard.energy.niceTicks
 import io.homeassistant.companion.android.dashboard.energy.timeTickLabel
 import io.homeassistant.companion.android.dashboard.energy.timeTicks
 import io.homeassistant.companion.android.dashboard.energy.valueLabel
+import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -81,6 +85,7 @@ internal fun EnergyBarChartView(
                 }
             }
             drawBars(layout, shown, dark)
+            drawLines(layout, chart.lines, dark)
         }
         selected?.let { start -> tooltip(shown, start) }?.let { EnergyTooltipCard(it, dark, formatTotal) }
     }
@@ -148,7 +153,10 @@ private class ChartGeometry(area: PlotArea, val chart: EnergyBarChart, val ticks
             formats: DisplayFormats,
             text: AxisText,
         ): ChartGeometry = with(scope) {
-            val (low, high) = stackedExtent(series)
+            val (stackLow, stackHigh) = stackedExtent(series)
+            val lineValues = chart.lines.flatMap { line -> line.points.map { it.y } }
+            val low = minOf(stackLow, lineValues.minOrNull() ?: stackLow)
+            val high = maxOf(stackHigh, lineValues.maxOrNull() ?: stackHigh)
             val ticks = niceTicks(low, high)
             val labelWidth = ticks.maxOf {
                 text.measure(formats.valueLabel(it, chart.yFractionDigits)).size.width
@@ -161,10 +169,14 @@ private class ChartGeometry(area: PlotArea, val chart: EnergyBarChart, val ticks
             // The shown period's bars and their starts, at the main series' places
             val starts = series.filterNot { it.compare }.flatMap { s -> s.points.map { it.x to it.start } }
                 .distinctBy { it.first }.sortedBy { it.first }
-            val periods = max(starts.size, 1)
+            // Like ECharts on a time axis, a period's place is the smallest gap between bars (or the period's
+            // length for a lone bar), so bars keep their width when some periods have none
+            val gap = starts.zipWithNext { a, b -> b.first - a.first }.filter { it > 0 }.minOrNull()
+                ?: periodLength(chart.period)
+            val span = (chart.xMax - chart.xMin).toFloat().coerceAtLeast(1f)
             val stacks = listOfNotNull(true.takeIf { chart.compare }, false)
             val stackWidth = min(
-                (size.width - left) / periods * BAR_SHARE / stacks.size,
+                (size.width - left) * min(gap / span, 1f) * BAR_SHARE / stacks.size,
                 MAX_BAR_WIDTH.toPx(),
             )
             ChartGeometry(PlotArea(left, top, size.width, bottom), chart, ticks, BarPlaces(stackWidth, stacks, starts))
@@ -234,6 +246,29 @@ private fun DrawScope.drawBars(layout: ChartGeometry, series: List<EnergyBarSeri
     }
 }
 
+/** The length of a [period], a month counted as 30 days. */
+private fun periodLength(period: StatisticPeriod): Long = when (period) {
+    StatisticPeriod.FIVE_MINUTES -> FIVE_MINUTES_MS
+    StatisticPeriod.HOUR -> HOUR_MS
+    StatisticPeriod.DAY -> DAY_MS
+    StatisticPeriod.MONTH -> MONTH_DAYS * DAY_MS
+}
+
+/** The lines over the bars (the solar forecast): straight between their points, dashed. */
+private fun DrawScope.drawLines(layout: ChartGeometry, lines: List<EnergyLineSeries>, dark: Boolean) {
+    val dash = PathEffect.dashPathEffect(floatArrayOf(LINE_DASH.toPx(), LINE_GAP.toPx()))
+    lines.forEach { line ->
+        val color = resolveVariable(line.color, dark) ?: return@forEach
+        val path = Path()
+        line.points.forEachIndexed { index, point ->
+            val x = layout.x(point.x)
+            val y = layout.y(point.y)
+            if (index == 0) path.moveTo(x, y) else path.lineTo(x, y)
+        }
+        drawPath(path, color, style = Stroke(LINE_WIDTH.toPx(), pathEffect = dash))
+    }
+}
+
 /** A bar whose end away from zero is rounded by [radius]. */
 private fun barPath(bar: Rect, radius: Float, up: Boolean): Path {
     val r = CornerRadius(min(radius, min(bar.width / 2, bar.height)))
@@ -263,6 +298,13 @@ private val MAX_BAR_WIDTH = 50.dp
 private val CAP_RADIUS = 4.dp
 private val BORDER = 1.dp
 private val MIN_TICK_SPACING = 56.dp
+private val LINE_WIDTH = 1.5.dp
+private const val FIVE_MINUTES_MS = 5 * 60 * 1000L
+private const val HOUR_MS = 60 * 60 * 1000L
+private const val DAY_MS = 24 * HOUR_MS
+private const val MONTH_DAYS = 30
+private val LINE_DASH = 7.dp
+private val LINE_GAP = 5.dp
 
 /** The share of a period's place its bars take. */
 private const val BAR_SHARE = 0.6f

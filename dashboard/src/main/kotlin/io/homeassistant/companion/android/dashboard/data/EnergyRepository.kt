@@ -10,9 +10,11 @@ import io.homeassistant.companion.android.dashboard.energy.EnergyInfo
 import io.homeassistant.companion.android.dashboard.energy.EnergyPeriod
 import io.homeassistant.companion.android.dashboard.energy.EnergyPreferences
 import io.homeassistant.companion.android.dashboard.energy.EnergyRequest
+import io.homeassistant.companion.android.dashboard.energy.SOLAR_FORECAST_COMMAND
 import io.homeassistant.companion.android.dashboard.energy.StatisticsMetadata
 import io.homeassistant.companion.android.dashboard.energy.WsCommand
 import io.homeassistant.companion.android.dashboard.energy.assemble
+import io.homeassistant.companion.android.dashboard.energy.hasSolarForecast
 import io.homeassistant.companion.android.dashboard.energy.metadataCommand
 import io.homeassistant.companion.android.dashboard.energy.parseStatisticsMetadata
 import io.homeassistant.companion.android.dashboard.energy.planEnergyFetch
@@ -130,8 +132,23 @@ private suspend fun ServerSession.fetchEnergy(
                 INFO to Fetched.Success(infoJson),
                 METADATA to Fetched.Success(metadataJson),
                 PLAN to Fetched.Success(plan.toJson()),
+                SOLAR_FORECAST to solarForecast(prefs),
             ) + results,
         )
+    }
+}
+
+/**
+ * The solar forecasts when a solar source is forecast; like the frontend's solar graph, the graph goes without
+ * them when they can't be loaded.
+ */
+private suspend fun ServerSession.solarForecast(prefs: EnergyPreferences): Fetched<JsonElement?> {
+    if (!prefs.hasSolarForecast) return Fetched.Success(null)
+    return when (val forecast = request(SOLAR_FORECAST_COMMAND)) {
+        is Fetched.Success -> forecast
+        is Fetched.Failure -> Fetched.Success<JsonElement?>(null).also {
+            Timber.w("Couldn't load the solar forecasts, the solar graph goes without: $forecast")
+        }
     }
 }
 
@@ -165,6 +182,7 @@ internal fun parseEnergyBundle(bundle: JsonObject): Fetched<EnergyData> {
         waterCompare = part("water_compare"),
         fossil = part("fossil"),
         fossilCompare = part("fossil_compare"),
+        solarForecast = part(SOLAR_FORECAST),
     )
     return Fetched.Success(plan.assemble(basis.prefs, basis.info, basis.metadata, results))
 }
@@ -224,3 +242,4 @@ private const val PREFS = "prefs"
 private const val INFO = "info"
 private const val METADATA = "metadata"
 private const val PLAN = "plan"
+private const val SOLAR_FORECAST = "solar_forecast"

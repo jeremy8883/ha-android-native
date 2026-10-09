@@ -18,12 +18,13 @@ class EnergySourceGraphGoldenTest {
     private val energy = EnergyFixture()
 
     @TestFactory
-    fun `Given a period's data when computing a source graph then it has the frontend's bars`(): List<DynamicTest> = energy.periods.flatMap { recorded ->
+    fun `Given a period's data when computing a source graph then it has the frontend's bars and forecast`(): List<DynamicTest> = energy.periods.flatMap { recorded ->
         SourceGraphKind.entries.map { kind ->
             DynamicTest.dynamicTest("${recorded.name} ${kind.kind}") {
                 val expected = recorded.card("energy-${kind.kind}-graph")
                 // The empty series that puts the compared bars first is ECharts' business
-                val expectedSeries = expected.objects("series").filter { it.string("name") != null }
+                val (expectedLines, expectedSeries) = expected.objects("series").filter { it.string("name") != null }
+                    .partition { it.string("id").orEmpty().startsWith(FORECAST) }
 
                 val model = energy.fixture.hass.energySourceGraph(recorded.data, kind)
 
@@ -36,6 +37,12 @@ class EnergySourceGraphGoldenTest {
                     assertEquals(points.map { it[2].jsonPrimitive.long }, actual.points.map { it.start }, "${actual.id} start")
                     assertEquals(points.map { it[1].jsonPrimitive.double }, actual.points.map { it.y }, "${actual.id} y")
                 }
+                assertEquals(expectedLines.map { it.string("id") to it.string("name") }, model.chart.lines.map { it.id to it.name })
+                expectedLines.zip(model.chart.lines).forEach { (line, actual) ->
+                    val points = (line["data"] as JsonArray).map { it as JsonArray }
+                    assertEquals(points.map { it[0].jsonPrimitive.long }, actual.points.map { it.x }, "${actual.id} x")
+                    points.zip(actual.points).forEach { (point, p) -> assertEquals(point[1].jsonPrimitive.double, p.y, TOLERANCE) }
+                }
                 assertEquals(expected.number("total")!!, model.total, TOLERANCE)
                 assertEquals(expected.number("yAxisFractionDigits")?.toInt(), model.chart.yFractionDigits)
                 assertEquals(Instant.parse(expected.string("xMin")).toEpochMilli(), model.chart.xMin)
@@ -46,5 +53,6 @@ class EnergySourceGraphGoldenTest {
 
     private companion object {
         const val TOLERANCE = 1e-9
+        const val FORECAST = "forecast-"
     }
 }

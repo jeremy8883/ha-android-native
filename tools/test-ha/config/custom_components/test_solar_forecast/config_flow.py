@@ -1,0 +1,14 @@
+"""One entry, created without questions."""
+
+from homeassistant import config_entries
+
+DOMAIN = "test_solar_forecast"
+
+
+class TestSolarForecastConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
+    VERSION = 1
+
+    async def async_step_user(self, user_input=None):
+        await self.async_set_unique_id(DOMAIN)
+        self._abort_if_unique_id_configured()
+        return self.async_create_entry(title="Test solar forecast", data={})

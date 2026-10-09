@@ -59,6 +59,9 @@ internal class EnergyFixture {
                         water = result(plan.water),
                         energyCompare = result(plan.energyCompare),
                         waterCompare = result(plan.waterCompare),
+                        // Fetched by the solar graph itself, which the capture records with it
+                        solarForecast = json.obj("cards")?.obj("energy-solar-graph")?.obj("forecasts")
+                            .takeIf { prefs.hasSolarForecast },
                     ),
                 )
             }

@@ -42,8 +42,12 @@ python3 tools/ha-probe/ha_ro.py call call_service \
   - On first run only, makes a few service calls so `usage_prediction/common_control` returns data.
   - Seeds the energy dashboard (`seed_energy.py`, also runnable alone): 60 days of hourly history for grid,
     solar, battery, gas, water and devices as `test:*` statistics, the history of the power and flow
-    template sensors, and energy preferences using all of them. The import is applied asynchronously by the
-    recorder, so a query right after can still see the previous values.
+    template sensors, and energy preferences using all of them, with the solar forecast of the
+    `test_solar_forecast` integration (`config/custom_components/`, a fixed daily curve without outbound calls;
+    its config entry is created when missing). The import is applied asynchronously by the recorder, so a query
+    right after can still see the previous values.
+- `up.sh` copies `config/custom_components/` into the runtime config on every start, so changes to them only
+  need a restart (`podman restart ha-native-test`).
 
 ## Quirks
 

@@ -135,17 +135,6 @@
     "config_panel_domain": null,
     "show_in_sidebar": true
   },
-  "logbook": {
-    "component_name": "logbook",
-    "icon": "mdi:format-list-bulleted-type",
-    "title": "logbook",
-    "default_visible": true,
-    "config": null,
-    "url_path": "logbook",
-    "require_admin": false,
-    "config_panel_domain": null,
-    "show_in_sidebar": true
-  },
   "history": {
     "component_name": "history",
     "icon": "mdi:chart-box",
@@ -153,6 +142,17 @@
     "default_visible": true,
     "config": null,
     "url_path": "history",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  },
+  "logbook": {
+    "component_name": "logbook",
+    "icon": "mdi:format-list-bulleted-type",
+    "title": "logbook",
+    "default_visible": true,
+    "config": null,
+    "url_path": "logbook",
     "require_admin": false,
     "config_panel_domain": null,
     "show_in_sidebar": true
@@ -179,17 +179,6 @@
     "config_panel_domain": null,
     "show_in_sidebar": true
   },
-  "calendar": {
-    "component_name": "calendar",
-    "icon": "mdi:calendar",
-    "title": "calendar",
-    "default_visible": true,
-    "config": null,
-    "url_path": "calendar",
-    "require_admin": false,
-    "config_panel_domain": null,
-    "show_in_sidebar": true
-  },
   "todo": {
     "component_name": "todo",
     "icon": "mdi:clipboard-list",
@@ -197,6 +186,17 @@
     "default_visible": true,
     "config": null,
     "url_path": "todo",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  },
+  "calendar": {
+    "component_name": "calendar",
+    "icon": "mdi:calendar",
+    "title": "calendar",
+    "default_visible": true,
+    "config": null,
+    "url_path": "calendar",
     "require_admin": false,
     "config_panel_domain": null,
     "show_in_sidebar": true

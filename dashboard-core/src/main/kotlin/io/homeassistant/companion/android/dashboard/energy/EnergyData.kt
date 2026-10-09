@@ -10,6 +10,7 @@ import kotlinx.serialization.json.doubleOrNull
  * @property stats the statistics of the period, power and flow rates included
  * @property statsCompare the statistics of [comparePeriod], `null` without comparison
  * @property fossilEnergyConsumption the fossil fuel share of the grid's energy by period start, with a CO2 signal
+ * @property solarForecasts the solar forecasts, `null` when no solar source is forecast or they couldn't be loaded
  */
 data class EnergyData(
     val period: EnergyPeriod,
@@ -25,6 +26,7 @@ data class EnergyData(
     val fossilEnergyConsumptionCompare: Map<String, Double>?,
     val waterUnit: String,
     val gasUnit: String,
+    val solarForecasts: SolarForecasts? = null,
 )
 
 /** The results of the commands of an [EnergyFetchPlan], each `null` when its command wasn't sent. */
@@ -37,6 +39,7 @@ data class EnergyFetchResults(
     val waterCompare: JsonObject? = null,
     val fossil: JsonObject? = null,
     val fossilCompare: JsonObject? = null,
+    val solarForecast: JsonObject? = null,
 )
 
 /** The energy data from the plan's [results], as `getEnergyData` puts them together. */
@@ -70,6 +73,7 @@ fun EnergyFetchPlan.assemble(
         fossilEnergyConsumptionCompare = results.fossilCompare?.let(::parseFossil),
         waterUnit = waterUnit,
         gasUnit = gasUnit,
+        solarForecasts = results.solarForecast?.let(::parseSolarForecasts),
     )
 }
 

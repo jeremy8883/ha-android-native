@@ -360,13 +360,12 @@ async def seed_usage(ws: Ws, states: list[dict]) -> None:
     await asyncio.sleep(6)
 
 
-async def seed_energy(ws: Ws) -> None:
+async def seed_energy(ws: Ws, session: aiohttp.ClientSession, base: str, token: str) -> None:
     # Imported here: seed_energy imports this module's helpers
-    from seed_energy import ENERGY_PREFS, import_history
+    from seed_energy import import_history, save_prefs
 
     await import_history(ws)
-    await ws.call("energy/save_prefs", **ENERGY_PREFS)
-    log("saved energy preferences")
+    await save_prefs(ws, session, base, token)
 
 
 # --------------------------------------------------------------------------- main
@@ -409,7 +408,7 @@ async def main(base: str, skip_usage: bool) -> None:
             await seed_usage(ws, states)
         elif HOME_SYSTEM_DATA:
             await ws.call("frontend/set_system_data", key="home", value=HOME_SYSTEM_DATA)
-        await seed_energy(ws)
+        await seed_energy(ws, session, base, token)
         await ws.ws.close()
         log("done")
 

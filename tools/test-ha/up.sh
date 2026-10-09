@@ -19,6 +19,10 @@ if [[ ! -f "$RUNTIME/config/configuration.yaml" ]]; then
   cp -r "$HERE/config" "$RUNTIME/config"
 fi
 
+# Custom integrations follow the template, so changes to them only need a restart
+rm -rf "$RUNTIME/config/custom_components"
+cp -r "$HERE/config/custom_components" "$RUNTIME/config/custom_components"
+
 if podman container exists "$NAME"; then
   if [[ "$(podman inspect -f '{{.State.Running}}' "$NAME")" != "true" ]]; then
     podman start "$NAME" >/dev/null

@@ -6,7 +6,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
  * The bar graphs of one kind of source: gas or water consumption, or solar production, a series per source with
  * the compared period's beside it. Ports of `generateEnergyGasGraphData` (frontend@20260624.6
  * src/panels/lovelace/cards/energy/energy-gas-graph-data.ts), `HuiEnergyWaterGraphCard._getStatistics`
- * (hui-energy-water-graph-card.ts) and `generateEnergySolarGraphData` (energy-solar-graph-data.ts) without the
+ * (hui-energy-water-graph-card.ts) and `generateEnergySolarGraphData` (energy-solar-graph-data.ts), with the
  * solar forecast.
  *
  * @property total the period's total, shown next to the title
@@ -43,6 +43,8 @@ fun HassSnapshot.energySourceGraph(data: EnergyData, kind: SourceGraphKind): Ene
     }
     val compareSeries = data.statsCompare?.let { series(it, compare = true) }.orEmpty()
     val mainSeries = series(data.stats, compare = false)
+    val lines = if (kind == SourceGraphKind.SOLAR) solarForecastLines(data, period) else emptyList()
+    range += lines.flatMap { line -> line.points.map { it.y } }
     val (xMin, xMax) = barChartRange(data, formats.zone)
     return EnergySourceGraphModel(
         chart = EnergyBarChart(
@@ -61,6 +63,7 @@ fun HassSnapshot.energySourceGraph(data: EnergyData, kind: SourceGraphKind): Ene
             },
             compare = data.comparePeriod != null,
             showCompareYear = data.comparePeriod?.let { it.start.year != data.period.start.year } == true,
+            lines = lines,
         ),
         total = sources.sumOf { source -> data.stats[source.statId].orEmpty().sumOf { it.change ?: 0.0 } },
     )

@@ -24,6 +24,7 @@ import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.energy.EnergyTooltip
+import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
 /** A tapped period's values, over the top of the chart, like the frontend's chart tooltip. */
 @Composable
@@ -36,6 +37,8 @@ internal fun EnergyTooltipCard(tooltip: EnergyTooltip, dark: Boolean, formatTota
                 seriesColor(row.series, dark, background = false) ?: fallback,
                 "${row.series.name}: ${row.value}",
             )
+        } + tooltip.lineRows.map { row ->
+            TooltipLine(resolveVariable(row.line.color, dark) ?: fallback, "${row.line.name}: ${row.value}")
         },
         total = tooltip.total?.let(formatTotal),
     )
