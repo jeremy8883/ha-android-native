@@ -246,12 +246,7 @@ internal fun DashboardScreenContent(
         bottomBar = { content?.view?.let { ViewFooter(it, hass, now, interactions) } },
         topBar = {
             val title = @Composable {
-                Text(
-                    when {
-                        content?.isSubview == true -> content.subviewTitle.orEmpty()
-                        else -> content?.title ?: stringResource(R.string.native_dashboard_title)
-                    },
-                )
+                Text(content?.title.orEmpty())
             }
             if (content?.showsBack == true) {
                 HATopBar(title = title, onBackClick = onBack)

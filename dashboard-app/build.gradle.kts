@@ -20,6 +20,11 @@ android {
         named("debug") {
             applicationIdSuffix = ".debug"
         }
+        // Not debuggable, so it starts and runs at full speed. Signed with the debug key so it can be installed
+        // straight from Gradle (`:dashboard-app:installRelease`) until there is a key of its own to publish with.
+        named("release") {
+            signingConfig = signingConfigs.getByName("debug")
+        }
     }
 }
 

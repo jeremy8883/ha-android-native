@@ -112,6 +112,7 @@ sealed interface DashboardUiState {
     data class Error(val error: LoadError) : DashboardUiState
 
     /**
+     * @property title the toolbar's title: the config's, then as the frontend's once the sidebar is known
      * @property tabs the top-level views; subviews are only reached through navigation, as upstream
      * @property selectedTab index in [tabs] of the shown view or of the view a subview was opened from
      * @property isSubview whether the shown view is a subview, which shows a back button instead of tabs
@@ -133,6 +134,18 @@ sealed interface DashboardUiState {
         val groups: List<CardGroup>?,
         val view: ViewConfig? = null,
     ) : DashboardUiState {
+        /**
+         * With the toolbar's title as the frontend's (hui-root): a subview's title, a single view's title, otherwise
+         * the dashboard's name in the sidebar ([dashboardTitle], like "Overview").
+         */
+        fun withToolbarTitle(dashboardTitle: String?): Content = copy(
+            title = when {
+                isSubview -> subviewTitle
+                tabs.size == 1 -> tabs.single().title ?: dashboardTitle ?: title
+                else -> dashboardTitle ?: title
+            },
+        )
+
         /** Whether the top bar shows a back button rather than the menu. */
         val showsBack: Boolean get() = isSubview || canGoBack
     }
@@ -277,6 +290,14 @@ class DashboardViewModel @VisibleForTesting internal constructor(
     }.flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), Loadable.Loading)
 
+    /** The shown dashboard's name in the sidebar (like "Overview"), the frontend's title for it; `null` until known. */
+    val dashboardTitle: StateFlow<String?> = combine(sidebar, selectedDashboard) { sidebar, urlPath ->
+        sidebar.valueOrNull?.let { state ->
+            val path = urlPath ?: state.defaultPanel
+            state.items.firstOrNull { it.urlPath == path }?.title
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
+
     // Live collections some cards show; only admins may read them, and the cards are hidden for others
     private val isAdmin = serverInfo.map { it.valueOrNull?.user?.isAdmin == true }.distinctUntilChanged()
     private val repairsIssues = isAdmin
@@ -327,6 +348,9 @@ class DashboardViewModel @VisibleForTesting internal constructor(
                     if (navigation.canOpenOtherPages) state else state.withoutLinksOut(inputs.panelInfo)
                 }
             }
+        }
+        .combine(dashboardTitle) { state, dashboardTitle ->
+            if (state is DashboardUiState.Content) state.withToolbarTitle(dashboardTitle) else state
         }
         .flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), DashboardUiState.Loading)
