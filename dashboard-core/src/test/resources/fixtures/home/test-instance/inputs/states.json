@@ -498,8 +498,8 @@
       "next_noon": "2026-10-09T11:27:49+00:00",
       "next_rising": "2026-10-10T05:57:05.237028+00:00",
       "next_setting": "2026-10-09T16:59:07.942658+00:00",
-      "elevation": 14.81,
-      "azimuth": 121.85,
+      "elevation": 17.33,
+      "azimuth": 126.31,
       "rising": true,
       "friendly_name": "Sun"
     },
@@ -633,7 +633,7 @@
   },
   "sensor.living_room_temperature": {
     "entity_id": "sensor.living_room_temperature",
-    "state": "21.7",
+    "state": "21.8",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "°C",
@@ -650,7 +650,7 @@
   },
   "sensor.living_room_humidity": {
     "entity_id": "sensor.living_room_humidity",
-    "state": "50",
+    "state": "46",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "%",
@@ -735,7 +735,7 @@
   },
   "sensor.house_power": {
     "entity_id": "sensor.house_power",
-    "state": "629",
+    "state": "356",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -752,7 +752,7 @@
   },
   "sensor.solar_power": {
     "entity_id": "sensor.solar_power",
-    "state": "2509",
+    "state": "2649",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -769,7 +769,7 @@
   },
   "sensor.grid_power": {
     "entity_id": "sensor.grid_power",
-    "state": "-159",
+    "state": "-299",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -803,7 +803,7 @@
   },
   "sensor.home_battery_charge": {
     "entity_id": "sensor.home_battery_charge",
-    "state": "55",
+    "state": "64",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "%",
@@ -820,7 +820,7 @@
   },
   "sensor.fridge_power": {
     "entity_id": "sensor.fridge_power",
-    "state": "120",
+    "state": "5",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -837,7 +837,7 @@
   },
   "sensor.washer_power": {
     "entity_id": "sensor.washer_power",
-    "state": "2",
+    "state": "1800",
     "attributes": {
       "state_class": "measurement",
       "unit_of_measurement": "W",
@@ -1000,7 +1000,7 @@
   },
   "binary_sensor.kitchen_motion": {
     "entity_id": "binary_sensor.kitchen_motion",
-    "state": "off",
+    "state": "on",
     "attributes": {
       "device_class": "motion",
       "friendly_name": "Kitchen motion"
@@ -1362,8 +1362,8 @@
     "entity_id": "camera.demo_camera",
     "state": "streaming",
     "attributes": {
-      "access_token": "2efb11ae08ef75da5301a02b4b15124be65057141dd4114dbda755b5c97a0d1c",
-      "entity_picture": "/api/camera_proxy/camera.demo_camera?token=2efb11ae08ef75da5301a02b4b15124be65057141dd4114dbda755b5c97a0d1c",
+      "access_token": "57fe1ca8a003bc06e6d58c116f4ec2a46ebb8b8ebb6da79e8d4d03de1b887c4f",
+      "entity_picture": "/api/camera_proxy/camera.demo_camera?token=57fe1ca8a003bc06e6d58c116f4ec2a46ebb8b8ebb6da79e8d4d03de1b887c4f",
       "friendly_name": "Demo camera",
       "supported_features": 3
     },
@@ -1379,8 +1379,8 @@
     "entity_id": "camera.demo_camera_png",
     "state": "streaming",
     "attributes": {
-      "access_token": "cd5ce7fd300f8985097f5c04f8c67795fe59006dd0bed4028af6652220aa2b03",
-      "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=cd5ce7fd300f8985097f5c04f8c67795fe59006dd0bed4028af6652220aa2b03",
+      "access_token": "c3d60e493a785bf74bac1d42f864c9236e9e0712c0959df0fc341dee37234b57",
+      "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=c3d60e493a785bf74bac1d42f864c9236e9e0712c0959df0fc341dee37234b57",
       "friendly_name": "Demo camera png",
       "supported_features": 3
     },
@@ -1396,8 +1396,8 @@
     "entity_id": "camera.demo_camera_without_stream",
     "state": "streaming",
     "attributes": {
-      "access_token": "c73b3760996ba6da5bab53309b8e3b1d82a3738955740a3d744ed02bcc006472",
-      "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=c73b3760996ba6da5bab53309b8e3b1d82a3738955740a3d744ed02bcc006472",
+      "access_token": "673e05b8cb13899e2487c962640f8b3373c6d139dac8f2077added7ea094ae4d",
+      "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=673e05b8cb13899e2487c962640f8b3373c6d139dac8f2077added7ea094ae4d",
       "friendly_name": "Demo camera without stream",
       "supported_features": 1
     },
@@ -1411,7 +1411,7 @@
   },
   "calendar.calendar_1": {
     "entity_id": "calendar.calendar_1",
-    "state": "on",
+    "state": "off",
     "attributes": {
       "message": "Future Event",
       "all_day": false,
@@ -2651,7 +2651,7 @@
   },
   "sensor.total_energy_kwh": {
     "entity_id": "sensor.total_energy_kwh",
-    "state": "159.5",
+    "state": "162.0",
     "attributes": {
       "state_class": "total",
       "unit_of_measurement": "kWh",
@@ -2668,7 +2668,7 @@
   },
   "sensor.total_energy_mwh": {
     "entity_id": "sensor.total_energy_mwh",
-    "state": "0.0797500000000001",
+    "state": "0.0810000000000001",
     "attributes": {
       "state_class": "total",
       "unit_of_measurement": "MWh",
@@ -2685,7 +2685,7 @@
   },
   "sensor.total_gas_m3": {
     "entity_id": "sensor.total_gas_m3",
-    "state": "7.97500000000005",
+    "state": "8.10000000000005",
     "attributes": {
       "state_class": "total",
       "unit_of_measurement": "m³",
@@ -2702,7 +2702,7 @@
   },
   "sensor.total_gas_ft3": {
     "entity_id": "sensor.total_gas_ft3",
-    "state": "9.033074062848",
+    "state": "9.174658295808",
     "attributes": {
       "state_class": "total",
       "unit_of_measurement": "m³",

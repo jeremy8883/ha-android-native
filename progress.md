@@ -177,7 +177,9 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - [x] Energy usage graph: series ported from `hui-energy-usage-graph-card` (incl. compare, grid-to-battery split, colour shading per source) golden-tested against the frontend chart's series; drawn by `EnergyBarChartView` (Canvas: stacked bars above/below zero, compare stacks side by side, rounded caps, round value ticks, time axis, tap tooltip, toggling legend). Vico was considered but can't stack and group bars together, so the energy bar charts are drawn directly
 - [x] Energy sources table: `EnergySourcesTableModel` golden-tested against the frontend table's rows for every period and five configs (all, totals only, electricity, gas, water); scrolls sideways when the compared columns don't fit, rows open more-info
 - [x] Energy gauges (self-sufficiency, grid neutrality, self-consumed solar with the battery tracked last in first out, low-carbon): golden-tested against the frontend's gauge cards for every period; drawn like `ha-gauge` (arc or levels with needle, fitted value text), info behind the info icon
-- [ ] Other cards, most useful first: devices, gas/water/solar graphs, compare, grid balance, sankeys, power sources graph and the Now badges
+- [x] Gas, water and solar graphs (`EnergySourceGraphModel`), compare banner (`EnergyCompareModel`: switch to previous year/period, stop comparing) and grid balance (`EnergyGridBalanceModel`), golden-tested against the frontend's cards for every period
+- [ ] Solar forecast lines on the solar graph (`energy/solar_forecast`; the test instance has no forecast integration)
+- [ ] Other cards: devices (detail graph and bars), energy and water sankeys, power sources graph, power sankey, water flow sankey and the Now badges
 - [ ] Overview "Today's energy" summary (needs the energy data on the home dashboard)
 
 ### Later — Startup time

@@ -340,6 +340,10 @@ const ENERGY_CARD_CAPTURES = [
   { name: "energy-sources-table-electricity", config: { type: "energy-sources-table", types: ["grid", "solar", "battery"] } },
   { name: "energy-sources-table-gas", config: { type: "energy-sources-table", types: ["gas"] } },
   { name: "energy-sources-table-water", config: { type: "energy-sources-table", types: ["water"] } },
+  { name: "energy-gas-graph", config: { type: "energy-gas-graph" } },
+  { name: "energy-water-graph", config: { type: "energy-water-graph" } },
+  { name: "energy-solar-graph", config: { type: "energy-solar-graph" } },
+  { name: "energy-grid-balance", config: { type: "energy-grid-balance" } },
   { name: "energy-self-sufficiency-gauge", config: { type: "energy-self-sufficiency-gauge" } },
   { name: "energy-grid-neutrality-gauge", config: { type: "energy-grid-neutrality-gauge" } },
   { name: "energy-solar-consumed-gauge", config: { type: "energy-solar-consumed-gauge" } },
@@ -360,7 +364,7 @@ async function captureEnergyCard(config) {
   // Inside <home-assistant>, which provides the contexts cards read (the theme for charts)
   document.querySelector("home-assistant").shadowRoot.appendChild(el);
   const root = () => el.shadowRoot;
-  for (let i = 0; i < 100 && !root()?.querySelector(".card-content, ha-chart-base, table, ha-card"); i++) await new Promise((r) => setTimeout(r, 100));
+  for (let i = 0; i < 100 && !root()?.querySelector(".card-content, ha-chart-base, table, ha-card, .content"); i++) await new Promise((r) => setTimeout(r, 100));
   await new Promise((r) => setTimeout(r, 300));
   const text = (sel) => {
     const n = root().querySelector(sel);
@@ -402,6 +406,20 @@ async function captureEnergyCard(config) {
       })),
     };
   }
+  if (type === "energy-grid-balance") {
+    const width = (sel) => root().querySelector(sel)?.style.width ?? null;
+    result = {
+      title: text("[slot=primary]"),
+      imported: text(".imported"),
+      exported: text(".exported"),
+      net: text(".net"),
+      netClass: root().querySelector(".net")?.classList.contains("consumption") ? "consumption" : "return",
+      left: width("#bar-exported"),
+      right: width("#bar-imported"),
+      netLeft: width("#bar-net-left"),
+      netRight: width("#bar-net-right"),
+    };
+  }
   if (type.endsWith("-gauge")) {
     const gauge = root().querySelector("ha-gauge");
     if (gauge) await gauge.updateComplete;
@@ -429,6 +447,7 @@ async function captureEnergyCard(config) {
         data: (s.data ?? []).map((d) => (d && typeof d === "object" && "value" in d ? d.value : d)),
       })),
       total: el._total ?? null,
+      unit: el._unit ?? null,
       yAxisFractionDigits: el._yAxisFractionDigits ?? null,
       xMin: date(options.xAxis?.min),
       xMax: date(options.xAxis?.max),

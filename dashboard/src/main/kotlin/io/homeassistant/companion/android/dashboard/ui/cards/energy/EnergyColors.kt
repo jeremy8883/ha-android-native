@@ -13,6 +13,9 @@ internal val ENERGY_KIND_COLORS = mapOf(
     "used_grid" to "energy-grid-consumption-color",
     "used_solar" to "energy-solar-color",
     "used_battery" to "energy-battery-out-color",
+    "gas" to "energy-gas-color",
+    "water" to "energy-water-color",
+    "solar" to "energy-solar-color",
 )
 
 /**

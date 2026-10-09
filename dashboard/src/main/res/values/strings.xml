@@ -24,6 +24,7 @@
     <string name="native_dashboard_error_unexpected">Home Assistant sent an unexpected response (%1$s)</string>
     <string name="native_dashboard_retry">Retry</string>
     <string name="native_dashboard_refresh_failed">Couldn\'t refresh the dashboard: %1$s</string>
+    <string name="native_dashboard_energy_stop_compare">Stop comparing</string>
     <string name="native_dashboard_energy_failed">Couldn\'t load the energy data</string>
     <string name="native_dashboard_load_failed">Couldn\'t load the navigation: %1$s</string>
     <string name="native_dashboard_offline">Connection lost. Reconnecting…</string>

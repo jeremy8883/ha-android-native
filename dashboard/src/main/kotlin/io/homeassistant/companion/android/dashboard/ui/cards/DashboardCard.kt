@@ -14,15 +14,11 @@ import io.homeassistant.companion.android.dashboard.derive.discoveredDevicesMode
 import io.homeassistant.companion.android.dashboard.derive.homeSummaryModel
 import io.homeassistant.companion.android.dashboard.derive.repairsModel
 import io.homeassistant.companion.android.dashboard.derive.updatesModel
-import io.homeassistant.companion.android.dashboard.energy.EnergyGaugeType
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.layout.conditionalInnerCard
 import io.homeassistant.companion.android.dashboard.model.CardConfig
-import io.homeassistant.companion.android.dashboard.ui.cards.energy.EnergyDateSelectionCard
-import io.homeassistant.companion.android.dashboard.ui.cards.energy.EnergyDistributionCard
-import io.homeassistant.companion.android.dashboard.ui.cards.energy.EnergyGaugeCard
-import io.homeassistant.companion.android.dashboard.ui.cards.energy.EnergySourcesTableCard
-import io.homeassistant.companion.android.dashboard.ui.cards.energy.EnergyUsageGraphCard
+import io.homeassistant.companion.android.dashboard.ui.cards.energy.ENERGY_CARD_TYPES
+import io.homeassistant.companion.android.dashboard.ui.cards.energy.EnergyCard
 import java.time.ZonedDateTime
 
 /** Renders [card] with its native renderer, or a placeholder when the type is not supported yet. */
@@ -51,11 +47,7 @@ internal fun DashboardCard(
         )
         CARD_HEADING -> HeadingCard(card, hass, now, interactions, cardModifier)
         CARD_ENTITIES -> EntitiesCard(card, hass, now, interactions, modifier)
-        CARD_ENERGY_DATE_SELECTION -> EnergyDateSelectionCard(card, hass, now, interactions, modifier)
-        CARD_ENERGY_DISTRIBUTION -> EnergyDistributionCard(card, hass, now, modifier)
-        CARD_ENERGY_USAGE_GRAPH -> EnergyUsageGraphCard(card, hass, now, modifier)
-        CARD_ENERGY_SOURCES_TABLE -> EnergySourcesTableCard(card, hass, interactions, modifier)
-        in ENERGY_GAUGES -> EnergyGaugeCard(card, hass, ENERGY_GAUGES.getValue(card.type.orEmpty()), modifier)
+        in ENERGY_CARD_TYPES -> EnergyCard(card, hass, now, interactions, modifier)
         else -> OtherCard(card, hass, interactions, modifier, cardModifier)
     }
 }
@@ -91,11 +83,6 @@ private val INFO_TILES: Map<String, HassSnapshot.(CardConfig) -> InfoTileModel?>
 )
 
 private const val CARD_TILE = "tile"
-private const val CARD_ENERGY_DATE_SELECTION = "energy-date-selection"
-private const val CARD_ENERGY_DISTRIBUTION = "energy-distribution"
-private const val CARD_ENERGY_USAGE_GRAPH = "energy-usage-graph"
-private const val CARD_ENERGY_SOURCES_TABLE = "energy-sources-table"
-private val ENERGY_GAUGES = EnergyGaugeType.entries.associateBy { it.cardType }
 private const val CARD_HEADING = "heading"
 private const val CARD_AREA = "area"
 private const val CARD_HOME_SUMMARY = "home-summary"
