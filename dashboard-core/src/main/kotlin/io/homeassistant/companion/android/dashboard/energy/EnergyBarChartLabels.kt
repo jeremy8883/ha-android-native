@@ -5,6 +5,7 @@ import io.homeassistant.companion.android.dashboard.display.DisplayFormats
 import java.math.BigDecimal
 import java.time.Instant
 import java.time.temporal.ChronoUnit
+import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.floor
 import kotlin.math.log10
@@ -14,12 +15,18 @@ import kotlin.math.pow
 // `getCommonOptions` formats it (frontend@20260624.6 src/panels/lovelace/cards/energy/common/energy-chart-options.ts).
 
 /**
- * Round values for a value axis from [min] to [max] (including 0), about [splitNumber] intervals apart: ECharts'
- * `intervalScaleNiceTicks`.
+ * Round values for a value axis from [min] to [max], about [splitNumber] intervals apart: ECharts'
+ * `intervalScaleNiceTicks`. The axis includes 0 unless [scale]d to the values (ECharts' `scale: true`), and one
+ * value alone is in the middle of an axis as wide as it.
  */
-fun niceTicks(min: Double, max: Double, splitNumber: Int = DEFAULT_SPLIT): List<Double> {
-    val low = minOf(min, 0.0)
-    val high = maxOf(max, 0.0)
+fun niceTicks(min: Double, max: Double, splitNumber: Int = DEFAULT_SPLIT, scale: Boolean = false): List<Double> {
+    var low = if (scale) min else minOf(min, 0.0)
+    var high = if (scale) max else maxOf(max, 0.0)
+    if (scale && low == high && low.isFinite()) {
+        val expand = abs(low).takeIf { it != 0.0 } ?: 1.0
+        low -= expand / 2
+        high += expand / 2
+    }
     val span = high - low
     if (span <= 0 || !span.isFinite()) return listOf(0.0, 1.0)
     val interval = niceNumber(span / splitNumber)

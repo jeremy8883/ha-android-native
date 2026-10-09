@@ -6,9 +6,11 @@ import io.homeassistant.companion.android.dashboard.model.number
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
+import java.time.Instant
 import kotlin.math.abs
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DynamicTest
@@ -58,6 +60,31 @@ class HistoryGoldenTest {
         }
     }
 
+    @TestFactory
+    fun `Given an entity when loading its history then it sends the frontend's requests`(): List<DynamicTest> = recorded.map { (entityId, value) ->
+        DynamicTest.dynamicTest(entityId) {
+            val entity = value as JsonObject
+            val state = entity["state"] as? JsonObject
+            val hass = fixture.hass.copy(
+                states = fixture.hass.states + state?.let { parseStates(JsonArray(listOf(it))) }.orEmpty(),
+            )
+            val now = Instant.EPOCH
+            val expected = entity.objects("requests").filter { it.string("type") in HISTORY_COMMANDS }.map { it.withoutStart() }
+
+            val usesStatistics = hass.historyUsesStatistics(entityId)
+            val commands = if (usesStatistics) {
+                listOf(statisticsMetadataCommand(entityId), historyStatisticsCommand(entityId, now))
+            } else {
+                listOf(historyStreamCommand(entityId, hass.historyWithoutAttributes(entityId), now))
+            }
+
+            assertTrue(hass.showsHistory(entityId))
+            assertEquals(expected, commands.map { JsonObject(mapOf("type" to JsonPrimitive(it.type)) + it.params).withoutStart() })
+        }
+    }
+
+    private fun JsonObject.withoutStart() = JsonObject(filterKeys { it != "start_time" })
+
     /** JavaScript keeps fractions of milliseconds; the app's times are whole ones. */
     private fun assertTimes(expected: List<Double>, actual: List<Long>) {
         assertEquals(expected.size, actual.size)
@@ -67,5 +94,6 @@ class HistoryGoldenTest {
     private companion object {
         const val MILLIS = 1000.0
         const val DAY_SECONDS = 24 * 60 * 60.0
+        val HISTORY_COMMANDS = setOf("history/stream", "recorder/get_statistics_metadata", "recorder/statistics_during_period")
     }
 }

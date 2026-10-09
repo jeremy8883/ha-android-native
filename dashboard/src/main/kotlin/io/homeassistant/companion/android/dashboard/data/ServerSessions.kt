@@ -80,8 +80,8 @@ internal class ServerSession(
     suspend fun request(type: String, data: Map<String, Any?> = emptyMap()): Fetched<JsonElement?> =
         webSocket.request(type, data)
 
-    suspend fun subscribe(type: String): Fetched<Flow<JsonElement>> =
-        webSocket.subscribeRaw(type)?.let { Fetched.Success(it) } ?: Fetched.Failure(LoadError.NoResponse)
+    suspend fun subscribe(type: String, data: Map<String, Any?> = emptyMap()): Fetched<Flow<JsonElement>> =
+        webSocket.subscribeRaw(type, data)?.let { Fetched.Success(it) } ?: Fetched.Failure(LoadError.NoResponse)
 
     /**
      * An emission for each [eventType] event, subscribing again after a failure so no change goes unnoticed for

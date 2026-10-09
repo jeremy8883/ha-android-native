@@ -39,15 +39,17 @@ import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.derive.MoreInfoModel
 import io.homeassistant.companion.android.dashboard.derive.moreInfoModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
+import io.homeassistant.companion.android.dashboard.history.showsHistory
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.EntityToggle
 import io.homeassistant.companion.android.dashboard.ui.cards.TileFeatureControl
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
 import java.time.Instant
 import java.time.ZonedDateTime
 
 /**
- * The native quick view of an entity: its state, main control and attributes, with a link to upstream's full
+ * The native quick view of an entity: its state, main control, recent history and attributes, with a link to upstream's full
  * more-info dialog. Live: it follows the entity while open. The sheet covers the screen, so [snackbar]'s messages
  * (such as a failed action) show over it too.
  */
@@ -67,7 +69,8 @@ internal fun MoreInfoSheet(
     }
     val model = info ?: return
     HAModalBottomSheet(bottomSheetState = rememberModalBottomSheetState(), onDismissRequest = onDismiss) {
-        MoreInfoContent(model, interactions, onShowFull)
+        val snapshot = hass.value ?: return@HAModalBottomSheet
+        MoreInfoContent(model, snapshot, now.value?.toInstant() ?: Instant.EPOCH, interactions, onShowFull)
         // The sheet's content may extend below the screen, so messages go at the bottom of the window instead
         if (snackbar?.currentSnackbarData != null) {
             Popup(popupPositionProvider = WindowBottom) {
@@ -78,7 +81,13 @@ internal fun MoreInfoSheet(
 }
 
 @Composable
-private fun MoreInfoContent(model: MoreInfoModel, interactions: CardInteractions, onShowFull: (() -> Unit)?) {
+private fun MoreInfoContent(
+    model: MoreInfoModel,
+    hass: HassSnapshot,
+    now: Instant,
+    interactions: CardInteractions,
+    onShowFull: (() -> Unit)?,
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -97,6 +106,7 @@ private fun MoreInfoContent(model: MoreInfoModel, interactions: CardInteractions
                 }
             }
         }
+        if (hass.showsHistory(model.entityId)) MoreInfoHistory(model.entityId, hass, now, interactions)
         if (model.attributes.isNotEmpty()) MoreInfoAttributes(model.attributes)
         onShowFull?.let {
             HAPlainButton(

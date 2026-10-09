@@ -196,7 +196,7 @@ private fun JsonObjectBuilder.putStrings(key: String, values: List<String>) =
     put(key, JsonArray(values.map(::JsonPrimitive)))
 
 /** JavaScript's `Date.toISOString()`: UTC with milliseconds. */
-private fun isoString(instant: Instant): String = ISO_MILLIS.format(instant)
+internal fun isoString(instant: Instant): String = ISO_MILLIS.format(instant)
 
 private val ISO_MILLIS = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneOffset.UTC)
 
