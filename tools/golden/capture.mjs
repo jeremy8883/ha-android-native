@@ -331,6 +331,58 @@ function energyPeriods(now = new Date()) {
   ];
 }
 
+/** The energy cards whose displayed values are recorded for each period. */
+const ENERGY_CARD_CAPTURES = ["energy-distribution"];
+
+/**
+ * Renders the energy card [type] on the default collection and returns what it shows. Runs in the page, where it
+ * is installed as a global so that `captureEnergyData` can call it.
+ */
+async function captureEnergyCard(type) {
+  const g = window.__golden;
+  const hass = document.querySelector("home-assistant").hass;
+  const el = document.createElement(`hui-${type}-card`);
+  el.hass = hass;
+  el.setConfig({ type, collection_key: "energy_dashboard" });
+  document.body.appendChild(el);
+  const root = () => el.shadowRoot;
+  for (let i = 0; i < 100 && !root()?.querySelector(".card-content"); i++) await new Promise((r) => setTimeout(r, 100));
+  await new Promise((r) => setTimeout(r, 300));
+  const text = (sel) => {
+    const n = root().querySelector(sel);
+    return n ? n.textContent.replace(/\s+/g, " ").trim() : null;
+  };
+  let result;
+  if (type === "energy-distribution") {
+    result = {
+      lowCarbon: text(".low-carbon .circle"),
+      solar: text(".solar .circle"),
+      gas: text(".gas .circle"),
+      water: text(".water .circle"),
+      gridReturn: text(".grid .return"),
+      gridConsumption: text(".grid .consumption"),
+      home: text(".home .circle"),
+      homeLabel: text(".home .label"),
+      batteryIn: text(".battery-in"),
+      batteryOut: text(".battery-out"),
+      batterySoc: text(".battery-soc"),
+      batteryIcon: root().querySelector(".battery-soc ha-svg-icon")?.path ?? null,
+      ring: [...(root().querySelector(".home svg")?.querySelectorAll("circle") ?? [])].map((c) => ({
+        class: c.getAttribute("class"),
+        dasharray: c.getAttribute("stroke-dasharray"),
+        dashoffset: c.getAttribute("stroke-dashoffset"),
+      })),
+      flows: [...root().querySelectorAll(".lines circle")].map((c) => ({
+        class: c.getAttribute("class"),
+        dur: c.querySelector("animateMotion")?.getAttribute("dur") ?? null,
+      })),
+      waterBelow: !!root().querySelector(".water.bottom"),
+    };
+  }
+  el.remove();
+  return g.clone(result);
+}
+
 /**
  * Loads the energy collection for each of [periods] and records the WS requests it made with their results (what
  * `getEnergyData` fetches), on the energy panel's page.
@@ -362,8 +414,11 @@ async function captureEnergyData(periods) {
       collection.setCompare(p.compare);
       await collection.refresh();
       const state = collection.state;
+      const cards = {};
+      for (const type of ENERGY_CARD_CAPTURES) cards[type] = await captureEnergyCard(type);
       out.push({
         ...p,
+        cards,
         requests: log.map((e) => g.clone(e)),
         data: {
           start: state.start?.toISOString() ?? null,
@@ -380,7 +435,7 @@ async function captureEnergyData(periods) {
   } finally {
     conn.sendMessagePromise = orig;
   }
-  return { periods: out };
+  return { capturedAt: new Date().toISOString(), periods: out };
 }
 
 /** The capture proper. Runs in the page with one consistent `hass` snapshot. */
@@ -832,6 +887,9 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
   const renderedEnergy = availablePanels.includes("energy") ? await visitEnergyPanel(page) : null;
   if (renderedEnergy) console.log(`  visited /energy (${Object.keys(renderedEnergy.views).join(", ")})`);
   // The same for every user: recorded once
+  if (renderedEnergy && variant === "admin") {
+    await page.evaluate(`window.captureEnergyCard = ${captureEnergyCard.toString()}; window.ENERGY_CARD_CAPTURES = ${JSON.stringify(ENERGY_CARD_CAPTURES)};`);
+  }
   const energyData = renderedEnergy && variant === "admin" ? await page.evaluate(captureEnergyData, energyPeriods()) : null;
   await page.evaluate(() => window.__golden.navigate("/home/overview"));
   await page.waitForTimeout(500);

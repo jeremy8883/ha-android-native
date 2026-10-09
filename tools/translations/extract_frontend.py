@@ -19,6 +19,7 @@ SUBTREES = [
     "ui.notification_toast",
     "ui.card",
     "ui.panel.lovelace.cards.actions",
+    "ui.panel.lovelace.cards.energy",
     "ui.panel.lovelace.components",
     "ui.panel.lovelace.editor.action-editor.actions",
     "ui.components.date-range-picker",

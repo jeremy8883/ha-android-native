@@ -420,6 +420,119 @@
       "no_entity_toggle": "No entity provided to toggle",
       "no_navigation_path": "No navigation path specified",
       "no_url": "No URL to open specified"
+     },
+     "energy": {
+      "carbon_consumed_gauge": {
+       "card_indicates_energy_used": "This card indicates how much of the electricity consumed by your home was generated using non-fossil fuels like solar, wind, and nuclear. The higher, the better!",
+       "low_carbon_energy_consumed": "Low-carbon electricity consumed",
+       "low_carbon_energy_not_calculated": "Consumed low-carbon electricity couldn't be calculated"
+      },
+      "energy_compare": {
+       "compare_preview": "Card preview",
+       "compare_previous_period": "Compare previous period",
+       "compare_previous_year": "Compare previous year",
+       "info": "You are comparing the period {start} with the period {end}"
+      },
+      "energy_devices_detail_graph": {
+       "other": "Other",
+       "over_reported_consumption": "Over-reported consumption",
+       "untracked": "untracked",
+       "untracked_consumption": "Untracked consumption"
+      },
+      "energy_devices_graph": {
+       "change_chart_type": "Change chart type",
+       "energy_usage": "Energy usage",
+       "previous_energy_usage": "Previous energy usage",
+       "total_energy_usage": "Total",
+       "untracked": "untracked",
+       "untracked_consumption": "Untracked consumption"
+      },
+      "energy_distribution": {
+       "battery": "Battery",
+       "gas": "Gas",
+       "go_to_energy_dashboard": "Go to the energy dashboard",
+       "grid": "Grid",
+       "low_carbon": "Low-carbon",
+       "solar": "Solar",
+       "title_today": "Energy distribution today",
+       "water": "Water"
+      },
+      "energy_gas_graph": {
+       "total_consumed": "Total consumed {num} {unit}"
+      },
+      "energy_solar_graph": {
+       "forecast": "Forecast {name}",
+       "production": "Production {name}",
+       "total_produced": "Total produced {num} kWh"
+      },
+      "energy_sources_table": {
+       "battery_total": "Battery total",
+       "cost": "Cost",
+       "energy": "Usage",
+       "gas_total": "Gas total",
+       "grid_total": "Grid total",
+       "named_battery_charged": "{name} charged",
+       "named_battery_discharged": "{name} discharged",
+       "named_grid_exported": "{name} exported",
+       "named_grid_imported": "{name} imported",
+       "previous_cost": "Previous cost",
+       "previous_energy": "Previous usage",
+       "solar_total": "Solar total",
+       "source": "Source",
+       "total_costs": "Total costs",
+       "water_total": "Water total"
+      },
+      "energy_usage_graph": {
+       "combined_from_grid": "Combined from grid",
+       "consumed_battery": "Consumed battery",
+       "consumed_solar": "Consumed solar",
+       "named_battery_charged": "{name} charged",
+       "named_grid_consumed": "Consumed {name}",
+       "named_grid_exported": "{name} exported",
+       "total_consumed": "Total consumed {num} kWh",
+       "total_usage": "+{num} kWh"
+      },
+      "energy_water_graph": {
+       "total_consumed": "Total consumed {num} {unit}"
+      },
+      "gas_total_title": "Gas flow rate",
+      "grid_balance": {
+       "exported": "Total energy exported: {value} kWh",
+       "imported": "Total energy imported: {value} kWh",
+       "net_export": "Net energy exported: {value} kWh",
+       "net_import": "Net energy imported: {value} kWh",
+       "title": "Grid energy balance"
+      },
+      "grid_neutrality_gauge": {
+       "color_explain": "If the needle is in the purple, you exported more energy to the grid than you imported from it. If it's in the blue, you imported more energy from the grid than you exported.",
+       "energy_dependency": "This card indicates your grid energy usage.",
+       "grid_neutrality_not_calculated": "Grid neutrality could not be calculated",
+       "net_consumed_grid": "Net imported from the grid",
+       "net_returned_grid": "Net exported to the grid"
+      },
+      "loading": "Loading…",
+      "no_data": "There is no data to show. It can take up to 2 hours for new data to arrive after you configure your energy dashboard.",
+      "no_data_period": "There is no data for this period.",
+      "power_graph": {
+       "battery": "Battery",
+       "grid": "Grid",
+       "solar": "Solar",
+       "usage": "Consumption"
+      },
+      "power_total_title": "Power usage",
+      "self_sufficiency_gauge": {
+       "card_indicates_self_sufficiency_quota": "This card indicates how much of the electricity consumed by your home came from on-site sources (such as solar panels or batteries).",
+       "self_sufficiency_could_not_calc": "Self-sufficiency couldn't be calculated",
+       "self_sufficiency_quota": "Self-sufficiency"
+      },
+      "solar_consumed_gauge": {
+       "card_indicates_solar_energy_used": "This card indicates how much of the solar energy you produced was used by your home instead of being exported to the grid.",
+       "card_indicates_solar_energy_used_charge_home_bat": "If this number is typically very low, indicating excess solar production, you might want to consider charging a home battery or electric car from your solar panels at times of high solar production.",
+       "not_produced_solar_energy": "You have not produced any solar energy",
+       "self_consumed_solar_could_not_calc": "Self-consumed solar energy couldn't be calculated",
+       "self_consumed_solar_energy": "Self-consumed solar energy"
+      },
+      "water_total_title": "Water flow rate"
      }
     },
     "components": {

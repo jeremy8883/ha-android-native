@@ -173,7 +173,8 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - [x] Periods (`EnergyPeriod`: the selector's ranges, previous/next, now, comparison) and what `getEnergyData` fetches for one (`EnergyFetch`, golden-tested against the frontend's requests for six periods)
 - [x] `EnergyRepository` (today's data cached, other periods kept while the screen lives, hourly refresh at :20) and the view model's collections, read by cards from `hass.energy`
 - [x] Date selection footer: previous/next, ranges menu, now, compare (no free date range picker yet)
-- [ ] Cards, most useful first: distribution, usage graph (charts with Vico), sources table, gauges, devices, gas/water/solar graphs, compare, grid balance, sankeys, power sources graph and the Now badges
+- [x] Energy distribution card: `EnergyDistributionModel` (sums and consumption split ported from `data/energy.ts`) golden-tested against the frontend card's amounts, home ring and flow speeds for six periods; drawn with the frontend's SVG geometry and moving dots
+- [ ] Other cards, most useful first: usage graph (charts with Vico), sources table, gauges, devices, gas/water/solar graphs, compare, grid balance, sankeys, power sources graph and the Now badges
 - [ ] Overview "Today's energy" summary (needs the energy data on the home dashboard)
 
 ### Later — Startup time

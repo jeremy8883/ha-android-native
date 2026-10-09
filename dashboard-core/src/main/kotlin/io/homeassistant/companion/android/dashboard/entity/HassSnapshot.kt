@@ -30,6 +30,8 @@ data class HassConfig(
     val components: Set<String>,
     /** `unit_system`: the unit of each measure, for example `temperature` "°C" and `length` "km". */
     val unitSystem: Map<String, String> = emptyMap(),
+    /** `location_name`: the home's name. */
+    val locationName: String? = null,
 ) {
     /** `unit_system.temperature`, for example "°C". */
     val temperatureUnit: String? get() = unitSystem["temperature"]

@@ -49,5 +49,6 @@ private fun parseConfig(config: JsonObject): HassConfig? = config.array("compone
         unitSystem = config.obj("unit_system")
             ?.mapNotNull { (measure, unit) -> unit.stringOrNull?.let { measure to it } }
             .orEmpty().toMap(),
+        locationName = config.string("location_name"),
     )
 }
