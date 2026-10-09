@@ -13,7 +13,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
@@ -42,7 +41,7 @@ import io.homeassistant.companion.android.dashboard.data.valueOrNull
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
-import io.homeassistant.companion.android.dashboard.ui.cards.LocalServerUrl
+import io.homeassistant.companion.android.dashboard.ui.cards.ProvideCardLocals
 import java.time.ZonedDateTime
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -79,7 +78,7 @@ internal fun DashboardScreen(
     ApplyRequest(request, viewModel::onOpenPath, onMoreInfo = { moreInfo = it }, drawerState = drawerState)
     val scope = rememberCoroutineScope()
     val serverUrl by viewModel.serverUrl.collectAsStateWithLifecycle()
-    CompositionLocalProvider(LocalServerUrl provides serverUrl) {
+    ProvideCardLocals(serverUrl) {
         DashboardLayers(
             drawerState = drawerState,
             gesturesEnabled = drawerState.isOpen || content?.showsBack != true,

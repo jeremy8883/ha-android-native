@@ -22,9 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,7 +56,9 @@ import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.number
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.cards.DEVICES_CHART_TYPE_KEY
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.cards.LocalCardPreferences
 import java.math.BigDecimal
 import kotlin.math.max
 
@@ -75,8 +75,9 @@ internal fun EnergyDevicesGraphCard(
 ) {
     val snapshot = hass.value ?: return
     val modes = remember(card) { allowedModes(card) }
-    var type by rememberSaveable { mutableStateOf(modes.first()) }
-    if (type !in modes) type = modes.first()
+    // Kept for every devices graph, like the frontend's local storage; the first allowed mode otherwise
+    val preferences = LocalCardPreferences.current
+    val type = modes.firstOrNull { it.value == preferences.values[DEVICES_CHART_TYPE_KEY] } ?: modes.first()
     val options = remember(card) {
         DevicesGraphOptions(card.json.number("max_devices")?.toInt(), card.json.boolean("hide_compound_stats") == true)
     }
@@ -90,7 +91,7 @@ internal fun EnergyDevicesGraphCard(
                 val label = snapshot.localize("$DEVICES.change_chart_type")
                 IconButton(
                     onClick = {
-                        type = modes[(modes.indexOf(type) + 1) % modes.size]
+                        preferences.set(DEVICES_CHART_TYPE_KEY, modes[(modes.indexOf(type) + 1) % modes.size].value)
                     },
                     modifier = Modifier.semantics {
                         contentDescription =
@@ -126,10 +127,7 @@ internal fun EnergyDevicesGraphCard(
 
 /** The modes the card allows (`modes`, all by default), bars first. */
 private fun allowedModes(card: CardConfig): List<DevicesChartType> = card.json.array("modes")?.mapNotNull { mode ->
-    DevicesChartType.entries.firstOrNull {
-        it.name.lowercase() ==
-            mode.stringOrNull
-    }
+    DevicesChartType.entries.firstOrNull { it.value == mode.stringOrNull }
 }
     ?.ifEmpty { null } ?: DevicesChartType.entries
 

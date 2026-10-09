@@ -28,7 +28,10 @@ data class DeviceSlice(
 )
 
 /** How the devices graph is drawn. */
-enum class DevicesChartType { BAR, PIE }
+enum class DevicesChartType(val value: String) {
+    BAR("bar"),
+    PIE("pie"),
+}
 
 /** The devices of [data] drawn as [type], at most [maxDevices], without compound devices when [hideCompound]. */
 fun HassSnapshot.energyDevicesGraph(

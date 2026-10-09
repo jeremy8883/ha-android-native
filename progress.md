@@ -180,7 +180,7 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - [x] Gas, water and solar graphs (`EnergySourceGraphModel`), compare banner (`EnergyCompareModel`: switch to previous year/period, stop comparing) and grid balance (`EnergyGridBalanceModel`), golden-tested against the frontend's cards for every period
 - [ ] Solar forecast lines on the solar graph (`energy/solar_forecast`; the test instance has no forecast integration)
 - [x] Device cards: the detail graph (devices by period without their included devices, untracked and over-reported consumption) and the devices graph (bars or donut, switched from the header), golden-tested against the frontend's cards for every period; device colours from the graph palette (`--color-N`, now extracted)
-- [ ] Devices graph: remember the chosen bar/donut mode across launches (the frontend keeps it in local storage)
+- [x] Devices graph: the chosen bar/donut mode is kept on the device for every devices graph, as the frontend keeps it in local storage (`data/CardPreferences.kt`, provided to cards through `LocalCardPreferences`)
 - [x] Energy sankey: nodes and flows (by floor and area) and the chart's layout input golden-tested against the frontend's; laid out like ECharts' sankey with `layoutIterations: 0` (`SankeyLayout`) and drawn with gradient flows, vertical on phones like the frontend; theme colours now include the core palette and `var()` fallbacks
 - [ ] Test data: give the device statistics entities with areas, so the sankey's floor and area grouping is golden-tested too
 - [x] Water sankey (`waterSankey`, sharing the devices part with the energy sankey), golden-tested
