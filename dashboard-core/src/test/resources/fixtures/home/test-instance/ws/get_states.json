@@ -525,8 +525,8 @@
         "next_noon": "2026-10-09T11:27:49+00:00",
         "next_rising": "2026-10-10T05:57:05.237028+00:00",
         "next_setting": "2026-10-09T16:59:07.942658+00:00",
-        "elevation": 21.92,
-        "azimuth": 135.67,
+        "elevation": 23.55,
+        "azimuth": 139.59,
         "rising": true,
         "friendly_name": "Sun"
       },
@@ -669,7 +669,7 @@
     },
     {
       "entity_id": "sensor.living_room_temperature",
-      "state": "21.5",
+      "state": "21.4",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "°C",
@@ -687,7 +687,7 @@
     },
     {
       "entity_id": "sensor.living_room_humidity",
-      "state": "48",
+      "state": "49",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "%",
@@ -777,7 +777,7 @@
     },
     {
       "entity_id": "sensor.house_power",
-      "state": "615",
+      "state": "328",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -795,7 +795,7 @@
     },
     {
       "entity_id": "sensor.solar_power",
-      "state": "2841",
+      "state": "2911",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -813,7 +813,7 @@
     },
     {
       "entity_id": "sensor.grid_power",
-      "state": "-491",
+      "state": "-561",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -849,7 +849,7 @@
     },
     {
       "entity_id": "sensor.home_battery_charge",
-      "state": "64",
+      "state": "72",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "%",
@@ -885,7 +885,7 @@
     },
     {
       "entity_id": "sensor.washer_power",
-      "state": "1800",
+      "state": "2",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -1058,7 +1058,7 @@
     },
     {
       "entity_id": "binary_sensor.kitchen_motion",
-      "state": "off",
+      "state": "on",
       "attributes": {
         "device_class": "motion",
         "friendly_name": "Kitchen motion"
@@ -1440,8 +1440,8 @@
       "entity_id": "camera.demo_camera",
       "state": "streaming",
       "attributes": {
-        "access_token": "d414b8b3b3451d9a23898b76731c6a395d5511cab64bcf8e17314d5f7db8b86d",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera?token=d414b8b3b3451d9a23898b76731c6a395d5511cab64bcf8e17314d5f7db8b86d",
+        "access_token": "6e97b39ef6fa4b7aec191729c8971ae4abd1f2f18fa390fb7d8acf5cad53826b",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera?token=6e97b39ef6fa4b7aec191729c8971ae4abd1f2f18fa390fb7d8acf5cad53826b",
         "friendly_name": "Demo camera",
         "supported_features": 3
       },
@@ -1458,8 +1458,8 @@
       "entity_id": "camera.demo_camera_png",
       "state": "streaming",
       "attributes": {
-        "access_token": "8aa80fab5eb193694a7a7e18433f5c482d6a2d412f3a7624ce5b23c2e7bacacc",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=8aa80fab5eb193694a7a7e18433f5c482d6a2d412f3a7624ce5b23c2e7bacacc",
+        "access_token": "a91d0c90a9bf6a043659c20b251f9747be5a55d9967a7598a846959d19e07e4c",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=a91d0c90a9bf6a043659c20b251f9747be5a55d9967a7598a846959d19e07e4c",
         "friendly_name": "Demo camera png",
         "supported_features": 3
       },
@@ -1476,8 +1476,8 @@
       "entity_id": "camera.demo_camera_without_stream",
       "state": "streaming",
       "attributes": {
-        "access_token": "ddece18821e0e641bfb51f85c3031e7a100c1be684e692febae18f8e631bf280",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=ddece18821e0e641bfb51f85c3031e7a100c1be684e692febae18f8e631bf280",
+        "access_token": "2801c931c644307166d6219a64d898b125e7f7a7950dafbef46d49692416a7b6",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=2801c931c644307166d6219a64d898b125e7f7a7950dafbef46d49692416a7b6",
         "friendly_name": "Demo camera without stream",
         "supported_features": 1
       },
@@ -2785,7 +2785,7 @@
     },
     {
       "entity_id": "sensor.total_energy_kwh",
-      "state": "165.5",
+      "state": "167.5",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "kWh",
@@ -2803,7 +2803,7 @@
     },
     {
       "entity_id": "sensor.total_energy_mwh",
-      "state": "0.0827500000000001",
+      "state": "0.0837500000000001",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "MWh",
@@ -2821,7 +2821,7 @@
     },
     {
       "entity_id": "sensor.total_gas_m3",
-      "state": "8.27500000000005",
+      "state": "8.37500000000005",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "m³",
@@ -2839,7 +2839,7 @@
     },
     {
       "entity_id": "sensor.total_gas_ft3",
-      "state": "9.372876221952",
+      "state": "9.48614360832",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "m³",

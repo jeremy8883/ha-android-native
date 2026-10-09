@@ -181,7 +181,9 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - [ ] Solar forecast lines on the solar graph (`energy/solar_forecast`; the test instance has no forecast integration)
 - [x] Device cards: the detail graph (devices by period without their included devices, untracked and over-reported consumption) and the devices graph (bars or donut, switched from the header), golden-tested against the frontend's cards for every period; device colours from the graph palette (`--color-N`, now extracted)
 - [ ] Devices graph: remember the chosen bar/donut mode across launches (the frontend keeps it in local storage)
-- [ ] Other cards: energy and water sankeys, power sources graph, power sankey, water flow sankey and the Now badges
+- [x] Energy sankey: nodes and flows (by floor and area) and the chart's layout input golden-tested against the frontend's; laid out like ECharts' sankey with `layoutIterations: 0` (`SankeyLayout`) and drawn with gradient flows, vertical on phones like the frontend; theme colours now include the core palette and `var()` fallbacks
+- [ ] Test data: give the device statistics entities with areas, so the sankey's floor and area grouping is golden-tested too
+- [ ] Other cards: water sankey, power sources graph, power sankey, water flow sankey and the Now badges
 - [ ] Overview "Today's energy" summary (needs the energy data on the home dashboard)
 
 ### Later — Startup time

@@ -347,6 +347,8 @@ const ENERGY_CARD_CAPTURES = [
   { name: "energy-devices-detail-graph", config: { type: "energy-devices-detail-graph" } },
   { name: "energy-devices-graph", config: { type: "energy-devices-graph", modes: ["bar"] } },
   { name: "energy-devices-graph-pie", config: { type: "energy-devices-graph", modes: ["pie"] } },
+  { name: "energy-sankey", config: { type: "energy-sankey", group_by_floor: true, group_by_area: true } },
+  { name: "energy-sankey-flat", config: { type: "energy-sankey", group_by_floor: false, group_by_area: false } },
   { name: "energy-self-sufficiency-gauge", config: { type: "energy-self-sufficiency-gauge" } },
   { name: "energy-grid-neutrality-gauge", config: { type: "energy-grid-neutrality-gauge" } },
   { name: "energy-solar-consumed-gauge", config: { type: "energy-solar-consumed-gauge" } },
@@ -367,7 +369,7 @@ async function captureEnergyCard(config) {
   // Inside <home-assistant>, which provides the contexts cards read (the theme for charts)
   document.querySelector("home-assistant").shadowRoot.appendChild(el);
   const root = () => el.shadowRoot;
-  for (let i = 0; i < 100 && !root()?.querySelector(".card-content, ha-chart-base, table, ha-card, .content"); i++) await new Promise((r) => setTimeout(r, 100));
+  for (let i = 0; i < 100 && !root()?.querySelector(".card-content, ha-chart-base, table, ha-card, .content, ha-sankey-chart"); i++) await new Promise((r) => setTimeout(r, 100));
   await new Promise((r) => setTimeout(r, 300));
   const text = (sel) => {
     const n = root().querySelector(sel);
@@ -433,6 +435,20 @@ async function captureEnergyCard(config) {
       needle: gauge?.needle ?? null,
       name: text(".name"),
       message: gauge ? null : root().querySelector("ha-card")?.textContent.replace(/\s+/g, " ").trim() ?? null,
+    };
+  }
+  if (type === "energy-sankey" || type === "water-sankey") {
+    const chart = root().querySelector("ha-sankey-chart");
+    const processed = chart ? chart._createData(chart.data, 400) : null;
+    result = {
+      data: chart ? g.clone(chart.data) : null,
+      message: chart ? null : text(".card-content"),
+      processed: processed
+        ? {
+            nodes: processed.nodes.map((n) => ({ id: n.id, value: n.value, depth: n.depth, color: n.itemStyle?.color ?? null })),
+            links: processed.links.map((l) => ({ source: l.source, target: l.target, value: l.value })),
+          }
+        : null,
     };
   }
   if (type === "energy-devices-graph") {
