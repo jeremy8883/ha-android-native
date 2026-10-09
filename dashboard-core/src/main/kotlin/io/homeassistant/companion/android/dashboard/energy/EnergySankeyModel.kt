@@ -85,9 +85,17 @@ internal class SankeyBuilder(private val hass: HassSnapshot) {
         if (sources.any { it is EnergySource.Battery }) {
             nodes += node(BATTERY_NODE, "battery", total(EnergyFlow.FROM_BATTERY), "energy-battery-out-color", 0)
             links += SankeyLink(BATTERY_NODE, HOME, consumption.usedBattery)
-            nodes += node(BATTERY_IN, "battery", total(EnergyFlow.TO_BATTERY), "energy-battery-in-color", 1)
-            if (consumption.gridToBattery > 0) links += SankeyLink(GRID_NODE, BATTERY_IN, consumption.gridToBattery)
-            if (consumption.solarToBattery > 0) links += SankeyLink(SOLAR_NODE, BATTERY_IN, consumption.solarToBattery)
+            nodes += node(BATTERY_IN_NODE, "battery", total(EnergyFlow.TO_BATTERY), "energy-battery-in-color", 1)
+            if (consumption.gridToBattery >
+                0
+            ) {
+                links += SankeyLink(GRID_NODE, BATTERY_IN_NODE, consumption.gridToBattery)
+            }
+            if (consumption.solarToBattery >
+                0
+            ) {
+                links += SankeyLink(SOLAR_NODE, BATTERY_IN_NODE, consumption.solarToBattery)
+            }
         }
         val grids = sources.filterIsInstance<EnergySource.Grid>()
         if (grids.isNotEmpty()) {
@@ -99,13 +107,18 @@ internal class SankeyBuilder(private val hass: HassSnapshot) {
             links += SankeyLink(SOLAR_NODE, HOME, consumption.usedSolar)
         }
         if (!grids.firstOrNull()?.statEnergyTo.isNullOrEmpty()) {
-            nodes += node(GRID_RETURN, "grid", total(EnergyFlow.TO_GRID), "energy-grid-return-color", 1)
-            if (consumption.batteryToGrid > 0) links += SankeyLink(BATTERY_NODE, GRID_RETURN, consumption.batteryToGrid)
-            if (consumption.solarToGrid > 0) links += SankeyLink(SOLAR_NODE, GRID_RETURN, consumption.solarToGrid)
+            nodes += node(GRID_RETURN_NODE, "grid", total(EnergyFlow.TO_GRID), "energy-grid-return-color", 1)
+            if (consumption.batteryToGrid >
+                0
+            ) {
+                links += SankeyLink(BATTERY_NODE, GRID_RETURN_NODE, consumption.batteryToGrid)
+            }
+            if (consumption.solarToGrid > 0) links += SankeyLink(SOLAR_NODE, GRID_RETURN_NODE, consumption.solarToGrid)
         }
     }
 
-    private fun node(id: String, label: String, value: Double, color: String, index: Int) = SankeyNode(
+    /** A source node labelled with the energy distribution's [label] translation. */
+    fun node(id: String, label: String, value: Double, color: String, index: Int) = SankeyNode(
         id,
         hass.localize("ui.panel.lovelace.cards.energy.energy_distribution.$label"),
         value,
@@ -118,77 +131,77 @@ internal class SankeyBuilder(private val hass: HassSnapshot) {
      * inclusion, and what of the home's [homeValue] no device accounts for.
      */
     fun devices(devices: List<DeviceNode>, homeValue: Double, groupByFloor: Boolean, groupByArea: Boolean) {
-        devices.forEach { device -> device.parent?.let { links += SankeyLink(it, device.node.id) } }
-        val topLevel = devices.filter { it.parent == null }.map { it.node }
-        flowToDevices(topLevel, groupByFloor, groupByArea)
-        val sections =
-            deviceSections(
-                devices.mapNotNull { d ->
-                    d.parent?.let { d.node.id to it }
-                }.toMap(),
-                devices.map { it.node },
-            )
-        sections.forEachIndexed { index, section -> section.forEach { nodes += it.copy(index = DEVICE_INDEX + index) } }
-        val untracked = homeValue - topLevel.sumOf { it.value }
-        if (untracked > 0) {
-            nodes += SankeyNode(
-                id = UNTRACKED_ID,
-                label = hass.localize(
-                    "ui.panel.lovelace.cards.energy.energy_devices_detail_graph.untracked_consumption",
-                ),
-                value = untracked,
-                color = SankeyColor.Variable("state-unavailable-color"),
-                index = DEVICE_INDEX - 1 + sections.size,
-            )
-            links += SankeyLink(HOME, UNTRACKED_ID, untracked)
-        }
+        val untracked = homeValue - devices.filter { it.parent == null }.sumOf { it.node.value }
+        val sections = placeDevices(devices, HOME, groupByFloor, groupByArea)
+        if (untracked > 0) untracked(untracked, HOME, sections)
     }
 
     /**
-     * The flows from the home to the devices without a parent: through their floor and area when grouping, straight
+     * The devices: from the device they're included in or (grouped by floor and area) from [root], in columns by
+     * inclusion. Returns how many columns they take.
+     */
+    fun placeDevices(devices: List<DeviceNode>, root: String, groupByFloor: Boolean, groupByArea: Boolean): Int {
+        devices.forEach { device -> device.parent?.let { links += SankeyLink(it, device.node.id) } }
+        val topLevel = devices.filter { it.parent == null }.map { it.node }
+        flowToDevices(topLevel, root, groupByFloor, groupByArea)
+        val parents = devices.mapNotNull { d -> d.parent?.let { d.node.id to it } }.toMap()
+        val sections = deviceSections(parents, devices.map { it.node })
+        sections.forEachIndexed { index, section -> section.forEach { nodes += it.copy(index = DEVICE_INDEX + index) } }
+        return sections.size
+    }
+
+    /** What no device accounts for, [value] flowing from [root], after the [sections] columns of devices. */
+    fun untracked(value: Double, root: String, sections: Int) {
+        nodes += SankeyNode(
+            id = UNTRACKED_ID,
+            label = hass.localize("ui.panel.lovelace.cards.energy.energy_devices_detail_graph.untracked_consumption"),
+            value = value,
+            color = UNAVAILABLE,
+            index = DEVICE_INDEX - 1 + sections,
+        )
+        links += SankeyLink(root, UNTRACKED_ID, value)
+    }
+
+    /**
+     * The flows from [root] to the devices without a parent: through their floor and area when grouping, straight
      * otherwise.
      */
-    private fun flowToDevices(devices: List<SankeyNode>, groupByFloor: Boolean, groupByArea: Boolean) {
+    private fun flowToDevices(devices: List<SankeyNode>, root: String, groupByFloor: Boolean, groupByArea: Boolean) {
         if (!groupByArea && !groupByFloor) {
-            devices.forEach { links += SankeyLink(HOME, it.id, it.value) }
+            devices.forEach { links += SankeyLink(root, it.id, it.value) }
             return
         }
         val (areas, floors) = hass.groupByFloorAndArea(devices)
-        floors.keys.sortedWith(
-            compareByDescending {
-                hass.registries.floors[it]?.level?.toDouble()
-                    ?: Double.NEGATIVE_INFINITY
-            },
+        val byLevel = floors.keys.sortedWith(
+            compareByDescending { hass.registries.floors[it]?.level?.toDouble() ?: Double.NEGATIVE_INFINITY },
         )
-            .forEach { floorId ->
-                val floorNode = if (floorId == NO_FLOOR ||
-                    !groupByFloor
-                ) {
-                    HOME
-                } else {
-                    floorNode(floorId, floors.getValue(floorId).value)
-                }
-                floors.getValue(floorId).areas.forEach { areaId ->
-                    val area = areas.getValue(areaId)
-                    val target = if (areaId == NO_AREA ||
-                        !groupByArea
-                    ) {
-                        floorNode
-                    } else {
-                        areaNode(areaId, area.value, floorNode)
-                    }
-                    area.devices.forEach { links += SankeyLink(target, it.id, it.value) }
-                }
+        byLevel.forEach { floorId ->
+            val floorNode = if (floorId == NO_FLOOR || !groupByFloor) {
+                root
+            } else {
+                floorNode(floorId, floors.getValue(floorId).value, root)
             }
+            floors.getValue(floorId).areas.forEach { areaId ->
+                val area = areas.getValue(areaId)
+                val target = if (areaId == NO_AREA ||
+                    !groupByArea
+                ) {
+                    floorNode
+                } else {
+                    areaNode(areaId, area.value, floorNode)
+                }
+                area.devices.forEach { links += SankeyLink(target, it.id, it.value) }
+            }
+        }
     }
 
-    private fun floorNode(floorId: String, value: Double) = "floor_$floorId".also { id ->
+    private fun floorNode(floorId: String, value: Double, root: String) = "floor_$floorId".also { id ->
         nodes += SankeyNode(id, hass.registries.floors[floorId]?.name.orEmpty(), value, PRIMARY, FLOOR_INDEX)
-        links += SankeyLink(HOME, id)
+        links += SankeyLink(root, id)
     }
 
     private fun areaNode(areaId: String, value: Double, floorNode: String) = "area_$areaId".also { id ->
-        nodes += SankeyNode(id, hass.registries.areas[areaId]?.name.orEmpty(), value, PRIMARY, AREA_INDEX)
+        nodes += SankeyNode(id, hass.registries.areas[areaId]?.name ?: areaId, value, PRIMARY, AREA_INDEX)
         links += SankeyLink(floorNode, id, value)
     }
 }
@@ -248,15 +261,16 @@ internal fun deviceSections(parents: Map<String, String>, devices: List<SankeyNo
 }
 
 internal const val HOME = "home"
-private const val BATTERY_NODE = "battery"
-private const val BATTERY_IN = "battery_in"
-private const val GRID_NODE = "grid"
-private const val GRID_RETURN = "grid_return"
-private const val SOLAR_NODE = "solar"
+internal const val BATTERY_NODE = "battery"
+internal const val BATTERY_IN_NODE = "battery_in"
+internal const val GRID_NODE = "grid"
+internal const val GRID_RETURN_NODE = "grid_return"
+internal const val SOLAR_NODE = "solar"
 private const val NO_AREA = "no_area"
 private const val NO_FLOOR = "no_floor"
 private const val FLOOR_INDEX = 2
 private const val AREA_INDEX = 3
-private const val DEVICE_INDEX = 4
+internal const val DEVICE_INDEX = 4
 private const val MIN_DEVICE = 0.01
 internal val PRIMARY = SankeyColor.Variable("primary-color")
+internal val UNAVAILABLE = SankeyColor.Variable("state-unavailable-color")

@@ -71,7 +71,7 @@ fun viewHeaderCard(view: ViewConfig): CardConfig? = view.json.obj("header")?.obj
 /**
  * The header of [view] for the current state: its card and the visible entity badges. Ports of
  * `hui-view-header` and `hui-entity-badge` (frontend@20260624.6 src/panels/lovelace/views/hui-view-header.ts,
- * src/panels/lovelace/badges/hui-entity-badge.ts). Only `entity` badges are ported.
+ * src/panels/lovelace/badges/hui-entity-badge.ts). Only `entity` badges and the energy total badges are ported.
  */
 fun HassSnapshot.viewHeader(view: ViewConfig, context: ConditionContext, now: Instant): ViewHeaderModel? {
     val header = view.json.obj("header")
@@ -93,7 +93,8 @@ fun HassSnapshot.viewHeader(view: ViewConfig, context: ConditionContext, now: In
 }
 
 private fun HassSnapshot.viewBadge(badge: JsonObject, now: Instant): ViewBadgeModel? {
-    if ((badge.string("type") ?: ENTITY) != ENTITY) return null
+    val type = badge.string("type") ?: ENTITY
+    if (type != ENTITY) return energyBadge(type, badge)
     val entityId = badge.string("entity").orEmpty()
     // `tap_action` defaults to more-info, like the tile card
     val actions = cardActions(CardConfig(JsonObject(badge + ("type" to JsonPrimitive("tile"))))).card

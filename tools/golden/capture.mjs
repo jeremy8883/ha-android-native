@@ -350,6 +350,33 @@ const ENERGY_CARD_CAPTURES = [
   { name: "energy-sankey", config: { type: "energy-sankey", group_by_floor: true, group_by_area: true } },
   { name: "energy-sankey-flat", config: { type: "energy-sankey", group_by_floor: false, group_by_area: false } },
   { name: "water-sankey", config: { type: "water-sankey", group_by_floor: true, group_by_area: true } },
+  { name: "power-sankey", config: { type: "power-sankey", group_by_floor: true, group_by_area: true } },
+  { name: "water-flow-sankey", config: { type: "water-flow-sankey", group_by_floor: true, group_by_area: true } },
+  { name: "power-sources-graph", config: { type: "power-sources-graph" } },
+  // The live cards again with states set in the page only (nothing is written to Home Assistant), so the
+  // fixtures cover what the time of the capture doesn't: discharging, grid charging, small consumers, water flowing
+  {
+    name: "power-sankey-evening",
+    config: { type: "power-sankey" },
+    states: { "sensor.solar_power": "0", "sensor.grid_power": "400", "sensor.home_battery_power": "900", "sensor.fridge_power": "0.5", "sensor.washer_power": "0.4", "sensor.office_circuit_power": "15", "sensor.office_computer_power": "1" },
+  },
+  {
+    name: "power-sankey-charging",
+    config: { type: "power-sankey", group_by_floor: true, group_by_area: true },
+    states: { "sensor.solar_power": "200", "sensor.grid_power": "2.5", "sensor.home_battery_power": "-1500", "sensor.fridge_power": "120", "sensor.washer_power": "1800", "sensor.office_circuit_power": "160", "sensor.office_computer_power": "120" },
+    units: { "sensor.grid_power": "kW" },
+  },
+  {
+    name: "water-flow-sankey-flowing",
+    config: { type: "water-flow-sankey", group_by_floor: true, group_by_area: true },
+    states: { "sensor.water_flow": "20", "sensor.shower_flow": "8", "sensor.garden_tap_flow": "12" },
+  },
+  {
+    name: "water-flow-sankey-small",
+    config: { type: "water-flow-sankey" },
+    states: { "sensor.water_flow": "0.6", "sensor.shower_flow": "0.59", "sensor.garden_tap_flow": "0.0001" },
+    units: { "sensor.water_flow": "m³/h" },
+  },
   { name: "energy-self-sufficiency-gauge", config: { type: "energy-self-sufficiency-gauge" } },
   { name: "energy-grid-neutrality-gauge", config: { type: "energy-grid-neutrality-gauge" } },
   { name: "energy-solar-consumed-gauge", config: { type: "energy-solar-consumed-gauge" } },
@@ -360,10 +387,18 @@ const ENERGY_CARD_CAPTURES = [
  * Renders the energy card [type] on the default collection and returns what it shows. Runs in the page, where it
  * is installed as a global so that `captureEnergyData` can call it.
  */
-async function captureEnergyCard(config) {
+async function captureEnergyCard(config, states, units) {
   const g = window.__golden;
   const type = config.type;
-  const hass = document.querySelector("home-assistant").hass;
+  const real = document.querySelector("home-assistant").hass;
+  const overridden = Object.fromEntries(
+    [...new Set([...Object.keys(states ?? {}), ...Object.keys(units ?? {})])].map((id) => {
+      const stateObj = real.states[id];
+      const attributes = units?.[id] ? { ...stateObj.attributes, unit_of_measurement: units[id] } : stateObj.attributes;
+      return [id, { ...stateObj, state: states?.[id] ?? stateObj.state, attributes }];
+    }),
+  );
+  const hass = { ...real, states: { ...real.states, ...overridden } };
   const el = document.createElement(`hui-${type}-card`);
   el.hass = hass;
   el.setConfig({ ...config, collection_key: "energy_dashboard" });
@@ -438,7 +473,7 @@ async function captureEnergyCard(config) {
       message: gauge ? null : root().querySelector("ha-card")?.textContent.replace(/\s+/g, " ").trim() ?? null,
     };
   }
-  if (type === "energy-sankey" || type === "water-sankey") {
+  if (["energy-sankey", "water-sankey", "power-sankey", "water-flow-sankey"].includes(type)) {
     const chart = root().querySelector("ha-sankey-chart");
     const processed = chart ? chart._createData(chart.data, 400) : null;
     result = {
@@ -484,6 +519,34 @@ async function captureEnergyCard(config) {
       xMax: date(options.xAxis?.max),
     };
   }
+  // The live states the card read, for the cards built from them
+  if (["power-sankey", "water-flow-sankey", "power-sources-graph"].includes(type)) {
+    const ids = Object.keys(hass.states).filter((id) => /_(power|flow)$/.test(id));
+    result = { ...result, states: Object.fromEntries(ids.map((id) => [id, g.clone(hass.states[id])])), now: Date.now() };
+  }
+  el.remove();
+  return g.clone(result);
+}
+
+/** The energy badges whose text is recorded for each period. */
+const ENERGY_BADGES = ["power-total", "gas-total", "water-total"];
+
+/** Renders the energy badge [type] on the default collection and returns its label, text and the states it read. */
+async function captureEnergyBadge(type) {
+  const g = window.__golden;
+  const ha = document.querySelector("home-assistant");
+  const el = document.createElement(`hui-${type}-badge`);
+  el.hass = ha.hass;
+  el.setConfig({ type, collection_key: "energy_dashboard" });
+  ha.shadowRoot.appendChild(el);
+  for (let i = 0; i < 50 && !el.shadowRoot?.querySelector("ha-badge"); i++) await new Promise((r) => setTimeout(r, 100));
+  const badge = el.shadowRoot?.querySelector("ha-badge");
+  const ids = Object.keys(ha.hass.states).filter((id) => /_(power|flow)$/.test(id));
+  const result = {
+    label: badge?.label ?? null,
+    text: badge ? badge.textContent.replace(/\s+/g, " ").trim() : null,
+    states: Object.fromEntries(ids.map((id) => [id, g.clone(ha.hass.states[id])])),
+  };
   el.remove();
   return g.clone(result);
 }
@@ -522,7 +585,8 @@ async function captureEnergyData(periods) {
       // What the collection fetched; rendering the cards below must not add to it
       const requests = log.map((e) => g.clone(e));
       const cards = {};
-      for (const { name, config } of ENERGY_CARD_CAPTURES) cards[name] = await captureEnergyCard(config);
+      for (const { name, config, states, units } of ENERGY_CARD_CAPTURES) cards[name] = await captureEnergyCard(config, states, units);
+      for (const type of ENERGY_BADGES) cards[type] = await captureEnergyBadge(type);
       out.push({
         ...p,
         cards,
@@ -995,7 +1059,7 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
   if (renderedEnergy) console.log(`  visited /energy (${Object.keys(renderedEnergy.views).join(", ")})`);
   // The same for every user: recorded once
   if (renderedEnergy && variant === "admin") {
-    await page.evaluate(`window.captureEnergyCard = ${captureEnergyCard.toString()}; window.ENERGY_CARD_CAPTURES = ${JSON.stringify(ENERGY_CARD_CAPTURES)};`);
+    await page.evaluate(`window.captureEnergyCard = ${captureEnergyCard.toString()}; window.ENERGY_CARD_CAPTURES = ${JSON.stringify(ENERGY_CARD_CAPTURES)}; window.captureEnergyBadge = ${captureEnergyBadge.toString()}; window.ENERGY_BADGES = ${JSON.stringify(ENERGY_BADGES)};`);
   }
   const energyData = renderedEnergy && variant === "admin" ? await page.evaluate(captureEnergyData, energyPeriods()) : null;
   await page.evaluate(() => window.__golden.navigate("/home/overview"));
