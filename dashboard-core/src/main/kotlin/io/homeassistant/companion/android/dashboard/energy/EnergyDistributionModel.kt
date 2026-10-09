@@ -60,44 +60,11 @@ enum class DistributionFlow {
 
 /** The distribution of [data] at [now]. */
 fun HassSnapshot.energyDistribution(data: EnergyData, now: Instant): EnergyDistributionModel {
-    val sources = data.prefs.energySources
-    val grids = sources.filterIsInstance<EnergySource.Grid>()
-    val firstGrid = grids.firstOrNull()
-    val hasGrid =
-        firstGrid != null && (!firstGrid.statEnergyFrom.isNullOrEmpty() || !firstGrid.statEnergyTo.isNullOrEmpty())
-    val hasSolar = sources.any { it is EnergySource.Solar }
-    val batteries = sources.filterIsInstance<EnergySource.Battery>()
-    val hasBattery = batteries.isNotEmpty()
-    val hasReturn = grids.any { !it.statEnergyTo.isNullOrEmpty() }
-    val sums = data.summed()
-    val consumption = sums.consumption().total
-    fun total(flow: EnergyFlow) = sums.total[flow] ?: 0.0
-    val amounts = Amounts(
-        fromGrid = total(EnergyFlow.FROM_GRID),
-        solar = if (hasSolar) total(EnergyFlow.SOLAR) else null,
-        batteryIn = if (hasBattery) total(EnergyFlow.TO_BATTERY) else null,
-        batteryOut = if (hasBattery) total(EnergyFlow.FROM_BATTERY) else null,
-        returned = if (hasReturn) total(EnergyFlow.TO_GRID) else null,
-        home = max(0.0, consumption.usedTotal),
-    )
-    val used = Used(
-        solar = if (hasSolar) consumption.usedSolar else null,
-        battery = if (hasBattery) max(consumption.usedBattery, 0.0) else null,
-        grid = if (hasGrid) max(consumption.usedGrid, 0.0) else 0.0,
-    )
-    val carbon = if (hasGrid) lowCarbon(data, amounts, used) else null
-    val unit = formats.consumptionUnit(
-        listOfNotNull(
-            carbon?.lowCarbon,
-            amounts.solar,
-            amounts.returned,
-            amounts.fromGrid,
-            amounts.home,
-            amounts.batteryIn,
-            amounts.batteryOut,
-        )
-            .maxOrNull() ?: 0.0,
-    )
+    val kinds = SourceKinds(data.prefs)
+    val amounts = data.summed().let { sums -> Amounts(sums, sums.consumption().total, kinds) }
+    val used = amounts.used
+    val carbon = if (kinds.grid) lowCarbon(data, amounts, used) else null
+    val unit = formats.consumptionUnit(amounts.largest(carbon?.lowCarbon))
     fun kwh(value: Double?) = formats.consumptionShort(value, "kWh", unit)
     val gas = utilityUsage(data, UtilityType.GAS)
     val water = utilityUsage(data, UtilityType.WATER)
@@ -106,34 +73,59 @@ fun HassSnapshot.energyDistribution(data: EnergyData, now: Instant): EnergyDistr
         solar = amounts.solar?.let(::kwh),
         gas = gas?.let { formats.consumptionShort(it, data.gasUnit) },
         water = water?.let { formats.consumptionShort(it, data.waterUnit) },
-        grid = if (hasGrid) GridNode(kwh(amounts.fromGrid), amounts.returned?.let(::kwh)) else null,
+        grid = if (kinds.grid) GridNode(kwh(amounts.fromGrid), amounts.returned?.let(::kwh)) else null,
         home = kwh(amounts.home),
         homeLabel = config.locationName.takeUnless { gas != null && water != null },
-        battery = if (hasBattery) battery(data, batteries, amounts, now, ::kwh) else null,
-        homeRing = homeRing(used, amounts.home, hasGrid, carbon),
-        flows = flows(hasGrid, hasSolar, hasBattery, consumption, used),
+        battery = if (kinds.battery) battery(data, amounts, now, ::kwh) else null,
+        homeRing = homeRing(used, amounts.home, kinds.grid, carbon),
+        flows = flows(kinds, amounts.consumption, used),
         gasFlows = (gas ?: 0.0) != 0.0,
         waterFlows = (water ?: 0.0) != 0.0,
     )
 }
 
-private class Amounts(
-    val fromGrid: Double,
-    val solar: Double?,
-    val batteryIn: Double?,
-    val batteryOut: Double?,
-    val returned: Double?,
-    val home: Double,
-)
+/** Which sources the card shows. */
+private class SourceKinds(prefs: EnergyPreferences) {
+    private val grids = prefs.energySources.filterIsInstance<EnergySource.Grid>()
+    val grid =
+        grids.firstOrNull()?.let { !it.statEnergyFrom.isNullOrEmpty() || !it.statEnergyTo.isNullOrEmpty() } == true
+    val solar = prefs.energySources.any { it is EnergySource.Solar }
+    val battery = prefs.energySources.any { it is EnergySource.Battery }
+    val returns = grids.any { !it.statEnergyTo.isNullOrEmpty() }
+}
 
+/** The totals of the period, `null` for sources that aren't configured. */
+private class Amounts(sums: EnergySums, val consumption: Consumption, kinds: SourceKinds) {
+    private fun total(sums: EnergySums, flow: EnergyFlow) = sums.total[flow] ?: 0.0
+
+    val fromGrid = total(sums, EnergyFlow.FROM_GRID)
+    val solar = total(sums, EnergyFlow.SOLAR).takeIf { kinds.solar }
+    val batteryIn = total(sums, EnergyFlow.TO_BATTERY).takeIf { kinds.battery }
+    val batteryOut = total(sums, EnergyFlow.FROM_BATTERY).takeIf { kinds.battery }
+    val returned = total(sums, EnergyFlow.TO_GRID).takeIf { kinds.returns }
+    val home = max(0.0, consumption.usedTotal)
+
+    /** What the home used of each source. */
+    val used = Used(
+        solar = consumption.usedSolar.takeIf { kinds.solar },
+        battery = max(consumption.usedBattery, 0.0).takeIf { kinds.battery },
+        grid = if (kinds.grid) max(consumption.usedGrid, 0.0) else 0.0,
+    )
+
+    /** The largest amount, which picks the unit they're all shown in. */
+    fun largest(lowCarbon: Double?) =
+        listOfNotNull(lowCarbon, solar, returned, fromGrid, home, batteryIn, batteryOut).maxOrNull() ?: 0.0
+}
+
+/** What the home used of each source. */
 private class Used(val solar: Double?, val battery: Double?, val grid: Double)
 
 /** The low-carbon energy from the grid, and the high-carbon share of the home's consumption. */
 private class Carbon(val lowCarbon: Double, val highCarbonConsumption: Double)
 
 private fun lowCarbon(data: EnergyData, amounts: Amounts, used: Used): Carbon? {
-    if (data.co2SignalEntity == null) return null
-    val highCarbon = data.fossilEnergyConsumption?.values?.sum() ?: return null
+    val highCarbon = data.fossilEnergyConsumption?.values?.sum()
+    if (data.co2SignalEntity == null || highCarbon == null) return null
     // Only the part that the home used, not what charged the battery
     val consumed = if (used.grid != amounts.fromGrid) highCarbon * (used.grid / amounts.fromGrid) else highCarbon
     return Carbon(amounts.fromGrid - highCarbon, consumed)
@@ -157,13 +149,10 @@ private fun homeRing(used: Used, home: Double, hasGrid: Boolean, carbon: Carbon?
  * The seconds each flow's dot takes along its line: faster with more of the total. Port of the `animateMotion`
  * durations.
  */
-private fun flows(
-    hasGrid: Boolean,
-    hasSolar: Boolean,
-    hasBattery: Boolean,
-    consumption: Consumption,
-    used: Used,
-): Map<DistributionFlow, Double> {
+private fun flows(kinds: SourceKinds, consumption: Consumption, used: Used): Map<DistributionFlow, Double> {
+    val hasGrid = kinds.grid
+    val hasSolar = kinds.solar
+    val hasBattery = kinds.battery
     val amounts = mapOf(
         DistributionFlow.SOLAR_TO_GRID to consumption.solarToGrid.takeIf { hasSolar && hasGrid },
         DistributionFlow.SOLAR_TO_HOME to used.solar,
@@ -183,13 +172,13 @@ private fun flows(
 
 private fun HassSnapshot.battery(
     data: EnergyData,
-    batteries: List<EnergySource.Battery>,
     amounts: Amounts,
     now: Instant,
     kwh: (Double?) -> String,
 ): BatteryNode {
     // The charge is the battery's current one, so only shown when the period includes now
     val includesNow = !data.period.endInstant(formats.zone).isBefore(now)
+    val batteries = data.prefs.energySources.filterIsInstance<EnergySource.Battery>()
     val levels = if (includesNow) {
         batteries.mapNotNull {
             it.statSoc

@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-09T07:08:49.160Z",
+  "capture_date": "2026-10-09T07:37:35.285Z",
   "user": {
     "name": "Dev",
     "is_admin": true
@@ -132,8 +132,8 @@
   "files": [
     {
       "path": "energy/data.json",
-      "bytes": 988347,
-      "sha256": "29e3420edb5965b3462fd865c95d999a6c9bb4ad869f23e1a3c19d5b62e65538"
+      "bytes": 1031678,
+      "sha256": "c47ddffc61df55e2e0c6a07c059f3c84c699f3e6f2f0eef282e7c50705fca686"
     },
     {
       "path": "inputs/areas.json",
@@ -202,8 +202,8 @@
     },
     {
       "path": "inputs/states.json",
-      "bytes": 95161,
-      "sha256": "262ae0ee07255b4eaf1892eadc17b647da693588d140fbbfc0ee60903073cdc6"
+      "bytes": 95165,
+      "sha256": "da1368e4801f8ef3fa7ad98584efa85d9fdba84aec40ea688dac7f45523cdebf"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -272,8 +272,8 @@
     },
     {
       "path": "outputs/entity-display.json",
-      "bytes": 74978,
-      "sha256": "ecd154392429e20e84f0f1d072f1cbbb48aab6a90a428d7b543310f442e652f2"
+      "bytes": 74979,
+      "sha256": "6ab48aa43d019a3df3c5806483ca4ed30e863e370ea776605f2174cf23ae52ab"
     },
     {
       "path": "outputs/expanded.json",
@@ -447,8 +447,8 @@
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 106079,
-      "sha256": "1fde42ea2fcfc14a84ad11f6d162968ca2f73dc670ae7a3fa77e736c3f0041bc"
+      "bytes": 106083,
+      "sha256": "98bb3b9b3966cc33a4014b790322dec19c28b7425fdb58bb4dc4b38e34991bf4"
     },
     {
       "path": "ws/manifest-get-frontend.json",

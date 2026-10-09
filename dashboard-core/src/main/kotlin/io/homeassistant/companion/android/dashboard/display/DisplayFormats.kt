@@ -25,6 +25,18 @@ enum class DatePart {
 
     /** `formatDateYear`: "2026". */
     YEAR,
+
+    /** `formatDateMonthYear`: "October 2026". */
+    MONTH_YEAR,
+
+    /** `formatDateWeekdayVeryShortDate`: "Fri, Oct 9". */
+    WEEKDAY_DAY_MONTH,
+
+    /** `formatDateWeekdayShortDate`: "Fri, Oct 9, 2026". */
+    WEEKDAY_DAY_MONTH_YEAR,
+
+    /** `formatDateShort`: "Oct 9, 2026". */
+    DAY_MONTH_YEAR_SHORT,
 }
 
 /** A unit of relative time, as `Intl.RelativeTimeFormat` takes it. */
@@ -144,6 +156,10 @@ class JdkDisplayFormats(private val locale: Locale, override val zone: ZoneId) :
             DatePart.MONTH to DateTimeFormatter.ofPattern("LLLL"),
             DatePart.MONTH_SHORT to DateTimeFormatter.ofPattern("LLL"),
             DatePart.YEAR to DateTimeFormatter.ofPattern("y"),
+            DatePart.MONTH_YEAR to DateTimeFormatter.ofPattern("LLLL y"),
+            DatePart.WEEKDAY_DAY_MONTH to DateTimeFormatter.ofPattern("EEE, MMM d"),
+            DatePart.WEEKDAY_DAY_MONTH_YEAR to DateTimeFormatter.ofPattern("EEE, MMM d, y"),
+            DatePart.DAY_MONTH_YEAR_SHORT to DateTimeFormatter.ofPattern("MMM d, y"),
         )
 
         // CLDR English phrases that `numeric: "auto"` uses instead of numbers

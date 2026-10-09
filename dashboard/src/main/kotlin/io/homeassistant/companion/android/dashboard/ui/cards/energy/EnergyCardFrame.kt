@@ -2,6 +2,7 @@ package io.homeassistant.companion.android.dashboard.ui.cards.energy
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -10,8 +11,10 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
@@ -32,6 +35,7 @@ internal fun EnergyCardFrame(
     card: CardConfig,
     hass: State<HassSnapshot?>,
     modifier: Modifier = Modifier,
+    headerEnd: @Composable (EnergyData) -> Unit = {},
     content: @Composable ColumnScope.(EnergyData) -> Unit,
 ) {
     val key = card.json.string("collection_key") ?: DEFAULT_ENERGY_COLLECTION_KEY
@@ -39,15 +43,22 @@ internal fun EnergyCardFrame(
     val colors = LocalHAColorScheme.current
     DashboardCardSurface(modifier) {
         Column(Modifier.fillMaxWidth()) {
-            card.json.string("title")?.let { title ->
-                Text(
-                    title,
-                    style = HATextStyle.HeadlineMedium,
-                    color = colors.colorTextPrimary,
-                    modifier = Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, top = HADimens.SPACE4),
-                )
-            }
             val data = collection?.data
+            card.json.string("title")?.let { title ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, top = HADimens.SPACE4),
+                ) {
+                    Text(
+                        title,
+                        style = HATextStyle.HeadlineMedium,
+                        color = colors.colorTextPrimary,
+                        textAlign = TextAlign.Start,
+                        modifier = Modifier.weight(1f),
+                    )
+                    data?.let { headerEnd(it) }
+                }
+            }
             when {
                 data != null -> content(data)
                 collection?.failed == true -> Message(stringResource(R.string.native_dashboard_energy_failed))

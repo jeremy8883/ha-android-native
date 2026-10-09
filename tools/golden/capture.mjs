@@ -332,7 +332,7 @@ function energyPeriods(now = new Date()) {
 }
 
 /** The energy cards whose displayed values are recorded for each period. */
-const ENERGY_CARD_CAPTURES = ["energy-distribution"];
+const ENERGY_CARD_CAPTURES = ["energy-distribution", "energy-usage-graph"];
 
 /**
  * Renders the energy card [type] on the default collection and returns what it shows. Runs in the page, where it
@@ -344,9 +344,10 @@ async function captureEnergyCard(type) {
   const el = document.createElement(`hui-${type}-card`);
   el.hass = hass;
   el.setConfig({ type, collection_key: "energy_dashboard" });
-  document.body.appendChild(el);
+  // Inside <home-assistant>, which provides the contexts cards read (the theme for charts)
+  document.querySelector("home-assistant").shadowRoot.appendChild(el);
   const root = () => el.shadowRoot;
-  for (let i = 0; i < 100 && !root()?.querySelector(".card-content"); i++) await new Promise((r) => setTimeout(r, 100));
+  for (let i = 0; i < 100 && !root()?.querySelector(".card-content, ha-chart-base"); i++) await new Promise((r) => setTimeout(r, 100));
   await new Promise((r) => setTimeout(r, 300));
   const text = (sel) => {
     const n = root().querySelector(sel);
@@ -377,6 +378,26 @@ async function captureEnergyCard(type) {
         dur: c.querySelector("animateMotion")?.getAttribute("dur") ?? null,
       })),
       waterBelow: !!root().querySelector(".water.bottom"),
+    };
+  }
+  if (type.endsWith("-graph")) {
+    // The chart's series as the card built them, and its axes
+    for (let i = 0; i < 50 && !el._chartData?.length; i++) await new Promise((r) => setTimeout(r, 100));
+    const options = root().querySelector("ha-chart-base")?.options ?? {};
+    const date = (d) => (d instanceof Date ? d.toISOString() : d ?? null);
+    result = {
+      series: (el._chartData ?? []).map((s) => ({
+        id: s.id ?? null,
+        name: s.name ?? null,
+        stack: s.stack ?? null,
+        color: s.color ?? null,
+        borderColor: s.itemStyle?.borderColor ?? null,
+        data: (s.data ?? []).map((d) => (d && typeof d === "object" && "value" in d ? d.value : d)),
+      })),
+      total: el._total ?? null,
+      yAxisFractionDigits: el._yAxisFractionDigits ?? null,
+      xMin: date(options.xAxis?.min),
+      xMax: date(options.xAxis?.max),
     };
   }
   el.remove();
@@ -414,12 +435,14 @@ async function captureEnergyData(periods) {
       collection.setCompare(p.compare);
       await collection.refresh();
       const state = collection.state;
+      // What the collection fetched; rendering the cards below must not add to it
+      const requests = log.map((e) => g.clone(e));
       const cards = {};
       for (const type of ENERGY_CARD_CAPTURES) cards[type] = await captureEnergyCard(type);
       out.push({
         ...p,
         cards,
-        requests: log.map((e) => g.clone(e)),
+        requests,
         data: {
           start: state.start?.toISOString() ?? null,
           end: state.end?.toISOString() ?? null,
