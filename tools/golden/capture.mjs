@@ -639,6 +639,40 @@ async function captureMoreInfoHistory(entityIds) {
     await new Promise((r) => setTimeout(r, 500));
     conn.subscribeMessage = origSubscribe;
     conn.sendMessagePromise = origSend;
+    // The charts drawn from it, with their ECharts series
+    const charts = [];
+    const visit = (root) => {
+      root?.querySelectorAll("*").forEach((n) => {
+        if (["state-history-chart-timeline", "state-history-chart-line", "statistics-chart"].includes(n.localName)) {
+          const time = (t) => (t instanceof Date ? t.getTime() : t ?? null);
+          const point = (d) => (d && typeof d === "object" && !Array.isArray(d) ? (d.value ?? null) : d);
+          charts.push({
+            tag: n.localName,
+            startTime: time(n.startTime),
+            endTime: time(n.endTime),
+            yAxisFractionDigits: n._yAxisFractionDigits ?? null,
+            series: (n._chartData ?? []).map((s) => ({
+              id: s.id ?? null,
+              name: s.name ?? null,
+              type: s.type ?? null,
+              color: typeof s.color === "string" ? s.color : null,
+              stack: s.stack ?? null,
+              stackOrder: s.stackOrder ?? null,
+              area: s.areaStyle?.color ?? null,
+              lineWidth: s.lineStyle?.width ?? null,
+              step: s.step ?? null,
+              smooth: s.smooth ?? null,
+              data: (s.data ?? []).map((d) => {
+                const v = point(d);
+                return Array.isArray(v) ? v.map((x) => (x instanceof Date ? x.getTime() : x)) : v;
+              }),
+            })),
+          });
+        }
+        visit(n.shadowRoot);
+      });
+    };
+    visit(el.shadowRoot);
     out[entityId] = {
       requests,
       messages,
@@ -648,6 +682,7 @@ async function captureMoreInfoHistory(entityIds) {
       metadata: el._metadata ? g.clone(el._metadata) : null,
       error: el._error ? g.clone(el._error) : null,
       showMoreHref: el._showMoreHref ?? null,
+      charts: g.clone(charts),
     };
     el.remove();
   }

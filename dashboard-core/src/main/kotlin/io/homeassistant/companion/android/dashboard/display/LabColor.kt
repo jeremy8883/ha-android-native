@@ -10,7 +10,7 @@ import kotlin.math.roundToInt
  * [rgb] (0xRRGGBB) darkened by [amount] steps of lightness, or brightened when [brighten]. Port of `labDarken` and
  * `labBrighten` on `rgb2lab`/`lab2rgb`.
  */
-fun shadeRgb(rgb: Int, amount: Int, brighten: Boolean): Int {
+fun shadeRgb(rgb: Int, amount: Double, brighten: Boolean): Int {
     val (l, a, b) = rgbToLab(rgb)
     val sign = if (brighten) 1 else -1
     return labToRgb(Triple(l + sign * LIGHTNESS_STEP * amount, a, b))

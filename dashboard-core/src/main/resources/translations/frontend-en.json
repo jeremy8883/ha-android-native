@@ -348,6 +348,311 @@
     "start_date": "Start date",
     "time_from": "Time from",
     "time_to": "Time to"
+   },
+   "history_charts": {
+    "collapse_legend": "Less",
+    "duration": "Duration",
+    "error": "Unable to load history",
+    "expand_legend": "More",
+    "history_disabled": "History integration disabled",
+    "loading_history": "Loading state history…",
+    "no_history_found": "No state history found.",
+    "source_history": "Source: History",
+    "source_stats": "Source: Long term statistics",
+    "toggle_visibility": "Toggle visibility",
+    "zoom_reset": "Reset zoom"
+   },
+   "logbook": {
+    "automation_triggered": "Triggered",
+    "cause": {
+     "by": "By {name}",
+     "by_automation": "By automation: {name}",
+     "by_script": "By script: {name}",
+     "by_state_change": "By state change: {name}",
+     "scheduled": "Scheduled",
+     "via": "Via {name}"
+    },
+    "entries_not_found": "No activity found.",
+    "event": "event",
+    "homeassistant_starting": "Home Assistant starting",
+    "homeassistant_stopping": "Home Assistant stopping",
+    "messages": {
+     "activated": "Activated",
+     "command_sent": "Command sent",
+     "detected": "Detected",
+     "detected_event_no_type": "Event detected",
+     "pressed": "Pressed",
+     "ran": "Ran",
+     "responded": "Responded",
+     "scanned": "Scanned",
+     "sent": "Sent",
+     "spoke": "Spoke",
+     "transcribed": "Transcribed",
+     "updated": "Updated"
+    },
+    "not_loaded": "The {platform} integration is not loaded. Please add it to your configuration either by adding 'default_config:' or ''{platform}:''.",
+    "numeric_state_of": "numeric state of",
+    "retrieval_error": "Could not load activity",
+    "script_ran": "Ran",
+    "state_of": "state of",
+    "time": "time",
+    "time_pattern": "time pattern",
+    "trigger_type": {
+     "calendar": "Calendar",
+     "conversation": "Sentence",
+     "device": "Device",
+     "event": "Manual event received",
+     "geo_location": "Geolocation",
+     "homeassistant": "Home Assistant",
+     "mqtt": "MQTT",
+     "numeric_state": "Numeric state",
+     "persistent_notification": "Persistent notification",
+     "state": "State",
+     "sun": "Sun",
+     "tag": "Tag",
+     "template": "Template",
+     "time": "Time",
+     "time_pattern": "Time pattern",
+     "webhook": "Webhook",
+     "zone": "Zone"
+    },
+    "view_trace": "View trace"
+   },
+   "statistics_charts": {
+    "loading_statistics": "Loading statistics…",
+    "no_statistics_found": "No statistics found.",
+    "statistic_types": {
+     "change": "change",
+     "max": "max",
+     "mean": "mean",
+     "min": "min",
+     "state": "state",
+     "sum": "sum"
+    }
+   }
+  },
+  "dialogs": {
+   "more_info_control": {
+    "add_to": {
+     "action_failed": "Failed to perform the action {error}",
+     "action_options": {
+      "automation_action": "Create as a new action",
+      "automation_condition": "Create as a new condition",
+      "automation_trigger": "Create as a new trigger",
+      "scene": "Create as a new scene",
+      "script_action": "Create as a new action"
+     },
+     "app_actions": "App actions",
+     "automations_heading": "Automations",
+     "item": "Add to…",
+     "no_actions": "No actions available",
+     "scripts_heading": "Scripts",
+     "title": "Add {target} to…"
+    },
+    "aggregate": "5-minute aggregated",
+    "attributes": "Attributes",
+    "back_to_info": "Back to info",
+    "camera": {
+     "download_snapshot": "Download snapshot",
+     "failed_to_download": "Failed to download snapshot. Please check the logs for more information."
+    },
+    "climate": {
+     "humidity": "Humidity",
+     "temperature": "Temperature"
+    },
+    "cover": {
+     "copy_favorites": "Copy favorites to...",
+     "copy_favorites_entities": "Entities",
+     "copy_favorites_helper": "Select one or more covers to receive the copied favorites from this cover. Covers must support the same position controls.",
+     "edit_mode": "Edit favorites",
+     "favorite_position": {
+      "add": "Add new favorite position",
+      "add_title": "Add favorite position",
+      "delete": "Delete favorite position {number}",
+      "delete_confirm_action": "Delete",
+      "delete_confirm_text": "This favorite position will be permanently deleted.",
+      "delete_confirm_title": "Delete favorite position?",
+      "edit": "Set position to {value}",
+      "edit_title": "Edit favorite position",
+      "set": "Set position to {value}"
+     },
+     "favorite_tilt_position": {
+      "add": "Add new favorite tilt position",
+      "add_title": "Add favorite tilt position",
+      "delete": "Delete favorite tilt position {number}",
+      "delete_confirm_action": "Delete",
+      "delete_confirm_text": "This favorite tilt position will be permanently deleted.",
+      "delete_confirm_title": "Delete favorite tilt position?",
+      "edit": "Set tilt position to {value}",
+      "edit_title": "Edit favorite tilt position",
+      "set": "Set tilt position to {value}"
+     },
+     "reset_favorites": "Reset favorites",
+     "reset_favorites_text": "Do you want to reset all favorites for this cover back to default?",
+     "switch_mode": {
+      "button": "Switch to button mode",
+      "position": "Switch to position mode"
+     }
+    },
+    "details": "Details",
+    "device_or_service_info": "{type} info",
+    "device_type": {
+     "device": "Device",
+     "service": "Service"
+    },
+    "edit": "Edit entity",
+    "edit_domain": {
+     "automation": "Edit automation",
+     "person": "Edit person",
+     "scene": "Edit scene",
+     "script": "Edit script"
+    },
+    "exit_edit_mode": "Exit edit mode",
+    "fan": {
+     "set_forward_direction": "Set forward direction",
+     "set_reverse_direction": "Set reverse direction",
+     "turn_off_oscillating": "Turn off oscillating",
+     "turn_on_oscillating": "Turn on oscillating"
+    },
+    "history": "History",
+    "info": "Information",
+    "last_changed": "Last changed",
+    "last_updated": "Last updated",
+    "lawn_mower": {
+     "activity": "Activity",
+     "commands": "Lawn mower commands:",
+     "dock": "Return to dock",
+     "pause": "Pause",
+     "start_mowing": "Start mowing"
+    },
+    "light": {
+     "color": "Color",
+     "color_picker": {
+      "mode": {
+       "color": "Color",
+       "color_temp": "Temperature"
+      },
+      "title": "Change color"
+     },
+     "color_temp": "Temperature",
+     "copy_favorites": "Copy favorites to...",
+     "copy_favorites_entities": "Entities",
+     "copy_favorites_helper": "Select one or more lights to receive the copied favorites from this light (must support same color modes).",
+     "edit_mode": "Edit favorite colors",
+     "favorite_color": {
+      "add": "Add new favorite color",
+      "add_title": "Add favorite color",
+      "delete": "Delete favorite color {number}",
+      "delete_confirm_action": "Delete",
+      "delete_confirm_text": "This favorite color will be permanently deleted.",
+      "delete_confirm_title": "Delete favorite color?",
+      "edit": "Edit favorite color {number}",
+      "edit_title": "Edit favorite color",
+      "set": "Set favorite color {number}"
+     },
+     "reset_favorites": "Reset favorite colors",
+     "reset_favorites_text": "Do you want to reset all favorite colors for this light back to default?",
+     "select_effect": "Select effect",
+     "set_white": "Set white",
+     "toggle": "Toggle"
+    },
+    "logbook": "Activity",
+    "person": {
+     "create_zone": "Create zone from current location"
+    },
+    "raw": "Raw",
+    "related": "Related",
+    "remote": {
+     "activity": "Current activity"
+    },
+    "restored": {
+     "no_longer_provided": "This entity is no longer being provided by the {integration} integration. If the entity is no longer in use, delete it in settings."
+    },
+    "script": {
+     "last_action": "Last action",
+     "last_triggered": "Last triggered"
+    },
+    "settings": "Settings",
+    "show_more": "Show more",
+    "sun": {
+     "azimuth": "Azimuth",
+     "elevation": "Elevation",
+     "rising": "Rising",
+     "setting": "Setting"
+    },
+    "toggle_yaml_mode": "Toggle YAML mode",
+    "translated": "Translated",
+    "update": {
+     "auto_update_enabled_text": "Automatic updates for this item have been enabled; skipping it is, therefore, unavailable. You can either install this update now or wait for Home Assistant to do it automatically.",
+     "auto_update_enabled_title": "Cannot skip version",
+     "clear_skipped": "Clear skipped",
+     "create_backup": {
+      "app": "Keep backup of the last version",
+      "app_description": "For easily restoring to version {version}",
+      "automatic": "Automatic backup before update",
+      "automatic_description_last": "Last automatic backup {relative_time}.",
+      "automatic_description_none": "No automatic backup yet.",
+      "generic": "Create backup",
+      "manual": "Create manual backup before update",
+      "manual_description": "Includes Home Assistant settings and history."
+     },
+     "install": "Install",
+     "release_announcement": "Read release announcement",
+     "skip": "Skip",
+     "update": "Update"
+    },
+    "updater": {
+     "title": "Update instructions"
+    },
+    "vacuum": {
+     "by_area": "By area",
+     "clean_areas": "Clean areas",
+     "clean_areas_order_hint": "The order in which areas are cleaned may not be supported by your vacuum.",
+     "clean_spot": "Clean spot",
+     "cleaning": "Cleaning",
+     "commands": "Vacuum cleaner commands:",
+     "configure": "Configure",
+     "configure_area_mapping": "Configure area mapping",
+     "fan_speed": "Fan speed",
+     "locate": "Locate",
+     "no_areas_header": "No areas mapped",
+     "no_areas_text": "Map your vacuum's segments to areas in your home to start cleaning by area.",
+     "no_areas_text_non_admin": "Ask an administrator to map your vacuum's segments to areas.",
+     "other_areas": "Other areas",
+     "pause": "Pause",
+     "return_home": "Return home",
+     "start": "Start",
+     "start_cleaning_areas": "Start cleaning",
+     "start_pause": "Start/pause",
+     "status": "Status",
+     "stop": "Stop"
+    },
+    "valve": {
+     "copy_favorites": "Copy favorites to...",
+     "copy_favorites_entities": "Entities",
+     "copy_favorites_helper": "Select one or more valves to receive the copied favorites from this valve.",
+     "edit_mode": "Edit favorites",
+     "favorite_position": {
+      "add": "Add new favorite position",
+      "add_title": "Add favorite position",
+      "delete": "Delete favorite position {number}",
+      "delete_confirm_action": "Delete",
+      "delete_confirm_text": "This favorite position will be permanently deleted.",
+      "delete_confirm_title": "Delete favorite position?",
+      "edit": "Set position to {value}",
+      "edit_title": "Edit favorite position",
+      "set": "Set position to {value}"
+     },
+     "reset_favorites": "Reset favorites",
+     "reset_favorites_text": "Do you want to reset all favorites for this valve back to default?",
+     "switch_mode": {
+      "button": "Switch to button mode",
+      "position": "Switch to position mode"
+     }
+    },
+    "zone": {
+     "graph_unit": "People in zone"
+    }
    }
   },
   "notification_toast": {

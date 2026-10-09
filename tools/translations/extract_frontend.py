@@ -26,6 +26,10 @@ SUBTREES = [
     "ui.panel.energy",
     "ui.panel.lovelace.strategy",
     "ui.panel.page-authorize",
+    "ui.dialogs.more_info_control",
+    "ui.components.statistics_charts",
+    "ui.components.history_charts",
+    "ui.components.logbook",
 ]
 
 OUT_DIR = Path(__file__).resolve().parents[2] / "dashboard-core/src/main/resources/translations"

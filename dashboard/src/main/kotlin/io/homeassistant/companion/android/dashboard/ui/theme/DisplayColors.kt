@@ -4,6 +4,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import io.homeassistant.companion.android.dashboard.derive.DisplayColor
+import io.homeassistant.companion.android.dashboard.theme.themeColorArgb
 
 /**
  * The Compose colour of a [DisplayColor] with the frontend's default theme (light or dark like the system),
@@ -20,16 +21,7 @@ internal fun DisplayColor.toColor(): Color? {
 }
 
 /** The value of a frontend colour variable, following references to other variables. */
-internal fun resolveVariable(name: String, dark: Boolean): Color? =
-    generateSequence(name) { variable -> (frontendColor(variable, dark) as? FrontendColor.Ref)?.variable }
-        .take(MAX_REFERENCE_DEPTH)
-        .firstNotNullOfOrNull { variable ->
-            (frontendColor(variable, dark) as? FrontendColor.Hex)?.let { Color(it.argb) }
-        }
-
-/** The frontend's value of [variable], the dark theme's first when [dark]. */
-private fun frontendColor(variable: String, dark: Boolean): FrontendColor? =
-    (if (dark) FRONTEND_DARK_COLORS[variable] else null) ?: FRONTEND_LIGHT_COLORS[variable]
+internal fun resolveVariable(name: String, dark: Boolean): Color? = themeColorArgb(name, dark)?.let(::Color)
 
 /** `#rgb`, `#rrggbb` and `rgb(r, g, b)` colours; others are not resolved. */
 internal fun parseCssColor(css: String): Color? {
@@ -51,7 +43,6 @@ private fun rgbColor(match: MatchResult): Color {
     )
 }
 
-private const val MAX_REFERENCE_DEPTH = 8
 private const val SHORT_HEX = 3
 private const val HEX_RADIX = 16
 private const val CHANNEL_MAX = 255

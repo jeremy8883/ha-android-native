@@ -29,7 +29,7 @@ internal val ENERGY_KIND_COLORS = mapOf(
 internal fun energyColor(variable: String, dark: Boolean, index: Int?, background: Boolean, compare: Boolean): Color {
     val base = resolveVariable(variable, dark) ?: Color.Gray
     val shaded = if (index != null && index > 0) {
-        Color(OPAQUE or shadeRgb(base.toArgb() and RGB, index, brighten = dark))
+        Color(OPAQUE or shadeRgb(base.toArgb() and RGB, index.toDouble(), brighten = dark))
     } else {
         base
     }

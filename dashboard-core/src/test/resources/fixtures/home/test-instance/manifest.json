@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-09T11:49:07.582Z",
+  "capture_date": "2026-10-09T11:53:59.405Z",
   "user": {
     "name": "Dev",
     "is_admin": true
@@ -132,13 +132,13 @@
   "files": [
     {
       "path": "energy/data.json",
-      "bytes": 1759365,
-      "sha256": "4db00c7bed5d42a212f0fb7499e947258af0efdec86fdbe1d717c8dd9d6342c6"
+      "bytes": 1760044,
+      "sha256": "50873db2b98552de667c9bd0938b76a1992a741ef3c6e935a057833f9f415669"
     },
     {
       "path": "history/more-info.json",
-      "bytes": 150474,
-      "sha256": "833d00c57f97dfa4970b21db82af8719b62765028d565a8234d05a61e52f3679"
+      "bytes": 214370,
+      "sha256": "870afcb85a46acce06d356c62b9eea64ba4d8c1fa46f33fff535a29012b716a0"
     },
     {
       "path": "inputs/areas.json",
@@ -207,8 +207,8 @@
     },
     {
       "path": "inputs/states.json",
-      "bytes": 95166,
-      "sha256": "7420085bf1a4140733ca2e5c0526d532ee7e8e211e0adae9e3c5d0501e54e90a"
+      "bytes": 95165,
+      "sha256": "6cb5bb35a96966f86475bd83591d5cec5c49eb697d80e2ac6a3469469b448133"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -278,7 +278,7 @@
     {
       "path": "outputs/entity-display.json",
       "bytes": 74743,
-      "sha256": "ed2a945c1e0f21990f30ba1d82de1ab8ded646e871f4246f235697a1f640d700"
+      "sha256": "8edf42a85335bf16927fee2d0180593a5658124a83bc38efb26ec016edca7e2e"
     },
     {
       "path": "outputs/expanded.json",
@@ -452,8 +452,8 @@
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 106084,
-      "sha256": "689dac7131ed1d9701381497a21cd5eb75f6a11500318d36fd3f1c431980eda5"
+      "bytes": 106083,
+      "sha256": "7d2040614b84d0d9e69ad554987bab23d24cddb697a4b3654c6e6e4618206a3d"
     },
     {
       "path": "ws/manifest-get-frontend.json",
