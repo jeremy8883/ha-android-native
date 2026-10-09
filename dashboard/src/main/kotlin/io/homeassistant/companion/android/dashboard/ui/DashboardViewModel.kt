@@ -398,9 +398,12 @@ class DashboardViewModel @VisibleForTesting internal constructor(
             if (requests.isEmpty()) {
                 flowOf(emptyMap())
             } else {
-                combine(requests.map { request -> live.renderTemplate(request).map { request to it } }) {
-                    it.toMap()
-                }.onStart { emit(emptyMap()) }
+                // Each template's from when it has a rendering, without waiting for the others
+                val renderings = requests.map { request ->
+                    live.renderTemplate(request).map<TemplateResult, TemplateResult?> { it }.onStart { emit(null) }
+                        .map { result -> result?.let { request to it } }
+                }
+                combine(renderings) { it.filterNotNull().toMap() }
             }
         }
 

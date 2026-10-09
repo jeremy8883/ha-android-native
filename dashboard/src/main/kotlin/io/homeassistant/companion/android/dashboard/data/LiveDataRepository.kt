@@ -106,7 +106,7 @@ class LiveDataRepository @Inject constructor(
     /**
      * The renderings of [request], kept up to date by the server (`render_template`, strict like the markdown
      * card). The last rendering is kept (and cached), so it shows until the server renders it again; a template never
-     * rendered shows as its raw text, as upstream falls back to. Subscribing is retried.
+     * rendered has none until the server renders it. Subscribing is retried.
      */
     fun renderTemplate(request: TemplateRequest): Flow<TemplateResult> = flow {
         val serverId = serverManager.getServer()?.id
@@ -117,8 +117,7 @@ class LiveDataRepository @Inject constructor(
             return@flow
         }
         val keeper = loadedData.keeper(serverId, "template/${request.cacheKey()}", TextCodec)
-        val kept = keeper.get()?.value
-        emit(TemplateResult.Rendered(kept ?: request.template))
+        keeper.get()?.value?.let { emit(TemplateResult.Rendered(it)) }
         var failures = 0
         while (true) {
             val events = webSocket.subscribeRaw(RENDER_TEMPLATE, request.params())

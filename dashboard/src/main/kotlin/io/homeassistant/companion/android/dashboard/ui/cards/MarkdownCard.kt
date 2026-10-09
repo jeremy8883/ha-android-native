@@ -10,6 +10,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,7 +29,7 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 
 /**
  * A markdown card: the server-rendered template as markdown, in a card unless `text_only`. Nothing is shown until
- * the template has rendered, as upstream.
+ * the template has rendered, as upstream, but its room is kept so that the cards below don't move when it is.
  */
 @Composable
 internal fun MarkdownCard(card: CardConfig, hass: State<HassSnapshot?>, modifier: Modifier = Modifier) {
@@ -52,7 +53,7 @@ private fun MarkdownCardContent(model: MarkdownModel, modifier: Modifier = Modif
                     color = colors.colorTextPrimary,
                 )
             }
-            model.content?.let { text ->
+            (model.content ?: model.placeholder)?.let { text ->
                 Markdown(
                     content = text,
                     colors = markdownColor(text = colors.colorTextPrimary),
@@ -72,7 +73,7 @@ private fun MarkdownCardContent(model: MarkdownModel, modifier: Modifier = Modif
                         h6 = heading.copy(fontSize = HAFontSize.M, lineHeight = HAFontSize.XL),
                         textLink = HATextStyle.Link,
                     ),
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().alpha(if (model.content == null) 0f else 1f),
                 )
             }
         }

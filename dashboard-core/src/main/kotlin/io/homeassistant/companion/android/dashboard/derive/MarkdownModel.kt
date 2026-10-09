@@ -31,8 +31,16 @@ sealed interface TemplateResult {
  * @property title the card header, `null` with `text_only`
  * @property content the rendered markdown; `null` while the template has not rendered yet
  * @property error the latest template error to show above the card
+ * @property placeholder while there is neither [content] nor [error], the template itself, drawn invisibly so the card
+ *   takes about the room it will once rendered and nothing moves when it is
  */
-data class MarkdownModel(val title: String?, val textOnly: Boolean, val content: String?, val error: String?)
+data class MarkdownModel(
+    val title: String?,
+    val textOnly: Boolean,
+    val content: String?,
+    val error: String?,
+    val placeholder: String? = null,
+)
 
 /**
  * The template a markdown card renders, with the variables upstream gives it (`config` and the user's `user`
@@ -61,6 +69,7 @@ fun HassSnapshot.markdownModel(card: CardConfig): MarkdownModel? {
         textOnly = textOnly,
         content = (result as? TemplateResult.Rendered)?.text,
         error = (result as? TemplateResult.Failed)?.message,
+        placeholder = request.template.takeIf { result == null },
     )
 }
 
