@@ -309,6 +309,80 @@ async function visitEnergyPanel(page) {
   return { dashboard, views };
 }
 
+/**
+ * Fixed periods to load the energy data of, in the browser's time zone (UTC): whole days, as the period selector
+ * sets them, within the test instance's 60 days of seeded statistics.
+ */
+function energyPeriods(now = new Date()) {
+  const DAY = 86400000;
+  const midnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const days = (startMs, count) => ({ start: new Date(startMs).toISOString(), end: new Date(startMs + count * DAY - 1).toISOString() });
+  // The week before last, starting on Sunday (en-US)
+  const thisWeek = midnight - new Date(midnight).getUTCDay() * DAY;
+  const monthStart = Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1);
+  const monthEnd = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1) - 1;
+  return [
+    { name: "today", ...days(midnight, 1), compare: "" },
+    { name: "day", ...days(midnight - 3 * DAY, 1), compare: "" },
+    { name: "week-compare", ...days(thisWeek - 14 * DAY, 7), compare: "previous" },
+    { name: "month", start: new Date(monthStart).toISOString(), end: new Date(monthEnd).toISOString(), compare: "previous" },
+    { name: "year", start: new Date(Date.UTC(now.getUTCFullYear(), 0, 1)).toISOString(), end: new Date(Date.UTC(now.getUTCFullYear() + 1, 0, 1) - 1).toISOString(), compare: "" },
+    { name: "ten-days", ...days(midnight - 10 * DAY, 10), compare: "previous" },
+  ];
+}
+
+/**
+ * Loads the energy collection for each of [periods] and records the WS requests it made with their results (what
+ * `getEnergyData` fetches), on the energy panel's page.
+ */
+async function captureEnergyData(periods) {
+  const g = window.__golden;
+  const conn = document.querySelector("home-assistant").hass.connection;
+  const collection = conn._energy_dashboard;
+  if (!collection) return { error: "no energy collection" };
+  const log = [];
+  const orig = conn.sendMessagePromise;
+  conn.sendMessagePromise = async function (msg) {
+    const entry = { request: g.clone(msg) };
+    log.push(entry);
+    try {
+      const result = await orig.call(this, msg);
+      entry.result = g.clone(result);
+      return result;
+    } catch (err) {
+      entry.error = { code: err?.code ?? null, message: err?.message ?? String(err) };
+      throw err;
+    }
+  };
+  const out = [];
+  try {
+    for (const p of periods) {
+      log.length = 0;
+      collection.setPeriod(new Date(p.start), new Date(p.end));
+      collection.setCompare(p.compare);
+      await collection.refresh();
+      const state = collection.state;
+      out.push({
+        ...p,
+        requests: log.map((e) => g.clone(e)),
+        data: {
+          start: state.start?.toISOString() ?? null,
+          end: state.end?.toISOString() ?? null,
+          startCompare: state.startCompare?.toISOString() ?? null,
+          endCompare: state.endCompare?.toISOString() ?? null,
+          co2SignalEntity: state.co2SignalEntity ?? null,
+          waterUnit: state.waterUnit,
+          gasUnit: state.gasUnit,
+          statIds: Object.keys(state.stats).sort(),
+        },
+      });
+    }
+  } finally {
+    conn.sendMessagePromise = orig;
+  }
+  return { periods: out };
+}
+
 /** The capture proper. Runs in the page with one consistent `hass` snapshot. */
 async function captureInPage() {
   const g = window.__golden;
@@ -757,6 +831,8 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
   }
   const renderedEnergy = availablePanels.includes("energy") ? await visitEnergyPanel(page) : null;
   if (renderedEnergy) console.log(`  visited /energy (${Object.keys(renderedEnergy.views).join(", ")})`);
+  // The same for every user: recorded once
+  const energyData = renderedEnergy && variant === "admin" ? await page.evaluate(captureEnergyData, energyPeriods()) : null;
   await page.evaluate(() => window.__golden.navigate("/home/overview"));
   await page.waitForTimeout(500);
 
@@ -766,10 +842,10 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
   // ---- write files
   rmSync(outDir, { recursive: true, force: true });
   const files = [];
-  const write = (rel, data) => {
+  const write = (rel, data, compact = false) => {
     const p = join(outDir, rel);
     mkdirSync(dirname(p), { recursive: true });
-    const text = stableStringify(data);
+    const text = compact ? JSON.stringify(data) + "\n" : stableStringify(data);
     writeFileSync(p, text);
     files.push({ path: rel, bytes: Buffer.byteLength(text), sha256: createHash("sha256").update(text).digest("hex") });
   };
@@ -809,6 +885,11 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
       write(`outputs/energy/views/${sanitizeFile(v.path)}.json`, v.config ?? { error: v.error });
       if (v.error) problems.push(`energy view ${v.path}: ${v.error}`);
     }
+  }
+  if (energyData) {
+    // Mostly statistics rows: one line keeps it small
+    write("energy/data.json", energyData, true);
+    if (energyData.error) problems.push(`energy data: ${energyData.error}`);
   }
   write("outputs/expanded.json", cap.expanded);
   write("outputs/entity-display.json", cap.display);
