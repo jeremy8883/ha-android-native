@@ -5,7 +5,13 @@
   "result": {
     "entities": [
       "light.kitchen_lights",
-      "select.speed"
+      "light.living_room_rgbww_lights",
+      "input_boolean.guest_mode",
+      "switch.decorative_lights",
+      "fan.living_room_fan",
+      "cover.kitchen_window",
+      "light.bed_light",
+      "alarm_control_panel.security"
     ]
   }
 }

@@ -1,0 +1,79 @@
+{
+  "path": "overview",
+  "title": "Summary",
+  "type": "sections",
+  "sections": [
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "title": "Energy distribution",
+          "type": "energy-distribution",
+          "collection_key": "energy_dashboard"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "title": "Sources",
+          "type": "energy-sources-table",
+          "collection_key": "energy_dashboard",
+          "show_only_totals": true
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "title": "Power sources",
+          "type": "power-sources-graph",
+          "collection_key": "energy_dashboard",
+          "show_legend": false
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "title": "Electricity usage",
+          "type": "energy-usage-graph",
+          "collection_key": "energy_dashboard"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "title": "Gas consumption",
+          "type": "energy-gas-graph",
+          "collection_key": "energy_dashboard"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "title": "Water consumption",
+          "type": "energy-water-graph",
+          "collection_key": "energy_dashboard"
+        }
+      ]
+    }
+  ],
+  "dense_section_placement": true,
+  "max_columns": 3,
+  "footer": {
+    "card": {
+      "type": "energy-date-selection",
+      "collection_key": "energy_dashboard",
+      "opening_direction": "right",
+      "vertical_opening_direction": "up"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.strategy
 
+import io.homeassistant.companion.android.dashboard.energy.EnergyPreferences
 import kotlinx.serialization.json.JsonObject
 
 /**
@@ -10,6 +11,9 @@ import kotlinx.serialization.json.JsonObject
  * @property commonControls entity ids from `usage_prediction/common_control`, or `null` when unavailable
  */
 data class StrategyData(val energyPrefs: JsonObject?, val commonControls: List<String>?) {
+    /** [energyPrefs] read as [EnergyPreferences]. */
+    fun energyPreferences(): EnergyPreferences? = energyPrefs?.let(EnergyPreferences::fromJson)
+
     companion object {
         val NONE = StrategyData(energyPrefs = null, commonControls = null)
     }

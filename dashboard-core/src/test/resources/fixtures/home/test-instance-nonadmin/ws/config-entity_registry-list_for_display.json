@@ -929,6 +929,89 @@
         "di": "03dfeec1333dc3ff497c2b6f7c8a7e7f",
         "ec": 1,
         "en": "Charger type"
+      },
+      {
+        "ei": "sensor.solar_power",
+        "pl": "template",
+        "lb": [],
+        "en": "Solar power",
+        "dp": 0
+      },
+      {
+        "ei": "sensor.grid_power",
+        "pl": "template",
+        "lb": [],
+        "en": "Grid power",
+        "dp": 0
+      },
+      {
+        "ei": "sensor.home_battery_power",
+        "pl": "template",
+        "lb": [],
+        "en": "Home battery power",
+        "dp": 0
+      },
+      {
+        "ei": "sensor.home_battery_charge",
+        "pl": "template",
+        "lb": [],
+        "en": "Home battery charge"
+      },
+      {
+        "ei": "sensor.fridge_power",
+        "pl": "template",
+        "lb": [],
+        "en": "Fridge power",
+        "dp": 0
+      },
+      {
+        "ei": "sensor.washer_power",
+        "pl": "template",
+        "lb": [],
+        "en": "Washer power",
+        "dp": 0
+      },
+      {
+        "ei": "sensor.office_circuit_power",
+        "pl": "template",
+        "lb": [],
+        "en": "Office circuit power",
+        "dp": 0
+      },
+      {
+        "ei": "sensor.office_computer_power",
+        "pl": "template",
+        "lb": [],
+        "en": "Office computer power",
+        "dp": 0
+      },
+      {
+        "ei": "sensor.gas_flow",
+        "pl": "template",
+        "lb": [],
+        "en": "Gas flow",
+        "dp": 0
+      },
+      {
+        "ei": "sensor.water_flow",
+        "pl": "template",
+        "lb": [],
+        "en": "Water flow",
+        "dp": 0
+      },
+      {
+        "ei": "sensor.shower_flow",
+        "pl": "template",
+        "lb": [],
+        "en": "Shower flow",
+        "dp": 0
+      },
+      {
+        "ei": "sensor.garden_tap_flow",
+        "pl": "template",
+        "lb": [],
+        "en": "Garden tap flow",
+        "dp": 0
       }
     ]
   }

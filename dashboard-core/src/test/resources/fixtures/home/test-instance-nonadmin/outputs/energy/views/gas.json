@@ -1,0 +1,48 @@
+{
+  "path": "gas",
+  "title": "Gas",
+  "type": "sections",
+  "max_columns": 3,
+  "sections": [
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "energy-compare",
+          "collection_key": "energy_dashboard",
+          "grid_options": {
+            "columns": 36
+          }
+        },
+        {
+          "title": "Gas consumption",
+          "type": "energy-gas-graph",
+          "collection_key": "energy_dashboard",
+          "grid_options": {
+            "columns": 24
+          }
+        },
+        {
+          "title": "Sources",
+          "type": "energy-sources-table",
+          "collection_key": "energy_dashboard",
+          "types": [
+            "gas"
+          ],
+          "grid_options": {
+            "columns": 12
+          }
+        }
+      ],
+      "column_span": 3
+    }
+  ],
+  "footer": {
+    "card": {
+      "type": "energy-date-selection",
+      "collection_key": "energy_dashboard",
+      "opening_direction": "right",
+      "vertical_opening_direction": "up"
+    }
+  }
+}

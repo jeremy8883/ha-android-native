@@ -5,6 +5,11 @@ import io.homeassistant.companion.android.dashboard.model.ViewConfig
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.string
+import io.homeassistant.companion.android.dashboard.strategy.energy.electricityView
+import io.homeassistant.companion.android.dashboard.strategy.energy.energyOverviewView
+import io.homeassistant.companion.android.dashboard.strategy.energy.gasView
+import io.homeassistant.companion.android.dashboard.strategy.energy.powerView
+import io.homeassistant.companion.android.dashboard.strategy.energy.waterView
 import io.homeassistant.companion.android.dashboard.strategy.home.homeAreaView
 import io.homeassistant.companion.android.dashboard.strategy.home.homeMediaPlayersView
 import io.homeassistant.companion.android.dashboard.strategy.home.homeOtherDevicesView
@@ -69,6 +74,17 @@ private fun HassSnapshot.viewGenerator(strategy: JsonObject, data: StrategyData)
         "climate" -> { -> climateView() }
         "security" -> { -> securityView() }
         "maintenance" -> { -> maintenanceView() }
+        else -> energyViewGenerator(strategy, data)
+    }
+
+/** What generates the energy panel's view of [strategy], `null` when it is not one. */
+private fun HassSnapshot.energyViewGenerator(strategy: JsonObject, data: StrategyData): (() -> JsonObject)? =
+    when (strategy.string("type")) {
+        "energy-overview" -> { -> energyOverviewView(strategy, data.energyPreferences()) }
+        "energy" -> { -> electricityView(strategy, data.energyPreferences()) }
+        "gas" -> { -> gasView(strategy, data.energyPreferences()) }
+        "water" -> { -> waterView(strategy, data.energyPreferences()) }
+        "power" -> { -> powerView(strategy, data.energyPreferences()) }
         else -> null
     }
 

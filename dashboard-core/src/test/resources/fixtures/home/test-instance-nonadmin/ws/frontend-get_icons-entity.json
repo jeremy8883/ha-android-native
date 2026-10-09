@@ -5,27 +5,10 @@
   },
   "result": {
     "resources": {
-      "shopping_list": {
-        "todo": {
-          "shopping_list": {
-            "default": "mdi:cart"
-          }
-        }
-      },
-      "group": {
-        "light": {
-          "light": {
-            "default": "mdi:lightbulb-group",
-            "state": {
-              "off": "mdi:lightbulb-group-off"
-            }
-          }
-        }
-      },
-      "mobile_app": {
-        "notify": {
-          "notify": {
-            "default": "mdi:cellphone-message"
+      "backup": {
+        "event": {
+          "automatic_backup_event": {
+            "default": "mdi:database"
           }
         }
       },
@@ -122,6 +105,13 @@
           }
         }
       },
+      "mobile_app": {
+        "notify": {
+          "notify": {
+            "default": "mdi:cellphone-message"
+          }
+        }
+      },
       "sun": {
         "binary_sensor": {
           "solar_rising": {
@@ -159,10 +149,20 @@
           }
         }
       },
-      "backup": {
-        "event": {
-          "automatic_backup_event": {
-            "default": "mdi:database"
+      "group": {
+        "light": {
+          "light": {
+            "default": "mdi:lightbulb-group",
+            "state": {
+              "off": "mdi:lightbulb-group-off"
+            }
+          }
+        }
+      },
+      "shopping_list": {
+        "todo": {
+          "shopping_list": {
+            "default": "mdi:cart"
           }
         }
       }

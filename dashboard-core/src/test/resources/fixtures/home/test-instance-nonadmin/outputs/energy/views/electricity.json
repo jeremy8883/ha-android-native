@@ -1,0 +1,201 @@
+{
+  "path": "electricity",
+  "title": "Electricity",
+  "type": "sections",
+  "sections": [
+    {
+      "type": "grid",
+      "column_span": 1,
+      "cards": [
+        {
+          "title": "Energy distribution",
+          "type": "energy-distribution",
+          "collection_key": "energy_dashboard"
+        }
+      ],
+      "visibility": [
+        {
+          "condition": "view_columns",
+          "max": 1
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 1,
+      "visibility": [
+        {
+          "condition": "view_columns",
+          "max": 1
+        }
+      ],
+      "cards": [
+        {
+          "type": "energy-grid-balance",
+          "collection_key": "energy_dashboard"
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 1,
+      "visibility": [
+        {
+          "condition": "view_columns",
+          "max": 1
+        }
+      ],
+      "cards": [
+        {
+          "type": "energy-grid-neutrality-gauge",
+          "collection_key": "energy_dashboard",
+          "grid_options": {
+            "columns": 6
+          }
+        },
+        {
+          "type": "energy-solar-consumed-gauge",
+          "collection_key": "energy_dashboard",
+          "grid_options": {
+            "columns": 6
+          }
+        },
+        {
+          "type": "energy-self-sufficiency-gauge",
+          "collection_key": "energy_dashboard",
+          "grid_options": {
+            "columns": 6
+          }
+        },
+        {
+          "type": "energy-carbon-consumed-gauge",
+          "collection_key": "energy_dashboard",
+          "grid_options": {
+            "columns": 6
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "column_span": 3,
+      "cards": [
+        {
+          "type": "energy-compare",
+          "collection_key": "energy_dashboard",
+          "grid_options": {
+            "columns": 36
+          }
+        },
+        {
+          "title": "Electricity usage",
+          "type": "energy-usage-graph",
+          "collection_key": "energy_dashboard",
+          "grid_options": {
+            "columns": 36
+          }
+        },
+        {
+          "title": "Solar production",
+          "type": "energy-solar-graph",
+          "collection_key": "energy_dashboard",
+          "grid_options": {
+            "columns": 36
+          }
+        },
+        {
+          "title": "Sources",
+          "type": "energy-sources-table",
+          "collection_key": "energy_dashboard",
+          "types": [
+            "grid",
+            "solar",
+            "battery"
+          ],
+          "grid_options": {
+            "columns": 36
+          }
+        },
+        {
+          "title": "Individual devices detail usage",
+          "type": "energy-devices-detail-graph",
+          "collection_key": "energy_dashboard",
+          "grid_options": {
+            "columns": 36
+          }
+        },
+        {
+          "title": "Individual devices total usage",
+          "type": "energy-devices-graph",
+          "collection_key": "energy_dashboard",
+          "grid_options": {
+            "columns": 36
+          }
+        },
+        {
+          "title": "Energy flow",
+          "type": "energy-sankey",
+          "collection_key": "energy_dashboard",
+          "group_by_floor": true,
+          "group_by_area": true,
+          "grid_options": {
+            "columns": 36
+          }
+        }
+      ]
+    }
+  ],
+  "sidebar": {
+    "sections": [
+      {
+        "cards": [
+          {
+            "title": "Energy distribution",
+            "type": "energy-distribution",
+            "collection_key": "energy_dashboard"
+          },
+          {
+            "type": "energy-grid-balance",
+            "collection_key": "energy_dashboard"
+          },
+          {
+            "type": "grid",
+            "columns": 2,
+            "cards": [
+              {
+                "type": "energy-grid-neutrality-gauge",
+                "collection_key": "energy_dashboard"
+              },
+              {
+                "type": "energy-solar-consumed-gauge",
+                "collection_key": "energy_dashboard"
+              },
+              {
+                "type": "energy-self-sufficiency-gauge",
+                "collection_key": "energy_dashboard"
+              },
+              {
+                "type": "energy-carbon-consumed-gauge",
+                "collection_key": "energy_dashboard"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "visibility": [
+      {
+        "condition": "view_columns",
+        "min": 2
+      }
+    ]
+  },
+  "footer": {
+    "card": {
+      "type": "energy-date-selection",
+      "collection_key": "energy_dashboard",
+      "opening_direction": "right",
+      "vertical_opening_direction": "up"
+    }
+  }
+}

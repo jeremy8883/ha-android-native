@@ -7,7 +7,8 @@
    normal /auth/login_flow instead.
 2. Creates a long-lived token over WS and writes tools/test-ha/.env.
 3. Seeds floors, areas, device/entity area assignments, a storage dashboard,
-   home system data and some service-call history (for usage_prediction).
+   home system data, some service-call history (for usage_prediction) and the
+   energy dashboard (seed_energy.py).
 
 Only ever connects to localhost. Never prints token values.
 """
@@ -352,6 +353,15 @@ async def seed_usage(ws: Ws, states: list[dict]) -> None:
     await asyncio.sleep(6)
 
 
+async def seed_energy(ws: Ws) -> None:
+    # Imported here: seed_energy imports this module's helpers
+    from seed_energy import ENERGY_PREFS, import_history
+
+    await import_history(ws)
+    await ws.call("energy/save_prefs", **ENERGY_PREFS)
+    log("saved energy preferences")
+
+
 # --------------------------------------------------------------------------- main
 
 
@@ -392,6 +402,7 @@ async def main(base: str, skip_usage: bool) -> None:
             await seed_usage(ws, states)
         elif HOME_SYSTEM_DATA:
             await ws.call("frontend/set_system_data", key="home", value=HOME_SYSTEM_DATA)
+        await seed_energy(ws)
         await ws.ws.close()
         log("done")
 

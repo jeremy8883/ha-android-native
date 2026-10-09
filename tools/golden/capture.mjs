@@ -273,6 +273,42 @@ async function visitSummaryPanel(page, panel) {
   return page.evaluate((p) => window.__golden.clone(window.__golden.deepAll(`ha-panel-${p}`)[0]._lovelace.config.views[0]), panel);
 }
 
+/**
+ * Navigates in-app to the energy panel (loading its dashboard and view strategy chunks) and returns the dashboard it
+ * generated itself, then each view as hui-view resolved it (`/energy/<path>`).
+ */
+async function visitEnergyPanel(page) {
+  const panelConfig = async (path) => {
+    await page.evaluate((p) => window.__golden.navigate(p), path);
+    await page.waitForFunction(
+      () => !!window.__golden.deepAll("ha-panel-energy")[0]?._lovelace?.config?.views,
+      null,
+      { timeout: 30000, polling: 250 }
+    );
+    return page.evaluate(() => window.__golden.clone(window.__golden.deepAll("ha-panel-energy")[0]._lovelace.config));
+  };
+  const dashboard = await panelConfig("/energy");
+  const views = {};
+  for (const v of dashboard.views) {
+    await panelConfig(`/energy/${v.path}`);
+    await page.waitForFunction(
+      (path) => {
+        const panel = window.__golden.deepAll("ha-panel-energy")[0];
+        const view = window.__golden.deepAll("hui-view", panel.shadowRoot)[0];
+        // The previous view's element can still be there right after navigating
+        return view?._config?.path === path && !view._config.strategy;
+      },
+      v.path,
+      { timeout: 30000, polling: 250 }
+    );
+    views[v.path] = await page.evaluate(() => {
+      const panel = window.__golden.deepAll("ha-panel-energy")[0];
+      return window.__golden.clone(window.__golden.deepAll("hui-view", panel.shadowRoot)[0]._config);
+    });
+  }
+  return { dashboard, views };
+}
+
 /** The capture proper. Runs in the page with one consistent `hass` snapshot. */
 async function captureInPage() {
   const g = window.__golden;
@@ -439,6 +475,7 @@ async function captureInPage() {
     "frontend-get_user_data-core": { type: "frontend/get_user_data", key: "core" },
     "usage_prediction-common_control": { type: "usage_prediction/common_control" },
     "energy-get_prefs": { type: "energy/get_prefs" },
+    "frontend-get_system_data-energy": { type: "frontend/get_system_data", key: "energy" },
     "manifest-get-frontend": { type: "manifest/get", integration: "frontend" },
     // What the frontend loads to resolve entity icons and translate states (data/icons.ts,
     // layouts/home-assistant.ts hassConnected)
@@ -541,6 +578,22 @@ async function captureInPage() {
     panelViews[p] = await run("view", { strategy: { type: p } }, `panel:${p}`);
   }
 
+  // The energy panel's dashboard and views, generated like ha-panel-energy does
+  let energy = null;
+  if (hass.panels.energy && customElements.get("energy-dashboard-strategy")) {
+    const energyData = ws["frontend-get_system_data-energy"]?.result?.value ?? {};
+    const energyDashboard = await run(
+      "dashboard",
+      { strategy: { type: "energy", default_collection: undefined, hidden_cards: energyData.hidden_cards } },
+      "energy"
+    );
+    const energyViews = [];
+    for (const view of energyDashboard.config?.views ?? []) {
+      energyViews.push({ path: view.path, ...(await run("view", view, `energy:${view.path}`)) });
+    }
+    energy = { dashboard: energyDashboard, views: energyViews };
+  }
+
   // Fully expanded config, like expandLovelaceConfigStrategies() would produce.
   let expanded = null;
   if (dashboard.config) {
@@ -558,7 +611,7 @@ async function captureInPage() {
   }
 
   // Translations the strategies can reach (bundle strings, not backend).
-  const prefixes = ["ui.panel.lovelace.strategy.", "ui.panel.home.", "panel."];
+  const prefixes = ["ui.panel.lovelace.strategy.", "ui.panel.home.", "ui.panel.energy.", "panel."];
   // The frontend keeps its merged translation bundle on <home-assistant> (translations-mixin `__resources`).
   const resources = ha.__resources?.[hass.language] ?? hass.resources?.[hass.language] ?? {};
   const translations = {};
@@ -609,6 +662,7 @@ async function captureInPage() {
     views,
     sections,
     panelViews,
+    energy,
     expanded,
     display,
     cards,
@@ -701,6 +755,8 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
     renderedPanels[p] = await visitSummaryPanel(page, p);
     console.log(`  visited /${p}`);
   }
+  const renderedEnergy = availablePanels.includes("energy") ? await visitEnergyPanel(page) : null;
+  if (renderedEnergy) console.log(`  visited /energy (${Object.keys(renderedEnergy.views).join(", ")})`);
   await page.evaluate(() => window.__golden.navigate("/home/overview"));
   await page.waitForTimeout(500);
 
@@ -746,6 +802,14 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
     write(`outputs/panels/${sanitizeFile(p)}.json`, res.config ?? { error: res.error });
     if (res.error) problems.push(`panel ${p}: ${res.error}`);
   }
+  if (cap.energy) {
+    write("outputs/energy/dashboard.json", cap.energy.dashboard.config ?? { error: cap.energy.dashboard.error });
+    if (cap.energy.dashboard.error) problems.push(`energy: ${cap.energy.dashboard.error}`);
+    for (const v of cap.energy.views) {
+      write(`outputs/energy/views/${sanitizeFile(v.path)}.json`, v.config ?? { error: v.error });
+      if (v.error) problems.push(`energy view ${v.path}: ${v.error}`);
+    }
+  }
   write("outputs/expanded.json", cap.expanded);
   write("outputs/entity-display.json", cap.display);
   write("outputs/cards.json", cap.cards);
@@ -784,6 +848,18 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
     const theirs = renderedPanels[p] ?? null;
     if (!ours && !theirs) continue;
     checks.push({ what: `panel ${p} == ha-panel-${p}._lovelace.config.views[0]`, ok: sameJson(ours, theirs), ours, theirs });
+  }
+
+  if (cap.energy || renderedEnergy) {
+    checks.push({
+      what: "energy dashboard == ha-panel-energy._lovelace.config",
+      ok: sameJson(cap.energy?.dashboard.config ?? null, renderedEnergy?.dashboard ?? null),
+    });
+    for (const v of cap.energy?.views ?? []) {
+      const ours = v.config ? { ...v.config, type: v.config.type ?? "masonry" } : null;
+      const theirs = renderedEnergy?.views[v.path] ?? null;
+      checks.push({ what: `energy view ${v.path} == hui-view._config (+type)`, ok: sameJson(ours, theirs), ours, theirs });
+    }
   }
 
   const manifest = {

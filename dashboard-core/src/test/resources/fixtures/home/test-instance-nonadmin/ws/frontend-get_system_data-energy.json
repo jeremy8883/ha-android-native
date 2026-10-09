@@ -1,0 +1,9 @@
+{
+  "request": {
+    "type": "frontend/get_system_data",
+    "key": "energy"
+  },
+  "result": {
+    "value": null
+  }
+}

@@ -171,6 +171,98 @@ template:
         device_class: power
         state_class: measurement
         state: "{{ 300 + (now().minute * 7) }}"
+      # Live power and flow for the energy dashboard (seed_energy.py imports their history). They follow the
+      # same daily profile as the imported energy: solar by day, an evening peak, a battery evening shift.
+      - name: Solar power
+        unique_id: tpl_solar_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set h = now().hour + now().minute / 60 %}
+          {{ (3000 * sin(pi * (h - 6) / 12)) | round(0) if 6 < h < 18 else 0 }}
+      - name: Grid power
+        unique_id: tpl_grid_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set h = now().hour + now().minute / 60 %}
+          {% set solar = 3000 * sin(pi * (h - 6) / 12) if 6 < h < 18 else 0 %}
+          {% set load = 350 + (900 if 17 <= h < 21 else 0) + (400 if 7 <= h < 9 else 0) %}
+          {% set net = load - solar %}
+          {% if net < 0 %}{{ (net + [-net, 2000] | min) | round(0) }}
+          {% elif h >= 17 or h < 6 %}{{ (net - [net, 1500] | min) | round(0) }}
+          {% else %}{{ net | round(0) }}{% endif %}
+      - name: Home battery power
+        unique_id: tpl_home_battery_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: >
+          {% set h = now().hour + now().minute / 60 %}
+          {% set solar = 3000 * sin(pi * (h - 6) / 12) if 6 < h < 18 else 0 %}
+          {% set load = 350 + (900 if 17 <= h < 21 else 0) + (400 if 7 <= h < 9 else 0) %}
+          {% set net = load - solar %}
+          {% if net < 0 %}{{ -([-net, 2000] | min) | round(0) }}
+          {% elif h >= 17 or h < 6 %}{{ [net, 1500] | min | round(0) }}
+          {% else %}0{% endif %}
+      - name: Home battery charge
+        unique_id: tpl_home_battery_charge
+        unit_of_measurement: "%"
+        device_class: battery
+        state_class: measurement
+        state: "{{ (55 + 35 * sin(pi * (now().hour - 9) / 12)) | round(0) }}"
+      - name: Fridge power
+        unique_id: tpl_fridge_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ 120 if now().minute % 20 < 8 else 5 }}"
+      - name: Washer power
+        unique_id: tpl_washer_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ 1800 if now().hour == 10 else 2 }}"
+      - name: Office circuit power
+        unique_id: tpl_office_circuit_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ 160 if 9 <= now().hour < 17 else 15 }}"
+      - name: Office computer power
+        unique_id: tpl_office_computer_power
+        unit_of_measurement: "W"
+        device_class: power
+        state_class: measurement
+        state: "{{ 120 if 9 <= now().hour < 17 else 3 }}"
+      - name: Gas flow
+        unique_id: tpl_gas_flow
+        unit_of_measurement: "m³/h"
+        device_class: volume_flow_rate
+        state_class: measurement
+        state: "{{ 0.6 if 6 <= now().hour < 9 or 17 <= now().hour < 22 else 0.05 }}"
+      - name: Water flow
+        unique_id: tpl_water_flow
+        unit_of_measurement: "L/min"
+        device_class: volume_flow_rate
+        state_class: measurement
+        state: >
+          {% set m = now().minute %}
+          {{ 8 if now().hour in [7, 19] and m < 10 else 12 if now().hour == 18 and m < 20 else 0 }}
+      - name: Shower flow
+        unique_id: tpl_shower_flow
+        unit_of_measurement: "L/min"
+        device_class: volume_flow_rate
+        state_class: measurement
+        state: "{{ 8 if now().hour in [7, 19] and now().minute < 10 else 0 }}"
+      - name: Garden tap flow
+        unique_id: tpl_garden_tap_flow
+        unit_of_measurement: "L/min"
+        device_class: volume_flow_rate
+        state_class: measurement
+        state: "{{ 12 if now().hour == 18 and now().minute < 20 else 0 }}"
       - name: Lights on
         unique_id: tpl_lights_on
         state: "{{ states.light | selectattr('state', 'eq', 'on') | list | count }}"

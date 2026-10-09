@@ -82,6 +82,13 @@
         },
         {
           "type": "tile",
+          "entity": "sensor.home_battery_charge",
+          "name": {
+            "type": "entity"
+          }
+        },
+        {
+          "type": "tile",
           "entity": "sensor.sdk_gphone64_x86_64_battery_level",
           "name": {
             "type": "device"

@@ -2,8 +2,76 @@
   "request": {
     "type": "energy/get_prefs"
   },
-  "error": {
-    "code": "not_found",
-    "message": "No prefs"
+  "result": {
+    "energy_sources": [
+      {
+        "type": "grid",
+        "stat_energy_from": "test:grid_import",
+        "stat_energy_to": "test:grid_export",
+        "stat_cost": "test:grid_cost",
+        "stat_compensation": "test:grid_compensation",
+        "stat_rate": "sensor.grid_power",
+        "cost_adjustment_day": 0,
+        "entity_energy_price": null,
+        "number_energy_price": null,
+        "number_energy_price_export": null,
+        "entity_energy_price_export": null
+      },
+      {
+        "type": "solar",
+        "stat_energy_from": "test:solar",
+        "stat_rate": "sensor.solar_power",
+        "config_entry_solar_forecast": null
+      },
+      {
+        "type": "battery",
+        "stat_energy_from": "test:battery_out",
+        "stat_energy_to": "test:battery_in",
+        "stat_rate": "sensor.home_battery_power",
+        "stat_soc": "sensor.home_battery_charge"
+      },
+      {
+        "type": "gas",
+        "stat_energy_from": "test:gas",
+        "stat_cost": "test:gas_cost",
+        "stat_rate": "sensor.gas_flow"
+      },
+      {
+        "type": "water",
+        "stat_energy_from": "test:water",
+        "stat_cost": "test:water_cost",
+        "stat_rate": "sensor.water_flow"
+      }
+    ],
+    "device_consumption": [
+      {
+        "stat_consumption": "test:fridge",
+        "stat_rate": "sensor.fridge_power"
+      },
+      {
+        "stat_consumption": "test:washer",
+        "stat_rate": "sensor.washer_power",
+        "name": "Washing machine"
+      },
+      {
+        "stat_consumption": "test:office_circuit",
+        "stat_rate": "sensor.office_circuit_power"
+      },
+      {
+        "stat_consumption": "test:office_computer",
+        "stat_rate": "sensor.office_computer_power",
+        "included_in_stat": "test:office_circuit"
+      }
+    ],
+    "device_consumption_water": [
+      {
+        "stat_consumption": "test:shower",
+        "stat_rate": "sensor.shower_flow"
+      },
+      {
+        "stat_consumption": "test:garden_tap",
+        "stat_rate": "sensor.garden_tap_flow"
+      }
+    ]
   }
 }

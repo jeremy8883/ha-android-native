@@ -1,0 +1,44 @@
+{
+  "views": [
+    {
+      "path": "overview",
+      "strategy": {
+        "type": "energy-overview",
+        "collection_key": "energy_dashboard"
+      },
+      "title": "Summary"
+    },
+    {
+      "path": "electricity",
+      "strategy": {
+        "type": "energy",
+        "collection_key": "energy_dashboard"
+      },
+      "title": "Electricity"
+    },
+    {
+      "path": "gas",
+      "strategy": {
+        "type": "gas",
+        "collection_key": "energy_dashboard"
+      },
+      "title": "Gas"
+    },
+    {
+      "path": "water",
+      "strategy": {
+        "type": "water",
+        "collection_key": "energy_dashboard"
+      },
+      "title": "Water"
+    },
+    {
+      "path": "now",
+      "strategy": {
+        "type": "power",
+        "collection_key": "energy_dashboard_now"
+      },
+      "title": "Now"
+    }
+  ]
+}

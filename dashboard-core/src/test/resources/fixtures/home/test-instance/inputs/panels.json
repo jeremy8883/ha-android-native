@@ -135,17 +135,6 @@
     "config_panel_domain": null,
     "show_in_sidebar": true
   },
-  "history": {
-    "component_name": "history",
-    "icon": "mdi:chart-box",
-    "title": "history",
-    "default_visible": true,
-    "config": null,
-    "url_path": "history",
-    "require_admin": false,
-    "config_panel_domain": null,
-    "show_in_sidebar": true
-  },
   "logbook": {
     "component_name": "logbook",
     "icon": "mdi:format-list-bulleted-type",
@@ -153,6 +142,17 @@
     "default_visible": true,
     "config": null,
     "url_path": "logbook",
+    "require_admin": false,
+    "config_panel_domain": null,
+    "show_in_sidebar": true
+  },
+  "history": {
+    "component_name": "history",
+    "icon": "mdi:chart-box",
+    "title": "history",
+    "default_visible": true,
+    "config": null,
+    "url_path": "history",
     "require_admin": false,
     "config_panel_domain": null,
     "show_in_sidebar": true

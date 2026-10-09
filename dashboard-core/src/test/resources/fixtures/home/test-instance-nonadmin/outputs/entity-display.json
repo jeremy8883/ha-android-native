@@ -1,5 +1,5 @@
 {
-  "now": "2026-10-09T03:52:08.869Z",
+  "now": "2026-10-09T06:40:40.460Z",
   "locale": {
     "language": "en",
     "number_format": "language",
@@ -153,17 +153,56 @@
         "device_entity": "Native Test Home"
       }
     },
-    "person.dev": {
-      "icon": "mdi:account",
-      "state": "Unknown",
-      "secondary": "Unknown",
+    "input_select.house_mode": {
+      "icon": "mdi:home-switch",
+      "state": "Home",
+      "secondary": "Home",
       "names": {
-        "default": "Dev",
-        "entity": "Dev",
+        "default": "House mode",
+        "entity": "House mode",
         "device": "",
         "area": "",
         "floor": "",
-        "device_entity": "Dev"
+        "device_entity": "House mode"
+      }
+    },
+    "input_button.doorbell_test": {
+      "icon": "mdi:doorbell",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Doorbell test",
+        "entity": "Doorbell test",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Doorbell test"
+      }
+    },
+    "input_boolean.guest_mode": {
+      "icon": "mdi:account-multiple",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "Guest mode",
+        "entity": "Guest mode",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Guest mode"
+      }
+    },
+    "input_boolean.vacation_mode": {
+      "icon": "mdi:airplane",
+      "state": "Off",
+      "secondary": "Off",
+      "names": {
+        "default": "Vacation mode",
+        "entity": "Vacation mode",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Vacation mode"
       }
     },
     "input_number.target_humidity": {
@@ -194,56 +233,17 @@
         "device_entity": "Bedroom brightness"
       }
     },
-    "input_boolean.guest_mode": {
-      "icon": "mdi:account-multiple",
-      "state": "Off",
-      "secondary": "Off",
-      "names": {
-        "default": "Guest mode",
-        "entity": "Guest mode",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Guest mode"
-      }
-    },
-    "input_boolean.vacation_mode": {
-      "icon": "mdi:airplane",
-      "state": "Off",
-      "secondary": "Off",
-      "names": {
-        "default": "Vacation mode",
-        "entity": "Vacation mode",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Vacation mode"
-      }
-    },
-    "input_select.house_mode": {
-      "icon": "mdi:home-switch",
-      "state": "Home",
-      "secondary": "Home",
-      "names": {
-        "default": "House mode",
-        "entity": "House mode",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "House mode"
-      }
-    },
-    "input_button.doorbell_test": {
-      "icon": "mdi:doorbell",
+    "person.dev": {
+      "icon": "mdi:account",
       "state": "Unknown",
       "secondary": "Unknown",
       "names": {
-        "default": "Doorbell test",
-        "entity": "Doorbell test",
+        "default": "Dev",
+        "entity": "Dev",
         "device": "",
         "area": "",
         "floor": "",
-        "device_entity": "Doorbell test"
+        "device_entity": "Dev"
       }
     },
     "timer.laundry": {
@@ -300,10 +300,23 @@
         "device_entity": "Home Boy"
       }
     },
+    "counter.coffee_cups": {
+      "icon": "mdi:coffee",
+      "state": "0",
+      "secondary": "0",
+      "names": {
+        "default": "Coffee cups",
+        "entity": "Coffee cups",
+        "device": "",
+        "area": "Kitchen",
+        "floor": "Ground floor",
+        "device_entity": "Coffee cups"
+      }
+    },
     "sun.sun": {
-      "icon": "mdi:weather-night",
-      "state": "Below horizon",
-      "secondary": "Below horizon",
+      "icon": "mdi:white-balance-sunny",
+      "state": "Above horizon",
+      "secondary": "Above horizon",
       "names": {
         "default": "Sun",
         "entity": "Sun",
@@ -315,8 +328,8 @@
     },
     "sensor.sun_next_dawn": {
       "icon": "mdi:sun-clock",
-      "state": "October 9, 2026 at 5:20 AM",
-      "secondary": "In 1 hour",
+      "state": "October 10, 2026 at 5:22 AM",
+      "secondary": "Tomorrow",
       "names": {
         "default": "Sun Next dawn",
         "entity": "Next dawn",
@@ -329,7 +342,7 @@
     "sensor.sun_next_dusk": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 5:33 PM",
-      "secondary": "In 14 hours",
+      "secondary": "In 11 hours",
       "names": {
         "default": "Sun Next dusk",
         "entity": "Next dusk",
@@ -342,7 +355,7 @@
     "sensor.sun_next_midnight": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 11:27 PM",
-      "secondary": "In 20 hours",
+      "secondary": "In 17 hours",
       "names": {
         "default": "Sun Next midnight",
         "entity": "Next midnight",
@@ -355,7 +368,7 @@
     "sensor.sun_next_noon": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 11:27 AM",
-      "secondary": "In 8 hours",
+      "secondary": "In 5 hours",
       "names": {
         "default": "Sun Next noon",
         "entity": "Next noon",
@@ -367,8 +380,8 @@
     },
     "sensor.sun_next_rising": {
       "icon": "mdi:sun-clock",
-      "state": "October 9, 2026 at 5:55 AM",
-      "secondary": "In 2 hours",
+      "state": "October 10, 2026 at 5:57 AM",
+      "secondary": "Tomorrow",
       "names": {
         "default": "Sun Next rising",
         "entity": "Next rising",
@@ -381,7 +394,7 @@
     "sensor.sun_next_setting": {
       "icon": "mdi:sun-clock",
       "state": "October 9, 2026 at 4:59 PM",
-      "secondary": "In 13 hours",
+      "secondary": "In 10 hours",
       "names": {
         "default": "Sun Next setting",
         "entity": "Next setting",
@@ -389,19 +402,6 @@
         "area": "",
         "floor": "",
         "device_entity": "Sun Next setting"
-      }
-    },
-    "input_datetime.wake_up": {
-      "icon": "mdi:clock",
-      "state": "7:00 AM",
-      "secondary": "7:00 AM",
-      "names": {
-        "default": "Wake-up time",
-        "entity": "Wake-up time",
-        "device": "",
-        "area": "",
-        "floor": "",
-        "device_entity": "Wake-up time"
       }
     },
     "lock.front_door_deadbolt": {
@@ -432,8 +432,8 @@
     },
     "sensor.living_room_temperature": {
       "icon": "mdi:thermometer",
-      "state": "21.2 °C",
-      "secondary": "21.2 °C",
+      "state": "21.0 °C",
+      "secondary": "21.0 °C",
       "names": {
         "default": "Living room temperature",
         "entity": "Living room temperature",
@@ -445,8 +445,8 @@
     },
     "sensor.living_room_humidity": {
       "icon": "mdi:water-percent",
-      "state": "48%",
-      "secondary": "48%",
+      "state": "50%",
+      "secondary": "50%",
       "names": {
         "default": "Living room humidity",
         "entity": "Living room humidity",
@@ -510,8 +510,8 @@
     },
     "sensor.house_power": {
       "icon": "mdi:flash",
-      "state": "664 W",
-      "secondary": "664 W",
+      "state": "580 W",
+      "secondary": "580 W",
       "names": {
         "default": "House power",
         "entity": "House power",
@@ -519,6 +519,162 @@
         "area": "",
         "floor": "",
         "device_entity": "House power"
+      }
+    },
+    "sensor.solar_power": {
+      "icon": "mdi:flash",
+      "state": "1,928 W",
+      "secondary": "1,928 W",
+      "names": {
+        "default": "Solar power",
+        "entity": "Solar power",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Solar power"
+      }
+    },
+    "sensor.grid_power": {
+      "icon": "mdi:flash",
+      "state": "0 W",
+      "secondary": "0 W",
+      "names": {
+        "default": "Grid power",
+        "entity": "Grid power",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Grid power"
+      }
+    },
+    "sensor.home_battery_power": {
+      "icon": "mdi:flash",
+      "state": "-1,178 W",
+      "secondary": "-1,178 W",
+      "names": {
+        "default": "Home battery power",
+        "entity": "Home battery power",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Home battery power"
+      }
+    },
+    "sensor.home_battery_charge": {
+      "icon": "mdi:battery-40",
+      "state": "46%",
+      "secondary": "46%",
+      "names": {
+        "default": "Home battery charge",
+        "entity": "Home battery charge",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Home battery charge"
+      }
+    },
+    "sensor.fridge_power": {
+      "icon": "mdi:flash",
+      "state": "120 W",
+      "secondary": "120 W",
+      "names": {
+        "default": "Fridge power",
+        "entity": "Fridge power",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Fridge power"
+      }
+    },
+    "sensor.washer_power": {
+      "icon": "mdi:flash",
+      "state": "2 W",
+      "secondary": "2 W",
+      "names": {
+        "default": "Washer power",
+        "entity": "Washer power",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Washer power"
+      }
+    },
+    "sensor.office_circuit_power": {
+      "icon": "mdi:flash",
+      "state": "15 W",
+      "secondary": "15 W",
+      "names": {
+        "default": "Office circuit power",
+        "entity": "Office circuit power",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Office circuit power"
+      }
+    },
+    "sensor.office_computer_power": {
+      "icon": "mdi:flash",
+      "state": "3 W",
+      "secondary": "3 W",
+      "names": {
+        "default": "Office computer power",
+        "entity": "Office computer power",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Office computer power"
+      }
+    },
+    "sensor.gas_flow": {
+      "icon": "mdi:pipe-valve",
+      "state": "1 m³/h",
+      "secondary": "1 m³/h",
+      "names": {
+        "default": "Gas flow",
+        "entity": "Gas flow",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Gas flow"
+      }
+    },
+    "sensor.water_flow": {
+      "icon": "mdi:pipe-valve",
+      "state": "0 L/min",
+      "secondary": "0 L/min",
+      "names": {
+        "default": "Water flow",
+        "entity": "Water flow",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Water flow"
+      }
+    },
+    "sensor.shower_flow": {
+      "icon": "mdi:pipe-valve",
+      "state": "0 L/min",
+      "secondary": "0 L/min",
+      "names": {
+        "default": "Shower flow",
+        "entity": "Shower flow",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Shower flow"
+      }
+    },
+    "sensor.garden_tap_flow": {
+      "icon": "mdi:pipe-valve",
+      "state": "0 L/min",
+      "secondary": "0 L/min",
+      "names": {
+        "default": "Garden tap flow",
+        "entity": "Garden tap flow",
+        "device": "",
+        "area": "",
+        "floor": "",
+        "device_entity": "Garden tap flow"
       }
     },
     "sensor.lights_on": {
@@ -625,17 +781,17 @@
         "device_entity": "Garden irrigation"
       }
     },
-    "counter.coffee_cups": {
-      "icon": "mdi:coffee",
-      "state": "0",
-      "secondary": "0",
+    "input_datetime.wake_up": {
+      "icon": "mdi:clock",
+      "state": "7:00 AM",
+      "secondary": "7:00 AM",
       "names": {
-        "default": "Coffee cups",
-        "entity": "Coffee cups",
+        "default": "Wake-up time",
+        "entity": "Wake-up time",
         "device": "",
-        "area": "Kitchen",
-        "floor": "Ground floor",
-        "device_entity": "Coffee cups"
+        "area": "",
+        "floor": "",
+        "device_entity": "Wake-up time"
       }
     },
     "input_text.welcome_message": {
@@ -716,19 +872,6 @@
         "area": "",
         "floor": "",
         "device_entity": "sdk_gphone64_x86_64 Charger type"
-      }
-    },
-    "tts.google_translate_en_com": {
-      "icon": "mdi:speaker-message",
-      "state": "Unknown",
-      "secondary": "Unknown",
-      "names": {
-        "default": "Google Translate en com",
-        "entity": "Google Translate en com",
-        "device": "Google Translate en com",
-        "area": "",
-        "floor": "",
-        "device_entity": "Google Translate en com"
       }
     },
     "image_processing.demo_face": {
@@ -890,9 +1033,9 @@
       }
     },
     "calendar.calendar_2": {
-      "icon": "mdi:calendar-blank",
-      "state": "Off",
-      "secondary": "Off",
+      "icon": "mdi:calendar-check",
+      "state": "On",
+      "secondary": "On",
       "names": {
         "default": "Calendar 2",
         "entity": "Calendar 2",
@@ -1567,8 +1710,8 @@
     },
     "sensor.total_energy_kwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "136.50 kWh",
-      "secondary": "136.50 kWh",
+      "state": "153.00 kWh",
+      "secondary": "153.00 kWh",
       "names": {
         "default": "Total energy 1",
         "entity": "Total energy 1",
@@ -1580,8 +1723,8 @@
     },
     "sensor.total_energy_mwh": {
       "icon": "mdi:lightning-bolt",
-      "state": "0.07 MWh",
-      "secondary": "0.07 MWh",
+      "state": "0.08 MWh",
+      "secondary": "0.08 MWh",
       "names": {
         "default": "Total energy 2",
         "entity": "Total energy 2",
@@ -1593,8 +1736,8 @@
     },
     "sensor.total_gas_m3": {
       "icon": "mdi:meter-gas",
-      "state": "6.83 m³",
-      "secondary": "6.83 m³",
+      "state": "7.65 m³",
+      "secondary": "7.65 m³",
       "names": {
         "default": "Total gas 1",
         "entity": "Total gas 1",
@@ -1606,8 +1749,8 @@
     },
     "sensor.total_gas_ft3": {
       "icon": "mdi:meter-gas",
-      "state": "7.73 m³",
-      "secondary": "7.73 m³",
+      "state": "8.66 m³",
+      "secondary": "8.66 m³",
       "names": {
         "default": "Total gas 2",
         "entity": "Total gas 2",
@@ -2007,6 +2150,19 @@
         "device_entity": "Demo Weather North"
       }
     },
+    "tts.google_translate_en_com": {
+      "icon": "mdi:speaker-message",
+      "state": "Unknown",
+      "secondary": "Unknown",
+      "names": {
+        "default": "Google Translate en com",
+        "entity": "Google Translate en com",
+        "device": "Google Translate en com",
+        "area": "",
+        "floor": "",
+        "device_entity": "Google Translate en com"
+      }
+    },
     "todo.shopping_list": {
       "icon": "mdi:cart",
       "state": "0",
@@ -2252,7 +2408,7 @@
         }
       },
       "name": "Living room temperature",
-      "secondary": "21.2 °C"
+      "secondary": "21.0 °C"
     },
     {
       "config": {
@@ -2263,7 +2419,7 @@
         }
       },
       "name": "Living room humidity",
-      "secondary": "48%"
+      "secondary": "50%"
     },
     {
       "config": {
@@ -2329,17 +2485,6 @@
     {
       "config": {
         "type": "tile",
-        "entity": "binary_sensor.kitchen_motion",
-        "name": {
-          "type": "entity"
-        }
-      },
-      "name": "Kitchen motion",
-      "secondary": "Detected"
-    },
-    {
-      "config": {
-        "type": "tile",
         "entity": "counter.coffee_cups",
         "name": {
           "type": "entity"
@@ -2347,6 +2492,17 @@
       },
       "name": "Coffee cups",
       "secondary": "0"
+    },
+    {
+      "config": {
+        "type": "tile",
+        "entity": "binary_sensor.kitchen_motion",
+        "name": {
+          "type": "entity"
+        }
+      },
+      "name": "Kitchen motion",
+      "secondary": "Detected"
     },
     {
       "config": {
@@ -2502,7 +2658,7 @@
         }
       },
       "name": "Total energy 1",
-      "secondary": "136.50 kWh"
+      "secondary": "153.00 kWh"
     },
     {
       "config": {
@@ -2513,7 +2669,7 @@
         }
       },
       "name": "Total gas 1",
-      "secondary": "6.83 m³"
+      "secondary": "7.65 m³"
     },
     {
       "config": {

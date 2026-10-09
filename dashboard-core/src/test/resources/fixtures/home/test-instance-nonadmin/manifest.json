@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-09T03:52:12.364Z",
+  "capture_date": "2026-10-09T06:40:43.799Z",
   "user": {
     "name": "Golden Viewer",
     "is_admin": false
@@ -102,6 +102,30 @@
     {
       "what": "panel maintenance == ha-panel-maintenance._lovelace.config.views[0]",
       "ok": true
+    },
+    {
+      "what": "energy dashboard == ha-panel-energy._lovelace.config",
+      "ok": true
+    },
+    {
+      "what": "energy view overview == hui-view._config (+type)",
+      "ok": true
+    },
+    {
+      "what": "energy view electricity == hui-view._config (+type)",
+      "ok": true
+    },
+    {
+      "what": "energy view gas == hui-view._config (+type)",
+      "ok": true
+    },
+    {
+      "what": "energy view water == hui-view._config (+type)",
+      "ok": true
+    },
+    {
+      "what": "energy view now == hui-view._config (+type)",
+      "ok": true
     }
   ],
   "problems": [],
@@ -114,7 +138,7 @@
     {
       "path": "inputs/config.json",
       "bytes": 4097,
-      "sha256": "1b25f8aad26294c92e621eea6e9a7ed7c961048f408e2b79c59f686d10ab4beb"
+      "sha256": "8f79030bea1f41727c8373a041b9e777d98914b2120fdbfaf6b2112f40897a7f"
     },
     {
       "path": "inputs/devices.json",
@@ -123,8 +147,8 @@
     },
     {
       "path": "inputs/entities.json",
-      "bytes": 26741,
-      "sha256": "28fbe92750bbef4771729cd68b9eeef6e289a3480ee88424f30c30e7f4315ae1"
+      "bytes": 28858,
+      "sha256": "87ea542ac44ee62cfeb40ced76c2db97c155d4eef24afcf007d1805b7d475b0b"
     },
     {
       "path": "inputs/floors.json",
@@ -153,13 +177,13 @@
     },
     {
       "path": "inputs/localize.json",
-      "bytes": 2408,
-      "sha256": "143bfd9e95f023ea076122b4a52d5b0ec14377ba8e692076a98338b5a109dd24"
+      "bytes": 4418,
+      "sha256": "78e8313c6d41849e05b492c58eb133a3709aa69568cbee46f3e900f3d441e862"
     },
     {
       "path": "inputs/panels.json",
       "bytes": 4660,
-      "sha256": "be31032b553ae06f672e7409e34e52ebe6979ac9291a1c0b6b99d91d91aeeb74"
+      "sha256": "01b27d8075a3234ff81a094e1476c06e29945dddecbd97cc1a37372ad273d026"
     },
     {
       "path": "inputs/selectedLanguage.json",
@@ -173,8 +197,8 @@
     },
     {
       "path": "inputs/states.json",
-      "bytes": 89373,
-      "sha256": "acf4960f41323574ff2905c1cc746f27a4356610f6f657446c5a6d1627605b1e"
+      "bytes": 95159,
+      "sha256": "73ceb08a4e64a79841fbd960f919ce0cb508454af5dfaf972cf2c5c9132c4970"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -188,8 +212,8 @@
     },
     {
       "path": "inputs/translations.json",
-      "bytes": 8551,
-      "sha256": "e2010a14f0bd50eb21bef33fe81206721432b87bbc0a60ef746635d093321d4b"
+      "bytes": 11057,
+      "sha256": "a0bba1ad6e6dcfac195c37c8f99293f453e40cdf8c8c312ce0e975351126c76a"
     },
     {
       "path": "inputs/user.json",
@@ -212,14 +236,44 @@
       "sha256": "15ca26919e428160cba93a6c7da514abb5ced8afbb978942e779d0361b1293a4"
     },
     {
+      "path": "outputs/energy/dashboard.json",
+      "bytes": 832,
+      "sha256": "785d556124e91b508e7acc7921e7de5da445aa1d8e5e7bbd39335a47f3e550fb"
+    },
+    {
+      "path": "outputs/energy/views/electricity.json",
+      "bytes": 4739,
+      "sha256": "d4101caf68b9793fa5b11c864f935a435e25f69bb4ccde354ae33c8a0324e6df"
+    },
+    {
+      "path": "outputs/energy/views/gas.json",
+      "bytes": 1023,
+      "sha256": "91a1f415bccb2dad8663be3d3d8465461c2819d1f87cb27343f6d2fa1f50b18c"
+    },
+    {
+      "path": "outputs/energy/views/now.json",
+      "bytes": 1287,
+      "sha256": "c1d4830630821c0b9e9bcf862896b74539cd1a71a29256bd1462a87416d93d3a"
+    },
+    {
+      "path": "outputs/energy/views/overview.json",
+      "bytes": 1641,
+      "sha256": "e75ca00174214d00664890fbcf9d87ee02d9df89ae696281ec01a87a5ac8d23c"
+    },
+    {
+      "path": "outputs/energy/views/water.json",
+      "bytes": 1302,
+      "sha256": "98fcaf4fdc07c01ccbdd186eb02c2dbde0626d8d3a75496921b6eb429f9dec1f"
+    },
+    {
       "path": "outputs/entity-display.json",
-      "bytes": 69654,
-      "sha256": "d36a98a484d90ee4a96856ee50cfa00e10155d22854b047e4ebfed8e956f1c41"
+      "bytes": 73526,
+      "sha256": "ef4cdc07a899ba7a89d4eaf3335209689ecb0dd7f8f526eff42c55ada576eb8d"
     },
     {
       "path": "outputs/expanded.json",
-      "bytes": 66464,
-      "sha256": "b3f0c0ff0d81ae6fda2c005092247ee51b927255557bf221d03e24590f3e896d"
+      "bytes": 67163,
+      "sha256": "acf0a4de015bd8c6caa2a255d77efb3398aa91856345f0b2b6a2d7861262ea51"
     },
     {
       "path": "outputs/panels/climate.json",
@@ -233,8 +287,8 @@
     },
     {
       "path": "outputs/panels/maintenance.json",
-      "bytes": 2030,
-      "sha256": "33d6d245dfa8557e23bbfd4ab871b6d5b938fa25b069ab92ded7712e28ba9843"
+      "bytes": 2188,
+      "sha256": "25e8fc5aaadc1ccdc9b09f76e5918c23296c32ed6c199c9e2c78328e9f76cae4"
     },
     {
       "path": "outputs/panels/security.json",
@@ -269,7 +323,7 @@
     {
       "path": "outputs/views/areas-kitchen.json",
       "bytes": 4837,
-      "sha256": "24af5b4d0700ff0c9e7c4fb4fb95cd60b862227d375cb804e7a06d3f72bb5475"
+      "sha256": "e566dcf644bd523d8ec4d5fc69e308408c5dc4203e401df4e8a8c2ed65329a08"
     },
     {
       "path": "outputs/views/areas-living_room.json",
@@ -293,8 +347,8 @@
     },
     {
       "path": "outputs/views/overview.json",
-      "bytes": 10834,
-      "sha256": "9a37914c37e6c600bf4f4e3137805d8488fdc5e199b331837e656dc3940fa6e0"
+      "bytes": 11445,
+      "sha256": "abae61a667ebcca3b5704f9f0db68eafba5228bf57682ef3ba90cb14d8f6befd"
     },
     {
       "path": "ws/auth-current_user.json",
@@ -318,8 +372,8 @@
     },
     {
       "path": "ws/config-entity_registry-list_for_display.json",
-      "bytes": 22219,
-      "sha256": "f124b35ed0f37d5e415a01d55e97a55830d49707389de05337067d5542b5ec0f"
+      "bytes": 23976,
+      "sha256": "644c87d8ba5c2114b8a9beb9be96e6f380f91b018adfaa6b019700228d5cfdbf"
     },
     {
       "path": "ws/config-floor_registry-list.json",
@@ -328,23 +382,28 @@
     },
     {
       "path": "ws/energy-get_prefs.json",
-      "bytes": 123,
-      "sha256": "ef5560163cc3db904af5abe898464105db7f7884436e04b6714c37d591fd8c12"
+      "bytes": 2115,
+      "sha256": "a1314747c204de58135e85cd1fbd4579ecc3f9310ba004eb1924f9398822f7f2"
     },
     {
       "path": "ws/frontend-get_icons-entity_component.json",
       "bytes": 28770,
-      "sha256": "ae782a907ce4e7697a7af27a8eb4a17bfc9a6d13a5719d242926a91c0ab6ca06"
+      "sha256": "5654dd6f8bdbfe98abce2aeab619fafd6666628f370ebb3f1ab927855ba19c6d"
     },
     {
       "path": "ws/frontend-get_icons-entity.json",
       "bytes": 4283,
-      "sha256": "858a3471ab4093d0ee873e8fed8babbda5922a21413628d61eafb979a33daaf7"
+      "sha256": "da201e7e20dec7db9f04d4bd4f0130838b3c7a5126e8266de06477c06e49f3a4"
     },
     {
       "path": "ws/frontend-get_system_data-core.json",
       "bytes": 118,
       "sha256": "2d32d987ee2f10b218df1ffeb138ba9badce1e6839b64c188593ed4863d9bea4"
+    },
+    {
+      "path": "ws/frontend-get_system_data-energy.json",
+      "bytes": 120,
+      "sha256": "f76db00667f50abda0fd9bf62c6ca09941496dff88cc263fb93f15bb964eabfc"
     },
     {
       "path": "ws/frontend-get_system_data-home.json",
@@ -354,12 +413,12 @@
     {
       "path": "ws/frontend-get_translations-entity_component.json",
       "bytes": 66502,
-      "sha256": "8058230c7f01778ef31d45484de4fdf0bd4f4a67e2b51567eca98a3d376feb86"
+      "sha256": "72bc89c00157c430f3a6034fe17f648307e04a04501fe4e0179f19a6d68c8688"
     },
     {
       "path": "ws/frontend-get_translations-entity.json",
       "bytes": 7454,
-      "sha256": "700f8d9708c1459ebc9dabd58ac90fb13d7d566feb68de2d51b9cb2429d1326d"
+      "sha256": "9c584bb98e36d76b953b030c630d2c88091dfbcfc1db6df25a19fc681f60af94"
     },
     {
       "path": "ws/frontend-get_user_data-core.json",
@@ -374,17 +433,17 @@
     {
       "path": "ws/get_config.json",
       "bytes": 4604,
-      "sha256": "92ecc6ecc13e227d595cb5cddd60d5a7f418e84756dd72cf6da718714c0b912c"
+      "sha256": "c9178ed76f7f5b3745425378ea1cdb9d4d56c623168670866d7e142d9a82c1da"
     },
     {
       "path": "ws/get_panels.json",
       "bytes": 5105,
-      "sha256": "09c3574a9e202b858f0f12d9dc7d134e0b487b56fd63c435f718e5311d7bdd4e"
+      "sha256": "dbaa3f09d13fafcb75941a599201fb6c22d69ff5859b812c5e5372d99102625f"
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 99558,
-      "sha256": "a169c57768b50d79523ba73d27ed3c48a78871abd4cc5ce8d0900ee8ca51052f"
+      "bytes": 106077,
+      "sha256": "bdb6d834961cf09bfc72dd6a9729175e4b548edac29480a1768984dd3197d0c5"
     },
     {
       "path": "ws/manifest-get-frontend.json",
@@ -398,8 +457,8 @@
     },
     {
       "path": "ws/strategy-calls.json",
-      "bytes": 334,
-      "sha256": "4432f79b42eb5ca568ce025d10e6e1ed8a75144a67cf03298cc5141e1dcd2694"
+      "bytes": 2462,
+      "sha256": "21d54112637a47250bac871f13406d21e5e0ce69d52e783ec7768c536cd28dab"
     },
     {
       "path": "ws/usage_prediction-common_control.json",

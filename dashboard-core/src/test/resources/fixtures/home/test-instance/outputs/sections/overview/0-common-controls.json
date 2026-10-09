@@ -82,7 +82,34 @@
       },
       {
         "type": "tile",
-        "entity": "select.speed",
+        "entity": "input_boolean.guest_mode",
+        "state_content": [
+          "state",
+          "area_name"
+        ],
+        "show_entity_picture": true
+      },
+      {
+        "type": "tile",
+        "entity": "switch.decorative_lights",
+        "state_content": [
+          "state",
+          "area_name"
+        ],
+        "show_entity_picture": true
+      },
+      {
+        "type": "tile",
+        "entity": "fan.living_room_fan",
+        "state_content": [
+          "state",
+          "area_name"
+        ],
+        "show_entity_picture": true
+      },
+      {
+        "type": "tile",
+        "entity": "cover.kitchen_window",
         "state_content": [
           "state",
           "area_name"

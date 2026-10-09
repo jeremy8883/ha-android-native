@@ -1,0 +1,58 @@
+{
+  "path": "now",
+  "title": "Now",
+  "type": "sections",
+  "sections": [
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "title": "Power sources",
+          "type": "power-sources-graph",
+          "collection_key": "energy_dashboard_now",
+          "grid_options": {
+            "columns": 36
+          }
+        },
+        {
+          "title": "Current power flow",
+          "type": "power-sankey",
+          "collection_key": "energy_dashboard_now",
+          "group_by_floor": true,
+          "group_by_area": true,
+          "grid_options": {
+            "columns": 36
+          }
+        },
+        {
+          "title": "Current water flow",
+          "type": "water-flow-sankey",
+          "collection_key": "energy_dashboard_now",
+          "group_by_floor": true,
+          "group_by_area": true,
+          "grid_options": {
+            "columns": 36
+          }
+        }
+      ]
+    }
+  ],
+  "badges": [
+    {
+      "type": "power-total",
+      "collection_key": "energy_dashboard_now"
+    },
+    {
+      "type": "gas-total",
+      "collection_key": "energy_dashboard_now"
+    },
+    {
+      "type": "water-total",
+      "collection_key": "energy_dashboard_now"
+    },
+    {
+      "type": "entity",
+      "entity": "sensor.home_battery_charge"
+    }
+  ]
+}

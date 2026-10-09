@@ -163,6 +163,17 @@
               "grid_options": {
                 "columns": 6
               }
+            },
+            {
+              "type": "home-summary",
+              "summary": "energy",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/energy?historyBack=1&backPath=/home"
+              },
+              "grid_options": {
+                "columns": 6
+              }
             }
           ]
         },
@@ -454,6 +465,17 @@
                   "temperature",
                   "state"
                 ],
+                "grid_options": {
+                  "columns": 12
+                }
+              },
+              {
+                "type": "home-summary",
+                "summary": "energy",
+                "tap_action": {
+                  "action": "navigate",
+                  "navigation_path": "/energy?historyBack=1&backPath=/home"
+                },
                 "grid_options": {
                   "columns": 12
                 }
@@ -963,14 +985,14 @@
             },
             {
               "type": "tile",
-              "entity": "binary_sensor.kitchen_motion",
+              "entity": "counter.coffee_cups",
               "name": {
                 "type": "entity"
               }
             },
             {
               "type": "tile",
-              "entity": "counter.coffee_cups",
+              "entity": "binary_sensor.kitchen_motion",
               "name": {
                 "type": "entity"
               }

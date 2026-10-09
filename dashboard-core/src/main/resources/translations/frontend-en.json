@@ -341,6 +341,51 @@
    "wrapping_up_startup": "Wrapping up startup. Not everything will be available until it is finished."
   },
   "panel": {
+   "energy": {
+    "cards": {
+     "energy_carbon_consumed_gauge_title": "Carbon consumed gauge",
+     "energy_devices_detail_graph_title": "Individual devices detail usage",
+     "energy_devices_graph_title": "Individual devices total usage",
+     "energy_distribution_title": "Energy distribution",
+     "energy_gas_graph_title": "Gas consumption",
+     "energy_grid_balance_title": "Grid energy balance",
+     "energy_grid_neutrality_gauge_title": "Grid neutrality gauge",
+     "energy_sankey_title": "Energy flow",
+     "energy_self_sufficiency_gauge_title": "Self-sufficiency gauge",
+     "energy_solar_consumed_gauge_title": "Solar consumed gauge",
+     "energy_solar_graph_title": "Solar production",
+     "energy_sources_table_title": "Sources",
+     "energy_top_consumers_title": "Top consumers",
+     "energy_usage_graph_title": "Electricity usage",
+     "energy_water_graph_title": "Water consumption",
+     "power_sankey_title": "Current power flow",
+     "power_sources_graph_title": "Power sources",
+     "water_flow_sankey_title": "Current water flow",
+     "water_sankey_title": "Water flow"
+    },
+    "charts": {
+     "by_device": "Consumption by device",
+     "solar": "Solar",
+     "stat_house_energy_meter": "Total energy consumption"
+    },
+    "configure": "Energy configuration",
+    "error_loading_preferences": "An error occurred loading energy preferences: {error}",
+    "setup": {
+     "back": "Back",
+     "done": "Show me my energy dashboard!",
+     "next": "Next",
+     "no_statistics_selected_description": "You must select at least one statistic to finish setting up your Energy dashboard.",
+     "no_statistics_selected_title": "No statistics selected",
+     "step": "Step {step} of {steps}"
+    },
+    "title": {
+     "electricity": "Electricity",
+     "gas": "Gas",
+     "now": "Now",
+     "overview": "Summary",
+     "water": "Water"
+    }
+   },
    "lovelace": {
     "cards": {
      "actions": {

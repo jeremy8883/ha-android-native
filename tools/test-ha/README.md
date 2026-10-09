@@ -40,6 +40,10 @@ python3 tools/ha-probe/ha_ro.py call call_service \
   - Creates the storage dashboard `dashboard-test` (from `dashboard-test.json`).
   - Sets `frontend/set_system_data home` favorites.
   - On first run only, makes a few service calls so `usage_prediction/common_control` returns data.
+  - Seeds the energy dashboard (`seed_energy.py`, also runnable alone): 60 days of hourly history for grid,
+    solar, battery, gas, water and devices as `test:*` statistics, the history of the power and flow
+    template sensors, and energy preferences using all of them. The import is applied asynchronously by the
+    recorder, so a query right after can still see the previous values.
 
 ## Quirks
 

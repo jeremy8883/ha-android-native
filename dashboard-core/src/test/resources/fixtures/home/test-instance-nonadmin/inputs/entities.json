@@ -920,5 +920,88 @@
     "platform": "mobile_app",
     "entity_category": "diagnostic",
     "name": "Charger type"
+  },
+  "sensor.solar_power": {
+    "entity_id": "sensor.solar_power",
+    "labels": [],
+    "platform": "template",
+    "name": "Solar power",
+    "display_precision": 0
+  },
+  "sensor.grid_power": {
+    "entity_id": "sensor.grid_power",
+    "labels": [],
+    "platform": "template",
+    "name": "Grid power",
+    "display_precision": 0
+  },
+  "sensor.home_battery_power": {
+    "entity_id": "sensor.home_battery_power",
+    "labels": [],
+    "platform": "template",
+    "name": "Home battery power",
+    "display_precision": 0
+  },
+  "sensor.home_battery_charge": {
+    "entity_id": "sensor.home_battery_charge",
+    "labels": [],
+    "platform": "template",
+    "name": "Home battery charge"
+  },
+  "sensor.fridge_power": {
+    "entity_id": "sensor.fridge_power",
+    "labels": [],
+    "platform": "template",
+    "name": "Fridge power",
+    "display_precision": 0
+  },
+  "sensor.washer_power": {
+    "entity_id": "sensor.washer_power",
+    "labels": [],
+    "platform": "template",
+    "name": "Washer power",
+    "display_precision": 0
+  },
+  "sensor.office_circuit_power": {
+    "entity_id": "sensor.office_circuit_power",
+    "labels": [],
+    "platform": "template",
+    "name": "Office circuit power",
+    "display_precision": 0
+  },
+  "sensor.office_computer_power": {
+    "entity_id": "sensor.office_computer_power",
+    "labels": [],
+    "platform": "template",
+    "name": "Office computer power",
+    "display_precision": 0
+  },
+  "sensor.gas_flow": {
+    "entity_id": "sensor.gas_flow",
+    "labels": [],
+    "platform": "template",
+    "name": "Gas flow",
+    "display_precision": 0
+  },
+  "sensor.water_flow": {
+    "entity_id": "sensor.water_flow",
+    "labels": [],
+    "platform": "template",
+    "name": "Water flow",
+    "display_precision": 0
+  },
+  "sensor.shower_flow": {
+    "entity_id": "sensor.shower_flow",
+    "labels": [],
+    "platform": "template",
+    "name": "Shower flow",
+    "display_precision": 0
+  },
+  "sensor.garden_tap_flow": {
+    "entity_id": "sensor.garden_tap_flow",
+    "labels": [],
+    "platform": "template",
+    "name": "Garden tap flow",
+    "display_precision": 0
   }
 }

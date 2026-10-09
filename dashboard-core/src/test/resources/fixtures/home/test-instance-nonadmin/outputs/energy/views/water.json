@@ -1,0 +1,58 @@
+{
+  "path": "water",
+  "title": "Water",
+  "type": "sections",
+  "max_columns": 3,
+  "sections": [
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "energy-compare",
+          "collection_key": "energy_dashboard",
+          "grid_options": {
+            "columns": 36
+          }
+        },
+        {
+          "title": "Water consumption",
+          "type": "energy-water-graph",
+          "collection_key": "energy_dashboard",
+          "grid_options": {
+            "columns": 24
+          }
+        },
+        {
+          "title": "Sources",
+          "type": "energy-sources-table",
+          "collection_key": "energy_dashboard",
+          "types": [
+            "water"
+          ],
+          "grid_options": {
+            "columns": 12
+          }
+        },
+        {
+          "title": "Water flow",
+          "type": "water-sankey",
+          "collection_key": "energy_dashboard",
+          "group_by_floor": true,
+          "group_by_area": true,
+          "grid_options": {
+            "columns": 24
+          }
+        }
+      ],
+      "column_span": 3
+    }
+  ],
+  "footer": {
+    "card": {
+      "type": "energy-date-selection",
+      "collection_key": "energy_dashboard",
+      "opening_direction": "right",
+      "vertical_opening_direction": "up"
+    }
+  }
+}

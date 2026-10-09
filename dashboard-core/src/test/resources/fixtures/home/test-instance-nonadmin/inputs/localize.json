@@ -112,5 +112,95 @@
     "key": "ui.panel.lovelace.strategy.maintenance.other_devices",
     "args": [],
     "result": "Other devices"
+  },
+  {
+    "key": "ui.panel.energy.title.overview",
+    "args": [],
+    "result": "Summary"
+  },
+  {
+    "key": "ui.panel.energy.title.electricity",
+    "args": [],
+    "result": "Electricity"
+  },
+  {
+    "key": "ui.panel.energy.title.gas",
+    "args": [],
+    "result": "Gas"
+  },
+  {
+    "key": "ui.panel.energy.title.water",
+    "args": [],
+    "result": "Water"
+  },
+  {
+    "key": "ui.panel.energy.title.now",
+    "args": [],
+    "result": "Now"
+  },
+  {
+    "key": "ui.panel.energy.cards.energy_distribution_title",
+    "args": [],
+    "result": "Energy distribution"
+  },
+  {
+    "key": "ui.panel.energy.cards.energy_sources_table_title",
+    "args": [],
+    "result": "Sources"
+  },
+  {
+    "key": "ui.panel.energy.cards.power_sources_graph_title",
+    "args": [],
+    "result": "Power sources"
+  },
+  {
+    "key": "ui.panel.energy.cards.energy_usage_graph_title",
+    "args": [],
+    "result": "Electricity usage"
+  },
+  {
+    "key": "ui.panel.energy.cards.energy_gas_graph_title",
+    "args": [],
+    "result": "Gas consumption"
+  },
+  {
+    "key": "ui.panel.energy.cards.energy_water_graph_title",
+    "args": [],
+    "result": "Water consumption"
+  },
+  {
+    "key": "ui.panel.energy.cards.energy_solar_graph_title",
+    "args": [],
+    "result": "Solar production"
+  },
+  {
+    "key": "ui.panel.energy.cards.energy_devices_detail_graph_title",
+    "args": [],
+    "result": "Individual devices detail usage"
+  },
+  {
+    "key": "ui.panel.energy.cards.energy_devices_graph_title",
+    "args": [],
+    "result": "Individual devices total usage"
+  },
+  {
+    "key": "ui.panel.energy.cards.energy_sankey_title",
+    "args": [],
+    "result": "Energy flow"
+  },
+  {
+    "key": "ui.panel.energy.cards.water_sankey_title",
+    "args": [],
+    "result": "Water flow"
+  },
+  {
+    "key": "ui.panel.energy.cards.power_sankey_title",
+    "args": [],
+    "result": "Current power flow"
+  },
+  {
+    "key": "ui.panel.energy.cards.water_flow_sankey_title",
+    "args": [],
+    "result": "Current water flow"
   }
 ]
