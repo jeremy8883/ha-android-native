@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -81,6 +82,8 @@ internal fun NavigationDrawerContent(
     ModalDrawerSheet(
         drawerState = drawerState,
         modifier = Modifier.width(width),
+        // Square, as the frontend's sidebar, instead of Material's rounded open edge
+        drawerShape = RectangleShape,
         drawerContainerColor = colors.colorSurfaceDefault,
     ) {
         Column(

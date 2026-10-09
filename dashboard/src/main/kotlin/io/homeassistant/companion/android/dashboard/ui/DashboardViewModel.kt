@@ -39,6 +39,7 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.DashboardConfig
 import io.homeassistant.companion.android.dashboard.model.ViewConfig
 import io.homeassistant.companion.android.dashboard.model.number
+import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.navigation.PanelInfo
 import io.homeassistant.companion.android.dashboard.navigation.SidebarItem
@@ -272,13 +273,29 @@ class DashboardViewModel @VisibleForTesting internal constructor(
             }
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
 
+    private val otherPages = MutableStateFlow(true)
+
+    /**
+     * Whether pages other than the native dashboards can be opened (the host decides); when not, cards that only lead
+     * to them are left out.
+     */
+    var otherPagesAvailable: Boolean
+        get() = otherPages.value
+        set(value) {
+            otherPages.value = value
+        }
+
     val uiState: StateFlow<DashboardUiState> = dashboard
         .filterNotNull()
-        .combine(viewStack) { (urlPath, loadable), stack ->
+        .combine(combine(viewStack, otherPages, ::Pair)) { (urlPath, loadable), (stack, canOpenOtherPages) ->
             when (loadable) {
                 Loadable.Loading -> DashboardUiState.Loading
                 is Loadable.Failed -> DashboardUiState.Error(loadable.error)
-                is Loadable.Ready -> loadable.value.first.toUiState(urlPath, loadable.value.second, stack)
+                is Loadable.Ready -> {
+                    val (config, inputs) = loadable.value
+                    val state = config.toUiState(urlPath, inputs, stack)
+                    if (canOpenOtherPages) state else state.withoutLinksOut(inputs.panelInfo)
+                }
             }
         }
         .flowOn(dispatchers.default)
@@ -532,6 +549,42 @@ private fun shownCards(state: DashboardUiState, withHeader: Boolean): List<CardC
     val header = if (withHeader) listOfNotNull(content.view?.let(::viewHeaderCard)) else emptyList()
     return cards + header
 }
+
+/**
+ * This, without links to pages other than the native dashboards (see [linksOut]): a heading keeps its title without
+ * the link (and its arrow), other cards whose tap only leads there are left out.
+ */
+private fun DashboardUiState.withoutLinksOut(panels: Map<String, PanelInfo>): DashboardUiState {
+    if (this !is DashboardUiState.Content) return this
+    return copy(
+        groups = groups?.mapNotNull { group ->
+            group.copy(cards = group.cards.mapNotNull { it.withoutLinkOut(panels) }).takeIf { it.cards.isNotEmpty() }
+        },
+    )
+}
+
+private fun CardConfig.withoutLinkOut(panels: Map<String, PanelInfo>): CardConfig? = when {
+    !linksOut(panels) -> this
+    type == HEADING -> CardConfig(JsonObject(json - TAP_ACTION))
+    else -> null
+}
+
+/**
+ * Whether this card's tap navigates to a page that isn't a native dashboard, such as the overview's summaries and its
+ * Repairs and Updates cards (`/config/...`).
+ */
+private fun CardConfig.linksOut(panels: Map<String, PanelInfo>): Boolean {
+    val tap = json.obj(TAP_ACTION)
+    val path = tap?.string(NAVIGATION_PATH)?.takeIf { tap.string(ACTION) == NAVIGATE && it.startsWith("/") }
+    val panel = path?.let { panels[it.removePrefix("/").substringBefore('?').substringBefore('/')] }
+    return path != null && (panel == null || !isNativeDashboard(panel))
+}
+
+private const val TAP_ACTION = "tap_action"
+private const val HEADING = "heading"
+private const val ACTION = "action"
+private const val NAVIGATE = "navigate"
+private const val NAVIGATION_PATH = "navigation_path"
 
 /** Whether data is being loaded again, why it last failed to, and when it was kept, whatever the value. */
 private data class Progress(val refreshing: Boolean, val refreshError: LoadError?, val keptAt: Instant?)

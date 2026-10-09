@@ -32,9 +32,16 @@ import timber.log.Timber
 
 /** Where logging in is at. */
 internal sealed interface LoginUiState {
-    /** Choosing the server: one found on the network, or an address typed in. */
-    data class ChooseServer(val address: String = "", val problem: LoadError? = null, val connecting: Boolean = false) :
-        LoginUiState
+    /**
+     * Choosing the server: one found on the network, or, when [manual], an address typed in. A server that couldn't be
+     * connected to comes back here with the [problem], its address filled in.
+     */
+    data class ChooseServer(
+        val address: String = "",
+        val problem: LoadError? = null,
+        val connecting: Boolean = false,
+        val manual: Boolean = false,
+    ) : LoginUiState
 
     data class ChooseProvider(val server: HttpUrl, val providers: List<AuthProvider>, val title: String) : LoginUiState
 
@@ -158,20 +165,31 @@ internal class LoginViewModel @VisibleForTesting constructor(
         }
     }
 
-    /** Back to choosing the server. @return whether there was a step to go back from */
+    /** Type the server's address instead of choosing one found on the network. */
+    fun onManualSetup() {
+        _state.update { (it as? LoginUiState.ChooseServer)?.copy(manual = true) ?: it }
+    }
+
+    /** Back a step: to the servers found from the address, or to choosing the server. @return whether there was one */
     fun onBack(): Boolean {
-        if (_state.value is LoginUiState.ChooseServer) return false
-        _state.value = LoginUiState.ChooseServer()
-        return true
+        val state = _state.value
+        val back = when {
+            state is LoginUiState.ChooseServer && state.manual -> state.copy(manual = false, problem = null)
+            state is LoginUiState.ChooseServer -> null
+            else -> LoginUiState.ChooseServer()
+        }
+        back?.let { _state.value = it }
+        return back != null
     }
 
     private fun connect(server: HttpUrl) {
-        _state.value = LoginUiState.ChooseServer(address = server.baseUrl(), connecting = true)
+        val manual = (_state.value as? LoginUiState.ChooseServer)?.manual == true
+        _state.value = LoginUiState.ChooseServer(address = server.baseUrl(), connecting = true, manual = manual)
         viewModelScope.launch {
             when (val providers = api.providers(server)) {
-                is Fetched.Failure -> chooseServerAgain(server, providers.error)
+                is Fetched.Failure -> _state.value = chooseServerAgain(server, providers.error)
                 is Fetched.Success -> when (providers.value.size) {
-                    0 -> chooseServerAgain(server, LoadError.UnexpectedResponse(PROVIDERS))
+                    0 -> _state.value = chooseServerAgain(server, LoadError.UnexpectedResponse(PROVIDERS))
                     // As the frontend, the first provider unless the user picks another
                     1 -> start(server, providers.value.single())
                     else -> _state.value = LoginUiState.ChooseProvider(
@@ -187,7 +205,7 @@ internal class LoginViewModel @VisibleForTesting constructor(
     private fun start(server: HttpUrl, provider: AuthProvider) {
         viewModelScope.launch {
             when (val step = api.start(server, provider)) {
-                is Fetched.Failure -> chooseServerAgain(server, step.error)
+                is Fetched.Failure -> _state.value = chooseServerAgain(server, step.error)
                 is Fetched.Success -> show(server, provider, step.value, previous = null)
             }
         }
@@ -214,14 +232,14 @@ internal class LoginViewModel @VisibleForTesting constructor(
                         _loggedIn.send(added.value)
                         return
                     }
-                    is Fetched.Failure -> LoginUiState.ChooseServer(server.baseUrl(), problem = added.error)
+                    is Fetched.Failure -> LoginUiState.ChooseServer(
+                        server.baseUrl(),
+                        problem = added.error,
+                        manual = true,
+                    )
                 }
             }
         }
-    }
-
-    private fun chooseServerAgain(server: HttpUrl, problem: LoadError) {
-        _state.value = LoginUiState.ChooseServer(address = server.baseUrl(), problem = problem)
     }
 
     private companion object {
@@ -230,6 +248,10 @@ internal class LoginViewModel @VisibleForTesting constructor(
         const val PROVIDERS = "auth providers"
     }
 }
+
+/** Back to the address, filled in, with why it failed, so it can be corrected or tried again. */
+private fun chooseServerAgain(server: HttpUrl, problem: LoadError) =
+    LoginUiState.ChooseServer(address = server.baseUrl(), problem = problem, manual = true)
 
 private fun formTexts(texts: LoginTexts, step: LoginStep.Form) = FormTexts(
     title = texts.title(step),

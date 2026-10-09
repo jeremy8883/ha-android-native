@@ -15,6 +15,7 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -56,6 +57,8 @@ internal fun DashboardScreen(
     onSwitchServer: (() -> Unit)? = null,
     onOpenSettings: (() -> Unit)? = null,
 ) {
+    // Cards that only lead to other pages are left out when those can't be opened
+    SideEffect { viewModel.otherPagesAvailable = onOpenWeb != null }
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val selectedDashboard by viewModel.selectedDashboardUrlPath.collectAsStateWithLifecycle()
     // Passed down as State so that only the cards whose derived content changes recompose
