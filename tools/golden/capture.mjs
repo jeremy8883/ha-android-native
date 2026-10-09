@@ -551,6 +551,27 @@ async function captureEnergyBadge(type) {
   return g.clone(result);
 }
 
+/** Renders the home dashboard's energy summary tile (always today, on its own collection) and returns its text. */
+async function captureHomeEnergySummary() {
+  const g = window.__golden;
+  const ha = document.querySelector("home-assistant");
+  const el = document.createElement("hui-home-summary-card");
+  el.hass = ha.hass;
+  el.setConfig({ type: "home-summary", summary: "energy" });
+  ha.shadowRoot.appendChild(el);
+  const info = () => el.shadowRoot?.querySelector("ha-tile-info");
+  for (let i = 0; i < 100 && !(el._energyData && info()); i++) await new Promise((r) => setTimeout(r, 100));
+  await new Promise((r) => setTimeout(r, 300));
+  const tile = info();
+  const result = {
+    primary: tile?.primary ?? null,
+    secondary: tile?.secondary ?? null,
+    period: el._energyData ? { start: el._energyData.start?.toISOString() ?? null, end: el._energyData.end?.toISOString() ?? null } : null,
+  };
+  el.remove();
+  return g.clone(result);
+}
+
 /**
  * Loads the energy collection for each of [periods] and records the WS requests it made with their results (what
  * `getEnergyData` fetches), on the energy panel's page.
@@ -587,6 +608,7 @@ async function captureEnergyData(periods) {
       const cards = {};
       for (const { name, config, states, units } of ENERGY_CARD_CAPTURES) cards[name] = await captureEnergyCard(config, states, units);
       for (const type of ENERGY_BADGES) cards[type] = await captureEnergyBadge(type);
+      cards["home-summary-energy"] = await captureHomeEnergySummary();
       out.push({
         ...p,
         cards,
@@ -1059,7 +1081,7 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
   if (renderedEnergy) console.log(`  visited /energy (${Object.keys(renderedEnergy.views).join(", ")})`);
   // The same for every user: recorded once
   if (renderedEnergy && variant === "admin") {
-    await page.evaluate(`window.captureEnergyCard = ${captureEnergyCard.toString()}; window.ENERGY_CARD_CAPTURES = ${JSON.stringify(ENERGY_CARD_CAPTURES)}; window.captureEnergyBadge = ${captureEnergyBadge.toString()}; window.ENERGY_BADGES = ${JSON.stringify(ENERGY_BADGES)};`);
+    await page.evaluate(`window.captureEnergyCard = ${captureEnergyCard.toString()}; window.ENERGY_CARD_CAPTURES = ${JSON.stringify(ENERGY_CARD_CAPTURES)}; window.captureEnergyBadge = ${captureEnergyBadge.toString()}; window.captureHomeEnergySummary = ${captureHomeEnergySummary.toString()}; window.ENERGY_BADGES = ${JSON.stringify(ENERGY_BADGES)};`);
   }
   const energyData = renderedEnergy && variant === "admin" ? await page.evaluate(captureEnergyData, energyPeriods()) : null;
   await page.evaluate(() => window.__golden.navigate("/home/overview"));

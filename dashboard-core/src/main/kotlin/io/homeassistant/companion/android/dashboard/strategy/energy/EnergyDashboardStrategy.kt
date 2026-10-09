@@ -17,6 +17,9 @@ const val ENERGY_PANEL = "energy"
 const val DEFAULT_ENERGY_COLLECTION_KEY = "energy_dashboard"
 const val DEFAULT_POWER_COLLECTION_KEY = "energy_dashboard_now"
 
+/** The collection of the home dashboard's energy summary, which always shows today. */
+const val HOME_ENERGY_COLLECTION_KEY = "energy_home_dashboard"
+
 /**
  * The energy panel's dashboard: a view for each kind of source configured, the overview first when there are
  * several, and the setup wizard when nothing is configured ([prefs] `null` when energy was never set up). Views

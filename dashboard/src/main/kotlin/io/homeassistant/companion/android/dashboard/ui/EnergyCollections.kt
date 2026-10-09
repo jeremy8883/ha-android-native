@@ -16,6 +16,7 @@ import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.strategy.energy.DEFAULT_ENERGY_COLLECTION_KEY
 import io.homeassistant.companion.android.dashboard.strategy.energy.DEFAULT_POWER_COLLECTION_KEY
+import io.homeassistant.companion.android.dashboard.strategy.energy.HOME_ENERGY_COLLECTION_KEY
 import java.time.ZonedDateTime
 import java.util.concurrent.ConcurrentHashMap
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -108,13 +109,20 @@ internal class EnergyCollections(private val repository: EnergyRepository) {
         zone = day.time.zone,
     )
 
-    /** What a collection shows until another period is chosen. Port of `getEnergyDataCollection`'s default. */
-    private fun defaultPeriod(key: String, day: Day) = EnergyPeriod.default(
-        day.time.toLocalDate(),
-        day.time.hour,
-        midnightRollover =
-        key == DEFAULT_POWER_COLLECTION_KEY,
-    )
+    /**
+     * What a collection shows until another period is chosen: port of `getEnergyDataCollection`'s default, and today
+     * for the home dashboard's summary, which sets it so.
+     */
+    private fun defaultPeriod(key: String, day: Day) = if (key == HOME_ENERGY_COLLECTION_KEY) {
+        EnergyPeriod.day(day.time.toLocalDate())
+    } else {
+        EnergyPeriod.default(
+            day.time.toLocalDate(),
+            day.time.hour,
+            midnightRollover =
+            key == DEFAULT_POWER_COLLECTION_KEY,
+        )
+    }
 
     /** A chosen period (`null` for the default) and comparison. */
     private data class Selection(val period: EnergyPeriod? = null, val compareMode: CompareMode? = null)
@@ -151,9 +159,12 @@ internal fun energyCollectionKeys(cards: List<CardConfig>, view: ViewConfig?): S
 /** The collection an energy card reads: its `collection_key`, by default the energy dashboard's. */
 private fun energyCollectionKey(card: JsonObject): String? {
     val type = card.string("type").orEmpty()
+    if (type == HOME_SUMMARY && card.string("summary") == ENERGY_SUMMARY) return HOME_ENERGY_COLLECTION_KEY
     val isEnergy = ENERGY_CARD_PREFIXES.any(type::startsWith) || type in ENERGY_BADGES
     return if (isEnergy) card.string("collection_key") ?: DEFAULT_ENERGY_COLLECTION_KEY else null
 }
 
+private const val HOME_SUMMARY = "home-summary"
+private const val ENERGY_SUMMARY = "energy"
 private val ENERGY_CARD_PREFIXES = listOf("energy-", "power-", "water-")
 private val ENERGY_BADGES = setOf("gas-total")

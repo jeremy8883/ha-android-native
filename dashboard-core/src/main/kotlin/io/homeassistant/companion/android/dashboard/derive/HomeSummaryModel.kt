@@ -1,27 +1,33 @@
 package io.homeassistant.companion.android.dashboard.derive
 
+import io.homeassistant.companion.android.dashboard.energy.consumption
+import io.homeassistant.companion.android.dashboard.energy.consumptionShort
+import io.homeassistant.companion.android.dashboard.energy.summed
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.findEntities
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.string
+import io.homeassistant.companion.android.dashboard.strategy.energy.HOME_ENERGY_COLLECTION_KEY
 import io.homeassistant.companion.android.dashboard.strategy.home.HomeSummary
 import java.math.BigDecimal
 
 /**
  * Derive a `home-summary` card, or `null` for an unknown `summary`.
  * Port of `HuiHomeSummaryCard` (frontend@20260624.6 src/panels/lovelace/cards/hui-home-summary-card.ts). Energy
- * needs the energy statistics, which are not fetched yet, so it stays loading.
+ * reads today's energy from the [HOME_ENERGY_COLLECTION_KEY] collection, loading until it's there.
  */
 fun HassSnapshot.homeSummaryModel(card: CardConfig): InfoTileModel? {
     val summary = HomeSummary.entries.firstOrNull { it.key == card.json.string("summary") } ?: return null
+    val energy = energy[HOME_ENERGY_COLLECTION_KEY].takeIf { summary == HomeSummary.ENERGY }
     return InfoTileModel(
         label = summary.label(localize),
         icon = summary.icon,
         color = summary.color,
         secondary = summaryState(summary),
-        loading = summary == HomeSummary.ENERGY,
+        loading = summary == HomeSummary.ENERGY && energy?.data == null && energy?.failed != true,
         vertical = card.json.boolean("vertical") == true,
+        failed = energy?.data == null && energy?.failed == true,
     )
 }
 
@@ -35,7 +41,9 @@ private fun HassSnapshot.summaryState(summary: HomeSummary): String {
         HomeSummary.SECURITY -> securitySummary(entities)
         HomeSummary.MEDIA_PLAYERS -> countOr("count_media_playing", withState("playing"), "no_media_playing")
         HomeSummary.MAINTENANCE -> maintenanceSummary(entities)
-        HomeSummary.ENERGY -> ""
+        HomeSummary.ENERGY -> energy[HOME_ENERGY_COLLECTION_KEY]?.data?.let { data ->
+            formats.consumptionShort(data.summed().consumption().total.usedTotal, "kWh")
+        }.orEmpty()
         HomeSummary.PERSONS -> countOr("count_persons_home", withState("home"), "nobody_home")
     }
 }

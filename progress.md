@@ -187,7 +187,7 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - [x] Now tab: power sankey and water flow sankey (`RateSankeyModel`, from the live states, sharing the energy sankey's device grouping), power/gas/water total badges (`layout/EnergyBadges.kt`), all golden-tested; the capture adds scenarios with states overridden in the page only (discharging, grid charging, small consumers grouped as "Other", water flowing)
 - [x] Power sources graph: series golden-tested (`PowerSourcesGraphModel`, today's graph ends with the current states); drawn by `PowerLineChart` (Canvas: areas stacked above/below zero with ECharts' smoothing ported from `poly.ts`, dashed use line, tap tooltip, toggling legend). Vico 3.3 was evaluated but its line layer can't stack areas
 - [x] Theme colours: the extractor also reads `semantic.globals.ts` (`--ha-color-text-*`...), so `primary-text-color` and friends resolve
-- [ ] Overview "Today's energy" summary (needs the energy data on the home dashboard)
+- [x] Home dashboard "Today's energy" summary: its own `energy_home_dashboard` collection, always today, golden-tested against the frontend's tile; says it couldn't load rather than showing nothing
 
 ### Later — Startup time
 - [ ] Cold launch straight to the dashboard: the dashboard app has no splash wait (it starts from the cache); measure it on a release-like build on a real device
