@@ -50,6 +50,8 @@ import io.homeassistant.companion.android.dashboard.strategy.StrategyData
 import io.homeassistant.companion.android.dashboard.strategy.expandView
 import io.homeassistant.companion.android.dashboard.strategy.home.HomeDashboardConfig
 import io.homeassistant.companion.android.dashboard.strategy.home.homeDashboard
+import io.homeassistant.companion.android.dashboard.strategy.summary.SUMMARY_PANELS
+import io.homeassistant.companion.android.dashboard.strategy.summary.summaryPanelDashboard
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.Locale
@@ -108,6 +110,8 @@ sealed interface DashboardUiState {
      * @property tabs the top-level views; subviews are only reached through navigation, as upstream
      * @property selectedTab index in [tabs] of the shown view or of the view a subview was opened from
      * @property isSubview whether the shown view is a subview, which shows a back button instead of tabs
+     * @property canGoBack whether the dashboard was opened from another page to return to (a `historyBack` link),
+     * which shows a back button
      * @property groups the shown view's cards, or `null` when its strategy is not ported yet
      * @property view the shown view with its strategies expanded, for its header and badges
      */
@@ -117,12 +121,16 @@ sealed interface DashboardUiState {
         val selectedTab: Int,
         val isSubview: Boolean,
         val subviewTitle: String?,
+        val canGoBack: Boolean = false,
         val viewPath: String,
         /** The view's `max_columns`, bounding the column count `view_columns` conditions see. */
         val maxColumns: Int?,
         val groups: List<CardGroup>?,
         val view: ViewConfig? = null,
-    ) : DashboardUiState
+    ) : DashboardUiState {
+        /** Whether the top bar shows a back button rather than the menu. */
+        val showsBack: Boolean get() = isSubview || canGoBack
+    }
 }
 
 /**
@@ -182,6 +190,13 @@ class DashboardViewModel @VisibleForTesting internal constructor(
 
     /** Opened views, last is shown. Empty shows the first view. */
     private val viewStack = MutableStateFlow<List<String>>(emptyList())
+
+    /**
+     * Where back returns to after the shown dashboard's first view, last first: the pages that opened a dashboard
+     * with a `historyBack` link, such as the overview's summaries opening `/light?historyBack=1`. The frontend goes
+     * back in the browser history there.
+     */
+    private val returnPoints = MutableStateFlow<List<Location>>(emptyList())
 
     /** The current time for `time` conditions, updated often enough for their minute resolution. */
     val now: StateFlow<ZonedDateTime?> = flow {
@@ -267,7 +282,13 @@ class DashboardViewModel @VisibleForTesting internal constructor(
     private val dashboard: StateFlow<Pair<String?, Loadable<Pair<StoredDashboardConfig, StructureInputs>>>?> =
         selectedDashboard
             .flatMapLatest { urlPath ->
-                repository.dashboardConfig(urlPath).combine(structureInputs) { config, inputs ->
+                // Summary panels are generated, never stored
+                val config = if (urlPath in SUMMARY_PANELS) {
+                    flowOf(Loadable.Ready(StoredDashboardConfig.NotStored))
+                } else {
+                    repository.dashboardConfig(urlPath)
+                }
+                config.combine(structureInputs) { config, inputs ->
                     urlPath to combineLoadables(config, inputs, ::Pair)
                 }
             }
@@ -287,14 +308,15 @@ class DashboardViewModel @VisibleForTesting internal constructor(
 
     val uiState: StateFlow<DashboardUiState> = dashboard
         .filterNotNull()
-        .combine(combine(viewStack, otherPages, ::Pair)) { (urlPath, loadable), (stack, canOpenOtherPages) ->
+        .combine(combine(viewStack, otherPages, returnPoints, ::Navigation)) { (urlPath, loadable), navigation ->
             when (loadable) {
                 Loadable.Loading -> DashboardUiState.Loading
                 is Loadable.Failed -> DashboardUiState.Error(loadable.error)
                 is Loadable.Ready -> {
                     val (config, inputs) = loadable.value
-                    val state = config.toUiState(urlPath, inputs, stack)
-                    if (canOpenOtherPages) state else state.withoutLinksOut(inputs.panelInfo)
+                    val state = config.toUiState(urlPath, inputs, navigation.stack)
+                        .withReturn(navigation.returnPoints.isNotEmpty())
+                    if (navigation.canOpenOtherPages) state else state.withoutLinksOut(inputs.panelInfo)
                 }
             }
         }
@@ -386,6 +408,7 @@ class DashboardViewModel @VisibleForTesting internal constructor(
     fun onRetry() = repository.retry()
 
     fun onSelectDashboard(urlPath: String?) {
+        returnPoints.value = emptyList()
         viewStack.value = emptyList()
         selectedDashboard.value = urlPath
     }
@@ -469,15 +492,30 @@ class DashboardViewModel @VisibleForTesting internal constructor(
                 _events.send(DashboardEvent.OpenWeb(path))
                 return@launch
             }
+            val here = Location(selectedDashboard.value, viewStack.value)
+            returnPoints.update { if (path.hasHistoryBack()) it + here else emptyList() }
             selectedDashboard.value = if (urlPath == HOME_PANEL) null else urlPath
             viewStack.value = segments.drop(1).take(1)
         }
     }
 
-    /** @return whether a view was closed; the first view is implicit, so an empty stack shows it */
+    /**
+     * Close the shown view, or from the first view return to the page that opened this dashboard with a
+     * `historyBack` link.
+     *
+     * @return whether back was handled; the first view is implicit, so an empty stack shows it
+     */
     fun onBack(): Boolean {
-        if (viewStack.value.isEmpty()) return false
-        viewStack.update { it.dropLast(1) }
+        val back = returnPoints.value.lastOrNull()
+        when {
+            viewStack.value.isNotEmpty() -> viewStack.update { it.dropLast(1) }
+            back != null -> {
+                returnPoints.update { it.dropLast(1) }
+                selectedDashboard.value = back.dashboard
+                viewStack.value = back.stack
+            }
+            else -> return false
+        }
         return true
     }
 }
@@ -599,11 +637,12 @@ private fun StoredDashboardConfig.toUiState(
     stack: List<String>,
 ): DashboardUiState = when (this) {
     // Without a stored default dashboard the frontend shows the generated home dashboard (/home)
-    StoredDashboardConfig.NotStored -> if (urlPath == null) {
-        DashboardConfig(inputs.hass.homeDashboard(HomeDashboardConfig.fromSystemData(inputs.homeSettings)))
+    StoredDashboardConfig.NotStored -> when (urlPath) {
+        null -> DashboardConfig(inputs.hass.homeDashboard(HomeDashboardConfig.fromSystemData(inputs.homeSettings)))
             .toContent(inputs, stack)
-    } else {
-        DashboardUiState.NotFound
+        // Like the frontend's panels, generated from the current registries
+        in SUMMARY_PANELS -> DashboardConfig(inputs.hass.summaryPanelDashboard(urlPath)).toContent(inputs, stack)
+        else -> DashboardUiState.NotFound
     }
     is StoredDashboardConfig.Stored -> config.toContent(inputs, stack)
 }
@@ -657,9 +696,12 @@ data class SidebarState(
     val isAdmin: Boolean,
 )
 
-/** Whether [panel] is a dashboard the native renderer shows: the home dashboard and Lovelace dashboards. */
+/**
+ * Whether [panel] is a dashboard the native renderer shows: the home dashboard, Lovelace dashboards, and the summary
+ * panels (lights, climate, security, maintenance), which are generated dashboards too.
+ */
 internal fun isNativeDashboard(panel: PanelInfo): Boolean =
-    panel.componentName == HOME_PANEL || panel.componentName == LOVELACE_PANEL
+    panel.componentName == HOME_PANEL || panel.componentName == LOVELACE_PANEL || panel.componentName in SUMMARY_PANELS
 
 private const val HOME_PANEL = "home"
 private const val LOVELACE_PANEL = "lovelace"

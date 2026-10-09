@@ -137,10 +137,10 @@ Decided 2026-10-09: the native dashboards are an app of their own, installed alo
 Every place the dashboards lead out of the app. With "Open other pages in the Home Assistant app" off (the default), cards that only lead there are hidden, headings keep their title without the link, the drawer lists only dashboards, and More details is hidden. Tick an item off when it opens natively, or decide it belongs to the companion app.
 
 Overview summaries (generated home dashboard):
-- [ ] Lights → `/light` (frontend `panels/light/strategies/light-view-strategy.ts`)
-- [ ] Climate → `/climate` (`panels/climate/strategies/climate-view-strategy.ts`)
-- [ ] Security → `/security` (`panels/security/strategies/security-view-strategy.ts`)
-- [ ] Maintenance → `/maintenance` (`panels/maintenance/strategies/maintenance-view-strategy.ts`)
+- [x] Lights → `/light` (native; port of `panels/light/strategies/light-view-strategy.ts`)
+- [x] Climate → `/climate` (native; `panels/climate/strategies/climate-view-strategy.ts`; the `trend-graph` tile feature is not native yet and leaves blank space)
+- [x] Security → `/security` (native; `panels/security/strategies/security-view-strategy.ts`; the Activity sidebar's `logbook` card is not native yet)
+- [x] Maintenance → `/maintenance` (native; `panels/maintenance/strategies/maintenance-view-strategy.ts`)
 - [ ] Energy → `/energy` (energy dashboard: statistics and charts; larger)
 - [x] Media players → `media-players` view (native)
 - [x] Weather → more-info (native)
@@ -151,7 +151,7 @@ Overview admin cards (companion app only; hidden when off):
 - [ ] Discovered devices → upstream opens the add-integration dialog; the native card has no tap yet
 
 Room and device views (generated):
-- [ ] Section headings Lights / Climate / Security → the summary pages above (link hidden when off)
+- [x] Section headings Lights / Climate / Security → the summary pages above (native; back returns to the room)
 - [x] Media players heading → `media-players` view (native)
 - [ ] Device headings → `/config/devices/device/<id>` (companion app; link hidden when off)
 - [ ] Scenes heading → `/config/scene/dashboard`, Automations heading → `/config/automation/dashboard` (companion app; link hidden when off)

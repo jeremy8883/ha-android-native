@@ -67,7 +67,7 @@ internal fun DashboardScreen(
     val status by viewModel.status.collectAsStateWithLifecycle()
     val content = uiState as? DashboardUiState.Content
     DashboardBackHandlers(
-        isSubview = content?.isSubview == true,
+        showsBack = content?.showsBack == true,
         isDefaultDashboard = selectedDashboard == null,
         viewModel = viewModel,
     )
@@ -82,7 +82,7 @@ internal fun DashboardScreen(
     CompositionLocalProvider(LocalServerUrl provides serverUrl) {
         DashboardLayers(
             drawerState = drawerState,
-            gesturesEnabled = drawerState.isOpen || content?.isSubview != true,
+            gesturesEnabled = drawerState.isOpen || content?.showsBack != true,
             drawer = {
                 DashboardDrawer(
                     drawerState = drawerState,
@@ -186,13 +186,13 @@ private fun DashboardDrawer(
 }
 
 /**
- * Back closes a subview, and from another dashboard returns to the default one before leaving, like other top-level
- * destinations.
+ * Back closes a subview or returns to the page that opened the dashboard with a `historyBack` link, and from another
+ * dashboard returns to the default one before leaving, like other top-level destinations.
  */
 @Composable
-private fun DashboardBackHandlers(isSubview: Boolean, isDefaultDashboard: Boolean, viewModel: DashboardViewModel) {
-    BackHandler(enabled = isSubview) { viewModel.onBack() }
-    BackHandler(enabled = !isSubview && !isDefaultDashboard) { viewModel.onSelectDashboard(null) }
+private fun DashboardBackHandlers(showsBack: Boolean, isDefaultDashboard: Boolean, viewModel: DashboardViewModel) {
+    BackHandler(enabled = showsBack) { viewModel.onBack() }
+    BackHandler(enabled = !showsBack && !isDefaultDashboard) { viewModel.onSelectDashboard(null) }
 }
 
 /** Apply [request] once: open its path, more-info or the drawer. Saved, so it isn't applied again when recreated. */
@@ -252,7 +252,7 @@ internal fun DashboardScreenContent(
                     },
                 )
             }
-            if (content?.isSubview == true) {
+            if (content?.showsBack == true) {
                 HATopBar(title = title, onBackClick = onBack)
             } else {
                 HATopBar(
