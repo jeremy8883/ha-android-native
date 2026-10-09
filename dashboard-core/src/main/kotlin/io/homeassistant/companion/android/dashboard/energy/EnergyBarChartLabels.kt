@@ -53,10 +53,17 @@ private fun roundToInterval(value: Double, interval: Double): Double {
 /**
  * The times the time axis of [chart] has labels at: hours, days or months, as many apart as fit about [maxLabels].
  */
-fun DisplayFormats.timeTicks(chart: EnergyBarChart, maxLabels: Int): List<Long> {
-    val first = Instant.ofEpochMilli(chart.xMin).atZone(zone)
-    val last = Instant.ofEpochMilli(chart.xMax)
-    val unit = when (chart.period) {
+fun DisplayFormats.timeTicks(chart: EnergyBarChart, maxLabels: Int): List<Long> =
+    timeTicks(chart.xMin, chart.xMax, chart.period, maxLabels)
+
+/**
+ * The times a time axis from [xMin] to [xMax] with statistics by [period] has labels at: hours, days or months, as
+ * many apart as fit about [maxLabels].
+ */
+fun DisplayFormats.timeTicks(xMin: Long, xMax: Long, period: StatisticPeriod, maxLabels: Int): List<Long> {
+    val first = Instant.ofEpochMilli(xMin).atZone(zone)
+    val last = Instant.ofEpochMilli(xMax)
+    val unit = when (period) {
         StatisticPeriod.FIVE_MINUTES, StatisticPeriod.HOUR -> ChronoUnit.HOURS
         StatisticPeriod.DAY -> ChronoUnit.DAYS
         StatisticPeriod.MONTH -> ChronoUnit.MONTHS

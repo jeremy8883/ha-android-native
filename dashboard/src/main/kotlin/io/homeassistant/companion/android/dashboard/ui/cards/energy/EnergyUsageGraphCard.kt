@@ -20,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
@@ -103,28 +104,39 @@ internal fun TotalChip(text: String) {
 /** An item per shown series; a tap hides or shows it and its compared series. Port of the custom legend. */
 @Composable
 internal fun Legend(chart: EnergyBarChart, hidden: Set<String>, onToggle: (String) -> Unit) {
-    val colors = LocalHAColorScheme.current
+    val fallback = LocalHAColorScheme.current.colorTextSecondary
     val dark = isSystemInDarkTheme()
+    val entries = chart.series.filterNot { it.compare }.map { series ->
+        LegendEntry(series.id, series.name, seriesColor(series, dark, background = false) ?: fallback)
+    }
+    LegendItems(entries, hidden, onToggle)
+}
+
+/** A legend item: what a tap toggles ([id]), its [name] and [color]. */
+internal class LegendEntry(val id: String, val name: String, val color: Color)
+
+/** The custom legend of the frontend's charts: an item per entry, crossed out while [hidden]. */
+@Composable
+internal fun LegendItems(entries: List<LegendEntry>, hidden: Set<String>, onToggle: (String) -> Unit) {
+    val colors = LocalHAColorScheme.current
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
         modifier = Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, bottom = HADimens.SPACE4),
     ) {
-        chart.series.filterNot { it.compare }.forEach { series ->
-            val off = series.id in hidden
-            val color = seriesColor(series, dark, background = false) ?: colors.colorTextSecondary
+        entries.forEach { entry ->
+            val off = entry.id in hidden
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
-                modifier = Modifier.clickable(role = Role.Checkbox) { onToggle(series.id) },
+                modifier = Modifier.clickable(role = Role.Checkbox) { onToggle(entry.id) },
             ) {
                 Box(
-                    Modifier.size(
-                        LEGEND_MARKER,
-                    ).background(if (off) colors.colorTextDisabled else color, RoundedCornerShape(HARadius.S)),
+                    Modifier.size(LEGEND_MARKER)
+                        .background(if (off) colors.colorTextDisabled else entry.color, RoundedCornerShape(HARadius.S)),
                 )
                 Text(
-                    series.name,
+                    entry.name,
                     style = HATextStyle.Body,
                     color = if (off) colors.colorTextDisabled else colors.colorTextSecondary,
                     textDecoration = if (off) TextDecoration.LineThrough else null,

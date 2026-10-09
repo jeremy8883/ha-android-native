@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -27,6 +28,25 @@ import io.homeassistant.companion.android.dashboard.energy.EnergyTooltip
 /** A tapped period's values, over the top of the chart, like the frontend's chart tooltip. */
 @Composable
 internal fun EnergyTooltipCard(tooltip: EnergyTooltip, dark: Boolean, formatTotal: (Double) -> String) {
+    val fallback = LocalHAColorScheme.current.colorTextSecondary
+    ChartTooltipCard(
+        title = tooltip.title,
+        rows = tooltip.rows.map { row ->
+            TooltipLine(
+                seriesColor(row.series, dark, background = false) ?: fallback,
+                "${row.series.name}: ${row.value}",
+            )
+        },
+        total = tooltip.total?.let(formatTotal),
+    )
+}
+
+/** A line of a chart tooltip: a series' [color] marker and its [text]. */
+internal class TooltipLine(val color: Color, val text: String)
+
+/** A chart tooltip: its [title], a line per series and the [total], if any, in bold. */
+@Composable
+internal fun ChartTooltipCard(title: String, rows: List<TooltipLine>, total: String?) {
     val colors = LocalHAColorScheme.current
     Card(
         colors = CardDefaults.cardColors(containerColor = colors.colorSurfaceDefault),
@@ -36,29 +56,23 @@ internal fun EnergyTooltipCard(tooltip: EnergyTooltip, dark: Boolean, formatTota
     ) {
         Column(Modifier.padding(HADimens.SPACE2), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE1)) {
             Text(
-                tooltip.title,
+                title,
                 style = HATextStyle.BodyMedium,
                 fontWeight = FontWeight.Bold,
                 color = colors.colorTextPrimary,
                 textAlign = TextAlign.Center,
             )
-            tooltip.rows.forEach { row ->
+            rows.forEach { row ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
                 ) {
-                    val color = seriesColor(row.series, dark, background = false) ?: colors.colorTextSecondary
-                    Box(Modifier.size(MARKER).background(color, CircleShape))
-                    Text("${row.series.name}: ${row.value}", style = HATextStyle.Body, color = colors.colorTextPrimary)
+                    Box(Modifier.size(MARKER).background(row.color, CircleShape))
+                    Text(row.text, style = HATextStyle.Body, color = colors.colorTextPrimary)
                 }
             }
-            tooltip.total?.let {
-                Text(
-                    formatTotal(it),
-                    style = HATextStyle.BodyMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = colors.colorTextPrimary,
-                )
+            total?.let {
+                Text(it, style = HATextStyle.BodyMedium, fontWeight = FontWeight.Bold, color = colors.colorTextPrimary)
             }
         }
     }
