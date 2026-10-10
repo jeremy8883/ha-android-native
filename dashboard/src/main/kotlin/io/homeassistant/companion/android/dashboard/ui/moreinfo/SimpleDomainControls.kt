@@ -9,6 +9,7 @@ import io.homeassistant.companion.android.dashboard.ui.controls.ControlSelectMen
 /** The smaller domains' controls: a siren's, a counter's, an automation's, a timer's, a remote's, the inputs and an update's. */
 @Composable
 internal fun SimpleDomainControls(model: MoreInfoModel, state: EntityState, onAction: (CardAction) -> Unit) {
+    model.lawnMower?.let { MoreInfoLawnMower(it, onAction) }
     model.siren?.let { MoreInfoSiren(it, state, onAction) }
     model.counter?.let { MoreInfoActionRow(it, onAction) }
     model.automation?.let { MoreInfoAutomation(it, onAction) }

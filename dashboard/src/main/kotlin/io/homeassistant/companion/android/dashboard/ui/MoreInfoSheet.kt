@@ -229,8 +229,8 @@ private fun MoreInfoState(model: MoreInfoModel) {
                 style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium),
                 color = colors.colorTextPrimary,
             )
-            // The `after-time` slot: a vacuum's battery
-            model.vacuum?.battery?.let { battery ->
+            // The `after-time` slot: a vacuum's or lawn mower's battery
+            (model.vacuum?.battery ?: model.lawnMower?.battery)?.let { battery ->
                 battery.text?.let { Text(it, style = HATextStyle.Body, color = colors.colorTextSecondary) }
                 battery.icon?.let { DashboardIcon(it, colors.colorTextSecondary, Modifier.size(HASize.XL)) }
             }

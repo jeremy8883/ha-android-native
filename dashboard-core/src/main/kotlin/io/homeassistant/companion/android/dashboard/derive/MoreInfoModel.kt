@@ -15,6 +15,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.AutomationMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.ClimateMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.FanMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.HumidifierMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.LawnMowerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.LightMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.LockMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.MediaPlayerMoreInfo
@@ -33,6 +34,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.climateMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.counterActions
 import io.homeassistant.companion.android.dashboard.moreinfo.fanMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.humidifierMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.lawnMowerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.lightMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.lockMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.mediaPlayerMoreInfo
@@ -67,6 +69,7 @@ import java.time.Instant
  * @property alarm an alarm panel's controls
  * @property mediaPlayer a media player's controls
  * @property vacuum a vacuum's controls
+ * @property lawnMower a lawn mower's controls
  * @property siren a siren's controls
  * @property counter a counter's buttons
  * @property automation an automation's last run and run button
@@ -98,6 +101,7 @@ data class MoreInfoModel(
     val alarm: AlarmMoreInfo?,
     val mediaPlayer: MediaPlayerMoreInfo?,
     val vacuum: VacuumMoreInfo?,
+    val lawnMower: LawnMowerMoreInfo?,
     val siren: SirenMoreInfo?,
     val counter: List<MoreInfoAction>?,
     val automation: AutomationMoreInfo?,
@@ -150,6 +154,7 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         alarm = alarmMoreInfo(state),
         mediaPlayer = mediaPlayerMoreInfo(state),
         vacuum = vacuum,
+        lawnMower = lawnMowerMoreInfo(state),
         siren = sirenMoreInfo(state),
         counter = counterActions(state),
         automation = automationMoreInfo(state, now),

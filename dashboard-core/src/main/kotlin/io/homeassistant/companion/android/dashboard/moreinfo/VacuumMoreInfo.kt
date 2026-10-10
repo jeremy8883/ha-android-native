@@ -14,7 +14,7 @@ import io.homeassistant.companion.android.dashboard.model.string
 
 // Port of `more-info-vacuum` (frontend@20260624.6 src/dialogs/more-info/controls/more-info-vacuum.ts) with
 // `ha-state-control-vacuum-status` (src/state-control/vacuum/) and its helpers (src/data/vacuum.ts). The battery is
-// in VacuumBattery.kt. Not ported: cleaning by area (a dialog of the vacuum's map segments).
+// in DeviceBattery.kt. Not ported: cleaning by area (a dialog of the vacuum's map segments).
 
 /**
  * What a vacuum's details show: the state (or its status), the battery beside it, the robot drawn as it is
@@ -22,15 +22,15 @@ import io.homeassistant.companion.android.dashboard.model.string
  */
 data class VacuumMoreInfo(
     val state: String,
-    val battery: VacuumBattery?,
+    val battery: DeviceBattery?,
     val visual: VacuumVisual,
     val color: DisplayColor?,
-    val buttons: List<VacuumButton>,
+    val buttons: List<CommandButton>,
     val fanSpeed: SelectMenu?,
 )
 
 /** One command button. */
-data class VacuumButton(val label: String, val icon: String, val enabled: Boolean, val action: CardAction.CallService)
+data class CommandButton(val label: String, val icon: String, val enabled: Boolean, val action: CardAction.CallService)
 
 /** What the drawn robot does (`computeVisualState`). */
 sealed interface VacuumVisual {
@@ -86,11 +86,11 @@ private fun vacuumVisual(state: EntityState): VacuumVisual = when {
     else -> VacuumVisual.Idle
 }
 
-private fun HassSnapshot.vacuumButtons(state: EntityState): List<VacuumButton> {
+private fun HassSnapshot.vacuumButtons(state: EntityState): List<CommandButton> {
     val unavailable = state.state == UNAVAILABLE
     val supports = { feature: Int -> state.supportsFeature(feature) }
     val button = { key: String, icon: String, enabled: Boolean, service: String ->
-        VacuumButton(localize("$STRINGS.$key"), icon, enabled, call(state, service))
+        CommandButton(localize("$STRINGS.$key"), icon, enabled, call(state, service))
     }
     return listOfNotNull(
         startPauseButton(state).takeIf { supports(VACUUM_START) || supports(VACUUM_PAUSE) },
@@ -105,7 +105,7 @@ private fun HassSnapshot.vacuumButtons(state: EntityState): List<VacuumButton> {
 /**
  * Start, or pause while cleaning; a legacy vacuum (neither state nor start supported) toggles with `start_pause`.
  */
-private fun HassSnapshot.startPauseButton(state: EntityState): VacuumButton {
+private fun HassSnapshot.startPauseButton(state: EntityState): CommandButton {
     val legacy = !state.supportsFeature(VACUUM_STATE) && !state.supportsFeature(VACUUM_START)
     val pause = isCleaning(state) && state.supportsFeature(VACUUM_PAUSE)
     val service = when {
@@ -113,7 +113,7 @@ private fun HassSnapshot.startPauseButton(state: EntityState): VacuumButton {
         isCleaning(state) -> "pause"
         else -> "start"
     }
-    return VacuumButton(
+    return CommandButton(
         label = localize(
             "$STRINGS.${if (legacy) {
                 "start_pause"

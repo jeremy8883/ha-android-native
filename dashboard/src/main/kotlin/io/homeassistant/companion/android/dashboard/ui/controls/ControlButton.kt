@@ -75,9 +75,9 @@ internal fun ControlButtonIcon(icon: String, label: String, modifier: Modifier =
     }
 }
 
-/** The details' `.status`: the entity's icon in a tinted circle, pulsing while something is under way. */
+/** The details' `.status`: the entity's icon in a tinted circle, pulsing while something is under way ([pulsing]). */
 @Composable
-internal fun PulsingStatusIcon(status: StatusIcon, modifier: Modifier = Modifier) {
+internal fun PulsingStatusIcon(status: StatusIcon, modifier: Modifier = Modifier, pulsing: Boolean = true) {
     val color = status.color?.toColor() ?: LocalHAColorScheme.current.colorFillPrimaryLoudResting
     val pulse by rememberInfiniteTransition(label = "status").animateFloat(
         initialValue = 1f,
@@ -88,7 +88,7 @@ internal fun PulsingStatusIcon(status: StatusIcon, modifier: Modifier = Modifier
     Box(
         modifier = modifier
             .size(STATUS_SIZE)
-            .alpha(pulse)
+            .alpha(if (pulsing) pulse else 1f)
             .clip(CircleShape)
             .background(color.copy(alpha = TINT_ALPHA)),
         contentAlignment = Alignment.Center,

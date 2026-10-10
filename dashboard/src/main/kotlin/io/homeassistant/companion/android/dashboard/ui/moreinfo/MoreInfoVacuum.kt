@@ -26,7 +26,7 @@ import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
-import io.homeassistant.companion.android.dashboard.moreinfo.VacuumButton
+import io.homeassistant.companion.android.dashboard.moreinfo.CommandButton
 import io.homeassistant.companion.android.dashboard.moreinfo.VacuumMoreInfo
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.controls.CONTROL_BUTTON_HEIGHT
@@ -48,21 +48,26 @@ internal fun MoreInfoVacuum(info: VacuumMoreInfo, onAction: (CardAction) -> Unit
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
     ) {
         VacuumStatus(info.visual, info.color?.toColor() ?: colors.colorFillDisabledLoudResting)
-        if (info.buttons.isNotEmpty()) {
-            Row(
-                modifier = Modifier.fillMaxWidth().widthIn(max = GROUP_MAX_WIDTH).height(CONTROL_BUTTON_HEIGHT),
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
-            ) {
-                info.buttons.forEach { VacuumCommand(it, onAction, Modifier.weight(1f)) }
-            }
-        }
+        CommandButtonRow(info.buttons, onAction)
         ControlSelectMenus(listOfNotNull(info.fanSpeed), onAction)
+    }
+}
+
+/** Port of `ha-control-button-group`: the command buttons side by side. */
+@Composable
+internal fun CommandButtonRow(buttons: List<CommandButton>, onAction: (CardAction) -> Unit) {
+    if (buttons.isEmpty()) return
+    Row(
+        modifier = Modifier.fillMaxWidth().widthIn(max = GROUP_MAX_WIDTH).height(CONTROL_BUTTON_HEIGHT),
+        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+    ) {
+        buttons.forEach { VacuumCommand(it, onAction, Modifier.weight(1f)) }
     }
 }
 
 /** Port of the `ha-control-button`s in their group: an icon on a quiet tint, greyed while it can't be used. */
 @Composable
-private fun VacuumCommand(button: VacuumButton, onAction: (CardAction) -> Unit, modifier: Modifier) {
+private fun VacuumCommand(button: CommandButton, onAction: (CardAction) -> Unit, modifier: Modifier) {
     val colors = LocalHAColorScheme.current
     Box(
         modifier = modifier
