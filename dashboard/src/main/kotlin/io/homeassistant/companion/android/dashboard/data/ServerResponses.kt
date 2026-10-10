@@ -7,10 +7,8 @@ import io.homeassistant.companion.android.dashboard.entity.parseDeviceRegistry
 import io.homeassistant.companion.android.dashboard.entity.parseEntityRegistryDisplay
 import io.homeassistant.companion.android.dashboard.entity.parseFloorRegistry
 import io.homeassistant.companion.android.dashboard.model.DashboardConfig
-import io.homeassistant.companion.android.dashboard.model.array
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
-import io.homeassistant.companion.android.dashboard.strategy.StrategyData
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
@@ -58,6 +56,13 @@ internal const val DASHBOARD_CONFIG = "dashboard_config"
 
 internal fun parseRegistries(bundle: JsonObject): Fetched<Registries> =
     bundle.part<JsonObject>(ENTITIES).flatMap { entities ->
+        // An answer without its entities is unexpected, never an empty registry
+        if (entities["entities"] is JsonArray) {
+            Fetched.Success(entities)
+        } else {
+            Fetched.Failure(LoadError.UnexpectedResponse("config/entity_registry/list_for_display"))
+        }
+    }.flatMap { entities ->
         bundle.part<JsonArray>(DEVICES).flatMap { devices ->
             bundle.part<JsonArray>(AREAS).flatMap { areas ->
                 bundle.part<JsonArray>(FLOORS).map { floors ->
@@ -71,19 +76,6 @@ internal fun parseRegistries(bundle: JsonObject): Fetched<Registries> =
             }
         }
     }
-
-/**
- * Energy preferences and settings and common controls are absent (`null`) when not loaded or refused, as upstream
- * treats them.
- */
-internal fun parseStrategyData(bundle: JsonObject): Fetched<StrategyData> = Fetched.Success(
-    StrategyData(
-        energyPrefs = bundle[ENERGY_PREFS] as? JsonObject,
-        commonControls = (bundle[COMMON_CONTROLS] as? JsonObject)?.array("entities")?.mapNotNull { it.stringOrNull },
-        energyHiddenCards = (bundle[ENERGY_SETTINGS] as? JsonObject)?.obj("value")?.array("hidden_cards")
-            ?.mapNotNull { it.stringOrNull },
-    ),
-)
 
 internal fun parseEntityResources(bundle: JsonObject): Fetched<EntityResources> =
     bundle.part<JsonObject>(COMPONENT_ICONS).flatMap { componentIcons ->

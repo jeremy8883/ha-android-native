@@ -91,7 +91,6 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.transformWhile
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -254,29 +253,36 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         .map { it.valueOrNull?.config?.components }
         .distinctUntilChanged()
         .flatMapLatest { components ->
-            if (components == null) flowOf(Loadable.Loading) else repository.strategyData(components)
+            when {
+                components == null -> flowOf(Loadable.Loading)
+                "usage_prediction" !in components -> repository.strategyData(components)
+                else -> combine(repository.strategyData(components), repository.commonControls()) { data, predicted ->
+                    data.map {
+                        it.copy(commonControls = predicted.asCommonControls() ?: return@combine Loadable.Loading)
+                    }
+                }
+            }
         }
 
     /**
      * The data the dashboard structure is derived from. Like upstream, structure is regenerated when registries
-     * change, not on state changes, so the states are those at the time of the registry update.
+     * or the other inputs change, not on each state change, and then from the states at that time. The states' own
+     * changes regenerate it only when they become loaded, live (replacing kept ones) or failed.
      */
     private val structureInputs: StateFlow<Loadable<StructureInputs>> = combine(
         repository.registries(),
         serverInfo,
         combine(strategyData, repository.homeSystemData(), ::Pair),
-        // The states until the first live ones (kept ones show until then); later ones don't change the structure
-        entityStates.transformWhile {
-            emit(it)
-            !(it is Loadable.Ready && it.keptAt == null)
-        },
+        entityStates.distinctUntilChanged { old, new -> old.statesPhase() == new.statesPhase() },
         entityDisplay,
-    ) { registries, info, (strategy, home), states, display ->
+    ) { registries, info, (strategy, home), _, display ->
+        // The latest states, not those of the phase change: later changes are read on the next regeneration
+        val states = entityStates.value
         combineLoadables(
             combineLoadables(registries, info, strategy, ::ServerData),
             combineLoadables(home, states, display, ::Triple),
-        ) { server, (homeSettings, firstStates, entityDisplay) ->
-            structureInputs(server, homeSettings, firstStates, entityDisplay)
+        ) { server, (homeSettings, currentStates, entityDisplay) ->
+            structureInputs(server, homeSettings, currentStates, entityDisplay)
         }
     }.flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), Loadable.Loading)

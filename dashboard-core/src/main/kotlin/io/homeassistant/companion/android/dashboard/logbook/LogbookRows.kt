@@ -67,12 +67,12 @@ private enum class Category(val dotVariable: String) {
 
 /**
  * The rows of [entries] (newest first), as of [now]: the cause names the [users], and runs link to their
- * [traces].
+ * [traces] (`null` while they aren't known, so no run links).
  */
 fun HassSnapshot.logbookRows(
     entries: List<LogbookEntry>,
     users: LogbookUsers,
-    traces: Map<String, TraceContext>,
+    traces: Map<String, TraceContext>?,
     now: Instant,
 ): List<LogbookRow> {
     val days = entries.map { LocalDate.ofInstant(it.instant(), formats.zone) }
@@ -87,7 +87,7 @@ fun HassSnapshot.logbookRows(
             cause = if (category == Category.ENTITY) logbookCause(entry, users) else null,
             traceLink = entry.context.id
                 ?.takeIf { entry.domain in TRIGGER_DOMAINS }
-                ?.let { traces[it]?.path },
+                ?.let { traces?.get(it)?.path },
             dateHeader = if (firstOfDay) dateHeader(days[index], today, entry.instant()) else null,
             firstOfDay = firstOfDay,
             lastOfDay = index == entries.lastIndex || days[index + 1] != days[index],

@@ -151,6 +151,35 @@ class KeptDataTest {
                 cancelAndIgnoreRemainingEvents()
             }
         }
+
+        @Test
+        fun `Given a subscription without its first message when changes come then it subscribes again for one`() = runTest {
+            var subscriptions = 0
+            val late = MutableSharedFlow<String>()
+            val fresh = MutableSharedFlow<String>()
+            KeptData<List<String>>("test", FakeKeeper(), connection, retryDelays).subscribed(
+                subscribe = { Fetched.Success(if (subscriptions++ == 0) late else fresh) },
+                // As the entity states do: changes need a snapshot to apply to
+                reduce = { current, event ->
+                    when {
+                        event.startsWith("snapshot") -> listOf(event)
+                        current != null -> current + event
+                        else -> null
+                    }
+                },
+            ).test {
+                assertEquals(Loadable.Loading, awaitItem())
+                // A subscription joined after its snapshot was sent: never shown as an empty value
+                repeat(3) { late.emit("change") }
+                assertEquals(Loadable.Failed(LoadError.NoResponse), awaitItem())
+                advanceTimeBy(1.seconds + 1.seconds / 10)
+                fresh.emit("snapshot")
+                assertEquals(Loadable.Ready(listOf("snapshot")), awaitItem())
+                fresh.emit("change")
+                assertEquals(Loadable.Ready(listOf("snapshot", "change")), awaitItem())
+                assertEquals(2, subscriptions)
+            }
+        }
     }
 
     @Nested

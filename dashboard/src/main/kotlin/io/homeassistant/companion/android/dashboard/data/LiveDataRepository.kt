@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import timber.log.Timber
@@ -71,12 +72,22 @@ class LiveDataRepository @Inject constructor(
         KeptData(SUBSCRIBE_ENTITIES, loadedData.statesKeeper(session.serverId), session.connection).subscribed(
             subscribe = { session.subscribe(SUBSCRIBE_ENTITIES) },
             reduce = { states, event ->
-                // A snapshot (no current states) starts from no entities
-                (event as? JsonObject)?.let { applyEntityEvent(states.orEmpty(), it) }
-                    ?: null.also { Timber.w("Ignoring unexpected $SUBSCRIBE_ENTITIES event") }
+                val message = event as? JsonObject
+                when {
+                    message == null -> null.also { Timber.w("Ignoring unexpected $SUBSCRIBE_ENTITIES event") }
+                    states != null -> applyEntityEvent(states, message)
+                    // The first message of a subscription lists every entity; changes applied to nothing would
+                    // show no entities, so they wait for it
+                    isEntitiesSnapshot(message) -> applyEntityEvent(emptyMap(), message)
+                    else -> null.also { Timber.w("Ignoring $SUBSCRIBE_ENTITIES changes before its snapshot") }
+                }
             },
         )
     }
+
+    /** Whether [message] is a `subscribe_entities` snapshot: added entities only, no changes or removals. */
+    private fun isEntitiesSnapshot(message: JsonObject): Boolean =
+        message["a"] is JsonObject && message["c"] == null && message["r"] == null
 
     /**
      * The active, non-ignored repair issues, loaded again (debounced, like the frontend) when the issue registry
@@ -87,7 +98,14 @@ class LiveDataRepository @Inject constructor(
         session.parsed(
             name = "repairs",
             refreshes = session.events(REPAIRS_UPDATED_EVENT).debounce(REPAIRS_REFETCH_DEBOUNCE),
-            parse = { Fetched.Success(activeRepairsIssues(it)) },
+            // An answer without its issues is unexpected, never "no repairs"
+            parse = { result ->
+                if (result["issues"] is JsonArray) {
+                    Fetched.Success(activeRepairsIssues(result))
+                } else {
+                    Fetched.Failure(LoadError.UnexpectedResponse("repairs/list_issues"))
+                }
+            },
         ) { session.request("repairs/list_issues").expect<JsonObject>() }
     }
 
@@ -112,8 +130,8 @@ class LiveDataRepository @Inject constructor(
         val serverId = serverManager.getServer()?.id
         val webSocket = serverManager.webSocketRepositoryOrNull()
         if (serverId == null || webSocket == null) {
+            // Its source isn't a rendering: it stays unrendered, like a template the server hasn't answered yet
             Timber.w("No server to render a template on")
-            emit(TemplateResult.Rendered(request.template))
             return@flow
         }
         val keeper = loadedData.keeper(serverId, "template/${request.cacheKey()}", TextCodec)

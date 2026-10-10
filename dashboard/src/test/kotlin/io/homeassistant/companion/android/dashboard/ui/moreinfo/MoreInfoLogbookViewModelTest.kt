@@ -53,7 +53,7 @@ class MoreInfoLogbookViewModelTest {
         viewModel.logbook.test {
             viewModel.show(LogbookRequest("lock.door", isAdmin = false))
             assertEquals(Loadable.Loading, awaitItem())
-            assertEquals(Loadable.Ready(EntityLogbook(entries, null, emptyMap())), awaitItem())
+            assertEquals(Loadable.Ready(EntityLogbook(entries, null, null)), awaitItem())
         }
         verify(exactly = 0) { repository.users() }
         verify(exactly = 0) { repository.traceContexts() }

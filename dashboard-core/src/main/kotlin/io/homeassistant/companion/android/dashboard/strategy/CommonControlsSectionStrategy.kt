@@ -19,23 +19,15 @@ import kotlinx.serialization.json.putJsonArray
  * Port of `CommonControlsSectionStrategy.generate` (frontend@20260624.6
  * src/panels/lovelace/strategies/usage_prediction/common-controls-section-strategy.ts).
  *
- * @param predicted the `usage_prediction/common_control` entities, or `null` when they could not be fetched
+ * @param predicted what `usage_prediction/common_control` predicts
  */
-fun HassSnapshot.commonControlsSection(config: JsonObject, predicted: List<String>?): JsonObject {
-    val cards = mutableListOf<JsonObject>()
-    config.obj("heading")?.let(cards::add) ?: config.string("title")?.let { title ->
-        cards += buildJsonObject {
-            put("type", "heading")
-            put("heading", title)
-            config["icon"]?.let { put("icon", it) }
-            config["title_visibilty"]?.let { put("visibility", it) }
-        }
-    }
+fun HassSnapshot.commonControlsSection(config: JsonObject, predicted: CommonControls): JsonObject {
+    val cards = listOfNotNull(sectionHeading(config))
 
     val limit = config.number("limit")?.toInt() ?: DEFAULT_LIMIT
     val included = config.stringList("include_entities").filter { it in states }
     val excluded = config.stringList("exclude_entities")
-    val predictedEntities = predicted.orEmpty().filter { entityId ->
+    val predictedEntities = (predicted as? CommonControls.Predicted)?.entities.orEmpty().filter { entityId ->
         entityId in states &&
             registries.entities[entityId]?.hidden != true &&
             entityId !in excluded &&
@@ -45,10 +37,22 @@ fun HassSnapshot.commonControlsSection(config: JsonObject, predicted: List<Strin
     return when {
         // Pinned entities already fill the section
         included.size >= limit -> gridSection(cards + included.take(limit).map(::commonControlTile))
-        "usage_prediction" !in this.config.components ->
+        "usage_prediction" !in this.config.components || predicted == CommonControls.NotLoaded ->
             disabledMessage(cards, "ui.panel.lovelace.strategy.common_controls.not_loaded", config)
+        // Upstream's prediction call rejects, which fails the section's generation
+        predicted is CommonControls.Failed -> strategyError("section", predicted.message)
         entities.isEmpty() -> disabledMessage(cards, "ui.panel.lovelace.strategy.common_controls.no_data", config)
         else -> gridSection(cards + entities.map(::commonControlTile))
+    }
+}
+
+/** The section's heading: the configured heading card, else one for its title. */
+private fun sectionHeading(config: JsonObject): JsonObject? = config.obj("heading") ?: config.string("title")?.let {
+    buildJsonObject {
+        put("type", "heading")
+        put("heading", it)
+        config["icon"]?.let { icon -> put("icon", icon) }
+        config["title_visibilty"]?.let { visibility -> put("visibility", visibility) }
     }
 }
 

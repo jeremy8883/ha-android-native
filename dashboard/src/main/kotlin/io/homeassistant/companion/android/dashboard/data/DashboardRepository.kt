@@ -8,6 +8,7 @@ import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.strategy.StrategyData
 import javax.inject.Inject
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
@@ -53,9 +54,14 @@ class DashboardRepository @Inject constructor(private val sessions: ServerSessio
         }
     }
 
-    /** User, server config and panels. */
+    /** User, server config and panels, kept up to date as integrations load. */
+    @OptIn(FlowPreview::class)
     fun serverInfo(): Flow<Loadable<ServerInfo>> = sessions.withServer { session ->
-        session.parsed(name = "server-info", parse = ::parseServerInfo) {
+        // As upstream's `config`, loaded again when an integration loads or the core config changes (for example
+        // while Home Assistant starts)
+        val refreshes = merge(session.events("component_loaded"), session.events("core_config_updated"))
+            .debounce(SERVER_INFO_REFETCH_DEBOUNCE)
+        session.parsed(name = "server-info", refreshes = refreshes, parse = ::parseServerInfo) {
             bundle(
                 USER to session.request("auth/current_user"),
                 CONFIG to session.request("get_config"),
@@ -70,26 +76,30 @@ class DashboardRepository @Inject constructor(private val sessions: ServerSessio
     fun strategyData(components: Set<String>): Flow<Loadable<StrategyData>> = sessions.withServer { session ->
         session.parsed(name = "strategy-data", parse = ::parseStrategyData) {
             bundle(
-                // As upstream (home-overview-view-strategy.ts), energy preferences the server refuses (not
-                // configured) mean no energy data
+                // As upstream (home-overview-view-strategy.ts), the server's "No prefs" (energy not configured)
+                // means no energy data; any other failure is one
                 ENERGY_PREFS to if ("energy" in components) {
-                    session.request("energy/get_prefs").absentWhenRefused()
+                    session.request("energy/get_prefs").absentWhenNotFound()
                 } else {
                     Fetched.Success(null)
                 },
-                // The energy panel reads its settings that way too (ha-panel-energy.ts _loadSystemData)
+                // The energy panel's settings (ha-panel-energy.ts _loadSystemData): none saved is a null value
                 ENERGY_SETTINGS to if ("energy" in components) {
-                    session.request("frontend/get_system_data", mapOf("key" to "energy")).absentWhenRefused()
-                } else {
-                    Fetched.Success(null)
-                },
-                // Upstream fails the common controls section when the prediction is refused; it is left out instead
-                COMMON_CONTROLS to if ("usage_prediction" in components) {
-                    session.request("usage_prediction/common_control").absentWhenRefused()
+                    session.request("frontend/get_system_data", mapOf("key" to "energy"))
                 } else {
                     Fetched.Success(null)
                 },
             )
+        }
+    }
+
+    /**
+     * The entities `usage_prediction/common_control` predicts, for loaded `usage_prediction` only, as upstream's
+     * common controls section asks. A failure is shown as such; the last prediction stays meanwhile.
+     */
+    fun commonControls(): Flow<Loadable<List<String>>> = sessions.withServer { session ->
+        session.parsed(name = "common-controls", parse = ::parseCommonControls) {
+            bundle(COMMON_CONTROLS to session.request("usage_prediction/common_control"))
         }
     }
 
@@ -162,4 +172,5 @@ private val REGISTRY_EVENTS = listOf(
     "floor_registry_updated",
 )
 private val REGISTRY_REFETCH_DEBOUNCE = 500.milliseconds
+private val SERVER_INFO_REFETCH_DEBOUNCE = 1.seconds
 private const val EVENT_LOVELACE_UPDATED = "lovelace_updated"

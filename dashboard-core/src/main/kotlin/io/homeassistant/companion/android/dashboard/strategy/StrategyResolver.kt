@@ -57,7 +57,7 @@ fun HassSnapshot.resolveStrategyView(view: ViewConfig, data: StrategyData = Stra
         val generated = try {
             generate()
         } catch (e: IllegalArgumentException) {
-            errorContent("view", e.message)
+            strategyError("view", e.message)
         }
         ViewConfig(JsonObject(view.json.filterKeys { it != KEY_STRATEGY } + generated))
     }
@@ -94,12 +94,13 @@ private fun HassSnapshot.expandSection(section: JsonObject, data: StrategyData):
     val generated = try {
         commonControlsSection(strategy, data.commonControls)
     } catch (e: IllegalArgumentException) {
-        errorContent("section", e.message)
+        strategyError("section", e.message)
     }
     return JsonObject(section.filterKeys { it != KEY_STRATEGY } + generated)
 }
 
-private fun errorContent(level: String, message: String?) = buildJsonObject {
+/** Port of the `renderError` of `generateLovelace*Strategy`: a markdown card with the error. */
+internal fun strategyError(level: String, message: String?) = buildJsonObject {
     putJsonArray("cards") {
         addJsonObject {
             put("type", "markdown")

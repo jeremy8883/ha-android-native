@@ -137,6 +137,12 @@ internal inline fun <reified J : JsonElement> Fetched<JsonElement?>.expect(): Fe
         ?: Fetched.Failure(LoadError.UnexpectedResponse(J::class.simpleName.orEmpty()))
 }
 
+/** The server's "not found" as no result, for data upstream treats as absent then (such as unset preferences). */
+internal fun Fetched<JsonElement?>.absentWhenNotFound(): Fetched<JsonElement?> =
+    if (((this as? Fetched.Failure)?.error as? LoadError.Server)?.code == NOT_FOUND) Fetched.Success(null) else this
+
+private const val NOT_FOUND = "not_found"
+
 /** A refusal by the server as no result, for data upstream treats as absent when refused. */
 internal fun Fetched<JsonElement?>.absentWhenRefused(): Fetched<JsonElement?> =
     if ((this as? Fetched.Failure)?.error is LoadError.Server) Fetched.Success(null) else this

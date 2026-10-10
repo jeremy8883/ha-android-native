@@ -6,6 +6,7 @@ import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -153,22 +154,31 @@ class KeptData<T>(
         }
         var snapshotOf: Int? = null
         var current: T? = null
+        // Messages that couldn't start the value while its first one was due, in a row
+        var unusable = 0
         for (input in inputs) {
             when (input) {
                 is SubscriptionInput.Event -> {
                     val connectionNumber = connection?.value?.connections
                     val isSnapshot = current == null || snapshotOf != connectionNumber
-                    reduce(if (isSnapshot) null else current, input.event)?.let { reduced ->
+                    val reduced = reduce(if (isSnapshot) null else current, input.event)
+                    if (reduced != null) {
+                        unusable = 0
                         snapshotOf = connectionNumber
                         current = reduced
                         keeper.put(reduced)
                         shown.show(Loadable.Ready(reduced))
+                    } else if (isSnapshot && ++unusable >= MAX_UNUSABLE_FIRST_MESSAGES) {
+                        // A subscription that joined late never sends its first message: start a new one
+                        Timber.w("No usable first message from $description, subscribing again")
+                        break
                     }
                 }
                 // The snapshot of the new connection is on its way
                 SubscriptionInput.Reconnected -> shown.markRefreshing()
             }
         }
+        coroutineContext.cancelChildren()
         current != null
     }
 
@@ -210,3 +220,6 @@ private fun StateFlow<WebSocketConnectionStatus>.reconnections(): Flow<Int> =
 private val INITIAL_RETRY_DELAY = 1.seconds
 private val MAX_RETRY_DELAY = 30.seconds
 private const val MAX_DOUBLINGS = 5
+
+/** How many messages a subscription may send before a usable first one, before it is started again. */
+private const val MAX_UNUSABLE_FIRST_MESSAGES = 3

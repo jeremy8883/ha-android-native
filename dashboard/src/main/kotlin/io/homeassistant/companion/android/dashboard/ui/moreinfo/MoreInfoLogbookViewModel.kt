@@ -25,12 +25,13 @@ import kotlinx.serialization.json.JsonArray
 
 /**
  * What the details show of an entity's logbook: its [entries], newest first, with the [users] list (`null` when
- * it isn't known: for users other than admins, or while it loads) and the runs' [traces].
+ * it isn't known: for users other than admins, or while it loads) and the runs' [traces] (`null` while not known,
+ * which leaves the trace links out).
  */
 internal data class EntityLogbook(
     val entries: List<LogbookEntry>,
     val users: JsonArray?,
-    val traces: Map<String, TraceContext>,
+    val traces: Map<String, TraceContext>?,
 )
 
 /** Which logbook to load: [entityId]'s, with what only admins may read when [isAdmin]. */
@@ -58,7 +59,7 @@ internal class MoreInfoLogbookViewModel @Inject constructor(private val reposito
         adminOnly(request.isAdmin) { repository.users() },
         adminOnly(request.isAdmin) { repository.traceContexts() },
     ) { entries, users, traces ->
-        entries.map { EntityLogbook(it, users.valueOrNull, traces.valueOrNull.orEmpty()) }
+        entries.map { EntityLogbook(it, users.valueOrNull, traces.valueOrNull) }
     }
 
     private fun <T> adminOnly(isAdmin: Boolean, load: () -> Flow<Loadable<T>>): Flow<Loadable<T>> =

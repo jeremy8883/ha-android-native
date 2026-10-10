@@ -19,6 +19,7 @@ import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
+import io.homeassistant.companion.android.dashboard.strategy.CommonControls
 import io.homeassistant.companion.android.dashboard.strategy.StrategyData
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
@@ -50,7 +51,8 @@ class GoldenFixture(variant: String) {
         StrategyData(
             energyPrefs = result("energy/get_prefs") as? JsonObject,
             commonControls = (result("usage_prediction/common_control") as? JsonObject)
-                ?.get("entities")?.jsonArray?.mapNotNull { it.stringOrNull },
+                ?.get("entities")?.jsonArray?.mapNotNull { it.stringOrNull }
+                ?.let { CommonControls.Predicted(it) } ?: CommonControls.NotLoaded,
         )
     }
 
