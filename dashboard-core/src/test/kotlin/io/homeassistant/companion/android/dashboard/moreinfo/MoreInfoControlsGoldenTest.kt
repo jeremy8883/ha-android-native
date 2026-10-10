@@ -33,6 +33,8 @@ class MoreInfoControlsGoldenTest {
     @TestFactory
     fun `Given captured entities when deriving the details then the state header matches ha-more-info-state-header`() = perVariant { hass, state, captured ->
         val model = hass.moreInfoModel(state.entityId, Instant.EPOCH)!!
+        // Upstream's other domains lead with the entity's row, where the details show the same state header
+        if (state.domain !in NEW_MORE_INFO) return@perVariant
         // Domains whose controls show their own readings have no state header
         assertEquals(captured.obj("main")!!.string("state"), model.state.takeIf { model.stateHeader })
     }
@@ -153,7 +155,7 @@ class MoreInfoControlsGoldenTest {
             }
         }
         val toggle = hass.lightMoreInfo(state)?.toggle ?: hass.positionMoreInfo(state)?.toggle ?: hass.fanMoreInfo(state)?.toggle
-            ?: hass.lockMoreInfo(state)?.toggle
+            ?: hass.lockMoreInfo(state)?.toggle ?: hass.sirenMoreInfo(state)?.toggle
             ?: hass.moreInfoModel(state.entityId, Instant.EPOCH)?.stateToggle
         val actual = toggle?.let {
             if (it.buttons) {
@@ -287,6 +289,12 @@ class MoreInfoControlsGoldenTest {
         }
 
     private companion object {
+        /** `DOMAINS_WITH_NEW_MORE_INFO` (src/dialogs/more-info/const.ts): the dialogs with the state header. */
+        val NEW_MORE_INFO = setOf(
+            "alarm_control_panel", "cover", "climate", "conversation", "fan", "humidifier", "input_boolean",
+            "lawn_mower", "light", "lock", "siren", "script", "switch", "vacuum", "valve", "water_heater", "weather",
+            "media_player",
+        )
         const val LIGHT = "light"
         const val PERCENT = 100.0
         const val RGB_MAX = 255.0

@@ -21,8 +21,11 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HARadius
+import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.moreinfo.StatusIcon
@@ -53,6 +56,22 @@ internal fun ControlButton(
         contentAlignment = Alignment.Center,
     ) {
         Text(label, style = HATextStyle.Body, color = colors.colorTextPrimary)
+    }
+}
+
+/** Port of `ha-control-button` with an icon: a rounded square on a quiet tint. */
+@Composable
+internal fun ControlButtonIcon(icon: String, label: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
+    val colors = LocalHAColorScheme.current
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(HARadius.XL))
+            .background(colors.colorFillDisabledLoudResting.copy(alpha = TINT_ALPHA))
+            .clickable(role = Role.Button, onClick = onClick)
+            .semantics { contentDescription = label },
+        contentAlignment = Alignment.Center,
+    ) {
+        DashboardIcon(icon, colors.colorTextPrimary, Modifier.size(HASize.X2L))
     }
 }
 

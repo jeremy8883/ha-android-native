@@ -866,6 +866,11 @@ const CONTROL_ENTITIES = [
   "vacuum.demo_vacuum_1_first_floor",
   "vacuum.demo_vacuum_3_third_floor",
   "vacuum.demo_vacuum_4_fourth_floor",
+  "siren.siren",
+  "siren.siren_with_all_features",
+  "counter.coffee_cups",
+  "automation.bed_light_schedule",
+  "timer.laundry",
   "alarm_control_panel.security",
   "media_player.living_room_tv",
   "media_player.kitchen_speaker",
@@ -1024,6 +1029,13 @@ async function captureMoreInfoControls(entityIds) {
           slider(root.querySelector(`ha-state-control-${name}`)?.shadowRoot?.querySelector("ha-control-slider")),
         ])
       ),
+      actions: [...root.querySelectorAll(".actions ha-button")].map((b) => ({ text: text(b), disabled: b.disabled ?? false })),
+      lastTriggered: root.querySelector("ha-relative-time") ? text(root.querySelector(".flex")) : null,
+      duration: (() => {
+        const d = root.querySelector("ha-duration-input");
+        return d ? (d.data ?? null) : null;
+      })(),
+      moreControls: el.localName === "more-info-siren" ? text(root.querySelector(".controls ha-button")) : undefined,
       vacuum: el.localName === "more-info-vacuum" ? {
         battery: text(root.querySelector("ha-more-info-state-header .battery")),
         batteryIcon: root.querySelector("ha-more-info-state-header .battery ha-icon")?.icon ?? null,
@@ -1228,6 +1240,16 @@ async function captureMoreInfoControls(entityIds) {
         off: { ...stateObj, state: "off", attributes: off },
         unavailable: { ...stateObj, state: "unavailable", attributes: { ...stateObj.attributes, restored: true } },
       };
+      if (domain === "timer") {
+        const a = stateObj.attributes;
+        shown.active = { ...stateObj, state: "active", attributes: { ...a, remaining: "0:42:13", finishes_at: new Date(Date.now() + 2533000).toISOString() } };
+        shown.paused = { ...stateObj, state: "paused", attributes: { ...a, remaining: "0:42:13" } };
+      }
+      if (domain === "counter") {
+        const a = stateObj.attributes;
+        shown.at_max = { ...stateObj, state: "5", attributes: { ...a, maximum: 5 } };
+        shown.at_min = { ...stateObj, state: "-2", attributes: { ...a, minimum: -2 } };
+      }
       if (domain === "vacuum") {
         for (const name of ["cleaning", "returning", "paused", "error", "idle"]) {
           shown[name] = { ...stateObj, state: name };
@@ -1331,6 +1353,12 @@ async function captureMoreInfoControls(entityIds) {
     if (domain === "climate") out[entityId].as_is.calls = await climateCalls(g.clone(current));
     if (domain === "water_heater") {
       out[entityId].as_is.calls = await dialCalls(g.clone(current), "ha-state-control-water_heater-temperature", 50);
+    }
+    if (["timer", "counter", "automation", "siren"].includes(domain)) {
+      for (const name of Object.keys(out[entityId])) {
+        if (name === "unavailable") continue;
+        out[entityId][name].calls = await actionCalls(g.clone(out[entityId][name].stateObj));
+      }
     }
     if (domain === "vacuum") {
       for (const name of ["as_is", "cleaning"]) {
@@ -1465,6 +1493,24 @@ async function captureMoreInfoControls(entityIds) {
       );
     }
     return recorded;
+  }
+
+  /** The calls of the plain action buttons under a dialog (counter, timer, automation), and a tall switch. */
+  async function actionCalls(stateObj) {
+    const recorded = [];
+    const record = async (control, label, act) =>
+      recorded.push({ control, label, detail: null, calls: await recordCalls(stateObj, act, 400) });
+    for (let index = 0; index < 5; index++) {
+      await record("action", `action ${index}`, (r) => r.querySelectorAll(".actions ha-button")[index]?.click());
+    }
+    await record("toggle", "switch", (r) => {
+      const control = r.querySelector("ha-state-control-toggle")?.shadowRoot?.querySelector("ha-control-switch");
+      if (control) {
+        control.checked = !control.checked;
+        control.dispatchEvent(new Event("change"));
+      }
+    });
+    return recorded.filter((r) => r.calls.length > 0);
   }
 
   /** The calls of a vacuum's controls: each button, and the fan speed menu. */

@@ -325,6 +325,9 @@
     "twice_daily": "Twice daily"
    }
   },
+  "common": {
+   "close": "Close"
+  },
   "components": {
    "date-range-picker": {
     "end_date": "End date",
@@ -417,6 +420,15 @@
      "zone": "Zone"
     },
     "view_trace": "View trace"
+   },
+   "relative_time": {
+    "never": "Never"
+   },
+   "siren": {
+    "duration": "Duration",
+    "more_controls": "More controls",
+    "tone": "Tone",
+    "volume": "Volume"
    },
    "statistics_charts": {
     "loading_statistics": "Loading statistics…",

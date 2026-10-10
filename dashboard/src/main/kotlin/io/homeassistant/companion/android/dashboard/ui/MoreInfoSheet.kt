@@ -65,6 +65,7 @@ import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLogbook
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoMediaPlayer
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoPosition
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoVacuum
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.SimpleDomainControls
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.SingleDialControls
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -152,6 +153,7 @@ private fun DomainControls(
     model.alarm?.let { MoreInfoAlarm(it, onAction) }
     model.mediaPlayer?.let { MoreInfoMediaPlayer(it, now, onAction) }
     model.vacuum?.let { MoreInfoVacuum(it, onAction) }
+    SimpleDomainControls(model, state, onAction)
     model.waterHeater?.let { heater ->
         SingleDialControls(
             current = heater.current,

@@ -31,6 +31,9 @@ SUBTREES = [
     "ui.components.statistics_charts",
     "ui.components.history_charts",
     "ui.components.logbook",
+    "ui.components.relative_time",
+    "ui.components.siren",
+    "ui.common.close",
 ]
 
 OUT_DIR = Path(__file__).resolve().parents[2] / "dashboard-core/src/main/resources/translations"

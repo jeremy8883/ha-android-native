@@ -1,6 +1,1804 @@
 {
-  "capturedAt": "2026-10-10T06:09:32.161Z",
+  "capturedAt": "2026-10-10T06:18:38.380Z",
   "entities": {
+    "siren.siren": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "siren.siren",
+          "state": "on",
+          "attributes": {
+            "friendly_name": "Siren",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4HEKT3JRBFXSHMQD2YFVFM6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.170Z",
+          "last_updated": "2026-10-09T23:05:17.170Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "On",
+          "toggle": {
+            "switch": {
+              "checked": true,
+              "showHandle": true,
+              "disabled": false,
+              "label": "Toggle",
+              "onColor": "var(--state-siren-on-color, var(--state-siren-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-siren-off-color, var(--state-siren-inactive-color, var(--state-inactive-color)))"
+            },
+            "icons": [],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [],
+          "lastTriggered": null,
+          "duration": null,
+          "moreControls": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "toggle",
+            "label": "switch",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "siren",
+                "service": "turn_off",
+                "data": {
+                  "entity_id": "siren.siren"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "siren.siren",
+          "state": "off",
+          "attributes": {
+            "friendly_name": "Siren",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4HEKT3JRBFXSHMQD2YFVFM6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.170Z",
+          "last_updated": "2026-10-09T23:05:17.170Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Off",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Toggle",
+              "onColor": "var(--state-siren-on-color, var(--state-siren-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-siren-off-color, var(--state-siren-inactive-color, var(--state-inactive-color)))"
+            },
+            "icons": [],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [],
+          "lastTriggered": null,
+          "duration": null,
+          "moreControls": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "toggle",
+            "label": "switch",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "siren",
+                "service": "turn_on",
+                "data": {
+                  "entity_id": "siren.siren"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "siren.siren",
+          "state": "unavailable",
+          "attributes": {
+            "friendly_name": "Siren",
+            "supported_features": 3,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3JRBFXSHMQD2YFVFM6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.170Z",
+          "last_updated": "2026-10-09T23:05:17.170Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Unavailable",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": true,
+              "label": "Toggle",
+              "onColor": "var(--state-siren-on-color, var(--state-siren-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-siren-off-color, var(--state-siren-inactive-color, var(--state-inactive-color)))"
+            },
+            "icons": [],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [],
+          "lastTriggered": null,
+          "duration": null,
+          "moreControls": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "siren.siren_with_all_features": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "siren.siren_with_all_features",
+          "state": "on",
+          "attributes": {
+            "available_tones": [
+              "fire",
+              "alarm"
+            ],
+            "friendly_name": "Siren with all features",
+            "supported_features": 31
+          },
+          "context": {
+            "id": "01M4HEKT3KTXDMGM5QK4BEXQQJ",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.171Z",
+          "last_updated": "2026-10-09T23:05:17.171Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "On",
+          "toggle": {
+            "switch": {
+              "checked": true,
+              "showHandle": true,
+              "disabled": false,
+              "label": "Toggle",
+              "onColor": "var(--state-siren-on-color, var(--state-siren-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-siren-off-color, var(--state-siren-inactive-color, var(--state-inactive-color)))"
+            },
+            "icons": [],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [],
+          "lastTriggered": null,
+          "duration": null,
+          "moreControls": "More controls",
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "toggle",
+            "label": "switch",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "siren",
+                "service": "turn_off",
+                "data": {
+                  "entity_id": "siren.siren_with_all_features"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "siren.siren_with_all_features",
+          "state": "off",
+          "attributes": {
+            "available_tones": [
+              "fire",
+              "alarm"
+            ],
+            "friendly_name": "Siren with all features",
+            "supported_features": 31
+          },
+          "context": {
+            "id": "01M4HEKT3KTXDMGM5QK4BEXQQJ",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.171Z",
+          "last_updated": "2026-10-09T23:05:17.171Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Off",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Toggle",
+              "onColor": "var(--state-siren-on-color, var(--state-siren-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-siren-off-color, var(--state-siren-inactive-color, var(--state-inactive-color)))"
+            },
+            "icons": [],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [],
+          "lastTriggered": null,
+          "duration": null,
+          "moreControls": "More controls",
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "toggle",
+            "label": "switch",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "siren",
+                "service": "turn_on",
+                "data": {
+                  "entity_id": "siren.siren_with_all_features"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "siren.siren_with_all_features",
+          "state": "unavailable",
+          "attributes": {
+            "available_tones": [
+              "fire",
+              "alarm"
+            ],
+            "friendly_name": "Siren with all features",
+            "supported_features": 31,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3KTXDMGM5QK4BEXQQJ",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.171Z",
+          "last_updated": "2026-10-09T23:05:17.171Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Unavailable",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": true,
+              "label": "Toggle",
+              "onColor": "var(--state-siren-on-color, var(--state-siren-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-siren-off-color, var(--state-siren-inactive-color, var(--state-inactive-color)))"
+            },
+            "icons": [],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [],
+          "lastTriggered": null,
+          "duration": null,
+          "moreControls": "More controls",
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "counter.coffee_cups": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "counter.coffee_cups",
+          "state": "0",
+          "attributes": {
+            "editable": false,
+            "initial": 0,
+            "step": 1,
+            "icon": "mdi:coffee",
+            "friendly_name": "Coffee cups"
+          },
+          "context": {
+            "id": "01M4HEKSE4VTST84W829K6FJ8Q",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.484Z",
+          "last_updated": "2026-10-09T23:05:16.484Z"
+        },
+        "entry": {
+          "area_id": "kitchen",
+          "categories": {},
+          "config_entry_id": null,
+          "config_subentry_id": null,
+          "created_at": 1791433961.591354,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "counter.coffee_cups",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "f759f657d8b1246e5d40bccaf041d974",
+          "labels": [],
+          "modified_at": 1791433963.413805,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Coffee cups",
+          "platform": "counter",
+          "translation_key": null,
+          "unique_id": "coffee_cups",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": "mdi:coffee"
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Increment",
+              "disabled": false
+            },
+            {
+              "text": "Decrement",
+              "disabled": false
+            },
+            {
+              "text": "Reset",
+              "disabled": false
+            }
+          ],
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "counter",
+                "service": "increment",
+                "data": {
+                  "entity_id": "counter.coffee_cups"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "counter",
+                "service": "decrement",
+                "data": {
+                  "entity_id": "counter.coffee_cups"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 2",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "counter",
+                "service": "reset",
+                "data": {
+                  "entity_id": "counter.coffee_cups"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "counter.coffee_cups",
+          "state": "off",
+          "attributes": {
+            "editable": false,
+            "initial": 0,
+            "step": 1,
+            "icon": "mdi:coffee",
+            "friendly_name": "Coffee cups"
+          },
+          "context": {
+            "id": "01M4HEKSE4VTST84W829K6FJ8Q",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.484Z",
+          "last_updated": "2026-10-09T23:05:16.484Z"
+        },
+        "entry": {
+          "area_id": "kitchen",
+          "categories": {},
+          "config_entry_id": null,
+          "config_subentry_id": null,
+          "created_at": 1791433961.591354,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "counter.coffee_cups",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "f759f657d8b1246e5d40bccaf041d974",
+          "labels": [],
+          "modified_at": 1791433963.413805,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Coffee cups",
+          "platform": "counter",
+          "translation_key": null,
+          "unique_id": "coffee_cups",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": "mdi:coffee"
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Increment",
+              "disabled": false
+            },
+            {
+              "text": "Decrement",
+              "disabled": false
+            },
+            {
+              "text": "Reset",
+              "disabled": false
+            }
+          ],
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "counter",
+                "service": "increment",
+                "data": {
+                  "entity_id": "counter.coffee_cups"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "counter",
+                "service": "decrement",
+                "data": {
+                  "entity_id": "counter.coffee_cups"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 2",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "counter",
+                "service": "reset",
+                "data": {
+                  "entity_id": "counter.coffee_cups"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "counter.coffee_cups",
+          "state": "unavailable",
+          "attributes": {
+            "editable": false,
+            "initial": 0,
+            "step": 1,
+            "icon": "mdi:coffee",
+            "friendly_name": "Coffee cups",
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKSE4VTST84W829K6FJ8Q",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.484Z",
+          "last_updated": "2026-10-09T23:05:16.484Z"
+        },
+        "entry": {
+          "area_id": "kitchen",
+          "categories": {},
+          "config_entry_id": null,
+          "config_subentry_id": null,
+          "created_at": 1791433961.591354,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "counter.coffee_cups",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "f759f657d8b1246e5d40bccaf041d974",
+          "labels": [],
+          "modified_at": 1791433963.413805,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Coffee cups",
+          "platform": "counter",
+          "translation_key": null,
+          "unique_id": "coffee_cups",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": "mdi:coffee"
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Increment",
+              "disabled": true
+            },
+            {
+              "text": "Decrement",
+              "disabled": true
+            },
+            {
+              "text": "Reset",
+              "disabled": true
+            }
+          ],
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "at_max": {
+        "stateObj": {
+          "entity_id": "counter.coffee_cups",
+          "state": "5",
+          "attributes": {
+            "editable": false,
+            "initial": 0,
+            "step": 1,
+            "icon": "mdi:coffee",
+            "friendly_name": "Coffee cups",
+            "maximum": 5
+          },
+          "context": {
+            "id": "01M4HEKSE4VTST84W829K6FJ8Q",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.484Z",
+          "last_updated": "2026-10-09T23:05:16.484Z"
+        },
+        "entry": {
+          "area_id": "kitchen",
+          "categories": {},
+          "config_entry_id": null,
+          "config_subentry_id": null,
+          "created_at": 1791433961.591354,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "counter.coffee_cups",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "f759f657d8b1246e5d40bccaf041d974",
+          "labels": [],
+          "modified_at": 1791433963.413805,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Coffee cups",
+          "platform": "counter",
+          "translation_key": null,
+          "unique_id": "coffee_cups",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": "mdi:coffee"
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Increment",
+              "disabled": true
+            },
+            {
+              "text": "Decrement",
+              "disabled": false
+            },
+            {
+              "text": "Reset",
+              "disabled": false
+            }
+          ],
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "counter",
+                "service": "decrement",
+                "data": {
+                  "entity_id": "counter.coffee_cups"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 2",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "counter",
+                "service": "reset",
+                "data": {
+                  "entity_id": "counter.coffee_cups"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "at_min": {
+        "stateObj": {
+          "entity_id": "counter.coffee_cups",
+          "state": "-2",
+          "attributes": {
+            "editable": false,
+            "initial": 0,
+            "step": 1,
+            "icon": "mdi:coffee",
+            "friendly_name": "Coffee cups",
+            "minimum": -2
+          },
+          "context": {
+            "id": "01M4HEKSE4VTST84W829K6FJ8Q",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.484Z",
+          "last_updated": "2026-10-09T23:05:16.484Z"
+        },
+        "entry": {
+          "area_id": "kitchen",
+          "categories": {},
+          "config_entry_id": null,
+          "config_subentry_id": null,
+          "created_at": 1791433961.591354,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "counter.coffee_cups",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "f759f657d8b1246e5d40bccaf041d974",
+          "labels": [],
+          "modified_at": 1791433963.413805,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Coffee cups",
+          "platform": "counter",
+          "translation_key": null,
+          "unique_id": "coffee_cups",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": "mdi:coffee"
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Increment",
+              "disabled": false
+            },
+            {
+              "text": "Decrement",
+              "disabled": true
+            },
+            {
+              "text": "Reset",
+              "disabled": false
+            }
+          ],
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "counter",
+                "service": "increment",
+                "data": {
+                  "entity_id": "counter.coffee_cups"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 2",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "counter",
+                "service": "reset",
+                "data": {
+                  "entity_id": "counter.coffee_cups"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "automation.bed_light_schedule": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "automation.bed_light_schedule",
+          "state": "on",
+          "attributes": {
+            "id": "bed_light_schedule",
+            "last_triggered": "2026-10-10T06:00:00.472973+00:00",
+            "mode": "single",
+            "current": 0,
+            "friendly_name": "Bed light schedule"
+          },
+          "context": {
+            "id": "01M4J6B66MVDDSJ1KV0YC07HY7",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.143Z",
+          "last_updated": "2026-10-10T06:00:00.482Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": null,
+          "config_subentry_id": null,
+          "created_at": 1791587117.143561,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "automation.bed_light_schedule",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "2d730dc2392ddea679e43da1715ed32c",
+          "labels": [],
+          "modified_at": 1791587118.002064,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Bed light schedule",
+          "platform": "automation",
+          "translation_key": null,
+          "unique_id": "bed_light_schedule",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "id": "bed_light_schedule"
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Run actions",
+              "disabled": false
+            }
+          ],
+          "lastTriggered": "Last triggered: 18 minutes ago",
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "automation",
+                "service": "trigger",
+                "data": {
+                  "entity_id": "automation.bed_light_schedule",
+                  "skip_condition": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "automation.bed_light_schedule",
+          "state": "off",
+          "attributes": {
+            "id": "bed_light_schedule",
+            "last_triggered": "2026-10-10T06:00:00.472973+00:00",
+            "mode": "single",
+            "current": 0,
+            "friendly_name": "Bed light schedule"
+          },
+          "context": {
+            "id": "01M4J6B66MVDDSJ1KV0YC07HY7",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.143Z",
+          "last_updated": "2026-10-10T06:00:00.482Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": null,
+          "config_subentry_id": null,
+          "created_at": 1791587117.143561,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "automation.bed_light_schedule",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "2d730dc2392ddea679e43da1715ed32c",
+          "labels": [],
+          "modified_at": 1791587118.002064,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Bed light schedule",
+          "platform": "automation",
+          "translation_key": null,
+          "unique_id": "bed_light_schedule",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "id": "bed_light_schedule"
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Run actions",
+              "disabled": false
+            }
+          ],
+          "lastTriggered": "Last triggered: 18 minutes ago",
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "automation",
+                "service": "trigger",
+                "data": {
+                  "entity_id": "automation.bed_light_schedule",
+                  "skip_condition": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "automation.bed_light_schedule",
+          "state": "unavailable",
+          "attributes": {
+            "id": "bed_light_schedule",
+            "last_triggered": "2026-10-10T06:00:00.472973+00:00",
+            "mode": "single",
+            "current": 0,
+            "friendly_name": "Bed light schedule",
+            "restored": true
+          },
+          "context": {
+            "id": "01M4J6B66MVDDSJ1KV0YC07HY7",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.143Z",
+          "last_updated": "2026-10-10T06:00:00.482Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": null,
+          "config_subentry_id": null,
+          "created_at": 1791587117.143561,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "automation.bed_light_schedule",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "2d730dc2392ddea679e43da1715ed32c",
+          "labels": [],
+          "modified_at": 1791587118.002064,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Bed light schedule",
+          "platform": "automation",
+          "translation_key": null,
+          "unique_id": "bed_light_schedule",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "id": "bed_light_schedule"
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Run actions",
+              "disabled": true
+            }
+          ],
+          "lastTriggered": "Last triggered: 18 minutes ago",
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "timer.laundry": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "timer.laundry",
+          "state": "idle",
+          "attributes": {
+            "duration": "1:00:00",
+            "editable": false,
+            "last_transition": null,
+            "friendly_name": "Laundry"
+          },
+          "context": {
+            "id": "01M4HEKS345GMRBZPV4J8WNRQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.132Z",
+          "last_updated": "2026-10-09T23:05:16.132Z"
+        },
+        "entry": {
+          "area_id": "garage",
+          "categories": {},
+          "config_entry_id": null,
+          "config_subentry_id": null,
+          "created_at": 1791433961.128127,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "timer.laundry",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "de0224ac38f4fc4f99d2dfdf978e31ef",
+          "labels": [],
+          "modified_at": 1791433963.429239,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Laundry",
+          "platform": "timer",
+          "translation_key": null,
+          "unique_id": "laundry",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Start",
+              "disabled": false
+            }
+          ],
+          "lastTriggered": null,
+          "duration": {
+            "hours": 1,
+            "minutes": 0,
+            "seconds": 0,
+            "milliseconds": 0
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "timer",
+                "service": "start",
+                "data": {
+                  "entity_id": "timer.laundry",
+                  "duration": {
+                    "hours": 1,
+                    "minutes": 0,
+                    "seconds": 0,
+                    "milliseconds": 0
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "timer.laundry",
+          "state": "off",
+          "attributes": {
+            "duration": "1:00:00",
+            "editable": false,
+            "last_transition": null,
+            "friendly_name": "Laundry"
+          },
+          "context": {
+            "id": "01M4HEKS345GMRBZPV4J8WNRQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.132Z",
+          "last_updated": "2026-10-09T23:05:16.132Z"
+        },
+        "entry": {
+          "area_id": "garage",
+          "categories": {},
+          "config_entry_id": null,
+          "config_subentry_id": null,
+          "created_at": 1791433961.128127,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "timer.laundry",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "de0224ac38f4fc4f99d2dfdf978e31ef",
+          "labels": [],
+          "modified_at": 1791433963.429239,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Laundry",
+          "platform": "timer",
+          "translation_key": null,
+          "unique_id": "laundry",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [],
+          "lastTriggered": null,
+          "duration": {
+            "hours": 1,
+            "minutes": 0,
+            "seconds": 0,
+            "milliseconds": 0
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "timer.laundry",
+          "state": "unavailable",
+          "attributes": {
+            "duration": "1:00:00",
+            "editable": false,
+            "last_transition": null,
+            "friendly_name": "Laundry",
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKS345GMRBZPV4J8WNRQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.132Z",
+          "last_updated": "2026-10-09T23:05:16.132Z"
+        },
+        "entry": {
+          "area_id": "garage",
+          "categories": {},
+          "config_entry_id": null,
+          "config_subentry_id": null,
+          "created_at": 1791433961.128127,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "timer.laundry",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "de0224ac38f4fc4f99d2dfdf978e31ef",
+          "labels": [],
+          "modified_at": 1791433963.429239,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Laundry",
+          "platform": "timer",
+          "translation_key": null,
+          "unique_id": "laundry",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [],
+          "lastTriggered": null,
+          "duration": {
+            "hours": 1,
+            "minutes": 0,
+            "seconds": 0,
+            "milliseconds": 0
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "active": {
+        "stateObj": {
+          "entity_id": "timer.laundry",
+          "state": "active",
+          "attributes": {
+            "duration": "1:00:00",
+            "editable": false,
+            "last_transition": null,
+            "friendly_name": "Laundry",
+            "remaining": "0:42:13",
+            "finishes_at": "2026-10-10T07:00:33.032Z"
+          },
+          "context": {
+            "id": "01M4HEKS345GMRBZPV4J8WNRQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.132Z",
+          "last_updated": "2026-10-09T23:05:16.132Z"
+        },
+        "entry": {
+          "area_id": "garage",
+          "categories": {},
+          "config_entry_id": null,
+          "config_subentry_id": null,
+          "created_at": 1791433961.128127,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "timer.laundry",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "de0224ac38f4fc4f99d2dfdf978e31ef",
+          "labels": [],
+          "modified_at": 1791433963.429239,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Laundry",
+          "platform": "timer",
+          "translation_key": null,
+          "unique_id": "laundry",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Set",
+              "disabled": false
+            },
+            {
+              "text": "Pause",
+              "disabled": false
+            },
+            {
+              "text": "Cancel",
+              "disabled": false
+            },
+            {
+              "text": "Finish",
+              "disabled": false
+            }
+          ],
+          "lastTriggered": null,
+          "duration": {
+            "hours": 1,
+            "minutes": 0,
+            "seconds": 0,
+            "milliseconds": 0
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "timer",
+                "service": "start",
+                "data": {
+                  "entity_id": "timer.laundry",
+                  "duration": {
+                    "hours": 1,
+                    "minutes": 0,
+                    "seconds": 0,
+                    "milliseconds": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "timer",
+                "service": "pause",
+                "data": {
+                  "entity_id": "timer.laundry"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 2",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "timer",
+                "service": "cancel",
+                "data": {
+                  "entity_id": "timer.laundry"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 3",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "timer",
+                "service": "finish",
+                "data": {
+                  "entity_id": "timer.laundry"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "paused": {
+        "stateObj": {
+          "entity_id": "timer.laundry",
+          "state": "paused",
+          "attributes": {
+            "duration": "1:00:00",
+            "editable": false,
+            "last_transition": null,
+            "friendly_name": "Laundry",
+            "remaining": "0:42:13"
+          },
+          "context": {
+            "id": "01M4HEKS345GMRBZPV4J8WNRQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.132Z",
+          "last_updated": "2026-10-09T23:05:16.132Z"
+        },
+        "entry": {
+          "area_id": "garage",
+          "categories": {},
+          "config_entry_id": null,
+          "config_subentry_id": null,
+          "created_at": 1791433961.128127,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "timer.laundry",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "de0224ac38f4fc4f99d2dfdf978e31ef",
+          "labels": [],
+          "modified_at": 1791433963.429239,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Laundry",
+          "platform": "timer",
+          "translation_key": null,
+          "unique_id": "laundry",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Set",
+              "disabled": false
+            },
+            {
+              "text": "Start",
+              "disabled": false
+            },
+            {
+              "text": "Cancel",
+              "disabled": false
+            },
+            {
+              "text": "Finish",
+              "disabled": false
+            }
+          ],
+          "lastTriggered": null,
+          "duration": {
+            "hours": 1,
+            "minutes": 0,
+            "seconds": 0,
+            "milliseconds": 0
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "timer",
+                "service": "start",
+                "data": {
+                  "entity_id": "timer.laundry",
+                  "duration": {
+                    "hours": 1,
+                    "minutes": 0,
+                    "seconds": 0,
+                    "milliseconds": 0
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "timer",
+                "service": "start",
+                "data": {
+                  "entity_id": "timer.laundry"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 2",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "timer",
+                "service": "cancel",
+                "data": {
+                  "entity_id": "timer.laundry"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 3",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "timer",
+                "service": "finish",
+                "data": {
+                  "entity_id": "timer.laundry"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
     "vacuum.demo_vacuum_0_ground_floor": {
       "as_is": {
         "stateObj": {

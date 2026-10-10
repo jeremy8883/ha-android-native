@@ -11,25 +11,35 @@ import io.homeassistant.companion.android.dashboard.entity.entityContext
 import io.homeassistant.companion.android.dashboard.feature.attributeName
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.moreinfo.AlarmMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.AutomationMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.ClimateMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.FanMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.HumidifierMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.LightMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.LockMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.MediaPlayerMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.MoreInfoAction
 import io.homeassistant.companion.android.dashboard.moreinfo.PositionMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.SelectMenu
+import io.homeassistant.companion.android.dashboard.moreinfo.SirenMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.StateToggle
+import io.homeassistant.companion.android.dashboard.moreinfo.TimerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.VacuumMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.WaterHeaterMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.alarmMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.automationMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.climateMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.counterActions
 import io.homeassistant.companion.android.dashboard.moreinfo.fanMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.humidifierMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.lightMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.lockMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.mediaPlayerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.positionMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.remoteActivity
+import io.homeassistant.companion.android.dashboard.moreinfo.sirenMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.stateToggle
+import io.homeassistant.companion.android.dashboard.moreinfo.timerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.vacuumMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterMoreInfo
 import java.time.Instant
@@ -55,6 +65,11 @@ import java.time.Instant
  * @property alarm an alarm panel's controls
  * @property mediaPlayer a media player's controls
  * @property vacuum a vacuum's controls
+ * @property siren a siren's controls
+ * @property counter a counter's buttons
+ * @property automation an automation's last run and run button
+ * @property timer a timer's duration and buttons
+ * @property remote a remote's activity menu
  * @property attributes the displayable attributes, as (name, formatted value)
  */
 data class MoreInfoModel(
@@ -79,6 +94,11 @@ data class MoreInfoModel(
     val alarm: AlarmMoreInfo?,
     val mediaPlayer: MediaPlayerMoreInfo?,
     val vacuum: VacuumMoreInfo?,
+    val siren: SirenMoreInfo?,
+    val counter: List<MoreInfoAction>?,
+    val automation: AutomationMoreInfo?,
+    val timer: TimerMoreInfo?,
+    val remote: SelectMenu?,
     val attributes: List<Pair<String, String>>,
 )
 
@@ -124,6 +144,11 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         alarm = alarmMoreInfo(state),
         mediaPlayer = mediaPlayerMoreInfo(state),
         vacuum = vacuum,
+        siren = sirenMoreInfo(state),
+        counter = counterActions(state),
+        automation = automationMoreInfo(state, now),
+        timer = timerMoreInfo(state),
+        remote = remoteActivity(state),
         attributes = displayAttributes(state).map { attributeName(state, it) to formatEntityAttributeValue(state, it) },
     )
 }
@@ -145,7 +170,7 @@ private val ON_OFF = setOf("on", "off")
 private val NO_STATE_HEADER_DOMAINS = setOf("climate", "humidifier", "media_player", "water_heater")
 
 /** The domains whose switch is in the header, until they have controls of their own. */
-private val HEADER_TOGGLE_DOMAINS = setOf("automation", "remote", "siren")
+private val HEADER_TOGGLE_DOMAINS = setOf("automation", "remote")
 
 /** The domains whose details lead with the large on/off switch (`more-info-switch`, `more-info-input_boolean`). */
 private val STATE_TOGGLE_DOMAINS = setOf("input_boolean", "switch")
