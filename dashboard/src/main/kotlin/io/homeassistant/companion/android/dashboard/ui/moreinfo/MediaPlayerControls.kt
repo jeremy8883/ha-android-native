@@ -11,7 +11,6 @@ import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -39,6 +38,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.SelectMenu
 import io.homeassistant.companion.android.dashboard.moreinfo.formatMediaTime
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.controls.SelectMenuOptions
+import io.homeassistant.companion.android.dashboard.ui.controls.haSliderColors
 import java.time.Instant
 import kotlinx.coroutines.delay
 
@@ -181,18 +181,6 @@ private fun MenuButton(menu: SelectMenu, onAction: (CardAction) -> Unit) {
         }
         SelectMenuOptions(menu, expanded, onDismiss = { expanded = false }, onAction = onAction)
     }
-}
-
-@Composable
-private fun haSliderColors() = LocalHAColorScheme.current.let { colors ->
-    SliderDefaults.colors(
-        thumbColor = colors.colorFillPrimaryLoudResting,
-        activeTrackColor = colors.colorFillPrimaryLoudResting,
-        inactiveTrackColor = colors.colorFillDisabledLoudResting,
-        disabledThumbColor = colors.colorFillDisabledLoudResting,
-        disabledActiveTrackColor = colors.colorFillDisabledLoudResting,
-        disabledInactiveTrackColor = colors.colorFillDisabledQuietResting,
-    )
 }
 
 private const val TICK_MS = 1000L

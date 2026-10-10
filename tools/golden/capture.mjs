@@ -833,10 +833,155 @@ async function captureMoreInfoLogbook(entityIds) {
     };
     el.remove();
   }
-  return { capturedAt: new Date().toISOString(), entities: out };
+  return { capturedAt: new Date().toISOString(), entities: out, rows: wantRows ? await captureRows() : undefined };
+
+  /** The entity rows of an entities card: each row's control and the call each makes. */
+  async function captureRows() {
+    const rows = {};
+    for (const entity of ROW_ENTITIES) {
+      if (!ha.hass.states[entity]) continue;
+      const stateObj = ha.hass.states[entity];
+      const variants = { as_is: stateObj, unavailable: { ...stateObj, state: "unavailable" } };
+      if (entity.startsWith("timer.")) {
+        // Fixed in time: paused with a remaining time, and active finishing at a time recorded with it
+        variants.paused = { ...stateObj, state: "paused", attributes: { ...stateObj.attributes, remaining: "0:42:13" } };
+        variants.active = { ...stateObj, state: "active", attributes: { ...stateObj.attributes, remaining: "1:00:00", finishes_at: new Date(Date.now() + 754000).toISOString() } };
+      }
+      rows[entity] = {};
+      for (const [name, shown] of Object.entries(variants)) {
+        const hass = { ...ha.hass, states: { ...ha.hass.states, [entity]: g.clone(shown) } };
+        const card = await rowCard(hass, entity);
+        rows[entity][name] = { stateObj: g.clone(shown), row: describeRow(card), capturedAt: Date.now() };
+        card.remove();
+        if (name === "as_is") rows[entity][name].calls = await rowCalls(hass, entity);
+      }
+    }
+    return rows;
+  }
+
+  async function rowCard(hass, entity) {
+    const card = document.createElement("hui-entities-card");
+    card.hass = hass;
+    card.setConfig({ type: "entities", entities: [entity] });
+    ha.shadowRoot.appendChild(card);
+    for (let i = 0; i < 30; i++) {
+      await card.updateComplete;
+      const row = card.shadowRoot?.querySelector("#states > div > *");
+      if (row?.shadowRoot) break;
+      await sleep(100);
+    }
+    await sleep(300);
+    return card;
+  }
+
+  function rowRoot(card) {
+    const wrapper = card.shadowRoot?.querySelector("#states > div > *");
+    return wrapper?.shadowRoot ?? null;
+  }
+
+  function describeRow(card) {
+    const root = rowRoot(card);
+    if (!root) return null;
+    const generic = root.querySelector("hui-generic-entity-row");
+    const slider = root.querySelector("ha-slider");
+    const input = root.querySelector("ha-input");
+    const select = root.querySelector("ha-select");
+    const date = root.querySelector("ha-date-input");
+    const time = root.querySelector("ha-time-input");
+    return {
+      tag: card.shadowRoot.querySelector("#states > div > *")?.localName ?? null,
+      name: text(generic?.shadowRoot?.querySelector(".info")) || null,
+      hideName: generic?.hasAttribute("hide-name") ?? false,
+      state: text(root.querySelector(".state:not(.flex)")) || text(generic?.querySelector(".text-content")) || null,
+      text: text(generic) || null,
+      slider: slider && { value: slider.value, min: slider.min, max: slider.max, step: slider.step, disabled: slider.disabled ?? false },
+      input: input && {
+        value: input.value ?? null, type: input.type ?? null, label: input.label ?? null, placeholder: input.placeholder ?? null,
+        min: input.min ?? null, max: input.max ?? null, step: input.step ?? null, minlength: input.minlength ?? null,
+        maxlength: input.maxlength ?? null, pattern: input.pattern ?? null, disabled: input.disabled ?? false,
+        unit: text(input.querySelector('[slot="end"]')) || null,
+      },
+      select: select && {
+        value: select.value ?? null, label: select.label ?? null, disabled: select.disabled ?? false,
+        options: (select.options ?? []).map((o) => (typeof o === "string" ? { value: o, label: o } : { value: o.value, label: o.label ?? o.value })),
+      },
+      date: date && { value: date.value ?? null, disabled: date.disabled ?? false, label: date.label ?? null },
+      time: time && { value: time.value ?? null, disabled: time.disabled ?? false, label: time.label ?? null },
+      buttons: [...root.querySelectorAll("ha-button, mwc-button")].map((b) => ({ text: text(b), disabled: b.disabled ?? false })),
+    };
+  }
+
+  /** The calls of a row's control for a set value, each on a fresh card. */
+  async function rowCalls(hass, entity) {
+    const recorded = [];
+    const record = async (control, label, act) => {
+      const conn = ha.hass.connection;
+      const calls = [];
+      const orig = conn.sendMessagePromise;
+      conn.sendMessagePromise = async function (msg) {
+        if (msg.type === "call_service") {
+          // The frontend logs its own errors through system_log; those aren't the row's
+          if (msg.domain !== "system_log") {
+            calls.push(g.clone({ domain: msg.domain, service: msg.service, data: msg.service_data ?? null, target: msg.target ?? null }));
+          }
+          return { context: { id: "golden" } };
+        }
+        return orig.call(this, msg);
+      };
+      const card = await rowCard({ ...hass, callService: ha.hass.callService }, entity);
+      try {
+        await act(rowRoot(card));
+        await sleep(400);
+      } finally {
+        card.remove();
+        conn.sendMessagePromise = orig;
+      }
+      if (calls.length) recorded.push({ control, label, calls });
+    };
+    const set = (el, value, event = "change") => {
+      if (!el) return;
+      el.value = value;
+      el.dispatchEvent(new Event(event, { bubbles: true, composed: true }));
+    };
+    const stateObj = hass.states[entity];
+    const options = stateObj.attributes.options ?? [];
+    await record("slider", "slider", (r) => set(r?.querySelector("ha-slider"), Number(stateObj.attributes.min ?? 0) + Number(stateObj.attributes.step ?? 1)));
+    await record("input", "input", (r) => set(r?.querySelector("ha-input"), stateObj.entity_id.startsWith("text") || stateObj.entity_id.startsWith("input_text") ? "abc" : "7"));
+    await record("select", "select", (r) => r?.querySelector("ha-select")?.dispatchEvent(new CustomEvent("selected", { detail: { value: options.find((o) => o !== stateObj.state) } })));
+    await record("date", "date", (r) => r?.querySelector("ha-date-input")?.dispatchEvent(new CustomEvent("value-changed", { detail: { value: "2024-02-03" } })));
+    await record("time", "time", (r) => r?.querySelector("ha-time-input")?.dispatchEvent(new CustomEvent("value-changed", { detail: { value: "08:15:00" } })));
+    await record("button", "button", (r) => r?.querySelector("ha-button, mwc-button")?.click());
+    return recorded;
+  }
 }
 
 /** The entities whose more-info controls are recorded, each as it is and turned off and unavailable. */
+/** The entities whose entities card rows the controls capture records (with "rows" among the entities). */
+const ROW_ENTITIES = [
+  "input_number.target_humidity",
+  "input_number.bedroom_brightness",
+  "number.volume",
+  "number.pwm_1",
+  "number.large_range",
+  "number.small_range",
+  "number.temperature_setting",
+  "input_select.house_mode",
+  "select.speed",
+  "input_text.welcome_message",
+  "text.text",
+  "text.password",
+  "text.text_with_1_to_5_characters",
+  "text.text_with_only_lower_case_characters",
+  "timer.laundry",
+  "input_datetime.wake_up",
+  "date.date",
+  "time.time",
+  "datetime.date_and_time",
+  "counter.coffee_cups",
+  "button.push",
+  "input_button.doorbell_test",
+];
+
 const CONTROL_ENTITIES = [
   "light.bed_light",
   "light.ceiling_lights",
@@ -892,7 +1037,10 @@ const CONTROL_ENTITIES = [
  * it would be turned off and unavailable, and returns what each drew: the state header, the main controls with
  * their values and colours, the button row and the select menus, then each light picker in turn. Runs in the page.
  */
-async function captureMoreInfoControls(entityIds) {
+async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_ENTITIES }) {
+  // "rows" among the entities asks for the entities card rows too
+  const wantRows = requested.includes("rows");
+  const entityIds = requested.filter((id) => id !== "rows");
   /** The attributes whose values each domain's menus list, with the attribute listing them, for their icons. */
   const MENU_ATTRIBUTES = {
     light: { effect: "effect_list" },
@@ -1405,7 +1553,126 @@ async function captureMoreInfoControls(entityIds) {
       out[entityId].as_is.calls = await dialCalls(g.clone(current), "ha-state-control-humidifier-humidity", 45);
     }
   }
-  return { capturedAt: new Date().toISOString(), entities: out };
+  return { capturedAt: new Date().toISOString(), entities: out, rows: wantRows ? await captureRows() : undefined };
+
+  /** The entity rows of an entities card: each row's control and the call each makes. */
+  async function captureRows() {
+    const rows = {};
+    for (const entity of ROW_ENTITIES) {
+      if (!ha.hass.states[entity]) continue;
+      const stateObj = ha.hass.states[entity];
+      const variants = { as_is: stateObj, unavailable: { ...stateObj, state: "unavailable" } };
+      if (entity.startsWith("timer.")) {
+        // Fixed in time: paused with a remaining time, and active finishing at a time recorded with it
+        variants.paused = { ...stateObj, state: "paused", attributes: { ...stateObj.attributes, remaining: "0:42:13" } };
+        variants.active = { ...stateObj, state: "active", attributes: { ...stateObj.attributes, remaining: "1:00:00", finishes_at: new Date(Date.now() + 754000).toISOString() } };
+      }
+      rows[entity] = {};
+      for (const [name, shown] of Object.entries(variants)) {
+        const hass = { ...ha.hass, states: { ...ha.hass.states, [entity]: g.clone(shown) } };
+        const card = await rowCard(hass, entity);
+        rows[entity][name] = { stateObj: g.clone(shown), row: describeRow(card), capturedAt: Date.now() };
+        card.remove();
+        if (name === "as_is") rows[entity][name].calls = await rowCalls(hass, entity);
+      }
+    }
+    return rows;
+  }
+
+  async function rowCard(hass, entity) {
+    const card = document.createElement("hui-entities-card");
+    card.hass = hass;
+    card.setConfig({ type: "entities", entities: [entity] });
+    ha.shadowRoot.appendChild(card);
+    for (let i = 0; i < 30; i++) {
+      await card.updateComplete;
+      const row = card.shadowRoot?.querySelector("#states > div > *");
+      if (row?.shadowRoot) break;
+      await sleep(100);
+    }
+    await sleep(300);
+    return card;
+  }
+
+  function rowRoot(card) {
+    const wrapper = card.shadowRoot?.querySelector("#states > div > *");
+    return wrapper?.shadowRoot ?? null;
+  }
+
+  function describeRow(card) {
+    const root = rowRoot(card);
+    if (!root) return null;
+    const generic = root.querySelector("hui-generic-entity-row");
+    const slider = root.querySelector("ha-slider");
+    const input = root.querySelector("ha-input");
+    const select = root.querySelector("ha-select");
+    const date = root.querySelector("ha-date-input");
+    const time = root.querySelector("ha-time-input");
+    return {
+      tag: card.shadowRoot.querySelector("#states > div > *")?.localName ?? null,
+      name: text(generic?.shadowRoot?.querySelector(".info")) || null,
+      hideName: generic?.hasAttribute("hide-name") ?? false,
+      state: text(root.querySelector(".state:not(.flex)")) || text(generic?.querySelector(".text-content")) || null,
+      text: text(generic) || null,
+      slider: slider && { value: slider.value, min: slider.min, max: slider.max, step: slider.step, disabled: slider.disabled ?? false },
+      input: input && {
+        value: input.value ?? null, type: input.type ?? null, label: input.label ?? null, placeholder: input.placeholder ?? null,
+        min: input.min ?? null, max: input.max ?? null, step: input.step ?? null, minlength: input.minlength ?? null,
+        maxlength: input.maxlength ?? null, pattern: input.pattern ?? null, disabled: input.disabled ?? false,
+        unit: text(input.querySelector('[slot="end"]')) || null,
+      },
+      select: select && {
+        value: select.value ?? null, label: select.label ?? null, disabled: select.disabled ?? false,
+        options: (select.options ?? []).map((o) => (typeof o === "string" ? { value: o, label: o } : { value: o.value, label: o.label ?? o.value })),
+      },
+      date: date && { value: date.value ?? null, disabled: date.disabled ?? false, label: date.label ?? null },
+      time: time && { value: time.value ?? null, disabled: time.disabled ?? false, label: time.label ?? null },
+      buttons: [...root.querySelectorAll("ha-button, mwc-button")].map((b) => ({ text: text(b), disabled: b.disabled ?? false })),
+    };
+  }
+
+  /** The calls of a row's control for a set value, each on a fresh card. */
+  async function rowCalls(hass, entity) {
+    const recorded = [];
+    const record = async (control, label, act) => {
+      const conn = ha.hass.connection;
+      const calls = [];
+      const orig = conn.sendMessagePromise;
+      conn.sendMessagePromise = async function (msg) {
+        if (msg.type === "call_service") {
+          // The frontend logs its own errors through system_log; those aren't the row's
+          if (msg.domain !== "system_log") {
+            calls.push(g.clone({ domain: msg.domain, service: msg.service, data: msg.service_data ?? null, target: msg.target ?? null }));
+          }
+          return { context: { id: "golden" } };
+        }
+        return orig.call(this, msg);
+      };
+      const card = await rowCard({ ...hass, callService: ha.hass.callService }, entity);
+      try {
+        await act(rowRoot(card));
+        await sleep(400);
+      } finally {
+        card.remove();
+        conn.sendMessagePromise = orig;
+      }
+      if (calls.length) recorded.push({ control, label, calls });
+    };
+    const set = (el, value, event = "change") => {
+      if (!el) return;
+      el.value = value;
+      el.dispatchEvent(new Event(event, { bubbles: true, composed: true }));
+    };
+    const stateObj = hass.states[entity];
+    const options = stateObj.attributes.options ?? [];
+    await record("slider", "slider", (r) => set(r?.querySelector("ha-slider"), Number(stateObj.attributes.min ?? 0) + Number(stateObj.attributes.step ?? 1)));
+    await record("input", "input", (r) => set(r?.querySelector("ha-input"), stateObj.entity_id.startsWith("text") || stateObj.entity_id.startsWith("input_text") ? "abc" : "7"));
+    await record("select", "select", (r) => r?.querySelector("ha-select")?.dispatchEvent(new CustomEvent("selected", { detail: { value: options.find((o) => o !== stateObj.state) } })));
+    await record("date", "date", (r) => r?.querySelector("ha-date-input")?.dispatchEvent(new CustomEvent("value-changed", { detail: { value: "2024-02-03" } })));
+    await record("time", "time", (r) => r?.querySelector("ha-time-input")?.dispatchEvent(new CustomEvent("value-changed", { detail: { value: "08:15:00" } })));
+    await record("button", "button", (r) => r?.querySelector("ha-button, mwc-button")?.click());
+    return recorded;
+  }
 
   /** Runs [act] on a fresh `more-info-<domain>` of [stateObj] and returns the service calls it made, intercepted. */
   async function recordCalls(stateObj, act, wait = 300, entry = null) {
@@ -2298,9 +2565,11 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir, contr
     // With --domains, only those domains' entities, merged into the existing controls
     const domains = CONTROL_DOMAINS;
     const entities = domains ? CONTROL_ENTITIES.filter((id) => domains.includes(id.split(".")[0])) : CONTROL_ENTITIES;
-    const data = await page.evaluate(captureMoreInfoControls, entities);
+    const withRows = !domains || domains.includes("rows") ? [...entities, "rows"] : entities;
+    const data = await page.evaluate(captureMoreInfoControls, { entityIds: withRows, rowEntities: ROW_ENTITIES });
     if (domains) {
       const existing = JSON.parse(readFileSync(join(outDir, "more-info", "controls.json"), "utf8"));
+      if (!domains.includes("rows")) data.rows = existing.rows;
       for (const id of Object.keys(existing.entities)) {
         if (!domains.includes(id.split(".")[0])) data.entities[id] = existing.entities[id];
       }
@@ -2337,7 +2606,9 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir, contr
   // The same for every user: recorded once
   const historyData = variant === "admin" ? await page.evaluate(captureMoreInfoHistory, HISTORY_ENTITIES) : null;
   if (historyData) console.log(`  recorded the history of ${Object.keys(historyData.entities).length} entities`);
-  const controlsData = variant === "admin" ? await page.evaluate(captureMoreInfoControls, CONTROL_ENTITIES) : null;
+  const controlsData = variant === "admin"
+    ? await page.evaluate(captureMoreInfoControls, { entityIds: [...CONTROL_ENTITIES, "rows"], rowEntities: ROW_ENTITIES })
+    : null;
   if (controlsData) console.log(`  recorded the controls of ${Object.keys(controlsData.entities).length} entities`);
   await page.evaluate(() => window.__golden.navigate("/home/overview"));
   await page.waitForTimeout(500);

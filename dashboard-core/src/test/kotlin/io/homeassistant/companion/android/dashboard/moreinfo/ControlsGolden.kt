@@ -52,7 +52,7 @@ internal fun GoldenFixture.withState(stateObj: JsonObject): Pair<HassSnapshot, E
 
 /** The calls the frontend recorded for one interaction. */
 internal fun JsonObject.recordedCalls(): List<CardAction.CallService> = objects("calls").map {
-    CardAction.CallService(it.string("domain")!!, it.string("service")!!, it.obj("data"), null)
+    CardAction.CallService(it.string("domain")!!, it.string("service")!!, it.obj("data"), it.obj("target"))
 }
 
 /** [menus] as the frontend's menus are recorded: label, value, enabled and each option's value and label. */

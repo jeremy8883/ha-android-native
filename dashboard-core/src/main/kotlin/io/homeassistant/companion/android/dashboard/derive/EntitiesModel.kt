@@ -87,10 +87,11 @@ private fun HassSnapshot.entityRow(config: JsonObject, now: Instant): EntityRowM
     val actions = cardActions(CardConfig(JsonObject(config + ("type" to JsonPrimitive("tile"))))).card
     val state = states[entityId]
         ?: return EntityRowModel(entityId, entityId, "mdi:alert-circle", null, false, true, null, actions)
-    val control = rowControl(state, config)
+    val name = entityNameDisplay(state, config["name"])
+    val control = rowControl(state, config) ?: inputRowControl(state, name)
     return EntityRowModel(
         entityId = entityId,
-        name = entityNameDisplay(state, config["name"]),
+        name = name,
         icon = entityIcon(entityId, config.string("icon")),
         state = if (control == null) rowStateText(state, config, now) else null,
         available = state.state != STATE_UNAVAILABLE,

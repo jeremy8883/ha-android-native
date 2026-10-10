@@ -55,8 +55,8 @@ class CardModelsTest {
         assertNull(sensor.control)
         assertEquals("15.6 °C", sensor.state)
         assertTrue(missing.missing)
-        // Only sensor rows show relative times; others show the formatted state
-        assertEquals("January 1, 2020 at 12:00 PM", model.rows.last().state)
+        // Only sensor rows show relative times; a datetime row is a date and a time
+        assertEquals("2020-01-01", (model.rows.last().control as RowDateTime).date)
         assertTrue(light.actions.tap)
     }
 

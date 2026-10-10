@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-10T06:18:38.380Z",
+  "capturedAt": "2026-10-10T06:30:41.090Z",
   "entities": {
     "siren.siren": {
       "as_is": {
@@ -40132,6 +40132,2389 @@
             ]
           }
         ]
+      }
+    }
+  },
+  "rows": {
+    "input_number.target_humidity": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "input_number.target_humidity",
+          "state": "30.0",
+          "attributes": {
+            "initial": null,
+            "editable": false,
+            "min": 30,
+            "max": 70,
+            "step": 1,
+            "mode": "slider",
+            "unit_of_measurement": "%",
+            "icon": "mdi:water-percent",
+            "friendly_name": "Target humidity"
+          },
+          "context": {
+            "id": "01M4HEKS33VPXS5GP42AYMPM56",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.131Z",
+          "last_updated": "2026-10-09T23:05:16.131Z"
+        },
+        "row": {
+          "tag": "hui-input-number-entity-row",
+          "name": "Target humidity",
+          "hideName": false,
+          "state": "30%",
+          "text": "30%",
+          "slider": {
+            "value": 30,
+            "min": 30,
+            "max": 70,
+            "step": 1,
+            "disabled": false
+          },
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613841493,
+        "calls": [
+          {
+            "control": "slider",
+            "label": "slider",
+            "calls": [
+              {
+                "domain": "input_number",
+                "service": "set_value",
+                "data": {
+                  "value": 31,
+                  "entity_id": "input_number.target_humidity"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "input_number.target_humidity",
+          "state": "unavailable",
+          "attributes": {
+            "initial": null,
+            "editable": false,
+            "min": 30,
+            "max": 70,
+            "step": 1,
+            "mode": "slider",
+            "unit_of_measurement": "%",
+            "icon": "mdi:water-percent",
+            "friendly_name": "Target humidity"
+          },
+          "context": {
+            "id": "01M4HEKS33VPXS5GP42AYMPM56",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.131Z",
+          "last_updated": "2026-10-09T23:05:16.131Z"
+        },
+        "row": {
+          "tag": "hui-input-number-entity-row",
+          "name": "Target humidity",
+          "hideName": false,
+          "state": "Unavailable",
+          "text": "Unavailable",
+          "slider": {
+            "value": null,
+            "min": 30,
+            "max": 70,
+            "step": 1,
+            "disabled": true
+          },
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613846018
+      }
+    },
+    "input_number.bedroom_brightness": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "input_number.bedroom_brightness",
+          "state": "0.0",
+          "attributes": {
+            "initial": null,
+            "editable": false,
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "mode": "box",
+            "unit_of_measurement": "%",
+            "friendly_name": "Bedroom brightness"
+          },
+          "context": {
+            "id": "01M4HEKS33Y0RMMF55W1YZQB91",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.131Z",
+          "last_updated": "2026-10-09T23:05:16.131Z"
+        },
+        "row": {
+          "tag": "hui-input-number-entity-row",
+          "name": "Bedroom brightness",
+          "hideName": false,
+          "state": null,
+          "text": "%",
+          "slider": null,
+          "input": {
+            "value": "0",
+            "type": "number",
+            "label": "",
+            "placeholder": "",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "minlength": null,
+            "maxlength": null,
+            "pattern": "[0-9]+([\\.][0-9]+)?",
+            "disabled": false,
+            "unit": "%"
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613846322,
+        "calls": [
+          {
+            "control": "input",
+            "label": "input",
+            "calls": [
+              {
+                "domain": "input_number",
+                "service": "set_value",
+                "data": {
+                  "value": "7",
+                  "entity_id": "input_number.bedroom_brightness"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "input_number.bedroom_brightness",
+          "state": "unavailable",
+          "attributes": {
+            "initial": null,
+            "editable": false,
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "mode": "box",
+            "unit_of_measurement": "%",
+            "friendly_name": "Bedroom brightness"
+          },
+          "context": {
+            "id": "01M4HEKS33Y0RMMF55W1YZQB91",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.131Z",
+          "last_updated": "2026-10-09T23:05:16.131Z"
+        },
+        "row": {
+          "tag": "hui-input-number-entity-row",
+          "name": "Bedroom brightness",
+          "hideName": false,
+          "state": null,
+          "text": "%",
+          "slider": null,
+          "input": {
+            "value": "NaN",
+            "type": "number",
+            "label": "",
+            "placeholder": "",
+            "min": 0,
+            "max": 100,
+            "step": 5,
+            "minlength": null,
+            "maxlength": null,
+            "pattern": "[0-9]+([\\.][0-9]+)?",
+            "disabled": true,
+            "unit": "%"
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613850840
+      }
+    },
+    "number.volume": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "number.volume",
+          "state": "42.0",
+          "attributes": {
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "mode": "slider",
+            "friendly_name": "volume"
+          },
+          "context": {
+            "id": "01M4HEKT3HSBD0GRJ5TY54HNKG",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.169Z",
+          "last_updated": "2026-10-09T23:05:17.169Z"
+        },
+        "row": {
+          "tag": "hui-number-entity-row",
+          "name": "volume",
+          "hideName": false,
+          "state": "42",
+          "text": "42",
+          "slider": {
+            "value": 42,
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "disabled": false
+          },
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613851244,
+        "calls": [
+          {
+            "control": "slider",
+            "label": "slider",
+            "calls": [
+              {
+                "domain": "number",
+                "service": "set_value",
+                "data": {
+                  "value": 1,
+                  "entity_id": "number.volume"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "number.volume",
+          "state": "unavailable",
+          "attributes": {
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "mode": "slider",
+            "friendly_name": "volume"
+          },
+          "context": {
+            "id": "01M4HEKT3HSBD0GRJ5TY54HNKG",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.169Z",
+          "last_updated": "2026-10-09T23:05:17.169Z"
+        },
+        "row": {
+          "tag": "hui-number-entity-row",
+          "name": "volume",
+          "hideName": false,
+          "state": "—",
+          "text": "—",
+          "slider": {
+            "value": null,
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "disabled": true
+          },
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613855769
+      }
+    },
+    "number.pwm_1": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "number.pwm_1",
+          "state": "0.42",
+          "attributes": {
+            "min": 0,
+            "max": 1,
+            "step": 0.01,
+            "mode": "box",
+            "friendly_name": "PWM 1"
+          },
+          "context": {
+            "id": "01M4HEKT3HM1MXZ3REAW8C4CP2",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.169Z",
+          "last_updated": "2026-10-09T23:05:17.169Z"
+        },
+        "row": {
+          "tag": "hui-number-entity-row",
+          "name": "PWM 1",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": {
+            "value": "0.42",
+            "type": "number",
+            "label": "",
+            "placeholder": "",
+            "min": 0,
+            "max": 1,
+            "step": 0.01,
+            "minlength": null,
+            "maxlength": null,
+            "pattern": "[0-9]+([\\.][0-9]+)?",
+            "disabled": false,
+            "unit": null
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613856072,
+        "calls": [
+          {
+            "control": "input",
+            "label": "input",
+            "calls": [
+              {
+                "domain": "number",
+                "service": "set_value",
+                "data": {
+                  "value": "7",
+                  "entity_id": "number.pwm_1"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "number.pwm_1",
+          "state": "unavailable",
+          "attributes": {
+            "min": 0,
+            "max": 1,
+            "step": 0.01,
+            "mode": "box",
+            "friendly_name": "PWM 1"
+          },
+          "context": {
+            "id": "01M4HEKT3HM1MXZ3REAW8C4CP2",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.169Z",
+          "last_updated": "2026-10-09T23:05:17.169Z"
+        },
+        "row": {
+          "tag": "hui-number-entity-row",
+          "name": "PWM 1",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": {
+            "value": "unavailable",
+            "type": "number",
+            "label": "",
+            "placeholder": "",
+            "min": 0,
+            "max": 1,
+            "step": 0.01,
+            "minlength": null,
+            "maxlength": null,
+            "pattern": "[0-9]+([\\.][0-9]+)?",
+            "disabled": true,
+            "unit": null
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613860584
+      }
+    },
+    "number.large_range": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "number.large_range",
+          "state": "500",
+          "attributes": {
+            "min": 1,
+            "max": 1000,
+            "step": 1,
+            "mode": "auto",
+            "friendly_name": "Large Range"
+          },
+          "context": {
+            "id": "01M4HEKT3HPPSTPXCD6G5VKDBK",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.169Z",
+          "last_updated": "2026-10-09T23:05:17.169Z"
+        },
+        "row": {
+          "tag": "hui-number-entity-row",
+          "name": "Large Range",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": {
+            "value": "500",
+            "type": "number",
+            "label": "",
+            "placeholder": "",
+            "min": 1,
+            "max": 1000,
+            "step": 1,
+            "minlength": null,
+            "maxlength": null,
+            "pattern": "[0-9]+([\\.][0-9]+)?",
+            "disabled": false,
+            "unit": null
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613860886,
+        "calls": [
+          {
+            "control": "input",
+            "label": "input",
+            "calls": [
+              {
+                "domain": "number",
+                "service": "set_value",
+                "data": {
+                  "value": "7",
+                  "entity_id": "number.large_range"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "number.large_range",
+          "state": "unavailable",
+          "attributes": {
+            "min": 1,
+            "max": 1000,
+            "step": 1,
+            "mode": "auto",
+            "friendly_name": "Large Range"
+          },
+          "context": {
+            "id": "01M4HEKT3HPPSTPXCD6G5VKDBK",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.169Z",
+          "last_updated": "2026-10-09T23:05:17.169Z"
+        },
+        "row": {
+          "tag": "hui-number-entity-row",
+          "name": "Large Range",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": {
+            "value": "unavailable",
+            "type": "number",
+            "label": "",
+            "placeholder": "",
+            "min": 1,
+            "max": 1000,
+            "step": 1,
+            "minlength": null,
+            "maxlength": null,
+            "pattern": "[0-9]+([\\.][0-9]+)?",
+            "disabled": true,
+            "unit": null
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613865399
+      }
+    },
+    "number.small_range": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "number.small_range",
+          "state": "128",
+          "attributes": {
+            "min": 1,
+            "max": 255,
+            "step": 1,
+            "mode": "auto",
+            "friendly_name": "Small Range"
+          },
+          "context": {
+            "id": "01M4HEKT3HKWS8F9HVGTNRXCY8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.169Z",
+          "last_updated": "2026-10-09T23:05:17.169Z"
+        },
+        "row": {
+          "tag": "hui-number-entity-row",
+          "name": "Small Range",
+          "hideName": false,
+          "state": "128",
+          "text": "128",
+          "slider": {
+            "value": 128,
+            "min": 1,
+            "max": 255,
+            "step": 1,
+            "disabled": false
+          },
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613865700,
+        "calls": [
+          {
+            "control": "slider",
+            "label": "slider",
+            "calls": [
+              {
+                "domain": "number",
+                "service": "set_value",
+                "data": {
+                  "value": 2,
+                  "entity_id": "number.small_range"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "number.small_range",
+          "state": "unavailable",
+          "attributes": {
+            "min": 1,
+            "max": 255,
+            "step": 1,
+            "mode": "auto",
+            "friendly_name": "Small Range"
+          },
+          "context": {
+            "id": "01M4HEKT3HKWS8F9HVGTNRXCY8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.169Z",
+          "last_updated": "2026-10-09T23:05:17.169Z"
+        },
+        "row": {
+          "tag": "hui-number-entity-row",
+          "name": "Small Range",
+          "hideName": false,
+          "state": "—",
+          "text": "—",
+          "slider": {
+            "value": null,
+            "min": 1,
+            "max": 255,
+            "step": 1,
+            "disabled": true
+          },
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613870221
+      }
+    },
+    "number.temperature_setting": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "number.temperature_setting",
+          "state": "22",
+          "attributes": {
+            "min": 15,
+            "max": 35,
+            "step": 1,
+            "mode": "box",
+            "unit_of_measurement": "°C",
+            "device_class": "temperature",
+            "friendly_name": "Temperature setting"
+          },
+          "context": {
+            "id": "01M4HEKT3H8NY8CWEVFC48PBJZ",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.169Z",
+          "last_updated": "2026-10-09T23:05:17.169Z"
+        },
+        "row": {
+          "tag": "hui-number-entity-row",
+          "name": "Temperature setting",
+          "hideName": false,
+          "state": null,
+          "text": "°C",
+          "slider": null,
+          "input": {
+            "value": "22",
+            "type": "number",
+            "label": "",
+            "placeholder": "",
+            "min": 15,
+            "max": 35,
+            "step": 1,
+            "minlength": null,
+            "maxlength": null,
+            "pattern": "[0-9]+([\\.][0-9]+)?",
+            "disabled": false,
+            "unit": "°C"
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613870524,
+        "calls": [
+          {
+            "control": "input",
+            "label": "input",
+            "calls": [
+              {
+                "domain": "number",
+                "service": "set_value",
+                "data": {
+                  "value": "7",
+                  "entity_id": "number.temperature_setting"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "number.temperature_setting",
+          "state": "unavailable",
+          "attributes": {
+            "min": 15,
+            "max": 35,
+            "step": 1,
+            "mode": "box",
+            "unit_of_measurement": "°C",
+            "device_class": "temperature",
+            "friendly_name": "Temperature setting"
+          },
+          "context": {
+            "id": "01M4HEKT3H8NY8CWEVFC48PBJZ",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.169Z",
+          "last_updated": "2026-10-09T23:05:17.169Z"
+        },
+        "row": {
+          "tag": "hui-number-entity-row",
+          "name": "Temperature setting",
+          "hideName": false,
+          "state": null,
+          "text": "°C",
+          "slider": null,
+          "input": {
+            "value": "unavailable",
+            "type": "number",
+            "label": "",
+            "placeholder": "",
+            "min": 15,
+            "max": 35,
+            "step": 1,
+            "minlength": null,
+            "maxlength": null,
+            "pattern": "[0-9]+([\\.][0-9]+)?",
+            "disabled": true,
+            "unit": "°C"
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613875040
+      }
+    },
+    "input_select.house_mode": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "input_select.house_mode",
+          "state": "Home",
+          "attributes": {
+            "options": [
+              "Home",
+              "Away",
+              "Night",
+              "Vacation"
+            ],
+            "editable": false,
+            "icon": "mdi:home-switch",
+            "friendly_name": "House mode"
+          },
+          "context": {
+            "id": "01M4HX3ACTKQPNNAX47SJ2CZND",
+            "parent_id": "01M4HX3ACSVHFV472J1QJNZ0F1",
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T03:18:27.440Z",
+          "last_updated": "2026-10-10T03:18:27.440Z"
+        },
+        "row": {
+          "tag": "hui-input-select-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": {
+            "value": "Home",
+            "label": "House mode",
+            "disabled": false,
+            "options": [
+              {
+                "value": "Home",
+                "label": "Home"
+              },
+              {
+                "value": "Away",
+                "label": "Away"
+              },
+              {
+                "value": "Night",
+                "label": "Night"
+              },
+              {
+                "value": "Vacation",
+                "label": "Vacation"
+              }
+            ]
+          },
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613875442,
+        "calls": [
+          {
+            "control": "select",
+            "label": "select",
+            "calls": [
+              {
+                "domain": "input_select",
+                "service": "select_option",
+                "data": {
+                  "option": "Away",
+                  "entity_id": "input_select.house_mode"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "input_select.house_mode",
+          "state": "unavailable",
+          "attributes": {
+            "options": [
+              "Home",
+              "Away",
+              "Night",
+              "Vacation"
+            ],
+            "editable": false,
+            "icon": "mdi:home-switch",
+            "friendly_name": "House mode"
+          },
+          "context": {
+            "id": "01M4HX3ACTKQPNNAX47SJ2CZND",
+            "parent_id": "01M4HX3ACSVHFV472J1QJNZ0F1",
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T03:18:27.440Z",
+          "last_updated": "2026-10-10T03:18:27.440Z"
+        },
+        "row": {
+          "tag": "hui-input-select-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": {
+            "value": "unavailable",
+            "label": "House mode",
+            "disabled": true,
+            "options": [
+              {
+                "value": "Home",
+                "label": "Home"
+              },
+              {
+                "value": "Away",
+                "label": "Away"
+              },
+              {
+                "value": "Night",
+                "label": "Night"
+              },
+              {
+                "value": "Vacation",
+                "label": "Vacation"
+              }
+            ]
+          },
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613879955
+      }
+    },
+    "select.speed": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "select.speed",
+          "state": "ridiculous_speed",
+          "attributes": {
+            "options": [
+              "light_speed",
+              "ridiculous_speed",
+              "ludicrous_speed"
+            ],
+            "friendly_name": "Speed"
+          },
+          "context": {
+            "id": "01M4HEKT3HYDMWZVNK74SJR42M",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.169Z",
+          "last_updated": "2026-10-09T23:05:17.169Z"
+        },
+        "row": {
+          "tag": "hui-select-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": {
+            "value": "ridiculous_speed",
+            "label": "Speed",
+            "disabled": false,
+            "options": [
+              {
+                "value": "light_speed",
+                "label": "Light speed"
+              },
+              {
+                "value": "ridiculous_speed",
+                "label": "Ridiculous speed"
+              },
+              {
+                "value": "ludicrous_speed",
+                "label": "Ludicrous speed"
+              }
+            ]
+          },
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613880358,
+        "calls": [
+          {
+            "control": "select",
+            "label": "select",
+            "calls": [
+              {
+                "domain": "select",
+                "service": "select_option",
+                "data": {
+                  "option": "light_speed"
+                },
+                "target": {
+                  "entity_id": "select.speed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "select.speed",
+          "state": "unavailable",
+          "attributes": {
+            "options": [
+              "light_speed",
+              "ridiculous_speed",
+              "ludicrous_speed"
+            ],
+            "friendly_name": "Speed"
+          },
+          "context": {
+            "id": "01M4HEKT3HYDMWZVNK74SJR42M",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.169Z",
+          "last_updated": "2026-10-09T23:05:17.169Z"
+        },
+        "row": {
+          "tag": "hui-select-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": {
+            "value": "unavailable",
+            "label": "Speed",
+            "disabled": true,
+            "options": [
+              {
+                "value": "light_speed",
+                "label": "Light speed"
+              },
+              {
+                "value": "ridiculous_speed",
+                "label": "Ridiculous speed"
+              },
+              {
+                "value": "ludicrous_speed",
+                "label": "Ludicrous speed"
+              }
+            ]
+          },
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613884876
+      }
+    },
+    "input_text.welcome_message": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "input_text.welcome_message",
+          "state": "Hello from the test instance",
+          "attributes": {
+            "editable": false,
+            "min": 0,
+            "max": 100,
+            "pattern": null,
+            "mode": "text",
+            "friendly_name": "Welcome message"
+          },
+          "context": {
+            "id": "01M4HEKSVFZFHTE87E2WG002TB",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.911Z",
+          "last_updated": "2026-10-09T23:05:16.911Z"
+        },
+        "row": {
+          "tag": "hui-input-text-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": {
+            "value": "Hello from the test instance",
+            "type": "text",
+            "label": "Welcome message",
+            "placeholder": "(empty value)",
+            "min": null,
+            "max": null,
+            "step": null,
+            "minlength": 0,
+            "maxlength": 100,
+            "pattern": null,
+            "disabled": false,
+            "unit": null
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613885279,
+        "calls": [
+          {
+            "control": "input",
+            "label": "input",
+            "calls": [
+              {
+                "domain": "input_text",
+                "service": "set_value",
+                "data": {
+                  "value": "abc",
+                  "entity_id": "input_text.welcome_message"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "input_text.welcome_message",
+          "state": "unavailable",
+          "attributes": {
+            "editable": false,
+            "min": 0,
+            "max": 100,
+            "pattern": null,
+            "mode": "text",
+            "friendly_name": "Welcome message"
+          },
+          "context": {
+            "id": "01M4HEKSVFZFHTE87E2WG002TB",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.911Z",
+          "last_updated": "2026-10-09T23:05:16.911Z"
+        },
+        "row": {
+          "tag": "hui-input-text-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": {
+            "value": "unavailable",
+            "type": "text",
+            "label": "Welcome message",
+            "placeholder": "(empty value)",
+            "min": null,
+            "max": null,
+            "step": null,
+            "minlength": 0,
+            "maxlength": 100,
+            "pattern": null,
+            "disabled": true,
+            "unit": null
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613889797
+      }
+    },
+    "text.text": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "text.text",
+          "state": "Hello world",
+          "attributes": {
+            "mode": "text",
+            "min": 0,
+            "max": 255,
+            "pattern": null,
+            "friendly_name": "Text"
+          },
+          "context": {
+            "id": "01M4HEKT3KPFXZW494K3EJ1S4Y",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.171Z",
+          "last_updated": "2026-10-09T23:05:17.171Z"
+        },
+        "row": {
+          "tag": "hui-text-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": {
+            "value": "Hello world",
+            "type": "text",
+            "label": "Text",
+            "placeholder": "(empty value)",
+            "min": null,
+            "max": null,
+            "step": null,
+            "minlength": 0,
+            "maxlength": 255,
+            "pattern": null,
+            "disabled": false,
+            "unit": null
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613890201,
+        "calls": [
+          {
+            "control": "input",
+            "label": "input",
+            "calls": [
+              {
+                "domain": "text",
+                "service": "set_value",
+                "data": {
+                  "value": "abc"
+                },
+                "target": {
+                  "entity_id": "text.text"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "text.text",
+          "state": "unavailable",
+          "attributes": {
+            "mode": "text",
+            "min": 0,
+            "max": 255,
+            "pattern": null,
+            "friendly_name": "Text"
+          },
+          "context": {
+            "id": "01M4HEKT3KPFXZW494K3EJ1S4Y",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.171Z",
+          "last_updated": "2026-10-09T23:05:17.171Z"
+        },
+        "row": {
+          "tag": "hui-text-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": {
+            "value": "unavailable",
+            "type": "text",
+            "label": "Text",
+            "placeholder": "(empty value)",
+            "min": null,
+            "max": null,
+            "step": null,
+            "minlength": 0,
+            "maxlength": 255,
+            "pattern": null,
+            "disabled": true,
+            "unit": null
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613894719
+      }
+    },
+    "text.password": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "text.password",
+          "state": "Hello world",
+          "attributes": {
+            "mode": "password",
+            "min": 0,
+            "max": 255,
+            "pattern": null,
+            "friendly_name": "Password"
+          },
+          "context": {
+            "id": "01M4HEKT3KXSHSVNB3X7SQZ6B2",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.171Z",
+          "last_updated": "2026-10-09T23:05:17.171Z"
+        },
+        "row": {
+          "tag": "hui-text-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": {
+            "value": "Hello world",
+            "type": "password",
+            "label": "Password",
+            "placeholder": "(empty value)",
+            "min": null,
+            "max": null,
+            "step": null,
+            "minlength": 0,
+            "maxlength": 255,
+            "pattern": null,
+            "disabled": false,
+            "unit": null
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613895021,
+        "calls": [
+          {
+            "control": "input",
+            "label": "input",
+            "calls": [
+              {
+                "domain": "text",
+                "service": "set_value",
+                "data": {
+                  "value": "abc"
+                },
+                "target": {
+                  "entity_id": "text.password"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "text.password",
+          "state": "unavailable",
+          "attributes": {
+            "mode": "password",
+            "min": 0,
+            "max": 255,
+            "pattern": null,
+            "friendly_name": "Password"
+          },
+          "context": {
+            "id": "01M4HEKT3KXSHSVNB3X7SQZ6B2",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.171Z",
+          "last_updated": "2026-10-09T23:05:17.171Z"
+        },
+        "row": {
+          "tag": "hui-text-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": {
+            "value": "unavailable",
+            "type": "password",
+            "label": "Password",
+            "placeholder": "(empty value)",
+            "min": null,
+            "max": null,
+            "step": null,
+            "minlength": 0,
+            "maxlength": 255,
+            "pattern": null,
+            "disabled": true,
+            "unit": null
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613899539
+      }
+    },
+    "text.text_with_1_to_5_characters": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "text.text_with_1_to_5_characters",
+          "state": "Hello",
+          "attributes": {
+            "mode": "text",
+            "min": 1,
+            "max": 5,
+            "pattern": null,
+            "friendly_name": "Text with 1 to 5 characters"
+          },
+          "context": {
+            "id": "01M4HEKT3KYGRVGZZNAYRN80CC",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.171Z",
+          "last_updated": "2026-10-09T23:05:17.171Z"
+        },
+        "row": {
+          "tag": "hui-text-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": {
+            "value": "Hello",
+            "type": "text",
+            "label": "Text with 1 to 5 characters",
+            "placeholder": "(empty value)",
+            "min": null,
+            "max": null,
+            "step": null,
+            "minlength": 1,
+            "maxlength": 5,
+            "pattern": null,
+            "disabled": false,
+            "unit": null
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613899842,
+        "calls": [
+          {
+            "control": "input",
+            "label": "input",
+            "calls": [
+              {
+                "domain": "text",
+                "service": "set_value",
+                "data": {
+                  "value": "abc"
+                },
+                "target": {
+                  "entity_id": "text.text_with_1_to_5_characters"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "text.text_with_1_to_5_characters",
+          "state": "unavailable",
+          "attributes": {
+            "mode": "text",
+            "min": 1,
+            "max": 5,
+            "pattern": null,
+            "friendly_name": "Text with 1 to 5 characters"
+          },
+          "context": {
+            "id": "01M4HEKT3KYGRVGZZNAYRN80CC",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.171Z",
+          "last_updated": "2026-10-09T23:05:17.171Z"
+        },
+        "row": {
+          "tag": "hui-text-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": {
+            "value": "unavailable",
+            "type": "text",
+            "label": "Text with 1 to 5 characters",
+            "placeholder": "(empty value)",
+            "min": null,
+            "max": null,
+            "step": null,
+            "minlength": 1,
+            "maxlength": 5,
+            "pattern": null,
+            "disabled": true,
+            "unit": null
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613904357
+      }
+    },
+    "text.text_with_only_lower_case_characters": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "text.text_with_only_lower_case_characters",
+          "state": "world",
+          "attributes": {
+            "mode": "text",
+            "min": 0,
+            "max": 255,
+            "pattern": "[a-z]+",
+            "friendly_name": "Text with only lower case characters"
+          },
+          "context": {
+            "id": "01M4HEKT3KR68RHS72EKDGW84C",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.171Z",
+          "last_updated": "2026-10-09T23:05:17.171Z"
+        },
+        "row": {
+          "tag": "hui-text-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": {
+            "value": "world",
+            "type": "text",
+            "label": "Text with only lower case characters",
+            "placeholder": "(empty value)",
+            "min": null,
+            "max": null,
+            "step": null,
+            "minlength": 0,
+            "maxlength": 255,
+            "pattern": "[a-z]+",
+            "disabled": false,
+            "unit": null
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613904659,
+        "calls": [
+          {
+            "control": "input",
+            "label": "input",
+            "calls": [
+              {
+                "domain": "text",
+                "service": "set_value",
+                "data": {
+                  "value": "abc"
+                },
+                "target": {
+                  "entity_id": "text.text_with_only_lower_case_characters"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "text.text_with_only_lower_case_characters",
+          "state": "unavailable",
+          "attributes": {
+            "mode": "text",
+            "min": 0,
+            "max": 255,
+            "pattern": "[a-z]+",
+            "friendly_name": "Text with only lower case characters"
+          },
+          "context": {
+            "id": "01M4HEKT3KR68RHS72EKDGW84C",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.171Z",
+          "last_updated": "2026-10-09T23:05:17.171Z"
+        },
+        "row": {
+          "tag": "hui-text-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": {
+            "value": "unavailable",
+            "type": "text",
+            "label": "Text with only lower case characters",
+            "placeholder": "(empty value)",
+            "min": null,
+            "max": null,
+            "step": null,
+            "minlength": 0,
+            "maxlength": 255,
+            "pattern": "[a-z]+",
+            "disabled": true,
+            "unit": null
+          },
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613909174
+      }
+    },
+    "timer.laundry": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "timer.laundry",
+          "state": "idle",
+          "attributes": {
+            "duration": "1:00:00",
+            "editable": false,
+            "last_transition": "cancelled",
+            "friendly_name": "Laundry"
+          },
+          "context": {
+            "id": "01M4J7W0ACK19MQXPNWQ21JMMJ",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T06:26:40.077Z",
+          "last_updated": "2026-10-10T06:26:40.077Z"
+        },
+        "row": {
+          "tag": "hui-timer-entity-row",
+          "name": "Laundry",
+          "hideName": false,
+          "state": "Idle",
+          "text": "Idle",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613909578,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "timer.laundry",
+          "state": "unavailable",
+          "attributes": {
+            "duration": "1:00:00",
+            "editable": false,
+            "last_transition": "cancelled",
+            "friendly_name": "Laundry"
+          },
+          "context": {
+            "id": "01M4J7W0ACK19MQXPNWQ21JMMJ",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T06:26:40.077Z",
+          "last_updated": "2026-10-10T06:26:40.077Z"
+        },
+        "row": {
+          "tag": "hui-timer-entity-row",
+          "name": "Laundry",
+          "hideName": false,
+          "state": "0",
+          "text": "0",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613914090
+      },
+      "paused": {
+        "stateObj": {
+          "entity_id": "timer.laundry",
+          "state": "paused",
+          "attributes": {
+            "duration": "1:00:00",
+            "editable": false,
+            "last_transition": "cancelled",
+            "friendly_name": "Laundry",
+            "remaining": "0:42:13"
+          },
+          "context": {
+            "id": "01M4J7W0ACK19MQXPNWQ21JMMJ",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T06:26:40.077Z",
+          "last_updated": "2026-10-10T06:26:40.077Z"
+        },
+        "row": {
+          "tag": "hui-timer-entity-row",
+          "name": "Laundry",
+          "hideName": false,
+          "state": "42:13 (Paused)",
+          "text": "42:13 (Paused)",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613914392
+      },
+      "active": {
+        "stateObj": {
+          "entity_id": "timer.laundry",
+          "state": "active",
+          "attributes": {
+            "duration": "1:00:00",
+            "editable": false,
+            "last_transition": "cancelled",
+            "friendly_name": "Laundry",
+            "remaining": "1:00:00",
+            "finishes_at": "2026-10-10T06:44:23.175Z"
+          },
+          "context": {
+            "id": "01M4J7W0ACK19MQXPNWQ21JMMJ",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T06:26:40.077Z",
+          "last_updated": "2026-10-10T06:26:40.077Z"
+        },
+        "row": {
+          "tag": "hui-timer-entity-row",
+          "name": "Laundry",
+          "hideName": false,
+          "state": "12:28",
+          "text": "12:28",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613914695
+      }
+    },
+    "input_datetime.wake_up": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "input_datetime.wake_up",
+          "state": "07:00:00",
+          "attributes": {
+            "has_date": false,
+            "has_time": true,
+            "editable": false,
+            "hour": 7,
+            "minute": 0,
+            "second": 0,
+            "timestamp": 25200,
+            "friendly_name": "Wake-up time"
+          },
+          "context": {
+            "id": "01M4HEKSVNSD50A4JYNCQ1JAKD",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.917Z",
+          "last_updated": "2026-10-09T23:05:16.917Z"
+        },
+        "row": {
+          "tag": "hui-input-datetime-entity-row",
+          "name": "Wake-up time",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": {
+            "value": "07:00:00",
+            "disabled": false,
+            "label": null
+          },
+          "buttons": []
+        },
+        "capturedAt": 1791613915101,
+        "calls": [
+          {
+            "control": "time",
+            "label": "time",
+            "calls": [
+              {
+                "domain": "input_datetime",
+                "service": "set_datetime",
+                "data": {
+                  "entity_id": "input_datetime.wake_up",
+                  "time": "08:15:00"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "input_datetime.wake_up",
+          "state": "unavailable",
+          "attributes": {
+            "has_date": false,
+            "has_time": true,
+            "editable": false,
+            "hour": 7,
+            "minute": 0,
+            "second": 0,
+            "timestamp": 25200,
+            "friendly_name": "Wake-up time"
+          },
+          "context": {
+            "id": "01M4HEKSVNSD50A4JYNCQ1JAKD",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.917Z",
+          "last_updated": "2026-10-09T23:05:16.917Z"
+        },
+        "row": {
+          "tag": "hui-input-datetime-entity-row",
+          "name": "Wake-up time",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": {
+            "value": "unavailable",
+            "disabled": true,
+            "label": null
+          },
+          "buttons": []
+        },
+        "capturedAt": 1791613919619
+      }
+    },
+    "date.date": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "date.date",
+          "state": "2020-01-01",
+          "attributes": {
+            "icon": "mdi:calendar",
+            "friendly_name": "Date"
+          },
+          "context": {
+            "id": "01M4HEKT3DGKPB4TARF6HG6BCJ",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "row": {
+          "tag": "hui-date-entity-row",
+          "name": "Date",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": {
+            "value": "2020-01-01",
+            "disabled": false,
+            "label": null
+          },
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613920023,
+        "calls": [
+          {
+            "control": "date",
+            "label": "date",
+            "calls": [
+              {
+                "domain": "date",
+                "service": "set_value",
+                "data": {
+                  "entity_id": "date.date",
+                  "date": "2024-02-03"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "date.date",
+          "state": "unavailable",
+          "attributes": {
+            "icon": "mdi:calendar",
+            "friendly_name": "Date"
+          },
+          "context": {
+            "id": "01M4HEKT3DGKPB4TARF6HG6BCJ",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "row": {
+          "tag": "hui-date-entity-row",
+          "name": "Date",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": {
+            "value": null,
+            "disabled": true,
+            "label": null
+          },
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613924538
+      }
+    },
+    "time.time": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "time.time",
+          "state": "12:00:00",
+          "attributes": {
+            "friendly_name": "Time"
+          },
+          "context": {
+            "id": "01M4HEKT3KHECJW0DWE3CSZW4P",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.171Z",
+          "last_updated": "2026-10-09T23:05:17.171Z"
+        },
+        "row": {
+          "tag": "hui-time-entity-row",
+          "name": "Time",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": {
+            "value": "12:00:00",
+            "disabled": false,
+            "label": null
+          },
+          "buttons": []
+        },
+        "capturedAt": 1791613924940,
+        "calls": [
+          {
+            "control": "time",
+            "label": "time",
+            "calls": [
+              {
+                "domain": "time",
+                "service": "set_value",
+                "data": {
+                  "entity_id": "time.time",
+                  "time": "08:15:00"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "time.time",
+          "state": "unavailable",
+          "attributes": {
+            "friendly_name": "Time"
+          },
+          "context": {
+            "id": "01M4HEKT3KHECJW0DWE3CSZW4P",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.171Z",
+          "last_updated": "2026-10-09T23:05:17.171Z"
+        },
+        "row": {
+          "tag": "hui-time-entity-row",
+          "name": "Time",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": {
+            "value": null,
+            "disabled": true,
+            "label": null
+          },
+          "buttons": []
+        },
+        "capturedAt": 1791613929461
+      }
+    },
+    "datetime.date_and_time": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "datetime.date_and_time",
+          "state": "2020-01-01T12:00:00+00:00",
+          "attributes": {
+            "icon": "mdi:calendar-clock",
+            "friendly_name": "Date and Time"
+          },
+          "context": {
+            "id": "01M4HEKT3DSJYE6VBMJSGMH08J",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "row": {
+          "tag": "hui-datetime-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": {
+            "value": "2020-01-01",
+            "disabled": false,
+            "label": "Date and Time"
+          },
+          "time": {
+            "value": "12:00:00",
+            "disabled": false,
+            "label": null
+          },
+          "buttons": []
+        },
+        "capturedAt": 1791613929866,
+        "calls": [
+          {
+            "control": "date",
+            "label": "date",
+            "calls": [
+              {
+                "domain": "datetime",
+                "service": "set_value",
+                "data": {
+                  "entity_id": "datetime.date_and_time",
+                  "datetime": "2024-02-03T12:00:00.000Z"
+                },
+                "target": null
+              }
+            ]
+          },
+          {
+            "control": "time",
+            "label": "time",
+            "calls": [
+              {
+                "domain": "datetime",
+                "service": "set_value",
+                "data": {
+                  "entity_id": "datetime.date_and_time",
+                  "datetime": "2020-01-01T08:15:00.000Z"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "datetime.date_and_time",
+          "state": "unavailable",
+          "attributes": {
+            "icon": "mdi:calendar-clock",
+            "friendly_name": "Date and Time"
+          },
+          "context": {
+            "id": "01M4HEKT3DSJYE6VBMJSGMH08J",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "row": {
+          "tag": "hui-datetime-entity-row",
+          "name": null,
+          "hideName": true,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": {
+            "value": null,
+            "disabled": true,
+            "label": "Date and Time"
+          },
+          "time": {
+            "value": null,
+            "disabled": true,
+            "label": null
+          },
+          "buttons": []
+        },
+        "capturedAt": 1791613934388
+      }
+    },
+    "counter.coffee_cups": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "counter.coffee_cups",
+          "state": "0",
+          "attributes": {
+            "editable": false,
+            "initial": 0,
+            "step": 1,
+            "icon": "mdi:coffee",
+            "friendly_name": "Coffee cups"
+          },
+          "context": {
+            "id": "01M4HEKSE4VTST84W829K6FJ8Q",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.484Z",
+          "last_updated": "2026-10-09T23:05:16.484Z"
+        },
+        "row": {
+          "tag": "hui-simple-entity-row",
+          "name": "Coffee cups",
+          "hideName": false,
+          "state": null,
+          "text": "0",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613934691,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "counter.coffee_cups",
+          "state": "unavailable",
+          "attributes": {
+            "editable": false,
+            "initial": 0,
+            "step": 1,
+            "icon": "mdi:coffee",
+            "friendly_name": "Coffee cups"
+          },
+          "context": {
+            "id": "01M4HEKSE4VTST84W829K6FJ8Q",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:16.484Z",
+          "last_updated": "2026-10-09T23:05:16.484Z"
+        },
+        "row": {
+          "tag": "hui-simple-entity-row",
+          "name": "Coffee cups",
+          "hideName": false,
+          "state": null,
+          "text": "Unavailable",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": []
+        },
+        "capturedAt": 1791613939204
+      }
+    },
+    "button.push": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "button.push",
+          "state": "2026-10-10T03:18:28.462287+00:00",
+          "attributes": {
+            "friendly_name": "Push"
+          },
+          "context": {
+            "id": "01M4HX3DBEZV81XXHM1ZG9FW9X",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T03:18:28.462Z",
+          "last_updated": "2026-10-10T03:18:28.462Z"
+        },
+        "row": {
+          "tag": "hui-button-entity-row",
+          "name": "Push",
+          "hideName": false,
+          "state": null,
+          "text": "Press",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [
+            {
+              "text": "Press",
+              "disabled": false
+            }
+          ]
+        },
+        "capturedAt": 1791613939607,
+        "calls": [
+          {
+            "control": "button",
+            "label": "button",
+            "calls": [
+              {
+                "domain": "button",
+                "service": "press",
+                "data": {
+                  "entity_id": "button.push"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "button.push",
+          "state": "unavailable",
+          "attributes": {
+            "friendly_name": "Push"
+          },
+          "context": {
+            "id": "01M4HX3DBEZV81XXHM1ZG9FW9X",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T03:18:28.462Z",
+          "last_updated": "2026-10-10T03:18:28.462Z"
+        },
+        "row": {
+          "tag": "hui-button-entity-row",
+          "name": "Push",
+          "hideName": false,
+          "state": null,
+          "text": "Press",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [
+            {
+              "text": "Press",
+              "disabled": true
+            }
+          ]
+        },
+        "capturedAt": 1791613944125
+      }
+    },
+    "input_button.doorbell_test": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "input_button.doorbell_test",
+          "state": "2026-10-10T03:18:28.467050+00:00",
+          "attributes": {
+            "editable": false,
+            "icon": "mdi:doorbell",
+            "friendly_name": "Doorbell test"
+          },
+          "context": {
+            "id": "01M4HX3DBJ0MWYZ9KWJQKS75RV",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T03:18:28.467Z",
+          "last_updated": "2026-10-10T03:18:28.467Z"
+        },
+        "row": {
+          "tag": "hui-input-button-entity-row",
+          "name": "Doorbell test",
+          "hideName": false,
+          "state": null,
+          "text": "Press",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [
+            {
+              "text": "Press",
+              "disabled": false
+            }
+          ]
+        },
+        "capturedAt": 1791613944526,
+        "calls": [
+          {
+            "control": "button",
+            "label": "button",
+            "calls": [
+              {
+                "domain": "input_button",
+                "service": "press",
+                "data": {
+                  "entity_id": "input_button.doorbell_test"
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "input_button.doorbell_test",
+          "state": "unavailable",
+          "attributes": {
+            "editable": false,
+            "icon": "mdi:doorbell",
+            "friendly_name": "Doorbell test"
+          },
+          "context": {
+            "id": "01M4HX3DBJ0MWYZ9KWJQKS75RV",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T03:18:28.467Z",
+          "last_updated": "2026-10-10T03:18:28.467Z"
+        },
+        "row": {
+          "tag": "hui-input-button-entity-row",
+          "name": "Doorbell test",
+          "hideName": false,
+          "state": null,
+          "text": "Press",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [
+            {
+              "text": "Press",
+              "disabled": true
+            }
+          ]
+        },
+        "capturedAt": 1791613949042
       }
     }
   }

@@ -70,6 +70,7 @@ import java.time.Instant
  * @property automation an automation's last run and run button
  * @property timer a timer's duration and buttons
  * @property remote a remote's activity menu
+ * @property input the entity's row control (a number, select, text, date or time), which upstream's dialog leads with
  * @property attributes the displayable attributes, as (name, formatted value)
  */
 data class MoreInfoModel(
@@ -99,6 +100,7 @@ data class MoreInfoModel(
     val automation: AutomationMoreInfo?,
     val timer: TimerMoreInfo?,
     val remote: SelectMenu?,
+    val input: RowControl?,
     val attributes: List<Pair<String, String>>,
 )
 
@@ -149,6 +151,7 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         automation = automationMoreInfo(state, now),
         timer = timerMoreInfo(state),
         remote = remoteActivity(state),
+        input = if (domain in INPUT_DOMAINS) inputRowControl(state, entityName ?: deviceName ?: entityId) else null,
         attributes = displayAttributes(state).map { attributeName(state, it) to formatEntityAttributeValue(state, it) },
     )
 }
@@ -165,6 +168,12 @@ private fun displayAttributes(state: EntityState): List<String> {
 
 private const val MILLIS = 1000.0
 private val ON_OFF = setOf("on", "off")
+
+/** The domains whose details lead with their row's input (`state-card-content`). */
+private val INPUT_DOMAINS = setOf(
+    "input_number", "number", "input_select", "select", "input_text", "text", "input_datetime", "date", "time",
+    "datetime",
+)
 
 /** The domains whose controls replace the state header (`more-info-climate` renders none). */
 private val NO_STATE_HEADER_DOMAINS = setOf("climate", "humidifier", "media_player", "water_heater")
