@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,8 +39,10 @@ import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
+import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.MoreInfoModel
 import io.homeassistant.companion.android.dashboard.derive.moreInfoModel
+import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.history.showsHistory
 import io.homeassistant.companion.android.dashboard.logbook.showsLogbook
@@ -49,6 +52,7 @@ import io.homeassistant.companion.android.dashboard.ui.cards.EntityToggle
 import io.homeassistant.companion.android.dashboard.ui.cards.TileFeatureControl
 import io.homeassistant.companion.android.dashboard.ui.controls.StateToggleControl
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.LightFavoritesMenu
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoClimate
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLight
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLogbook
@@ -106,12 +110,8 @@ private fun MoreInfoContent(
         MoreInfoHeader(model, interactions) {
             hass.states[model.entityId]?.takeIf { model.light != null }?.let { LightFavoritesMenu(it, hass) }
         }
-        MoreInfoState(model)
-        val state = hass.states[model.entityId]
-        model.light?.let { light -> state?.let { MoreInfoLight(light, it, hass, interactions.onAction) } }
-        model.stateToggle?.let { toggle ->
-            StateToggleControl(toggle, interactions.onAction, Modifier.align(Alignment.CenterHorizontally))
-        }
+        if (model.stateHeader) MoreInfoState(model)
+        hass.states[model.entityId]?.let { DomainControls(model, it, hass, interactions.onAction) }
         model.controls.forEach { TileFeatureControl(it, available = true, onAction = interactions.onAction) }
         model.media?.let { media ->
             Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
@@ -130,6 +130,21 @@ private fun MoreInfoContent(
                 modifier = Modifier.align(Alignment.End),
             )
         }
+    }
+}
+
+/** The controls of the entity's domain, as its `more-info-<domain>` leads with them. */
+@Composable
+private fun DomainControls(
+    model: MoreInfoModel,
+    state: EntityState,
+    hass: HassSnapshot,
+    onAction: (CardAction) -> Unit,
+) {
+    model.light?.let { MoreInfoLight(it, state, hass, onAction) }
+    model.climate?.let { MoreInfoClimate(it, state, onAction) }
+    model.stateToggle?.let { toggle ->
+        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { StateToggleControl(toggle, onAction) }
     }
 }
 

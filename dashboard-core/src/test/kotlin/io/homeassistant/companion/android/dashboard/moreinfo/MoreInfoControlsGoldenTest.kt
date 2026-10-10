@@ -3,7 +3,6 @@ package io.homeassistant.companion.android.dashboard.moreinfo
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.DisplayColor
 import io.homeassistant.companion.android.dashboard.derive.moreInfoModel
-import io.homeassistant.companion.android.dashboard.display.formatEntityState
 import io.homeassistant.companion.android.dashboard.display.jsNumberString
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -33,8 +32,9 @@ class MoreInfoControlsGoldenTest {
 
     @TestFactory
     fun `Given captured entities when deriving the details then the state header matches ha-more-info-state-header`() = perVariant { hass, state, captured ->
-        val shown = hass.lightMoreInfo(state)?.state ?: hass.formatEntityState(state)
-        assertEquals(captured.obj("main")!!.string("state"), shown)
+        val model = hass.moreInfoModel(state.entityId, Instant.EPOCH)!!
+        // Domains whose controls show their own readings have no state header
+        assertEquals(captured.obj("main")!!.string("state"), model.state.takeIf { model.stateHeader })
     }
 
     @TestFactory

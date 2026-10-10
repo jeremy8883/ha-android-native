@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-10T03:18:19.825Z",
+  "capturedAt": "2026-10-10T04:18:43.112Z",
   "entities": {
     "light.bed_light": {
       "as_is": {
@@ -38,12 +38,12 @@
             "supported_features": 4
           },
           "context": {
-            "id": "01M4HW5GQN86S3Q3R2Z15AND3T",
+            "id": "01M4HZFEYW84J15VT7FCEK47K0",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T03:02:08.898Z",
-          "last_updated": "2026-10-10T03:02:08.898Z"
+          "last_changed": "2026-10-10T04:00:00.479Z",
+          "last_updated": "2026-10-10T04:00:00.479Z"
         },
         "entry": {
           "area_id": null,
@@ -160,6 +160,8 @@
               ]
             }
           ],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -324,6 +326,8 @@
                 ]
               }
             ],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -491,6 +495,8 @@
                 ]
               }
             ],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -587,6 +593,12 @@
               "deleteLabels": [],
               "buttonsLabels": []
             }
+          }
+        },
+        "menuIcons": {
+          "effect": {
+            "rainbow": "mdi:looks",
+            "off": "mdi:star-off"
           }
         },
         "effectIcons": {
@@ -998,12 +1010,12 @@
             "effect": null
           },
           "context": {
-            "id": "01M4HW5GQN86S3Q3R2Z15AND3T",
+            "id": "01M4HZFEYW84J15VT7FCEK47K0",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T03:02:08.898Z",
-          "last_updated": "2026-10-10T03:02:08.898Z"
+          "last_changed": "2026-10-10T04:00:00.479Z",
+          "last_updated": "2026-10-10T04:00:00.479Z"
         },
         "entry": {
           "area_id": null,
@@ -1120,6 +1132,8 @@
               ]
             }
           ],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -1281,6 +1295,8 @@
                 ]
               }
             ],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -1448,6 +1464,8 @@
                 ]
               }
             ],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -1567,12 +1585,12 @@
             "restored": true
           },
           "context": {
-            "id": "01M4HW5GQN86S3Q3R2Z15AND3T",
+            "id": "01M4HZFEYW84J15VT7FCEK47K0",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T03:02:08.898Z",
-          "last_updated": "2026-10-10T03:02:08.898Z"
+          "last_changed": "2026-10-10T04:00:00.479Z",
+          "last_updated": "2026-10-10T04:00:00.479Z"
         },
         "entry": {
           "area_id": null,
@@ -1689,6 +1707,8 @@
               ]
             }
           ],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -1850,6 +1870,8 @@
                 ]
               }
             ],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -2017,6 +2039,8 @@
                 ]
               }
             ],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -2149,12 +2173,12 @@
             "supported_features": 0
           },
           "context": {
-            "id": "01M4HPWJACCWKV3D21P6W9B0VP",
+            "id": "01M4HX3DCG7Z75QVERSV3GGPEX",
             "parent_id": null,
             "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-10T01:29:52.717Z",
-          "last_updated": "2026-10-10T01:29:52.717Z"
+          "last_changed": "2026-10-10T03:18:28.507Z",
+          "last_updated": "2026-10-10T03:18:28.507Z"
         },
         "entry": {
           "area_id": null,
@@ -2251,6 +2275,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -2399,6 +2425,8 @@
               "sliders": []
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -2550,6 +2578,8 @@
             ],
             "rgb": null,
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -2647,6 +2677,9 @@
               "buttonsLabels": []
             }
           }
+        },
+        "menuIcons": {
+          "effect": {}
         },
         "effectIcons": {},
         "editMode": {
@@ -3034,12 +3067,12 @@
             "xy_color": null
           },
           "context": {
-            "id": "01M4HPWJACCWKV3D21P6W9B0VP",
+            "id": "01M4HX3DCG7Z75QVERSV3GGPEX",
             "parent_id": null,
             "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-10T01:29:52.717Z",
-          "last_updated": "2026-10-10T01:29:52.717Z"
+          "last_changed": "2026-10-10T03:18:28.507Z",
+          "last_updated": "2026-10-10T03:18:28.507Z"
         },
         "entry": {
           "area_id": null,
@@ -3136,6 +3169,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -3281,6 +3316,8 @@
               "sliders": []
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -3432,6 +3469,8 @@
             ],
             "rgb": null,
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -3547,12 +3586,12 @@
             "restored": true
           },
           "context": {
-            "id": "01M4HPWJACCWKV3D21P6W9B0VP",
+            "id": "01M4HX3DCG7Z75QVERSV3GGPEX",
             "parent_id": null,
             "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-10T01:29:52.717Z",
-          "last_updated": "2026-10-10T01:29:52.717Z"
+          "last_changed": "2026-10-10T03:18:28.507Z",
+          "last_updated": "2026-10-10T03:18:28.507Z"
         },
         "entry": {
           "area_id": null,
@@ -3649,6 +3688,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -3794,6 +3835,8 @@
               "sliders": []
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -3945,6 +3988,8 @@
             ],
             "rgb": null,
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -4179,6 +4224,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -4327,6 +4374,8 @@
               "sliders": []
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -4478,6 +4527,8 @@
             ],
             "rgb": null,
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -4575,6 +4626,9 @@
               "buttonsLabels": []
             }
           }
+        },
+        "menuIcons": {
+          "effect": {}
         },
         "effectIcons": {},
         "editMode": {
@@ -5064,6 +5118,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -5209,6 +5265,8 @@
               "sliders": []
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -5360,6 +5418,8 @@
             ],
             "rgb": null,
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -5577,6 +5637,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -5722,6 +5784,8 @@
               "sliders": []
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -5873,6 +5937,8 @@
             ],
             "rgb": null,
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -6102,6 +6168,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": null
         },
         "pickers": {
@@ -6161,8 +6229,13 @@
               ]
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": null
           }
+        },
+        "menuIcons": {
+          "effect": {}
         },
         "effectIcons": {},
         "editMode": {
@@ -6484,6 +6557,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": null
         },
         "pickers": {
@@ -6540,6 +6615,8 @@
               ]
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": null
           }
         }
@@ -6652,6 +6729,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": null
         },
         "pickers": {
@@ -6708,6 +6787,8 @@
               ]
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": null
           }
         }
@@ -6726,34 +6807,34 @@
             "brightness": 255,
             "hs_color": [
               120,
-              37.647
+              96.078
             ],
             "rgb_color": [
-              159,
+              10,
               255,
-              159
+              10
             ],
             "xy_color": [
-              0.269,
-              0.478
+              0.174,
+              0.743
             ],
             "rgbww_color": [
-              63,
+              10,
               255,
-              66,
-              255,
+              10,
+              0,
               0
             ],
             "friendly_name": "Living Room RGBWW Lights",
             "supported_features": 0
           },
           "context": {
-            "id": "01M4HPZR1G79MRAF8W2ZZ93Y7E",
+            "id": "01M4HXMFW2TRHCXKR765ADZYAP",
             "parent_id": null,
             "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
           "last_changed": "2026-10-09T23:05:17.167Z",
-          "last_updated": "2026-10-10T01:31:36.881Z"
+          "last_updated": "2026-10-10T03:27:48.099Z"
         },
         "entry": {
           "area_id": null,
@@ -6770,7 +6851,7 @@
           "icon": null,
           "id": "836877c967e38972d7187666e07cf39e",
           "labels": [],
-          "modified_at": 1791602055.31822,
+          "modified_at": 1791602934.236936,
           "name": null,
           "options": {
             "conversation": {
@@ -6837,8 +6918,8 @@
             "disabled": false,
             "label": "Brightness",
             "unit": "%",
-            "color": "#99ff99",
-            "background": "#99ff99",
+            "color": "#0aff0a",
+            "background": "#0aff0a",
             "gradient": null
           },
           "buttons": [
@@ -6869,6 +6950,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -6959,12 +7042,12 @@
             ],
             "rgb": {
               "hs": [
-                120.9375,
-                0.7529411764705882
+                120,
+                0.9607843137254902
               ],
               "colorBrightness": 255,
               "wv": null,
-              "cw": 255,
+              "cw": 0,
               "ww": 0,
               "minKelvin": null,
               "maxKelvin": null,
@@ -6979,7 +7062,7 @@
                   "caption": "Cold white brightness",
                   "name": "cw",
                   "icon": "mdi:file-word-box-outline",
-                  "value": 100
+                  "value": 0
                 },
                 {
                   "caption": "Warm white brightness",
@@ -6990,6 +7073,8 @@
               ]
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -7048,6 +7133,9 @@
               "buttonsLabels": []
             }
           }
+        },
+        "menuIcons": {
+          "effect": {}
         },
         "effectIcons": {},
         "editMode": {
@@ -7152,7 +7240,7 @@
                     127.5,
                     255,
                     127.5,
-                    255,
+                    0,
                     0
                   ]
                 }
@@ -7178,7 +7266,7 @@
                     255,
                     255,
                     255,
-                    255,
+                    0,
                     0
                   ]
                 }
@@ -7204,7 +7292,7 @@
                     255,
                     0,
                     255,
-                    255,
+                    0,
                     0
                   ]
                 }
@@ -7224,10 +7312,10 @@
                 "data": {
                   "entity_id": "light.living_room_rgbww_lights",
                   "rgbww_color": [
-                    25,
+                    4,
                     102,
-                    26,
-                    255,
+                    4,
+                    0,
                     0
                   ]
                 }
@@ -7247,10 +7335,10 @@
                 "data": {
                   "entity_id": "light.living_room_rgbww_lights",
                   "rgbww_color": [
-                    63,
+                    10,
                     255,
-                    66,
-                    255,
+                    10,
+                    0,
                     0
                   ]
                 }
@@ -7270,9 +7358,9 @@
                 "data": {
                   "entity_id": "light.living_room_rgbww_lights",
                   "rgbww_color": [
-                    63,
+                    10,
                     255,
-                    66,
+                    10,
                     102,
                     0
                   ]
@@ -7293,9 +7381,9 @@
                 "data": {
                   "entity_id": "light.living_room_rgbww_lights",
                   "rgbww_color": [
-                    63,
+                    10,
                     255,
-                    66,
+                    10,
                     255,
                     0
                   ]
@@ -7316,10 +7404,10 @@
                 "data": {
                   "entity_id": "light.living_room_rgbww_lights",
                   "rgbww_color": [
-                    63,
+                    10,
                     255,
-                    66,
-                    255,
+                    10,
+                    0,
                     102
                   ]
                 }
@@ -7339,10 +7427,10 @@
                 "data": {
                   "entity_id": "light.living_room_rgbww_lights",
                   "rgbww_color": [
-                    63,
+                    10,
                     255,
-                    66,
-                    255,
+                    10,
+                    0,
                     255
                   ]
                 }
@@ -7456,12 +7544,12 @@
             "xy_color": null
           },
           "context": {
-            "id": "01M4HPZR1G79MRAF8W2ZZ93Y7E",
+            "id": "01M4HXMFW2TRHCXKR765ADZYAP",
             "parent_id": null,
             "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
           "last_changed": "2026-10-09T23:05:17.167Z",
-          "last_updated": "2026-10-10T01:31:36.881Z"
+          "last_updated": "2026-10-10T03:27:48.099Z"
         },
         "entry": {
           "area_id": null,
@@ -7478,7 +7566,7 @@
           "icon": null,
           "id": "836877c967e38972d7187666e07cf39e",
           "labels": [],
-          "modified_at": 1791602055.31822,
+          "modified_at": 1791602934.236936,
           "name": null,
           "options": {
             "conversation": {
@@ -7577,6 +7665,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -7695,6 +7785,8 @@
               ]
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -7768,12 +7860,12 @@
             "restored": true
           },
           "context": {
-            "id": "01M4HPZR1G79MRAF8W2ZZ93Y7E",
+            "id": "01M4HXMFW2TRHCXKR765ADZYAP",
             "parent_id": null,
             "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
           "last_changed": "2026-10-09T23:05:17.167Z",
-          "last_updated": "2026-10-10T01:31:36.881Z"
+          "last_updated": "2026-10-10T03:27:48.099Z"
         },
         "entry": {
           "area_id": null,
@@ -7790,7 +7882,7 @@
           "icon": null,
           "id": "836877c967e38972d7187666e07cf39e",
           "labels": [],
-          "modified_at": 1791602055.31822,
+          "modified_at": 1791602934.236936,
           "name": null,
           "options": {
             "conversation": {
@@ -7889,6 +7981,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -8007,6 +8101,8 @@
               ]
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -8200,6 +8296,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -8367,6 +8465,8 @@
               "sliders": []
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -8480,6 +8580,9 @@
               "buttonsLabels": []
             }
           }
+        },
+        "menuIcons": {
+          "effect": {}
         },
         "effectIcons": {},
         "editMode": {
@@ -8997,6 +9100,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -9161,6 +9266,8 @@
               "sliders": []
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -9393,6 +9500,8 @@
           ],
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": {
             "colors": [
               {
@@ -9557,6 +9666,8 @@
               "sliders": []
             },
             "menus": [],
+            "current": [],
+            "circular": null,
             "favorites": {
               "colors": [
                 {
@@ -9740,6 +9851,8 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": null
         },
         "pickers": {}
@@ -9809,6 +9922,8 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": null
         },
         "pickers": {}
@@ -9879,6 +9994,8 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": null
         },
         "pickers": {}
@@ -9957,6 +10074,8 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": null
         },
         "pickers": {}
@@ -10033,6 +10152,8 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": null
         },
         "pickers": {}
@@ -10110,6 +10231,8 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": null
         },
         "pickers": {}
@@ -10126,12 +10249,12 @@
             "friendly_name": "Guest mode"
           },
           "context": {
-            "id": "01M4HPWGAR06H8HWEG2SHMTKKV",
+            "id": "01M4HX3BC63CPDZGRQWWXECR6W",
             "parent_id": null,
             "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-10T01:29:50.680Z",
-          "last_updated": "2026-10-10T01:29:50.680Z"
+          "last_changed": "2026-10-10T03:18:26.439Z",
+          "last_updated": "2026-10-10T03:18:26.439Z"
         },
         "entry": {
           "area_id": null,
@@ -10183,6 +10306,8 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": null
         },
         "pickers": {}
@@ -10196,12 +10321,12 @@
             "icon": "mdi:account-multiple"
           },
           "context": {
-            "id": "01M4HPWGAR06H8HWEG2SHMTKKV",
+            "id": "01M4HX3BC63CPDZGRQWWXECR6W",
             "parent_id": null,
             "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-10T01:29:50.680Z",
-          "last_updated": "2026-10-10T01:29:50.680Z"
+          "last_changed": "2026-10-10T03:18:26.439Z",
+          "last_updated": "2026-10-10T03:18:26.439Z"
         },
         "entry": {
           "area_id": null,
@@ -10253,6 +10378,8 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
           "favorites": null
         },
         "pickers": {}
@@ -10267,12 +10394,12 @@
             "restored": true
           },
           "context": {
-            "id": "01M4HPWGAR06H8HWEG2SHMTKKV",
+            "id": "01M4HX3BC63CPDZGRQWWXECR6W",
             "parent_id": null,
             "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-10T01:29:50.680Z",
-          "last_updated": "2026-10-10T01:29:50.680Z"
+          "last_changed": "2026-10-10T03:18:26.439Z",
+          "last_updated": "2026-10-10T03:18:26.439Z"
         },
         "entry": {
           "area_id": null,
@@ -10324,6 +10451,3706 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "climate.heatpump": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "climate.heatpump",
+          "state": "heat",
+          "attributes": {
+            "hvac_modes": [
+              "heat",
+              "off"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "current_temperature": 25,
+            "temperature": 27,
+            "hvac_action": "heating",
+            "friendly_name": "HeatPump",
+            "supported_features": 385
+          },
+          "context": {
+            "id": "01M4J0CKEWDA9X0V27DV7VZG9X",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-09T23:05:17.164Z",
+          "last_updated": "2026-10-10T04:15:55.357Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.218646,
+          "device_id": "8a5b0c745c47fe240b8a1f143e530b8e",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "climate.heatpump",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "a64dd237907df7a2e50d35ecd6e93b77",
+          "labels": [],
+          "modified_at": 1791433963.200199,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "ubercool",
+          "unique_id": "climate_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "hvac_modes": [
+              "heat",
+              "off"
+            ],
+            "min_temp": 7,
+            "max_temp": 35
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "heat",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "heat",
+                  "label": "Heat"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current temperature",
+              "value": "25 °C"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-climate-temperature",
+            "colors": {
+              "state": "var(--state-climate-heat-color, var(--state-climate-active-color, var(--state-active-color)))",
+              "action": "var(--state-climate-heat-color, var(--state-climate-active-color, var(--state-active-color)))",
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "start",
+              "value": 27,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": 25,
+              "min": 7,
+              "max": 35,
+              "step": 0.5,
+              "inactive": false,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Heating",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 27,
+                "unit": "°C",
+                "digits": 1,
+                "text": "27 .0 °C"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": [
+              {
+                "step": -0.5,
+                "target": "value",
+                "color": null
+              },
+              {
+                "step": 0.5,
+                "target": "value",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {},
+        "menuIcons": {
+          "preset_mode": {},
+          "fan_mode": {},
+          "swing_mode": {},
+          "swing_horizontal_mode": {}
+        },
+        "calls": [
+          {
+            "control": "temperature",
+            "label": "value 21",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "climate.heatpump",
+                  "temperature": 21
+                }
+              }
+            ]
+          },
+          {
+            "control": "temperature",
+            "label": "button minus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "climate.heatpump",
+                  "temperature": 26
+                }
+              }
+            ]
+          },
+          {
+            "control": "temperature",
+            "label": "button plus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "climate.heatpump",
+                  "temperature": 28
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Mode off",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_hvac_mode",
+                "data": {
+                  "hvac_mode": "off",
+                  "entity_id": "climate.heatpump"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "climate.heatpump",
+          "state": "off",
+          "attributes": {
+            "hvac_modes": [
+              "heat",
+              "off"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "current_temperature": 25,
+            "temperature": 27,
+            "hvac_action": "off",
+            "friendly_name": "HeatPump",
+            "supported_features": 385
+          },
+          "context": {
+            "id": "01M4J0CKEWDA9X0V27DV7VZG9X",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-09T23:05:17.164Z",
+          "last_updated": "2026-10-10T04:15:55.357Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.218646,
+          "device_id": "8a5b0c745c47fe240b8a1f143e530b8e",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "climate.heatpump",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "a64dd237907df7a2e50d35ecd6e93b77",
+          "labels": [],
+          "modified_at": 1791433963.200199,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "ubercool",
+          "unique_id": "climate_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "hvac_modes": [
+              "heat",
+              "off"
+            ],
+            "min_temp": 7,
+            "max_temp": 35
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "off",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "heat",
+                  "label": "Heat"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current temperature",
+              "value": "25 °C"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-climate-temperature",
+            "colors": {
+              "state": "var(--state-climate-off-color, var(--state-climate-inactive-color, var(--state-inactive-color)))",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "start",
+              "value": 27,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": 25,
+              "min": 7,
+              "max": 35,
+              "step": 0.5,
+              "inactive": true,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Off",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 27,
+                "unit": "°C",
+                "digits": 1,
+                "text": "27 .0 °C"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": [
+              {
+                "step": -0.5,
+                "target": "value",
+                "color": null
+              },
+              {
+                "step": 0.5,
+                "target": "value",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "climate.heatpump",
+          "state": "unavailable",
+          "attributes": {
+            "hvac_modes": [
+              "heat",
+              "off"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "current_temperature": 25,
+            "temperature": 27,
+            "hvac_action": "heating",
+            "friendly_name": "HeatPump",
+            "supported_features": 385,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4J0CKEWDA9X0V27DV7VZG9X",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-09T23:05:17.164Z",
+          "last_updated": "2026-10-10T04:15:55.357Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.218646,
+          "device_id": "8a5b0c745c47fe240b8a1f143e530b8e",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "climate.heatpump",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "a64dd237907df7a2e50d35ecd6e93b77",
+          "labels": [],
+          "modified_at": 1791433963.200199,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "ubercool",
+          "unique_id": "climate_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "hvac_modes": [
+              "heat",
+              "off"
+            ],
+            "min_temp": 7,
+            "max_temp": 35
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "unavailable",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "heat",
+                  "label": "Heat"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current temperature",
+              "value": "25 °C"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-climate-temperature",
+            "colors": {
+              "state": "var(--state-unavailable-color)",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "full",
+              "value": null,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": 25,
+              "min": 7,
+              "max": 35,
+              "step": 0.5,
+              "inactive": false,
+              "readonly": true,
+              "disabled": true
+            },
+            "label": "Unavailable",
+            "labelDisabled": true,
+            "big": [
+              {
+                "value": 27,
+                "unit": "°C",
+                "digits": 1,
+                "text": "27 .0 °C"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": []
+          },
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "climate.hvac": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "climate.hvac",
+          "state": "cool",
+          "attributes": {
+            "hvac_modes": [
+              "off",
+              "heat",
+              "cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "min_humidity": 30,
+            "max_humidity": 99,
+            "target_humidity_step": 5,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ],
+            "swing_horizontal_modes": [
+              "auto",
+              "rangefull",
+              "off"
+            ],
+            "current_temperature": 22,
+            "temperature": 21,
+            "target_temp_high": null,
+            "target_temp_low": null,
+            "current_humidity": 54.2,
+            "humidity": 67.4,
+            "fan_mode": "on_high",
+            "hvac_action": "cooling",
+            "swing_mode": "off",
+            "swing_horizontal_mode": "auto",
+            "friendly_name": "Hvac",
+            "supported_features": 943
+          },
+          "context": {
+            "id": "01M4HEKT3CY4KH4HQJ1QBZWYSQ",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.164Z",
+          "last_updated": "2026-10-09T23:05:17.164Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.218834,
+          "device_id": "505460fb6b679b60291c2fa54cf45fa6",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "climate.hvac",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "92587e5a8c3af410905c2895579a5831",
+          "labels": [],
+          "modified_at": 1791433963.200255,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "ubercool",
+          "unique_id": "climate_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "hvac_modes": [
+              "off",
+              "heat",
+              "cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "min_humidity": 30,
+            "max_humidity": 99,
+            "target_humidity_step": 5,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ],
+            "swing_horizontal_modes": [
+              "auto",
+              "rangefull",
+              "off"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Temperature",
+              "disabled": false,
+              "selected": true,
+              "control": "temperature"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Humidity",
+              "disabled": false,
+              "selected": false,
+              "control": "humidity"
+            }
+          ],
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "cool",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "heat",
+                  "label": "Heat"
+                },
+                {
+                  "value": "cool",
+                  "label": "Cool"
+                },
+                {
+                  "value": "dry",
+                  "label": "Dry"
+                },
+                {
+                  "value": "fan_only",
+                  "label": "Fan only"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Fan mode",
+              "value": "on_high",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "on_low",
+                  "label": "On low"
+                },
+                {
+                  "value": "on_high",
+                  "label": "On high"
+                },
+                {
+                  "value": "auto_low",
+                  "label": "Auto low"
+                },
+                {
+                  "value": "auto_high",
+                  "label": "Auto high"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Swing mode",
+              "value": "off",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "1",
+                  "label": "1"
+                },
+                {
+                  "value": "2",
+                  "label": "2"
+                },
+                {
+                  "value": "3",
+                  "label": "3"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Horizontal swing mode",
+              "value": "auto",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "rangefull",
+                  "label": "Full range"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current temperature",
+              "value": "22 °C"
+            },
+            {
+              "label": "Current humidity",
+              "value": "54.2%"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-climate-temperature",
+            "colors": {
+              "state": "var(--state-climate-cool-color, var(--state-climate-active-color, var(--state-active-color)))",
+              "action": "var(--state-climate-cool-color, var(--state-climate-active-color, var(--state-active-color)))",
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "end",
+              "value": 21,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": 22,
+              "min": 7,
+              "max": 35,
+              "step": 0.5,
+              "inactive": false,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Cooling",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 21,
+                "unit": "°C",
+                "digits": 1,
+                "text": "21 .0 °C"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": [
+              {
+                "step": -0.5,
+                "target": "value",
+                "color": null
+              },
+              {
+                "step": 0.5,
+                "target": "value",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {
+          "temperature": {
+            "state": null,
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Temperature",
+                "disabled": false,
+                "selected": true,
+                "control": "temperature"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Humidity",
+                "disabled": false,
+                "selected": false,
+                "control": "humidity"
+              }
+            ],
+            "rgb": null,
+            "menus": [
+              {
+                "label": "Mode",
+                "value": "cool",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "heat",
+                    "label": "Heat"
+                  },
+                  {
+                    "value": "cool",
+                    "label": "Cool"
+                  },
+                  {
+                    "value": "dry",
+                    "label": "Dry"
+                  },
+                  {
+                    "value": "fan_only",
+                    "label": "Fan only"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Fan mode",
+                "value": "on_high",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "on_low",
+                    "label": "On low"
+                  },
+                  {
+                    "value": "on_high",
+                    "label": "On high"
+                  },
+                  {
+                    "value": "auto_low",
+                    "label": "Auto low"
+                  },
+                  {
+                    "value": "auto_high",
+                    "label": "Auto high"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Swing mode",
+                "value": "off",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "1",
+                    "label": "1"
+                  },
+                  {
+                    "value": "2",
+                    "label": "2"
+                  },
+                  {
+                    "value": "3",
+                    "label": "3"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Horizontal swing mode",
+                "value": "auto",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "rangefull",
+                    "label": "Full range"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              }
+            ],
+            "current": [
+              {
+                "label": "Current temperature",
+                "value": "22 °C"
+              },
+              {
+                "label": "Current humidity",
+                "value": "54.2%"
+              }
+            ],
+            "circular": {
+              "tag": "ha-state-control-climate-temperature",
+              "colors": {
+                "state": "var(--state-climate-cool-color, var(--state-climate-active-color, var(--state-active-color)))",
+                "action": "var(--state-climate-cool-color, var(--state-climate-active-color, var(--state-active-color)))",
+                "low": null,
+                "high": null
+              },
+              "slider": {
+                "mode": "end",
+                "value": 21,
+                "low": null,
+                "high": null,
+                "dual": false,
+                "current": 22,
+                "min": 7,
+                "max": 35,
+                "step": 0.5,
+                "inactive": false,
+                "readonly": false,
+                "disabled": false
+              },
+              "label": "Cooling",
+              "labelDisabled": false,
+              "big": [
+                {
+                  "value": 21,
+                  "unit": "°C",
+                  "digits": 1,
+                  "text": "21 .0 °C"
+                }
+              ],
+              "primaryState": null,
+              "selected": [],
+              "buttons": [
+                {
+                  "step": -0.5,
+                  "target": "value",
+                  "color": null
+                },
+                {
+                  "step": 0.5,
+                  "target": "value",
+                  "color": null
+                }
+              ]
+            },
+            "favorites": null
+          },
+          "humidity": {
+            "state": null,
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Temperature",
+                "disabled": false,
+                "selected": false,
+                "control": "temperature"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Humidity",
+                "disabled": false,
+                "selected": true,
+                "control": "humidity"
+              }
+            ],
+            "rgb": null,
+            "menus": [
+              {
+                "label": "Mode",
+                "value": "cool",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "heat",
+                    "label": "Heat"
+                  },
+                  {
+                    "value": "cool",
+                    "label": "Cool"
+                  },
+                  {
+                    "value": "dry",
+                    "label": "Dry"
+                  },
+                  {
+                    "value": "fan_only",
+                    "label": "Fan only"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Fan mode",
+                "value": "on_high",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "on_low",
+                    "label": "On low"
+                  },
+                  {
+                    "value": "on_high",
+                    "label": "On high"
+                  },
+                  {
+                    "value": "auto_low",
+                    "label": "Auto low"
+                  },
+                  {
+                    "value": "auto_high",
+                    "label": "Auto high"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Swing mode",
+                "value": "off",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "1",
+                    "label": "1"
+                  },
+                  {
+                    "value": "2",
+                    "label": "2"
+                  },
+                  {
+                    "value": "3",
+                    "label": "3"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Horizontal swing mode",
+                "value": "auto",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "rangefull",
+                    "label": "Full range"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              }
+            ],
+            "current": [
+              {
+                "label": "Current temperature",
+                "value": "22 °C"
+              },
+              {
+                "label": "Current humidity",
+                "value": "54.2%"
+              }
+            ],
+            "circular": {
+              "tag": "ha-state-control-climate-humidity",
+              "colors": {
+                "state": "var(--state-humidifier-on-color, var(--state-humidifier-active-color, var(--state-active-color)))",
+                "action": null,
+                "low": null,
+                "high": null
+              },
+              "slider": {
+                "mode": null,
+                "value": 67.4,
+                "low": null,
+                "high": null,
+                "dual": false,
+                "current": 54.2,
+                "min": 30,
+                "max": 99,
+                "step": 5,
+                "inactive": false,
+                "readonly": false,
+                "disabled": false
+              },
+              "label": "Humidity target",
+              "labelDisabled": false,
+              "big": [
+                {
+                  "value": 67.4,
+                  "unit": "%",
+                  "digits": 0,
+                  "text": "67 %"
+                }
+              ],
+              "primaryState": null,
+              "selected": [],
+              "buttons": [
+                {
+                  "step": -5,
+                  "target": "",
+                  "color": null
+                },
+                {
+                  "step": 5,
+                  "target": "",
+                  "color": null
+                }
+              ]
+            },
+            "favorites": null
+          }
+        },
+        "menuIcons": {
+          "preset_mode": {},
+          "fan_mode": {
+            "on_low": "mdi:fan-chevron-down",
+            "on_high": "mdi:fan-chevron-up",
+            "auto_low": "mdi:fan-auto",
+            "auto_high": "mdi:fan-auto",
+            "off": "mdi:fan-off"
+          },
+          "swing_mode": {
+            "1": "mdi:numeric-1",
+            "2": "mdi:numeric-2",
+            "3": "mdi:numeric-3",
+            "auto": "mdi:arrow-oscillating",
+            "off": "mdi:arrow-oscillating-off"
+          },
+          "swing_horizontal_mode": {
+            "auto": "mdi:compare-horizontal",
+            "rangefull": "mdi:pan-horizontal",
+            "off": "mdi:arrow-oscillating-off"
+          }
+        },
+        "calls": [
+          {
+            "control": "temperature",
+            "label": "value 21",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "climate.hvac",
+                  "temperature": 21
+                }
+              }
+            ]
+          },
+          {
+            "control": "temperature",
+            "label": "button minus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "climate.hvac",
+                  "temperature": 20
+                }
+              }
+            ]
+          },
+          {
+            "control": "temperature",
+            "label": "button plus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "climate.hvac",
+                  "temperature": 22
+                }
+              }
+            ]
+          },
+          {
+            "control": "humidity",
+            "label": "value 55",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_humidity",
+                "data": {
+                  "entity_id": "climate.hvac",
+                  "humidity": 55
+                }
+              }
+            ]
+          },
+          {
+            "control": "humidity",
+            "label": "button plus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_humidity",
+                "data": {
+                  "entity_id": "climate.hvac",
+                  "humidity": 72.4
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Mode auto",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_hvac_mode",
+                "data": {
+                  "hvac_mode": "auto",
+                  "entity_id": "climate.hvac"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Fan mode on_low",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_fan_mode",
+                "data": {
+                  "fan_mode": "on_low",
+                  "entity_id": "climate.hvac"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Swing mode auto",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_swing_mode",
+                "data": {
+                  "swing_mode": "auto",
+                  "entity_id": "climate.hvac"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Horizontal swing mode rangefull",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_swing_horizontal_mode",
+                "data": {
+                  "swing_horizontal_mode": "rangefull",
+                  "entity_id": "climate.hvac"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "climate.hvac",
+          "state": "off",
+          "attributes": {
+            "hvac_modes": [
+              "off",
+              "heat",
+              "cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "min_humidity": 30,
+            "max_humidity": 99,
+            "target_humidity_step": 5,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ],
+            "swing_horizontal_modes": [
+              "auto",
+              "rangefull",
+              "off"
+            ],
+            "current_temperature": 22,
+            "temperature": 21,
+            "target_temp_high": null,
+            "target_temp_low": null,
+            "current_humidity": 54.2,
+            "humidity": 67.4,
+            "fan_mode": "on_high",
+            "hvac_action": "off",
+            "swing_mode": "off",
+            "swing_horizontal_mode": "auto",
+            "friendly_name": "Hvac",
+            "supported_features": 943
+          },
+          "context": {
+            "id": "01M4HEKT3CY4KH4HQJ1QBZWYSQ",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.164Z",
+          "last_updated": "2026-10-09T23:05:17.164Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.218834,
+          "device_id": "505460fb6b679b60291c2fa54cf45fa6",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "climate.hvac",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "92587e5a8c3af410905c2895579a5831",
+          "labels": [],
+          "modified_at": 1791433963.200255,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "ubercool",
+          "unique_id": "climate_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "hvac_modes": [
+              "off",
+              "heat",
+              "cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "min_humidity": 30,
+            "max_humidity": 99,
+            "target_humidity_step": 5,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ],
+            "swing_horizontal_modes": [
+              "auto",
+              "rangefull",
+              "off"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Temperature",
+              "disabled": false,
+              "selected": true,
+              "control": "temperature"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Humidity",
+              "disabled": false,
+              "selected": false,
+              "control": "humidity"
+            }
+          ],
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "off",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "heat",
+                  "label": "Heat"
+                },
+                {
+                  "value": "cool",
+                  "label": "Cool"
+                },
+                {
+                  "value": "dry",
+                  "label": "Dry"
+                },
+                {
+                  "value": "fan_only",
+                  "label": "Fan only"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Fan mode",
+              "value": "on_high",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "on_low",
+                  "label": "On low"
+                },
+                {
+                  "value": "on_high",
+                  "label": "On high"
+                },
+                {
+                  "value": "auto_low",
+                  "label": "Auto low"
+                },
+                {
+                  "value": "auto_high",
+                  "label": "Auto high"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Swing mode",
+              "value": "off",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "1",
+                  "label": "1"
+                },
+                {
+                  "value": "2",
+                  "label": "2"
+                },
+                {
+                  "value": "3",
+                  "label": "3"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Horizontal swing mode",
+              "value": "auto",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "rangefull",
+                  "label": "Full range"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current temperature",
+              "value": "22 °C"
+            },
+            {
+              "label": "Current humidity",
+              "value": "54.2%"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-climate-temperature",
+            "colors": {
+              "state": "var(--state-climate-off-color, var(--state-climate-inactive-color, var(--state-inactive-color)))",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "full",
+              "value": 21,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": 22,
+              "min": 7,
+              "max": 35,
+              "step": 0.5,
+              "inactive": true,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Off",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 21,
+                "unit": "°C",
+                "digits": 1,
+                "text": "21 .0 °C"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": [
+              {
+                "step": -0.5,
+                "target": "value",
+                "color": null
+              },
+              {
+                "step": 0.5,
+                "target": "value",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {
+          "temperature": {
+            "state": null,
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Temperature",
+                "disabled": false,
+                "selected": true,
+                "control": "temperature"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Humidity",
+                "disabled": false,
+                "selected": false,
+                "control": "humidity"
+              }
+            ],
+            "rgb": null,
+            "menus": [
+              {
+                "label": "Mode",
+                "value": "off",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "heat",
+                    "label": "Heat"
+                  },
+                  {
+                    "value": "cool",
+                    "label": "Cool"
+                  },
+                  {
+                    "value": "dry",
+                    "label": "Dry"
+                  },
+                  {
+                    "value": "fan_only",
+                    "label": "Fan only"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Fan mode",
+                "value": "on_high",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "on_low",
+                    "label": "On low"
+                  },
+                  {
+                    "value": "on_high",
+                    "label": "On high"
+                  },
+                  {
+                    "value": "auto_low",
+                    "label": "Auto low"
+                  },
+                  {
+                    "value": "auto_high",
+                    "label": "Auto high"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Swing mode",
+                "value": "off",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "1",
+                    "label": "1"
+                  },
+                  {
+                    "value": "2",
+                    "label": "2"
+                  },
+                  {
+                    "value": "3",
+                    "label": "3"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Horizontal swing mode",
+                "value": "auto",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "rangefull",
+                    "label": "Full range"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              }
+            ],
+            "current": [
+              {
+                "label": "Current temperature",
+                "value": "22 °C"
+              },
+              {
+                "label": "Current humidity",
+                "value": "54.2%"
+              }
+            ],
+            "circular": {
+              "tag": "ha-state-control-climate-temperature",
+              "colors": {
+                "state": "var(--state-climate-off-color, var(--state-climate-inactive-color, var(--state-inactive-color)))",
+                "action": null,
+                "low": null,
+                "high": null
+              },
+              "slider": {
+                "mode": "full",
+                "value": 21,
+                "low": null,
+                "high": null,
+                "dual": false,
+                "current": 22,
+                "min": 7,
+                "max": 35,
+                "step": 0.5,
+                "inactive": true,
+                "readonly": false,
+                "disabled": false
+              },
+              "label": "Off",
+              "labelDisabled": false,
+              "big": [
+                {
+                  "value": 21,
+                  "unit": "°C",
+                  "digits": 1,
+                  "text": "21 .0 °C"
+                }
+              ],
+              "primaryState": null,
+              "selected": [],
+              "buttons": [
+                {
+                  "step": -0.5,
+                  "target": "value",
+                  "color": null
+                },
+                {
+                  "step": 0.5,
+                  "target": "value",
+                  "color": null
+                }
+              ]
+            },
+            "favorites": null
+          },
+          "humidity": {
+            "state": null,
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Temperature",
+                "disabled": false,
+                "selected": false,
+                "control": "temperature"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Humidity",
+                "disabled": false,
+                "selected": true,
+                "control": "humidity"
+              }
+            ],
+            "rgb": null,
+            "menus": [
+              {
+                "label": "Mode",
+                "value": "off",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "heat",
+                    "label": "Heat"
+                  },
+                  {
+                    "value": "cool",
+                    "label": "Cool"
+                  },
+                  {
+                    "value": "dry",
+                    "label": "Dry"
+                  },
+                  {
+                    "value": "fan_only",
+                    "label": "Fan only"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Fan mode",
+                "value": "on_high",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "on_low",
+                    "label": "On low"
+                  },
+                  {
+                    "value": "on_high",
+                    "label": "On high"
+                  },
+                  {
+                    "value": "auto_low",
+                    "label": "Auto low"
+                  },
+                  {
+                    "value": "auto_high",
+                    "label": "Auto high"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Swing mode",
+                "value": "off",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "1",
+                    "label": "1"
+                  },
+                  {
+                    "value": "2",
+                    "label": "2"
+                  },
+                  {
+                    "value": "3",
+                    "label": "3"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Horizontal swing mode",
+                "value": "auto",
+                "disabled": false,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "rangefull",
+                    "label": "Full range"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              }
+            ],
+            "current": [
+              {
+                "label": "Current temperature",
+                "value": "22 °C"
+              },
+              {
+                "label": "Current humidity",
+                "value": "54.2%"
+              }
+            ],
+            "circular": {
+              "tag": "ha-state-control-climate-humidity",
+              "colors": {
+                "state": "var(--state-humidifier-off-color, var(--state-humidifier-inactive-color, var(--state-inactive-color)))",
+                "action": null,
+                "low": null,
+                "high": null
+              },
+              "slider": {
+                "mode": null,
+                "value": 67.4,
+                "low": null,
+                "high": null,
+                "dual": false,
+                "current": 54.2,
+                "min": 30,
+                "max": 99,
+                "step": 5,
+                "inactive": true,
+                "readonly": false,
+                "disabled": false
+              },
+              "label": "Humidity target",
+              "labelDisabled": false,
+              "big": [
+                {
+                  "value": 67.4,
+                  "unit": "%",
+                  "digits": 0,
+                  "text": "67 %"
+                }
+              ],
+              "primaryState": null,
+              "selected": [],
+              "buttons": [
+                {
+                  "step": -5,
+                  "target": "",
+                  "color": null
+                },
+                {
+                  "step": 5,
+                  "target": "",
+                  "color": null
+                }
+              ]
+            },
+            "favorites": null
+          }
+        }
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "climate.hvac",
+          "state": "unavailable",
+          "attributes": {
+            "hvac_modes": [
+              "off",
+              "heat",
+              "cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "min_humidity": 30,
+            "max_humidity": 99,
+            "target_humidity_step": 5,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ],
+            "swing_horizontal_modes": [
+              "auto",
+              "rangefull",
+              "off"
+            ],
+            "current_temperature": 22,
+            "temperature": 21,
+            "target_temp_high": null,
+            "target_temp_low": null,
+            "current_humidity": 54.2,
+            "humidity": 67.4,
+            "fan_mode": "on_high",
+            "hvac_action": "cooling",
+            "swing_mode": "off",
+            "swing_horizontal_mode": "auto",
+            "friendly_name": "Hvac",
+            "supported_features": 943,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3CY4KH4HQJ1QBZWYSQ",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.164Z",
+          "last_updated": "2026-10-09T23:05:17.164Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.218834,
+          "device_id": "505460fb6b679b60291c2fa54cf45fa6",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "climate.hvac",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "92587e5a8c3af410905c2895579a5831",
+          "labels": [],
+          "modified_at": 1791433963.200255,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "ubercool",
+          "unique_id": "climate_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "hvac_modes": [
+              "off",
+              "heat",
+              "cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "min_humidity": 30,
+            "max_humidity": 99,
+            "target_humidity_step": 5,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ],
+            "swing_horizontal_modes": [
+              "auto",
+              "rangefull",
+              "off"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Temperature",
+              "disabled": true,
+              "selected": true,
+              "control": "temperature"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Humidity",
+              "disabled": true,
+              "selected": false,
+              "control": "humidity"
+            }
+          ],
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "unavailable",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "heat",
+                  "label": "Heat"
+                },
+                {
+                  "value": "cool",
+                  "label": "Cool"
+                },
+                {
+                  "value": "dry",
+                  "label": "Dry"
+                },
+                {
+                  "value": "fan_only",
+                  "label": "Fan only"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Fan mode",
+              "value": "on_high",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "on_low",
+                  "label": "On low"
+                },
+                {
+                  "value": "on_high",
+                  "label": "On high"
+                },
+                {
+                  "value": "auto_low",
+                  "label": "Auto low"
+                },
+                {
+                  "value": "auto_high",
+                  "label": "Auto high"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Swing mode",
+              "value": "off",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "1",
+                  "label": "1"
+                },
+                {
+                  "value": "2",
+                  "label": "2"
+                },
+                {
+                  "value": "3",
+                  "label": "3"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Horizontal swing mode",
+              "value": "auto",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "rangefull",
+                  "label": "Full range"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current temperature",
+              "value": "22 °C"
+            },
+            {
+              "label": "Current humidity",
+              "value": "54.2%"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-climate-temperature",
+            "colors": {
+              "state": "var(--state-unavailable-color)",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "full",
+              "value": null,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": 22,
+              "min": 7,
+              "max": 35,
+              "step": 0.5,
+              "inactive": false,
+              "readonly": true,
+              "disabled": true
+            },
+            "label": "Unavailable",
+            "labelDisabled": true,
+            "big": [
+              {
+                "value": 21,
+                "unit": "°C",
+                "digits": 1,
+                "text": "21 .0 °C"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": []
+          },
+          "favorites": null
+        },
+        "pickers": {
+          "temperature": {
+            "state": null,
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Temperature",
+                "disabled": true,
+                "selected": true,
+                "control": "temperature"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Humidity",
+                "disabled": true,
+                "selected": false,
+                "control": "humidity"
+              }
+            ],
+            "rgb": null,
+            "menus": [
+              {
+                "label": "Mode",
+                "value": "unavailable",
+                "disabled": true,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "heat",
+                    "label": "Heat"
+                  },
+                  {
+                    "value": "cool",
+                    "label": "Cool"
+                  },
+                  {
+                    "value": "dry",
+                    "label": "Dry"
+                  },
+                  {
+                    "value": "fan_only",
+                    "label": "Fan only"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Fan mode",
+                "value": "on_high",
+                "disabled": true,
+                "options": [
+                  {
+                    "value": "on_low",
+                    "label": "On low"
+                  },
+                  {
+                    "value": "on_high",
+                    "label": "On high"
+                  },
+                  {
+                    "value": "auto_low",
+                    "label": "Auto low"
+                  },
+                  {
+                    "value": "auto_high",
+                    "label": "Auto high"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Swing mode",
+                "value": "off",
+                "disabled": true,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "1",
+                    "label": "1"
+                  },
+                  {
+                    "value": "2",
+                    "label": "2"
+                  },
+                  {
+                    "value": "3",
+                    "label": "3"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Horizontal swing mode",
+                "value": "auto",
+                "disabled": true,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "rangefull",
+                    "label": "Full range"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              }
+            ],
+            "current": [
+              {
+                "label": "Current temperature",
+                "value": "22 °C"
+              },
+              {
+                "label": "Current humidity",
+                "value": "54.2%"
+              }
+            ],
+            "circular": {
+              "tag": "ha-state-control-climate-temperature",
+              "colors": {
+                "state": "var(--state-unavailable-color)",
+                "action": null,
+                "low": null,
+                "high": null
+              },
+              "slider": {
+                "mode": "full",
+                "value": null,
+                "low": null,
+                "high": null,
+                "dual": false,
+                "current": 22,
+                "min": 7,
+                "max": 35,
+                "step": 0.5,
+                "inactive": false,
+                "readonly": true,
+                "disabled": true
+              },
+              "label": "Unavailable",
+              "labelDisabled": true,
+              "big": [
+                {
+                  "value": 21,
+                  "unit": "°C",
+                  "digits": 1,
+                  "text": "21 .0 °C"
+                }
+              ],
+              "primaryState": null,
+              "selected": [],
+              "buttons": []
+            },
+            "favorites": null
+          },
+          "humidity": {
+            "state": null,
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Temperature",
+                "disabled": true,
+                "selected": false,
+                "control": "temperature"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Humidity",
+                "disabled": true,
+                "selected": true,
+                "control": "humidity"
+              }
+            ],
+            "rgb": null,
+            "menus": [
+              {
+                "label": "Mode",
+                "value": "unavailable",
+                "disabled": true,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "heat",
+                    "label": "Heat"
+                  },
+                  {
+                    "value": "cool",
+                    "label": "Cool"
+                  },
+                  {
+                    "value": "dry",
+                    "label": "Dry"
+                  },
+                  {
+                    "value": "fan_only",
+                    "label": "Fan only"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Fan mode",
+                "value": "on_high",
+                "disabled": true,
+                "options": [
+                  {
+                    "value": "on_low",
+                    "label": "On low"
+                  },
+                  {
+                    "value": "on_high",
+                    "label": "On high"
+                  },
+                  {
+                    "value": "auto_low",
+                    "label": "Auto low"
+                  },
+                  {
+                    "value": "auto_high",
+                    "label": "Auto high"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Swing mode",
+                "value": "off",
+                "disabled": true,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "1",
+                    "label": "1"
+                  },
+                  {
+                    "value": "2",
+                    "label": "2"
+                  },
+                  {
+                    "value": "3",
+                    "label": "3"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              },
+              {
+                "label": "Horizontal swing mode",
+                "value": "auto",
+                "disabled": true,
+                "options": [
+                  {
+                    "value": "auto",
+                    "label": "Auto"
+                  },
+                  {
+                    "value": "rangefull",
+                    "label": "Full range"
+                  },
+                  {
+                    "value": "off",
+                    "label": "Off"
+                  }
+                ]
+              }
+            ],
+            "current": [
+              {
+                "label": "Current temperature",
+                "value": "22 °C"
+              },
+              {
+                "label": "Current humidity",
+                "value": "54.2%"
+              }
+            ],
+            "circular": {
+              "tag": "ha-state-control-climate-humidity",
+              "colors": {
+                "state": null,
+                "action": null,
+                "low": null,
+                "high": null
+              },
+              "slider": {
+                "mode": null,
+                "value": null,
+                "low": null,
+                "high": null,
+                "dual": false,
+                "current": 54.2,
+                "min": 30,
+                "max": 99,
+                "step": 5,
+                "inactive": false,
+                "readonly": false,
+                "disabled": true
+              },
+              "label": "Unavailable",
+              "labelDisabled": true,
+              "big": [],
+              "primaryState": null,
+              "selected": [],
+              "buttons": []
+            },
+            "favorites": null
+          }
+        }
+      }
+    },
+    "climate.ecobee": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "climate.ecobee",
+          "state": "heat_cool",
+          "attributes": {
+            "hvac_modes": [
+              "off",
+              "cool",
+              "heat_cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "preset_modes": [
+              "home",
+              "eco",
+              "away"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ],
+            "current_temperature": 23,
+            "target_temp_high": 24,
+            "target_temp_low": 21,
+            "fan_mode": "auto_low",
+            "preset_mode": "home",
+            "swing_mode": "auto",
+            "friendly_name": "Ecobee",
+            "supported_features": 442
+          },
+          "context": {
+            "id": "01M4HEKT3CB6YZPNM00V3C8G7C",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.164Z",
+          "last_updated": "2026-10-09T23:05:17.164Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.218984,
+          "device_id": "3b72a9ad8600116b813324dc271568c9",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "climate.ecobee",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "a4206333e9e4561df976680229a024c3",
+          "labels": [],
+          "modified_at": 1791433963.200294,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "ubercool",
+          "unique_id": "climate_3",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "hvac_modes": [
+              "off",
+              "cool",
+              "heat_cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "preset_modes": [
+              "home",
+              "eco",
+              "away"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "heat_cool",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "heat_cool",
+                  "label": "Heat/Cool"
+                },
+                {
+                  "value": "cool",
+                  "label": "Cool"
+                },
+                {
+                  "value": "dry",
+                  "label": "Dry"
+                },
+                {
+                  "value": "fan_only",
+                  "label": "Fan only"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Preset",
+              "value": "home",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "home",
+                  "label": "Home"
+                },
+                {
+                  "value": "eco",
+                  "label": "Eco"
+                },
+                {
+                  "value": "away",
+                  "label": "Away"
+                }
+              ]
+            },
+            {
+              "label": "Fan mode",
+              "value": "auto_low",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "on_low",
+                  "label": "On low"
+                },
+                {
+                  "value": "on_high",
+                  "label": "On high"
+                },
+                {
+                  "value": "auto_low",
+                  "label": "Auto low"
+                },
+                {
+                  "value": "auto_high",
+                  "label": "Auto high"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Swing mode",
+              "value": "auto",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "1",
+                  "label": "1"
+                },
+                {
+                  "value": "2",
+                  "label": "2"
+                },
+                {
+                  "value": "3",
+                  "label": "3"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current temperature",
+              "value": "23 °C"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-climate-temperature",
+            "colors": {
+              "state": null,
+              "action": null,
+              "low": "var(--state-climate-heat-color, var(--state-climate-active-color, var(--state-active-color)))",
+              "high": "var(--state-climate-cool-color, var(--state-climate-active-color, var(--state-active-color)))"
+            },
+            "slider": {
+              "mode": null,
+              "value": null,
+              "low": 21,
+              "high": 24,
+              "dual": true,
+              "current": 23,
+              "min": 7,
+              "max": 35,
+              "step": 0.5,
+              "inactive": false,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Heat/Cool",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 21,
+                "unit": "°C",
+                "digits": 1,
+                "text": "21 .0 °C"
+              },
+              {
+                "value": 24,
+                "unit": "°C",
+                "digits": 1,
+                "text": "24 .0 °C"
+              }
+            ],
+            "primaryState": null,
+            "selected": [
+              true,
+              false
+            ],
+            "buttons": [
+              {
+                "step": -0.5,
+                "target": "low",
+                "color": "var(--state-climate-heat-color, var(--state-climate-active-color, var(--state-active-color)))"
+              },
+              {
+                "step": 0.5,
+                "target": "low",
+                "color": "var(--state-climate-heat-color, var(--state-climate-active-color, var(--state-active-color)))"
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {},
+        "menuIcons": {
+          "preset_mode": {
+            "home": "mdi:home",
+            "eco": "mdi:leaf",
+            "away": "mdi:account-arrow-right"
+          },
+          "fan_mode": {
+            "on_low": "mdi:fan-chevron-down",
+            "on_high": "mdi:fan-chevron-up",
+            "auto_low": "mdi:fan-auto",
+            "auto_high": "mdi:fan-auto",
+            "off": "mdi:fan-off"
+          },
+          "swing_mode": {
+            "1": "mdi:numeric-1",
+            "2": "mdi:numeric-2",
+            "3": "mdi:numeric-3",
+            "auto": "mdi:arrow-oscillating",
+            "off": "mdi:arrow-oscillating-off"
+          },
+          "swing_horizontal_mode": {}
+        },
+        "calls": [
+          {
+            "control": "temperature",
+            "label": "low 19",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "climate.ecobee",
+                  "target_temp_low": 19,
+                  "target_temp_high": 24
+                }
+              }
+            ]
+          },
+          {
+            "control": "temperature",
+            "label": "high 25",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "climate.ecobee",
+                  "target_temp_low": 21,
+                  "target_temp_high": 25
+                }
+              }
+            ]
+          },
+          {
+            "control": "temperature",
+            "label": "button minus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "climate.ecobee",
+                  "target_temp_low": 20,
+                  "target_temp_high": 24
+                }
+              }
+            ]
+          },
+          {
+            "control": "temperature",
+            "label": "button plus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "climate.ecobee",
+                  "target_temp_low": 22,
+                  "target_temp_high": 24
+                }
+              }
+            ]
+          },
+          {
+            "control": "temperature",
+            "label": "high button plus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "climate.ecobee",
+                  "target_temp_low": 21,
+                  "target_temp_high": 24.5
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Mode auto",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_hvac_mode",
+                "data": {
+                  "hvac_mode": "auto",
+                  "entity_id": "climate.ecobee"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Preset eco",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_preset_mode",
+                "data": {
+                  "preset_mode": "eco",
+                  "entity_id": "climate.ecobee"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Fan mode on_low",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_fan_mode",
+                "data": {
+                  "fan_mode": "on_low",
+                  "entity_id": "climate.ecobee"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Swing mode 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "climate",
+                "service": "set_swing_mode",
+                "data": {
+                  "swing_mode": "1",
+                  "entity_id": "climate.ecobee"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "climate.ecobee",
+          "state": "off",
+          "attributes": {
+            "hvac_modes": [
+              "off",
+              "cool",
+              "heat_cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "preset_modes": [
+              "home",
+              "eco",
+              "away"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ],
+            "current_temperature": 23,
+            "target_temp_high": 24,
+            "target_temp_low": 21,
+            "fan_mode": "auto_low",
+            "preset_mode": "home",
+            "swing_mode": "auto",
+            "friendly_name": "Ecobee",
+            "supported_features": 442
+          },
+          "context": {
+            "id": "01M4HEKT3CB6YZPNM00V3C8G7C",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.164Z",
+          "last_updated": "2026-10-09T23:05:17.164Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.218984,
+          "device_id": "3b72a9ad8600116b813324dc271568c9",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "climate.ecobee",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "a4206333e9e4561df976680229a024c3",
+          "labels": [],
+          "modified_at": 1791433963.200294,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "ubercool",
+          "unique_id": "climate_3",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "hvac_modes": [
+              "off",
+              "cool",
+              "heat_cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "preset_modes": [
+              "home",
+              "eco",
+              "away"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "off",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "heat_cool",
+                  "label": "Heat/Cool"
+                },
+                {
+                  "value": "cool",
+                  "label": "Cool"
+                },
+                {
+                  "value": "dry",
+                  "label": "Dry"
+                },
+                {
+                  "value": "fan_only",
+                  "label": "Fan only"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Preset",
+              "value": "home",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "home",
+                  "label": "Home"
+                },
+                {
+                  "value": "eco",
+                  "label": "Eco"
+                },
+                {
+                  "value": "away",
+                  "label": "Away"
+                }
+              ]
+            },
+            {
+              "label": "Fan mode",
+              "value": "auto_low",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "on_low",
+                  "label": "On low"
+                },
+                {
+                  "value": "on_high",
+                  "label": "On high"
+                },
+                {
+                  "value": "auto_low",
+                  "label": "Auto low"
+                },
+                {
+                  "value": "auto_high",
+                  "label": "Auto high"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Swing mode",
+              "value": "auto",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "1",
+                  "label": "1"
+                },
+                {
+                  "value": "2",
+                  "label": "2"
+                },
+                {
+                  "value": "3",
+                  "label": "3"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current temperature",
+              "value": "23 °C"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-climate-temperature",
+            "colors": {
+              "state": null,
+              "action": null,
+              "low": "var(--state-climate-off-color, var(--state-climate-inactive-color, var(--state-inactive-color)))",
+              "high": "var(--state-climate-off-color, var(--state-climate-inactive-color, var(--state-inactive-color)))"
+            },
+            "slider": {
+              "mode": null,
+              "value": null,
+              "low": 21,
+              "high": 24,
+              "dual": true,
+              "current": 23,
+              "min": 7,
+              "max": 35,
+              "step": 0.5,
+              "inactive": true,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Off",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 21,
+                "unit": "°C",
+                "digits": 1,
+                "text": "21 .0 °C"
+              },
+              {
+                "value": 24,
+                "unit": "°C",
+                "digits": 1,
+                "text": "24 .0 °C"
+              }
+            ],
+            "primaryState": null,
+            "selected": [
+              true,
+              false
+            ],
+            "buttons": [
+              {
+                "step": -0.5,
+                "target": "low",
+                "color": null
+              },
+              {
+                "step": 0.5,
+                "target": "low",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "climate.ecobee",
+          "state": "unavailable",
+          "attributes": {
+            "hvac_modes": [
+              "off",
+              "cool",
+              "heat_cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "preset_modes": [
+              "home",
+              "eco",
+              "away"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ],
+            "current_temperature": 23,
+            "target_temp_high": 24,
+            "target_temp_low": 21,
+            "fan_mode": "auto_low",
+            "preset_mode": "home",
+            "swing_mode": "auto",
+            "friendly_name": "Ecobee",
+            "supported_features": 442,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3CB6YZPNM00V3C8G7C",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.164Z",
+          "last_updated": "2026-10-09T23:05:17.164Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.218984,
+          "device_id": "3b72a9ad8600116b813324dc271568c9",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "climate.ecobee",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "a4206333e9e4561df976680229a024c3",
+          "labels": [],
+          "modified_at": 1791433963.200294,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "ubercool",
+          "unique_id": "climate_3",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "hvac_modes": [
+              "off",
+              "cool",
+              "heat_cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "preset_modes": [
+              "home",
+              "eco",
+              "away"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "unavailable",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "heat_cool",
+                  "label": "Heat/Cool"
+                },
+                {
+                  "value": "cool",
+                  "label": "Cool"
+                },
+                {
+                  "value": "dry",
+                  "label": "Dry"
+                },
+                {
+                  "value": "fan_only",
+                  "label": "Fan only"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Preset",
+              "value": "home",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "home",
+                  "label": "Home"
+                },
+                {
+                  "value": "eco",
+                  "label": "Eco"
+                },
+                {
+                  "value": "away",
+                  "label": "Away"
+                }
+              ]
+            },
+            {
+              "label": "Fan mode",
+              "value": "auto_low",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "on_low",
+                  "label": "On low"
+                },
+                {
+                  "value": "on_high",
+                  "label": "On high"
+                },
+                {
+                  "value": "auto_low",
+                  "label": "Auto low"
+                },
+                {
+                  "value": "auto_high",
+                  "label": "Auto high"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Swing mode",
+              "value": "auto",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "1",
+                  "label": "1"
+                },
+                {
+                  "value": "2",
+                  "label": "2"
+                },
+                {
+                  "value": "3",
+                  "label": "3"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current temperature",
+              "value": "23 °C"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-climate-temperature",
+            "colors": {
+              "state": "var(--state-unavailable-color)",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "full",
+              "value": null,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": 23,
+              "min": 7,
+              "max": 35,
+              "step": 0.5,
+              "inactive": false,
+              "readonly": true,
+              "disabled": true
+            },
+            "label": "Unavailable",
+            "labelDisabled": true,
+            "big": [
+              {
+                "value": 21,
+                "unit": "°C",
+                "digits": 1,
+                "text": "21 .0 °C"
+              },
+              {
+                "value": 24,
+                "unit": "°C",
+                "digits": 1,
+                "text": "24 .0 °C"
+              }
+            ],
+            "primaryState": null,
+            "selected": [
+              true,
+              false
+            ],
+            "buttons": []
+          },
           "favorites": null
         },
         "pickers": {}

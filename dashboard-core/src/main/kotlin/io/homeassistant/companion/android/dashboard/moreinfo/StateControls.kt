@@ -2,14 +2,22 @@ package io.homeassistant.companion.android.dashboard.moreinfo
 
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.DisplayColor
+import io.homeassistant.companion.android.dashboard.derive.attributeIcon
 import io.homeassistant.companion.android.dashboard.derive.isActive
 import io.homeassistant.companion.android.dashboard.derive.stateColor
+import io.homeassistant.companion.android.dashboard.display.formatEntityAttributeValue
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.feature.ValueService
 import io.homeassistant.companion.android.dashboard.feature.assumedState
+import io.homeassistant.companion.android.dashboard.feature.attributeName
 import io.homeassistant.companion.android.dashboard.feature.available
 import io.homeassistant.companion.android.dashboard.feature.entityData
+import io.homeassistant.companion.android.dashboard.model.string
+import io.homeassistant.companion.android.dashboard.model.stringOrNull
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 
 // The large controls of the more-info dialog (frontend@20260624.6 src/state-control/, src/components/ha-control-*).
 
@@ -116,6 +124,40 @@ fun HassSnapshot.stateToggle(state: EntityState, onIcon: String, offIcon: String
         turnOffLabel = localize("ui.card.common.turn_off"),
         turnOn = CardAction.CallService(domain, "turn_on", entityData(state), target = null),
         turnOff = CardAction.CallService(domain, "turn_off", entityData(state), target = null),
+    )
+}
+
+/**
+ * A menu of [state]'s [attribute], listing the values of [listAttribute] with their translated names and icons,
+ * each set by `[domain].[service]` with `{attribute: value}`; `null` without the list. Ports the more-info
+ * dialogs' `ha-control-select-menu`s of an attribute (presets, fan modes and so on).
+ */
+fun HassSnapshot.attributeMenu(
+    state: EntityState,
+    attribute: String,
+    listAttribute: String,
+    service: String,
+    icon: String,
+): SelectMenu? {
+    val values = (state.attributes[listAttribute] as? JsonArray)?.mapNotNull { it.stringOrNull } ?: return null
+    return SelectMenu(
+        label = attributeName(state, attribute),
+        icon = icon,
+        value = state.attributes.string(attribute),
+        enabled = state.available(),
+        options = values.map { value ->
+            MenuOption(
+                value = value,
+                label = formatEntityAttributeValue(state, attribute, JsonPrimitive(value)),
+                icon = attributeIcon(state, attribute, value),
+                action = CardAction.CallService(
+                    state.domain,
+                    service,
+                    JsonObject(mapOf(attribute to JsonPrimitive(value)) + entityData(state)),
+                    target = null,
+                ),
+            )
+        },
     )
 }
 

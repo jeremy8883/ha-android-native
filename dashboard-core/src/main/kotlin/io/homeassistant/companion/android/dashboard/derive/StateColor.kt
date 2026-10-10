@@ -42,6 +42,14 @@ fun stateColor(state: EntityState, stateValue: String? = null): DisplayColor? {
     }
 }
 
+/**
+ * The colour of [state] as if it were of [domain] in [value]: port of `domainStateColorProperties`, which the
+ * climate humidity control uses with the humidifier's colours.
+ */
+fun domainStateColor(domain: String, state: EntityState, value: String): DisplayColor = DisplayColor.State(
+    domainColorVariables(domain, state.attributes.string("device_class"), value, state.isActive(value)),
+)
+
 /** The one domain of a group's entities, `null` when they are of several. */
 private fun groupDomain(state: EntityState): String? = state.attributes.array("entity_id")?.mapNotNull {
     it.stringOrNull?.substringBefore('.')

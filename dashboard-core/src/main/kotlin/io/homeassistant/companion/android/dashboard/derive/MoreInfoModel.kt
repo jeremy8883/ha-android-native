@@ -13,8 +13,10 @@ import io.homeassistant.companion.android.dashboard.feature.attributeName
 import io.homeassistant.companion.android.dashboard.feature.tileFeatures
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.string
+import io.homeassistant.companion.android.dashboard.moreinfo.ClimateMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.LightMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.StateToggle
+import io.homeassistant.companion.android.dashboard.moreinfo.climateMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.lightMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.stateToggle
 import java.time.Instant
@@ -32,7 +34,10 @@ import kotlinx.serialization.json.put
  * @property toggle a switch for entities that turn on and off
  * @property updatedAt when the entity's state object last changed (epoch seconds), so a switch knows when the server
  * answered
+ * @property stateHeader whether the state and when it changed show above the controls (not for domains whose
+ * controls show their own readings, like thermostats)
  * @property light a light's controls
+ * @property climate a thermostat's controls
  * @property stateToggle the large on/off switch of a switch or input boolean
  * @property controls the entity's main controls, as tile features, for domains without controls of their own yet
  * @property media the media controls of a media player
@@ -48,7 +53,9 @@ data class MoreInfoModel(
     val active: Boolean,
     val toggle: CardAction.CallService?,
     val updatedAt: Double,
+    val stateHeader: Boolean,
     val light: LightMoreInfo?,
+    val climate: ClimateMoreInfo?,
     val stateToggle: StateToggle?,
     val controls: List<TileFeature>,
     val media: MediaControlModel?,
@@ -89,7 +96,9 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         active = state.isActive(),
         toggle = toggleEntity(entityId).takeIf { domain in HEADER_TOGGLE_DOMAINS && state.state in ON_OFF },
         updatedAt = state.lastUpdated,
+        stateHeader = domain !in NO_STATE_HEADER_DOMAINS,
         light = light,
+        climate = climateMoreInfo(state),
         stateToggle = stateToggle,
         controls = tileFeatures(controlCard),
         media = if (domain == "media_player") mediaControlModel(CardConfig(controlCard.json)) else null,
@@ -110,6 +119,9 @@ private fun displayAttributes(state: EntityState): List<String> {
 private const val MILLIS = 1000.0
 private val ON_OFF = setOf("on", "off")
 
+/** The domains whose controls replace the state header (`more-info-climate` renders none). */
+private val NO_STATE_HEADER_DOMAINS = setOf("climate")
+
 /** The domains whose switch is in the header, until they have controls of their own. */
 private val HEADER_TOGGLE_DOMAINS = setOf("automation", "fan", "humidifier", "remote", "siren")
 
@@ -119,7 +131,6 @@ private val STATE_TOGGLE_DOMAINS = setOf("input_boolean", "switch")
 /** The control each domain's more-info dialog leads with, as card features. */
 private val MORE_INFO_FEATURES = mapOf(
     "cover" to listOf("cover-open-close"),
-    "climate" to listOf("target-temperature"),
     "water_heater" to listOf("target-temperature"),
     "fan" to listOf("fan-speed"),
     "lock" to listOf("lock-commands"),
