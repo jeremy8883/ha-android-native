@@ -2,13 +2,17 @@ package io.homeassistant.companion.android.dashboard.ui
 
 import io.homeassistant.companion.android.dashboard.data.EnergyRepository
 import io.homeassistant.companion.android.dashboard.data.Fetched
+import io.homeassistant.companion.android.dashboard.data.ForecastRepository
 import io.homeassistant.companion.android.dashboard.data.HistoryRepository
 import io.homeassistant.companion.android.dashboard.data.LoadError
 import io.homeassistant.companion.android.dashboard.data.Loadable
 import io.homeassistant.companion.android.dashboard.data.ServerActionsRepository
+import io.homeassistant.companion.android.dashboard.data.valueOrNull
 import io.homeassistant.companion.android.dashboard.history.GraphHistory
 import io.homeassistant.companion.android.dashboard.history.GraphHistoryKey
 import io.homeassistant.companion.android.dashboard.history.historyStreamCommand
+import io.homeassistant.companion.android.dashboard.weather.ForecastEvent
+import io.homeassistant.companion.android.dashboard.weather.ForecastKey
 import javax.inject.Inject
 import kotlin.time.Clock
 import kotlin.time.toJavaInstant
@@ -20,13 +24,14 @@ import kotlinx.coroutines.flow.map
 import timber.log.Timber
 
 /**
- * Loads the data the shown cards ask for beyond the entities' states: energy collections, graph histories, and
- * whether alarm panels have a default code.
+ * Loads the data the shown cards ask for beyond the entities' states: energy collections, graph histories, weather
+ * forecasts, and whether alarm panels have a default code.
  */
 class CardDataLoader @Inject internal constructor(
     energyRepository: EnergyRepository,
     private val historyRepository: HistoryRepository,
     private val serverActions: ServerActionsRepository,
+    private val forecastRepository: ForecastRepository,
     private val clock: Clock,
 ) {
     /** The energy collections of the shown view, with the period each one's date selection chose. */
@@ -67,6 +72,27 @@ class CardDataLoader @Inject internal constructor(
             }
             emit(known.toMap())
         }
+    }
+
+    /**
+     * The forecasts of [keys], each once the server sent it. One that couldn't be subscribed to is left out (and
+     * logged), so its card shows the current weather alone, as upstream's does when its subscription fails.
+     */
+    fun forecasts(keys: Set<ForecastKey>): Flow<Map<ForecastKey, ForecastEvent>> = if (keys.isEmpty()) {
+        flowOf(emptyMap())
+    } else {
+        combine(
+            keys.map { key ->
+                forecastRepository.forecast(key).map { loadable ->
+                    if (loadable is Loadable.Failed) {
+                        Timber.w(
+                            "Couldn't subscribe to the $key forecast: ${loadable.error}",
+                        )
+                    }
+                    loadable.valueOrNull?.let { key to it }
+                }
+            },
+        ) { forecasts -> forecasts.filterNotNull().toMap() }
     }
 
     private companion object {

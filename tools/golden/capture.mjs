@@ -896,6 +896,14 @@ const CARD_CONFIGS = [
   { type: "alarm-panel", entity: "alarm_control_panel.security", name: "House", states: ["arm_home", "arm_away", "arm_night", "arm_vacation", "arm_custom_bypass"] },
   { type: "alarm-panel", entity: "alarm_control_panel.missing" },
   { type: "alarm-panel", entity: "switch.ac" },
+  { type: "weather-forecast", entity: "weather.demo_weather_south" },
+  { type: "weather-forecast", entity: "weather.demo_weather_south", forecast_type: "daily" },
+  { type: "weather-forecast", entity: "weather.demo_weather_north", forecast_type: "hourly", forecast_slots: 8, secondary_info_attribute: "wind_speed" },
+  { type: "weather-forecast", entity: "weather.demo_weather_north", forecast_type: "twice_daily", round_temperature: true, name: "North" },
+  { type: "weather-forecast", entity: "weather.demo_weather_north", forecast_type: "daily", show_current: false },
+  { type: "weather-forecast", entity: "weather.forecast_native_test_home", forecast_type: "daily", secondary_info_attribute: "dew_point", round_temperature: true },
+  { type: "weather-forecast", entity: "weather.forecast_native_test_home", secondary_info_attribute: "wind_speed" },
+  { type: "weather-forecast", entity: "weather.missing" },
 ];
 
 /** The entities whose entities card rows the controls capture records (with "rows" among the entities). */
@@ -1689,6 +1697,35 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
           actions: [...root.querySelectorAll("#armActions ha-button")].map((b) => ({ label: text(b), action: b.action, variant: b.variant })),
           input: !!root.querySelector("ha-input"),
           keypad: !!root.querySelector(".keypad"),
+        } : null;
+      } else if (config.type === "weather-forecast") {
+        if (config.forecast_type) {
+          for (let i = 0; i < 60 && !el._forecastEvent; i++) await sleep(50);
+          await el.updateComplete;
+        }
+        const card = root.querySelector("ha-card");
+        const content = root.querySelector(".content");
+        const drawing = (node) => (node?.querySelector("svg") ? [...node.querySelectorAll("svg path")].map((p) => p.getAttribute("class")) : null);
+        shown.weather = card && !warning ? {
+          unavailable: card.classList.contains("unavailable") ? text(card) : null,
+          current: content ? {
+            drawing: drawing(root.querySelector(".icon-image")),
+            stateIcon: !!root.querySelector(".icon-image ha-state-icon"),
+            state: text(root.querySelector(".state")),
+            name: text(root.querySelector(".name")),
+            temp: text(root.querySelector(".temp-attribute .temp")),
+            attribute: text(root.querySelector(".attribute")),
+            attributeIcon: !!root.querySelector(".attribute ha-svg-icon"),
+          } : null,
+          forecast: root.querySelector(".forecast") ? [...root.querySelectorAll(".forecast-item")].map((item) => ({
+            header: text(item.querySelector(".forecast-day-header")),
+            label: text(item.querySelector(".forecast-item-label")),
+            drawing: drawing(item.querySelector(".forecast-image-icon")),
+            temp: text(item.querySelector(".temp")),
+            templow: item.querySelector(".templow") ? text(item.querySelector(".templow")) : null,
+          })) : null,
+          event: g.clone(el._forecastEvent ?? null),
+          now: Date.now(),
         } : null;
       } else if (config.type === "gauge") {
         const gauge = root.querySelector("ha-gauge");

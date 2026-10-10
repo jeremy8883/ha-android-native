@@ -178,7 +178,7 @@
             {
               "type": "markdown",
               "title": "Status",
-              "content": "**{{ states('sensor.lights_on') }}** lights on.\n\nHouse mode: *{{ states('input_select.house_mode') }}*\n\n- Living room: {{ states('sensor.living_room_temperature') }} \u00b0C"
+              "content": "**{{ states('sensor.lights_on') }}** lights on.\n\nHouse mode: *{{ states('input_select.house_mode') }}*\n\n- Living room: {{ states('sensor.living_room_temperature') }} °C"
             },
             {
               "type": "conditional",
@@ -329,7 +329,15 @@
         },
         {
           "type": "weather-forecast",
-          "entity": "weather.demo_weather_south"
+          "entity": "weather.demo_weather_south",
+          "forecast_type": "daily"
+        },
+        {
+          "type": "weather-forecast",
+          "entity": "weather.demo_weather_north",
+          "forecast_type": "hourly",
+          "forecast_slots": 8,
+          "secondary_info_attribute": "wind_speed"
         }
       ]
     }

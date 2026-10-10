@@ -17,6 +17,7 @@ internal fun elementGridOptions(card: CardConfig): GridOptions {
         "home-summary", "repairs", "updates", "discovered-devices", "toggle-group", "shortcut" ->
             infoTileGridOptions(vertical)
         "button" -> buttonGridOptions(json)
+        "weather-forecast" -> weatherForecastGridOptions(json)
         "thermostat", "humidifier" -> {
             val featureRows = (features * 2 + 2) / 3
             GridOptions(columns = 12, rows = 5 + featureRows, minColumns = 6, minRows = 2 + featureRows)
@@ -91,6 +92,20 @@ private fun buttonGridOptions(json: JsonObject): GridOptions {
     }
 }
 
+/** A row each for the name, the current weather and the forecast, two for a daily forecast. */
+private fun weatherForecastGridOptions(json: JsonObject): GridOptions {
+    val showCurrent = json.boolean("show_current") != false
+    val showForecast = json.boolean("show_forecast") != false
+    val minRows = 1 + (if (showCurrent) 1 else 0) + (if (showForecast) 1 else 0)
+    val rows = minRows + if (showForecast && json.string("forecast_type") == "daily") 1 else 0
+    return GridOptions(
+        columns = SECTION_COLUMNS,
+        rows = rows,
+        minColumns = if (showCurrent && showForecast) WEATHER_MIN_COLUMNS else WEATHER_SINGLE_MIN_COLUMNS,
+        minRows = minRows,
+    )
+}
+
 private fun featurePosition(json: JsonObject, vertical: Boolean): String =
     if (vertical) BOTTOM else json.string("features_position") ?: BOTTOM
 
@@ -101,6 +116,10 @@ private const val BOTTOM = "bottom"
 private const val SECTION_COLUMNS = 12
 private const val HALF_COLUMNS = 6
 private const val VERTICAL_MIN_COLUMNS = 3
+
+/** The fewest columns of a weather forecast card showing both parts, and one. */
+private const val WEATHER_MIN_COLUMNS = 5
+private const val WEATHER_SINGLE_MIN_COLUMNS = 4
 
 /** The rows an area card's picture adds, and with inline features. */
 private const val PICTURE_ROWS = 2

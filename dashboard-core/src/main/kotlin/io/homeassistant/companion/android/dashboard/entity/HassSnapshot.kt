@@ -7,6 +7,8 @@ import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
 import io.homeassistant.companion.android.dashboard.energy.EnergyCollection
 import io.homeassistant.companion.android.dashboard.history.GraphHistory
 import io.homeassistant.companion.android.dashboard.history.GraphHistoryKey
+import io.homeassistant.companion.android.dashboard.weather.ForecastEvent
+import io.homeassistant.companion.android.dashboard.weather.ForecastKey
 import kotlinx.serialization.json.JsonObject
 
 /** Looks up a frontend translation by key, for example `panel.light`. Returns "" when unknown. */
@@ -64,6 +66,7 @@ data class HassConfig(
  * @property graphHistories the histories the shown cards' graphs draw, absent while loading
  * @property alarmDefaultCodes whether the alarm panels the shown cards control store a default code, by entity id;
  * absent while not known
+ * @property forecasts the weather forecasts the shown cards subscribed to, absent until the server sent them
  */
 data class HassSnapshot(
     val states: EntityStates,
@@ -81,4 +84,5 @@ data class HassSnapshot(
     val energy: Map<String, EnergyCollection> = emptyMap(),
     val graphHistories: Map<GraphHistoryKey, GraphHistory> = emptyMap(),
     val alarmDefaultCodes: Map<String, Boolean> = emptyMap(),
+    val forecasts: Map<ForecastKey, ForecastEvent> = emptyMap(),
 )

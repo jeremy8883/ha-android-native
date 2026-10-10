@@ -60,6 +60,9 @@ import io.homeassistant.companion.android.dashboard.strategy.home.HomeDashboardC
 import io.homeassistant.companion.android.dashboard.strategy.home.homeDashboard
 import io.homeassistant.companion.android.dashboard.strategy.summary.SUMMARY_PANELS
 import io.homeassistant.companion.android.dashboard.strategy.summary.summaryPanelDashboard
+import io.homeassistant.companion.android.dashboard.weather.ForecastEvent
+import io.homeassistant.companion.android.dashboard.weather.ForecastKey
+import io.homeassistant.companion.android.dashboard.weather.forecastRequests
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.util.Locale
@@ -441,6 +444,15 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         .flatMapLatest(cardData::alarmDefaultCodes)
         .onStart { emit(emptyMap()) }
 
+    /** The forecasts the shown view's weather forecast cards subscribe to. */
+    private val forecasts: Flow<Map<ForecastKey, ForecastEvent>> = uiState
+        .combine(structureInputs.mapNotNull { it.valueOrNull }) { state, inputs ->
+            forecastRequests(shownCards(state, withHeader = false), inputs.hass.config.components)
+        }
+        .distinctUntilChanged()
+        .flatMapLatest(cardData::forecasts)
+        .onStart { emit(emptyMap()) }
+
     private val energy = cardData.energy
 
     /** The energy collections the shown view's cards read, with their data. */
@@ -467,7 +479,12 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         entityStates.mapNotNull { it.valueOrNull },
         repairsIssues,
         discoveredFlows,
-        combine(templates, cameraImages, energyCollections, graphHistories, alarmDefaultCodes, ::CardData),
+        combine(
+            combine(templates, cameraImages, energyCollections, ::Triple),
+            combine(graphHistories, alarmDefaultCodes, forecasts, ::Triple),
+        ) { (rendered, cameras, energy), (histories, codes, weather) ->
+            CardData(rendered, cameras, energy, histories, codes, weather)
+        },
     ) { inputs, states, repairs, flows, data ->
         inputs.hass.copy(
             states = states,
@@ -479,6 +496,7 @@ class DashboardViewModel @VisibleForTesting internal constructor(
             energy = data.energy,
             graphHistories = data.graphHistories,
             alarmDefaultCodes = data.alarmDefaultCodes,
+            forecasts = data.forecasts,
         )
     }.flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
@@ -715,6 +733,7 @@ private data class CardData(
     val energy: Map<String, EnergyCollection>,
     val graphHistories: Map<GraphHistoryKey, GraphHistory>,
     val alarmDefaultCodes: Map<String, Boolean>,
+    val forecasts: Map<ForecastKey, ForecastEvent>,
 )
 
 /** Whether data is being loaded again, why it last failed to, and when it was kept, whatever the value. */

@@ -18,6 +18,9 @@ import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
 import io.homeassistant.companion.android.dashboard.moreinfo.css
 import io.homeassistant.companion.android.dashboard.moreinfo.recordedCalls
+import io.homeassistant.companion.android.dashboard.weather.ForecastKey
+import io.homeassistant.companion.android.dashboard.weather.WeatherIcon
+import io.homeassistant.companion.android.dashboard.weather.parseForecastEvent
 import java.time.Instant
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
@@ -193,6 +196,56 @@ class SimpleCardsGoldenTest {
         assertEquals(alarm.boolean("input"), model.code != null)
         assertEquals(alarm.boolean("keypad"), model.code?.keypad == true)
     }
+
+    @TestFactory
+    fun `Given captured weather forecast cards when deriving them then they show as the frontend's`() = cards("weather-forecast") { config, shown ->
+        val weather = shown.obj("weather")
+        val event = weather?.obj("event")?.let(::parseForecastEvent)
+        val hass = if (event == null) this else copy(forecasts = mapOf(ForecastKey(config.entity!!, event.type) to event))
+        val model = hass.weatherForecastCardModel(config, Instant.ofEpochMilli(weather?.number("now")?.toLong() ?: 0))
+        if (weather == null) {
+            assertEquals(shown.string("warning"), (model as? WeatherForecastCardModel.Warning)?.text)
+            return@cards
+        }
+        model as WeatherForecastCardModel.Shown
+        val current = weather.obj("current")
+        assertEquals(current == null, model.current == null, "current")
+        model.current?.let { actual ->
+            current!!
+            assertEquals(
+                listOf(
+                    current.drawingClasses(),
+                    current.boolean("stateIcon"),
+                    current.string("state"),
+                    current.string("name"),
+                    current.string("temp"),
+                    current.string("attribute"),
+                    current.boolean("attributeIcon"),
+                ),
+                listOf(
+                    actual.condition.classes(),
+                    actual.condition == null,
+                    actual.state,
+                    actual.name,
+                    actual.temperature?.let { "$it ${actual.temperatureUnit}" },
+                    actual.secondary?.let { listOfNotNull(it.label, it.value).joinToString(" ") },
+                    actual.secondary?.icon != null,
+                ),
+            )
+        }
+        val items = model.forecast?.groups?.flatten()
+        assertEquals(
+            (weather["forecast"] as? JsonArray)?.map { it as JsonObject }?.map {
+                listOf(it.string("header"), it.string("label"), it.drawingClasses(), it.string("temp"), it.string("templow"))
+            },
+            items?.map { listOf(it.dayHeader, it.label, it.condition.classes(), it.temperature, it.low) },
+        )
+    }
+
+    private fun JsonObject.drawingClasses(): List<String?>? = (this["drawing"] as? JsonArray)?.map { it.stringOrNull }
+
+    /** The drawing's parts by their `weatherSVGStyles` class. */
+    private fun WeatherIcon?.classes(): List<String>? = (this as? WeatherIcon.Drawing)?.parts?.map { it.paint.name.lowercase().replace('_', '-') }
 
     /** Each captured card of [type], checked against the snapshot with the states it was drawn with. */
     private fun cards(type: String, check: HassSnapshot.(CardConfig, JsonObject) -> Unit): List<DynamicTest> = fixture.json("more-info/controls.json").objects("cards")
