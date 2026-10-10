@@ -904,6 +904,12 @@ const CARD_CONFIGS = [
   { type: "weather-forecast", entity: "weather.forecast_native_test_home", forecast_type: "daily", secondary_info_attribute: "dew_point", round_temperature: true },
   { type: "weather-forecast", entity: "weather.forecast_native_test_home", secondary_info_attribute: "wind_speed" },
   { type: "weather-forecast", entity: "weather.missing" },
+  { type: "thermostat", entity: "climate.ecobee" },
+  { type: "thermostat", entity: "climate.hvac", name: "Hall" },
+  { type: "thermostat", entity: "climate.heatpump" },
+  { type: "thermostat", entity: "water_heater.demo_water_heater" },
+  { type: "thermostat", entity: "climate.missing" },
+  { type: "thermostat", entity: "light.bed_light" },
 ];
 
 /** The entities whose entities card rows the controls capture records (with "rows" among the entities). */
@@ -1726,6 +1732,13 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
           })) : null,
           event: g.clone(el._forecastEvent ?? null),
           now: Date.now(),
+        } : null;
+      } else if (config.type === "thermostat") {
+        const control = root.querySelector("ha-state-control-climate-temperature, ha-state-control-water_heater-temperature");
+        if (control) await control.updateComplete;
+        shown.thermostat = control ? {
+          name: text(root.querySelector(".title")),
+          secondary: text(control.shadowRoot?.querySelector(".label.secondary")) || null,
         } : null;
       } else if (config.type === "gauge") {
         const gauge = root.querySelector("ha-gauge");

@@ -242,6 +242,18 @@ class SimpleCardsGoldenTest {
         )
     }
 
+    @TestFactory
+    fun `Given captured thermostat cards when deriving them then they show as the frontend's`() = cards("thermostat") { config, shown ->
+        val model = thermostatCardModel(config)
+        val thermostat = shown.obj("thermostat")
+        if (thermostat == null) {
+            assertEquals(shown.string("warning"), (model as? ThermostatCardModel.Warning)?.text)
+            return@cards
+        }
+        model as ThermostatCardModel.Shown
+        assertEquals(listOf(thermostat.string("name"), thermostat.string("secondary")), listOf(model.name, model.secondary))
+    }
+
     private fun JsonObject.drawingClasses(): List<String?>? = (this["drawing"] as? JsonArray)?.map { it.stringOrNull }
 
     /** The drawing's parts by their `weatherSVGStyles` class. */

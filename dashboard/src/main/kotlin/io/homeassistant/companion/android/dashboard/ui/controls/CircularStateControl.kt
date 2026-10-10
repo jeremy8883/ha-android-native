@@ -63,6 +63,7 @@ internal fun CircularStateControl(
     onSet: (CircularTargets, CircularTarget) -> Unit,
     modifier: Modifier = Modifier,
     bottomUnit: Boolean = false,
+    secondary: String? = null,
 ) {
     var local by remember(targets) { mutableStateOf(targets) }
     var selected by remember {
@@ -91,7 +92,7 @@ internal fun CircularStateControl(
             },
             modifier = Modifier.fillMaxSize(),
         )
-        CircularInfo(control, local, selected, bottomUnit, onSelect = {
+        CircularInfo(control, local, selected, bottomUnit, secondary, onSelect = {
             selected = it
         }, modifier = Modifier.align(Alignment.Center))
         if (control.buttons) {
@@ -108,6 +109,16 @@ internal fun CircularStateControl(
     }
 }
 
+/** The secondary label under the target: the current temperature, with a thermometer (`show-secondary`). */
+@Composable
+private fun CurrentTemperature(text: String) {
+    val colors = LocalHAColorScheme.current
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1)) {
+        DashboardIcon(THERMOMETER, colors.colorTextPrimary, Modifier.size(HASize.L))
+        Text(text, style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium), color = colors.colorTextPrimary)
+    }
+}
+
 /** The label, the target (or the low and high targets, tap one to choose it), centred in the slider. */
 @Composable
 private fun CircularInfo(
@@ -115,6 +126,7 @@ private fun CircularInfo(
     targets: CircularTargets,
     selected: CircularTarget,
     bottomUnit: Boolean,
+    secondary: String?,
     onSelect: (CircularTarget) -> Unit,
     modifier: Modifier,
 ) {
@@ -156,6 +168,7 @@ private fun CircularInfo(
             )
             CircularPrimary.None -> Unit
         }
+        secondary?.let { CurrentTemperature(it) }
     }
 }
 
@@ -216,6 +229,7 @@ private fun StepButtons(color: Color?, modifier: Modifier, onStep: (Int) -> Unit
     }
 }
 
+private const val THERMOMETER = "mdi:thermometer"
 private const val BUTTON_DEBOUNCE_MS = 1000L
 private const val LABEL_WIDTH = 0.6f
 private const val UNSELECTED_ALPHA = 0.7f

@@ -91,15 +91,18 @@ Update it in the same commit as the work it describes.
 - [ ] Entities
 - [ ] Tile
 - [x] Button (`ButtonCardModel`: name, icon or picture, state, the state colour; golden-tested against `hui-button-card`)
-- [ ] Sensor
+- [x] Entity and sensor (`EntityCardModel`: value and unit apart via `formatEntityStateParts`; the sensor's graph is `SensorGraph`, from a `history/stream` per graph in `CardDataLoader`; golden-tested, coordinates included)
 - [x] Gauge (`GaugeCardModel`: min, max, severity or segments, needle; warnings as upstream's)
 - [x] Glance (`GlanceCardModel`: title, columns, each entity's name, icon or picture, state or relative time, `state-badge`'s colour)
-- [ ] Light
-- [ ] Thermostat
+- [x] Light (`LightCardModel`; 20260624.6 still draws `round-slider`, ported as `RoundSlider`)
+- [x] Thermostat (`ThermostatCardModel`: the details' dial, with the current temperature under it; no features or `show_current_as_primary` yet)
+- [x] Alarm panel (`AlarmPanelCardModel`: mode buttons, code field and keypad unless the registry entry has a default code, read per shown card)
+- [x] Weather forecast (`WeatherForecastCardModel`, drawn conditions in `weather/WeatherIcons.kt`, `weather/subscribe_forecast` per configured card; regular height only, no compact layout)
 - [ ] Markdown
 - [ ] Conditional
 - [ ] Unsupported-card fallback (placeholder, then WebView investigation)
-- [ ] Layouts: masonry, sections, panel, sidebar, stacks/grid
+- [ ] Layouts: masonry, sections, panel, sidebar
+- [x] Vertical/horizontal stacks and grid (`StackCard`; cards in a row aren't stretched to the tallest)
 
 ### Step 5 — Reactive state and actions
 - [ ] Derived display state (state display, icons, colors)
@@ -257,12 +260,16 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 
 ## Handover notes
 
+### 2026-10-10: stacks and the remaining entity cards (Opus)
+- The six cards were ported from the 20260624.6 sources (fetched from GitHub at that tag; the test instance ships source maps naming them). The `ha-refs` checkout is a newer dev snapshot: its graph downsampling, light card slider and translations differ. Don't regenerate `frontend-en.json` from it wholesale; keys were added by hand.
+- Card data beyond states (energy, graph histories, alarm default codes, forecasts) loads through `CardDataLoader`, keyed by the shown view's cards (`shownCards`, which now includes stack children).
+- The Masonry test view has daily and hourly forecasts. Visual nits for Astra: stack rows aren't equal height; the weather card has no short layout.
+
 ### 2026-10-10: remaining details and simple cards (Opus)
 - The state-domain colours in `FrontendColor.kt` were only partly ported (no armed alarm, binary sensor problem, media player, sun, device tracker, lawn mower, water heater or some weather colours); the whole block is now generated from upstream's `color.globals.ts`.
 - `dashboard-test.json` has a "More devices" section (lawn mower, remote, update) and the button, glance and gauge cards; `bootstrap.py` seeds the vacuum's area mapping.
 - The media browser's dialog is edge to edge with the bars' icons set from its surface (`DialogSystemBars`).
 - History goldens allow 1 ms: the stream's purge time in the test goes through double seconds.
-- Vertical and horizontal stacks, grid, light, sensor, alarm panel and weather forecast cards still show "Unsupported card".
 
 ### 2026-10-10: light details (Opus)
 - The colour conversions moved to `color/` (`ConvertColor.kt`, `ConvertLightColor.kt`); `lightColor` in `StateColor.kt` uses them.

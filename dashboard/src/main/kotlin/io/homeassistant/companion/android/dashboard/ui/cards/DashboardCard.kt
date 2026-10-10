@@ -73,6 +73,7 @@ private fun EntityCards(
         CARD_LIGHT -> LightCard(card, hass, interactions, rounded)
         CARD_ALARM_PANEL -> AlarmPanelCard(card, hass, interactions, rounded)
         CARD_WEATHER_FORECAST -> WeatherForecastCard(card, hass, now, interactions, rounded)
+        CARD_THERMOSTAT -> ThermostatCard(card, hass, interactions, rounded)
         else -> EntityCard(card, hass, now, interactions, rounded)
     }
 }
@@ -116,6 +117,7 @@ private val ENTITY_CARD_TYPES =
         CARD_LIGHT,
         CARD_ALARM_PANEL,
         CARD_WEATHER_FORECAST,
+        CARD_THERMOSTAT,
         CARD_ENTITY,
         CARD_SENSOR,
     )
@@ -131,6 +133,7 @@ private const val CARD_ENTITY = "entity"
 private const val CARD_LIGHT = "light"
 private const val CARD_ALARM_PANEL = "alarm-panel"
 private const val CARD_WEATHER_FORECAST = "weather-forecast"
+private const val CARD_THERMOSTAT = "thermostat"
 private const val CARD_SENSOR = "sensor"
 private const val CARD_MEDIA_CONTROL = "media-control"
 private const val CARD_EMPTY_STATE = "empty-state"
