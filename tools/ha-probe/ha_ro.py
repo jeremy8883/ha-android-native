@@ -54,6 +54,9 @@ READ_ONLY_COMMANDS = frozenset({
     "subscribe_entities",
     "subscribe_events",
     "render_template",
+    "entity/source",
+    "hassio/update/config/info",
+    "backup/config/info",
 })
 
 

@@ -179,7 +179,7 @@ private fun DomainControls(
     model.alarm?.let { MoreInfoAlarm(it, onAction) }
     model.mediaPlayer?.let { MoreInfoMediaPlayer(it, state.entityId, hass, now, onAction) }
     model.vacuum?.let { MoreInfoVacuum(it, state, hass, onAction) }
-    SimpleDomainControls(model, state, onAction)
+    SimpleDomainControls(model, state, hass, now, onAction)
     model.waterHeater?.let { heater ->
         SingleDialControls(
             current = heater.current,

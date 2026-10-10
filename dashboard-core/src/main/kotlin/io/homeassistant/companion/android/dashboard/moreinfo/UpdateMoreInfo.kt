@@ -12,16 +12,14 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
 // Port of `more-info-update` (frontend@20260624.6 src/dialogs/more-info/controls/more-info-update.ts) with its
-// helpers (src/data/update.ts). Not ported: the backup settings of Home Assistant and its apps (`hassio`
-// updates), whose install stays in the full dialog.
+// helpers (src/data/update.ts). The backup switch's texts and default are in UpdateBackup.kt.
 
 /**
  * An update's details: its progress while installing, the title, the installed and latest versions, the release
  * announcement, the release notes (fetched, or the summary), and the skip and install buttons.
  *
  * @property fetchNotes whether the release notes are fetched (`update/release_notes`), rather than [summary]
- * @property install the install button, `null` when the entity can't install or its install stays in the full
- * dialog ([fullDialogOnly])
+ * @property install the install button, `null` when the entity can't install
  */
 data class UpdateMoreInfo(
     val progress: UpdateProgress?,
@@ -33,7 +31,6 @@ data class UpdateMoreInfo(
     val summary: String?,
     val skip: UpdateSkip,
     val install: UpdateInstall?,
-    val fullDialogOnly: Boolean,
 )
 
 /** An install's progress: a percentage, or unknown. */
@@ -55,15 +52,15 @@ data class UpdateSkip(
 )
 
 /**
- * The install button: [installing] while under way, with the backup switch when the entity backs up first.
+ * The install button: [installing] while under way, with the backup switch when the entity can back up first.
  *
- * @property backupLabel the backup switch's label, `null` without one
+ * @property backupType what the update updates, which decides the backup switch; `null` without one
  */
 data class UpdateInstall(
     val label: String,
     val enabled: Boolean,
     val installing: Boolean,
-    val backupLabel: String?,
+    val backupType: UpdateType?,
     private val entityId: String,
     private val version: String?,
 ) {
@@ -71,7 +68,7 @@ data class UpdateInstall(
     fun call(backup: Boolean): CardAction.CallService {
         val data = listOfNotNull(
             "entity_id" to JsonPrimitive(entityId),
-            ("backup" to JsonPrimitive(true)).takeIf { backup && backupLabel != null },
+            ("backup" to JsonPrimitive(true)).takeIf { backup && backupType != null },
             version?.let { "version" to JsonPrimitive(it) },
         )
         return CardAction.CallService(UPDATE, "install", JsonObject(data.toMap()), target = null)
@@ -89,7 +86,6 @@ fun HassSnapshot.updateMoreInfo(state: EntityState): UpdateMoreInfo? {
         attributeName(state, key) to
             (attributes.string(key) ?: localize("state.default.unavailable"))
     }
-    val hassio = registries.entities[state.entityId]?.platform == "hassio"
     return UpdateMoreInfo(
         progress = when {
             !installing -> null
@@ -103,14 +99,12 @@ fun HassSnapshot.updateMoreInfo(state: EntityState): UpdateMoreInfo? {
         fetchNotes = state.supportsFeature(FEATURE_RELEASE_NOTES),
         summary = attributes.string("release_summary")?.ifEmpty { null },
         skip = updateSkip(state, installing),
-        install = if (state.supportsFeature(FEATURE_INSTALL) && !hassio) {
+        install = if (state.supportsFeature(FEATURE_INSTALL)) {
             UpdateInstall(
                 label = localize("$strings.update"),
                 enabled = !(state.state == OFF && !latestSkipped(state)),
                 installing = installing,
-                backupLabel = localize("$strings.create_backup.generic").takeIf {
-                    state.supportsFeature(FEATURE_BACKUP)
-                },
+                backupType = updateType(state).takeIf { state.supportsFeature(FEATURE_BACKUP) },
                 entityId = state.entityId,
                 version = attributes.string("latest_version").takeIf {
                     state.supportsFeature(FEATURE_SPECIFIC_VERSION)
@@ -119,7 +113,6 @@ fun HassSnapshot.updateMoreInfo(state: EntityState): UpdateMoreInfo? {
         } else {
             null
         },
-        fullDialogOnly = state.supportsFeature(FEATURE_INSTALL) && hassio,
     )
 }
 

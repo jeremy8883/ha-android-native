@@ -6,6 +6,7 @@ import io.homeassistant.companion.android.dashboard.model.number
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
+import java.time.Instant
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.TestFactory
 
@@ -43,7 +44,8 @@ class UpdateMoreInfoGoldenTest {
                     is UpdateProgress.Percent -> progress.percent
                     null -> null
                 },
-                it.install?.backupLabel,
+                // The test instance has no Supervisor: every update's switch is the generic one
+                it.install?.backupType?.let { type -> hass.updateBackupOption(state, type, UpdateBackupSettings(), Instant.EPOCH).title },
                 listOf(Triple(it.skip.label, it.skip.enabled, false)) +
                     listOfNotNull(it.install?.let { install -> Triple(install.label, install.enabled, install.installing) }),
             )

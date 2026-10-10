@@ -183,7 +183,7 @@ Anywhere:
     - [x] Lawn mower: the battery beside the header's time (shared with the vacuum, `DeviceBattery`), start mowing or pause, and return to dock. Golden-tested against the demo mower (the test instance now enables the demo lawn mower and remote). Upstream's drawn mower is ported on a Canvas (`MowerStatus`/`MowerDrawing`/`MowerGrass`): wandering and turning with grass flying while it mows, heading for its dock, docked, a warning glow on error
     - [x] The details sheet is one lazy list (`LazyColumn`): the header, controls and history are single items and the logbook one item per row, so a day of hundreds of entries (an energy sensor's) only builds what's on screen. On the emulator with 150 entries, flinging went from 15% to 5% janky frames (95th percentile 31 to 17 ms)
     - [x] The history bar's time axis follows the frontend's ticks for short ranges too (minutes under 3 hours, `historyTimeTicks`), and the history follows the live stream
-    - [ ] Remaining details: script (fields and run), scene, button, person, sun, weather, camera, image, group, Home Assistant update backups (the server's backup settings), and the rest
+    - [ ] Remaining details: script (fields and run), scene, button, person, sun, weather, camera, image, group and the rest
   - [ ] Settings and related (registry editing: companion app for now)
 
 Drawer panels (shown only when the setting is on):
@@ -259,6 +259,10 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - Dependency lockfiles are global, so avoid adding new libraries to `:app`/`:automotive` (merge conflicts).
 
 ## Handover notes
+
+### 2026-10-10: update backups (Opus)
+- Home Assistant, OS and app updates now install from the native details: the backup switch reads `hassio/update/config/info` and `backup/config/info` (`UpdateBackupRepository`) as `more-info-update` does, for its title, description and default. The test instance has no Supervisor, so only the generic switch can be seen there; the other cases are unit-tested (`UpdateBackupTest`).
+- `ha_ro.py` allows those two commands and `entity/source` (read-only). `backup/config/info` holds the backup password: never print its output.
 
 ### 2026-10-10: stacks and the remaining entity cards (Opus)
 - The six cards were ported from the 20260624.6 sources (fetched from GitHub at that tag; the test instance ships source maps naming them). The `ha-refs` checkout is a newer dev snapshot: its graph downsampling, light card slider and translations differ. Don't regenerate `frontend-en.json` from it wholesale; keys were added by hand.

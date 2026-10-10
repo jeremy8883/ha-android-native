@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -34,13 +35,20 @@ import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
-import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.data.Loadable
+import io.homeassistant.companion.android.dashboard.data.valueOrNull
+import io.homeassistant.companion.android.dashboard.entity.EntityState
+import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
+import io.homeassistant.companion.android.dashboard.moreinfo.UpdateBackupOption
+import io.homeassistant.companion.android.dashboard.moreinfo.UpdateBackupSettings
 import io.homeassistant.companion.android.dashboard.moreinfo.UpdateMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.UpdateProgress
+import io.homeassistant.companion.android.dashboard.moreinfo.UpdateType
+import io.homeassistant.companion.android.dashboard.moreinfo.updateBackupOption
 import io.homeassistant.companion.android.dashboard.ui.cards.MarkdownText
 import io.homeassistant.companion.android.dashboard.ui.loadErrorText
+import java.time.Instant
 
 /**
  * The controls of an update's details, port of `more-info-update` (frontend@20260624.6
@@ -48,7 +56,14 @@ import io.homeassistant.companion.android.dashboard.ui.loadErrorText
  * the release notes, the backup switch, and skip and update.
  */
 @Composable
-internal fun MoreInfoUpdate(info: UpdateMoreInfo, entityId: String, onAction: (CardAction) -> Unit) {
+internal fun MoreInfoUpdate(
+    info: UpdateMoreInfo,
+    state: EntityState,
+    hass: HassSnapshot,
+    now: Instant,
+    onAction: (CardAction) -> Unit,
+) {
+    val entityId = state.entityId
     val colors = LocalHAColorScheme.current
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3)) {
         when (val progress = info.progress) {
@@ -65,7 +80,8 @@ internal fun MoreInfoUpdate(info: UpdateMoreInfo, entityId: String, onAction: (C
         info.versions.forEach { (key, value) -> VersionRow(key, value) }
         info.releaseUrl?.let { url -> ReleaseLink(info.releaseLabel, url) }
         ReleaseNotes(info, entityId)
-        UpdateFooter(info, onAction)
+        val backup = info.install?.backupType?.let { type -> rememberBackupOption(type, state, hass, now) }
+        UpdateFooter(info, backup, onAction)
     }
 }
 
@@ -115,24 +131,49 @@ private fun ReleaseNotes(info: UpdateMoreInfo, entityId: String) {
     }
 }
 
+/**
+ * The backup switch of [type]'s update, from the server's backup settings once read; before (or when they can't
+ * be read) it starts off and offers a manual backup, as upstream's.
+ */
+@Composable
+private fun rememberBackupOption(
+    type: UpdateType,
+    state: EntityState,
+    hass: HassSnapshot,
+    now: Instant,
+): UpdateBackupOption {
+    val viewModel = hiltViewModel<UpdateBackupViewModel>(key = "update-backup-${state.entityId}")
+    LaunchedEffect(type) { viewModel.show(type, hass.config.components) }
+    val settings by viewModel.settings.collectAsStateWithLifecycle()
+    val loaded = settings.valueOrNull ?: UpdateBackupSettings()
+    return remember(loaded, state, hass, now) { hass.updateBackupOption(state, type, loaded, now) }
+}
+
 /** The backup switch, then skip (or clear skipped) and update; skipping an update that installs itself asks first. */
 @Composable
-private fun UpdateFooter(info: UpdateMoreInfo, onAction: (CardAction) -> Unit) {
-    var backup by remember { mutableStateOf(false) }
+private fun UpdateFooter(info: UpdateMoreInfo, option: UpdateBackupOption?, onAction: (CardAction) -> Unit) {
+    // Starts as the settings say, once they are read; then as the user sets it
+    var backup by remember(option?.defaultOn) { mutableStateOf(option?.defaultOn == true) }
     var explainSkip by remember { mutableStateOf(false) }
     val install = info.install
-    install?.backupLabel?.let { label ->
+    if (install != null && option != null) {
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Text(label, style = HATextStyle.Body, modifier = Modifier.weight(1f))
+            Column(Modifier.weight(1f)) {
+                Text(
+                    option.title,
+                    style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+                    color = LocalHAColorScheme.current.colorTextPrimary,
+                )
+                option.description?.let {
+                    Text(
+                        it,
+                        style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+                        color = LocalHAColorScheme.current.colorTextSecondary,
+                    )
+                }
+            }
             HASwitch(checked = backup, onCheckedChange = { backup = it }, enabled = !install.installing)
         }
-    }
-    if (info.fullDialogOnly) {
-        Text(
-            stringResource(R.string.native_dashboard_update_full_dialog),
-            style = HATextStyle.BodyMedium,
-            color = LocalHAColorScheme.current.colorTextSecondary,
-        )
     }
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.End)) {
         val skip = info.skip
