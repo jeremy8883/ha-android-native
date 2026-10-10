@@ -373,6 +373,15 @@ FAVORITE_COLORS = {
 }
 
 
+# Covers' and valves' favourite positions: saved ones on a cover and a valve, and no tilt ones on the cover with
+# both, which hides them. The rest keep upstream's defaults.
+FAVORITE_POSITIONS = {
+    "cover.hall_window": ("cover", {"favorite_positions": [10, 50, 90]}),
+    "cover.living_room_window": ("cover", {"favorite_tilt_positions": []}),
+    "valve.back_garden": ("valve", {"favorite_positions": [20, 80]}),
+}
+
+
 async def seed_favorites(ws: Ws) -> None:
     for entity_id, colors in FAVORITE_COLORS.items():
         await ws.call(
@@ -381,7 +390,9 @@ async def seed_favorites(ws: Ws) -> None:
             options_domain="light",
             options={"favorite_colors": colors},
         )
-    log(f"saved the favourite colours of {len(FAVORITE_COLORS)} lights")
+    for entity_id, (domain, options) in FAVORITE_POSITIONS.items():
+        await ws.call("config/entity_registry/update", entity_id=entity_id, options_domain=domain, options=options)
+    log(f"saved the favourites of {len(FAVORITE_COLORS) + len(FAVORITE_POSITIONS)} entities")
 
 
 async def seed_energy(ws: Ws, session: aiohttp.ClientSession, base: str, token: str) -> None:

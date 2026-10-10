@@ -111,7 +111,7 @@ private fun ToggleButtons(
         ToggleButton(
             toggle.turnOffLabel,
             toggle.offIcon,
-            !toggle.checked,
+            toggle.offActive,
             offColor,
             toggle.enabled,
             Modifier.weight(1f),

@@ -9,8 +9,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.LinearGradientShader
+import androidx.compose.ui.graphics.Shader
+import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HAFontSize
@@ -39,11 +44,14 @@ internal fun StateControlSlider(
     val background = when (val track = slider.background) {
         is SliderBackground.Tint -> SolidColor(track.color?.toColor() ?: colors.colorFillDisabledLoudResting) to
             track.opacity
+        is SliderBackground.Stripes -> SolidColor(track.color?.toColor() ?: colors.colorFillDisabledLoudResting) to
+            track.opacity
         // The stops are evenly spaced, as upstream generates them
         is SliderBackground.Gradient -> Brush.verticalGradient(
             track.stops.map { (_, hex) -> parseCssColor(hex) ?: Color.Unspecified },
         ) to 1f
     }
+    val overlay = (slider.background as? SliderBackground.Stripes)?.let { tiltStripes(color) }
     var moving by remember { mutableStateOf<Double?>(null) }
     val send by rememberUpdatedState { value: Double -> onAction(slider.service.withValue(value)) }
     if (whileMoving) {
@@ -71,6 +79,8 @@ internal fun StateControlSlider(
             background = background.first,
             backgroundAlpha = background.second,
             tooltipFontSize = HAFontSize.XL,
+            overlay = overlay,
+            overlayAlpha = STRIPES_ALPHA,
         ),
         onChanged = send,
         onMoved = { moving = it },
@@ -83,6 +93,26 @@ internal fun StateControlSlider(
     )
 }
 
+/**
+ * Port of `generateTiltSliderTrackBackgroundGradient`: 24 stripes of [color] from the top, each wider than the
+ * one before.
+ */
+private fun tiltStripes(color: Color): Brush {
+    val stops = (0 until STRIPES).flatMap { i ->
+        val start = i.toFloat() / STRIPES
+        val end = start + i.toFloat() / (STRIPES * STRIPES) * (1 - MIN_STRIPE) + MIN_STRIPE / STRIPES
+        listOf(start to Color.Transparent, start to color, end to color, end to Color.Transparent)
+    }
+    return object : ShaderBrush() {
+        override fun createShader(size: Size): Shader = LinearGradientShader(
+            from = Offset.Zero,
+            to = Offset(0f, size.height),
+            colors = stops.map { it.second },
+            colorStops = stops.map { it.first },
+        )
+    }
+}
+
 /** The width of the details' tall controls (`--control-slider-thickness: 130px`). */
 internal val STATE_CONTROL_THICKNESS = 130.dp
 
@@ -93,3 +123,6 @@ internal val STATE_CONTROL_HEIGHT = 320.dp
 internal val STATE_CONTROL_RADIUS = 36.dp
 
 private const val THROTTLE_MS = 500L
+private const val STRIPES = 24
+private const val MIN_STRIPE = 0.2f
+private const val STRIPES_ALPHA = 0.6f

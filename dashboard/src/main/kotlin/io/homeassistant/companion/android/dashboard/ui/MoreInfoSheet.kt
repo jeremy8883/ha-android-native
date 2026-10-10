@@ -55,11 +55,12 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.EntityToggle
 import io.homeassistant.companion.android.dashboard.ui.cards.TileFeatureControl
 import io.homeassistant.companion.android.dashboard.ui.controls.StateToggleControl
-import io.homeassistant.companion.android.dashboard.ui.moreinfo.LightFavoritesMenu
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesMenu
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoClimate
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLight
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLogbook
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoPosition
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.SingleDialControls
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -113,7 +114,7 @@ private fun MoreInfoContent(
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
     ) {
         MoreInfoHeader(model, interactions) {
-            hass.states[model.entityId]?.takeIf { model.light != null }?.let { LightFavoritesMenu(it, hass) }
+            hass.states[model.entityId]?.takeIf { it.domain in FAVORITES_DOMAINS }?.let { FavoritesMenu(it, hass) }
         }
         if (model.stateHeader) MoreInfoState(model)
         hass.states[model.entityId]?.let { DomainControls(model, it, hass, interactions.onAction) }
@@ -148,6 +149,7 @@ private fun DomainControls(
 ) {
     model.light?.let { MoreInfoLight(it, state, hass, onAction) }
     model.climate?.let { MoreInfoClimate(it, state, onAction) }
+    model.position?.let { MoreInfoPosition(it, state, hass, onAction) }
     model.waterHeater?.let { heater ->
         SingleDialControls(
             current = heater.current,
@@ -238,6 +240,9 @@ private fun MoreInfoAttributes(attributes: List<Pair<String, String>>) {
         }
     }
 }
+
+/** The domains with favourites, whose menu the header shows. */
+private val FAVORITES_DOMAINS = setOf("light", "cover", "valve")
 
 /** The state's size in the header (36px). */
 private val STATE_FONT_SIZE = 36.sp

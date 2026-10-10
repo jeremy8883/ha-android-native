@@ -7,8 +7,7 @@ import io.homeassistant.companion.android.dashboard.data.EntityEntryRepository
 import io.homeassistant.companion.android.dashboard.data.Fetched
 import io.homeassistant.companion.android.dashboard.data.LoadError
 import io.homeassistant.companion.android.dashboard.data.Loadable
-import io.homeassistant.companion.android.dashboard.moreinfo.LightColor
-import io.homeassistant.companion.android.dashboard.moreinfo.favoriteColorsUpdate
+import io.homeassistant.companion.android.dashboard.energy.WsCommand
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
@@ -35,12 +34,13 @@ internal sealed interface FavoritesError {
 }
 
 /**
- * A light's registry entry, which holds its favourite colours, while its details are shown; the favourites' edit
- * mode, shared by the header's menu and the favourites; and the saving and copying of favourites. Port of what the
- * more-info dialog does for them (frontend@20260624.6 src/dialogs/more-info/ha-more-info-dialog.ts).
+ * An entity's registry entry, which holds its favourites (a light's colours, a cover's or valve's positions), while
+ * its details are shown; the favourites' edit mode, shared by the header's menu and the favourites; and saving and
+ * copying them. Port of what the more-info dialog does for them (frontend@20260624.6
+ * src/dialogs/more-info/ha-more-info-dialog.ts).
  */
 @HiltViewModel
-internal class MoreInfoLightViewModel @Inject constructor(private val repository: EntityEntryRepository) :
+internal class MoreInfoFavoritesViewModel @Inject constructor(private val repository: EntityEntryRepository) :
     ViewModel() {
     private val entityId = MutableStateFlow<String?>(null)
 
@@ -50,7 +50,7 @@ internal class MoreInfoLightViewModel @Inject constructor(private val repository
     private val _editMode = MutableStateFlow(false)
     private val _error = MutableStateFlow<FavoritesError?>(null)
 
-    /** The light's registry entry, `null` when it has none. */
+    /** The entity's registry entry, `null` when it has none. */
     @OptIn(ExperimentalCoroutinesApi::class)
     val entry: StateFlow<Loadable<JsonObject?>> = combine(
         entityId.filterNotNull().flatMapLatest(repository::entry),
@@ -64,12 +64,12 @@ internal class MoreInfoLightViewModel @Inject constructor(private val repository
     /** The last change of the favourites that failed, until the next one. */
     val error: StateFlow<FavoritesError?> = _error.asStateFlow()
 
-    /** Load [lightId]'s entry, unless it is the one loaded. */
-    fun show(lightId: String) {
-        if (entityId.value == lightId) return
+    /** Load [id]'s entry, unless it is the one loaded. */
+    fun show(id: String) {
+        if (entityId.value == id) return
         saved.value = null
         _editMode.value = false
-        entityId.value = lightId
+        entityId.value = id
     }
 
     /** Start or stop editing the favourites. */
@@ -77,30 +77,30 @@ internal class MoreInfoLightViewModel @Inject constructor(private val repository
         _editMode.value = editing
     }
 
-    /** Save [colors] as the light's favourites, or reset them to the defaults when `null`. */
-    fun save(colors: List<LightColor>?) {
-        val lightId = entityId.value ?: return
+    /** Send [command], an update of the entity's favourites; the entry the server returns is shown. */
+    fun save(command: WsCommand) {
+        val id = entityId.value ?: return
         _error.value = null
         viewModelScope.launch {
-            when (val result = repository.update(favoriteColorsUpdate(lightId, colors))) {
+            when (val result = repository.update(command)) {
                 is Fetched.Success -> saved.value = result.value
                 is Fetched.Failure -> {
-                    Timber.w("Couldn't save the favourite colours of $lightId: ${result.error}")
+                    Timber.w("Couldn't save the favourites of $id: ${result.error}")
                     _error.value = FavoritesError.Save(result.error)
                 }
             }
         }
     }
 
-    /** Save [colors] as the favourites of each of [lightIds]. */
-    fun copy(colors: List<LightColor>, lightIds: List<String>) {
+    /** Send [commands], copies of the favourites to other entities. */
+    fun copy(commands: List<WsCommand>) {
         _error.value = null
         viewModelScope.launch {
-            val failures = lightIds.map { id -> async { repository.update(favoriteColorsUpdate(id, colors)) } }
+            val failures = commands.map { command -> async { repository.update(command) } }
                 .awaitAll()
                 .filterIsInstance<Fetched.Failure>()
             failures.firstOrNull()?.let { first ->
-                Timber.w("Couldn't copy favourite colours to ${failures.size} lights: ${first.error}")
+                Timber.w("Couldn't copy favourites to ${failures.size} entities: ${first.error}")
                 _error.value = FavoritesError.Copy(failures.size, first.error)
             }
         }

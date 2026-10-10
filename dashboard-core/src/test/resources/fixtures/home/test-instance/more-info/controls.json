@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-10T04:24:47.324Z",
+  "capturedAt": "2026-10-10T04:37:19.527Z",
   "entities": {
     "light.bed_light": {
       "as_is": {
@@ -97,7 +97,8 @@
             "unit": "%",
             "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
             "background": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -150,6 +151,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -313,6 +317,9 @@
                 ]
               }
             ],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -429,7 +436,8 @@
               "unit": "K",
               "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
               "background": null,
-              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%"
+              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%",
+              "inactiveColor": null
             },
             "buttons": [
               {
@@ -482,6 +490,9 @@
                 ]
               }
             ],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -1066,7 +1077,8 @@
             "unit": "%",
             "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
             "background": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -1119,6 +1131,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -1282,6 +1297,9 @@
                 ]
               }
             ],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -1398,7 +1416,8 @@
               "unit": "K",
               "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
               "background": null,
-              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%"
+              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%",
+              "inactiveColor": null
             },
             "buttons": [
               {
@@ -1451,6 +1470,9 @@
                 ]
               }
             ],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -1641,7 +1663,8 @@
             "unit": "%",
             "color": "var(--state-unavailable-color)",
             "background": "var(--state-unavailable-color)",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -1694,6 +1717,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -1857,6 +1883,9 @@
                 ]
               }
             ],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -1973,7 +2002,8 @@
               "unit": "K",
               "color": "var(--state-unavailable-color)",
               "background": null,
-              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%"
+              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%",
+              "inactiveColor": null
             },
             "buttons": [
               {
@@ -2026,6 +2056,9 @@
                 ]
               }
             ],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -2225,7 +2258,8 @@
             "unit": "%",
             "color": "#ffa452",
             "background": "#ffa452",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -2262,6 +2296,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -2412,6 +2449,9 @@
               "sliders": []
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -2528,7 +2568,8 @@
               "unit": "K",
               "color": "var(--state-light-on-color, var(--state-light-active-color, var(--state-active-color)))",
               "background": null,
-              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%"
+              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%",
+              "inactiveColor": null
             },
             "buttons": [
               {
@@ -2565,6 +2606,9 @@
             ],
             "rgb": null,
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -3119,7 +3163,8 @@
             "unit": "%",
             "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
             "background": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -3156,6 +3201,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -3303,6 +3351,9 @@
               "sliders": []
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -3419,7 +3470,8 @@
               "unit": "K",
               "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
               "background": null,
-              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%"
+              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%",
+              "inactiveColor": null
             },
             "buttons": [
               {
@@ -3456,6 +3508,9 @@
             ],
             "rgb": null,
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -3638,7 +3693,8 @@
             "unit": "%",
             "color": "var(--state-unavailable-color)",
             "background": "var(--state-unavailable-color)",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -3675,6 +3731,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -3822,6 +3881,9 @@
               "sliders": []
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -3938,7 +4000,8 @@
               "unit": "K",
               "color": "var(--state-unavailable-color)",
               "background": null,
-              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%"
+              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%",
+              "inactiveColor": null
             },
             "buttons": [
               {
@@ -3975,6 +4038,9 @@
             ],
             "rgb": null,
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -4174,7 +4240,8 @@
             "unit": "%",
             "color": "#ffc699",
             "background": "#ffc699",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -4211,6 +4278,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -4361,6 +4431,9 @@
               "sliders": []
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -4477,7 +4550,8 @@
               "unit": "K",
               "color": "var(--state-light-on-color, var(--state-light-active-color, var(--state-active-color)))",
               "background": null,
-              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%"
+              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%",
+              "inactiveColor": null
             },
             "buttons": [
               {
@@ -4514,6 +4588,9 @@
             ],
             "rgb": null,
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -5068,7 +5145,8 @@
             "unit": "%",
             "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
             "background": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -5105,6 +5183,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -5252,6 +5333,9 @@
               "sliders": []
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -5368,7 +5452,8 @@
               "unit": "K",
               "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
               "background": null,
-              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%"
+              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%",
+              "inactiveColor": null
             },
             "buttons": [
               {
@@ -5405,6 +5490,9 @@
             ],
             "rgb": null,
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -5587,7 +5675,8 @@
             "unit": "%",
             "color": "var(--state-unavailable-color)",
             "background": "var(--state-unavailable-color)",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -5624,6 +5713,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -5771,6 +5863,9 @@
               "sliders": []
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -5887,7 +5982,8 @@
               "unit": "K",
               "color": "var(--state-unavailable-color)",
               "background": null,
-              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%"
+              "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%",
+              "inactiveColor": null
             },
             "buttons": [
               {
@@ -5924,6 +6020,9 @@
             ],
             "rgb": null,
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -6125,7 +6224,8 @@
             "unit": "%",
             "color": "#ff8080",
             "background": "#ff8080",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -6155,6 +6255,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": null
@@ -6216,6 +6319,9 @@
               ]
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": null
@@ -6514,7 +6620,8 @@
             "unit": "%",
             "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
             "background": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -6544,6 +6651,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": null
@@ -6602,6 +6712,9 @@
               ]
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": null
@@ -6686,7 +6799,8 @@
             "unit": "%",
             "color": "var(--state-unavailable-color)",
             "background": "var(--state-unavailable-color)",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -6716,6 +6830,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": null
@@ -6774,6 +6891,9 @@
               ]
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": null
@@ -6907,7 +7027,8 @@
             "unit": "%",
             "color": "#0aff0a",
             "background": "#0aff0a",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -6937,6 +7058,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -7060,6 +7184,9 @@
               ]
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -7622,7 +7749,8 @@
             "unit": "%",
             "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
             "background": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -7652,6 +7780,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -7772,6 +7903,9 @@
               ]
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -7938,7 +8072,8 @@
             "unit": "%",
             "color": "var(--state-unavailable-color)",
             "background": "var(--state-unavailable-color)",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -7968,6 +8103,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -8088,6 +8226,9 @@
               ]
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -8243,7 +8384,8 @@
             "unit": "%",
             "color": "#ff4070",
             "background": "#ff4070",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -8283,6 +8425,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -8452,6 +8597,9 @@
               "sliders": []
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -9047,7 +9195,8 @@
             "unit": "%",
             "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
             "background": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -9087,6 +9236,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -9253,6 +9405,9 @@
               "sliders": []
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -9447,7 +9602,8 @@
             "unit": "%",
             "color": "var(--state-unavailable-color)",
             "background": "var(--state-unavailable-color)",
-            "gradient": null
+            "gradient": null,
+            "inactiveColor": null
           },
           "buttons": [
             {
@@ -9487,6 +9643,9 @@
           ],
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": {
@@ -9653,6 +9812,9 @@
               "sliders": []
             },
             "menus": [],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [],
             "circular": null,
             "favorites": {
@@ -9838,6 +10000,9 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": null
@@ -9909,6 +10074,9 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": null
@@ -9981,6 +10149,9 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": null
@@ -10061,6 +10232,9 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": null
@@ -10139,6 +10313,9 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": null
@@ -10218,6 +10395,9 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": null
@@ -10293,6 +10473,9 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": null
@@ -10365,6 +10548,9 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": null
@@ -10438,6 +10624,9 @@
           "buttons": null,
           "rgb": null,
           "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": null,
           "favorites": null
@@ -10534,6 +10723,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current temperature",
@@ -10747,6 +10939,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current temperature",
@@ -10893,6 +11088,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current temperature",
@@ -11192,6 +11390,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current temperature",
@@ -11378,6 +11579,9 @@
                 ]
               }
             ],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [
               {
                 "label": "Current temperature",
@@ -11563,6 +11767,9 @@
                 ]
               }
             ],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [
               {
                 "label": "Current temperature",
@@ -12034,6 +12241,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current temperature",
@@ -12220,6 +12430,9 @@
                 ]
               }
             ],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [
               {
                 "label": "Current temperature",
@@ -12405,6 +12618,9 @@
                 ]
               }
             ],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [
               {
                 "label": "Current temperature",
@@ -12718,6 +12934,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current temperature",
@@ -12893,6 +13112,9 @@
                 ]
               }
             ],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [
               {
                 "label": "Current temperature",
@@ -13067,6 +13289,9 @@
                 ]
               }
             ],
+            "positions": {},
+            "positionButtons": null,
+            "favoritePositions": null,
             "current": [
               {
                 "label": "Current temperature",
@@ -13338,6 +13563,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current temperature",
@@ -13794,6 +14022,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current temperature",
@@ -14087,6 +14318,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current temperature",
@@ -14282,6 +14516,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": {
             "tag": "ha-state-control-water_heater-temperature",
@@ -14560,6 +14797,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": {
             "tag": "ha-state-control-water_heater-temperature",
@@ -14751,6 +14991,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": {
             "tag": "ha-state-control-water_heater-temperature",
@@ -14925,6 +15168,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": {
             "tag": "ha-state-control-water_heater-temperature",
@@ -15203,6 +15449,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": {
             "tag": "ha-state-control-water_heater-temperature",
@@ -15394,6 +15643,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": {
             "tag": "ha-state-control-water_heater-temperature",
@@ -15476,6 +15728,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current humidity",
@@ -15643,6 +15898,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current humidity",
@@ -15747,6 +16005,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current humidity",
@@ -15840,6 +16101,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current humidity",
@@ -16006,6 +16270,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current humidity",
@@ -16109,6 +16376,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [
             {
               "label": "Current humidity",
@@ -16219,6 +16489,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": {
             "tag": "ha-state-control-humidifier-humidity",
@@ -16415,6 +16688,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": {
             "tag": "ha-state-control-humidifier-humidity",
@@ -16530,6 +16806,9 @@
               ]
             }
           ],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
           "current": [],
           "circular": {
             "tag": "ha-state-control-humidifier-humidity",
@@ -16570,6 +16849,5035 @@
           "favorites": null
         },
         "pickers": {}
+      }
+    },
+    "cover.kitchen_window": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "cover.kitchen_window",
+          "state": "closed",
+          "attributes": {
+            "is_closed": true,
+            "friendly_name": "Kitchen Window",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3DSW74KPYF5ZWWSP7A",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219242,
+          "device_id": "75666e913eb536fad3387e804763d874",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.kitchen_window",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "e15a80af53bef62cbeb7fd8b4f2129e2",
+          "labels": [],
+          "modified_at": 1791433963.200326,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Closed",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "positionButtons": {
+            "layout": "line",
+            "buttons": [
+              {
+                "button": "open",
+                "label": "Open cover",
+                "disabled": false
+              },
+              {
+                "button": "stop",
+                "label": "Stop cover",
+                "disabled": false
+              },
+              {
+                "button": "close",
+                "label": "Close cover",
+                "disabled": true
+              }
+            ]
+          },
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "editMode": [],
+        "calls": [
+          {
+            "control": "button",
+            "label": "open",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "open_cover",
+                "data": {
+                  "entity_id": "cover.kitchen_window"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "stop",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "stop_cover",
+                "data": {
+                  "entity_id": "cover.kitchen_window"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "close",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "close_cover",
+                "data": {
+                  "entity_id": "cover.kitchen_window"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "cover.kitchen_window",
+          "state": "off",
+          "attributes": {
+            "is_closed": true,
+            "friendly_name": "Kitchen Window",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3DSW74KPYF5ZWWSP7A",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219242,
+          "device_id": "75666e913eb536fad3387e804763d874",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.kitchen_window",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "e15a80af53bef62cbeb7fd8b4f2129e2",
+          "labels": [],
+          "modified_at": 1791433963.200326,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "off",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "positionButtons": {
+            "layout": "line",
+            "buttons": [
+              {
+                "button": "open",
+                "label": "Open cover",
+                "disabled": false
+              },
+              {
+                "button": "stop",
+                "label": "Stop cover",
+                "disabled": false
+              },
+              {
+                "button": "close",
+                "label": "Close cover",
+                "disabled": false
+              }
+            ]
+          },
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "cover.kitchen_window",
+          "state": "unavailable",
+          "attributes": {
+            "is_closed": true,
+            "friendly_name": "Kitchen Window",
+            "supported_features": 11,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3DSW74KPYF5ZWWSP7A",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219242,
+          "device_id": "75666e913eb536fad3387e804763d874",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.kitchen_window",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "e15a80af53bef62cbeb7fd8b4f2129e2",
+          "labels": [],
+          "modified_at": 1791433963.200326,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "positionButtons": {
+            "layout": "line",
+            "buttons": [
+              {
+                "button": "open",
+                "label": "Open cover",
+                "disabled": true
+              },
+              {
+                "button": "stop",
+                "label": "Stop cover",
+                "disabled": true
+              },
+              {
+                "button": "close",
+                "label": "Close cover",
+                "disabled": true
+              }
+            ]
+          },
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "cover.hall_window": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "cover.hall_window",
+          "state": "open",
+          "attributes": {
+            "is_closed": false,
+            "current_position": 10,
+            "friendly_name": "Hall Window",
+            "supported_features": 15
+          },
+          "context": {
+            "id": "01M4HEKT3DPB04N6TEG09Y8J78",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219388,
+          "device_id": "8e14bd6490a70631bd5180b6f3047133",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.hall_window",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "b10927d4f08da036effaeb74c1291dcd",
+          "labels": [],
+          "modified_at": 1791606772.259872,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            },
+            "cover": {
+              "favorite_positions": [
+                10,
+                50,
+                90
+              ]
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Open · 10%",
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to position mode",
+              "disabled": false,
+              "selected": true,
+              "control": "position"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to button mode",
+              "disabled": false,
+              "selected": false,
+              "control": "button"
+            }
+          ],
+          "rgb": null,
+          "menus": [],
+          "positions": {
+            "cover-position": {
+              "value": 10,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "end",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": true,
+              "disabled": false,
+              "label": "Position",
+              "unit": "%",
+              "color": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))",
+              "background": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))",
+              "gradient": null,
+              "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+            }
+          },
+          "positionButtons": null,
+          "favoritePositions": [
+            {
+              "kind": "position",
+              "label": null,
+              "items": [
+                {
+                  "label": "Set position to 10%",
+                  "text": "10%",
+                  "active": true,
+                  "disabled": false
+                },
+                {
+                  "label": "Set position to 50%",
+                  "text": "50%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set position to 90%",
+                  "text": "90%",
+                  "active": false,
+                  "disabled": false
+                }
+              ],
+              "deleteLabels": [],
+              "buttonsLabels": []
+            }
+          ],
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {
+          "position": {
+            "state": "Open · 10%",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": true,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": false,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {
+              "cover-position": {
+                "value": 10,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "end",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": true,
+                "disabled": false,
+                "label": "Position",
+                "unit": "%",
+                "color": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))",
+                "background": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))",
+                "gradient": null,
+                "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+              }
+            },
+            "positionButtons": null,
+            "favoritePositions": [
+              {
+                "kind": "position",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 10%",
+                    "text": "10%",
+                    "active": true,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 50%",
+                    "text": "50%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 90%",
+                    "text": "90%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          },
+          "button": {
+            "state": "Open · 10%",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": false,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": true,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {},
+            "positionButtons": {
+              "layout": "line",
+              "buttons": [
+                {
+                  "button": "open",
+                  "label": "Open cover",
+                  "disabled": false
+                },
+                {
+                  "button": "stop",
+                  "label": "Stop cover",
+                  "disabled": false
+                },
+                {
+                  "button": "close",
+                  "label": "Close cover",
+                  "disabled": false
+                }
+              ]
+            },
+            "favoritePositions": [
+              {
+                "kind": "position",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 10%",
+                    "text": "10%",
+                    "active": true,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 50%",
+                    "text": "50%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 90%",
+                    "text": "90%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          }
+        },
+        "editMode": [
+          {
+            "kind": "position",
+            "label": null,
+            "items": [
+              {
+                "label": "Set position to 10%",
+                "text": "10%",
+                "active": true,
+                "disabled": false
+              },
+              {
+                "label": "Set position to 50%",
+                "text": "50%",
+                "active": false,
+                "disabled": false
+              },
+              {
+                "label": "Set position to 90%",
+                "text": "90%",
+                "active": false,
+                "disabled": false
+              }
+            ],
+            "deleteLabels": [
+              "Delete favorite position 1",
+              "Delete favorite position 2",
+              "Delete favorite position 3"
+            ],
+            "buttonsLabels": [
+              "Add new favorite position",
+              "Exit edit mode"
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "control": "slider",
+            "label": "cover-position 40",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_position",
+                "data": {
+                  "entity_id": "cover.hall_window",
+                  "position": 40
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "open",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "open_cover",
+                "data": {
+                  "entity_id": "cover.hall_window"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "stop",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "stop_cover",
+                "data": {
+                  "entity_id": "cover.hall_window"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "close",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "close_cover",
+                "data": {
+                  "entity_id": "cover.hall_window"
+                }
+              }
+            ]
+          },
+          {
+            "control": "favorite",
+            "label": "position 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_position",
+                "data": {
+                  "entity_id": "cover.hall_window",
+                  "position": 10
+                }
+              }
+            ]
+          },
+          {
+            "control": "favorite",
+            "label": "position 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_position",
+                "data": {
+                  "entity_id": "cover.hall_window",
+                  "position": 50
+                }
+              }
+            ]
+          },
+          {
+            "control": "favorite",
+            "label": "position 2",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_position",
+                "data": {
+                  "entity_id": "cover.hall_window",
+                  "position": 90
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "cover.hall_window",
+          "state": "off",
+          "attributes": {
+            "is_closed": false,
+            "current_position": 10,
+            "friendly_name": "Hall Window",
+            "supported_features": 15
+          },
+          "context": {
+            "id": "01M4HEKT3DPB04N6TEG09Y8J78",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219388,
+          "device_id": "8e14bd6490a70631bd5180b6f3047133",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.hall_window",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "b10927d4f08da036effaeb74c1291dcd",
+          "labels": [],
+          "modified_at": 1791606772.259872,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            },
+            "cover": {
+              "favorite_positions": [
+                10,
+                50,
+                90
+              ]
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "off",
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to position mode",
+              "disabled": false,
+              "selected": true,
+              "control": "position"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to button mode",
+              "disabled": false,
+              "selected": false,
+              "control": "button"
+            }
+          ],
+          "rgb": null,
+          "menus": [],
+          "positions": {
+            "cover-position": {
+              "value": 10,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "end",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": true,
+              "disabled": false,
+              "label": "Position",
+              "unit": "%",
+              "color": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+              "background": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+              "gradient": null,
+              "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+            }
+          },
+          "positionButtons": null,
+          "favoritePositions": [
+            {
+              "kind": "position",
+              "label": null,
+              "items": [
+                {
+                  "label": "Set position to 10%",
+                  "text": "10%",
+                  "active": true,
+                  "disabled": false
+                },
+                {
+                  "label": "Set position to 50%",
+                  "text": "50%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set position to 90%",
+                  "text": "90%",
+                  "active": false,
+                  "disabled": false
+                }
+              ],
+              "deleteLabels": [],
+              "buttonsLabels": []
+            }
+          ],
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {
+          "position": {
+            "state": "off",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": true,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": false,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {
+              "cover-position": {
+                "value": 10,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "end",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": true,
+                "disabled": false,
+                "label": "Position",
+                "unit": "%",
+                "color": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+                "background": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+                "gradient": null,
+                "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+              }
+            },
+            "positionButtons": null,
+            "favoritePositions": [
+              {
+                "kind": "position",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 10%",
+                    "text": "10%",
+                    "active": true,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 50%",
+                    "text": "50%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 90%",
+                    "text": "90%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          },
+          "button": {
+            "state": "off",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": false,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": true,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {},
+            "positionButtons": {
+              "layout": "line",
+              "buttons": [
+                {
+                  "button": "open",
+                  "label": "Open cover",
+                  "disabled": false
+                },
+                {
+                  "button": "stop",
+                  "label": "Stop cover",
+                  "disabled": false
+                },
+                {
+                  "button": "close",
+                  "label": "Close cover",
+                  "disabled": false
+                }
+              ]
+            },
+            "favoritePositions": [
+              {
+                "kind": "position",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 10%",
+                    "text": "10%",
+                    "active": true,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 50%",
+                    "text": "50%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 90%",
+                    "text": "90%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          }
+        }
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "cover.hall_window",
+          "state": "unavailable",
+          "attributes": {
+            "is_closed": false,
+            "current_position": 10,
+            "friendly_name": "Hall Window",
+            "supported_features": 15,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3DPB04N6TEG09Y8J78",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219388,
+          "device_id": "8e14bd6490a70631bd5180b6f3047133",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.hall_window",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "b10927d4f08da036effaeb74c1291dcd",
+          "labels": [],
+          "modified_at": 1791606772.259872,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            },
+            "cover": {
+              "favorite_positions": [
+                10,
+                50,
+                90
+              ]
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to position mode",
+              "disabled": false,
+              "selected": true,
+              "control": "position"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to button mode",
+              "disabled": false,
+              "selected": false,
+              "control": "button"
+            }
+          ],
+          "rgb": null,
+          "menus": [],
+          "positions": {
+            "cover-position": {
+              "value": 10,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "end",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": true,
+              "disabled": true,
+              "label": "Position",
+              "unit": "%",
+              "color": "var(--state-unavailable-color)",
+              "background": "var(--state-unavailable-color)",
+              "gradient": null,
+              "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+            }
+          },
+          "positionButtons": null,
+          "favoritePositions": [
+            {
+              "kind": "position",
+              "label": null,
+              "items": [
+                {
+                  "label": "Set position to 10%",
+                  "text": "10%",
+                  "active": true,
+                  "disabled": true
+                },
+                {
+                  "label": "Set position to 50%",
+                  "text": "50%",
+                  "active": false,
+                  "disabled": true
+                },
+                {
+                  "label": "Set position to 90%",
+                  "text": "90%",
+                  "active": false,
+                  "disabled": true
+                }
+              ],
+              "deleteLabels": [],
+              "buttonsLabels": []
+            }
+          ],
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {
+          "position": {
+            "state": "Unavailable",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": true,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": false,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {
+              "cover-position": {
+                "value": 10,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "end",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": true,
+                "disabled": true,
+                "label": "Position",
+                "unit": "%",
+                "color": "var(--state-unavailable-color)",
+                "background": "var(--state-unavailable-color)",
+                "gradient": null,
+                "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+              }
+            },
+            "positionButtons": null,
+            "favoritePositions": [
+              {
+                "kind": "position",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 10%",
+                    "text": "10%",
+                    "active": true,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set position to 50%",
+                    "text": "50%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set position to 90%",
+                    "text": "90%",
+                    "active": false,
+                    "disabled": true
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          },
+          "button": {
+            "state": "Unavailable",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": false,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": true,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {},
+            "positionButtons": {
+              "layout": "line",
+              "buttons": [
+                {
+                  "button": "open",
+                  "label": "Open cover",
+                  "disabled": true
+                },
+                {
+                  "button": "stop",
+                  "label": "Stop cover",
+                  "disabled": true
+                },
+                {
+                  "button": "close",
+                  "label": "Close cover",
+                  "disabled": true
+                }
+              ]
+            },
+            "favoritePositions": [
+              {
+                "kind": "position",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 10%",
+                    "text": "10%",
+                    "active": true,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set position to 50%",
+                    "text": "50%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set position to 90%",
+                    "text": "90%",
+                    "active": false,
+                    "disabled": true
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          }
+        }
+      }
+    },
+    "cover.living_room_window": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "cover.living_room_window",
+          "state": "open",
+          "attributes": {
+            "is_closed": false,
+            "current_position": 70,
+            "current_tilt_position": 50,
+            "friendly_name": "Living Room Window",
+            "supported_features": 255
+          },
+          "context": {
+            "id": "01M4HEKT3DASQ07WZ8HCV4AZBM",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219522,
+          "device_id": "72a4c9fe12beb4a65f8874bd4d913dfc",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.living_room_window",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "d57b25ee620624b778d49e03748d3c1a",
+          "labels": [],
+          "modified_at": 1791606772.265086,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            },
+            "cover": {
+              "favorite_tilt_positions": []
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_3",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Open · 70%",
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to position mode",
+              "disabled": false,
+              "selected": true,
+              "control": "position"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to button mode",
+              "disabled": false,
+              "selected": false,
+              "control": "button"
+            }
+          ],
+          "rgb": null,
+          "menus": [],
+          "positions": {
+            "cover-position": {
+              "value": 70,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "end",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": true,
+              "disabled": false,
+              "label": "Position",
+              "unit": "%",
+              "color": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))",
+              "background": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))",
+              "gradient": null,
+              "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+            },
+            "cover-tilt-position": {
+              "value": 50,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "cursor",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Tilt position",
+              "unit": "%",
+              "color": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))",
+              "background": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))",
+              "gradient": null,
+              "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+            }
+          },
+          "positionButtons": null,
+          "favoritePositions": [
+            {
+              "kind": "position",
+              "label": null,
+              "items": [
+                {
+                  "label": "Set position to 0%",
+                  "text": "0%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set position to 25%",
+                  "text": "25%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set position to 75%",
+                  "text": "75%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set position to 100%",
+                  "text": "100%",
+                  "active": false,
+                  "disabled": false
+                }
+              ],
+              "deleteLabels": [],
+              "buttonsLabels": []
+            }
+          ],
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {
+          "position": {
+            "state": "Open · 70%",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": true,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": false,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {
+              "cover-position": {
+                "value": 70,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "end",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": true,
+                "disabled": false,
+                "label": "Position",
+                "unit": "%",
+                "color": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))",
+                "background": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))",
+                "gradient": null,
+                "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+              },
+              "cover-tilt-position": {
+                "value": 50,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "cursor",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": false,
+                "disabled": false,
+                "label": "Tilt position",
+                "unit": "%",
+                "color": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))",
+                "background": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))",
+                "gradient": null,
+                "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+              }
+            },
+            "positionButtons": null,
+            "favoritePositions": [
+              {
+                "kind": "position",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 0%",
+                    "text": "0%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 25%",
+                    "text": "25%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 75%",
+                    "text": "75%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 100%",
+                    "text": "100%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          },
+          "button": {
+            "state": "Open · 70%",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": false,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": true,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {},
+            "positionButtons": {
+              "layout": "cross",
+              "buttons": [
+                {
+                  "button": "open",
+                  "label": "Open cover",
+                  "disabled": false
+                },
+                {
+                  "button": "close-tilt",
+                  "label": "Close cover tilt",
+                  "disabled": false
+                },
+                {
+                  "button": "stop",
+                  "label": "Stop cover",
+                  "disabled": false
+                },
+                {
+                  "button": "open-tilt",
+                  "label": "Open cover tilt",
+                  "disabled": false
+                },
+                {
+                  "button": "close",
+                  "label": "Close cover",
+                  "disabled": false
+                }
+              ]
+            },
+            "favoritePositions": [
+              {
+                "kind": "position",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 0%",
+                    "text": "0%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 25%",
+                    "text": "25%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 75%",
+                    "text": "75%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 100%",
+                    "text": "100%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          }
+        },
+        "editMode": [
+          {
+            "kind": "position",
+            "label": "Position",
+            "items": [
+              {
+                "label": "Set position to 0%",
+                "text": "0%",
+                "active": false,
+                "disabled": false
+              },
+              {
+                "label": "Set position to 25%",
+                "text": "25%",
+                "active": false,
+                "disabled": false
+              },
+              {
+                "label": "Set position to 75%",
+                "text": "75%",
+                "active": false,
+                "disabled": false
+              },
+              {
+                "label": "Set position to 100%",
+                "text": "100%",
+                "active": false,
+                "disabled": false
+              }
+            ],
+            "deleteLabels": [
+              "Delete favorite position 1",
+              "Delete favorite position 2",
+              "Delete favorite position 3",
+              "Delete favorite position 4"
+            ],
+            "buttonsLabels": [
+              "Add new favorite position"
+            ]
+          },
+          {
+            "kind": "tilt",
+            "label": "Tilt position",
+            "items": [],
+            "deleteLabels": [],
+            "buttonsLabels": [
+              "Add new favorite tilt position",
+              "Exit edit mode"
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "control": "slider",
+            "label": "cover-position 40",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_position",
+                "data": {
+                  "entity_id": "cover.living_room_window",
+                  "position": 40
+                }
+              }
+            ]
+          },
+          {
+            "control": "slider",
+            "label": "cover-tilt-position 30",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_tilt_position",
+                "data": {
+                  "entity_id": "cover.living_room_window",
+                  "tilt_position": 30
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "open",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "open_cover",
+                "data": {
+                  "entity_id": "cover.living_room_window"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "stop",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "stop_cover",
+                "data": {
+                  "entity_id": "cover.living_room_window"
+                }
+              },
+              {
+                "domain": "cover",
+                "service": "stop_cover_tilt",
+                "data": {
+                  "entity_id": "cover.living_room_window"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "close",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "close_cover",
+                "data": {
+                  "entity_id": "cover.living_room_window"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "open-tilt",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "open_cover_tilt",
+                "data": {
+                  "entity_id": "cover.living_room_window"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "close-tilt",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "close_cover_tilt",
+                "data": {
+                  "entity_id": "cover.living_room_window"
+                }
+              }
+            ]
+          },
+          {
+            "control": "favorite",
+            "label": "position 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_position",
+                "data": {
+                  "entity_id": "cover.living_room_window",
+                  "position": 0
+                }
+              }
+            ]
+          },
+          {
+            "control": "favorite",
+            "label": "position 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_position",
+                "data": {
+                  "entity_id": "cover.living_room_window",
+                  "position": 25
+                }
+              }
+            ]
+          },
+          {
+            "control": "favorite",
+            "label": "position 2",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_position",
+                "data": {
+                  "entity_id": "cover.living_room_window",
+                  "position": 75
+                }
+              }
+            ]
+          },
+          {
+            "control": "favorite",
+            "label": "position 3",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_position",
+                "data": {
+                  "entity_id": "cover.living_room_window",
+                  "position": 100
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "cover.living_room_window",
+          "state": "off",
+          "attributes": {
+            "is_closed": false,
+            "current_position": 70,
+            "current_tilt_position": 50,
+            "friendly_name": "Living Room Window",
+            "supported_features": 255
+          },
+          "context": {
+            "id": "01M4HEKT3DASQ07WZ8HCV4AZBM",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219522,
+          "device_id": "72a4c9fe12beb4a65f8874bd4d913dfc",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.living_room_window",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "d57b25ee620624b778d49e03748d3c1a",
+          "labels": [],
+          "modified_at": 1791606772.265086,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            },
+            "cover": {
+              "favorite_tilt_positions": []
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_3",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "off",
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to position mode",
+              "disabled": false,
+              "selected": true,
+              "control": "position"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to button mode",
+              "disabled": false,
+              "selected": false,
+              "control": "button"
+            }
+          ],
+          "rgb": null,
+          "menus": [],
+          "positions": {
+            "cover-position": {
+              "value": 70,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "end",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": true,
+              "disabled": false,
+              "label": "Position",
+              "unit": "%",
+              "color": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+              "background": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+              "gradient": null,
+              "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+            },
+            "cover-tilt-position": {
+              "value": 50,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "cursor",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Tilt position",
+              "unit": "%",
+              "color": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+              "background": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+              "gradient": null,
+              "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+            }
+          },
+          "positionButtons": null,
+          "favoritePositions": [
+            {
+              "kind": "position",
+              "label": null,
+              "items": [
+                {
+                  "label": "Set position to 0%",
+                  "text": "0%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set position to 25%",
+                  "text": "25%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set position to 75%",
+                  "text": "75%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set position to 100%",
+                  "text": "100%",
+                  "active": false,
+                  "disabled": false
+                }
+              ],
+              "deleteLabels": [],
+              "buttonsLabels": []
+            }
+          ],
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {
+          "position": {
+            "state": "off",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": true,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": false,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {
+              "cover-position": {
+                "value": 70,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "end",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": true,
+                "disabled": false,
+                "label": "Position",
+                "unit": "%",
+                "color": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+                "background": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+                "gradient": null,
+                "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+              },
+              "cover-tilt-position": {
+                "value": 50,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "cursor",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": false,
+                "disabled": false,
+                "label": "Tilt position",
+                "unit": "%",
+                "color": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+                "background": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+                "gradient": null,
+                "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+              }
+            },
+            "positionButtons": null,
+            "favoritePositions": [
+              {
+                "kind": "position",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 0%",
+                    "text": "0%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 25%",
+                    "text": "25%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 75%",
+                    "text": "75%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 100%",
+                    "text": "100%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          },
+          "button": {
+            "state": "off",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": false,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": true,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {},
+            "positionButtons": {
+              "layout": "cross",
+              "buttons": [
+                {
+                  "button": "open",
+                  "label": "Open cover",
+                  "disabled": false
+                },
+                {
+                  "button": "close-tilt",
+                  "label": "Close cover tilt",
+                  "disabled": false
+                },
+                {
+                  "button": "stop",
+                  "label": "Stop cover",
+                  "disabled": false
+                },
+                {
+                  "button": "open-tilt",
+                  "label": "Open cover tilt",
+                  "disabled": false
+                },
+                {
+                  "button": "close",
+                  "label": "Close cover",
+                  "disabled": false
+                }
+              ]
+            },
+            "favoritePositions": [
+              {
+                "kind": "position",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 0%",
+                    "text": "0%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 25%",
+                    "text": "25%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 75%",
+                    "text": "75%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 100%",
+                    "text": "100%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          }
+        }
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "cover.living_room_window",
+          "state": "unavailable",
+          "attributes": {
+            "is_closed": false,
+            "current_position": 70,
+            "current_tilt_position": 50,
+            "friendly_name": "Living Room Window",
+            "supported_features": 255,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3DASQ07WZ8HCV4AZBM",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219522,
+          "device_id": "72a4c9fe12beb4a65f8874bd4d913dfc",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.living_room_window",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "d57b25ee620624b778d49e03748d3c1a",
+          "labels": [],
+          "modified_at": 1791606772.265086,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            },
+            "cover": {
+              "favorite_tilt_positions": []
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_3",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to position mode",
+              "disabled": false,
+              "selected": true,
+              "control": "position"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to button mode",
+              "disabled": false,
+              "selected": false,
+              "control": "button"
+            }
+          ],
+          "rgb": null,
+          "menus": [],
+          "positions": {
+            "cover-position": {
+              "value": 70,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "end",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": true,
+              "disabled": true,
+              "label": "Position",
+              "unit": "%",
+              "color": "var(--state-unavailable-color)",
+              "background": "var(--state-unavailable-color)",
+              "gradient": null,
+              "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+            },
+            "cover-tilt-position": {
+              "value": 50,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "cursor",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": false,
+              "disabled": true,
+              "label": "Tilt position",
+              "unit": "%",
+              "color": "var(--state-unavailable-color)",
+              "background": "var(--state-unavailable-color)",
+              "gradient": null,
+              "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+            }
+          },
+          "positionButtons": null,
+          "favoritePositions": [
+            {
+              "kind": "position",
+              "label": null,
+              "items": [
+                {
+                  "label": "Set position to 0%",
+                  "text": "0%",
+                  "active": false,
+                  "disabled": true
+                },
+                {
+                  "label": "Set position to 25%",
+                  "text": "25%",
+                  "active": false,
+                  "disabled": true
+                },
+                {
+                  "label": "Set position to 75%",
+                  "text": "75%",
+                  "active": false,
+                  "disabled": true
+                },
+                {
+                  "label": "Set position to 100%",
+                  "text": "100%",
+                  "active": false,
+                  "disabled": true
+                }
+              ],
+              "deleteLabels": [],
+              "buttonsLabels": []
+            }
+          ],
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {
+          "position": {
+            "state": "Unavailable",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": true,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": false,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {
+              "cover-position": {
+                "value": 70,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "end",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": true,
+                "disabled": true,
+                "label": "Position",
+                "unit": "%",
+                "color": "var(--state-unavailable-color)",
+                "background": "var(--state-unavailable-color)",
+                "gradient": null,
+                "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+              },
+              "cover-tilt-position": {
+                "value": 50,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "cursor",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": false,
+                "disabled": true,
+                "label": "Tilt position",
+                "unit": "%",
+                "color": "var(--state-unavailable-color)",
+                "background": "var(--state-unavailable-color)",
+                "gradient": null,
+                "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+              }
+            },
+            "positionButtons": null,
+            "favoritePositions": [
+              {
+                "kind": "position",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 0%",
+                    "text": "0%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set position to 25%",
+                    "text": "25%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set position to 75%",
+                    "text": "75%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set position to 100%",
+                    "text": "100%",
+                    "active": false,
+                    "disabled": true
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          },
+          "button": {
+            "state": "Unavailable",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": false,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": true,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {},
+            "positionButtons": {
+              "layout": "cross",
+              "buttons": [
+                {
+                  "button": "open",
+                  "label": "Open cover",
+                  "disabled": true
+                },
+                {
+                  "button": "close-tilt",
+                  "label": "Close cover tilt",
+                  "disabled": true
+                },
+                {
+                  "button": "stop",
+                  "label": "Stop cover",
+                  "disabled": true
+                },
+                {
+                  "button": "open-tilt",
+                  "label": "Open cover tilt",
+                  "disabled": true
+                },
+                {
+                  "button": "close",
+                  "label": "Close cover",
+                  "disabled": true
+                }
+              ]
+            },
+            "favoritePositions": [
+              {
+                "kind": "position",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 0%",
+                    "text": "0%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set position to 25%",
+                    "text": "25%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set position to 75%",
+                    "text": "75%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set position to 100%",
+                    "text": "100%",
+                    "active": false,
+                    "disabled": true
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          }
+        }
+      }
+    },
+    "cover.garage_door": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "cover.garage_door",
+          "state": "closed",
+          "attributes": {
+            "is_closed": true,
+            "device_class": "garage",
+            "friendly_name": "Garage Door",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4HEKT3DJ19BZATC6RFTW11H",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219643,
+          "device_id": "6e4d7e6547a90fdd7bb05800d60dc8c3",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.garage_door",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "f8b752a3b4afd127d6870f1832cdd42e",
+          "labels": [],
+          "modified_at": 1791433963.200429,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_4",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": "garage",
+          "original_icon": null
+        },
+        "main": {
+          "state": "Closed",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Open cover",
+              "onColor": "var(--state-cover-garage-open-color, var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color))))",
+              "offColor": "var(--state-cover-garage-closed-color, var(--state-cover-closed-color, var(--state-cover-inactive-color, var(--state-inactive-color))))"
+            },
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "editMode": [],
+        "calls": [
+          {
+            "control": "toggle",
+            "label": "switch",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "open_cover",
+                "data": {
+                  "entity_id": "cover.garage_door"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "cover.garage_door",
+          "state": "off",
+          "attributes": {
+            "is_closed": true,
+            "device_class": "garage",
+            "friendly_name": "Garage Door",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4HEKT3DJ19BZATC6RFTW11H",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219643,
+          "device_id": "6e4d7e6547a90fdd7bb05800d60dc8c3",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.garage_door",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "f8b752a3b4afd127d6870f1832cdd42e",
+          "labels": [],
+          "modified_at": 1791433963.200429,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_4",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": "garage",
+          "original_icon": null
+        },
+        "main": {
+          "state": "off",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Open cover",
+              "onColor": "var(--state-cover-garage-open-color, var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color))))",
+              "offColor": "var(--state-cover-garage-closed-color, var(--state-cover-closed-color, var(--state-cover-inactive-color, var(--state-inactive-color))))"
+            },
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "cover.garage_door",
+          "state": "unavailable",
+          "attributes": {
+            "is_closed": true,
+            "device_class": "garage",
+            "friendly_name": "Garage Door",
+            "supported_features": 3,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3DJ19BZATC6RFTW11H",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219643,
+          "device_id": "6e4d7e6547a90fdd7bb05800d60dc8c3",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.garage_door",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "f8b752a3b4afd127d6870f1832cdd42e",
+          "labels": [],
+          "modified_at": 1791433963.200429,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_4",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": "garage",
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": true,
+              "label": "Open cover",
+              "onColor": "var(--state-cover-garage-open-color, var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color))))",
+              "offColor": "var(--state-cover-garage-closed-color, var(--state-cover-closed-color, var(--state-cover-inactive-color, var(--state-inactive-color))))"
+            },
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "cover.pergola_roof": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "cover.pergola_roof",
+          "state": "closed",
+          "attributes": {
+            "is_closed": true,
+            "current_tilt_position": 60,
+            "friendly_name": "Pergola Roof",
+            "supported_features": 240
+          },
+          "context": {
+            "id": "01M4HEKT3DXXQE3R6HGZ2BSHQ1",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219761,
+          "device_id": "7f9ca03f8677ae4e3f64225be8405ae2",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.pergola_roof",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "271898dcfc7a73e3067bdc2618d0a95b",
+          "labels": [],
+          "modified_at": 1791433963.200473,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_5",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Closed",
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to position mode",
+              "disabled": false,
+              "selected": true,
+              "control": "position"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to button mode",
+              "disabled": false,
+              "selected": false,
+              "control": "button"
+            }
+          ],
+          "rgb": null,
+          "menus": [],
+          "positions": {
+            "cover-tilt-position": {
+              "value": 60,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "cursor",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Tilt position",
+              "unit": "%",
+              "color": "var(--state-cover-closed-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+              "background": "var(--state-cover-closed-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+              "gradient": null,
+              "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+            }
+          },
+          "positionButtons": null,
+          "favoritePositions": [
+            {
+              "kind": "tilt",
+              "label": null,
+              "items": [
+                {
+                  "label": "Set tilt position to 0%",
+                  "text": "0%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set tilt position to 25%",
+                  "text": "25%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set tilt position to 75%",
+                  "text": "75%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set tilt position to 100%",
+                  "text": "100%",
+                  "active": false,
+                  "disabled": false
+                }
+              ],
+              "deleteLabels": [],
+              "buttonsLabels": []
+            }
+          ],
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {
+          "position": {
+            "state": "Closed",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": true,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": false,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {
+              "cover-tilt-position": {
+                "value": 60,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "cursor",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": false,
+                "disabled": false,
+                "label": "Tilt position",
+                "unit": "%",
+                "color": "var(--state-cover-closed-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+                "background": "var(--state-cover-closed-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+                "gradient": null,
+                "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+              }
+            },
+            "positionButtons": null,
+            "favoritePositions": [
+              {
+                "kind": "tilt",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set tilt position to 0%",
+                    "text": "0%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set tilt position to 25%",
+                    "text": "25%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set tilt position to 75%",
+                    "text": "75%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set tilt position to 100%",
+                    "text": "100%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          },
+          "button": {
+            "state": "Closed",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": false,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": true,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {},
+            "positionButtons": {
+              "layout": "line",
+              "buttons": [
+                {
+                  "button": "open-tilt",
+                  "label": "Open cover tilt",
+                  "disabled": false
+                },
+                {
+                  "button": "stop",
+                  "label": "Stop cover",
+                  "disabled": false
+                },
+                {
+                  "button": "close-tilt",
+                  "label": "Close cover tilt",
+                  "disabled": false
+                }
+              ]
+            },
+            "favoritePositions": [
+              {
+                "kind": "tilt",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set tilt position to 0%",
+                    "text": "0%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set tilt position to 25%",
+                    "text": "25%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set tilt position to 75%",
+                    "text": "75%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set tilt position to 100%",
+                    "text": "100%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          }
+        },
+        "editMode": [
+          {
+            "kind": "tilt",
+            "label": null,
+            "items": [
+              {
+                "label": "Set tilt position to 0%",
+                "text": "0%",
+                "active": false,
+                "disabled": false
+              },
+              {
+                "label": "Set tilt position to 25%",
+                "text": "25%",
+                "active": false,
+                "disabled": false
+              },
+              {
+                "label": "Set tilt position to 75%",
+                "text": "75%",
+                "active": false,
+                "disabled": false
+              },
+              {
+                "label": "Set tilt position to 100%",
+                "text": "100%",
+                "active": false,
+                "disabled": false
+              }
+            ],
+            "deleteLabels": [
+              "Delete favorite tilt position 1",
+              "Delete favorite tilt position 2",
+              "Delete favorite tilt position 3",
+              "Delete favorite tilt position 4"
+            ],
+            "buttonsLabels": [
+              "Add new favorite tilt position",
+              "Exit edit mode"
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "control": "slider",
+            "label": "cover-tilt-position 30",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_tilt_position",
+                "data": {
+                  "entity_id": "cover.pergola_roof",
+                  "tilt_position": 30
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "stop",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "stop_cover_tilt",
+                "data": {
+                  "entity_id": "cover.pergola_roof"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "open-tilt",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "open_cover_tilt",
+                "data": {
+                  "entity_id": "cover.pergola_roof"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "close-tilt",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "close_cover_tilt",
+                "data": {
+                  "entity_id": "cover.pergola_roof"
+                }
+              }
+            ]
+          },
+          {
+            "control": "favorite",
+            "label": "position 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_tilt_position",
+                "data": {
+                  "entity_id": "cover.pergola_roof",
+                  "tilt_position": 0
+                }
+              }
+            ]
+          },
+          {
+            "control": "favorite",
+            "label": "position 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_tilt_position",
+                "data": {
+                  "entity_id": "cover.pergola_roof",
+                  "tilt_position": 25
+                }
+              }
+            ]
+          },
+          {
+            "control": "favorite",
+            "label": "position 2",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_tilt_position",
+                "data": {
+                  "entity_id": "cover.pergola_roof",
+                  "tilt_position": 75
+                }
+              }
+            ]
+          },
+          {
+            "control": "favorite",
+            "label": "position 3",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "cover",
+                "service": "set_cover_tilt_position",
+                "data": {
+                  "entity_id": "cover.pergola_roof",
+                  "tilt_position": 100
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "cover.pergola_roof",
+          "state": "off",
+          "attributes": {
+            "is_closed": true,
+            "current_tilt_position": 60,
+            "friendly_name": "Pergola Roof",
+            "supported_features": 240
+          },
+          "context": {
+            "id": "01M4HEKT3DXXQE3R6HGZ2BSHQ1",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219761,
+          "device_id": "7f9ca03f8677ae4e3f64225be8405ae2",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.pergola_roof",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "271898dcfc7a73e3067bdc2618d0a95b",
+          "labels": [],
+          "modified_at": 1791433963.200473,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_5",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "off",
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to position mode",
+              "disabled": false,
+              "selected": true,
+              "control": "position"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to button mode",
+              "disabled": false,
+              "selected": false,
+              "control": "button"
+            }
+          ],
+          "rgb": null,
+          "menus": [],
+          "positions": {
+            "cover-tilt-position": {
+              "value": 60,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "cursor",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Tilt position",
+              "unit": "%",
+              "color": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+              "background": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+              "gradient": null,
+              "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+            }
+          },
+          "positionButtons": null,
+          "favoritePositions": [
+            {
+              "kind": "tilt",
+              "label": null,
+              "items": [
+                {
+                  "label": "Set tilt position to 0%",
+                  "text": "0%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set tilt position to 25%",
+                  "text": "25%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set tilt position to 75%",
+                  "text": "75%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set tilt position to 100%",
+                  "text": "100%",
+                  "active": false,
+                  "disabled": false
+                }
+              ],
+              "deleteLabels": [],
+              "buttonsLabels": []
+            }
+          ],
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {
+          "position": {
+            "state": "off",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": true,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": false,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {
+              "cover-tilt-position": {
+                "value": 60,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "cursor",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": false,
+                "disabled": false,
+                "label": "Tilt position",
+                "unit": "%",
+                "color": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+                "background": "var(--state-cover-off-color, var(--state-cover-inactive-color, var(--state-inactive-color)))",
+                "gradient": null,
+                "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+              }
+            },
+            "positionButtons": null,
+            "favoritePositions": [
+              {
+                "kind": "tilt",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set tilt position to 0%",
+                    "text": "0%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set tilt position to 25%",
+                    "text": "25%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set tilt position to 75%",
+                    "text": "75%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set tilt position to 100%",
+                    "text": "100%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          },
+          "button": {
+            "state": "off",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": false,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": true,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {},
+            "positionButtons": {
+              "layout": "line",
+              "buttons": [
+                {
+                  "button": "open-tilt",
+                  "label": "Open cover tilt",
+                  "disabled": false
+                },
+                {
+                  "button": "stop",
+                  "label": "Stop cover",
+                  "disabled": false
+                },
+                {
+                  "button": "close-tilt",
+                  "label": "Close cover tilt",
+                  "disabled": false
+                }
+              ]
+            },
+            "favoritePositions": [
+              {
+                "kind": "tilt",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set tilt position to 0%",
+                    "text": "0%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set tilt position to 25%",
+                    "text": "25%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set tilt position to 75%",
+                    "text": "75%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set tilt position to 100%",
+                    "text": "100%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          }
+        }
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "cover.pergola_roof",
+          "state": "unavailable",
+          "attributes": {
+            "is_closed": true,
+            "current_tilt_position": 60,
+            "friendly_name": "Pergola Roof",
+            "supported_features": 240,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3DXXQE3R6HGZ2BSHQ1",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.165Z",
+          "last_updated": "2026-10-09T23:05:17.165Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.219761,
+          "device_id": "7f9ca03f8677ae4e3f64225be8405ae2",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "cover.pergola_roof",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "271898dcfc7a73e3067bdc2618d0a95b",
+          "labels": [],
+          "modified_at": 1791433963.200473,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "cover_5",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to position mode",
+              "disabled": false,
+              "selected": true,
+              "control": "position"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to button mode",
+              "disabled": false,
+              "selected": false,
+              "control": "button"
+            }
+          ],
+          "rgb": null,
+          "menus": [],
+          "positions": {
+            "cover-tilt-position": {
+              "value": 60,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "cursor",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": false,
+              "disabled": true,
+              "label": "Tilt position",
+              "unit": "%",
+              "color": "var(--state-unavailable-color)",
+              "background": "var(--state-unavailable-color)",
+              "gradient": null,
+              "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+            }
+          },
+          "positionButtons": null,
+          "favoritePositions": [
+            {
+              "kind": "tilt",
+              "label": null,
+              "items": [
+                {
+                  "label": "Set tilt position to 0%",
+                  "text": "0%",
+                  "active": false,
+                  "disabled": true
+                },
+                {
+                  "label": "Set tilt position to 25%",
+                  "text": "25%",
+                  "active": false,
+                  "disabled": true
+                },
+                {
+                  "label": "Set tilt position to 75%",
+                  "text": "75%",
+                  "active": false,
+                  "disabled": true
+                },
+                {
+                  "label": "Set tilt position to 100%",
+                  "text": "100%",
+                  "active": false,
+                  "disabled": true
+                }
+              ],
+              "deleteLabels": [],
+              "buttonsLabels": []
+            }
+          ],
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {
+          "position": {
+            "state": "Unavailable",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": true,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": false,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {
+              "cover-tilt-position": {
+                "value": 60,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "cursor",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": false,
+                "disabled": true,
+                "label": "Tilt position",
+                "unit": "%",
+                "color": "var(--state-unavailable-color)",
+                "background": "var(--state-unavailable-color)",
+                "gradient": null,
+                "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
+              }
+            },
+            "positionButtons": null,
+            "favoritePositions": [
+              {
+                "kind": "tilt",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set tilt position to 0%",
+                    "text": "0%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set tilt position to 25%",
+                    "text": "25%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set tilt position to 75%",
+                    "text": "75%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set tilt position to 100%",
+                    "text": "100%",
+                    "active": false,
+                    "disabled": true
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          },
+          "button": {
+            "state": "Unavailable",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": false,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": true,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {},
+            "positionButtons": {
+              "layout": "line",
+              "buttons": [
+                {
+                  "button": "open-tilt",
+                  "label": "Open cover tilt",
+                  "disabled": true
+                },
+                {
+                  "button": "stop",
+                  "label": "Stop cover",
+                  "disabled": true
+                },
+                {
+                  "button": "close-tilt",
+                  "label": "Close cover tilt",
+                  "disabled": true
+                }
+              ]
+            },
+            "favoritePositions": [
+              {
+                "kind": "tilt",
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set tilt position to 0%",
+                    "text": "0%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set tilt position to 25%",
+                    "text": "25%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set tilt position to 75%",
+                    "text": "75%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set tilt position to 100%",
+                    "text": "100%",
+                    "active": false,
+                    "disabled": true
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          }
+        }
+      }
+    },
+    "valve.front_garden": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "valve.front_garden",
+          "state": "open",
+          "attributes": {
+            "is_closed": false,
+            "friendly_name": "Front Garden",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4HEKT3M2VRKQW899QQY7MX9",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.342185,
+          "device_id": "1d6e0934758c1652e75d80539b14a67f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "valve.front_garden",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "8d1c53774d947142a95296873becc6ee",
+          "labels": [],
+          "modified_at": 1791433963.202261,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "valve_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Open",
+          "toggle": {
+            "switch": {
+              "checked": true,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Close valve",
+              "onColor": "var(--state-valve-open-color, var(--state-valve-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-valve-closed-color, var(--state-valve-inactive-color, var(--state-inactive-color)))"
+            },
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "editMode": [
+          {
+            "kind": null,
+            "label": null,
+            "items": [
+              {
+                "label": "Set position to 0%",
+                "text": "0%",
+                "active": false,
+                "disabled": false
+              },
+              {
+                "label": "Set position to 25%",
+                "text": "25%",
+                "active": false,
+                "disabled": false
+              },
+              {
+                "label": "Set position to 75%",
+                "text": "75%",
+                "active": false,
+                "disabled": false
+              },
+              {
+                "label": "Set position to 100%",
+                "text": "100%",
+                "active": false,
+                "disabled": false
+              }
+            ],
+            "deleteLabels": [
+              "Delete favorite position 1",
+              "Delete favorite position 2",
+              "Delete favorite position 3",
+              "Delete favorite position 4"
+            ],
+            "buttonsLabels": [
+              "Add new favorite position",
+              "Exit edit mode"
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "control": "toggle",
+            "label": "switch",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "valve",
+                "service": "close_valve",
+                "data": {
+                  "entity_id": "valve.front_garden"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "valve.front_garden",
+          "state": "off",
+          "attributes": {
+            "is_closed": false,
+            "friendly_name": "Front Garden",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4HEKT3M2VRKQW899QQY7MX9",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.342185,
+          "device_id": "1d6e0934758c1652e75d80539b14a67f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "valve.front_garden",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "8d1c53774d947142a95296873becc6ee",
+          "labels": [],
+          "modified_at": 1791433963.202261,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "valve_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "off",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Open valve",
+              "onColor": "var(--state-valve-open-color, var(--state-valve-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-valve-closed-color, var(--state-valve-inactive-color, var(--state-inactive-color)))"
+            },
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "valve.front_garden",
+          "state": "unavailable",
+          "attributes": {
+            "is_closed": false,
+            "friendly_name": "Front Garden",
+            "supported_features": 3,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3M2VRKQW899QQY7MX9",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.342185,
+          "device_id": "1d6e0934758c1652e75d80539b14a67f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "valve.front_garden",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "8d1c53774d947142a95296873becc6ee",
+          "labels": [],
+          "modified_at": 1791433963.202261,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "valve_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": true,
+              "label": "Open valve",
+              "onColor": "var(--state-valve-open-color, var(--state-valve-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-valve-closed-color, var(--state-valve-inactive-color, var(--state-inactive-color)))"
+            },
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "valve.back_garden": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "valve.back_garden",
+          "state": "open",
+          "attributes": {
+            "is_closed": false,
+            "current_position": 70,
+            "friendly_name": "Back Garden",
+            "supported_features": 15
+          },
+          "context": {
+            "id": "01M4HEKT3MN9B1VNRV25SQ0EJX",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.342411,
+          "device_id": "a263a8abfed6d3ae07475f21fed9d5c4",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "valve.back_garden",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "97459fe72f90d63a5b1fea264b4e32fb",
+          "labels": [],
+          "modified_at": 1791606772.269465,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            },
+            "valve": {
+              "favorite_positions": [
+                20,
+                80
+              ]
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "valve_3",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Open · 70%",
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to position mode",
+              "disabled": false,
+              "selected": true,
+              "control": "position"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to button mode",
+              "disabled": false,
+              "selected": false,
+              "control": "button"
+            }
+          ],
+          "rgb": null,
+          "menus": [],
+          "positions": {
+            "valve-position": {
+              "value": 70,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "start",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": true,
+              "disabled": false,
+              "label": "Position",
+              "unit": "%",
+              "color": "var(--state-valve-open-color, var(--state-valve-active-color, var(--state-active-color)))",
+              "background": "var(--state-valve-open-color, var(--state-valve-active-color, var(--state-active-color)))",
+              "gradient": null,
+              "inactiveColor": null
+            }
+          },
+          "positionButtons": null,
+          "favoritePositions": [
+            {
+              "kind": null,
+              "label": null,
+              "items": [
+                {
+                  "label": "Set position to 20%",
+                  "text": "20%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set position to 80%",
+                  "text": "80%",
+                  "active": false,
+                  "disabled": false
+                }
+              ],
+              "deleteLabels": [],
+              "buttonsLabels": []
+            }
+          ],
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {
+          "position": {
+            "state": "Open · 70%",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": true,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": false,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {
+              "valve-position": {
+                "value": 70,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "start",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": true,
+                "disabled": false,
+                "label": "Position",
+                "unit": "%",
+                "color": "var(--state-valve-open-color, var(--state-valve-active-color, var(--state-active-color)))",
+                "background": "var(--state-valve-open-color, var(--state-valve-active-color, var(--state-active-color)))",
+                "gradient": null,
+                "inactiveColor": null
+              }
+            },
+            "positionButtons": null,
+            "favoritePositions": [
+              {
+                "kind": null,
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 20%",
+                    "text": "20%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 80%",
+                    "text": "80%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          },
+          "button": {
+            "state": "Open · 70%",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": false,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": true,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {},
+            "positionButtons": {
+              "layout": "line",
+              "buttons": [
+                {
+                  "button": "open",
+                  "label": "Open valve",
+                  "disabled": false
+                },
+                {
+                  "button": "stop",
+                  "label": "Stop valve",
+                  "disabled": false
+                },
+                {
+                  "button": "close",
+                  "label": "Close valve",
+                  "disabled": false
+                }
+              ]
+            },
+            "favoritePositions": [
+              {
+                "kind": null,
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 20%",
+                    "text": "20%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 80%",
+                    "text": "80%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          }
+        },
+        "editMode": [
+          {
+            "kind": null,
+            "label": null,
+            "items": [
+              {
+                "label": "Set position to 20%",
+                "text": "20%",
+                "active": false,
+                "disabled": false
+              },
+              {
+                "label": "Set position to 80%",
+                "text": "80%",
+                "active": false,
+                "disabled": false
+              }
+            ],
+            "deleteLabels": [
+              "Delete favorite position 1",
+              "Delete favorite position 2"
+            ],
+            "buttonsLabels": [
+              "Add new favorite position",
+              "Exit edit mode"
+            ]
+          }
+        ],
+        "calls": [
+          {
+            "control": "slider",
+            "label": "valve-position 40",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "valve",
+                "service": "set_valve_position",
+                "data": {
+                  "entity_id": "valve.back_garden",
+                  "position": 40
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "open",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "valve",
+                "service": "open_valve",
+                "data": {
+                  "entity_id": "valve.back_garden"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "stop",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "valve",
+                "service": "stop_valve",
+                "data": {
+                  "entity_id": "valve.back_garden"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "close",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "valve",
+                "service": "close_valve",
+                "data": {
+                  "entity_id": "valve.back_garden"
+                }
+              }
+            ]
+          },
+          {
+            "control": "favorite",
+            "label": "position 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "valve",
+                "service": "set_valve_position",
+                "data": {
+                  "entity_id": "valve.back_garden",
+                  "position": 20
+                }
+              }
+            ]
+          },
+          {
+            "control": "favorite",
+            "label": "position 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "valve",
+                "service": "set_valve_position",
+                "data": {
+                  "entity_id": "valve.back_garden",
+                  "position": 80
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "valve.back_garden",
+          "state": "off",
+          "attributes": {
+            "is_closed": false,
+            "current_position": 70,
+            "friendly_name": "Back Garden",
+            "supported_features": 15
+          },
+          "context": {
+            "id": "01M4HEKT3MN9B1VNRV25SQ0EJX",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.342411,
+          "device_id": "a263a8abfed6d3ae07475f21fed9d5c4",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "valve.back_garden",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "97459fe72f90d63a5b1fea264b4e32fb",
+          "labels": [],
+          "modified_at": 1791606772.269465,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            },
+            "valve": {
+              "favorite_positions": [
+                20,
+                80
+              ]
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "valve_3",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "off",
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to position mode",
+              "disabled": false,
+              "selected": true,
+              "control": "position"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to button mode",
+              "disabled": false,
+              "selected": false,
+              "control": "button"
+            }
+          ],
+          "rgb": null,
+          "menus": [],
+          "positions": {
+            "valve-position": {
+              "value": 70,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "start",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": true,
+              "disabled": false,
+              "label": "Position",
+              "unit": "%",
+              "color": "var(--state-valve-off-color, var(--state-valve-inactive-color, var(--state-inactive-color)))",
+              "background": "var(--state-valve-off-color, var(--state-valve-inactive-color, var(--state-inactive-color)))",
+              "gradient": null,
+              "inactiveColor": null
+            }
+          },
+          "positionButtons": null,
+          "favoritePositions": [
+            {
+              "kind": null,
+              "label": null,
+              "items": [
+                {
+                  "label": "Set position to 20%",
+                  "text": "20%",
+                  "active": false,
+                  "disabled": false
+                },
+                {
+                  "label": "Set position to 80%",
+                  "text": "80%",
+                  "active": false,
+                  "disabled": false
+                }
+              ],
+              "deleteLabels": [],
+              "buttonsLabels": []
+            }
+          ],
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {
+          "position": {
+            "state": "off",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": true,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": false,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {
+              "valve-position": {
+                "value": 70,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "start",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": true,
+                "disabled": false,
+                "label": "Position",
+                "unit": "%",
+                "color": "var(--state-valve-off-color, var(--state-valve-inactive-color, var(--state-inactive-color)))",
+                "background": "var(--state-valve-off-color, var(--state-valve-inactive-color, var(--state-inactive-color)))",
+                "gradient": null,
+                "inactiveColor": null
+              }
+            },
+            "positionButtons": null,
+            "favoritePositions": [
+              {
+                "kind": null,
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 20%",
+                    "text": "20%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 80%",
+                    "text": "80%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          },
+          "button": {
+            "state": "off",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": false,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": true,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {},
+            "positionButtons": {
+              "layout": "line",
+              "buttons": [
+                {
+                  "button": "open",
+                  "label": "Open valve",
+                  "disabled": false
+                },
+                {
+                  "button": "stop",
+                  "label": "Stop valve",
+                  "disabled": false
+                },
+                {
+                  "button": "close",
+                  "label": "Close valve",
+                  "disabled": false
+                }
+              ]
+            },
+            "favoritePositions": [
+              {
+                "kind": null,
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 20%",
+                    "text": "20%",
+                    "active": false,
+                    "disabled": false
+                  },
+                  {
+                    "label": "Set position to 80%",
+                    "text": "80%",
+                    "active": false,
+                    "disabled": false
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          }
+        }
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "valve.back_garden",
+          "state": "unavailable",
+          "attributes": {
+            "is_closed": false,
+            "current_position": 70,
+            "friendly_name": "Back Garden",
+            "supported_features": 15,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3MN9B1VNRV25SQ0EJX",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.342411,
+          "device_id": "a263a8abfed6d3ae07475f21fed9d5c4",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "valve.back_garden",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "97459fe72f90d63a5b1fea264b4e32fb",
+          "labels": [],
+          "modified_at": 1791606772.269465,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            },
+            "valve": {
+              "favorite_positions": [
+                20,
+                80
+              ]
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "valve_3",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": null,
+          "buttons": [
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to position mode",
+              "disabled": false,
+              "selected": true,
+              "control": "position"
+            },
+            {
+              "tag": "ha-icon-button-toggle",
+              "label": "Switch to button mode",
+              "disabled": false,
+              "selected": false,
+              "control": "button"
+            }
+          ],
+          "rgb": null,
+          "menus": [],
+          "positions": {
+            "valve-position": {
+              "value": 70,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "mode": "start",
+              "vertical": true,
+              "inverted": false,
+              "showHandle": true,
+              "disabled": true,
+              "label": "Position",
+              "unit": "%",
+              "color": "var(--state-unavailable-color)",
+              "background": "var(--state-unavailable-color)",
+              "gradient": null,
+              "inactiveColor": null
+            }
+          },
+          "positionButtons": null,
+          "favoritePositions": [
+            {
+              "kind": null,
+              "label": null,
+              "items": [
+                {
+                  "label": "Set position to 20%",
+                  "text": "20%",
+                  "active": false,
+                  "disabled": true
+                },
+                {
+                  "label": "Set position to 80%",
+                  "text": "80%",
+                  "active": false,
+                  "disabled": true
+                }
+              ],
+              "deleteLabels": [],
+              "buttonsLabels": []
+            }
+          ],
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {
+          "position": {
+            "state": "Unavailable",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": true,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": false,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {
+              "valve-position": {
+                "value": 70,
+                "min": 0,
+                "max": 100,
+                "step": 1,
+                "mode": "start",
+                "vertical": true,
+                "inverted": false,
+                "showHandle": true,
+                "disabled": true,
+                "label": "Position",
+                "unit": "%",
+                "color": "var(--state-unavailable-color)",
+                "background": "var(--state-unavailable-color)",
+                "gradient": null,
+                "inactiveColor": null
+              }
+            },
+            "positionButtons": null,
+            "favoritePositions": [
+              {
+                "kind": null,
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 20%",
+                    "text": "20%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set position to 80%",
+                    "text": "80%",
+                    "active": false,
+                    "disabled": true
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          },
+          "button": {
+            "state": "Unavailable",
+            "toggle": null,
+            "buttons": [
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to position mode",
+                "disabled": false,
+                "selected": false,
+                "control": "position"
+              },
+              {
+                "tag": "ha-icon-button-toggle",
+                "label": "Switch to button mode",
+                "disabled": false,
+                "selected": true,
+                "control": "button"
+              }
+            ],
+            "rgb": null,
+            "menus": [],
+            "positions": {},
+            "positionButtons": {
+              "layout": "line",
+              "buttons": [
+                {
+                  "button": "open",
+                  "label": "Open valve",
+                  "disabled": true
+                },
+                {
+                  "button": "stop",
+                  "label": "Stop valve",
+                  "disabled": true
+                },
+                {
+                  "button": "close",
+                  "label": "Close valve",
+                  "disabled": true
+                }
+              ]
+            },
+            "favoritePositions": [
+              {
+                "kind": null,
+                "label": null,
+                "items": [
+                  {
+                    "label": "Set position to 20%",
+                    "text": "20%",
+                    "active": false,
+                    "disabled": true
+                  },
+                  {
+                    "label": "Set position to 80%",
+                    "text": "80%",
+                    "active": false,
+                    "disabled": true
+                  }
+                ],
+                "deleteLabels": [],
+                "buttonsLabels": []
+              }
+            ],
+            "current": [],
+            "circular": null,
+            "favorites": null
+          }
+        }
       }
     }
   }

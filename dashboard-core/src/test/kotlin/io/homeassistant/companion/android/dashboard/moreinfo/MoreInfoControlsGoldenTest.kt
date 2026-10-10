@@ -152,14 +152,14 @@ class MoreInfoControlsGoldenTest {
                 )
             }
         }
-        val toggle = hass.lightMoreInfo(state)?.toggle
+        val toggle = hass.lightMoreInfo(state)?.toggle ?: hass.positionMoreInfo(state)?.toggle
             ?: hass.moreInfoModel(state.entityId, Instant.EPOCH)?.stateToggle
         val actual = toggle?.let {
             if (it.buttons) {
                 listOf(
                     "buttons",
                     it.turnOnLabel to it.checked,
-                    it.turnOffLabel to (state.state == "off"),
+                    it.turnOffLabel to it.offActive,
                     it.enabled,
                     it.onColor?.css(),
                     it.offColor?.css(),
@@ -236,6 +236,7 @@ class MoreInfoControlsGoldenTest {
                 it.color?.css(),
                 when (val background = it.background) {
                     is SliderBackground.Tint -> background.color?.css()
+                    is SliderBackground.Stripes -> background.color?.css()
                     is SliderBackground.Gradient ->
                         background.stops.joinToString(", ") { (stop, hex) -> "$hex ${jsNumberString(stop * PERCENT)}%" }
                 },

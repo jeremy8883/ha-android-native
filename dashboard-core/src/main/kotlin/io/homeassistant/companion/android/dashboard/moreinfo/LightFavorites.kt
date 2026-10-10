@@ -57,7 +57,7 @@ data class LightFavorite(
  */
 fun HassSnapshot.lightFavorites(state: EntityState, entry: JsonObject?, editMode: Boolean): LightFavorites? {
     val saved = entry?.obj("options")?.obj(LIGHT)?.get(FAVORITE_COLORS)?.takeIf { it !is JsonNull } as? JsonArray
-    val supports = lightSupportsColor(state) || supportsMode(state, COLOR_TEMP)
+    val supports = lightTakesFavorites(state)
     val shown = entry != null && (editMode || (supports && saved?.isEmpty() != true))
     if (!shown) return null
     val colors = saved?.mapNotNull { (it as? JsonObject)?.let(::parseLightColor) } ?: defaultFavoriteColors(state)
@@ -80,6 +80,10 @@ fun HassSnapshot.lightFavorites(state: EntityState, entry: JsonObject?, editMode
         doneLabel = localize("ui.dialogs.more_info_control.exit_edit_mode"),
     )
 }
+
+/** Port of `lightSupportsFavoriteColors`: lights with colours or whites. */
+internal fun lightTakesFavorites(state: EntityState): Boolean =
+    lightSupportsColor(state) || supportsMode(state, COLOR_TEMP)
 
 /** Port of `computeDefaultFavoriteColors`: four whites, then four colours, as the light takes them. */
 fun defaultFavoriteColors(state: EntityState): List<LightColor> = buildList {

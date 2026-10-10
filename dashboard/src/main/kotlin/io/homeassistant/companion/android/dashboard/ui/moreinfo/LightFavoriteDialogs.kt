@@ -130,25 +130,26 @@ internal fun ConfirmDialog(title: String, text: String, confirm: String, onConfi
 }
 
 /**
- * Port of the light favourites' copy dialog (`copyFavoriteOptionsToEntities`, src/dialogs/more-info/favorites.ts):
- * the lights that take every kind of colour among the favourites, to pick which receive them.
+ * Port of the favourites' copy dialog (`copyFavoriteOptionsToEntities`, src/dialogs/more-info/favorites.ts): the
+ * entities that can take the favourites, to pick which receive them.
  */
 @Composable
 internal fun CopyFavoritesDialog(
     hass: HassSnapshot,
+    title: String,
+    helper: String,
     targets: List<String>,
     onCopy: (List<String>) -> Unit,
     onDismiss: () -> Unit,
 ) {
     var chosen by remember { mutableStateOf(emptySet<String>()) }
-    val strings = "ui.dialogs.more_info_control.light"
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(hass.localize("$strings.copy_favorites"), style = HATextStyle.HeadlineMedium) },
+        title = { Text(title, style = HATextStyle.HeadlineMedium) },
         text = {
             Column(Modifier.heightIn(max = LIST_MAX_HEIGHT).verticalScroll(rememberScrollState())) {
                 Text(
-                    hass.localize("$strings.copy_favorites_helper"),
+                    helper,
                     style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
                 )
                 targets.forEach { entityId ->

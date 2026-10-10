@@ -52,6 +52,9 @@ sealed interface SliderMode {
     /** A bar filled from the start up to the value. */
     data object Start : SliderMode
 
+    /** A bar filled from the value to the end (a cover's position, open at the top). */
+    data object End : SliderMode
+
     /** A cursor at the value, over the background. */
     data object Cursor : SliderMode
 }
@@ -63,19 +66,27 @@ sealed interface SliderBackground {
 
     /** A gradient of `#rrggbb` colours from the start (the top, when vertical), at their fractions of the length. */
     data class Gradient(val stops: List<Pair<Double, String>>) : SliderBackground
+
+    /**
+     * [color] at [opacity], under stripes of the slider's colour that widen towards the end (a cover's tilt,
+     * `generateTiltSliderTrackBackgroundGradient`).
+     */
+    data class Stripes(val color: DisplayColor?, val opacity: Float) : SliderBackground
 }
 
 /**
  * The large on/off control (`ha-state-control-toggle`): a switch, or two buttons when the state isn't known for
  * sure (assumed or unknown).
  *
- * @property checked whether the switch is on
+ * @property checked whether the switch is on (and the on button filled)
+ * @property offActive whether the off button is filled (neither is while the state is unknown)
  * @property showHandle whether the switch's knob shows (while active)
  * @property buttons whether it shows as separate on and off buttons
  */
 data class StateToggle(
     val label: String,
     val checked: Boolean,
+    val offActive: Boolean,
     val showHandle: Boolean,
     val enabled: Boolean,
     val buttons: Boolean,
@@ -116,6 +127,7 @@ fun HassSnapshot.stateToggle(state: EntityState, onIcon: String, offIcon: String
     return StateToggle(
         label = localize("ui.card.common.toggle"),
         checked = state.state == ON,
+        offActive = state.state == OFF,
         showHandle = state.isActive(),
         enabled = state.available(),
         buttons = state.assumedState() || state.state == UNKNOWN,

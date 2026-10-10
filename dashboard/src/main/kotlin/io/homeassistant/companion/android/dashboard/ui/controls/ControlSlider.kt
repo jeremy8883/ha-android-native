@@ -27,6 +27,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.scale
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.layout
@@ -111,12 +112,8 @@ internal fun ControlSlider(
         ) {
             val cursorLine = LocalHAColorScheme.current.colorTextSecondary
             Canvas(Modifier.fillMaxSize()) {
-                drawRect(style.background, alpha = style.backgroundAlpha)
                 val visual = if (inverted) 1 - animated else animated
-                when (mode) {
-                    SliderMode.Start -> drawBar(visual, vertical, showHandle, style, Color.White)
-                    SliderMode.Cursor -> if (fraction != null) drawCursor(visual, vertical, style, cursorLine)
-                }
+                drawSlider(SliderLook(mode, vertical, showHandle, style), visual, fraction != null, cursorLine)
             }
         }
         if (dragging && shown != null) {
@@ -195,6 +192,30 @@ private fun valueAt(
     val raw = if (vertical) 1 - position.y / size.height else position.x / size.width
     val visual = raw.coerceIn(0f, 1f)
     return range.start + (if (inverted) 1 - visual else visual) * (range.endInclusive - range.start)
+}
+
+/** What a slider draws: its [mode] along its axis, with or without a handle, in [style]. */
+private data class SliderLook(
+    val mode: SliderMode,
+    val vertical: Boolean,
+    val showHandle: Boolean,
+    val style: ControlSliderStyle,
+)
+
+/** The track, its overlay, and the bar or cursor at [visual] of the length ([known] while there is a value). */
+private fun DrawScope.drawSlider(look: SliderLook, visual: Float, known: Boolean, cursorLine: Color) {
+    val style = look.style
+    val vertical = look.vertical
+    drawRect(style.background, alpha = style.backgroundAlpha)
+    style.overlay?.let { drawRect(it, alpha = style.overlayAlpha) }
+    when (look.mode) {
+        SliderMode.Start -> drawBar(visual, vertical, look.showHandle, style, Color.White)
+        // The same bar from the other end: mirrored along the slider
+        SliderMode.End -> scale(if (vertical) 1f else -1f, if (vertical) -1f else 1f) {
+            drawBar(1 - visual, vertical, look.showHandle, style, Color.White)
+        }
+        SliderMode.Cursor -> if (known) drawCursor(visual, vertical, style, cursorLine)
+    }
 }
 
 /** The bar from the start to [fraction] of the length, ending in a handle when [showHandle]. */

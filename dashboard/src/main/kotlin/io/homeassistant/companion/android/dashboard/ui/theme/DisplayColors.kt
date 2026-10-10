@@ -11,12 +11,14 @@ import io.homeassistant.companion.android.dashboard.theme.themeColorArgb
  * or `null` when it can't be resolved.
  */
 @Composable
-internal fun DisplayColor.toColor(): Color? {
-    val dark = isSystemInDarkTheme()
-    return when (this) {
-        is DisplayColor.Theme -> resolveVariable("$name-color", dark)
-        is DisplayColor.Literal -> parseCssColor(css)
-        is DisplayColor.State -> variables.firstNotNullOfOrNull { resolveVariable(it, dark) }
+internal fun DisplayColor.toColor(): Color? = resolve(this, isSystemInDarkTheme())
+
+/** [color] in the light or [dark] theme; a state colour's [DisplayColor.State.overrides] replace its variables. */
+private fun resolve(color: DisplayColor, dark: Boolean): Color? = when (color) {
+    is DisplayColor.Theme -> resolveVariable("${color.name}-color", dark)
+    is DisplayColor.Literal -> parseCssColor(color.css)
+    is DisplayColor.State -> color.variables.firstNotNullOfOrNull { variable ->
+        color.overrides[variable]?.let { resolve(it, dark) } ?: resolveVariable(variable, dark)
     }
 }
 

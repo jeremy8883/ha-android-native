@@ -854,6 +854,13 @@ const CONTROL_ENTITIES = [
   "humidifier.humidifier",
   "humidifier.dehumidifier",
   "humidifier.hygrostat",
+  "cover.kitchen_window",
+  "cover.hall_window",
+  "cover.living_room_window",
+  "cover.garage_door",
+  "cover.pergola_roof",
+  "valve.front_garden",
+  "valve.back_garden",
 ];
 
 
@@ -913,10 +920,13 @@ async function captureMoreInfoControls(entityIds) {
     color: el.style.getPropertyValue("--control-slider-color") || null,
     background: el.style.getPropertyValue("--control-slider-background") || null,
     gradient: el.style.getPropertyValue("--gradient") || null,
+    inactiveColor: el.style.getPropertyValue("--state-cover-inactive-color") || null,
   };
   const controls = (el) => {
     const root = el.shadowRoot;
-    const toggle = root.querySelector("ha-state-control-toggle");
+    const toggle = root.querySelector(
+      "ha-state-control-toggle, ha-state-control-cover-toggle, ha-state-control-valve-toggle"
+    );
     const switchEl = toggle?.shadowRoot?.querySelector("ha-control-switch");
     const toggleButtons = [...(toggle?.shadowRoot?.querySelectorAll("ha-control-button") ?? [])];
     const group = root.querySelector("ha-icon-button-group");
@@ -958,7 +968,7 @@ async function captureMoreInfoControls(entityIds) {
                   label: b.label ?? null,
                   disabled: b.disabled ?? false,
                   selected: b.selected ?? null,
-                  control: b.control ?? null,
+                  control: b.control ?? b.mode ?? null,
                 }
           )
         : null,
@@ -988,6 +998,43 @@ async function captureMoreInfoControls(entityIds) {
         disabled: m.disabled ?? false,
         options: (m.options ?? []).map((o) => ({ value: o.value, label: o.label })),
       })),
+      positions: Object.fromEntries(
+        ["cover-position", "cover-tilt-position", "valve-position"].map((name) => [
+          name,
+          slider(root.querySelector(`ha-state-control-${name}`)?.shadowRoot?.querySelector("ha-control-slider")),
+        ])
+      ),
+      positionButtons: (() => {
+        const control = root.querySelector("ha-state-control-cover-buttons, ha-state-control-valve-buttons");
+        if (!control) return null;
+        return {
+          layout: control.shadowRoot?.querySelector(".cross-container") ? "cross" : "line",
+          buttons: [...(control.shadowRoot?.querySelectorAll("ha-control-button") ?? [])].map((b) => ({
+            button: b.dataset.button ?? null,
+            label: b.label ?? null,
+            disabled: b.disabled ?? false,
+          })),
+        };
+      })(),
+      favoritePositions: (() => {
+        const favorites = root.querySelector("ha-more-info-cover-favorite-positions, ha-more-info-valve-favorite-positions");
+        if (!favorites) return null;
+        return [...(favorites.shadowRoot?.querySelectorAll("section.group, .group") ?? [])].map((section) => {
+          const list = section.querySelector("ha-more-info-favorites");
+          return {
+            kind: list?.dataset.kind ?? null,
+            label: text(section.querySelector("h4")),
+            items: deep(list?.shadowRoot, "ha-control-button").map((b) => ({
+              label: b.label ?? null,
+              text: text(b),
+              active: b.classList.contains("active"),
+              disabled: b.disabled ?? false,
+            })),
+            deleteLabels: [...(list?.shadowRoot?.querySelectorAll(".delete") ?? [])].map((d) => d.getAttribute("aria-label")),
+            buttonsLabels: [...(list?.shadowRoot?.querySelectorAll("ha-outlined-icon-button") ?? [])].map((d) => d.label ?? null),
+          };
+        });
+      })(),
       current: [...root.querySelectorAll(".current > div")].map((d) => ({
         label: text(d.querySelector(".label")),
         value: text(d.querySelector(".value")),
@@ -1123,22 +1170,24 @@ async function captureMoreInfoControls(entityIds) {
           shown.menuIcons[attribute] = await attributeIcons(stateObj, attribute, list);
         }
       }
-      if (name === "as_is" && domain === "light") {
-        shown.effectIcons = await effectIcons(stateObj);
+      if (name === "as_is" && domain === "light") shown.effectIcons = await effectIcons(stateObj);
+      if (name === "as_is" && ["light", "cover", "valve"].includes(domain)) {
         // As an admin's long press shows them
         el.editMode = true;
         await sleep(300);
-        shown.editMode = controls(el).favorites;
+        const editing = controls(el);
+        shown.editMode = domain === "light" ? editing.favorites : editing.favoritePositions;
         el.editMode = false;
         await sleep(200);
       }
       // Each other main control in turn, as its button shows it
       const toggles = [...(el.shadowRoot.querySelector("ha-icon-button-group")?.querySelectorAll("ha-icon-button-toggle") ?? [])];
       for (const button of toggles) {
-        if (button.control === "brightness") continue;
+        const key = button.control ?? button.mode;
+        if (key === "brightness") continue;
         button.click();
         await sleep(300);
-        shown.pickers[button.control] = controls(el);
+        shown.pickers[key] = controls(el);
       }
       out[entityId][name] = shown;
       el.remove();
@@ -1148,6 +1197,9 @@ async function captureMoreInfoControls(entityIds) {
     if (domain === "water_heater") {
       out[entityId].as_is.calls = await dialCalls(g.clone(current), "ha-state-control-water_heater-temperature", 50);
     }
+    if (domain === "cover" || domain === "valve") {
+      out[entityId].as_is.calls = await positionCalls(g.clone(current), entry);
+    }
     if (domain === "humidifier") {
       out[entityId].as_is.calls = await dialCalls(g.clone(current), "ha-state-control-humidifier-humidity", 45);
     }
@@ -1155,7 +1207,7 @@ async function captureMoreInfoControls(entityIds) {
   return { capturedAt: new Date().toISOString(), entities: out };
 
   /** Runs [act] on a fresh `more-info-<domain>` of [stateObj] and returns the service calls it made, intercepted. */
-  async function recordCalls(stateObj, act, wait = 300) {
+  async function recordCalls(stateObj, act, wait = 300, entry = null) {
     const conn = ha.hass.connection;
     const calls = [];
     const origSend = conn.sendMessagePromise;
@@ -1168,7 +1220,8 @@ async function captureMoreInfoControls(entityIds) {
     };
     const el = document.createElement(`more-info-${stateObj.entity_id.split(".")[0]}`);
     el.hass = ha.hass;
-    el.stateObj = stateObj;
+    el.stateObj = g.clone(stateObj);
+    el.entry = entry;
     ha.shadowRoot.appendChild(el);
     await sleep(300);
     try {
@@ -1239,6 +1292,48 @@ async function captureMoreInfoControls(entityIds) {
       );
     }
     return recorded;
+  }
+
+  /** The calls of a cover's or valve's controls: each slider, button, the switch, and each favourite. */
+  async function positionCalls(stateObj, entry) {
+    const recorded = [];
+    const record = async (control, label, act) =>
+      recorded.push({ control, label, detail: null, calls: await recordCalls(stateObj, act, 300, entry) });
+    const toMode = async (r, mode) => {
+      [...r.querySelectorAll("ha-icon-button-toggle")].find((b) => b.mode === mode)?.click();
+      await sleep(300);
+    };
+    for (const [name, value] of [["cover-position", 40], ["cover-tilt-position", 30], ["valve-position", 40]]) {
+      await record("slider", `${name} ${value}`, (r) =>
+        r.querySelector(`ha-state-control-${name}`)?.shadowRoot?.querySelector("ha-control-slider")
+          ?.dispatchEvent(new CustomEvent("value-changed", { detail: { value } }))
+      );
+    }
+    for (const button of ["open", "stop", "close", "open-tilt", "close-tilt"]) {
+      await record("button", button, async (r) => {
+        await toMode(r, "button");
+        r.querySelector("ha-state-control-cover-buttons, ha-state-control-valve-buttons")
+          ?.shadowRoot?.querySelector(`ha-control-button[data-button="${button}"]`)?.click();
+      });
+    }
+    await record("toggle", "switch", async (r) => {
+      await toMode(r, "button");
+      const toggle = r.querySelector("ha-state-control-cover-toggle, ha-state-control-valve-toggle")?.shadowRoot;
+      const control = toggle?.querySelector("ha-control-switch");
+      if (control) {
+        control.checked = !control.checked;
+        control.dispatchEvent(new Event("change"));
+      }
+    });
+    for (let index = 0; index < 8; index++) {
+      await record("favorite", `position ${index}`, (r) =>
+        r.querySelector("ha-more-info-cover-favorite-positions, ha-more-info-valve-favorite-positions")
+          ?.shadowRoot?.querySelector("ha-more-info-favorites")?.shadowRoot
+          ?.querySelectorAll(".item")[index]?.dispatchEvent(new CustomEvent("action", { detail: { action: "tap" } }))
+      );
+    }
+    // Only the interactions the entity has
+    return recorded.filter((r) => r.calls.length > 0);
   }
 
   /** The calls of a single-target dial ([tag]): set to [value], each button pressed twice, and each menu. */

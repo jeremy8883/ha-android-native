@@ -43,6 +43,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
@@ -57,33 +58,31 @@ import io.homeassistant.companion.android.dashboard.ui.theme.parseCssColor
 import kotlin.math.roundToInt
 
 /**
- * Port of `ha-more-info-favorites` with `ha-favorite-color-button` (frontend@20260624.6
- * src/dialogs/more-info/components/): round swatches that set the light when tapped. An admin's long press starts
- * editing them: they shake, each with a delete badge, a tap edits one, dragging one moves it, and the add and done
- * buttons follow.
+ * Port of `ha-more-info-favorites` (frontend@20260624.6 src/dialogs/more-info/components/): favourites that act
+ * when tapped. An admin's long press starts editing them: they shake, each with a delete badge (labelled
+ * [deleteLabels]), a tap edits one, dragging one moves it, and the add (and, given [doneLabel], done) buttons
+ * follow. [item] draws each, with the modifier carrying its gestures.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-internal fun LightFavoritesRow(
-    favorites: LightFavorites,
-    editMode: Boolean,
-    isAdmin: Boolean,
+internal fun FavoritesRow(
+    deleteLabels: List<String>,
+    state: FavoritesRowState,
     callbacks: FavoritesRowCallbacks,
+    item: @Composable (index: Int, modifier: Modifier) -> Unit,
 ) {
     // Where each favourite sits, to find where a dragged one lands
     val bounds = remember { mutableStateMapOf<Int, Rect>() }
     FlowRow(
-        modifier = Modifier.widthIn(max = ROW_MAX_WIDTH),
+        modifier = Modifier.widthIn(max = state.maxWidth),
         horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4, Alignment.CenterHorizontally),
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
     ) {
-        favorites.favorites.forEachIndexed { index, favorite ->
+        deleteLabels.forEachIndexed { index, deleteLabel ->
             FavoriteBubble(
-                favorite = favorite,
                 index = index,
-                enabled = favorites.enabled,
-                editMode = editMode,
-                isAdmin = isAdmin,
+                deleteLabel = deleteLabel,
+                state = state,
                 callbacks = callbacks,
                 landing = { from, moved ->
                     val center = (bounds[from]?.center ?: Offset.Zero) + moved
@@ -91,30 +90,59 @@ internal fun LightFavoritesRow(
                         ?.takeIf { it != from }
                 },
                 modifier = Modifier.onGloballyPositioned { bounds[index] = it.boundsInParent() },
+                item = item,
             )
         }
-        if (editMode) {
-            RoundButton("mdi:plus", favorites.addLabel, callbacks.onAdd)
-            RoundButton("mdi:check", favorites.doneLabel, callbacks.onDone)
+        if (state.editMode) {
+            RoundButton("mdi:plus", state.addLabel, callbacks.onAdd)
+            state.doneLabel?.let { RoundButton("mdi:check", it, callbacks.onDone) }
         }
     }
 }
 
-/** One favourite: its swatch, shaking with a delete badge while editing, and draggable then. */
-@OptIn(ExperimentalFoundationApi::class)
+/**
+ * How a [FavoritesRow] shows: [enabled] (the entity is available), [editMode], whether the user [isAdmin] (who may
+ * edit), its buttons' labels, and its [maxWidth].
+ */
+internal data class FavoritesRowState(
+    val enabled: Boolean,
+    val editMode: Boolean,
+    val isAdmin: Boolean,
+    val addLabel: String,
+    val doneLabel: String?,
+    val maxWidth: Dp = ROW_MAX_WIDTH,
+)
+
+/** A light's favourite colours as a [FavoritesRow] of swatches. */
 @Composable
-private fun FavoriteBubble(
-    favorite: LightFavorite,
-    index: Int,
-    enabled: Boolean,
+internal fun LightFavoritesRow(
+    favorites: LightFavorites,
     editMode: Boolean,
     isAdmin: Boolean,
     callbacks: FavoritesRowCallbacks,
+) {
+    FavoritesRow(
+        deleteLabels = favorites.favorites.map { it.deleteLabel },
+        state = FavoritesRowState(favorites.enabled, editMode, isAdmin, favorites.addLabel, favorites.doneLabel),
+        callbacks = callbacks,
+    ) { index, modifier -> Swatch(favorites.favorites[index], favorites.enabled, modifier) }
+}
+
+/** One favourite: shaking with a delete badge while editing, and draggable then. */
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun FavoriteBubble(
+    index: Int,
+    deleteLabel: String,
+    state: FavoritesRowState,
+    callbacks: FavoritesRowCallbacks,
     landing: (from: Int, moved: Offset) -> Int?,
     modifier: Modifier,
+    item: @Composable (index: Int, modifier: Modifier) -> Unit,
 ) {
     var drag by remember { mutableStateOf<Offset?>(null) }
     val latest by rememberUpdatedState(callbacks)
+    val editMode = state.editMode
     val rotation = if (editMode && drag == null) shakeRotation(index) else 0f
     Box(
         modifier = modifier
@@ -122,10 +150,9 @@ private fun FavoriteBubble(
             .offset { drag?.let { IntOffset(it.x.roundToInt(), it.y.roundToInt()) } ?: IntOffset.Zero }
             .graphicsLayer { rotationZ = rotation },
     ) {
-        Swatch(
-            favorite = favorite,
-            enabled = enabled,
-            modifier = Modifier
+        item(
+            index,
+            Modifier
                 .then(
                     if (editMode) {
                         Modifier.pointerInput(index) {
@@ -147,14 +174,14 @@ private fun FavoriteBubble(
                     },
                 )
                 .combinedClickable(
-                    enabled = enabled,
+                    enabled = state.enabled,
                     role = Role.Button,
-                    onLongClick = if (!editMode && isAdmin) latest.onStartEditing else null,
+                    onLongClick = if (!editMode && state.isAdmin) latest.onStartEditing else null,
                     onClick = { if (editMode) latest.onEdit(index) else latest.onApply(index) },
                 ),
         )
         if (editMode) {
-            DeleteBadge(favorite.deleteLabel, Modifier.align(Alignment.TopEnd).offset(DELETE_OFFSET, -DELETE_OFFSET)) {
+            DeleteBadge(deleteLabel, Modifier.align(Alignment.TopEnd).offset(DELETE_OFFSET, -DELETE_OFFSET)) {
                 latest.onDelete(index)
             }
         }

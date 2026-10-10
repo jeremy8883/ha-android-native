@@ -10,7 +10,8 @@ sealed interface DisplayColor {
 
     /**
      * The colour of an entity's state: the first of these theme variables that is defined, without the leading
-     * `--` (for example `state-light-on-color`, `state-light-active-color`, `state-active-color`).
+     * `--` (for example `state-light-on-color`, `state-light-active-color`, `state-active-color`). [overrides]
+     * redefine some of them, as a control's style sets a variable for its children.
      */
-    data class State(val variables: List<String>) : DisplayColor
+    data class State(val variables: List<String>, val overrides: Map<String, DisplayColor> = emptyMap()) : DisplayColor
 }

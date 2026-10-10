@@ -5,7 +5,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 
-/** How a [ControlSlider] looks: its [thickness] and [cornerRadius], and the colours of its bar and track. */
+/**
+ * How a [ControlSlider] looks: its [thickness] and [cornerRadius], and the colours of its bar and track, with an
+ * [overlay] over the track (a cover tilt's stripes).
+ */
 internal data class ControlSliderStyle(
     val thickness: Dp,
     val cornerRadius: Dp,
@@ -13,4 +16,6 @@ internal data class ControlSliderStyle(
     val background: Brush,
     val backgroundAlpha: Float,
     val tooltipFontSize: TextUnit,
+    val overlay: Brush? = null,
+    val overlayAlpha: Float = 1f,
 )
