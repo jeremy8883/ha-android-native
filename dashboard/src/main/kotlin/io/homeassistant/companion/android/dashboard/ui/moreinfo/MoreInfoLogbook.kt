@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -50,6 +52,7 @@ import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.data.Loadable
+import io.homeassistant.companion.android.dashboard.data.map
 import io.homeassistant.companion.android.dashboard.display.relativeTime
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.logbook.CauseBadge
@@ -71,47 +74,63 @@ import java.time.Instant
 import java.time.LocalDate
 
 /**
- * The logbook section of an entity's details: what happened to it over the last day, newest first, each with what
- * caused it, kept up to date, with a link to the Logbook panel. Port of `ha-more-info-logbook` (frontend@20260624.6
- * src/dialogs/more-info/ha-more-info-logbook.ts) with `ha-logbook`'s narrow rows without names.
+ * The logbook of an entity's details: what happened to it over the last day, newest first, each with what caused
+ * it, kept up to date. Port of `ha-more-info-logbook` (frontend@20260624.6 src/dialogs/more-info/ha-more-info-logbook.ts)
+ * with `ha-logbook`'s narrow rows without names. Loaded here; drawn by [logbookItems] as items of the details' list,
+ * so only the rows on screen are built (an energy sensor can log hundreds a day).
  */
 @Composable
-internal fun MoreInfoLogbook(entityId: String, hass: HassSnapshot, now: Instant, interactions: CardInteractions) {
+internal fun rememberLogbookSection(entityId: String, hass: HassSnapshot, now: Instant): LogbookSection {
     val viewModel = hiltViewModel<MoreInfoLogbookViewModel>(key = "logbook-$entityId")
     val request = LogbookRequest(entityId, hass.user?.isAdmin == true)
     LaunchedEffect(request) { viewModel.show(request) }
     val logbook by viewModel.logbook.collectAsStateWithLifecycle()
-    Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+    val relative = rememberSaveable(entityId) { mutableStateOf(false) }
+    val today = LocalDate.ofInstant(now, hass.formats.zone)
+    val rows = remember(logbook, hass, today) {
+        logbook.map { (entries, users, traces) -> hass.logbookRows(entries, hass.logbookUsers(users), traces, now) }
+    }
+    return LogbookSection(entityId, rows, relative)
+}
+
+/** The logbook section as list items: its header with a link to the Logbook panel, then its state or one item per row. */
+internal fun LazyListScope.logbookItems(
+    section: LogbookSection,
+    hass: HassSnapshot,
+    now: Instant,
+    interactions: CardInteractions,
+) {
+    item(key = "logbook-header") {
         MoreInfoSectionHeader(
             title = hass.localize("$MORE_INFO.logbook"),
             subtitle = null,
             showMore = hass.localize("$MORE_INFO.show_more"),
             onShowMore = {
-                val path = moreInfoPanelPath("logbook", entityId, now, hass.formats.zone)
+                val path = moreInfoPanelPath("logbook", section.entityId, now, hass.formats.zone)
                 interactions.onAction(CardAction.Navigate(path, replace = false))
             },
+            modifier = Modifier.padding(bottom = HADimens.SPACE2),
         )
-        when (val loaded = logbook) {
-            Loadable.Loading -> HALoading(Modifier.align(Alignment.CenterHorizontally))
-            is Loadable.Failed -> LogbookMessage(
+    }
+    when (val loaded = section.logbook) {
+        Loadable.Loading -> item(key = "logbook-loading") {
+            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { HALoading() }
+        }
+        is Loadable.Failed -> item(key = "logbook-error") {
+            LogbookMessage(
                 "${hass.localize("$LOGBOOK.retrieval_error")}: ${LocalContext.current.loadErrorText(loaded.error)}",
                 LocalHAColorScheme.current.colorOnDangerNormal,
             )
-            is Loadable.Ready -> {
-                val today = LocalDate.ofInstant(now, hass.formats.zone)
-                val rows = remember(loaded.value, hass, today) {
-                    val (entries, users, traces) = loaded.value
-                    hass.logbookRows(entries, hass.logbookUsers(users), traces, now)
-                }
-                if (rows.isEmpty()) {
-                    LogbookMessage(
-                        hass.localize("$LOGBOOK.entries_not_found"),
-                        LocalHAColorScheme.current.colorTextSecondary,
-                    )
-                } else {
-                    LogbookRows(rows, hass, now, interactions)
-                }
+        }
+        is Loadable.Ready -> if (loaded.value.isEmpty()) {
+            item(key = "logbook-empty") {
+                LogbookMessage(
+                    hass.localize("$LOGBOOK.entries_not_found"),
+                    LocalHAColorScheme.current.colorTextSecondary,
+                )
             }
+        } else {
+            logbookRowItems(loaded.value, section, hass, now, interactions)
         }
     }
 }
@@ -126,12 +145,24 @@ private fun LogbookMessage(text: String, color: Color) {
     )
 }
 
-/** The rows under their days' headers. A tap on a time shows every time as how long ago it was, or back. */
-@Composable
-private fun LogbookRows(rows: List<LogbookRow>, hass: HassSnapshot, now: Instant, interactions: CardInteractions) {
-    var relative by rememberSaveable { mutableStateOf(false) }
-    Column {
-        rows.forEach { row ->
+/** One item per row, under its day's header. A tap on a time shows every time as how long ago it was, or back. */
+private fun LazyListScope.logbookRowItems(
+    rows: List<LogbookRow>,
+    section: LogbookSection,
+    hass: HassSnapshot,
+    now: Instant,
+    interactions: CardInteractions,
+) {
+    itemsIndexed(rows, contentType = { _, row ->
+        if (row.dateHeader !=
+            null
+        ) {
+            "logbook-day"
+        } else {
+            "logbook-row"
+        }
+    }) { _, row ->
+        Column {
             row.dateHeader?.let { header ->
                 Text(
                     header,
@@ -143,9 +174,9 @@ private fun LogbookRows(rows: List<LogbookRow>, hass: HassSnapshot, now: Instant
             val at = Instant.ofEpochMilli(row.whenMillis)
             LogbookRowContent(
                 row = row,
-                time = if (relative) hass.formats.relativeTime(at, now) else hass.formats.timeWithSeconds(at),
+                time = if (section.relative) hass.formats.relativeTime(at, now) else hass.formats.timeWithSeconds(at),
                 badge = row.cause?.let { hass.causeBadge(it) },
-                onToggleTime = { relative = !relative },
+                onToggleTime = { section.relative = !section.relative },
                 onOpenTrace = { path -> interactions.onAction(CardAction.Navigate(path, replace = false)) },
                 traceLabel = hass.localize("$LOGBOOK.view_trace"),
             )

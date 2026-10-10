@@ -73,9 +73,15 @@ internal fun MoreInfoHistory(entityId: String, hass: HassSnapshot, now: Instant,
 
 /** A section's header in the details: its [title] (with a [subtitle]), and a link to see more on its page. */
 @Composable
-internal fun MoreInfoSectionHeader(title: String, subtitle: String?, showMore: String, onShowMore: () -> Unit) {
+internal fun MoreInfoSectionHeader(
+    title: String,
+    subtitle: String?,
+    showMore: String,
+    onShowMore: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val colors = LocalHAColorScheme.current
-    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+    Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
             Text(title, style = HATextStyle.Body.copy(textAlign = TextAlign.Start), color = colors.colorTextPrimary)
             subtitle?.let { Text(it, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start)) }

@@ -3,13 +3,13 @@ package io.homeassistant.companion.android.dashboard.ui
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -61,12 +61,13 @@ import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoFan
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLight
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLock
-import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLogbook
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoMediaPlayer
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoPosition
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoVacuum
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.SimpleDomainControls
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.SingleDialControls
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.logbookItems
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.rememberLogbookSection
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -102,6 +103,10 @@ internal fun MoreInfoSheet(
     }
 }
 
+/**
+ * The details as one lazy list: the header, state, controls and history are single items, then the logbook one
+ * item per row, so only what's on screen is built however long the day's logbook is.
+ */
 @Composable
 private fun MoreInfoContent(
     model: MoreInfoModel,
@@ -110,28 +115,49 @@ private fun MoreInfoContent(
     interactions: CardInteractions,
     onShowFull: (() -> Unit)?,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = HADimens.SPACE6)
-            .navigationBarsPadding(),
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+    val logbook = if (hass.showsLogbook(model.entityId)) rememberLogbookSection(model.entityId, hass, now) else null
+    val section = Modifier.padding(bottom = HADimens.SPACE4)
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth().navigationBarsPadding(),
+        contentPadding = PaddingValues(horizontal = HADimens.SPACE6),
     ) {
-        MoreInfoHeader(model, interactions) {
-            hass.states[model.entityId]?.takeIf { it.domain in FAVORITES_DOMAINS }?.let { FavoritesMenu(it, hass) }
+        item(key = "header") {
+            Box(section) {
+                MoreInfoHeader(model, interactions) {
+                    hass.states[model.entityId]?.takeIf {
+                        it.domain in FAVORITES_DOMAINS
+                    }?.let { FavoritesMenu(it, hass) }
+                }
+            }
         }
-        if (model.stateHeader) MoreInfoState(model)
-        hass.states[model.entityId]?.let { DomainControls(model, it, hass, now, interactions.onAction) }
-        if (hass.showsHistory(model.entityId)) MoreInfoHistory(model.entityId, hass, now, interactions)
-        if (hass.showsLogbook(model.entityId)) MoreInfoLogbook(model.entityId, hass, now, interactions)
-        if (model.attributes.isNotEmpty()) MoreInfoAttributes(model.attributes)
+        if (model.stateHeader) item(key = "state") { Box(section) { MoreInfoState(model) } }
+        hass.states[model.entityId]?.let { state ->
+            item(key = "controls") {
+                Column(section, verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+                    DomainControls(model, state, hass, now, interactions.onAction)
+                }
+            }
+        }
+        if (hass.showsHistory(model.entityId)) {
+            item(key = "history") { Box(section) { MoreInfoHistory(model.entityId, hass, now, interactions) } }
+        }
+        logbook?.let { logbookItems(it, hass, now, interactions) }
+        if (model.attributes.isNotEmpty()) {
+            item(key = "attributes") {
+                Column(
+                    Modifier.padding(vertical = HADimens.SPACE4),
+                    verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+                ) {
+                    MoreInfoAttributes(model.attributes)
+                }
+            }
+        }
         onShowFull?.let {
-            HAPlainButton(
-                stringResource(R.string.native_dashboard_more_info_full),
-                it,
-                modifier = Modifier.align(Alignment.End),
-            )
+            item(key = "full") {
+                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
+                    HAPlainButton(stringResource(R.string.native_dashboard_more_info_full), it)
+                }
+            }
         }
     }
 }
