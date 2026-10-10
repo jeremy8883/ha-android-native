@@ -4,8 +4,14 @@
   },
   "result": {
     "entities": [
+      "number.large_range",
       "light.kitchen_lights",
-      "select.speed"
+      "light.living_room_rgbww_lights",
+      "fan.living_room_fan",
+      "input_boolean.guest_mode",
+      "switch.decorative_lights",
+      "alarm_control_panel.security",
+      "climate.heatpump"
     ]
   }
 }

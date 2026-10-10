@@ -177,8 +177,8 @@ private fun DomainControls(
     model.fan?.let { MoreInfoFan(it, onAction) }
     model.lock?.let { MoreInfoLock(it, onAction) }
     model.alarm?.let { MoreInfoAlarm(it, onAction) }
-    model.mediaPlayer?.let { MoreInfoMediaPlayer(it, now, onAction) }
-    model.vacuum?.let { MoreInfoVacuum(it, onAction) }
+    model.mediaPlayer?.let { MoreInfoMediaPlayer(it, state.entityId, hass, now, onAction) }
+    model.vacuum?.let { MoreInfoVacuum(it, state, hass, onAction) }
     SimpleDomainControls(model, state, onAction)
     model.waterHeater?.let { heater ->
         SingleDialControls(

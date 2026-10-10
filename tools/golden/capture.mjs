@@ -833,129 +833,44 @@ async function captureMoreInfoLogbook(entityIds) {
     };
     el.remove();
   }
-  return { capturedAt: new Date().toISOString(), entities: out, rows: wantRows ? await captureRows() : undefined };
-
-  /** The entity rows of an entities card: each row's control and the call each makes. */
-  async function captureRows() {
-    const rows = {};
-    for (const entity of ROW_ENTITIES) {
-      if (!ha.hass.states[entity]) continue;
-      const stateObj = ha.hass.states[entity];
-      const variants = { as_is: stateObj, unavailable: { ...stateObj, state: "unavailable" } };
-      if (entity.startsWith("timer.")) {
-        // Fixed in time: paused with a remaining time, and active finishing at a time recorded with it
-        variants.paused = { ...stateObj, state: "paused", attributes: { ...stateObj.attributes, remaining: "0:42:13" } };
-        variants.active = { ...stateObj, state: "active", attributes: { ...stateObj.attributes, remaining: "1:00:00", finishes_at: new Date(Date.now() + 754000).toISOString() } };
-      }
-      rows[entity] = {};
-      for (const [name, shown] of Object.entries(variants)) {
-        const hass = { ...ha.hass, states: { ...ha.hass.states, [entity]: g.clone(shown) } };
-        const card = await rowCard(hass, entity);
-        rows[entity][name] = { stateObj: g.clone(shown), row: describeRow(card), capturedAt: Date.now() };
-        card.remove();
-        if (name === "as_is") rows[entity][name].calls = await rowCalls(hass, entity);
-      }
-    }
-    return rows;
-  }
-
-  async function rowCard(hass, entity) {
-    const card = document.createElement("hui-entities-card");
-    card.hass = hass;
-    card.setConfig({ type: "entities", entities: [entity] });
-    ha.shadowRoot.appendChild(card);
-    for (let i = 0; i < 30; i++) {
-      await card.updateComplete;
-      const row = card.shadowRoot?.querySelector("#states > div > *");
-      if (row?.shadowRoot) break;
-      await sleep(100);
-    }
-    await sleep(300);
-    return card;
-  }
-
-  function rowRoot(card) {
-    const wrapper = card.shadowRoot?.querySelector("#states > div > *");
-    return wrapper?.shadowRoot ?? null;
-  }
-
-  function describeRow(card) {
-    const root = rowRoot(card);
-    if (!root) return null;
-    const generic = root.querySelector("hui-generic-entity-row");
-    const slider = root.querySelector("ha-slider");
-    const input = root.querySelector("ha-input");
-    const select = root.querySelector("ha-select");
-    const date = root.querySelector("ha-date-input");
-    const time = root.querySelector("ha-time-input");
-    return {
-      tag: card.shadowRoot.querySelector("#states > div > *")?.localName ?? null,
-      name: text(generic?.shadowRoot?.querySelector(".info")) || null,
-      hideName: generic?.hasAttribute("hide-name") ?? false,
-      state: text(root.querySelector(".state:not(.flex)")) || text(generic?.querySelector(".text-content")) || null,
-      text: text(generic) || null,
-      slider: slider && { value: slider.value, min: slider.min, max: slider.max, step: slider.step, disabled: slider.disabled ?? false },
-      input: input && {
-        value: input.value ?? null, type: input.type ?? null, label: input.label ?? null, placeholder: input.placeholder ?? null,
-        min: input.min ?? null, max: input.max ?? null, step: input.step ?? null, minlength: input.minlength ?? null,
-        maxlength: input.maxlength ?? null, pattern: input.pattern ?? null, disabled: input.disabled ?? false,
-        unit: text(input.querySelector('[slot="end"]')) || null,
-      },
-      select: select && {
-        value: select.value ?? null, label: select.label ?? null, disabled: select.disabled ?? false,
-        options: (select.options ?? []).map((o) => (typeof o === "string" ? { value: o, label: o } : { value: o.value, label: o.label ?? o.value })),
-      },
-      date: date && { value: date.value ?? null, disabled: date.disabled ?? false, label: date.label ?? null },
-      time: time && { value: time.value ?? null, disabled: time.disabled ?? false, label: time.label ?? null },
-      buttons: [...root.querySelectorAll("ha-button, mwc-button")].map((b) => ({ text: text(b), disabled: b.disabled ?? false })),
-    };
-  }
-
-  /** The calls of a row's control for a set value, each on a fresh card. */
-  async function rowCalls(hass, entity) {
-    const recorded = [];
-    const record = async (control, label, act) => {
-      const conn = ha.hass.connection;
-      const calls = [];
-      const orig = conn.sendMessagePromise;
-      conn.sendMessagePromise = async function (msg) {
-        if (msg.type === "call_service") {
-          // The frontend logs its own errors through system_log; those aren't the row's
-          if (msg.domain !== "system_log") {
-            calls.push(g.clone({ domain: msg.domain, service: msg.service, data: msg.service_data ?? null, target: msg.target ?? null }));
-          }
-          return { context: { id: "golden" } };
-        }
-        return orig.call(this, msg);
-      };
-      const card = await rowCard({ ...hass, callService: ha.hass.callService }, entity);
-      try {
-        await act(rowRoot(card));
-        await sleep(400);
-      } finally {
-        card.remove();
-        conn.sendMessagePromise = orig;
-      }
-      if (calls.length) recorded.push({ control, label, calls });
-    };
-    const set = (el, value, event = "change") => {
-      if (!el) return;
-      el.value = value;
-      el.dispatchEvent(new Event(event, { bubbles: true, composed: true }));
-    };
-    const stateObj = hass.states[entity];
-    const options = stateObj.attributes.options ?? [];
-    await record("slider", "slider", (r) => set(r?.querySelector("ha-slider"), Number(stateObj.attributes.min ?? 0) + Number(stateObj.attributes.step ?? 1)));
-    await record("input", "input", (r) => set(r?.querySelector("ha-input"), stateObj.entity_id.startsWith("text") || stateObj.entity_id.startsWith("input_text") ? "abc" : "7"));
-    await record("select", "select", (r) => r?.querySelector("ha-select")?.dispatchEvent(new CustomEvent("selected", { detail: { value: options.find((o) => o !== stateObj.state) } })));
-    await record("date", "date", (r) => r?.querySelector("ha-date-input")?.dispatchEvent(new CustomEvent("value-changed", { detail: { value: "2024-02-03" } })));
-    await record("time", "time", (r) => r?.querySelector("ha-time-input")?.dispatchEvent(new CustomEvent("value-changed", { detail: { value: "08:15:00" } })));
-    await record("button", "button", (r) => r?.querySelector("ha-button, mwc-button")?.click());
-    return recorded;
-  }
+  return { capturedAt: new Date().toISOString(), entities: out };
 }
 
-/** The entities whose more-info controls are recorded, each as it is and turned off and unavailable. */
+/** The button, glance and gauge cards the controls capture draws (with "cards" among the entities). */
+const CARD_CONFIGS = [
+  { type: "button", entity: "switch.decorative_lights", show_state: true, tap_action: { action: "toggle" } },
+  { type: "button", name: "Ring bell", icon: "mdi:bell", show_state: false },
+  { type: "button", entity: "light.bed_light" },
+  { type: "button", entity: "light.office_rgbw_lights" },
+  { type: "button", entity: "light.kitchen_lights", show_state: true, show_name: false },
+  { type: "button", entity: "switch.ac" },
+  { type: "button", entity: "fan.ceiling_fan", color: "red" },
+  { type: "button", entity: "climate.hvac", show_state: true },
+  { type: "button", entity: "sensor.outside_temperature", state_color: false, show_icon: false, show_state: true },
+  { type: "button", entity: "light.missing" },
+  {
+    type: "glance",
+    title: "Openings",
+    columns: 3,
+    entities: ["binary_sensor.front_door", "binary_sensor.bedroom_window", "binary_sensor.garage_door_contact", "binary_sensor.kitchen_motion", "lock.back_door_lock", "cover.garage_door"],
+  },
+  {
+    type: "glance",
+    show_name: false,
+    entities: ["light.bed_light", "light.kitchen_lights", "person.dev", "button.push", "input_button.doorbell_test", { entity: "sensor.outside_temperature", show_last_changed: true }, "light.missing"],
+  },
+  { type: "glance", state_color: false, show_state: false, entities: [{ entity: "light.bed_light", name: "Bed" }, "climate.hvac"] },
+  { type: "gauge", entity: "sensor.living_room_humidity", min: 0, max: 100, severity: { green: 40, yellow: 60, red: 75 } },
+  { type: "gauge", entity: "sensor.house_power", min: 0, max: 1000, needle: true },
+  { type: "gauge", entity: "sensor.living_room_humidity", segments: [{ from: 0, color: "blue" }, { from: 30, color: "green", label: "Ok" }, { from: 70, color: "#ff0000" }] },
+  { type: "gauge", entity: "sensor.living_room_humidity", needle: true, segments: [{ from: 0, color: "blue", label: "Dry" }, { from: 30, color: "green", label: "Ok" }, { from: 70, color: "red", label: "Wet" }] },
+  { type: "gauge", entity: "sensor.outside_temperature", unit: "deg", name: "Outside" },
+  { type: "gauge", entity: "climate.hvac", attribute: "current_temperature", min: 10, max: 30 },
+  { type: "gauge", entity: "sensor.living_room_humidity", severity: { green: 40, yellow: 60 } },
+  { type: "gauge", entity: "light.bed_light" },
+  { type: "gauge", entity: "sensor.missing" },
+];
+
 /** The entities whose entities card rows the controls capture records (with "rows" among the entities). */
 const ROW_ENTITIES = [
   "input_number.target_humidity",
@@ -982,6 +897,7 @@ const ROW_ENTITIES = [
   "input_button.doorbell_test",
 ];
 
+/** The entities whose more-info controls are recorded, each as it is and turned off and unavailable. */
 const CONTROL_ENTITIES = [
   "light.bed_light",
   "light.ceiling_lights",
@@ -1020,10 +936,15 @@ const CONTROL_ENTITIES = [
   "update.demo_no_update",
   "update.demo_add_on",
   "update.demo_update_with_progress",
+  "lawn_mower.garden_mower",
+  "lawn_mower.simple_mower",
+  "lawn_mower.returning_mower",
+  "remote.tv_remote",
   "alarm_control_panel.security",
   "media_player.living_room_tv",
   "media_player.kitchen_speaker",
   "media_player.lounge_room",
+  "media_player.browse",
   "media_player.browse",
   "media_player.group",
   "lock.front_door",
@@ -1041,10 +962,11 @@ const CONTROL_ENTITIES = [
  * it would be turned off and unavailable, and returns what each drew: the state header, the main controls with
  * their values and colours, the button row and the select menus, then each light picker in turn. Runs in the page.
  */
-async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_ENTITIES }) {
+async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_ENTITIES, cardConfigs: CARD_CONFIGS }) {
   // "rows" among the entities asks for the entities card rows too
   const wantRows = requested.includes("rows");
-  const entityIds = requested.filter((id) => id !== "rows");
+  const wantCards = requested.includes("cards");
+  const entityIds = requested.filter((id) => id !== "rows" && id !== "cards");
   /** The attributes whose values each domain's menus list, with the attribute listing them, for their icons. */
   const MENU_ATTRIBUTES = {
     light: { effect: "effect_list" },
@@ -1200,6 +1122,20 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
         return d ? (d.data ?? null) : null;
       })(),
       moreControls: el.localName === "more-info-siren" ? text(root.querySelector(".controls ha-button")) : undefined,
+      mower: el.localName === "more-info-lawn_mower" ? {
+        battery: text(root.querySelector("ha-more-info-state-header .battery")),
+        visual: [...(root.querySelector("ha-state-control-lawn_mower-status")?.shadowRoot?.querySelector(".container")?.classList ?? [])].filter((c) => c !== "container")[0] ?? null,
+        color: root.querySelector("ha-state-control-lawn_mower-status")?.shadowRoot?.querySelector(".container")?.style.getPropertyValue("--mower-color") || null,
+        buttons: [...root.querySelectorAll(".buttons ha-control-button")].map((b) => ({ label: b.label ?? null, disabled: b.disabled ?? false })),
+      } : undefined,
+      remote: el.localName === "more-info-remote" ? (() => {
+        const select = root.querySelector("ha-select");
+        return select ? {
+          label: select.label ?? null,
+          value: select.value ?? null,
+          options: (select.options ?? []).map((o) => ({ value: o.value, label: o.label ?? null })),
+        } : null;
+      })() : undefined,
       vacuum: el.localName === "more-info-vacuum" ? {
         battery: text(root.querySelector("ha-more-info-state-header .battery")),
         batteryIcon: root.querySelector("ha-more-info-state-header .battery ha-icon")?.icon ?? null,
@@ -1404,6 +1340,11 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
         off: { ...stateObj, state: "off", attributes: off },
         unavailable: { ...stateObj, state: "unavailable", attributes: { ...stateObj.attributes, restored: true } },
       };
+      if (domain === "lawn_mower") {
+        for (const name of ["mowing", "paused", "returning", "error", "docked"]) {
+          shown[name] = { ...stateObj, state: name };
+        }
+      }
       if (domain === "update") {
         const a = stateObj.attributes;
         shown.installing = { ...stateObj, attributes: { ...a, in_progress: true, update_percentage: 42 } };
@@ -1532,12 +1473,21 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
         out[entityId][name].calls = await actionCalls(g.clone(out[entityId][name].stateObj));
       }
     }
+    if (domain === "lawn_mower" || domain === "remote") {
+      for (const name of Object.keys(out[entityId])) {
+        if (name === "unavailable") continue;
+        out[entityId][name].calls = await mowerCalls(g.clone(out[entityId][name].stateObj));
+      }
+    }
     if (domain === "vacuum") {
+      out[entityId].as_is.cleanAreas = await cleanAreasView(g.clone(out[entityId].as_is.stateObj), out[entityId].as_is.entry);
       for (const name of ["as_is", "cleaning"]) {
         out[entityId][name].calls = await vacuumCalls(g.clone(out[entityId][name].stateObj));
       }
     }
     if (domain === "media_player") {
+      out[entityId].as_is.grouping = await groupingDialog(g.clone(out[entityId].as_is.stateObj));
+      out[entityId].as_is.browser = await mediaBrowser(g.clone(out[entityId].as_is.stateObj));
       for (const name of ["as_is", "muted", "assumed", "off"]) {
         out[entityId][name].calls = await mediaCalls(g.clone(out[entityId][name].stateObj));
       }
@@ -1577,7 +1527,97 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
       out[entityId].as_is.calls = await dialCalls(g.clone(current), "ha-state-control-humidifier-humidity", 45);
     }
   }
-  return { capturedAt: new Date().toISOString(), entities: out, rows: wantRows ? await captureRows() : undefined };
+  return {
+    capturedAt: new Date().toISOString(),
+    entities: out,
+    rows: wantRows ? await captureRows() : undefined,
+    cards: wantCards ? await captureCards() : undefined,
+  };
+
+  /** What the button, glance and gauge cards draw for each of CARD_CONFIGS, and a button's tap. */
+  async function captureCards() {
+    const out = [];
+    for (const config of CARD_CONFIGS) {
+      // hui-card loads the card's element on demand, as dashboards do
+      const wrapper = document.createElement("hui-card");
+      wrapper.hass = ha.hass;
+      wrapper.config = config;
+      ha.shadowRoot.appendChild(wrapper);
+      wrapper.load();
+      let el = null;
+      for (let i = 0; i < 60; i++) {
+        el = wrapper._element;
+        if (el?.localName === `hui-${config.type}-card` && el.shadowRoot?.childElementCount) break;
+        await sleep(50);
+      }
+      await el.updateComplete;
+      await sleep(300);
+      const root = el.shadowRoot;
+      const warning = text(root.querySelector("hui-warning"));
+      // The states it was drawn with, which change while the capture runs
+      const ids = [config.entity, ...(config.entities ?? []).map((e) => (typeof e === "string" ? e : e.entity))].filter(Boolean);
+      const states = Object.fromEntries(ids.filter((id) => ha.hass.states[id]).map((id) => [id, g.clone(ha.hass.states[id])]));
+      const shown = { config: g.clone(config), states, warning: warning || null };
+      if (config.type === "button") {
+        const icon = root.querySelector("ha-state-icon");
+        shown.button = {
+          name: text(root.querySelector("ha-card > span:not(.state)")),
+          state: text(root.querySelector(".state")),
+          icon: icon ? (icon.icon ?? null) : null,
+          showsIcon: !!icon,
+          color: root.querySelector("ha-card")?.style.getPropertyValue("--state-color") || null,
+        };
+        const conn = ha.hass.connection;
+        const calls = [];
+        const orig = conn.sendMessagePromise;
+        conn.sendMessagePromise = async function (msg) {
+          if (msg.type === "call_service" && msg.domain !== "system_log") {
+            calls.push(g.clone({ domain: msg.domain, service: msg.service, data: msg.service_data ?? null, target: msg.target ?? null }));
+            return { context: { id: "golden" } };
+          }
+          return orig.call(this, msg);
+        };
+        let moreInfo = null;
+        const listen = (ev) => { moreInfo = ev.detail?.entityId ?? null; };
+        el.addEventListener("hass-more-info", listen);
+        try {
+          el._handleAction?.({ detail: { action: "tap" } });
+          await sleep(300);
+        } finally {
+          conn.sendMessagePromise = orig;
+          el.removeEventListener("hass-more-info", listen);
+        }
+        shown.tap = { calls, moreInfo };
+      } else if (config.type === "glance") {
+        shown.glance = {
+          title: root.querySelector("ha-card")?.header ?? null,
+          entities: [...root.querySelectorAll(".entity")].map((e) => {
+            const badge = e.querySelector("state-badge");
+            return {
+              warning: e.classList.contains("warning"),
+              name: text(e.querySelector(".name")),
+              state: text(e.querySelector(":scope > div:not(.name)")),
+              showsBadge: !!badge,
+              color: badge?._iconStyle?.color ?? null,
+              picture: !!badge && badge.icon === false,
+            };
+          }),
+        };
+      } else if (config.type === "gauge") {
+        const gauge = root.querySelector("ha-gauge");
+        shown.gauge = gauge ? {
+          min: gauge.min, max: gauge.max, value: Number(gauge.value), valueText: gauge.valueText ?? null, label: gauge.label ?? null,
+          color: gauge.style.getPropertyValue("--gauge-color") || null, needle: !!gauge.needle,
+          levels: (gauge.levels ?? []).map((l) => ({ level: l.level, stroke: l.stroke, label: l.label ?? null })),
+          text: text(gauge.shadowRoot?.querySelector(".value-text")),
+          name: text(root.querySelector(".title")),
+        } : null;
+      }
+      wrapper.remove();
+      out.push(shown);
+    }
+    return out;
+  }
 
   /** The entity rows of an entities card: each row's control and the call each makes. */
   async function captureRows() {
@@ -1705,7 +1745,10 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
     const origSend = conn.sendMessagePromise;
     conn.sendMessagePromise = async function (msg) {
       if (msg.type === "call_service") {
-        calls.push(g.clone({ domain: msg.domain, service: msg.service, data: msg.service_data ?? null }));
+        // The frontend logs its own errors through system_log; those aren't the control's
+        if (msg.domain !== "system_log") {
+          calls.push(g.clone({ domain: msg.domain, service: msg.service, data: msg.service_data ?? null, target: msg.target ?? null }));
+        }
         return { context: { id: "golden" } };
       }
       return origSend.call(this, msg);
@@ -1804,6 +1847,71 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
     return recorded.filter((r) => r.calls.length > 0);
   }
 
+  /**
+   * A vacuum's clean-by-area view, opened from its details: its sections (floor name and areas), its empty state,
+   * and the call of cleaning the last area then the first (the order of the taps).
+   */
+  async function cleanAreasView(stateObj, entry) {
+    if (!((stateObj.attributes.supported_features ?? 0) & 16384)) return null;
+    const open = async (r) => {
+      r.querySelector(".clean-areas-button")?.click();
+      for (let i = 0; i < 50; i++) {
+        const view = g.deepAll("ha-more-info-view-vacuum-clean-areas")[0];
+        if (view?.shadowRoot && !view.shadowRoot.querySelector("ha-spinner")) return view;
+        await sleep(100);
+      }
+      return null;
+    };
+    let shown = null;
+    await recordCalls(stateObj, async (r) => {
+      const view = await open(r);
+      const root = view?.shadowRoot;
+      if (!root) return;
+      shown = {
+        sections: [...root.querySelectorAll(".section")].map((section) => ({
+          label: text(section.querySelector(".section-name")),
+          areas: [...section.querySelectorAll(".area-card")].map((card) => ({ areaId: card.dataset.areaId, name: text(card.querySelector(".area-name")) })),
+        })),
+        empty: root.querySelector(".empty") ? { title: text(root.querySelector(".empty-title")), configure: text(root.querySelector(".empty ha-button")) } : null,
+        hint: text(root.querySelector(".hint")),
+        start: text(root.querySelector(".footer ha-button")),
+      };
+      view.remove();
+    }, 300, entry);
+    if (!shown || !shown.sections.length) return shown;
+    const cards = shown.sections.flatMap((section) => section.areas);
+    shown.calls = await recordCalls(stateObj, async (r) => {
+      const root = (await open(r))?.shadowRoot;
+      if (!root) return;
+      const all = [...root.querySelectorAll(".area-card")];
+      all[all.length - 1]?.click();
+      all[0]?.click();
+      await sleep(200);
+      shown.selected = text(root.querySelector(".footer ha-button"));
+      root.querySelector(".footer ha-button")?.click();
+      await sleep(300);
+    }, 300, entry);
+    shown.order = [cards[cards.length - 1].areaId, cards[0].areaId];
+    return shown;
+  }
+
+  /** The calls of a lawn mower's buttons and a remote's activity select. */
+  async function mowerCalls(stateObj) {
+    const recorded = [];
+    const record = async (control, label, act) =>
+      recorded.push({ control, label, detail: null, calls: await recordCalls(stateObj, act, 400) });
+    for (let index = 0; index < 3; index++) {
+      await record("button", `button ${index}`, (r) => r.querySelectorAll(".buttons ha-control-button")[index]?.click());
+    }
+    const activity = (stateObj.attributes.activity_list ?? []).find((a) => a !== stateObj.attributes.current_activity);
+    if (activity) {
+      await record("activity", `activity ${activity}`, (r) =>
+        r.querySelector("ha-select")?.dispatchEvent(new CustomEvent("selected", { detail: { value: activity } }))
+      );
+    }
+    return recorded.filter((r) => r.calls.length > 0);
+  }
+
   /** The calls of a vacuum's controls: each button, and the fan speed menu. */
   async function vacuumCalls(stateObj) {
     const recorded = [];
@@ -1814,6 +1922,106 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
     }
     await menuCalls(stateObj, recorded, async (control, label, act) => record(control, label, act));
     return recorded.filter((r) => r.calls.length > 0);
+  }
+
+  /**
+   * A player's media browser, opened from its details: its root page, then the Camera source (local; Radio Browser
+   * would reach the internet), each as the title, how its children show, and each child; and the call of playing
+   * the first child that plays.
+   */
+  async function mediaBrowser(stateObj) {
+    if (!((stateObj.attributes.supported_features ?? 0) & 131072)) return null;
+    const browser = async () => {
+      for (let i = 0; i < 50; i++) {
+        const el = g.deepAll("ha-media-player-browse")[0];
+        if (el?._currentItem && !el._isLoading) return el;
+        await sleep(100);
+      }
+      return null;
+    };
+    const page = (el) => {
+      const root = el.shadowRoot;
+      return {
+        item: g.clone({ ...el._currentItem, children: undefined }),
+        layout: root.querySelector(".child") ? "grid" : root.querySelector("ha-list-item") ? "list" : null,
+        children: (el._currentItem.children ?? []).map((c) => g.clone(c)),
+        noItems: text(root.querySelector(".no-items")),
+      };
+    };
+    let pages = [];
+    let played = [];
+    await recordCalls(stateObj, async (r) => {
+      r.querySelector("#media-control-row-button-browse_media")?.click();
+      let el = await browser();
+      if (!el) return;
+      pages.push(page(el));
+      const camera = [...el.shadowRoot.querySelectorAll(".child, ha-list-item")].find((c) => c.item?.title === "Camera");
+      camera?.click();
+      await sleep(500);
+      el = await browser();
+      if (el && el._currentItem?.title !== pages[0].item.title) pages.push(page(el));
+      g.deepAll("dialog-media-player-browse")[0]?.closeDialog?.();
+      await sleep(300);
+    });
+    played = await recordCalls(stateObj, async (r) => {
+      r.querySelector("#media-control-row-button-browse_media")?.click();
+      let el = await browser();
+      [...(el?.shadowRoot.querySelectorAll(".child, ha-list-item") ?? [])].find((c) => c.item?.title === "Camera")?.click();
+      await sleep(500);
+      el = await browser();
+      const playable = [...(el?.shadowRoot.querySelectorAll(".child, ha-list-item") ?? [])].find((c) => c.item?.can_play);
+      playable?.querySelector("ha-icon-button.play")?.click();
+      await sleep(300);
+      g.deepAll("dialog-media-player-browse")[0]?.closeDialog?.();
+    });
+    return { pages, played };
+  }
+
+  /**
+   * The join dialog of a player that groups: the players it lists (on and disabled), and the calls of applying it
+   * with every other player chosen ("Select all") and with none.
+   */
+  async function groupingDialog(stateObj) {
+    const open = async (r) => {
+      r.querySelector("#grouping-button")?.click();
+      for (let i = 0; i < 30; i++) {
+        const dialog = g.deepAll("dialog-join-media-players")[0];
+        if (dialog?.shadowRoot?.querySelector("ha-media-player-toggle")) return dialog;
+        await sleep(100);
+      }
+      return null;
+    };
+    let players = null;
+    const read = async (r) => {
+      const dialog = await open(r);
+      if (!dialog) return;
+      players = [...dialog.shadowRoot.querySelectorAll("ha-media-player-toggle")].map((t) => ({
+        entityId: t.entityId,
+        checked: t.checked ?? false,
+        disabled: t.disabled ?? false,
+        text: text(t.shadowRoot?.querySelector(".info")),
+      }));
+      dialog.closeDialog();
+      await sleep(300);
+    };
+    await recordCalls(stateObj, read, 300);
+    if (players == null) return null;
+    const apply = (selectAll) => async (r) => {
+      const dialog = await open(r);
+      if (!dialog) return;
+      if (selectAll) [...dialog.shadowRoot.querySelectorAll("ha-dialog-header ha-button")][0]?.click();
+      else for (const t of dialog.shadowRoot.querySelectorAll("ha-media-player-toggle:not([disabled])")) {
+        if (t.checked) t.shadowRoot?.querySelector("ha-switch")?.click();
+      }
+      await sleep(200);
+      [...dialog.shadowRoot.querySelectorAll("ha-dialog-footer ha-button")].pop()?.click();
+      await sleep(300);
+    };
+    return {
+      players,
+      selectAll: await recordCalls(stateObj, apply(true), 300),
+      none: await recordCalls(stateObj, apply(false), 300),
+    };
   }
 
   /** The calls of a media player's controls: each button, mute, volume, seek, source and sound mode. */
@@ -2589,11 +2797,12 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir, contr
     // With --domains, only those domains' entities, merged into the existing controls
     const domains = CONTROL_DOMAINS;
     const entities = domains ? CONTROL_ENTITIES.filter((id) => domains.includes(id.split(".")[0])) : CONTROL_ENTITIES;
-    const withRows = !domains || domains.includes("rows") ? [...entities, "rows"] : entities;
-    const data = await page.evaluate(captureMoreInfoControls, { entityIds: withRows, rowEntities: ROW_ENTITIES });
+    const extras = ["rows", "cards"].filter((extra) => !domains || domains.includes(extra));
+    const data = await page.evaluate(captureMoreInfoControls, { entityIds: [...entities, ...extras], rowEntities: ROW_ENTITIES, cardConfigs: CARD_CONFIGS });
     if (domains) {
       const existing = JSON.parse(readFileSync(join(outDir, "more-info", "controls.json"), "utf8"));
       if (!domains.includes("rows")) data.rows = existing.rows;
+      if (!domains.includes("cards")) data.cards = existing.cards;
       for (const id of Object.keys(existing.entities)) {
         if (!domains.includes(id.split(".")[0])) data.entities[id] = existing.entities[id];
       }
@@ -2631,7 +2840,11 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir, contr
   const historyData = variant === "admin" ? await page.evaluate(captureMoreInfoHistory, HISTORY_ENTITIES) : null;
   if (historyData) console.log(`  recorded the history of ${Object.keys(historyData.entities).length} entities`);
   const controlsData = variant === "admin"
-    ? await page.evaluate(captureMoreInfoControls, { entityIds: [...CONTROL_ENTITIES, "rows"], rowEntities: ROW_ENTITIES })
+    ? await page.evaluate(captureMoreInfoControls, {
+      entityIds: [...CONTROL_ENTITIES, "rows", "cards"],
+      rowEntities: ROW_ENTITIES,
+      cardConfigs: CARD_CONFIGS,
+    })
     : null;
   if (controlsData) console.log(`  recorded the controls of ${Object.keys(controlsData.entities).length} entities`);
   await page.evaluate(() => window.__golden.navigate("/home/overview"));

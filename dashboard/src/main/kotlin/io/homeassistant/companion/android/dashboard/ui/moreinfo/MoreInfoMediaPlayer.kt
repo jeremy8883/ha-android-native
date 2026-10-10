@@ -26,6 +26,7 @@ import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
+import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.moreinfo.MediaPlayerMoreInfo
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.ServerImage
@@ -37,7 +38,13 @@ import java.time.Instant
  * artist, the position, the transport buttons, the volume, and the source, sound mode and power buttons.
  */
 @Composable
-internal fun MoreInfoMediaPlayer(info: MediaPlayerMoreInfo, now: Instant, onAction: (CardAction) -> Unit) {
+internal fun MoreInfoMediaPlayer(
+    info: MediaPlayerMoreInfo,
+    entityId: String,
+    hass: HassSnapshot,
+    now: Instant,
+    onAction: (CardAction) -> Unit,
+) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -53,7 +60,7 @@ internal fun MoreInfoMediaPlayer(info: MediaPlayerMoreInfo, now: Instant, onActi
         info.position?.let { MediaPositionBar(it, now, onAction) }
         info.main?.let { MediaMainButtons(it, onAction) }
         info.volume?.let { MediaVolumeRow(it, onAction) }
-        MediaControlsRow(info, onAction)
+        MediaControlsRow(info, entityId, hass, onAction)
     }
 }
 

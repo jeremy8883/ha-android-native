@@ -208,6 +208,8 @@ DEVICE_AREAS: dict[str, str] = {
 # Entities without a device (must have a unique_id to be in the entity registry).
 ENTITY_AREAS: dict[str, str] = {
     "alarm_control_panel.security": "living_room",
+    "lawn_mower.garden_mower": "garden",
+    "remote.tv_remote": "living_room",
     "fan.living_room_fan": "living_room",
     "media_player.living_room_tv": "living_room",
     "lock.front_door_deadbolt": "living_room",
@@ -382,6 +384,31 @@ FAVORITE_POSITIONS = {
 }
 
 
+# The ground floor vacuum's map segments mapped to areas on two floors and one without a floor, so its
+# clean-by-area view lists them by floor; the first floor vacuum keeps none, for the empty view.
+VACUUM_AREA_MAPPING = {
+    "vacuum.demo_vacuum_0_ground_floor": {
+        "living_room": ["living_room"],
+        "kitchen": ["kitchen"],
+        "bedroom": ["bedroom_1", "bedroom_2"],
+        "hallway": ["bathroom"],
+    },
+}
+
+
+async def seed_vacuum_areas(ws: Ws) -> None:
+    """Saves VACUUM_AREA_MAPPING as the frontend's segment mapping does (with the segments it last saw)."""
+    for entity_id, mapping in VACUUM_AREA_MAPPING.items():
+        segments = (await ws.call("vacuum/get_segments", entity_id=entity_id))["segments"]
+        await ws.call(
+            "config/entity_registry/update",
+            entity_id=entity_id,
+            options_domain="vacuum",
+            options={"area_mapping": mapping, "last_seen_segments": segments},
+        )
+    log(f"mapped the areas of {len(VACUUM_AREA_MAPPING)} vacuum")
+
+
 async def seed_favorites(ws: Ws) -> None:
     for entity_id, colors in FAVORITE_COLORS.items():
         await ws.call(
@@ -436,9 +463,15 @@ async def main(base: str, skip_usage: bool) -> None:
             log(f"wrote {ENV_FILE.relative_to(HERE.parent.parent)}")
 
         states = await wait_for_demo(ws)
+        # Imported here: seed_energy imports this module's helpers
+        from seed_energy import custom_entry
+
+        # The remote and lawn mowers the demo lacks (config/custom_components/test_devices)
+        await custom_entry(ws, session, base, token, "test_devices")
         await seed_structure(ws)
         await seed_dashboard(ws)
         await seed_favorites(ws)
+        await seed_vacuum_areas(ws)
         # Usage history accumulates, so only seed it on a fresh instance.
         if not onboarded and not skip_usage:
             await seed_usage(ws, states)

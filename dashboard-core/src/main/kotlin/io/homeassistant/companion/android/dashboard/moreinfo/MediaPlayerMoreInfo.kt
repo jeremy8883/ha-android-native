@@ -22,7 +22,7 @@ import kotlinx.serialization.json.JsonPrimitive
 
 // Port of `more-info-media_player` (frontend@20260624.6 src/dialogs/more-info/controls/more-info-media_player.ts)
 // with `computeMediaControls`, `handleMediaControlClick` and `formatMediaTime` (src/data/media-player.ts). Its
-// volume is in MediaPlayerVolume.kt. Not ported: the media browser and the grouping dialog.
+// volume is in MediaVolume.kt, the grouping in MediaPlayerGrouping.kt. The browser is in MediaBrowser.kt.
 
 /**
  * What a media player's details show. Unavailable, only [unavailable] (the state) shows, in place of the artwork.
@@ -32,6 +32,8 @@ import kotlinx.serialization.json.JsonPrimitive
  * @property main the transport buttons, when there are any
  * @property source the source menu, `null` when it can't choose one
  * @property soundMode the sound mode menu, `null` when it can't choose one or lists none
+ * @property grouping grouping it with other players, `null` when it can't
+ * @property browseLabel the media browser's button, `null` when the player can't browse
  */
 data class MediaPlayerMoreInfo(
     val unavailable: String?,
@@ -45,6 +47,8 @@ data class MediaPlayerMoreInfo(
     val volume: MediaVolume?,
     val source: SelectMenu?,
     val soundMode: SelectMenu?,
+    val grouping: MediaGrouping?,
+    val browseLabel: String?,
     val turnOn: MediaControl?,
     val turnOff: MediaControl?,
 )
@@ -106,6 +110,9 @@ fun HassSnapshot.mediaPlayerMoreInfo(state: EntityState): MediaPlayerMoreInfo? {
         volume = mediaVolume(state),
         source = sourceMenu(state),
         soundMode = soundModeMenu(state),
+        grouping = mediaGrouping(state),
+        browseLabel = localize("ui.card.media_player.browse_media")
+            .takeIf { state.state != UNAVAILABLE && state.supportsFeature(FEATURE_BROWSE_MEDIA) },
         turnOn = find("turn_on"),
         turnOff = find("turn_off"),
     )
@@ -166,5 +173,6 @@ private const val MILLIS = 1000.0
 private const val SECONDS_PER_HOUR = 3600L
 private const val SECONDS_PER_MINUTE = 60L
 private const val FEATURE_SEEK = 2
+private const val FEATURE_BROWSE_MEDIA = 131072
 private val CENTER_ACTIONS = listOf("media_play_pause", "media_pause", "media_play", "media_stop")
 private val NEXT_REPEAT = mapOf("all" to "one", "off" to "all")

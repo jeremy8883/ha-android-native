@@ -52,8 +52,11 @@ fun cardActions(card: CardConfig): CardActions {
 /** The gestures an element with its own `*_action` options responds to; unset actions do nothing. */
 fun elementActions(config: JsonObject): ElementActions = elementActions(config, tapWhenUnset = false)
 
-/** `!config.tap_action || hasAction(tap_action)` for tap when [tapWhenUnset], `hasAction` for the others. */
-private fun elementActions(config: JsonObject, tapWhenUnset: Boolean) = ElementActions(
+/**
+ * The gestures of an element that opens its details on tap without a `tap_action` (`!config.tap_action ||
+ * hasAction(tap_action)`) when [tapWhenUnset]; `hasAction` for the others.
+ */
+fun elementActions(config: JsonObject, tapWhenUnset: Boolean): ElementActions = ElementActions(
     config = config,
     tap = (tapWhenUnset && config[Gesture.TAP.configKey] == null) || hasAction(config, Gesture.TAP),
     hold = hasAction(config, Gesture.HOLD),
@@ -69,5 +72,5 @@ private fun defaultTileIconAction(entityId: String): String {
 private const val TILE = "tile"
 
 /** Port of `DOMAINS_TOGGLE` (src/common/const.ts). */
-private val DOMAINS_TOGGLE =
+internal val DOMAINS_TOGGLE =
     setOf("fan", "input_boolean", "light", "switch", "group", "automation", "humidifier", "valve")

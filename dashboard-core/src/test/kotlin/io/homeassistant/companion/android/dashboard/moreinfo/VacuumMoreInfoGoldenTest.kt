@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard.moreinfo
 
 import io.homeassistant.companion.android.dashboard.golden.GoldenFixture
+import io.homeassistant.companion.android.dashboard.model.array
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.objects
@@ -52,6 +53,26 @@ class VacuumMoreInfoGoldenTest {
                 else -> info.fanSpeed!!.options.single { it.value == label.substringAfterLast(' ') }.action
             }
             assertEquals(call.recordedCalls(), listOf(actual), label)
+        }
+    }
+
+    @TestFactory
+    fun `Given captured vacuums when deriving the clean-by-area view then it matches the areas, empty state and call`() = fixture.controlVariants(VACUUM, onlyAsIs = true) { hass, state, captured ->
+        val shown = captured.obj("cleanAreas") ?: return@controlVariants
+        val view = hass.vacuumCleanAreas(state, captured.obj("entry"))!!
+        assertEquals(
+            shown.objects("sections").map { section ->
+                section.string("label") to section.objects("areas").map { it.string("areaId") to it.string("name") }
+            },
+            view.sections.map { section -> section.label to section.areas.map { it.areaId to it.name } },
+        )
+        assertEquals(shown.obj("empty")?.string("title"), view.empty?.title)
+        assertEquals(shown.obj("empty")?.string("configure"), view.empty?.configureLabel)
+        if (view.empty == null) {
+            assertEquals(shown.string("hint"), view.hint)
+            assertEquals(shown.string("start"), view.startLabel)
+            val order = shown.array("order")!!.map { (it as kotlinx.serialization.json.JsonPrimitive).content }
+            assertEquals(shown.recordedCalls(), listOf(view.clean(order)))
         }
     }
 

@@ -229,6 +229,27 @@
               "show_state": false
             }
           ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "More devices"
+            },
+            {
+              "type": "tile",
+              "entity": "lawn_mower.garden_mower"
+            },
+            {
+              "type": "tile",
+              "entity": "remote.tv_remote"
+            },
+            {
+              "type": "tile",
+              "entity": "update.demo_update_with_progress"
+            }
+          ]
         }
       ]
     },

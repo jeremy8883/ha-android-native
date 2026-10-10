@@ -237,7 +237,7 @@ private val CLIMATE_MODES = listOf(
 )
 
 /** Port of `CLIMATE_HVAC_ACTION_TO_MODE` (src/data/climate.ts). */
-private val HVAC_ACTION_TO_MODE = mapOf(
+internal val HVAC_ACTION_TO_MODE = mapOf(
     "cooling" to "cool",
     "defrosting" to "heat",
     "drying" to "dry",

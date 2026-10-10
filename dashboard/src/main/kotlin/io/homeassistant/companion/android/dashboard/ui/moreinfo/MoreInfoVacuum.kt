@@ -26,6 +26,8 @@ import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
+import io.homeassistant.companion.android.dashboard.entity.EntityState
+import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.moreinfo.CommandButton
 import io.homeassistant.companion.android.dashboard.moreinfo.VacuumMoreInfo
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
@@ -37,10 +39,15 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 /**
  * The controls of a vacuum's details, port of `more-info-vacuum` (frontend@20260624.6
  * src/dialogs/more-info/controls/more-info-vacuum.ts): the robot drawn as it is, the command buttons and the fan
- * speed menu. The battery shows beside the header's time.
+ * speed menu, and cleaning by area. The battery shows beside the header's time.
  */
 @Composable
-internal fun MoreInfoVacuum(info: VacuumMoreInfo, onAction: (CardAction) -> Unit) {
+internal fun MoreInfoVacuum(
+    info: VacuumMoreInfo,
+    state: EntityState,
+    hass: HassSnapshot,
+    onAction: (CardAction) -> Unit,
+) {
     val colors = LocalHAColorScheme.current
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -50,6 +57,7 @@ internal fun MoreInfoVacuum(info: VacuumMoreInfo, onAction: (CardAction) -> Unit
         VacuumStatus(info.visual, info.color?.toColor() ?: colors.colorFillDisabledLoudResting)
         CommandButtonRow(info.buttons, onAction)
         ControlSelectMenus(listOfNotNull(info.fanSpeed), onAction)
+        info.cleanAreasLabel?.let { CleanAreasButton(it, state, hass, onAction) }
     }
 }
 

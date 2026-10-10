@@ -2203,5 +2203,40 @@
     "serial_number": null,
     "sw_version": "36",
     "via_device_id": null
+  },
+  "54c4faca44662ac60f3c50e605645251": {
+    "area_id": null,
+    "configuration_url": null,
+    "config_entries": [
+      "01M4JDD9H0GEK1R55CZ9YNAWAH"
+    ],
+    "config_entries_subentries": {
+      "01M4JDD9H0GEK1R55CZ9YNAWAH": [
+        null
+      ]
+    },
+    "connections": [],
+    "created_at": 1791619409.443404,
+    "disabled_by": null,
+    "entry_type": null,
+    "hw_version": null,
+    "id": "54c4faca44662ac60f3c50e605645251",
+    "identifiers": [
+      [
+        "test_devices",
+        "garden_mower"
+      ]
+    ],
+    "labels": [],
+    "manufacturer": "Test",
+    "model": null,
+    "model_id": null,
+    "modified_at": 1791619409.443452,
+    "name_by_user": null,
+    "name": "Garden mower",
+    "primary_config_entry": "01M4JDD9H0GEK1R55CZ9YNAWAH",
+    "serial_number": null,
+    "sw_version": null,
+    "via_device_id": null
   }
 }

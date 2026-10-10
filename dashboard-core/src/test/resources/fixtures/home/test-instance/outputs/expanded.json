@@ -53,6 +53,15 @@
             },
             {
               "type": "tile",
+              "entity": "number.large_range",
+              "state_content": [
+                "state",
+                "area_name"
+              ],
+              "show_entity_picture": true
+            },
+            {
+              "type": "tile",
               "entity": "light.kitchen_lights",
               "state_content": [
                 "state",
@@ -62,7 +71,25 @@
             },
             {
               "type": "tile",
-              "entity": "select.speed",
+              "entity": "fan.living_room_fan",
+              "state_content": [
+                "state",
+                "area_name"
+              ],
+              "show_entity_picture": true
+            },
+            {
+              "type": "tile",
+              "entity": "input_boolean.guest_mode",
+              "state_content": [
+                "state",
+                "area_name"
+              ],
+              "show_entity_picture": true
+            },
+            {
+              "type": "tile",
+              "entity": "switch.decorative_lights",
               "state_content": [
                 "state",
                 "area_name"
@@ -797,6 +824,13 @@
             {
               "type": "tile",
               "entity": "sensor.living_room_humidity",
+              "name": {
+                "type": "entity"
+              }
+            },
+            {
+              "type": "tile",
+              "entity": "remote.tv_remote",
               "name": {
                 "type": "entity"
               }
@@ -1921,6 +1955,27 @@
           "cards": [
             {
               "type": "heading",
+              "heading": "Garden mower",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/config/devices/device/54c4faca44662ac60f3c50e605645251"
+              },
+              "badges": []
+            },
+            {
+              "type": "tile",
+              "entity": "lawn_mower.garden_mower",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
               "heading": "Others",
               "badges": []
             },
@@ -2954,6 +3009,44 @@
               "entities": [
                 {
                   "entity": "weather.forecast_native_test_home",
+                  "name": {
+                    "type": "entity"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Garden mower",
+              "tap_action": {
+                "action": "navigate",
+                "navigation_path": "/config/devices/device/54c4faca44662ac60f3c50e605645251"
+              },
+              "badges": [
+                {
+                  "type": "button",
+                  "icon": "mdi:home-plus",
+                  "text": "Assign area",
+                  "tap_action": {
+                    "action": "fire-dom-event",
+                    "home_panel": {
+                      "type": "assign_area",
+                      "device_id": "54c4faca44662ac60f3c50e605645251"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.garden_mower_battery",
                   "name": {
                     "type": "entity"
                   }

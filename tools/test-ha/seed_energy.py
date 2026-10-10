@@ -231,18 +231,23 @@ FORECAST_DOMAIN = "test_solar_forecast"
 
 async def forecast_entry(ws: Ws, session: aiohttp.ClientSession, base: str, token: str) -> str:
     """The config entry of the test solar forecast (config/custom_components), created when missing."""
-    entries = await ws.call("config_entries/get", domain=FORECAST_DOMAIN)
+    return await custom_entry(ws, session, base, token, FORECAST_DOMAIN)
+
+
+async def custom_entry(ws: Ws, session: aiohttp.ClientSession, base: str, token: str, domain: str) -> str:
+    """The config entry of one of config/custom_components' integrations, created when missing."""
+    entries = await ws.call("config_entries/get", domain=domain)
     if entries:
         return entries[0]["entry_id"]
     async with session.post(
         f"{base}/api/config/config_entries/flow",
-        json={"handler": FORECAST_DOMAIN},
+        json={"handler": domain},
         headers={"Authorization": f"Bearer {token}"},
     ) as response:
         response.raise_for_status()
         result = await response.json()
     assert result["type"] == "create_entry", result
-    log("created the solar forecast entry")
+    log(f"created the {domain} entry")
     return result["result"]["entry_id"]
 
 

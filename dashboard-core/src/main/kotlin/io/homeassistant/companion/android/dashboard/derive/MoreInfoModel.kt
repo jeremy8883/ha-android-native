@@ -120,9 +120,7 @@ data class MoreInfoModel(
  */
 fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
     val state = states[entityId] ?: return null
-    val context = registries.entityContext(entityId)
-    val deviceName = context.device?.deviceName()
-    val entityName = entityName(state)
+    val (name, context) = entityPickerDisplay(state)
     val domain = state.domain
     val light = lightMoreInfo(state)
     val position = positionMoreInfo(state)
@@ -131,9 +129,8 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
     val stateToggle = if (domain in STATE_TOGGLE_DOMAINS) stateToggle(state, "mdi:power", "mdi:power-off") else null
     return MoreInfoModel(
         entityId = entityId,
-        name = entityName ?: deviceName ?: entityId,
-        context = listOfNotNull(context.area?.name?.trim()?.ifEmpty { null }, deviceName.takeIf { entityName != null })
-            .joinToString(" › ").ifEmpty { null },
+        name = name,
+        context = context,
         icon = entityIcon(entityId),
         state = light?.state ?: position?.state ?: fan?.state ?: vacuum?.state ?: formatEntityState(state),
         // A change the server stamped ahead of this device's clock happened just now, not in the future
@@ -161,9 +158,23 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         timer = timerMoreInfo(state),
         remote = remoteActivity(state),
         update = updateMoreInfo(state),
-        input = if (domain in INPUT_DOMAINS) inputRowControl(state, entityName ?: deviceName ?: entityId) else null,
+        input = if (domain in INPUT_DOMAINS) inputRowControl(state, name) else null,
         attributes = displayAttributes(state).map { attributeName(state, it) to formatEntityAttributeValue(state, it) },
     )
+}
+
+/**
+ * The name and context ("Kitchen › Kitchen speaker") of [state] as entity pickers show them (the details' header,
+ * the speakers to group): its name, else its device's; under it its area, and its device when it has a name of its
+ * own. Port of `computeEntityPickerDisplay`.
+ */
+fun HassSnapshot.entityPickerDisplay(state: EntityState): Pair<String, String?> {
+    val context = registries.entityContext(state.entityId)
+    val deviceName = context.device?.deviceName()
+    val entityName = entityName(state)
+    return (entityName ?: deviceName ?: state.entityId) to
+        listOfNotNull(context.area?.name?.trim()?.ifEmpty { null }, deviceName.takeIf { entityName != null })
+            .joinToString(" › ").ifEmpty { null }
 }
 
 /** Port of `ha-attributes`' filter: attributes that are not internal, nor shown elsewhere. */

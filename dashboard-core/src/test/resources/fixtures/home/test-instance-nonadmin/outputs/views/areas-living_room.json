@@ -279,6 +279,13 @@
           "name": {
             "type": "entity"
           }
+        },
+        {
+          "type": "tile",
+          "entity": "remote.tv_remote",
+          "name": {
+            "type": "entity"
+          }
         }
       ]
     }

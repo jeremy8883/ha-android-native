@@ -12,10 +12,10 @@
         "stat_compensation": "test:grid_compensation",
         "stat_rate": "sensor.grid_power",
         "cost_adjustment_day": 0,
-        "number_energy_price": null,
-        "entity_energy_price": null,
         "entity_energy_price_export": null,
-        "number_energy_price_export": null
+        "entity_energy_price": null,
+        "number_energy_price_export": null,
+        "number_energy_price": null
       },
       {
         "type": "solar",

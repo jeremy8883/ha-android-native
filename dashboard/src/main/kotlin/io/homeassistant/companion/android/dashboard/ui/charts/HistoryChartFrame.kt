@@ -12,8 +12,8 @@ import io.homeassistant.companion.android.dashboard.display.DisplayFormats
 import io.homeassistant.companion.android.dashboard.energy.StatisticPeriod
 import io.homeassistant.companion.android.dashboard.energy.niceTicks
 import io.homeassistant.companion.android.dashboard.energy.timeTickLabel
-import io.homeassistant.companion.android.dashboard.energy.timeTicks
 import io.homeassistant.companion.android.dashboard.energy.valueLabel
+import io.homeassistant.companion.android.dashboard.history.historyTimeTicks
 import kotlin.math.abs
 
 /** How a chart's axis labels are formatted ([formats]), measured and drawn. */
@@ -99,12 +99,12 @@ internal fun DrawScope.drawValueAxis(
     }
 }
 
-/** The time axis's labels below the plot from [left] to [right] over [time], at hours as many apart as fit. */
+/** The time axis's labels below the plot from [left] to [right] over [time], at hours (minutes over a short span). */
 internal fun DrawScope.drawTimeAxis(left: Float, right: Float, top: Float, time: TimeSpan, text: ChartText) {
     val formats = text.formats
     val span = (time.end - time.start).coerceAtLeast(1.0)
     val maxLabels = ((right - left) / MIN_TICK_SPACING.toPx()).toInt().coerceAtLeast(1)
-    formats.timeTicks(time.start.toLong(), time.end.toLong(), StatisticPeriod.HOUR, maxLabels).forEach { tick ->
+    formats.historyTimeTicks(time.start.toLong(), time.end.toLong(), maxLabels).forEach { tick ->
         val label = text.measure(formats.timeTickLabel(tick, StatisticPeriod.HOUR))
         val x = (left + (tick - time.start) / span * (right - left)).toFloat()
         drawText(label, topLeft = Offset((x - label.size.width / 2).coerceIn(0f, size.width - label.size.width), top))

@@ -10,6 +10,7 @@ import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
 import java.time.Instant
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -20,7 +21,7 @@ import org.junit.jupiter.api.TestFactory
  * Differential tests of media players' details against the real frontend's `more-info-media_player`
  * (20260624.6): a TV, a speaker, a TV with sources, a player that only browses and a group, each as it is, off,
  * unavailable, paused, idle, muted (with repeat and shuffle on), only assumed, and playing at a fixed time, with
- * each control's call. The media browser and the grouping dialog aren't ported, so their buttons are left out.
+ * each control's call, and the grouping dialog's players and calls.
  */
 class MediaPlayerMoreInfoGoldenTest {
     private val fixture = GoldenFixture("test-instance")
@@ -100,6 +101,8 @@ class MediaPlayerMoreInfoGoldenTest {
             emptyList()
         } else {
             listOfNotNull(
+                info.browseLabel?.let { "media-control-row-button-browse_media" },
+                info.grouping?.let { "grouping-button" },
                 info.source?.let { "source-button" },
                 info.soundMode?.let { "sound-mode-button" },
                 info.turnOn?.let { "media-control-row-button-turn_on" },
@@ -129,6 +132,26 @@ class MediaPlayerMoreInfoGoldenTest {
         }
     }
 
+    @TestFactory
+    fun `Given captured players that group when deriving the join dialog then it lists and applies as upstream's`() = each { info, captured, _ ->
+        val dialog = captured.obj("grouping") ?: return@each
+        val grouping = info.grouping!!
+        val listed = listOf(grouping.player) + grouping.candidates
+        assertEquals(
+            dialog.objects("players").map { listOf(it.string("entityId"), it.boolean("checked") == true, it.boolean("disabled") == true) },
+            listed.mapIndexed { index, player -> listOf(player.entityId, index == 0 || player.entityId in grouping.members, index == 0) },
+        )
+        assertEquals(dialog.objects("players").map { it.string("text") }, listed.map { listOfNotNull(it.name, it.context).joinToString(" ") })
+        assertEquals(dialog.recorded("selectAll"), grouping.apply(grouping.candidates.map { it.entityId }.toSet()))
+        assertEquals(dialog.recorded("none"), grouping.apply(emptySet()))
+    }
+
+    private fun JsonObject.recorded(key: String) = (this[key] as JsonArray).map { call ->
+        (call as JsonObject).let {
+            io.homeassistant.companion.android.dashboard.action.CardAction.CallService(it.string("domain")!!, it.string("service")!!, it.obj("data"), it.obj("target"))
+        }
+    }
+
     private fun MediaControl.pair() = action.service to label
 
     private fun MediaPlayerMoreInfo.allControls(): List<MediaControl> = listOfNotNull(turnOn, turnOff, volume?.down, volume?.up) + main?.let { it.left + it.center + it.right }.orEmpty().filterNotNull()
@@ -146,6 +169,6 @@ class MediaPlayerMoreInfoGoldenTest {
     }
 
     private companion object {
-        val NOT_PORTED = setOf("media-control-row-button-browse_media", "grouping-button")
+        val NOT_PORTED = emptySet<String>()
     }
 }

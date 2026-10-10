@@ -488,6 +488,30 @@
           ]
         }
       ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
+          "heading": "Garden mower",
+          "tap_action": {
+            "action": "none"
+          },
+          "badges": []
+        },
+        {
+          "type": "entities",
+          "entities": [
+            {
+              "entity": "sensor.garden_mower_battery",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

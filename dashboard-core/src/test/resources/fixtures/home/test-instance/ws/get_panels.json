@@ -139,17 +139,6 @@
       "config_panel_domain": null,
       "show_in_sidebar": true
     },
-    "logbook": {
-      "component_name": "logbook",
-      "icon": "mdi:format-list-bulleted-type",
-      "title": "logbook",
-      "default_visible": true,
-      "config": null,
-      "url_path": "logbook",
-      "require_admin": false,
-      "config_panel_domain": null,
-      "show_in_sidebar": true
-    },
     "history": {
       "component_name": "history",
       "icon": "mdi:chart-box",
@@ -161,13 +150,13 @@
       "config_panel_domain": null,
       "show_in_sidebar": true
     },
-    "energy": {
-      "component_name": "energy",
-      "icon": "mdi:lightning-bolt",
-      "title": "energy",
+    "logbook": {
+      "component_name": "logbook",
+      "icon": "mdi:format-list-bulleted-type",
+      "title": "logbook",
       "default_visible": true,
       "config": null,
-      "url_path": "energy",
+      "url_path": "logbook",
       "require_admin": false,
       "config_panel_domain": null,
       "show_in_sidebar": true
@@ -183,13 +172,13 @@
       "config_panel_domain": null,
       "show_in_sidebar": true
     },
-    "todo": {
-      "component_name": "todo",
-      "icon": "mdi:clipboard-list",
-      "title": "todo",
+    "energy": {
+      "component_name": "energy",
+      "icon": "mdi:lightning-bolt",
+      "title": "energy",
       "default_visible": true,
       "config": null,
-      "url_path": "todo",
+      "url_path": "energy",
       "require_admin": false,
       "config_panel_domain": null,
       "show_in_sidebar": true
@@ -201,6 +190,17 @@
       "default_visible": true,
       "config": null,
       "url_path": "calendar",
+      "require_admin": false,
+      "config_panel_domain": null,
+      "show_in_sidebar": true
+    },
+    "todo": {
+      "component_name": "todo",
+      "icon": "mdi:clipboard-list",
+      "title": "todo",
+      "default_visible": true,
+      "config": null,
+      "url_path": "todo",
       "require_admin": false,
       "config_panel_domain": null,
       "show_in_sidebar": true

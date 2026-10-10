@@ -86,7 +86,9 @@ class EntityDisplayGoldenTest {
                 val tile = fixture.hass.tileModel(CardConfig(config), drawnAt)
                 // The capture renders state-display for every tile; hui-tile-card skips it with hide_state
                 val secondary = captured.string("secondary").takeUnless { config.boolean("hide_state") == true }
-                assertEquals(captured.string("name") to secondary, tile?.name to tile?.state)
+                assertEquals(captured.string("name"), tile?.name)
+                // renderedAt is read after the tile drew, so a time seconds ago may be one second apart
+                assertSameDisplay(secondary, tile?.state)
             }
         }
     }

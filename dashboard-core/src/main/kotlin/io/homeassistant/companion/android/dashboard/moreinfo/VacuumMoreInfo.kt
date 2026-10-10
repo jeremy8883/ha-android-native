@@ -14,7 +14,7 @@ import io.homeassistant.companion.android.dashboard.model.string
 
 // Port of `more-info-vacuum` (frontend@20260624.6 src/dialogs/more-info/controls/more-info-vacuum.ts) with
 // `ha-state-control-vacuum-status` (src/state-control/vacuum/) and its helpers (src/data/vacuum.ts). The battery is
-// in DeviceBattery.kt. Not ported: cleaning by area (a dialog of the vacuum's map segments).
+// in DeviceBattery.kt, cleaning by area in VacuumCleanAreas.kt.
 
 /**
  * What a vacuum's details show: the state (or its status), the battery beside it, the robot drawn as it is
@@ -27,6 +27,7 @@ data class VacuumMoreInfo(
     val color: DisplayColor?,
     val buttons: List<CommandButton>,
     val fanSpeed: SelectMenu?,
+    val cleanAreasLabel: Pair<String, String>?,
 )
 
 /** One command button. */
@@ -67,6 +68,9 @@ fun HassSnapshot.vacuumMoreInfo(state: EntityState): VacuumMoreInfo? {
         visual = vacuumVisual(state),
         color = stateColor(state),
         buttons = vacuumButtons(state),
+        // "Cleaning · By area", which opens the areas to clean
+        cleanAreasLabel = (localize("$STRINGS.cleaning") to localize("$STRINGS.by_area"))
+            .takeIf { state.supportsFeature(VACUUM_CLEAN_AREA) },
         fanSpeed = if (state.supportsFeature(VACUUM_FAN_SPEED)) {
             attributeMenu(state, "fan_speed", "fan_speed_list", "set_fan_speed", "mdi:fan")
                 ?.copy(label = attributeName(state, "fan_speed"), optionIcons = false)
@@ -153,4 +157,5 @@ private const val VACUUM_LOCATE = 512
 private const val VACUUM_CLEAN_SPOT = 1024
 private const val VACUUM_STATE = 4096
 private const val VACUUM_START = 8192
+private const val VACUUM_CLEAN_AREA = 16384
 private val STOPPED = setOf("docked", "off", "idle")

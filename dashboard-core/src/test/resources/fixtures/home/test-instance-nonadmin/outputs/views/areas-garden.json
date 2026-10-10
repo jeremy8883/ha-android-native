@@ -188,6 +188,23 @@
       "cards": [
         {
           "type": "heading",
+          "heading": "Garden mower",
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "lawn_mower.garden_mower",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
           "heading": "Others",
           "badges": []
         },

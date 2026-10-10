@@ -136,9 +136,13 @@ class HistoryChartsGoldenTest {
 
     private fun hex(rgb: Int) = "#%06x".format(rgb)
 
+    /**
+     * JavaScript keeps fractions of milliseconds; the app's times are whole ones. The stream's purge time is the
+     * capture's milliseconds as epoch seconds, which a double can't hold exactly, so it may come back 1 ms early.
+     */
     private fun assertTimes(expected: List<Double>, actual: List<Double>) {
         assertEquals(expected.size, actual.size)
-        expected.zip(actual).forEach { (e, a) -> assertTrue(abs(e - a) < 1, "time $a, expected $e") }
+        expected.zip(actual).forEach { (e, a) -> assertTrue(abs(e - a) <= 1, "time $a, expected $e") }
     }
 
     private fun assertValues(expected: List<Double?>, actual: List<Double?>, id: String) {

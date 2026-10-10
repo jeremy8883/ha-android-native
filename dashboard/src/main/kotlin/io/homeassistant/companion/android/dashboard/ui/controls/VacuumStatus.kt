@@ -106,7 +106,7 @@ private fun pulseMs(visual: VacuumVisual) = when (visual) {
 }
 
 /** `vacuum-wander`: forward and back, turned left, then right, each a stretch of its twelve seconds. */
-private fun wanderAt(progress: Float): Pair<Float, Float> {
+internal fun wanderAt(progress: Float): Pair<Float, Float> {
     val stops = WANDER_STOPS
     val index = stops.indexOfLast { it.first <= progress }.coerceIn(0, stops.size - 2)
     val (startAt, start) = stops[index].first to stops[index].second

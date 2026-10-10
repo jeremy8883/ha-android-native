@@ -14,10 +14,10 @@
           "stat_compensation": "test:grid_compensation",
           "stat_rate": "sensor.grid_power",
           "cost_adjustment_day": 0,
-          "number_energy_price": null,
-          "entity_energy_price": null,
           "entity_energy_price_export": null,
-          "number_energy_price_export": null
+          "entity_energy_price": null,
+          "number_energy_price_export": null,
+          "number_energy_price": null
         },
         {
           "type": "solar",
@@ -86,8 +86,14 @@
     },
     "result": {
       "entities": [
+        "number.large_range",
         "light.kitchen_lights",
-        "select.speed"
+        "light.living_room_rgbww_lights",
+        "fan.living_room_fan",
+        "input_boolean.guest_mode",
+        "switch.decorative_lights",
+        "alarm_control_panel.security",
+        "climate.heatpump"
       ]
     }
   }

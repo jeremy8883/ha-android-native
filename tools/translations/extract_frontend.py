@@ -20,6 +20,7 @@ SUBTREES = [
     "ui.card",
     "ui.panel.lovelace.cards.actions",
     "ui.panel.lovelace.cards.show_more_info",
+    "ui.panel.lovelace.warning",
     "ui.panel.lovelace.cards.energy",
     "ui.panel.lovelace.components",
     "ui.panel.lovelace.editor.action-editor.actions",
@@ -33,7 +34,10 @@ SUBTREES = [
     "ui.components.logbook",
     "ui.components.relative_time",
     "ui.components.siren",
+    "ui.components.media-browser",
     "ui.common.close",
+    "ui.common.apply",
+    "ui.common.cancel",
 ]
 
 OUT_DIR = Path(__file__).resolve().parents[2] / "dashboard-core/src/main/resources/translations"

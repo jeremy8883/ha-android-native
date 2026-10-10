@@ -216,6 +216,27 @@
       "cards": [
         {
           "type": "heading",
+          "heading": "Garden mower",
+          "tap_action": {
+            "action": "navigate",
+            "navigation_path": "/config/devices/device/54c4faca44662ac60f3c50e605645251"
+          },
+          "badges": []
+        },
+        {
+          "type": "tile",
+          "entity": "lawn_mower.garden_mower",
+          "name": {
+            "type": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "type": "grid",
+      "cards": [
+        {
+          "type": "heading",
           "heading": "Others",
           "badges": []
         },

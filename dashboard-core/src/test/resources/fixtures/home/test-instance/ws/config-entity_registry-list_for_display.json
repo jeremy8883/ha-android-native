@@ -1035,6 +1035,41 @@
         "pl": "automation",
         "lb": [],
         "en": "Guest welcome"
+      },
+      {
+        "ei": "lawn_mower.garden_mower",
+        "pl": "test_devices",
+        "ai": "garden",
+        "lb": [],
+        "di": "54c4faca44662ac60f3c50e605645251",
+        "hn": true
+      },
+      {
+        "ei": "lawn_mower.simple_mower",
+        "pl": "test_devices",
+        "lb": [],
+        "en": "Simple mower"
+      },
+      {
+        "ei": "lawn_mower.returning_mower",
+        "pl": "test_devices",
+        "lb": [],
+        "en": "Returning mower"
+      },
+      {
+        "ei": "remote.tv_remote",
+        "pl": "test_devices",
+        "ai": "living_room",
+        "lb": [],
+        "en": "TV remote"
+      },
+      {
+        "ei": "sensor.garden_mower_battery",
+        "pl": "test_devices",
+        "lb": [],
+        "di": "54c4faca44662ac60f3c50e605645251",
+        "hn": true,
+        "en": "Battery"
       }
     ]
   }

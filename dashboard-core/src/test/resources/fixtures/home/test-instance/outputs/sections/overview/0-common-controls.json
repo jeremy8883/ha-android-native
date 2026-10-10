@@ -73,6 +73,15 @@
       },
       {
         "type": "tile",
+        "entity": "number.large_range",
+        "state_content": [
+          "state",
+          "area_name"
+        ],
+        "show_entity_picture": true
+      },
+      {
+        "type": "tile",
         "entity": "light.kitchen_lights",
         "state_content": [
           "state",
@@ -82,7 +91,25 @@
       },
       {
         "type": "tile",
-        "entity": "select.speed",
+        "entity": "fan.living_room_fan",
+        "state_content": [
+          "state",
+          "area_name"
+        ],
+        "show_entity_picture": true
+      },
+      {
+        "type": "tile",
+        "entity": "input_boolean.guest_mode",
+        "state_content": [
+          "state",
+          "area_name"
+        ],
+        "show_entity_picture": true
+      },
+      {
+        "type": "tile",
+        "entity": "switch.decorative_lights",
         "state_content": [
           "state",
           "area_name"

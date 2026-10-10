@@ -47,6 +47,9 @@ internal fun DashboardCard(
         )
         CARD_HEADING -> HeadingCard(card, hass, now, interactions, cardModifier)
         CARD_ENTITIES -> EntitiesCard(card, hass, now, interactions, modifier)
+        CARD_BUTTON -> ButtonCard(card, hass, interactions, modifier.clip(RoundedCornerShape(HARadius.XL)))
+        CARD_GLANCE -> GlanceCard(card, hass, now, interactions, modifier)
+        CARD_GAUGE -> GaugeCard(card, hass, interactions, modifier.clip(RoundedCornerShape(HARadius.XL)))
         in ENERGY_CARD_TYPES -> EnergyCard(card, hass, now, interactions, modifier)
         else -> OtherCard(card, hass, interactions, modifier, cardModifier)
     }
@@ -88,6 +91,9 @@ private const val CARD_AREA = "area"
 private const val CARD_HOME_SUMMARY = "home-summary"
 private const val CARD_MARKDOWN = "markdown"
 private const val CARD_ENTITIES = "entities"
+private const val CARD_BUTTON = "button"
+private const val CARD_GLANCE = "glance"
+private const val CARD_GAUGE = "gauge"
 private const val CARD_MEDIA_CONTROL = "media-control"
 private const val CARD_EMPTY_STATE = "empty-state"
 private const val CARD_SHORTCUT = "shortcut"

@@ -30,6 +30,7 @@ import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.MediaControl
+import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.moreinfo.MediaMainControls
 import io.homeassistant.companion.android.dashboard.moreinfo.MediaPlayerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.MediaPosition
@@ -155,17 +156,43 @@ internal fun MediaVolumeRow(volume: MediaVolume, onAction: (CardAction) -> Unit)
     }
 }
 
-/** Source, sound mode, turn on and turn off, as icon buttons; the menus open from theirs. */
+/** Browse, grouping, source, sound mode, turn on and turn off, as icon buttons; the menus open from theirs. */
 @Composable
-internal fun MediaControlsRow(info: MediaPlayerMoreInfo, onAction: (CardAction) -> Unit) {
-    val buttons = listOfNotNull(info.source, info.soundMode).isNotEmpty() || info.turnOn != null || info.turnOff != null
+internal fun MediaControlsRow(
+    info: MediaPlayerMoreInfo,
+    entityId: String,
+    hass: HassSnapshot,
+    onAction: (CardAction) -> Unit,
+) {
+    val buttons =
+        listOfNotNull(info.source, info.soundMode).isNotEmpty() ||
+            info.turnOn != null ||
+            info.turnOff != null ||
+            info.grouping != null ||
+            info.browseLabel != null
     if (!buttons) return
     Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.CenterHorizontally)) {
+        info.browseLabel?.let { BrowseButton(it, entityId, hass, onAction) }
+        info.grouping?.let { MediaGroupingButton(it, onAction) }
         info.source?.let { MenuButton(it, onAction) }
         info.soundMode?.let { MenuButton(it, onAction) }
         info.turnOn?.let { SideButton(it, onAction) }
         info.turnOff?.let { SideButton(it, onAction) }
     }
+}
+
+/** The media browser's button, opening it. */
+@Composable
+private fun BrowseButton(label: String, entityId: String, hass: HassSnapshot, onAction: (CardAction) -> Unit) {
+    var open by remember { mutableStateOf(false) }
+    IconButton(onClick = { open = true }) {
+        DashboardIcon(
+            "mdi:play-box-multiple",
+            LocalHAColorScheme.current.colorTextPrimary,
+            Modifier.size(HASize.X2L).semantics { contentDescription = label },
+        )
+    }
+    if (open) MediaBrowserDialog(entityId, label, hass, onAction) { open = false }
 }
 
 @Composable

@@ -774,6 +774,13 @@
               "name": {
                 "type": "entity"
               }
+            },
+            {
+              "type": "tile",
+              "entity": "remote.tv_remote",
+              "name": {
+                "type": "entity"
+              }
             }
           ]
         }
@@ -1835,6 +1842,23 @@
           "cards": [
             {
               "type": "heading",
+              "heading": "Garden mower",
+              "badges": []
+            },
+            {
+              "type": "tile",
+              "entity": "lawn_mower.garden_mower",
+              "name": {
+                "type": "entity"
+              }
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
               "heading": "Others",
               "badges": []
             },
@@ -2588,6 +2612,30 @@
               "entities": [
                 {
                   "entity": "weather.forecast_native_test_home",
+                  "name": {
+                    "type": "entity"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "grid",
+          "cards": [
+            {
+              "type": "heading",
+              "heading": "Garden mower",
+              "tap_action": {
+                "action": "none"
+              },
+              "badges": []
+            },
+            {
+              "type": "entities",
+              "entities": [
+                {
+                  "entity": "sensor.garden_mower_battery",
                   "name": {
                     "type": "entity"
                   }

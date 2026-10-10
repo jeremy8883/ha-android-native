@@ -17,15 +17,15 @@
         "media_content_type": "movie",
         "media_duration": 300,
         "media_position": 45,
-        "media_position_updated_at": "2026-10-09T23:05:17.167980+00:00",
+        "media_position_updated_at": "2026-10-10T08:03:28.948387+00:00",
         "media_title": "♥♥ The Best Fireplace Video (3 hours)",
         "app_name": "YouTube",
         "sound_mode": "Music",
         "shuffle": false,
-        "entity_picture_local": "/api/media_player_proxy/media_player.living_room_tv?token=58a075e30ac534b2090a2e7748d764c6d8c5705918fe07e987c999a02b1ba853&cache=3a60fab7b571abf2",
+        "entity_picture_local": "/api/media_player_proxy/media_player.living_room_tv?token=e5a649104509e9601f9ee33325dc6e3078e03881512ddecfbf880250282d32d1&cache=31ffaf9127c634fb",
         "active_child": "media_player.living_room",
         "device_class": "tv",
-        "entity_picture": "/api/media_player_proxy/media_player.living_room?token=56b844c3683c80b2f03813954c1eecd1fccb7c3b0b60717674c93381378b2b6b&cache=bc2ffb49c4f67034",
+        "entity_picture": "/api/media_player_proxy/media_player.living_room?token=f37fd2ccf385c6817150625cd80cbfdc3582b102222dee12a091071db761c0b7&cache=bc2ffb49c4f67034",
         "friendly_name": "Living Room TV",
         "supported_features": 119695
       },
@@ -59,10 +59,10 @@
         "sound_mode": "Music",
         "shuffle": false,
         "repeat": "off",
-        "entity_picture_local": "/api/media_player_proxy/media_player.kitchen_speaker?token=3ddd88738fcae16b5b958f390dc7f9006b55ae33d7e72389e693f1ae083d9965&cache=e9b1cc3371804826",
+        "entity_picture_local": "/api/media_player_proxy/media_player.kitchen_speaker?token=d5f116627771cdf6a4769c8781b63c06ad777d97c98eb2886df01247bc7cee76&cache=f4971e128ccf25a9",
         "active_child": "media_player.kitchen",
         "device_class": "speaker",
-        "entity_picture": "/api/media_player_proxy/media_player.kitchen?token=2e1785ff48dfe2a4681f40c2855b65e511614e02353647328bcc10664878b86c&cache=62c0c516acbc53a9",
+        "entity_picture": "/api/media_player_proxy/media_player.kitchen?token=3759f61b34782c6800a0d53b4d6d8b003469c2cf0458790b0222c4aa9b8ae665&cache=62c0c516acbc53a9",
         "friendly_name": "Kitchen Speaker",
         "supported_features": 914877
       },
@@ -89,15 +89,15 @@
         "media_content_type": "movie",
         "media_duration": 360000,
         "media_position": 54000,
-        "media_position_updated_at": "2026-10-09T23:05:17.167987+00:00",
+        "media_position_updated_at": "2026-10-10T08:03:28.948398+00:00",
         "media_title": "Epic sax guy 10 hours",
         "app_name": "YouTube",
         "sound_mode": "Music",
         "shuffle": false,
-        "entity_picture_local": "/api/media_player_proxy/media_player.bedroom_speaker?token=4bb49ddb77f16e36e2cb862cbd8c8d53a28190cc1f07b9e8c136ad2e4ef75ae7&cache=1d2f0d4b45e3fcb5",
+        "entity_picture_local": "/api/media_player_proxy/media_player.bedroom_speaker?token=bf5d85b66cadf06001122bab2c61d580bbeb5c90ca598cf09f434e56c2735d4b&cache=4b6840147d89006f",
         "active_child": "media_player.bedroom",
         "device_class": "speaker",
-        "entity_picture": "/api/media_player_proxy/media_player.bedroom?token=af409c873fd2ea1fe3848be47ca5dc992cf3c79cf9d25ec212f5c470821729e4&cache=e4513ed94ec89151",
+        "entity_picture": "/api/media_player_proxy/media_player.bedroom?token=1489e78a73d1a3e6b888d1efc3d0f4fe4c45ff676fee5086225e151fcacbbf45&cache=e4513ed94ec89151",
         "friendly_name": "Bedroom Speaker",
         "supported_features": 119695
       },
@@ -131,10 +131,10 @@
         "sound_mode": "Music",
         "shuffle": false,
         "repeat": "off",
-        "entity_picture_local": "/api/media_player_proxy/media_player.office_speaker?token=e4bf75ff32d84afd1567ca9c847b436f1b5a479e5cfb836096268201676d7187&cache=53ce3ed5adcb1254",
+        "entity_picture_local": "/api/media_player_proxy/media_player.office_speaker?token=014cd85e9c1f6719d7843aa61e5fb123cdfe8ed69cdf9951c905cbd4ffa0701a&cache=56b2a04578f39c2b",
         "active_child": "media_player.walkman",
         "device_class": "speaker",
-        "entity_picture": "/api/media_player_proxy/media_player.walkman?token=02c40dceaa46994a922610c6b9850580c9f81bee738c1b095ebd73f97e637d91&cache=62c0c516acbc53a9",
+        "entity_picture": "/api/media_player_proxy/media_player.walkman?token=c46a5ecb4741756a8dd7a16415653825af8da83743d0c88e96033da6b178cfa3&cache=62c0c516acbc53a9",
         "friendly_name": "Office Speaker",
         "supported_features": 914877
       },
@@ -281,7 +281,7 @@
       "entity_id": "script.lock_up",
       "state": "off",
       "attributes": {
-        "last_triggered": "2026-10-10T01:29:49.676472+00:00",
+        "last_triggered": "2026-10-10T08:25:35.775464+00:00",
         "mode": "single",
         "current": 0,
         "friendly_name": "Lock up"
@@ -341,6 +341,28 @@
       }
     },
     {
+      "entity_id": "person.dev",
+      "state": "unknown",
+      "attributes": {
+        "editable": true,
+        "id": "dev",
+        "device_trackers": [
+          "device_tracker.sdk_gphone64_x86_64"
+        ],
+        "in_zones": [],
+        "user_id": "4dced85e68734d9b807a24fb2cccdc38",
+        "friendly_name": "Dev"
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
       "entity_id": "input_boolean.guest_mode",
       "state": "off",
       "attributes": {
@@ -375,28 +397,6 @@
       }
     },
     {
-      "entity_id": "person.dev",
-      "state": "unknown",
-      "attributes": {
-        "editable": true,
-        "id": "dev",
-        "device_trackers": [
-          "device_tracker.sdk_gphone64_x86_64"
-        ],
-        "in_zones": [],
-        "user_id": "4dced85e68734d9b807a24fb2cccdc38",
-        "friendly_name": "Dev"
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
       "entity_id": "timer.laundry",
       "state": "idle",
       "attributes": {
@@ -416,7 +416,7 @@
     },
     {
       "entity_id": "input_select.house_mode",
-      "state": "Vacation",
+      "state": "Away",
       "attributes": {
         "options": [
           "Home",
@@ -439,7 +439,7 @@
     },
     {
       "entity_id": "input_button.doorbell_test",
-      "state": "2026-10-10T01:29:52.703019+00:00",
+      "state": "2026-10-10T08:25:38.822108+00:00",
       "attributes": {
         "editable": false,
         "icon": "mdi:doorbell",
@@ -459,10 +459,10 @@
       "state": "not_home",
       "attributes": {
         "source_type": "gps",
-        "latitude": 52.367725,
-        "longitude": 4.888155,
-        "gps_accuracy": 116,
-        "battery": 19,
+        "latitude": 52.365815,
+        "longitude": 4.8832699999999996,
+        "gps_accuracy": 124,
+        "battery": 89,
         "friendly_name": "Paulus"
       },
       "last_changed": "2026-01-01T00:00:00+00:00",
@@ -479,10 +479,10 @@
       "state": "not_home",
       "attributes": {
         "source_type": "gps",
-        "latitude": 52.378165,
-        "longitude": 4.896555,
-        "gps_accuracy": 96,
-        "battery": 87,
+        "latitude": 52.37843,
+        "longitude": 4.89598,
+        "gps_accuracy": 79,
+        "battery": 65,
         "friendly_name": "Anne Therese"
       },
       "last_changed": "2026-01-01T00:00:00+00:00",
@@ -515,17 +515,37 @@
       }
     },
     {
-      "entity_id": "sun.sun",
-      "state": "below_horizon",
+      "entity_id": "input_text.welcome_message",
+      "state": "Hello from the test instance",
       "attributes": {
-        "next_dawn": "2026-10-10T05:22:17.733203+00:00",
+        "editable": false,
+        "min": 0,
+        "max": 100,
+        "pattern": null,
+        "mode": "text",
+        "friendly_name": "Welcome message"
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "sun.sun",
+      "state": "above_horizon",
+      "attributes": {
+        "next_dawn": "2026-10-11T05:23:59.345843+00:00",
         "next_dusk": "2026-10-10T17:31:33.757424+00:00",
         "next_midnight": "2026-10-10T23:27:10+00:00",
         "next_noon": "2026-10-10T11:27:33+00:00",
-        "next_rising": "2026-10-10T05:57:05.237028+00:00",
+        "next_rising": "2026-10-11T05:58:49.556708+00:00",
         "next_setting": "2026-10-10T16:56:51.752558+00:00",
-        "elevation": -25.75,
-        "azimuth": 65.38,
+        "elevation": 21.46,
+        "azimuth": 135.58,
         "rising": true,
         "friendly_name": "Sun"
       },
@@ -540,7 +560,7 @@
     },
     {
       "entity_id": "sensor.sun_next_dawn",
-      "state": "2026-10-10T05:22:17+00:00",
+      "state": "2026-10-11T05:23:59+00:00",
       "attributes": {
         "device_class": "timestamp",
         "friendly_name": "Sun Next dawn"
@@ -604,7 +624,7 @@
     },
     {
       "entity_id": "sensor.sun_next_rising",
-      "state": "2026-10-10T05:57:05+00:00",
+      "state": "2026-10-11T05:58:49+00:00",
       "attributes": {
         "device_class": "timestamp",
         "friendly_name": "Sun Next rising"
@@ -635,45 +655,6 @@
       }
     },
     {
-      "entity_id": "counter.coffee_cups",
-      "state": "0",
-      "attributes": {
-        "editable": false,
-        "initial": 0,
-        "step": 1,
-        "icon": "mdi:coffee",
-        "friendly_name": "Coffee cups"
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
-      "entity_id": "input_text.welcome_message",
-      "state": "Hello from the test instance",
-      "attributes": {
-        "editable": false,
-        "min": 0,
-        "max": 100,
-        "pattern": null,
-        "mode": "text",
-        "friendly_name": "Welcome message"
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
       "entity_id": "input_datetime.wake_up",
       "state": "07:00:00",
       "attributes": {
@@ -685,6 +666,25 @@
         "second": 0,
         "timestamp": 25200,
         "friendly_name": "Wake-up time"
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "counter.coffee_cups",
+      "state": "0",
+      "attributes": {
+        "editable": false,
+        "initial": 0,
+        "step": 1,
+        "icon": "mdi:coffee",
+        "friendly_name": "Coffee cups"
       },
       "last_changed": "2026-01-01T00:00:00+00:00",
       "last_reported": "2026-01-01T00:00:00+00:00",
@@ -729,7 +729,7 @@
     },
     {
       "entity_id": "sensor.living_room_temperature",
-      "state": "21.8",
+      "state": "21.6",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "°C",
@@ -837,7 +837,7 @@
     },
     {
       "entity_id": "sensor.house_power",
-      "state": "426",
+      "state": "622",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -855,7 +855,7 @@
     },
     {
       "entity_id": "sensor.solar_power",
-      "state": "0",
+      "state": "2845",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -873,7 +873,7 @@
     },
     {
       "entity_id": "sensor.grid_power",
-      "state": "0",
+      "state": "-495",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -891,7 +891,7 @@
     },
     {
       "entity_id": "sensor.home_battery_power",
-      "state": "350",
+      "state": "-2000",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -909,7 +909,7 @@
     },
     {
       "entity_id": "sensor.home_battery_charge",
-      "state": "25",
+      "state": "64",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "%",
@@ -927,7 +927,7 @@
     },
     {
       "entity_id": "sensor.fridge_power",
-      "state": "5",
+      "state": "120",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -945,7 +945,7 @@
     },
     {
       "entity_id": "sensor.washer_power",
-      "state": "2",
+      "state": "1800",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -963,7 +963,7 @@
     },
     {
       "entity_id": "sensor.office_circuit_power",
-      "state": "15",
+      "state": "160",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -981,7 +981,7 @@
     },
     {
       "entity_id": "sensor.office_computer_power",
-      "state": "3",
+      "state": "120",
       "attributes": {
         "state_class": "measurement",
         "unit_of_measurement": "W",
@@ -1196,175 +1196,6 @@
       }
     },
     {
-      "entity_id": "device_tracker.sdk_gphone64_x86_64",
-      "state": "unknown",
-      "attributes": {
-        "tracking_type": "position",
-        "in_zones": [],
-        "source_type": "gps",
-        "friendly_name": "sdk_gphone64_x86_64"
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
-      "entity_id": "notify.sdk_gphone64_x86_64",
-      "state": "unknown",
-      "attributes": {
-        "friendly_name": "sdk_gphone64_x86_64",
-        "supported_features": 1
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
-      "entity_id": "sensor.sdk_gphone64_x86_64_battery_level",
-      "state": "100",
-      "attributes": {
-        "state_class": "measurement",
-        "unit_of_measurement": "%",
-        "device_class": "battery",
-        "icon": "mdi:battery",
-        "friendly_name": "sdk_gphone64_x86_64 Battery level"
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
-      "entity_id": "sensor.sdk_gphone64_x86_64_battery_state",
-      "state": "not_charging",
-      "attributes": {
-        "options": [
-          "charging",
-          "discharging",
-          "full",
-          "not_charging"
-        ],
-        "device_class": "enum",
-        "icon": "mdi:battery",
-        "friendly_name": "sdk_gphone64_x86_64 Battery state"
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
-      "entity_id": "sensor.sdk_gphone64_x86_64_charger_type",
-      "state": "none",
-      "attributes": {
-        "options": [
-          "ac",
-          "usb",
-          "wireless",
-          "dock",
-          "none"
-        ],
-        "device_class": "enum",
-        "icon": "mdi:battery",
-        "friendly_name": "sdk_gphone64_x86_64 Charger type"
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
-      "entity_id": "tts.google_translate_en_com",
-      "state": "unknown",
-      "attributes": {
-        "friendly_name": "Google Translate en com"
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
-      "entity_id": "todo.shopping_list",
-      "state": "0",
-      "attributes": {
-        "friendly_name": "Shopping List",
-        "supported_features": 15
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
-      "entity_id": "automation.bed_light_schedule",
-      "state": "on",
-      "attributes": {
-        "id": "bed_light_schedule",
-        "last_triggered": "2026-10-10T03:02:08.885785+00:00",
-        "mode": "single",
-        "current": 0,
-        "friendly_name": "Bed light schedule"
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
-      "entity_id": "automation.guest_welcome",
-      "state": "on",
-      "attributes": {
-        "id": "guest_welcome",
-        "last_triggered": "2026-10-10T01:29:49.676251+00:00",
-        "mode": "single",
-        "current": 0,
-        "friendly_name": "Guest welcome"
-      },
-      "last_changed": "2026-01-01T00:00:00+00:00",
-      "last_reported": "2026-01-01T00:00:00+00:00",
-      "last_updated": "2026-01-01T00:00:00+00:00",
-      "context": {
-        "id": "01JGOLDENCONTEXT000000000000",
-        "parent_id": null,
-        "user_id": null
-      }
-    },
-    {
       "entity_id": "image_processing.demo_face",
       "state": "Hans",
       "attributes": {
@@ -1510,7 +1341,7 @@
     },
     {
       "entity_id": "button.push",
-      "state": "2026-10-10T01:29:52.696204+00:00",
+      "state": "2026-10-10T08:25:38.812459+00:00",
       "attributes": {
         "friendly_name": "Push"
       },
@@ -1527,8 +1358,8 @@
       "entity_id": "camera.demo_camera",
       "state": "streaming",
       "attributes": {
-        "access_token": "791be16db61268d0f94b11b591373820f7e0aa6c582464070483cdc522bd6cf0",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera?token=791be16db61268d0f94b11b591373820f7e0aa6c582464070483cdc522bd6cf0",
+        "access_token": "47eab9856fb84148ff164f77e1e071de50bad4249713fbf2914fee0bd415420e",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera?token=47eab9856fb84148ff164f77e1e071de50bad4249713fbf2914fee0bd415420e",
         "friendly_name": "Demo camera",
         "supported_features": 3
       },
@@ -1545,8 +1376,8 @@
       "entity_id": "camera.demo_camera_png",
       "state": "streaming",
       "attributes": {
-        "access_token": "f767db65af8489cd96b9e2cbb60c12cd21d4db94d174d1394fa2d94de6dff609",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=f767db65af8489cd96b9e2cbb60c12cd21d4db94d174d1394fa2d94de6dff609",
+        "access_token": "e6cf74b04575b619616f65a8b3efd98e1c8f4f097a8c4b21a44ec025945f8390",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera_png?token=e6cf74b04575b619616f65a8b3efd98e1c8f4f097a8c4b21a44ec025945f8390",
         "friendly_name": "Demo camera png",
         "supported_features": 3
       },
@@ -1563,8 +1394,8 @@
       "entity_id": "camera.demo_camera_without_stream",
       "state": "streaming",
       "attributes": {
-        "access_token": "87ae547a583c1d181b4bddc25462aba7c17c3be3204a1ab1a1e0c38b34633ec5",
-        "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=87ae547a583c1d181b4bddc25462aba7c17c3be3204a1ab1a1e0c38b34633ec5",
+        "access_token": "c99ba5cb17d39208a0c2689ba62aca0870452f2e61e1ce3489d60d552eef4d36",
+        "entity_picture": "/api/camera_proxy/camera.demo_camera_without_stream?token=c99ba5cb17d39208a0c2689ba62aca0870452f2e61e1ce3489d60d552eef4d36",
         "friendly_name": "Demo camera without stream",
         "supported_features": 1
       },
@@ -1579,12 +1410,12 @@
     },
     {
       "entity_id": "calendar.calendar_1",
-      "state": "off",
+      "state": "on",
       "attributes": {
         "message": "Future Event",
         "all_day": false,
-        "start_time": "2026-10-10 01:35:17",
-        "end_time": "2026-10-10 02:35:17",
+        "start_time": "2026-10-10 10:33:28",
+        "end_time": "2026-10-10 11:33:28",
         "location": "Future Location",
         "description": "Future Description",
         "friendly_name": "Calendar 1"
@@ -1604,8 +1435,8 @@
       "attributes": {
         "message": "Current Event",
         "all_day": false,
-        "start_time": "2026-10-10 00:35:17",
-        "end_time": "2026-10-10 01:35:17",
+        "start_time": "2026-10-10 09:33:28",
+        "end_time": "2026-10-10 10:33:28",
         "location": "",
         "description": "",
         "friendly_name": "Calendar 2"
@@ -1877,7 +1708,7 @@
     },
     {
       "entity_id": "event.push_button_press",
-      "state": "2026-10-10T01:29:52.696+00:00",
+      "state": "2026-10-10T08:25:38.813+00:00",
       "attributes": {
         "event_types": [
           "pressed"
@@ -2177,21 +2008,21 @@
           "color_temp",
           "hs"
         ],
-        "color_mode": "color_temp",
-        "brightness": 186,
-        "color_temp_kelvin": 4143,
+        "color_mode": "hs",
+        "brightness": 180,
+        "color_temp_kelvin": null,
         "hs_color": [
-          26.758,
-          32.341
+          345,
+          75
         ],
         "rgb_color": [
           255,
-          209,
-          173
+          64,
+          112
         ],
         "xy_color": [
-          0.411,
-          0.362
+          0.588,
+          0.274
         ],
         "friendly_name": "Kitchen Lights",
         "supported_features": 0
@@ -2253,24 +2084,24 @@
           "rgbww"
         ],
         "color_mode": "rgbww",
-        "brightness": 255,
+        "brightness": 180,
         "hs_color": [
-          120,
-          37.647
+          0.923,
+          50.98
         ],
         "rgb_color": [
-          159,
           255,
-          159
+          127,
+          125
         ],
         "xy_color": [
-          0.269,
-          0.478
+          0.528,
+          0.315
         ],
         "rgbww_color": [
-          63,
           255,
-          66,
+          0,
+          0,
           255,
           0
         ],
@@ -2399,12 +2230,12 @@
         "media_content_type": "movie",
         "media_duration": 300,
         "media_position": 45,
-        "media_position_updated_at": "2026-10-09T23:05:17.167980+00:00",
+        "media_position_updated_at": "2026-10-10T08:03:28.948387+00:00",
         "media_title": "♥♥ The Best Fireplace Video (3 hours)",
         "app_name": "YouTube",
         "sound_mode": "Music",
         "shuffle": false,
-        "entity_picture": "/api/media_player_proxy/media_player.living_room?token=56b844c3683c80b2f03813954c1eecd1fccb7c3b0b60717674c93381378b2b6b&cache=bc2ffb49c4f67034",
+        "entity_picture": "/api/media_player_proxy/media_player.living_room?token=f37fd2ccf385c6817150625cd80cbfdc3582b102222dee12a091071db761c0b7&cache=bc2ffb49c4f67034",
         "friendly_name": "Living Room",
         "supported_features": 119695
       },
@@ -2431,12 +2262,12 @@
         "media_content_type": "movie",
         "media_duration": 360000,
         "media_position": 54000,
-        "media_position_updated_at": "2026-10-09T23:05:17.167987+00:00",
+        "media_position_updated_at": "2026-10-10T08:03:28.948398+00:00",
         "media_title": "Epic sax guy 10 hours",
         "app_name": "YouTube",
         "sound_mode": "Music",
         "shuffle": false,
-        "entity_picture": "/api/media_player_proxy/media_player.bedroom?token=af409c873fd2ea1fe3848be47ca5dc992cf3c79cf9d25ec212f5c470821729e4&cache=e4513ed94ec89151",
+        "entity_picture": "/api/media_player_proxy/media_player.bedroom?token=1489e78a73d1a3e6b888d1efc3d0f4fe4c45ff676fee5086225e151fcacbbf45&cache=e4513ed94ec89151",
         "friendly_name": "Bedroom",
         "supported_features": 119695
       },
@@ -2470,7 +2301,7 @@
         "sound_mode": "Music",
         "shuffle": false,
         "repeat": "off",
-        "entity_picture": "/api/media_player_proxy/media_player.walkman?token=02c40dceaa46994a922610c6b9850580c9f81bee738c1b095ebd73f97e637d91&cache=62c0c516acbc53a9",
+        "entity_picture": "/api/media_player_proxy/media_player.walkman?token=c46a5ecb4741756a8dd7a16415653825af8da83743d0c88e96033da6b178cfa3&cache=62c0c516acbc53a9",
         "friendly_name": "Walkman",
         "supported_features": 914877
       },
@@ -2504,7 +2335,7 @@
         "sound_mode": "Music",
         "shuffle": false,
         "repeat": "off",
-        "entity_picture": "/api/media_player_proxy/media_player.kitchen?token=2e1785ff48dfe2a4681f40c2855b65e511614e02353647328bcc10664878b86c&cache=62c0c516acbc53a9",
+        "entity_picture": "/api/media_player_proxy/media_player.kitchen?token=3759f61b34782c6800a0d53b4d6d8b003469c2cf0458790b0222c4aa9b8ae665&cache=62c0c516acbc53a9",
         "friendly_name": "Kitchen",
         "supported_features": 914877
       },
@@ -2543,7 +2374,7 @@
         "sound_mode": "Music",
         "shuffle": false,
         "device_class": "tv",
-        "entity_picture": "/api/media_player_proxy/media_player.lounge_room?token=22ec93951bab98be74618c927bf88f5c274bddddf61d34732658fd7950237029&cache=cb9d84451faf9351",
+        "entity_picture": "/api/media_player_proxy/media_player.lounge_room?token=1124fefd3daccd80e554bdce96fc55e96cf0718fa4f5d845db27c01d1451e4a9&cache=cb9d84451faf9351",
         "friendly_name": "Lounge room",
         "supported_features": 121265
       },
@@ -2882,7 +2713,7 @@
     },
     {
       "entity_id": "sensor.total_energy_kwh",
-      "state": "267.0",
+      "state": "299.0",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "kWh",
@@ -2900,7 +2731,7 @@
     },
     {
       "entity_id": "sensor.total_energy_mwh",
-      "state": "0.1335",
+      "state": "0.1495",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "MWh",
@@ -2918,7 +2749,7 @@
     },
     {
       "entity_id": "sensor.total_gas_m3",
-      "state": "13.3500000000001",
+      "state": "14.9500000000001",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "m³",
@@ -2936,7 +2767,7 @@
     },
     {
       "entity_id": "sensor.total_gas_ft3",
-      "state": "15.121196080128",
+      "state": "16.933474262016",
       "attributes": {
         "state_class": "total",
         "unit_of_measurement": "m³",
@@ -3043,7 +2874,7 @@
     },
     {
       "entity_id": "switch.ac",
-      "state": "on",
+      "state": "off",
       "attributes": {
         "device_class": "outlet",
         "friendly_name": "AC"
@@ -3603,25 +3434,282 @@
       }
     },
     {
-      "entity_id": "weather.forecast_native_test_home",
-      "state": "clear-night",
+      "entity_id": "device_tracker.sdk_gphone64_x86_64",
+      "state": "unknown",
       "attributes": {
-        "temperature": 13,
-        "dew_point": 9.3,
+        "tracking_type": "position",
+        "in_zones": [],
+        "source_type": "gps",
+        "friendly_name": "sdk_gphone64_x86_64"
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "notify.sdk_gphone64_x86_64",
+      "state": "unknown",
+      "attributes": {
+        "friendly_name": "sdk_gphone64_x86_64",
+        "supported_features": 1
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "sensor.sdk_gphone64_x86_64_battery_level",
+      "state": "100",
+      "attributes": {
+        "state_class": "measurement",
+        "unit_of_measurement": "%",
+        "device_class": "battery",
+        "icon": "mdi:battery",
+        "friendly_name": "sdk_gphone64_x86_64 Battery level"
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "sensor.sdk_gphone64_x86_64_battery_state",
+      "state": "not_charging",
+      "attributes": {
+        "options": [
+          "charging",
+          "discharging",
+          "full",
+          "not_charging"
+        ],
+        "device_class": "enum",
+        "icon": "mdi:battery",
+        "friendly_name": "sdk_gphone64_x86_64 Battery state"
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "sensor.sdk_gphone64_x86_64_charger_type",
+      "state": "none",
+      "attributes": {
+        "options": [
+          "ac",
+          "usb",
+          "wireless",
+          "dock",
+          "none"
+        ],
+        "device_class": "enum",
+        "icon": "mdi:battery",
+        "friendly_name": "sdk_gphone64_x86_64 Charger type"
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "todo.shopping_list",
+      "state": "0",
+      "attributes": {
+        "friendly_name": "Shopping List",
+        "supported_features": 15
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "automation.bed_light_schedule",
+      "state": "on",
+      "attributes": {
+        "id": "bed_light_schedule",
+        "last_triggered": "2026-10-10T08:40:00.367575+00:00",
+        "mode": "single",
+        "current": 0,
+        "friendly_name": "Bed light schedule"
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "automation.guest_welcome",
+      "state": "on",
+      "attributes": {
+        "id": "guest_welcome",
+        "last_triggered": "2026-10-10T08:25:35.774969+00:00",
+        "mode": "single",
+        "current": 0,
+        "friendly_name": "Guest welcome"
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "tts.google_translate_en_com",
+      "state": "unknown",
+      "attributes": {
+        "friendly_name": "Google Translate en com"
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "weather.forecast_native_test_home",
+      "state": "rainy",
+      "attributes": {
+        "temperature": 12.4,
+        "dew_point": 7.7,
         "temperature_unit": "°C",
-        "humidity": 78,
-        "cloud_coverage": 10.9,
-        "uv_index": 0,
-        "pressure": 1007.1,
+        "humidity": 73,
+        "cloud_coverage": 40.6,
+        "uv_index": 0.2,
+        "pressure": 1007.8,
         "pressure_unit": "hPa",
-        "wind_bearing": 276.2,
-        "wind_speed": 22.3,
+        "wind_bearing": 248.6,
+        "wind_speed": 21.2,
         "wind_speed_unit": "km/h",
         "visibility_unit": "km",
         "precipitation_unit": "mm",
         "attribution": "Weather forecast from met.no, delivered by the Norwegian Meteorological Institute.",
         "friendly_name": "Forecast Native Test Home",
         "supported_features": 3
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "lawn_mower.garden_mower",
+      "state": "docked",
+      "attributes": {
+        "friendly_name": "Garden mower",
+        "supported_features": 7
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "lawn_mower.simple_mower",
+      "state": "mowing",
+      "attributes": {
+        "friendly_name": "Simple mower",
+        "supported_features": 1
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "lawn_mower.returning_mower",
+      "state": "returning",
+      "attributes": {
+        "friendly_name": "Returning mower",
+        "supported_features": 7
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "remote.tv_remote",
+      "state": "on",
+      "attributes": {
+        "activity_list": [
+          "Watch TV",
+          "Play games",
+          "Listen to music"
+        ],
+        "current_activity": "Watch TV",
+        "friendly_name": "TV remote",
+        "supported_features": 4
+      },
+      "last_changed": "2026-01-01T00:00:00+00:00",
+      "last_reported": "2026-01-01T00:00:00+00:00",
+      "last_updated": "2026-01-01T00:00:00+00:00",
+      "context": {
+        "id": "01JGOLDENCONTEXT000000000000",
+        "parent_id": null,
+        "user_id": null
+      }
+    },
+    {
+      "entity_id": "sensor.garden_mower_battery",
+      "state": "73",
+      "attributes": {
+        "state_class": "measurement",
+        "unit_of_measurement": "%",
+        "device_class": "battery",
+        "friendly_name": "Garden mower Battery"
       },
       "last_changed": "2026-01-01T00:00:00+00:00",
       "last_reported": "2026-01-01T00:00:00+00:00",

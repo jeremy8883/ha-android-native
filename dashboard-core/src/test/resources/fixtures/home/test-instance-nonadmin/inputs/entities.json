@@ -1026,5 +1026,40 @@
     "labels": [],
     "platform": "automation",
     "name": "Guest welcome"
+  },
+  "lawn_mower.garden_mower": {
+    "entity_id": "lawn_mower.garden_mower",
+    "device_id": "54c4faca44662ac60f3c50e605645251",
+    "area_id": "garden",
+    "labels": [],
+    "platform": "test_devices",
+    "has_entity_name": true
+  },
+  "lawn_mower.simple_mower": {
+    "entity_id": "lawn_mower.simple_mower",
+    "labels": [],
+    "platform": "test_devices",
+    "name": "Simple mower"
+  },
+  "lawn_mower.returning_mower": {
+    "entity_id": "lawn_mower.returning_mower",
+    "labels": [],
+    "platform": "test_devices",
+    "name": "Returning mower"
+  },
+  "remote.tv_remote": {
+    "entity_id": "remote.tv_remote",
+    "area_id": "living_room",
+    "labels": [],
+    "platform": "test_devices",
+    "name": "TV remote"
+  },
+  "sensor.garden_mower_battery": {
+    "entity_id": "sensor.garden_mower_battery",
+    "device_id": "54c4faca44662ac60f3c50e605645251",
+    "labels": [],
+    "platform": "test_devices",
+    "has_entity_name": true,
+    "name": "Battery"
   }
 }

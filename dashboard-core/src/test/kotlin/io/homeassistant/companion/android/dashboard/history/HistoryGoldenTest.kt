@@ -85,10 +85,13 @@ class HistoryGoldenTest {
 
     private fun JsonObject.withoutStart() = JsonObject(filterKeys { it != "start_time" })
 
-    /** JavaScript keeps fractions of milliseconds; the app's times are whole ones. */
+    /**
+     * JavaScript keeps fractions of milliseconds; the app's times are whole ones. The stream's purge time is the
+     * capture's milliseconds as epoch seconds, which a double can't hold exactly, so it may come back 1 ms early.
+     */
     private fun assertTimes(expected: List<Double>, actual: List<Long>) {
         assertEquals(expected.size, actual.size)
-        expected.zip(actual).forEach { (e, a) -> assertTrue(abs(e - a) < 1, "time $a, expected $e") }
+        expected.zip(actual).forEach { (e, a) -> assertTrue(abs(e - a) <= 1, "time $a, expected $e") }
     }
 
     private companion object {

@@ -326,6 +326,8 @@
    }
   },
   "common": {
+   "apply": "Apply",
+   "cancel": "Cancel",
    "close": "Close"
   },
   "components": {
@@ -420,6 +422,85 @@
      "zone": "Zone"
     },
     "view_trace": "View trace"
+   },
+   "media-browser": {
+    "audio_not_supported": "Your browser does not support the audio element.",
+    "auto": "Auto",
+    "choose_player": "Choose player",
+    "class": {
+     "album": "Album",
+     "app": "App",
+     "artist": "Artist",
+     "channel": "Channel",
+     "composer": "Composer",
+     "contributing_artist": "Contributing artist",
+     "directory": "Library",
+     "episode": "Episode",
+     "game": "Game",
+     "genre": "Genre",
+     "image": "Image",
+     "movie": "Movie",
+     "music": "Music",
+     "playlist": "Playlist",
+     "podcast": "Podcast",
+     "season": "Season",
+     "track": "Track",
+     "tv_show": "TV show",
+     "url": "URL",
+     "video": "Video"
+    },
+    "documentation": "documentation",
+    "file_management": {
+     "add_media": "Add media",
+     "confirm_delete": "Do you want to delete {count} {count, plural,\n  one {file}\n  other {files}\n}?",
+     "delete": "Delete {count}",
+     "deleting": "Deleting {count}",
+     "deselect_all": "Deselect all",
+     "folders_not_supported": "Folders cannot be managed via the UI.",
+     "highlight_button": "Click here to upload your first media",
+     "manage": "Manage",
+     "no_items": "No media items found",
+     "select_all": "Select all",
+     "tip_media_storage": "You can add network storage to your Home Assistant instance in the {storage} panel.",
+     "tip_storage_panel": "storage",
+     "title": "Media management",
+     "upload_failed": "Upload failed: {reason}",
+     "uploading": "Uploading {count} {count, plural,\n  one {file}\n  other {files}\n}"
+    },
+    "grid": "Grid",
+    "learn_adding_local_media": "Learn more about adding media in the {documentation}.",
+    "list": "List",
+    "local_media_files": "Place your video, audio, and image files in the media directory to be able to browse and play them in the browser or on supported media players.",
+    "media-player-browser": "Media",
+    "media_browsing_error": "Media browsing error",
+    "media_not_supported": "Your browser's media player does not support this type of media",
+    "media_player": "Media player",
+    "media_player_unavailable": "The selected media player is unavailable.",
+    "no_items": "No items",
+    "no_local_media_found": "No local media found",
+    "no_media_folder": "It looks like you have not yet created a media directory.",
+    "not_shown": "{count} {count, plural,\n  one {item}\n  other {items}\n} incompatible with the currently selected player {count, plural,\n  one {is}\n  other {are}\n} hidden",
+    "pick": "Pick",
+    "pick-media": "Pick media",
+    "play": "Play",
+    "play-media": "Play media",
+    "setup_local_help": "Check the {documentation} on how to set up local media.",
+    "tts": {
+     "action_pick": "Select",
+     "action_play": "Say",
+     "copy_voice_id": "Copy voice ID",
+     "example_message": "Hello {name}, you can play any text on any supported media player!",
+     "faild_to_store_defaults": "Failed to store defaults: {error}",
+     "gender": "Gender",
+     "gender_female": "Female",
+     "gender_male": "Male",
+     "language": "Language",
+     "message": "Message",
+     "selected_voice_id": "Selected voice ID",
+     "set_as_default": "Set as default options"
+    },
+    "video_not_supported": "Your browser does not support the video element.",
+    "web-browser": "Web browser"
    },
    "relative_time": {
     "never": "Never"
@@ -969,6 +1050,14 @@
       "devices": "Devices",
       "other_devices": "Other devices"
      }
+    },
+    "warning": {
+     "attribute_not_found": "Attribute {attribute} not available in: {entity}",
+     "attribute_not_numeric": "Attribute {attribute} is non-numeric",
+     "entity_non_numeric": "Entity is non-numeric: {entity}",
+     "entity_not_found": "Entity not available: {entity}",
+     "entity_unavailable": "Entity is currently unavailable: {entity}",
+     "starting": "Home Assistant is starting. Not everything may be available yet."
     }
    },
    "page-authorize": {
