@@ -15,6 +15,7 @@ import io.homeassistant.companion.android.dashboard.display.relativeTime
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.feature.number
+import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.weather.ForecastEvent
 import io.homeassistant.companion.android.dashboard.weather.WeatherIcon
 import io.homeassistant.companion.android.dashboard.weather.forecastToShow
@@ -26,7 +27,7 @@ import kotlinx.serialization.json.JsonNull
  * Port of `more-info-weather` (frontend@20260624.6 src/dialogs/more-info/controls/more-info-weather.ts): the
  * condition's picture (else the entity's icon), the state and when it changed, the temperature and today's high and
  * low (else the precipitation or humidity), the pressure, humidity, wind and visibility, then the forecast of the
- * types the entity offers (tabs when several), daily by default.
+ * types the entity offers (tabs when several), daily by default, and the data's attribution.
  */
 data class WeatherMoreInfo(
     val condition: WeatherIcon?,
@@ -38,6 +39,7 @@ data class WeatherMoreInfo(
     val forecastTitle: String?,
     val tabs: List<Pair<String, String>>,
     val defaultType: String?,
+    val attribution: String? = null,
 )
 
 /** A reading under the conditions: its [icon], [name] and [value]. */
@@ -71,6 +73,7 @@ internal fun HassSnapshot.weatherMoreInfo(state: EntityState, now: Instant): Wea
         forecastTitle = "${localize("ui.card.weather.forecast")}:".takeIf { types.isNotEmpty() },
         tabs = types.map { it to localize("ui.card.weather.$it") }.takeIf { it.size > 1 }.orEmpty(),
         defaultType = types.firstOrNull(),
+        attribution = attributes.string("attribution")?.ifEmpty { null },
     )
 }
 

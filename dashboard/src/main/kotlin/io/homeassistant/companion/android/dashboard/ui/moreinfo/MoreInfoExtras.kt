@@ -70,20 +70,13 @@ private fun MoreInfoSun(rows: List<SunRow>) {
         HAHorizontalDivider()
         rows.forEach { row ->
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Column(Modifier.weight(1f)) {
-                    Text(
-                        row.name,
-                        style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
-                        color = colors.colorTextPrimary,
-                    )
-                    row.relative?.let {
-                        Text(
-                            it,
-                            style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
-                            color = colors.colorTextSecondary,
-                        )
-                    }
-                }
+                // `.key`: the name, then when, on one line
+                Text(
+                    listOfNotNull(row.name, row.relative).joinToString(" "),
+                    style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+                    color = colors.colorTextPrimary,
+                    modifier = Modifier.weight(1f),
+                )
                 Text(row.value, style = HATextStyle.Body, color = colors.colorTextPrimary)
             }
         }

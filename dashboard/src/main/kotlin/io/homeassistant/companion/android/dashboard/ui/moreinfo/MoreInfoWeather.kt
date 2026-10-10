@@ -106,6 +106,14 @@ internal fun MoreInfoWeather(weather: WeatherMoreInfo, state: EntityState, hass:
                 BoxWithConstraints(Modifier.fillMaxWidth()) { ForecastRow(columns, maxWidth, Modifier) }
             }
         }
+        weather.attribution?.let {
+            Text(
+                it,
+                style = HATextStyle.BodyMedium,
+                color = colors.colorTextSecondary,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+            )
+        }
     }
 }
 
