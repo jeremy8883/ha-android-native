@@ -7,6 +7,8 @@ import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.entityContext
 import io.homeassistant.companion.android.dashboard.feature.attributeName
+import io.homeassistant.companion.android.dashboard.history.showsHistory
+import io.homeassistant.companion.android.dashboard.logbook.showsLogbook
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.moreinfo.AlarmMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.AutomationMoreInfo
@@ -51,7 +53,8 @@ import kotlinx.serialization.json.JsonPrimitive
 /**
  * The native quick view of an entity, shown before (or instead of) upstream's full more-info dialog.
  *
- * @property context the area and device, for example "Kitchen › Kitchen speaker"
+ * @property context the area and device above the name, for example "Kitchen ▸ Kitchen speaker" (the dialog's
+ * breadcrumb)
  * @property changed when the state last changed, as a relative time
  * @property updatedAt when the entity's state object last changed (epoch seconds), so a switch knows when the server
  * answered
@@ -83,6 +86,8 @@ import kotlinx.serialization.json.JsonPrimitive
  * @property inlineHistory whether the history and activity follow the controls (`ha-more-info-info`: domains
  * without details of their own); for the others they are only in the history view
  * @property inlineAttributes whether the attributes follow them (`more-info-default`); else only in the details view
+ * @property historyButton whether the toolbar has the history button (`_shouldShowHistory`: the domains whose
+ * history isn't inline, when it has a history or activity)
  * @property details the details view's state entries (`ha-more-info-details`), as (label, value)
  */
 data class MoreInfoModel(
@@ -118,6 +123,7 @@ data class MoreInfoModel(
     val stateCard: StateCard? = null,
     val inlineHistory: Boolean = true,
     val inlineAttributes: Boolean = true,
+    val historyButton: Boolean = false,
     val details: List<Pair<String, String>> = emptyList(),
 )
 
@@ -142,7 +148,7 @@ data class StateCard(
  */
 fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
     val state = states[entityId] ?: return null
-    val (name, context) = entityPickerDisplay(state)
+    val (name, context) = entityNameParts(state)
     val domain = state.domain
     val light = lightMoreInfo(state)
     val position = positionMoreInfo(state)
@@ -152,7 +158,7 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
     return MoreInfoModel(
         entityId = entityId,
         name = name,
-        context = context,
+        context = context.joinToString(" ▸ ").ifEmpty { null },
         icon = entityIcon(entityId),
         state = light?.state ?: position?.state ?: fan?.state ?: vacuum?.state ?: formatEntityState(state),
         // A change the server stamped ahead of this device's clock happened just now, not in the future
@@ -184,6 +190,9 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         stateCard = if (domain !in NEW_MORE_INFO_DOMAINS && domain !in NO_INFO_DOMAINS) stateCard(state, now) else null,
         inlineHistory = domain !in WITH_MORE_INFO_DOMAINS,
         inlineAttributes = domain !in WITH_MORE_INFO_DOMAINS && domain !in HIDE_DEFAULT_MORE_INFO_DOMAINS,
+        historyButton = domain in WITH_MORE_INFO_DOMAINS &&
+            domain !in NO_HISTORY_DOMAINS &&
+            (showsHistory(entityId) || showsLogbook(entityId)),
         details = detailEntries(state),
     )
 }
@@ -224,12 +233,17 @@ private fun HassSnapshot.detailEntries(state: EntityState): List<Pair<String, St
  * own. Port of `computeEntityPickerDisplay`.
  */
 fun HassSnapshot.entityPickerDisplay(state: EntityState): Pair<String, String?> {
+    val (name, context) = entityNameParts(state)
+    return name to context.joinToString(" › ").ifEmpty { null }
+}
+
+/** The name of [state] and its context (its area, and its device when it has a name of its own). */
+private fun HassSnapshot.entityNameParts(state: EntityState): Pair<String, List<String>> {
     val context = registries.entityContext(state.entityId)
     val deviceName = context.device?.deviceName()
     val entityName = entityName(state)
     return (entityName ?: deviceName ?: state.entityId) to
         listOfNotNull(context.area?.name?.trim()?.ifEmpty { null }, deviceName.takeIf { entityName != null })
-            .joinToString(" › ").ifEmpty { null }
 }
 
 /** Port of `ha-attributes`' filter: attributes that are not internal, nor shown elsewhere. */
@@ -246,6 +260,9 @@ private const val MILLIS = 1000.0
 
 /** Port of `DOMAINS_FULL_HEIGHT_MORE_INFO`. */
 private val FULL_HEIGHT_DOMAINS = setOf("update")
+
+/** Port of `DOMAINS_MORE_INFO_NO_HISTORY`. */
+private val NO_HISTORY_DOMAINS = setOf("camera", "configurator")
 
 /** Port of `DOMAINS_NO_INFO`: no state card. */
 private val NO_INFO_DOMAINS = setOf("camera", "configurator")

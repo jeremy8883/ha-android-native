@@ -1,10 +1,12 @@
 package io.homeassistant.companion.android.dashboard.ui
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
@@ -29,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
@@ -37,6 +40,7 @@ import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.derive.MoreInfoModel
 import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesMenuItems
 
 // The details' toolbar and views. Port of the toolbar of `ha-more-info-dialog` (frontend@20260624.6
 // src/dialogs/more-info/ha-more-info-dialog.ts).
@@ -53,28 +57,32 @@ internal sealed interface MoreInfoView {
     data object Details : MoreInfoView
 }
 
-/** `100dvh - max(var(--safe-area-inset-top), 48px)`. */
+/**
+ * `100dvh - max(var(--safe-area-inset-top), 48px)`, less the navigation bar the sheet adds under its content.
+ */
 @Composable
 internal fun sheetHeight(): Dp {
     val density = LocalDensity.current
     val window = with(density) { LocalWindowInfo.current.containerSize.height.toDp() }
     val statusBar = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
-    return window - maxOf(statusBar, MIN_TOP_GAP)
+    val navigationBar = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    return window - maxOf(statusBar, MIN_TOP_GAP) - navigationBar
 }
 
 /**
- * Port of the dialog's toolbar: close (or back from another view), the entity's name, then on the main view the
- * history button and a menu with the details view and the frontend's full dialog.
+ * Port of the dialog's toolbar: close (or back from another view), the entity's name under its area and device,
+ * then on the main view the history button and a menu with [favorites]' items, the details view and the frontend's
+ * full dialog.
  */
 @Composable
 internal fun MoreInfoToolbar(
     model: MoreInfoModel,
     view: MoreInfoView,
-    showsHistory: Boolean,
     onView: (MoreInfoView) -> Unit,
     onClose: () -> Unit,
     onShowFull: (() -> Unit)?,
     localize: Localize,
+    favorites: FavoritesMenuItems?,
 ) {
     val colors = LocalHAColorScheme.current
     var menu by remember { mutableStateOf(false) }
@@ -87,20 +95,9 @@ internal fun MoreInfoToolbar(
             if (main) CLOSE_ICON else BACK_ICON,
             localize(if (main) "ui.common.close" else "ui.common.back"),
         ) { if (main) onClose() else onView(MoreInfoView.Main) }
-        Text(
-            when (view) {
-                MoreInfoView.Main -> model.name
-                MoreInfoView.History -> localize("ui.dialogs.more_info_control.history")
-                MoreInfoView.Details -> localize("ui.dialogs.more_info_control.details")
-            },
-            style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start, fontSize = TITLE_FONT_SIZE),
-            color = colors.colorTextPrimary,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1f).padding(horizontal = HADimens.SPACE2),
-        )
+        ToolbarTitle(model, view, localize, Modifier.weight(1f).padding(horizontal = HADimens.SPACE2))
         if (main) {
-            if (showsHistory) {
+            if (model.historyButton) {
                 ToolbarButton(HISTORY_ICON, localize("ui.dialogs.more_info_control.history")) {
                     onView(MoreInfoView.History)
                 }
@@ -108,6 +105,10 @@ internal fun MoreInfoToolbar(
             Box {
                 ToolbarButton(MENU_ICON, localize("ui.common.menu")) { menu = true }
                 DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {
+                    favorites?.let { items ->
+                        items { menu = false }
+                        HAHorizontalDivider()
+                    }
                     DropdownMenuItem(
                         text = { Text(localize("ui.dialogs.more_info_control.details")) },
                         leadingIcon = {
@@ -136,6 +137,34 @@ internal fun MoreInfoToolbar(
     }
 }
 
+/** The title: the entity's name (or the view's) under the breadcrumb of its area and device, which the name ends. */
+@Composable
+private fun ToolbarTitle(model: MoreInfoModel, view: MoreInfoView, localize: Localize, modifier: Modifier) {
+    val colors = LocalHAColorScheme.current
+    Column(modifier) {
+        model.context?.let { breadcrumb ->
+            Text(
+                breadcrumb,
+                style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start, lineHeight = BREADCRUMB_LINE_HEIGHT),
+                color = colors.colorTextSecondary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+        Text(
+            when (view) {
+                MoreInfoView.Main -> model.name
+                MoreInfoView.History -> localize("ui.dialogs.more_info_control.history")
+                MoreInfoView.Details -> localize("ui.dialogs.more_info_control.details")
+            },
+            style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start, fontSize = TITLE_FONT_SIZE),
+            color = colors.colorTextPrimary,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+    }
+}
+
 @Composable
 private fun ToolbarButton(icon: String, label: String, onClick: () -> Unit) {
     IconButton(onClick = onClick, modifier = Modifier.semantics { contentDescription = label }) {
@@ -150,6 +179,9 @@ private const val MENU_ICON = "mdi:dots-vertical"
 private const val DETAILS_ICON = "mdi:format-list-bulleted-square"
 private const val FULL_ICON = "mdi:open-in-new"
 private val MIN_TOP_GAP = 48.dp
+
+/** The breadcrumb's 16px line. */
+private val BREADCRUMB_LINE_HEIGHT = 16.sp
 
 /** The toolbar title, `--ha-font-size-xl`. */
 private val TITLE_FONT_SIZE = 20.sp

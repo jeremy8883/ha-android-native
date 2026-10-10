@@ -1,11 +1,13 @@
 package io.homeassistant.companion.android.dashboard.ui.moreinfo
 
 import android.content.Intent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
@@ -21,8 +23,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -57,8 +61,17 @@ import java.time.Instant
  */
 @Composable
 internal fun MoreInfoUpdate(info: UpdateMoreInfo, entityId: String) {
+    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+        UpdateSummary(info)
+        ReleaseNotes(info, entityId)
+    }
+}
+
+/** The `summary`: the progress, the title, then the versions and the announcement link, line after line. */
+@Composable
+private fun UpdateSummary(info: UpdateMoreInfo) {
     val colors = LocalHAColorScheme.current
-    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3)) {
+    Column(Modifier.fillMaxWidth()) {
         when (val progress = info.progress) {
             is UpdateProgress.Percent -> LinearProgressIndicator(
                 progress = { (progress.percent / PERCENT).toFloat() },
@@ -68,11 +81,15 @@ internal fun MoreInfoUpdate(info: UpdateMoreInfo, entityId: String) {
             null -> Unit
         }
         info.title?.let {
-            Text(it, style = HATextStyle.Body.copy(fontWeight = FontWeight.Bold), color = colors.colorTextPrimary)
+            Text(
+                it,
+                style = HATextStyle.Body.copy(fontWeight = FontWeight.Bold),
+                color = colors.colorTextPrimary,
+                modifier = Modifier.padding(vertical = HADimens.SPACE3),
+            )
         }
         info.versions.forEach { (key, value) -> VersionRow(key, value) }
         info.releaseUrl?.let { url -> ReleaseLink(info.releaseLabel, url) }
-        ReleaseNotes(info, entityId)
     }
 }
 
@@ -97,15 +114,23 @@ internal fun MoreInfoUpdateFooter(
 @Composable
 private fun VersionRow(key: String, value: String) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(key, style = HATextStyle.Body, color = LocalHAColorScheme.current.colorTextPrimary)
-        Text(value, style = HATextStyle.Body, color = LocalHAColorScheme.current.colorTextPrimary)
+        Text(key, style = HATextStyle.BodyMedium, color = LocalHAColorScheme.current.colorTextPrimary)
+        Text(value, style = HATextStyle.BodyMedium, color = LocalHAColorScheme.current.colorTextPrimary)
     }
 }
 
+/** The announcement, an underlined link in the primary colour on its own line. */
 @Composable
 private fun ReleaseLink(label: String, url: String) {
     val context = LocalContext.current
-    HAPlainButton(label, { context.startActivity(Intent(Intent.ACTION_VIEW, url.toUri())) })
+    Text(
+        label,
+        style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start, textDecoration = TextDecoration.Underline),
+        color = LocalHAColorScheme.current.colorOnPrimaryNormal,
+        modifier = Modifier.clickable(role = Role.Button) {
+            context.startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
+        },
+    )
 }
 
 /** The fetched notes (a spinner while loading, the error if it fails), else the summary, after a rule. */

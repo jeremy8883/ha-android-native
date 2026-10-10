@@ -1,10 +1,7 @@
 package io.homeassistant.companion.android.dashboard.ui.moreinfo
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,8 +12,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.theme.HASize
@@ -31,48 +26,47 @@ import io.homeassistant.companion.android.dashboard.moreinfo.favoritesActions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.loadErrorText
 
+/** The favourites' items of the dialog's menu, each closing the menu with the given function first. */
+internal typealias FavoritesMenuItems = @Composable (close: () -> Unit) -> Unit
+
 /**
- * The header's favourites menu, for admins: start or stop editing the favourites of a light, cover or valve, reset
- * them to the defaults (when some were saved) and copy them to others, as the more-info dialog's menu offers.
- * Hidden until the entity's registry entry is loaded, and when it has none.
+ * The favourites part of the dialog's menu, for admins: start or stop editing the favourites of a light, cover or
+ * valve, reset them to the defaults (when some were saved) and copy them to others. [content] gets the items, or
+ * `null` until the entity's registry entry is loaded and when it has none; their dialogs show from here.
  */
 @Composable
-internal fun FavoritesMenu(state: EntityState, hass: HassSnapshot) {
+internal fun FavoritesMenuHost(
+    state: EntityState,
+    hass: HassSnapshot,
+    content: @Composable (FavoritesMenuItems?) -> Unit,
+) {
     val viewModel = favoritesViewModel(state.entityId)
     val entry by viewModel.entry.collectAsStateWithLifecycle()
     val editMode by viewModel.editMode.collectAsStateWithLifecycle()
     val actions = remember(state, entry) {
         (entry as? Loadable.Ready)?.value?.let { hass.favoritesActions(state, it) }
-    } ?: return
-    if (hass.user?.isAdmin != true) return
-    var expanded by remember { mutableStateOf(false) }
+    }
+    if (actions == null || hass.user?.isAdmin != true) {
+        content(null)
+        return
+    }
     var confirmReset by remember { mutableStateOf(false) }
     var copying by remember { mutableStateOf(false) }
-    val moreOptions = stringResource(R.string.native_dashboard_more_options)
-    Box {
-        IconButton(onClick = { expanded = true }) {
-            DashboardIcon(
-                "mdi:dots-vertical",
-                LocalHAColorScheme.current.colorTextPrimary,
-                Modifier.size(HASize.X2L).semantics { contentDescription = moreOptions },
-            )
+    content { close ->
+        MenuItem(
+            if (editMode) "mdi:pencil-off" else "mdi:pencil",
+            if (editMode) hass.localize("ui.dialogs.more_info_control.exit_edit_mode") else actions.editLabel,
+        ) {
+            close()
+            viewModel.setEditMode(!editMode)
         }
-        DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            MenuItem(
-                if (editMode) "mdi:pencil-off" else "mdi:pencil",
-                if (editMode) hass.localize("ui.dialogs.more_info_control.exit_edit_mode") else actions.editLabel,
-            ) {
-                expanded = false
-                viewModel.setEditMode(!editMode)
-            }
-            MenuItem("mdi:backup-restore", actions.resetLabel, enabled = actions.custom) {
-                expanded = false
-                confirmReset = true
-            }
-            MenuItem("mdi:content-duplicate", actions.copyLabel) {
-                expanded = false
-                copying = true
-            }
+        MenuItem("mdi:backup-restore", actions.resetLabel, enabled = actions.custom) {
+            close()
+            confirmReset = true
+        }
+        MenuItem("mdi:content-duplicate", actions.copyLabel) {
+            close()
+            copying = true
         }
     }
     FavoritesMenuDialogs(hass, actions, viewModel, confirmReset, copying) {

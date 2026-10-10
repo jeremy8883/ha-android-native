@@ -66,7 +66,8 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.RowControlContent
 import io.homeassistant.companion.android.dashboard.ui.cards.ServerImage
 import io.homeassistant.companion.android.dashboard.ui.controls.StateToggleControl
-import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesMenu
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesMenuHost
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesMenuItems
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.LogbookSection
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoAlarm
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoClimate
@@ -115,15 +116,17 @@ internal fun MoreInfoSheet(
         // Back returns to the main view first, as the dialog's back button does
         BackHandler(enabled = view != MoreInfoView.Main) { view = MoreInfoView.Main }
         Column(Modifier.fillMaxWidth().height(sheetHeight()).navigationBarsPadding()) {
-            MoreInfoToolbar(
-                model = model,
-                view = view,
-                showsHistory = snapshot.showsHistory(entityId) || snapshot.showsLogbook(entityId),
-                onView = { view = it },
-                onClose = onDismiss,
-                onShowFull = onShowFull,
-                localize = snapshot.localize,
-            )
+            WithFavoritesMenu(snapshot.states[entityId], snapshot) { favorites ->
+                MoreInfoToolbar(
+                    model = model,
+                    view = view,
+                    onView = { view = it },
+                    onClose = onDismiss,
+                    onShowFull = onShowFull,
+                    localize = snapshot.localize,
+                    favorites = favorites,
+                )
+            }
             when (view) {
                 MoreInfoView.Main -> MoreInfoMain(model, snapshot, instant, interactions)
                 MoreInfoView.History -> MoreInfoHistoryView(model.entityId, snapshot, instant, interactions)
@@ -191,15 +194,7 @@ private fun LazyListScope.mainItems(list: MainList) {
         item(key = "state-card") { Box(section) { StateCardRow(card, now, interactions.onAction) } }
     }
     if (model.stateHeader) {
-        item(key = "state") {
-            Box(section) {
-                MoreInfoState(model) {
-                    hass.states[model.entityId]?.takeIf {
-                        it.domain in FAVORITES_DOMAINS
-                    }?.let { FavoritesMenu(it, hass) }
-                }
-            }
-        }
+        item(key = "state") { Box(section) { MoreInfoStateText(model) } }
     }
     hass.states[model.entityId]?.let { state ->
         item(key = "controls") {
@@ -346,15 +341,17 @@ private fun StateCardRow(card: StateCard, now: Instant, onAction: (CardAction) -
     }
 }
 
-/** Port of `ha-more-info-state-header`: the state, and when it last changed, centred; [menu] at its end. */
+/** [content] with the favourites' menu items of [state], for the domains with favourites. */
 @Composable
-private fun MoreInfoState(model: MoreInfoModel, menu: @Composable () -> Unit) {
-    Box(Modifier.fillMaxWidth()) {
-        Box(Modifier.align(Alignment.TopEnd)) { menu() }
-        MoreInfoStateText(model)
-    }
+private fun WithFavoritesMenu(
+    state: EntityState?,
+    hass: HassSnapshot,
+    content: @Composable (FavoritesMenuItems?) -> Unit,
+) {
+    if (state != null && state.domain in FAVORITES_DOMAINS) FavoritesMenuHost(state, hass, content) else content(null)
 }
 
+/** Port of `ha-more-info-state-header`: the state, and when it last changed, centred. */
 @Composable
 private fun MoreInfoStateText(model: MoreInfoModel) {
     val colors = LocalHAColorScheme.current
@@ -399,7 +396,7 @@ private fun MoreInfoAttributes(attributes: List<Pair<String, String>>, title: St
     }
 }
 
-/** The domains with favourites, whose menu the header shows. */
+/** The domains with favourites, whose items the menu has. */
 private val FAVORITES_DOMAINS = setOf("light", "cover", "valve")
 
 /** `state-badge`'s 40 × 40. */

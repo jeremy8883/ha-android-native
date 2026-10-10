@@ -130,6 +130,7 @@ class MoreInfoModelTest {
         assertNull(model.stateCard)
         assertEquals(false, model.inlineHistory)
         assertEquals(false, model.inlineAttributes)
+        assertTrue(model.historyButton)
         assertEquals(percent.toDouble(), model.light?.brightness?.value)
         assertTrue(model.attributes.none { (name, _) -> name == "Friendly name" })
         assertTrue(model.attributes.isNotEmpty())
@@ -150,6 +151,15 @@ class MoreInfoModelTest {
         assertEquals(model.state, model.stateCard?.state)
         assertNull(model.stateCard?.control)
         assertTrue(model.inlineHistory && model.inlineAttributes)
+        // Its history is already inline
+        assertEquals(false, model.historyButton)
+    }
+
+    @Test
+    fun `Given an entity in an area when deriving its details then the area is the breadcrumb above its name`() {
+        val model = hass.moreInfoModel("sensor.living_room_temperature", Instant.EPOCH)!!
+        assertEquals("Living Room", model.context)
+        assertEquals("Living room temperature", model.name)
     }
 
     @Test
