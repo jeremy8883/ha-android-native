@@ -77,7 +77,7 @@ internal fun MoreInfoClimate(climate: ClimateMoreInfo, state: EntityState, onAct
 
 /** The current temperature and humidity, side by side: a small label over each value. */
 @Composable
-private fun CurrentReadings(readings: List<Pair<String, String>>) {
+internal fun CurrentReadings(readings: List<Pair<String, String>>) {
     if (readings.isEmpty()) return
     val colors = LocalHAColorScheme.current
     Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE6)) {

@@ -46,6 +46,10 @@ import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.history.showsHistory
 import io.homeassistant.companion.android.dashboard.logbook.showsLogbook
+import io.homeassistant.companion.android.dashboard.moreinfo.humidifierHumidityCall
+import io.homeassistant.companion.android.dashboard.moreinfo.humidifierTarget
+import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterTarget
+import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterTemperatureCall
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.EntityToggle
@@ -56,6 +60,7 @@ import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoClimate
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLight
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLogbook
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.SingleDialControls
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -143,6 +148,27 @@ private fun DomainControls(
 ) {
     model.light?.let { MoreInfoLight(it, state, hass, onAction) }
     model.climate?.let { MoreInfoClimate(it, state, onAction) }
+    model.waterHeater?.let { heater ->
+        SingleDialControls(
+            current = heater.current,
+            control = heater.temperature,
+            target = waterHeaterTarget(state),
+            menus = heater.menus,
+            onSet = { onAction(waterHeaterTemperatureCall(state, it)) },
+            onAction = onAction,
+        )
+    }
+    model.humidifier?.let { humidifier ->
+        SingleDialControls(
+            current = humidifier.current,
+            control = humidifier.humidity,
+            target = humidifierTarget(state),
+            menus = humidifier.menus,
+            onSet = { onAction(humidifierHumidityCall(state, it)) },
+            onAction = onAction,
+            bottomUnit = true,
+        )
+    }
     model.stateToggle?.let { toggle ->
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { StateToggleControl(toggle, onAction) }
     }

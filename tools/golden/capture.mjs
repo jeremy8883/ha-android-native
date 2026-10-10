@@ -849,6 +849,11 @@ const CONTROL_ENTITIES = [
   "climate.heatpump",
   "climate.hvac",
   "climate.ecobee",
+  "water_heater.demo_water_heater",
+  "water_heater.demo_water_heater_celsius",
+  "humidifier.humidifier",
+  "humidifier.dehumidifier",
+  "humidifier.hygrostat",
 ];
 
 
@@ -867,6 +872,8 @@ async function captureMoreInfoControls(entityIds) {
       swing_mode: "swing_modes",
       swing_horizontal_mode: "swing_horizontal_modes",
     },
+    water_heater: { operation_mode: "operation_list" },
+    humidifier: { mode: "available_modes" },
   };
   const g = window.__golden;
   const ha = document.querySelector("home-assistant");
@@ -988,7 +995,7 @@ async function captureMoreInfoControls(entityIds) {
       circular: (() => {
         const control = root.querySelector(
           "ha-state-control-climate-temperature, ha-state-control-climate-humidity, " +
-            "ha-state-control-water-heater-temperature, ha-state-control-humidifier-humidity"
+            "ha-state-control-water_heater-temperature, ha-state-control-humidifier-humidity"
         );
         if (!control) return null;
         const r = control.shadowRoot;
@@ -1138,6 +1145,12 @@ async function captureMoreInfoControls(entityIds) {
     }
     if (domain === "light") out[entityId].as_is.calls = await lightCalls(g.clone(current));
     if (domain === "climate") out[entityId].as_is.calls = await climateCalls(g.clone(current));
+    if (domain === "water_heater") {
+      out[entityId].as_is.calls = await dialCalls(g.clone(current), "ha-state-control-water_heater-temperature", 50);
+    }
+    if (domain === "humidifier") {
+      out[entityId].as_is.calls = await dialCalls(g.clone(current), "ha-state-control-humidifier-humidity", 45);
+    }
   }
   return { capturedAt: new Date().toISOString(), entities: out };
 
@@ -1226,6 +1239,46 @@ async function captureMoreInfoControls(entityIds) {
       );
     }
     return recorded;
+  }
+
+  /** The calls of a single-target dial ([tag]): set to [value], each button pressed twice, and each menu. */
+  async function dialCalls(stateObj, tag, value) {
+    const recorded = [];
+    const record = async (control, label, act, wait) =>
+      recorded.push({ control, label, detail: null, calls: await recordCalls(stateObj, act, wait) });
+    const dial = (r) => r.querySelector(tag)?.shadowRoot;
+    await record("dial", `value ${value}`, (r) =>
+      dial(r)?.querySelector("ha-control-circular-slider")?.dispatchEvent(new CustomEvent("value-changed", { detail: { value } }))
+    );
+    for (const [index, name] of [[0, "minus"], [1, "plus"]]) {
+      await record("dial", `button ${name}`, async (r) => {
+        const button = dial(r)?.querySelectorAll(".buttons ha-outlined-icon-button")[index];
+        button?.click();
+        button?.click();
+      }, 1400);
+    }
+    await menuCalls(stateObj, recorded, record);
+    return recorded;
+  }
+
+  /** Each menu of [stateObj]'s details set to an option it isn't on. */
+  async function menuCalls(stateObj, recorded, record) {
+    const el = document.createElement(`more-info-${stateObj.entity_id.split(".")[0]}`);
+    el.hass = ha.hass;
+    el.stateObj = stateObj;
+    ha.shadowRoot.appendChild(el);
+    await sleep(300);
+    const menus = [...el.shadowRoot.querySelectorAll("ha-control-select-menu")]
+      .map((m) => ({ label: m.label, options: (m.options ?? []).map((o) => o.value), value: m.value }));
+    el.remove();
+    for (const [index, menu] of menus.entries()) {
+      const option = menu.options.find((o) => o !== menu.value);
+      if (option == null) continue;
+      await record("menu", `${menu.label} ${option}`, (r) =>
+        [...r.querySelectorAll("ha-control-select-menu")][index]
+          ?.dispatchEvent(new CustomEvent("wa-select", { detail: { item: { value: option } } }))
+      );
+    }
   }
 
   /**

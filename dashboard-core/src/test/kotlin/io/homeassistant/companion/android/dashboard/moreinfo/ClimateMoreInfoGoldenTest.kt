@@ -4,7 +4,6 @@ import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.golden.GoldenFixture
-import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.number
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.objects
@@ -98,76 +97,6 @@ class ClimateMoreInfoGoldenTest {
                 menus.single { it.label == menuLabel }.options.single { it.value == option }.action
             }
         }
-    }
-
-    private fun assertCircular(captured: JsonObject, control: CircularControl) {
-        val slider = captured.obj("slider")!!
-        val colors = captured.obj("colors")!!
-        val expected = listOf(
-            slider.string("mode") ?: if (slider.boolean("dual") == true) "dual" else "start",
-            slider.boolean("dual"),
-            slider.number("value"),
-            slider.number("low"),
-            slider.number("high"),
-            slider.number("current"),
-            slider.number("min"),
-            slider.number("max"),
-            slider.number("step"),
-            slider.boolean("inactive"),
-            slider.boolean("readonly"),
-            slider.boolean("disabled"),
-            colors.string("state"),
-            colors.string("low"),
-            colors.string("high"),
-            colors.string("action"),
-            captured.string("label"),
-            captured.boolean("labelDisabled"),
-            captured.objects("big").map { Triple(it.number("value"), it.string("unit"), it.number("digits")?.toInt()) },
-            captured.string("primaryState"),
-            captured.objects("buttons").map { it.number("step") to it.string("color") },
-        )
-        val s = control.slider
-        val numbers = when (val primary = control.primary) {
-            is CircularPrimary.Target -> listOf(primary.number)
-            is CircularPrimary.Range -> listOf(primary.low, primary.high)
-            else -> emptyList()
-        }
-        val step = s.step
-        val actual = listOf(
-            when {
-                s.dual -> "dual"
-                s.mode == CircularMode.End -> "end"
-                s.mode == CircularMode.Full -> "full"
-                else -> "start"
-            },
-            s.dual,
-            s.value,
-            s.low,
-            s.high,
-            s.current,
-            s.min,
-            s.max,
-            s.step,
-            s.inactive,
-            s.readonly,
-            s.disabled,
-            s.color?.css(),
-            s.lowColor?.css(),
-            s.highColor?.css(),
-            s.actionColor?.css(),
-            control.label,
-            control.labelDisabled,
-            numbers.map { Triple(it.value, it.unit, it.fractionDigits) },
-            (control.primary as? CircularPrimary.Text)?.text,
-            if (control.buttons) {
-                // The low end's buttons are the ones shown first
-                val color = control.lowButtonColor?.css()
-                listOf(-step to color, step to color)
-            } else {
-                emptyList()
-            },
-        )
-        assertEquals(expected, actual)
     }
 
     private companion object {

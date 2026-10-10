@@ -92,8 +92,10 @@ data class StateToggle(
 /**
  * A dropdown of choices (`ha-control-select-menu`).
  *
- * @property icon the menu's icon, shown when the selected option has none
+ * @property icon the menu's icon, shown while nothing is selected, or always when its options have no icons
  * @property value the selected option's value, `null` when none
+ * @property optionIcons whether the options have icons, the selected one's then replacing [icon] (even when it has
+ * none, as upstream renders it)
  */
 data class SelectMenu(
     val label: String,
@@ -101,6 +103,7 @@ data class SelectMenu(
     val value: String?,
     val enabled: Boolean,
     val options: List<MenuOption>,
+    val optionIcons: Boolean = true,
 )
 
 /** One choice of a [SelectMenu], with its [icon] when it has one. */

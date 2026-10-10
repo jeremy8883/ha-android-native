@@ -1,11 +1,11 @@
 {
-  "capturedAt": "2026-10-10T04:18:43.112Z",
+  "capturedAt": "2026-10-10T04:24:47.324Z",
   "entities": {
     "light.bed_light": {
       "as_is": {
         "stateObj": {
           "entity_id": "light.bed_light",
-          "state": "on",
+          "state": "off",
           "attributes": {
             "min_color_temp_kelvin": 2000,
             "max_color_temp_kelvin": 6535,
@@ -17,33 +17,23 @@
               "color_temp",
               "hs"
             ],
-            "effect": "rainbow",
-            "color_mode": "color_temp",
-            "brightness": 180,
-            "color_temp_kelvin": 4166,
-            "hs_color": [
-              26.752,
-              31.945
-            ],
-            "rgb_color": [
-              255,
-              210,
-              174
-            ],
-            "xy_color": [
-              0.41,
-              0.362
-            ],
+            "effect": null,
+            "color_mode": null,
+            "brightness": null,
+            "color_temp_kelvin": null,
+            "hs_color": null,
+            "rgb_color": null,
+            "xy_color": null,
             "friendly_name": "Bed Light",
             "supported_features": 4
           },
           "context": {
-            "id": "01M4HZFEYW84J15VT7FCEK47K0",
+            "id": "01M4J0M2TJN7F0P3N8ZJG5EZDW",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T04:00:00.479Z",
-          "last_updated": "2026-10-10T04:00:00.479Z"
+          "last_changed": "2026-10-10T04:20:00.470Z",
+          "last_updated": "2026-10-10T04:20:00.470Z"
         },
         "entry": {
           "area_id": null,
@@ -91,22 +81,22 @@
           "original_icon": null
         },
         "main": {
-          "state": "71%",
+          "state": "Off",
           "toggle": null,
           "brightness": {
-            "value": 71,
+            "value": null,
             "min": 1,
             "max": 100,
             "step": 1,
             "mode": "start",
             "vertical": true,
             "inverted": false,
-            "showHandle": true,
+            "showHandle": false,
             "disabled": false,
             "label": "Brightness",
             "unit": "%",
-            "color": "#ffc699",
-            "background": "#ffc699",
+            "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
+            "background": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
             "gradient": null
           },
           "buttons": [
@@ -146,7 +136,7 @@
           "menus": [
             {
               "label": "Effect",
-              "value": "rainbow",
+              "value": null,
               "disabled": false,
               "options": [
                 {
@@ -261,7 +251,7 @@
         },
         "pickers": {
           "color": {
-            "state": "71%",
+            "state": "Off",
             "toggle": null,
             "buttons": [
               {
@@ -297,11 +287,8 @@
               }
             ],
             "rgb": {
-              "hs": [
-                26.666666666666664,
-                0.3176470588235294
-              ],
-              "colorBrightness": 255,
+              "hs": null,
+              "colorBrightness": null,
               "wv": null,
               "cw": null,
               "ww": null,
@@ -312,7 +299,7 @@
             "menus": [
               {
                 "label": "Effect",
-                "value": "rainbow",
+                "value": null,
                 "disabled": false,
                 "options": [
                   {
@@ -426,10 +413,10 @@
             }
           },
           "color_temp": {
-            "state": "71%",
+            "state": "Off",
             "toggle": null,
             "colorTemp": {
-              "value": 4166,
+              "value": null,
               "min": 2000,
               "max": 6535,
               "step": 1,
@@ -440,7 +427,7 @@
               "disabled": false,
               "label": "Temperature",
               "unit": "K",
-              "color": "var(--state-light-on-color, var(--state-light-active-color, var(--state-active-color)))",
+              "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
               "background": null,
               "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%"
             },
@@ -481,7 +468,7 @@
             "menus": [
               {
                 "label": "Effect",
-                "value": "rainbow",
+                "value": null,
                 "disabled": false,
                 "options": [
                   {
@@ -960,7 +947,7 @@
             "calls": [
               {
                 "domain": "light",
-                "service": "turn_off",
+                "service": "turn_on",
                 "data": {
                   "entity_id": "light.bed_light"
                 }
@@ -969,7 +956,7 @@
           },
           {
             "control": "effect",
-            "label": "off",
+            "label": "rainbow",
             "detail": null,
             "calls": [
               {
@@ -977,7 +964,7 @@
                 "service": "turn_on",
                 "data": {
                   "entity_id": "light.bed_light",
-                  "effect": "off"
+                  "effect": "rainbow"
                 }
               }
             ]
@@ -1010,12 +997,12 @@
             "effect": null
           },
           "context": {
-            "id": "01M4HZFEYW84J15VT7FCEK47K0",
+            "id": "01M4J0M2TJN7F0P3N8ZJG5EZDW",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T04:00:00.479Z",
-          "last_updated": "2026-10-10T04:00:00.479Z"
+          "last_changed": "2026-10-10T04:20:00.470Z",
+          "last_updated": "2026-10-10T04:20:00.470Z"
         },
         "entry": {
           "area_id": null,
@@ -1585,12 +1572,12 @@
             "restored": true
           },
           "context": {
-            "id": "01M4HZFEYW84J15VT7FCEK47K0",
+            "id": "01M4J0M2TJN7F0P3N8ZJG5EZDW",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T04:00:00.479Z",
-          "last_updated": "2026-10-10T04:00:00.479Z"
+          "last_changed": "2026-10-10T04:20:00.470Z",
+          "last_updated": "2026-10-10T04:20:00.470Z"
         },
         "entry": {
           "area_id": null,
@@ -14149,6 +14136,2435 @@
               true,
               false
             ],
+            "buttons": []
+          },
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "water_heater.demo_water_heater": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "water_heater.demo_water_heater",
+          "state": "eco",
+          "attributes": {
+            "min_temp": 43.3,
+            "max_temp": 60,
+            "target_temp_step": 1,
+            "operation_list": [
+              "eco",
+              "electric",
+              "performance",
+              "high_demand",
+              "heat_pump",
+              "gas",
+              "off"
+            ],
+            "current_temperature": null,
+            "temperature": 48.3,
+            "target_temp_high": null,
+            "target_temp_low": null,
+            "operation_mode": "eco",
+            "away_mode": "off",
+            "friendly_name": "Demo Water Heater",
+            "supported_features": 15
+          },
+          "context": {
+            "id": "01M4HEKT3N7V47FBXKWMSBN8C7",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.173Z",
+          "last_updated": "2026-10-09T23:05:17.173Z"
+        },
+        "entry": {
+          "area_id": "garage",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.342803,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "water_heater.demo_water_heater",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "594e1cf8da1980ac58a944ef08df63b0",
+          "labels": [],
+          "modified_at": 1791433963.426784,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Demo Water Heater",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_water_heater",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "min_temp": 43.3,
+            "max_temp": 60,
+            "target_temp_step": 1,
+            "operation_list": [
+              "eco",
+              "electric",
+              "performance",
+              "high_demand",
+              "heat_pump",
+              "gas",
+              "off"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "eco",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "electric",
+                  "label": "Electric"
+                },
+                {
+                  "value": "gas",
+                  "label": "Gas"
+                },
+                {
+                  "value": "heat_pump",
+                  "label": "Heat pump"
+                },
+                {
+                  "value": "eco",
+                  "label": "Eco"
+                },
+                {
+                  "value": "performance",
+                  "label": "Performance"
+                },
+                {
+                  "value": "high_demand",
+                  "label": "High demand"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Away mode",
+              "value": "off",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "on",
+                  "label": "On"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [],
+          "circular": {
+            "tag": "ha-state-control-water_heater-temperature",
+            "colors": {
+              "state": "var(--state-water_heater-eco-color, var(--state-water_heater-active-color, var(--state-active-color)))",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": null,
+              "value": 48.3,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": null,
+              "min": 43.3,
+              "max": 60,
+              "step": 1,
+              "inactive": false,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Target",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 48.3,
+                "unit": "°C",
+                "digits": 0,
+                "text": "48 °C"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": [
+              {
+                "step": -1,
+                "target": "",
+                "color": null
+              },
+              {
+                "step": 1,
+                "target": "",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {},
+        "menuIcons": {
+          "operation_mode": {
+            "eco": "mdi:leaf",
+            "electric": "mdi:lightning-bolt",
+            "performance": "mdi:rocket-launch",
+            "high_demand": "mdi:finance",
+            "heat_pump": "mdi:heat-wave",
+            "gas": "mdi:fire-circle",
+            "off": "mdi:power"
+          }
+        },
+        "calls": [
+          {
+            "control": "dial",
+            "label": "value 50",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "water_heater",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "water_heater.demo_water_heater",
+                  "temperature": 50
+                }
+              }
+            ]
+          },
+          {
+            "control": "dial",
+            "label": "button minus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "water_heater",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "water_heater.demo_water_heater",
+                  "temperature": 46.3
+                }
+              }
+            ]
+          },
+          {
+            "control": "dial",
+            "label": "button plus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "water_heater",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "water_heater.demo_water_heater",
+                  "temperature": 50.3
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Mode electric",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "water_heater",
+                "service": "set_operation_mode",
+                "data": {
+                  "operation_mode": "electric",
+                  "entity_id": "water_heater.demo_water_heater"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Away mode on",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "water_heater",
+                "service": "set_away_mode",
+                "data": {
+                  "away_mode": true,
+                  "entity_id": "water_heater.demo_water_heater"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "water_heater.demo_water_heater",
+          "state": "off",
+          "attributes": {
+            "min_temp": 43.3,
+            "max_temp": 60,
+            "target_temp_step": 1,
+            "operation_list": [
+              "eco",
+              "electric",
+              "performance",
+              "high_demand",
+              "heat_pump",
+              "gas",
+              "off"
+            ],
+            "current_temperature": null,
+            "temperature": 48.3,
+            "target_temp_high": null,
+            "target_temp_low": null,
+            "operation_mode": "eco",
+            "away_mode": "off",
+            "friendly_name": "Demo Water Heater",
+            "supported_features": 15
+          },
+          "context": {
+            "id": "01M4HEKT3N7V47FBXKWMSBN8C7",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.173Z",
+          "last_updated": "2026-10-09T23:05:17.173Z"
+        },
+        "entry": {
+          "area_id": "garage",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.342803,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "water_heater.demo_water_heater",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "594e1cf8da1980ac58a944ef08df63b0",
+          "labels": [],
+          "modified_at": 1791433963.426784,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Demo Water Heater",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_water_heater",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "min_temp": 43.3,
+            "max_temp": 60,
+            "target_temp_step": 1,
+            "operation_list": [
+              "eco",
+              "electric",
+              "performance",
+              "high_demand",
+              "heat_pump",
+              "gas",
+              "off"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "off",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "electric",
+                  "label": "Electric"
+                },
+                {
+                  "value": "gas",
+                  "label": "Gas"
+                },
+                {
+                  "value": "heat_pump",
+                  "label": "Heat pump"
+                },
+                {
+                  "value": "eco",
+                  "label": "Eco"
+                },
+                {
+                  "value": "performance",
+                  "label": "Performance"
+                },
+                {
+                  "value": "high_demand",
+                  "label": "High demand"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Away mode",
+              "value": "off",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "on",
+                  "label": "On"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [],
+          "circular": {
+            "tag": "ha-state-control-water_heater-temperature",
+            "colors": {
+              "state": "var(--state-water_heater-off-color, var(--state-water_heater-inactive-color, var(--state-inactive-color)))",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": null,
+              "value": 48.3,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": null,
+              "min": 43.3,
+              "max": 60,
+              "step": 1,
+              "inactive": true,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Target",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 48.3,
+                "unit": "°C",
+                "digits": 0,
+                "text": "48 °C"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": [
+              {
+                "step": -1,
+                "target": "",
+                "color": null
+              },
+              {
+                "step": 1,
+                "target": "",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "water_heater.demo_water_heater",
+          "state": "unavailable",
+          "attributes": {
+            "min_temp": 43.3,
+            "max_temp": 60,
+            "target_temp_step": 1,
+            "operation_list": [
+              "eco",
+              "electric",
+              "performance",
+              "high_demand",
+              "heat_pump",
+              "gas",
+              "off"
+            ],
+            "current_temperature": null,
+            "temperature": 48.3,
+            "target_temp_high": null,
+            "target_temp_low": null,
+            "operation_mode": "eco",
+            "away_mode": "off",
+            "friendly_name": "Demo Water Heater",
+            "supported_features": 15,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3N7V47FBXKWMSBN8C7",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.173Z",
+          "last_updated": "2026-10-09T23:05:17.173Z"
+        },
+        "entry": {
+          "area_id": "garage",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.342803,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "water_heater.demo_water_heater",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "594e1cf8da1980ac58a944ef08df63b0",
+          "labels": [],
+          "modified_at": 1791433963.426784,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Demo Water Heater",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_water_heater",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "min_temp": 43.3,
+            "max_temp": 60,
+            "target_temp_step": 1,
+            "operation_list": [
+              "eco",
+              "electric",
+              "performance",
+              "high_demand",
+              "heat_pump",
+              "gas",
+              "off"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "unavailable",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "electric",
+                  "label": "Electric"
+                },
+                {
+                  "value": "gas",
+                  "label": "Gas"
+                },
+                {
+                  "value": "heat_pump",
+                  "label": "Heat pump"
+                },
+                {
+                  "value": "eco",
+                  "label": "Eco"
+                },
+                {
+                  "value": "performance",
+                  "label": "Performance"
+                },
+                {
+                  "value": "high_demand",
+                  "label": "High demand"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Away mode",
+              "value": "off",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "on",
+                  "label": "On"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [],
+          "circular": {
+            "tag": "ha-state-control-water_heater-temperature",
+            "colors": {
+              "state": "var(--state-unavailable-color)",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "full",
+              "value": null,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": null,
+              "min": 43.3,
+              "max": 60,
+              "step": 1,
+              "inactive": false,
+              "readonly": true,
+              "disabled": true
+            },
+            "label": "Unavailable",
+            "labelDisabled": true,
+            "big": [],
+            "primaryState": null,
+            "selected": [],
+            "buttons": []
+          },
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "water_heater.demo_water_heater_celsius": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "water_heater.demo_water_heater_celsius",
+          "state": "eco",
+          "attributes": {
+            "min_temp": 43.3,
+            "max_temp": 60,
+            "target_temp_step": 1,
+            "operation_list": [
+              "eco",
+              "electric",
+              "performance",
+              "high_demand",
+              "heat_pump",
+              "gas",
+              "off"
+            ],
+            "current_temperature": null,
+            "temperature": 45,
+            "target_temp_high": null,
+            "target_temp_low": null,
+            "operation_mode": "eco",
+            "away_mode": "on",
+            "friendly_name": "Demo Water Heater Celsius",
+            "supported_features": 15
+          },
+          "context": {
+            "id": "01M4HEKT3N88HZ3F67ZFH2XGYN",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.173Z",
+          "last_updated": "2026-10-09T23:05:17.173Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.342916,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "water_heater.demo_water_heater_celsius",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "7323a053632b850d9dc8776d8bfe5dfc",
+          "labels": [],
+          "modified_at": 1791433963.202911,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Demo Water Heater Celsius",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_water_heater_celsius",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "min_temp": 43.3,
+            "max_temp": 60,
+            "target_temp_step": 1,
+            "operation_list": [
+              "eco",
+              "electric",
+              "performance",
+              "high_demand",
+              "heat_pump",
+              "gas",
+              "off"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "eco",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "electric",
+                  "label": "Electric"
+                },
+                {
+                  "value": "gas",
+                  "label": "Gas"
+                },
+                {
+                  "value": "heat_pump",
+                  "label": "Heat pump"
+                },
+                {
+                  "value": "eco",
+                  "label": "Eco"
+                },
+                {
+                  "value": "performance",
+                  "label": "Performance"
+                },
+                {
+                  "value": "high_demand",
+                  "label": "High demand"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Away mode",
+              "value": "on",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "on",
+                  "label": "On"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [],
+          "circular": {
+            "tag": "ha-state-control-water_heater-temperature",
+            "colors": {
+              "state": "var(--state-water_heater-eco-color, var(--state-water_heater-active-color, var(--state-active-color)))",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": null,
+              "value": 45,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": null,
+              "min": 43.3,
+              "max": 60,
+              "step": 1,
+              "inactive": false,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Target",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 45,
+                "unit": "°C",
+                "digits": 0,
+                "text": "45 °C"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": [
+              {
+                "step": -1,
+                "target": "",
+                "color": null
+              },
+              {
+                "step": 1,
+                "target": "",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {},
+        "menuIcons": {
+          "operation_mode": {
+            "eco": "mdi:leaf",
+            "electric": "mdi:lightning-bolt",
+            "performance": "mdi:rocket-launch",
+            "high_demand": "mdi:finance",
+            "heat_pump": "mdi:heat-wave",
+            "gas": "mdi:fire-circle",
+            "off": "mdi:power"
+          }
+        },
+        "calls": [
+          {
+            "control": "dial",
+            "label": "value 50",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "water_heater",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "water_heater.demo_water_heater_celsius",
+                  "temperature": 50
+                }
+              }
+            ]
+          },
+          {
+            "control": "dial",
+            "label": "button minus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "water_heater",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "water_heater.demo_water_heater_celsius",
+                  "temperature": 43.3
+                }
+              }
+            ]
+          },
+          {
+            "control": "dial",
+            "label": "button plus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "water_heater",
+                "service": "set_temperature",
+                "data": {
+                  "entity_id": "water_heater.demo_water_heater_celsius",
+                  "temperature": 47
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Mode electric",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "water_heater",
+                "service": "set_operation_mode",
+                "data": {
+                  "operation_mode": "electric",
+                  "entity_id": "water_heater.demo_water_heater_celsius"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Away mode off",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "water_heater",
+                "service": "set_away_mode",
+                "data": {
+                  "away_mode": false,
+                  "entity_id": "water_heater.demo_water_heater_celsius"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "water_heater.demo_water_heater_celsius",
+          "state": "off",
+          "attributes": {
+            "min_temp": 43.3,
+            "max_temp": 60,
+            "target_temp_step": 1,
+            "operation_list": [
+              "eco",
+              "electric",
+              "performance",
+              "high_demand",
+              "heat_pump",
+              "gas",
+              "off"
+            ],
+            "current_temperature": null,
+            "temperature": 45,
+            "target_temp_high": null,
+            "target_temp_low": null,
+            "operation_mode": "eco",
+            "away_mode": "on",
+            "friendly_name": "Demo Water Heater Celsius",
+            "supported_features": 15
+          },
+          "context": {
+            "id": "01M4HEKT3N88HZ3F67ZFH2XGYN",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.173Z",
+          "last_updated": "2026-10-09T23:05:17.173Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.342916,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "water_heater.demo_water_heater_celsius",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "7323a053632b850d9dc8776d8bfe5dfc",
+          "labels": [],
+          "modified_at": 1791433963.202911,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Demo Water Heater Celsius",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_water_heater_celsius",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "min_temp": 43.3,
+            "max_temp": 60,
+            "target_temp_step": 1,
+            "operation_list": [
+              "eco",
+              "electric",
+              "performance",
+              "high_demand",
+              "heat_pump",
+              "gas",
+              "off"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "off",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "electric",
+                  "label": "Electric"
+                },
+                {
+                  "value": "gas",
+                  "label": "Gas"
+                },
+                {
+                  "value": "heat_pump",
+                  "label": "Heat pump"
+                },
+                {
+                  "value": "eco",
+                  "label": "Eco"
+                },
+                {
+                  "value": "performance",
+                  "label": "Performance"
+                },
+                {
+                  "value": "high_demand",
+                  "label": "High demand"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Away mode",
+              "value": "on",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "on",
+                  "label": "On"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [],
+          "circular": {
+            "tag": "ha-state-control-water_heater-temperature",
+            "colors": {
+              "state": "var(--state-water_heater-off-color, var(--state-water_heater-inactive-color, var(--state-inactive-color)))",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": null,
+              "value": 45,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": null,
+              "min": 43.3,
+              "max": 60,
+              "step": 1,
+              "inactive": true,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Target",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 45,
+                "unit": "°C",
+                "digits": 0,
+                "text": "45 °C"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": [
+              {
+                "step": -1,
+                "target": "",
+                "color": null
+              },
+              {
+                "step": 1,
+                "target": "",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "water_heater.demo_water_heater_celsius",
+          "state": "unavailable",
+          "attributes": {
+            "min_temp": 43.3,
+            "max_temp": 60,
+            "target_temp_step": 1,
+            "operation_list": [
+              "eco",
+              "electric",
+              "performance",
+              "high_demand",
+              "heat_pump",
+              "gas",
+              "off"
+            ],
+            "current_temperature": null,
+            "temperature": 45,
+            "target_temp_high": null,
+            "target_temp_low": null,
+            "operation_mode": "eco",
+            "away_mode": "on",
+            "friendly_name": "Demo Water Heater Celsius",
+            "supported_features": 15,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3N88HZ3F67ZFH2XGYN",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.173Z",
+          "last_updated": "2026-10-09T23:05:17.173Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.342916,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "water_heater.demo_water_heater_celsius",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "7323a053632b850d9dc8776d8bfe5dfc",
+          "labels": [],
+          "modified_at": 1791433963.202911,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Demo Water Heater Celsius",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_water_heater_celsius",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "min_temp": 43.3,
+            "max_temp": 60,
+            "target_temp_step": 1,
+            "operation_list": [
+              "eco",
+              "electric",
+              "performance",
+              "high_demand",
+              "heat_pump",
+              "gas",
+              "off"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Mode",
+              "value": "unavailable",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "electric",
+                  "label": "Electric"
+                },
+                {
+                  "value": "gas",
+                  "label": "Gas"
+                },
+                {
+                  "value": "heat_pump",
+                  "label": "Heat pump"
+                },
+                {
+                  "value": "eco",
+                  "label": "Eco"
+                },
+                {
+                  "value": "performance",
+                  "label": "Performance"
+                },
+                {
+                  "value": "high_demand",
+                  "label": "High demand"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            },
+            {
+              "label": "Away mode",
+              "value": "on",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "on",
+                  "label": "On"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ]
+            }
+          ],
+          "current": [],
+          "circular": {
+            "tag": "ha-state-control-water_heater-temperature",
+            "colors": {
+              "state": "var(--state-unavailable-color)",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "full",
+              "value": null,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": null,
+              "min": 43.3,
+              "max": 60,
+              "step": 1,
+              "inactive": false,
+              "readonly": true,
+              "disabled": true
+            },
+            "label": "Unavailable",
+            "labelDisabled": true,
+            "big": [],
+            "primaryState": null,
+            "selected": [],
+            "buttons": []
+          },
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "humidifier.humidifier": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "humidifier.humidifier",
+          "state": "on",
+          "attributes": {
+            "min_humidity": 0,
+            "max_humidity": 100,
+            "target_humidity_step": 5,
+            "action": "humidifying",
+            "current_humidity": 45,
+            "humidity": 65,
+            "device_class": "humidifier",
+            "friendly_name": "Humidifier",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3ETHVX2DV5G6Z9194M",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": null,
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "State",
+              "value": "on",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "off",
+                  "label": "Off"
+                },
+                {
+                  "value": "on",
+                  "label": "On"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current humidity",
+              "value": "45%"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-humidifier-humidity",
+            "colors": {
+              "state": "var(--state-humidifier-humidifier-on-color, var(--state-humidifier-on-color, var(--state-humidifier-active-color, var(--state-active-color))))",
+              "action": "var(--state-humidifier-humidifier-on-color, var(--state-humidifier-on-color, var(--state-humidifier-active-color, var(--state-active-color))))",
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "start",
+              "value": 65,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": 45,
+              "min": 0,
+              "max": 100,
+              "step": 5,
+              "inactive": false,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Humidifying",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 65,
+                "unit": "%",
+                "digits": 0,
+                "text": "65 %"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": [
+              {
+                "step": -5,
+                "target": "",
+                "color": null
+              },
+              {
+                "step": 5,
+                "target": "",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {},
+        "menuIcons": {
+          "mode": {}
+        },
+        "calls": [
+          {
+            "control": "dial",
+            "label": "value 45",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "humidifier",
+                "service": "set_humidity",
+                "data": {
+                  "entity_id": "humidifier.humidifier",
+                  "humidity": 45
+                }
+              }
+            ]
+          },
+          {
+            "control": "dial",
+            "label": "button minus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "humidifier",
+                "service": "set_humidity",
+                "data": {
+                  "entity_id": "humidifier.humidifier",
+                  "humidity": 55
+                }
+              }
+            ]
+          },
+          {
+            "control": "dial",
+            "label": "button plus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "humidifier",
+                "service": "set_humidity",
+                "data": {
+                  "entity_id": "humidifier.humidifier",
+                  "humidity": 75
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "State off",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "humidifier",
+                "service": "turn_off",
+                "data": {
+                  "entity_id": "humidifier.humidifier"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "humidifier.humidifier",
+          "state": "off",
+          "attributes": {
+            "min_humidity": 0,
+            "max_humidity": 100,
+            "target_humidity_step": 5,
+            "action": "humidifying",
+            "current_humidity": 45,
+            "humidity": 65,
+            "device_class": "humidifier",
+            "friendly_name": "Humidifier",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3ETHVX2DV5G6Z9194M",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": null,
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "State",
+              "value": "off",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "off",
+                  "label": "Off"
+                },
+                {
+                  "value": "on",
+                  "label": "On"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current humidity",
+              "value": "45%"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-humidifier-humidity",
+            "colors": {
+              "state": "var(--state-humidifier-humidifier-off-color, var(--state-humidifier-off-color, var(--state-humidifier-inactive-color, var(--state-inactive-color))))",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "start",
+              "value": 65,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": 45,
+              "min": 0,
+              "max": 100,
+              "step": 5,
+              "inactive": true,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Humidifying",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 65,
+                "unit": "%",
+                "digits": 0,
+                "text": "65 %"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": [
+              {
+                "step": -5,
+                "target": "",
+                "color": null
+              },
+              {
+                "step": 5,
+                "target": "",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "humidifier.humidifier",
+          "state": "unavailable",
+          "attributes": {
+            "min_humidity": 0,
+            "max_humidity": 100,
+            "target_humidity_step": 5,
+            "action": "humidifying",
+            "current_humidity": 45,
+            "humidity": 65,
+            "device_class": "humidifier",
+            "friendly_name": "Humidifier",
+            "supported_features": 0,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3ETHVX2DV5G6Z9194M",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": null,
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "State",
+              "value": "unavailable",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "off",
+                  "label": "Off"
+                },
+                {
+                  "value": "on",
+                  "label": "On"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current humidity",
+              "value": "45%"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-humidifier-humidity",
+            "colors": {
+              "state": "var(--state-unavailable-color)",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": null,
+              "value": null,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": 45,
+              "min": 0,
+              "max": 100,
+              "step": 5,
+              "inactive": false,
+              "readonly": false,
+              "disabled": true
+            },
+            "label": "Unavailable",
+            "labelDisabled": true,
+            "big": [
+              {
+                "value": 65,
+                "unit": "%",
+                "digits": 0,
+                "text": "65 %"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": []
+          },
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "humidifier.dehumidifier": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "humidifier.dehumidifier",
+          "state": "on",
+          "attributes": {
+            "min_humidity": 0,
+            "max_humidity": 100,
+            "action": "drying",
+            "current_humidity": 59.4,
+            "humidity": 54.2,
+            "device_class": "dehumidifier",
+            "friendly_name": "Dehumidifier",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3EV4Z7QTVF9S1D4T24",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": null,
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "State",
+              "value": "on",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "off",
+                  "label": "Off"
+                },
+                {
+                  "value": "on",
+                  "label": "On"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current humidity",
+              "value": "59.4%"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-humidifier-humidity",
+            "colors": {
+              "state": "var(--state-humidifier-dehumidifier-on-color, var(--state-humidifier-on-color, var(--state-humidifier-active-color, var(--state-active-color))))",
+              "action": "var(--state-humidifier-dehumidifier-on-color, var(--state-humidifier-on-color, var(--state-humidifier-active-color, var(--state-active-color))))",
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "end",
+              "value": 54.2,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": 59.4,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "inactive": false,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Drying",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 54.2,
+                "unit": "%",
+                "digits": 0,
+                "text": "54 %"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": [
+              {
+                "step": -1,
+                "target": "",
+                "color": null
+              },
+              {
+                "step": 1,
+                "target": "",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {},
+        "menuIcons": {
+          "mode": {}
+        },
+        "calls": [
+          {
+            "control": "dial",
+            "label": "value 45",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "humidifier",
+                "service": "set_humidity",
+                "data": {
+                  "entity_id": "humidifier.dehumidifier",
+                  "humidity": 45
+                }
+              }
+            ]
+          },
+          {
+            "control": "dial",
+            "label": "button minus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "humidifier",
+                "service": "set_humidity",
+                "data": {
+                  "entity_id": "humidifier.dehumidifier",
+                  "humidity": 52.2
+                }
+              }
+            ]
+          },
+          {
+            "control": "dial",
+            "label": "button plus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "humidifier",
+                "service": "set_humidity",
+                "data": {
+                  "entity_id": "humidifier.dehumidifier",
+                  "humidity": 56.2
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "State off",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "humidifier",
+                "service": "turn_off",
+                "data": {
+                  "entity_id": "humidifier.dehumidifier"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "humidifier.dehumidifier",
+          "state": "off",
+          "attributes": {
+            "min_humidity": 0,
+            "max_humidity": 100,
+            "action": "drying",
+            "current_humidity": 59.4,
+            "humidity": 54.2,
+            "device_class": "dehumidifier",
+            "friendly_name": "Dehumidifier",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3EV4Z7QTVF9S1D4T24",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": null,
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "State",
+              "value": "off",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "off",
+                  "label": "Off"
+                },
+                {
+                  "value": "on",
+                  "label": "On"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current humidity",
+              "value": "59.4%"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-humidifier-humidity",
+            "colors": {
+              "state": "var(--state-humidifier-dehumidifier-off-color, var(--state-humidifier-off-color, var(--state-humidifier-inactive-color, var(--state-inactive-color))))",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "end",
+              "value": 54.2,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": 59.4,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "inactive": true,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Drying",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 54.2,
+                "unit": "%",
+                "digits": 0,
+                "text": "54 %"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": [
+              {
+                "step": -1,
+                "target": "",
+                "color": null
+              },
+              {
+                "step": 1,
+                "target": "",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "humidifier.dehumidifier",
+          "state": "unavailable",
+          "attributes": {
+            "min_humidity": 0,
+            "max_humidity": 100,
+            "action": "drying",
+            "current_humidity": 59.4,
+            "humidity": 54.2,
+            "device_class": "dehumidifier",
+            "friendly_name": "Dehumidifier",
+            "supported_features": 0,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3EV4Z7QTVF9S1D4T24",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": null,
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "State",
+              "value": "unavailable",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "off",
+                  "label": "Off"
+                },
+                {
+                  "value": "on",
+                  "label": "On"
+                }
+              ]
+            }
+          ],
+          "current": [
+            {
+              "label": "Current humidity",
+              "value": "59.4%"
+            }
+          ],
+          "circular": {
+            "tag": "ha-state-control-humidifier-humidity",
+            "colors": {
+              "state": "var(--state-unavailable-color)",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": null,
+              "value": null,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": 59.4,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "inactive": false,
+              "readonly": false,
+              "disabled": true
+            },
+            "label": "Unavailable",
+            "labelDisabled": true,
+            "big": [
+              {
+                "value": 54.2,
+                "unit": "%",
+                "digits": 0,
+                "text": "54 %"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": []
+          },
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "humidifier.hygrostat": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "humidifier.hygrostat",
+          "state": "on",
+          "attributes": {
+            "min_humidity": 0,
+            "max_humidity": 100,
+            "available_modes": [
+              "home",
+              "eco"
+            ],
+            "humidity": 50,
+            "mode": "home",
+            "friendly_name": "Hygrostat",
+            "supported_features": 1
+          },
+          "context": {
+            "id": "01M4HEKT3EC8YEA8S2MPSBVFCK",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": null,
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "State",
+              "value": "on",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "off",
+                  "label": "Off"
+                },
+                {
+                  "value": "on",
+                  "label": "On"
+                }
+              ]
+            },
+            {
+              "label": "Mode",
+              "value": "home",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "home",
+                  "label": "Home"
+                },
+                {
+                  "value": "eco",
+                  "label": "Eco"
+                }
+              ]
+            }
+          ],
+          "current": [],
+          "circular": {
+            "tag": "ha-state-control-humidifier-humidity",
+            "colors": {
+              "state": "var(--state-humidifier-on-color, var(--state-humidifier-active-color, var(--state-active-color)))",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "start",
+              "value": 50,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": null,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "inactive": false,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "On",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 50,
+                "unit": "%",
+                "digits": 0,
+                "text": "50 %"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": [
+              {
+                "step": -1,
+                "target": "",
+                "color": null
+              },
+              {
+                "step": 1,
+                "target": "",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {},
+        "menuIcons": {
+          "mode": {
+            "home": "mdi:home",
+            "eco": "mdi:leaf"
+          }
+        },
+        "calls": [
+          {
+            "control": "dial",
+            "label": "value 45",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "humidifier",
+                "service": "set_humidity",
+                "data": {
+                  "entity_id": "humidifier.hygrostat",
+                  "humidity": 45
+                }
+              }
+            ]
+          },
+          {
+            "control": "dial",
+            "label": "button minus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "humidifier",
+                "service": "set_humidity",
+                "data": {
+                  "entity_id": "humidifier.hygrostat",
+                  "humidity": 48
+                }
+              }
+            ]
+          },
+          {
+            "control": "dial",
+            "label": "button plus",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "humidifier",
+                "service": "set_humidity",
+                "data": {
+                  "entity_id": "humidifier.hygrostat",
+                  "humidity": 52
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "State off",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "humidifier",
+                "service": "turn_off",
+                "data": {
+                  "entity_id": "humidifier.hygrostat"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Mode eco",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "humidifier",
+                "service": "set_mode",
+                "data": {
+                  "mode": "eco",
+                  "entity_id": "humidifier.hygrostat"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "humidifier.hygrostat",
+          "state": "off",
+          "attributes": {
+            "min_humidity": 0,
+            "max_humidity": 100,
+            "available_modes": [
+              "home",
+              "eco"
+            ],
+            "humidity": 50,
+            "mode": "home",
+            "friendly_name": "Hygrostat",
+            "supported_features": 1
+          },
+          "context": {
+            "id": "01M4HEKT3EC8YEA8S2MPSBVFCK",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": null,
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "State",
+              "value": "off",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "off",
+                  "label": "Off"
+                },
+                {
+                  "value": "on",
+                  "label": "On"
+                }
+              ]
+            },
+            {
+              "label": "Mode",
+              "value": "home",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "home",
+                  "label": "Home"
+                },
+                {
+                  "value": "eco",
+                  "label": "Eco"
+                }
+              ]
+            }
+          ],
+          "current": [],
+          "circular": {
+            "tag": "ha-state-control-humidifier-humidity",
+            "colors": {
+              "state": "var(--state-humidifier-off-color, var(--state-humidifier-inactive-color, var(--state-inactive-color)))",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": "start",
+              "value": 50,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": null,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "inactive": true,
+              "readonly": false,
+              "disabled": false
+            },
+            "label": "Off",
+            "labelDisabled": false,
+            "big": [
+              {
+                "value": 50,
+                "unit": "%",
+                "digits": 0,
+                "text": "50 %"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
+            "buttons": [
+              {
+                "step": -1,
+                "target": "",
+                "color": null
+              },
+              {
+                "step": 1,
+                "target": "",
+                "color": null
+              }
+            ]
+          },
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "humidifier.hygrostat",
+          "state": "unavailable",
+          "attributes": {
+            "min_humidity": 0,
+            "max_humidity": 100,
+            "available_modes": [
+              "home",
+              "eco"
+            ],
+            "humidity": 50,
+            "mode": "home",
+            "friendly_name": "Hygrostat",
+            "supported_features": 1,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3EC8YEA8S2MPSBVFCK",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": null,
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "State",
+              "value": "unavailable",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "off",
+                  "label": "Off"
+                },
+                {
+                  "value": "on",
+                  "label": "On"
+                }
+              ]
+            },
+            {
+              "label": "Mode",
+              "value": "home",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "home",
+                  "label": "Home"
+                },
+                {
+                  "value": "eco",
+                  "label": "Eco"
+                }
+              ]
+            }
+          ],
+          "current": [],
+          "circular": {
+            "tag": "ha-state-control-humidifier-humidity",
+            "colors": {
+              "state": "var(--state-unavailable-color)",
+              "action": null,
+              "low": null,
+              "high": null
+            },
+            "slider": {
+              "mode": null,
+              "value": null,
+              "low": null,
+              "high": null,
+              "dual": false,
+              "current": null,
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "inactive": false,
+              "readonly": false,
+              "disabled": true
+            },
+            "label": "Unavailable",
+            "labelDisabled": true,
+            "big": [
+              {
+                "value": 50,
+                "unit": "%",
+                "digits": 0,
+                "text": "50 %"
+              }
+            ],
+            "primaryState": null,
+            "selected": [],
             "buttons": []
           },
           "favorites": null

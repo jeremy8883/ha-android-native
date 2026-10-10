@@ -68,7 +68,7 @@ internal fun ControlSelectMenu(menu: SelectMenu, onAction: (CardAction) -> Unit,
     var expanded by remember { mutableStateOf(false) }
     val selected = menu.options.firstOrNull { it.value == menu.value }
     // A selected option without an icon shows none, as upstream renders its attribute icon
-    val icon = if (menu.value != null) selected?.icon else menu.icon
+    val icon = if (menu.value != null && menu.optionIcons) selected?.icon else menu.icon
     val textColor = if (menu.enabled) colors.colorTextPrimary else colors.colorTextDisabled
     Box(modifier = modifier) {
         Row(

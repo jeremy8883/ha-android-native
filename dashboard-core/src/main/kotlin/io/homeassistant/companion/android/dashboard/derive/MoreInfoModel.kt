@@ -14,11 +14,15 @@ import io.homeassistant.companion.android.dashboard.feature.tileFeatures
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.moreinfo.ClimateMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.HumidifierMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.LightMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.StateToggle
+import io.homeassistant.companion.android.dashboard.moreinfo.WaterHeaterMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.climateMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.humidifierMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.lightMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.stateToggle
+import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterMoreInfo
 import java.time.Instant
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
@@ -38,6 +42,8 @@ import kotlinx.serialization.json.put
  * controls show their own readings, like thermostats)
  * @property light a light's controls
  * @property climate a thermostat's controls
+ * @property waterHeater a water heater's controls
+ * @property humidifier a humidifier's controls
  * @property stateToggle the large on/off switch of a switch or input boolean
  * @property controls the entity's main controls, as tile features, for domains without controls of their own yet
  * @property media the media controls of a media player
@@ -56,6 +62,8 @@ data class MoreInfoModel(
     val stateHeader: Boolean,
     val light: LightMoreInfo?,
     val climate: ClimateMoreInfo?,
+    val waterHeater: WaterHeaterMoreInfo?,
+    val humidifier: HumidifierMoreInfo?,
     val stateToggle: StateToggle?,
     val controls: List<TileFeature>,
     val media: MediaControlModel?,
@@ -99,6 +107,8 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         stateHeader = domain !in NO_STATE_HEADER_DOMAINS,
         light = light,
         climate = climateMoreInfo(state),
+        waterHeater = waterHeaterMoreInfo(state),
+        humidifier = humidifierMoreInfo(state),
         stateToggle = stateToggle,
         controls = tileFeatures(controlCard),
         media = if (domain == "media_player") mediaControlModel(CardConfig(controlCard.json)) else null,
@@ -120,10 +130,10 @@ private const val MILLIS = 1000.0
 private val ON_OFF = setOf("on", "off")
 
 /** The domains whose controls replace the state header (`more-info-climate` renders none). */
-private val NO_STATE_HEADER_DOMAINS = setOf("climate")
+private val NO_STATE_HEADER_DOMAINS = setOf("climate", "humidifier", "water_heater")
 
 /** The domains whose switch is in the header, until they have controls of their own. */
-private val HEADER_TOGGLE_DOMAINS = setOf("automation", "fan", "humidifier", "remote", "siren")
+private val HEADER_TOGGLE_DOMAINS = setOf("automation", "fan", "remote", "siren")
 
 /** The domains whose details lead with the large on/off switch (`more-info-switch`, `more-info-input_boolean`). */
 private val STATE_TOGGLE_DOMAINS = setOf("input_boolean", "switch")
@@ -131,7 +141,6 @@ private val STATE_TOGGLE_DOMAINS = setOf("input_boolean", "switch")
 /** The control each domain's more-info dialog leads with, as card features. */
 private val MORE_INFO_FEATURES = mapOf(
     "cover" to listOf("cover-open-close"),
-    "water_heater" to listOf("target-temperature"),
     "fan" to listOf("fan-speed"),
     "lock" to listOf("lock-commands"),
     "alarm_control_panel" to listOf("alarm-modes"),
