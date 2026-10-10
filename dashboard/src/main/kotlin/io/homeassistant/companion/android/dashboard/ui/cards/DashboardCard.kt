@@ -50,18 +50,28 @@ internal fun DashboardCard(
         )
         CARD_HEADING -> HeadingCard(card, hass, now, interactions, cardModifier)
         CARD_ENTITIES -> EntitiesCard(card, hass, now, interactions, modifier)
-        CARD_BUTTON -> ButtonCard(card, hass, interactions, modifier.clip(RoundedCornerShape(HARadius.XL)))
-        CARD_GLANCE -> GlanceCard(card, hass, now, interactions, modifier)
-        CARD_GAUGE -> GaugeCard(card, hass, interactions, modifier.clip(RoundedCornerShape(HARadius.XL)))
-        CARD_ENTITY, CARD_SENSOR -> EntityCard(
-            card,
-            hass,
-            now,
-            interactions,
-            modifier.clip(RoundedCornerShape(HARadius.XL)),
-        )
+        in ENTITY_CARD_TYPES -> EntityCards(card, hass, now, interactions, modifier)
         in ENERGY_CARD_TYPES -> EnergyCard(card, hass, now, interactions, modifier)
         else -> OtherCard(card, hass, interactions, modifier, cardModifier)
+    }
+}
+
+/** The cards of one entity (or a few) that handle their own gestures, in rounded corners. */
+@Composable
+private fun EntityCards(
+    card: CardConfig,
+    hass: State<HassSnapshot?>,
+    now: State<ZonedDateTime?>,
+    interactions: CardInteractions,
+    modifier: Modifier,
+) {
+    val rounded = modifier.clip(RoundedCornerShape(HARadius.XL))
+    when (card.type) {
+        CARD_BUTTON -> ButtonCard(card, hass, interactions, rounded)
+        CARD_GLANCE -> GlanceCard(card, hass, now, interactions, modifier)
+        CARD_GAUGE -> GaugeCard(card, hass, interactions, rounded)
+        CARD_LIGHT -> LightCard(card, hass, interactions, rounded)
+        else -> EntityCard(card, hass, now, interactions, rounded)
     }
 }
 
@@ -96,6 +106,7 @@ private val INFO_TILES: Map<String, HassSnapshot.(CardConfig) -> InfoTileModel?>
 )
 
 private const val CARD_TILE = "tile"
+private val ENTITY_CARD_TYPES = setOf(CARD_BUTTON, CARD_GLANCE, CARD_GAUGE, CARD_LIGHT, CARD_ENTITY, CARD_SENSOR)
 private const val CARD_HEADING = "heading"
 private const val CARD_AREA = "area"
 private const val CARD_HOME_SUMMARY = "home-summary"
@@ -105,6 +116,7 @@ private const val CARD_BUTTON = "button"
 private const val CARD_GLANCE = "glance"
 private const val CARD_GAUGE = "gauge"
 private const val CARD_ENTITY = "entity"
+private const val CARD_LIGHT = "light"
 private const val CARD_SENSOR = "sensor"
 private const val CARD_MEDIA_CONTROL = "media-control"
 private const val CARD_EMPTY_STATE = "empty-state"

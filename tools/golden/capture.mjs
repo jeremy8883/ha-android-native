@@ -886,6 +886,12 @@ const CARD_CONFIGS = [
   { type: "sensor", entity: "sensor.grid_power", graph: "line" },
   { type: "sensor", entity: "sensor.garage_battery" },
   { type: "sensor", entity: "light.bed_light", graph: "line" },
+  { type: "light", entity: "light.living_room_rgbww_lights" },
+  { type: "light", entity: "light.bed_light", name: "Bed" },
+  { type: "light", entity: "light.kitchen_lights", icon: "mdi:ceiling-light" },
+  { type: "light", entity: "light.ceiling_lights" },
+  { type: "light", entity: "light.missing" },
+  { type: "light", entity: "switch.ac" },
 ];
 
 /** The entities whose entities card rows the controls capture records (with "rows" among the entities). */
@@ -1655,6 +1661,20 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
             coordinates: g.clone(footer._coordinates ?? null),
           };
         }
+      } else if (config.type === "light") {
+        const slider = root.querySelector("round-slider");
+        const button = root.querySelector(".light-button");
+        const info = root.querySelector("#info");
+        shown.light = button ? {
+          // The info's first line is the state (unavailable or unknown) or the hidden brightness
+          info: [...info.childNodes].map((n) => n.textContent.replace(/\s+/g, " ").trim()).filter(Boolean),
+          brightness: slider ? Number(slider.value) : null,
+          sliderVisible: slider?.style.visibility !== "hidden",
+          disabled: !!slider?.disabled,
+          color: button.style.color || null,
+          classes: [...button.classList].filter((c) => c.startsWith("state-")),
+          icon: root.querySelector("ha-state-icon")?.icon ?? null,
+        } : null;
       } else if (config.type === "gauge") {
         const gauge = root.querySelector("ha-gauge");
         shown.gauge = gauge ? {

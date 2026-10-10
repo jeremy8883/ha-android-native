@@ -9,11 +9,13 @@ import io.homeassistant.companion.android.dashboard.golden.GoldenFixture
 import io.homeassistant.companion.android.dashboard.history.parseHistoryStates
 import io.homeassistant.companion.android.dashboard.history.sensorGraphCoordinates
 import io.homeassistant.companion.android.dashboard.model.CardConfig
+import io.homeassistant.companion.android.dashboard.model.array
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.number
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
+import io.homeassistant.companion.android.dashboard.model.stringOrNull
 import io.homeassistant.companion.android.dashboard.moreinfo.css
 import io.homeassistant.companion.android.dashboard.moreinfo.recordedCalls
 import java.time.Instant
@@ -141,6 +143,32 @@ class SimpleCardsGoldenTest {
             assertEquals(e[0], a.x, COORDINATE_TOLERANCE, "x")
             assertEquals(e[1], a.y, COORDINATE_TOLERANCE, "y")
         }
+    }
+
+    @TestFactory
+    fun `Given captured light cards when deriving them then they show as the frontend's`() = cards("light") { config, shown ->
+        val model = lightCardModel(config)
+        val light = shown.obj("light")
+        if (light == null) {
+            assertEquals(shown.string("warning"), (model as? LightCardModel.Warning)?.text)
+            return@cards
+        }
+        model as LightCardModel.Shown
+        // Lit's comment markers aside, the info is the state or the (hidden) brightness, then the name
+        val info = light.array("info")!!.map { it.stringOrNull }.filterNot { it.orEmpty().startsWith("?lit") }
+        assertEquals(info, listOf(model.stateText ?: "%", model.name))
+        assertEquals(light.number("brightness")?.toInt(), model.brightness)
+        assertEquals(light.boolean("sliderVisible"), model.supportsBrightness)
+        assertEquals(light.boolean("disabled"), model.disabled)
+        val classes = light.array("classes")!!.map { it.stringOrNull }
+        val expectedColor = light.string("color")?.let { DisplayColor.Literal(it.replace(", ", ",")) }
+            ?: when {
+                "state-on" in classes -> DisplayColor.State(listOf("state-light-active-color"))
+                "state-unavailable" in classes -> DisplayColor.State(listOf("state-unavailable-color"))
+                else -> DisplayColor.State(listOf("state-icon-color"))
+            }
+        assertEquals(expectedColor, model.color)
+        light.string("icon")?.let { assertEquals(it, model.icon) }
     }
 
     /** Each captured card of [type], checked against the snapshot with the states it was drawn with. */
