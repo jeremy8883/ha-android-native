@@ -1,5 +1,8 @@
 package io.homeassistant.companion.android.dashboard.derive
 
+import io.homeassistant.companion.android.dashboard.color.hsv2rgb
+import io.homeassistant.companion.android.dashboard.color.rgb2hex
+import io.homeassistant.companion.android.dashboard.color.rgb2hsv
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.model.array
 import io.homeassistant.companion.android.dashboard.model.jsNumber
@@ -116,45 +119,8 @@ fun lightColor(state: EntityState): DisplayColor? {
     return DisplayColor.Literal(rgb2hex(hsv2rgb(hsv)))
 }
 
-/** Port of `rgb2hsv` (src/common/color/convert-color.ts). */
-private fun rgb2hsv(r: Double, g: Double, b: Double): DoubleArray {
-    val v = maxOf(r, g, b)
-    val c = v - minOf(r, g, b)
-    val h = when {
-        c == 0.0 -> 0.0
-        v == r -> (g - b) / c
-        v == g -> 2 + (b - r) / c
-        else -> 4 + (r - g) / c
-    }
-    return doubleArrayOf(DEGREES_PER_SECTOR * (if (h < 0) h + SECTORS else h), if (v == 0.0) 0.0 else c / v, v)
-}
-
-/** Port of `hsv2rgb`. */
-private fun hsv2rgb(hsv: DoubleArray): DoubleArray {
-    val (h, s, v) = Triple(hsv[0], hsv[1], hsv[2])
-    fun f(n: Int): Double {
-        val k = (n + h / DEGREES_PER_SECTOR) % SECTORS
-        return v - v * s * maxOf(minOf(k, HSV_RAMP_END - k, 1.0), 0.0)
-    }
-    return doubleArrayOf(f(HSV_RED), f(HSV_GREEN), f(HSV_BLUE))
-}
-
-/** Port of `rgb2hex`. */
-private fun rgb2hex(rgb: DoubleArray): String = "#" + rgb.joinToString("") {
-    Math.round(it.coerceIn(0.0, RGB_MAX)).toString(HEX_RADIX).padStart(2, '0')
-}
-
 private const val RGB_SIZE = 3
 
-// The `n` of each channel and the end of the ramp in upstream's `hsv2rgb` formula
-private const val HSV_RED = 5
-private const val HSV_GREEN = 3
-private const val HSV_BLUE = 1
-private const val HSV_RAMP_END = 4
-private const val RGB_MAX = 255.0
-private const val HEX_RADIX = 16
-private const val DEGREES_PER_SECTOR = 60
-private const val SECTORS = 6
 private const val MIN_SATURATION = 0.4
 private const val WHITE_SATURATION = 0.1
 private const val WHITE_VALUE = 225.0

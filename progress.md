@@ -162,7 +162,11 @@ Anywhere:
 - [ ] More details → the frontend's full more-info dialog (history, logbook, settings, related); grow the native more-info sheet instead
   - [x] History in the sheet (`history/`): the last day's `history/stream` (merged and purged like `HistoryStream`, fresh after reconnecting) or a sensor's 5-minute statistics (refreshed every minute, falling back to states without statistics); `computeHistory`, the timeline bands and colours, the history lines (climate and humidifier series) and the statistics band all golden-tested against the frontend's more-info history (17 entities, the stream messages recorded by the capture). Drawn on Canvas (`ui/charts/`): timelines with labelled bands, stepped lines with areas, the min/max band with the smoothed mean; tap for values; "Show more" opens the History panel. The theme colour table moved to dashboard-core
   - [x] Logbook in the sheet (`logbook/`): the last day's `logbook/event_stream` (merged and purged like `ha-logbook`, fresh after reconnecting), with the users (`config/auth/list`) and trace contexts for admins; each row's text (state, run, press or event), dot colour, cause (user, automation, script, state, schedule, integration) and trace link, and the day headers, golden-tested against the rows the frontend drew (18 entities; the capture seeds runs, presses and user changes after the main capture, and the test instance has two automations and a script for them). Rows as upstream's narrow layout without names: dots on a rail, the cause badge (person picture or initials, or an icon), "View trace", the time (tap for relative times); "Show more" opens the Logbook panel
-  - [ ] Domain controls beyond the tile features (light colour/temperature, climate modes, cover position, media...); the light's brightness slider should keep its track when off (it shrinks to a dot)
+  - [ ] Domain controls beyond the tile features (`moreinfo/` in core, `ui/controls/` and `ui/moreinfo/`), each golden-tested against the frontend's `more-info-<domain>` as the entity is and turned off and unavailable (more-info/controls.json), with the service call of each control recorded and compared:
+    - [x] Shared controls: `ha-control-slider` (bar or cursor, handle, tooltip while dragging, tap and drag, accessibility), now also the tiles' slider, which keeps its track when off; `ha-state-control-toggle` (tall switch, or on/off buttons when assumed); the centred state header
+    - [x] Light: the brightness slider in the light's colour (a switch without brightness), the brightness in the header, power/brightness/colour/temperature/white buttons, the colour wheel (`ha-hs-color-picker`, tinted by the whites) with the colour brightness and white sliders of RGBW/RGBWW lights, the temperature slider, the effect menu (the app's dropdown). Not yet: favourite colours (need the entity registry entry's options), effect icons, the eyedropper
+    - [x] Switch, input boolean: the tall switch
+    - [ ] Climate, water heater, humidifier, cover, valve, fan, lock, alarm panel, media player, vacuum, lawn mower, siren, update, and the rest
   - [ ] Settings and related (registry editing: companion app for now)
 
 Drawer panels (shown only when the setting is on):
@@ -238,6 +242,13 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - Dependency lockfiles are global, so avoid adding new libraries to `:app`/`:automotive` (merge conflicts).
 
 ## Handover notes
+
+### 2026-10-10: light details (Opus)
+- The colour conversions moved to `color/` (`ConvertColor.kt`, `ConvertLightColor.kt`); `lightColor` in `StateColor.kt` uses them.
+- `MoreInfoModel` has `light` and `stateToggle`; the header's switch stays only for domains without controls of their own yet (`HEADER_TOGGLE_DOMAINS`), and `MORE_INFO_FEATURES` keeps the tile features for the others.
+- The capture's `captureMoreInfoControls` renders each `more-info-<domain>` directly with stateObj variants, and records the service calls of each control with `call_service` intercepted (the test instance isn't changed). Add entities to `CONTROL_ENTITIES` as domains are ported.
+- `seed_energy.py` imports up to the current hour: the energy "today" goldens need it re-run on the day of a capture.
+- Seen once, not reproduced: after the release build ran for about 1.5 hours on the emulator (with its clock jumping forward), the overview lost its quick tiles and the Office area showed "This is a blank canvas"; restarting the app fixed it. Dropping the connection (`adb reverse --remove`) and re-seeding the energy did not reproduce it. Like the "all rooms empty" bug, something showed empty instead of failed.
 
 ### 2026-10-09: detekt clean (Opus)
 - `detektMain` passes for `:dashboard-core`, `:dashboard` and `:app` (was 136 findings), with no suppressions or config changes; commit gate is now ktlint + detekt + tests.

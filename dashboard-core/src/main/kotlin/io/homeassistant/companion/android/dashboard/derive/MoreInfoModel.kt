@@ -13,6 +13,10 @@ import io.homeassistant.companion.android.dashboard.feature.attributeName
 import io.homeassistant.companion.android.dashboard.feature.tileFeatures
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.string
+import io.homeassistant.companion.android.dashboard.moreinfo.LightMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.StateToggle
+import io.homeassistant.companion.android.dashboard.moreinfo.lightMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.stateToggle
 import java.time.Instant
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
@@ -28,7 +32,9 @@ import kotlinx.serialization.json.put
  * @property toggle a switch for entities that turn on and off
  * @property updatedAt when the entity's state object last changed (epoch seconds), so a switch knows when the server
  * answered
- * @property controls the entity's main controls, as tile features
+ * @property light a light's controls
+ * @property stateToggle the large on/off switch of a switch or input boolean
+ * @property controls the entity's main controls, as tile features, for domains without controls of their own yet
  * @property media the media controls of a media player
  * @property attributes the displayable attributes, as (name, formatted value)
  */
@@ -42,6 +48,8 @@ data class MoreInfoModel(
     val active: Boolean,
     val toggle: CardAction.CallService?,
     val updatedAt: Double,
+    val light: LightMoreInfo?,
+    val stateToggle: StateToggle?,
     val controls: List<TileFeature>,
     val media: MediaControlModel?,
     val attributes: List<Pair<String, String>>,
@@ -67,18 +75,22 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
             put("features", JsonArray(features.map { JsonObject(mapOf("type" to JsonPrimitive(it))) }))
         },
     )
+    val light = lightMoreInfo(state)
+    val stateToggle = if (domain in STATE_TOGGLE_DOMAINS) stateToggle(state, "mdi:power", "mdi:power-off") else null
     return MoreInfoModel(
         entityId = entityId,
         name = entityName ?: deviceName ?: entityId,
         context = listOfNotNull(context.area?.name?.trim()?.ifEmpty { null }, deviceName.takeIf { entityName != null })
             .joinToString(" › ").ifEmpty { null },
         icon = entityIcon(entityId),
-        state = formatEntityState(state),
+        state = light?.state ?: formatEntityState(state),
         changed = formats.relativeTime(Instant.ofEpochMilli((state.lastChanged * MILLIS).toLong()), now)
             .replaceFirstChar { it.uppercaseChar() },
         active = state.isActive(),
-        toggle = toggleEntity(entityId).takeIf { domain in TOGGLE_DOMAINS && state.state in ON_OFF },
+        toggle = toggleEntity(entityId).takeIf { domain in HEADER_TOGGLE_DOMAINS && state.state in ON_OFF },
         updatedAt = state.lastUpdated,
+        light = light,
+        stateToggle = stateToggle,
         controls = tileFeatures(controlCard),
         media = if (domain == "media_player") mediaControlModel(CardConfig(controlCard.json)) else null,
         attributes = displayAttributes(state).map { attributeName(state, it) to formatEntityAttributeValue(state, it) },
@@ -97,20 +109,15 @@ private fun displayAttributes(state: EntityState): List<String> {
 
 private const val MILLIS = 1000.0
 private val ON_OFF = setOf("on", "off")
-private val TOGGLE_DOMAINS = setOf(
-    "automation",
-    "fan",
-    "humidifier",
-    "input_boolean",
-    "light",
-    "remote",
-    "siren",
-    "switch",
-)
+
+/** The domains whose switch is in the header, until they have controls of their own. */
+private val HEADER_TOGGLE_DOMAINS = setOf("automation", "fan", "humidifier", "remote", "siren")
+
+/** The domains whose details lead with the large on/off switch (`more-info-switch`, `more-info-input_boolean`). */
+private val STATE_TOGGLE_DOMAINS = setOf("input_boolean", "switch")
 
 /** The control each domain's more-info dialog leads with, as card features. */
 private val MORE_INFO_FEATURES = mapOf(
-    "light" to listOf("light-brightness"),
     "cover" to listOf("cover-open-close"),
     "climate" to listOf("target-temperature"),
     "water_heater" to listOf("target-temperature"),

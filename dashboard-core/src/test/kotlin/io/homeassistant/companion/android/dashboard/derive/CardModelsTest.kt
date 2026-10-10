@@ -119,13 +119,15 @@ class MoreInfoModelTest {
     private val hass = GoldenFixture("test-instance").hass
 
     @Test
-    fun `Given a dimmable light when deriving its quick view then it has a toggle, brightness and its attributes`() {
+    fun `Given a dimmable light when deriving its quick view then it shows its brightness, its controls and its attributes`() {
         val model = hass.moreInfoModel("light.kitchen_lights", Instant.parse("2026-01-01T01:00:00Z"))!!
         assertEquals("Kitchen Lights", model.name)
-        assertEquals("On", model.state)
+        assertEquals("71%", model.state)
         assertEquals("1 hour ago", model.changed)
-        assertEquals("turn_off", model.toggle?.service)
-        assertTrue(model.controls.single() is io.homeassistant.companion.android.dashboard.feature.TileFeature.Slider)
+        // Its own power button replaces the header's switch, its own controls the tile's
+        assertNull(model.toggle)
+        assertTrue(model.controls.isEmpty())
+        assertEquals(71.0, model.light?.brightness?.value)
         assertTrue(model.attributes.none { (name, _) -> name == "Friendly name" })
         assertTrue(model.attributes.isNotEmpty())
     }

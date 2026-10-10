@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-09T23:45:07.662Z",
+  "capture_date": "2026-10-10T01:30:31.410Z",
   "user": {
     "name": "Dev",
     "is_admin": true
@@ -132,13 +132,13 @@
   "files": [
     {
       "path": "energy/data.json",
-      "bytes": 1874694,
-      "sha256": "3ec64cf5277d9326c7e2679964aa42d7a0af8355f9a12174efb0ed30415394e8"
+      "bytes": 1693768,
+      "sha256": "4424673a256a1ce08555bb54bf13a5a940e0d86a323246feb22fd1e445d583d2"
     },
     {
       "path": "history/more-info.json",
-      "bytes": 236102,
-      "sha256": "2487e3e3bf26da0fe64d5ee7e729df3614c8745531e158cd4bc1fd375ab093ee"
+      "bytes": 243967,
+      "sha256": "aec529f631bd4bcbb67c0558a0fa1223126983329fcdd8bb228437b1c786de8e"
     },
     {
       "path": "inputs/areas.json",
@@ -207,8 +207,8 @@
     },
     {
       "path": "inputs/states.json",
-      "bytes": 96845,
-      "sha256": "d3545f6cb394818ace44609655b5309e82f9114f92ba4b4ca89708c25cb352e4"
+      "bytes": 96843,
+      "sha256": "4d7affc2ac1f1cc42e9cc139565f3dabf5dcaccb41b0642c2b882305b7d6dfc6"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -237,13 +237,18 @@
     },
     {
       "path": "logbook/more-info.json",
-      "bytes": 236324,
-      "sha256": "040ef9577f1b3737e9a1ef49f108da50aebf9e8decf4c563a4a67d6fea57ec29"
+      "bytes": 301920,
+      "sha256": "9be8b9f42860eeb4b8140eceb6083c2b025891ef99a07fac44fa6a81d706def1"
+    },
+    {
+      "path": "more-info/controls.json",
+      "bytes": 125790,
+      "sha256": "82c1f1454c259cfee784a98cf9be783b502583d932a1575b6dc2ce3be08976a7"
     },
     {
       "path": "outputs/cards.json",
-      "bytes": 2083,
-      "sha256": "e01f797006fcec42f69a827289842d63389e6c709b6966985e8ef6579bafc8bb"
+      "bytes": 2085,
+      "sha256": "19219cc29a4509a0f036a3946ffb9c24b4298b415d349c2116335d74acb1ff35"
     },
     {
       "path": "outputs/dashboard.json",
@@ -282,8 +287,8 @@
     },
     {
       "path": "outputs/entity-display.json",
-      "bytes": 78772,
-      "sha256": "c6c2b6add96d740de3c3b8d5fa9fcdbd75463a9215362648ed88a3a2d0a35c76"
+      "bytes": 78781,
+      "sha256": "8251b2069ebf6e473483ca7bc381d480980f90981bef1c7351f05c473bf7fb46"
     },
     {
       "path": "outputs/expanded.json",
@@ -398,7 +403,7 @@
     {
       "path": "ws/energy-get_prefs.json",
       "bytes": 2161,
-      "sha256": "24480442a12eec8e16c6c8a79a63362caa12f8b6e1bdbe3a5f4138b288a3b06a"
+      "sha256": "20684a555ace13a6ada94f75be7d1f8a86c834d6ec5dda19200d996e309732fd"
     },
     {
       "path": "ws/frontend-get_icons-entity_component.json",
@@ -457,8 +462,8 @@
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 107966,
-      "sha256": "8007388f0a1ba11ff45d4dfe1b1e7ab80acd07ae10f3dca48f6f3a71d8c0bbc4"
+      "bytes": 107964,
+      "sha256": "d813f76cf584f87111ad269e71d77fab18caad695f84ccc1a60216715e7ed7c5"
     },
     {
       "path": "ws/manifest-get-frontend.json",
@@ -473,7 +478,7 @@
     {
       "path": "ws/strategy-calls.json",
       "bytes": 2574,
-      "sha256": "b1518557eadec07cbd482a6f044a767f5baad95ffb9cceca5c3be153c3a7b286"
+      "sha256": "749f86ec494bf8cff1caa23527a77d264dadea2e2e5210ea0ffd9604f441030e"
     },
     {
       "path": "ws/usage_prediction-common_control.json",

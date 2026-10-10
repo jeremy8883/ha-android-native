@@ -22,7 +22,7 @@
     },
     "maintenance": {
       "primary": "Maintenance",
-      "secondary": "1 low battery",
+      "secondary": "2 low batteries",
       "loading": false
     },
     "energy": {

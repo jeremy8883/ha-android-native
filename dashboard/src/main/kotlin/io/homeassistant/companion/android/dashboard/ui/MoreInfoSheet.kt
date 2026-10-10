@@ -22,11 +22,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import io.homeassistant.companion.android.common.compose.composable.HAModalBottomSheet
@@ -45,7 +47,9 @@ import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.EntityToggle
 import io.homeassistant.companion.android.dashboard.ui.cards.TileFeatureControl
+import io.homeassistant.companion.android.dashboard.ui.controls.StateToggleControl
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLight
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLogbook
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -100,6 +104,11 @@ private fun MoreInfoContent(
     ) {
         MoreInfoHeader(model, interactions)
         MoreInfoState(model)
+        val state = hass.states[model.entityId]
+        model.light?.let { light -> state?.let { MoreInfoLight(light, it, hass, interactions.onAction) } }
+        model.stateToggle?.let { toggle ->
+            StateToggleControl(toggle, interactions.onAction, Modifier.align(Alignment.CenterHorizontally))
+        }
         model.controls.forEach { TileFeatureControl(it, available = true, onAction = interactions.onAction) }
         model.media?.let { media ->
             Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
@@ -150,23 +159,20 @@ private fun MoreInfoHeader(model: MoreInfoModel, interactions: CardInteractions)
     }
 }
 
-/** The state, and when it last changed. */
+/** Port of `ha-more-info-state-header`: the state, and when it last changed, centred. */
 @Composable
 private fun MoreInfoState(model: MoreInfoModel) {
-    Column {
+    val colors = LocalHAColorScheme.current
+    Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             model.state,
-            style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start),
-            color = LocalHAColorScheme.current.colorTextPrimary,
+            style = HATextStyle.Headline.copy(fontSize = STATE_FONT_SIZE, fontWeight = FontWeight.Normal),
+            color = colors.colorTextPrimary,
         )
         Text(
-            stringResource(
-                R.string.native_dashboard_more_info_changed,
-                model.changed.replaceFirstChar {
-                    it.lowercaseChar()
-                },
-            ),
-            style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+            model.changed,
+            style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium),
+            color = colors.colorTextPrimary,
         )
     }
 }
@@ -187,6 +193,9 @@ private fun MoreInfoAttributes(attributes: List<Pair<String, String>>) {
         }
     }
 }
+
+/** The state's size in the header (36px). */
+private val STATE_FONT_SIZE = 36.sp
 
 /** At the bottom of the window, centred. */
 private object WindowBottom : PopupPositionProvider {

@@ -1,0 +1,123 @@
+package io.homeassistant.companion.android.dashboard.moreinfo
+
+import io.homeassistant.companion.android.dashboard.action.CardAction
+import io.homeassistant.companion.android.dashboard.derive.DisplayColor
+import io.homeassistant.companion.android.dashboard.derive.isActive
+import io.homeassistant.companion.android.dashboard.derive.stateColor
+import io.homeassistant.companion.android.dashboard.entity.EntityState
+import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
+import io.homeassistant.companion.android.dashboard.feature.ValueService
+import io.homeassistant.companion.android.dashboard.feature.assumedState
+import io.homeassistant.companion.android.dashboard.feature.available
+import io.homeassistant.companion.android.dashboard.feature.entityData
+
+// The large controls of the more-info dialog (frontend@20260624.6 src/state-control/, src/components/ha-control-*).
+
+/**
+ * A large slider, as a state control draws `ha-control-slider`.
+ *
+ * @property value the value, `null` when unknown (the bar is then empty)
+ * @property mode how the value is drawn
+ * @property inverted whether the value grows towards the start (the top, when vertical)
+ * @property showHandle whether the bar ends in a handle, which keeps it visible at the minimum
+ * @property color the bar's colour, `null` for the theme's primary colour
+ * @property service the call that sets the value
+ */
+data class ControlSlider(
+    val label: String,
+    val value: Double?,
+    val min: Double,
+    val max: Double,
+    val step: Double,
+    val unit: String?,
+    val mode: SliderMode,
+    val inverted: Boolean,
+    val showHandle: Boolean,
+    val enabled: Boolean,
+    val color: DisplayColor?,
+    val background: SliderBackground,
+    val service: ValueService,
+)
+
+/** How a [ControlSlider] draws its value (`mode`). */
+sealed interface SliderMode {
+    /** A bar filled from the start up to the value. */
+    data object Start : SliderMode
+
+    /** A cursor at the value, over the background. */
+    data object Cursor : SliderMode
+}
+
+/** The track behind a [ControlSlider]'s value. */
+sealed interface SliderBackground {
+    /** A colour (`null` for the theme's disabled colour), at [opacity]. */
+    data class Tint(val color: DisplayColor?, val opacity: Float) : SliderBackground
+
+    /** A gradient of `#rrggbb` colours from the start (the top, when vertical), at their fractions of the length. */
+    data class Gradient(val stops: List<Pair<Double, String>>) : SliderBackground
+}
+
+/**
+ * The large on/off control (`ha-state-control-toggle`): a switch, or two buttons when the state isn't known for
+ * sure (assumed or unknown).
+ *
+ * @property checked whether the switch is on
+ * @property showHandle whether the switch's knob shows (while active)
+ * @property buttons whether it shows as separate on and off buttons
+ */
+data class StateToggle(
+    val label: String,
+    val checked: Boolean,
+    val showHandle: Boolean,
+    val enabled: Boolean,
+    val buttons: Boolean,
+    val onColor: DisplayColor?,
+    val offColor: DisplayColor?,
+    val onIcon: String,
+    val offIcon: String,
+    val turnOnLabel: String,
+    val turnOffLabel: String,
+    val turnOn: CardAction.CallService,
+    val turnOff: CardAction.CallService,
+)
+
+/**
+ * A dropdown of choices (`ha-control-select-menu`).
+ *
+ * @property value the selected option's value, `null` when none
+ */
+data class SelectMenu(
+    val label: String,
+    val icon: String,
+    val value: String?,
+    val enabled: Boolean,
+    val options: List<MenuOption>,
+)
+
+/** One choice of a [SelectMenu]. */
+data class MenuOption(val value: String, val label: String, val action: CardAction.CallService)
+
+/** Port of `ha-state-control-toggle` for [state], with [onIcon] and [offIcon] for its two sides. */
+fun HassSnapshot.stateToggle(state: EntityState, onIcon: String, offIcon: String): StateToggle {
+    // Groups turn on and off through the homeassistant domain
+    val domain = if (state.domain == "group") "homeassistant" else state.domain
+    return StateToggle(
+        label = localize("ui.card.common.toggle"),
+        checked = state.state == ON,
+        showHandle = state.isActive(),
+        enabled = state.available(),
+        buttons = state.assumedState() || state.state == UNKNOWN,
+        onColor = stateColor(state, ON),
+        offColor = stateColor(state, OFF),
+        onIcon = onIcon,
+        offIcon = offIcon,
+        turnOnLabel = localize("ui.card.common.turn_on"),
+        turnOffLabel = localize("ui.card.common.turn_off"),
+        turnOn = CardAction.CallService(domain, "turn_on", entityData(state), target = null),
+        turnOff = CardAction.CallService(domain, "turn_off", entityData(state), target = null),
+    )
+}
+
+private const val ON = "on"
+private const val OFF = "off"
+private const val UNKNOWN = "unknown"

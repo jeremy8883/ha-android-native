@@ -834,6 +834,263 @@ async function captureMoreInfoLogbook(entityIds) {
   return { capturedAt: new Date().toISOString(), entities: out };
 }
 
+/** The entities whose more-info controls are recorded, each as it is and turned off and unavailable. */
+const CONTROL_ENTITIES = [
+  "light.bed_light",
+  "light.ceiling_lights",
+  "light.kitchen_lights",
+  "light.office_rgbw_lights",
+  "light.living_room_rgbww_lights",
+  "light.entrance_color_white_lights",
+  "switch.ac",
+  "switch.decorative_lights",
+  "input_boolean.guest_mode",
+];
+
+/**
+ * Renders the more-info dialog's controls (`more-info-<domain>`) for each of [entityIds], as the entity is and as
+ * it would be turned off and unavailable, and returns what each drew: the state header, the main controls with
+ * their values and colours, the button row and the select menus, then each light picker in turn. Runs in the page.
+ */
+async function captureMoreInfoControls(entityIds) {
+  const g = window.__golden;
+  const ha = document.querySelector("home-assistant");
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const deep = (root, selector) => {
+    const found = [];
+    const visit = (r) => r?.querySelectorAll("*").forEach((n) => {
+      if (n.matches(selector)) found.push(n);
+      visit(n.shadowRoot);
+    });
+    visit(root);
+    return found;
+  };
+  const text = (n) => n?.textContent.replace(/\s+/g, " ").trim() ?? null;
+  // Each domain's controls load with its dialog: open one once
+  for (const domain of new Set(entityIds.map((id) => id.split(".")[0]))) {
+    const tag = `more-info-${domain}`;
+    if (customElements.get(tag)) continue;
+    const first = entityIds.find((id) => id.startsWith(`${domain}.`));
+    ha.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId: first }, bubbles: true, composed: true }));
+    for (let i = 0; i < 100 && !customElements.get(tag); i++) await sleep(100);
+    ha.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId: "" }, bubbles: true, composed: true }));
+    await sleep(500);
+  }
+  const slider = (el) => el && {
+    value: el.value ?? null,
+    min: el.min ?? null,
+    max: el.max ?? null,
+    step: el.step ?? null,
+    mode: el.mode ?? null,
+    vertical: el.vertical ?? false,
+    inverted: el.inverted ?? false,
+    showHandle: el.showHandle ?? false,
+    disabled: el.disabled ?? false,
+    label: el.label ?? null,
+    unit: el.unit ?? null,
+    color: el.style.getPropertyValue("--control-slider-color") || null,
+    background: el.style.getPropertyValue("--control-slider-background") || null,
+    gradient: el.style.getPropertyValue("--gradient") || null,
+  };
+  const controls = (el) => {
+    const root = el.shadowRoot;
+    const toggle = root.querySelector("ha-state-control-toggle");
+    const switchEl = toggle?.shadowRoot?.querySelector("ha-control-switch");
+    const toggleButtons = [...(toggle?.shadowRoot?.querySelectorAll("ha-control-button") ?? [])];
+    const group = root.querySelector("ha-icon-button-group");
+    const menus = [...root.querySelectorAll("ha-control-select-menu")];
+    return {
+      state: text(root.querySelector("ha-more-info-state-header")?.shadowRoot?.querySelector(".state")),
+      toggle: toggle
+        ? {
+            switch: switchEl
+              ? {
+                  checked: switchEl.checked ?? false,
+                  showHandle: switchEl.showHandle ?? false,
+                  disabled: switchEl.disabled ?? false,
+                  label: switchEl.label ?? null,
+                  onColor: switchEl.style.getPropertyValue("--control-switch-on-color") || null,
+                  offColor: switchEl.style.getPropertyValue("--control-switch-off-color") || null,
+                }
+              : null,
+            buttons: toggleButtons.map((b) => ({
+              label: b.label ?? null,
+              disabled: b.disabled ?? false,
+              active: b.classList.contains("active"),
+              color: b.style.getPropertyValue("--color") || null,
+            })),
+          }
+        : null,
+      brightness: slider(
+        root.querySelector("ha-state-control-light-brightness")?.shadowRoot?.querySelector("ha-control-slider")
+      ),
+      colorTemp: slider(
+        root.querySelector("light-color-temp-picker")?.shadowRoot?.querySelector("ha-control-slider")
+      ),
+      buttons: group
+        ? [...group.children].map((b) =>
+            b.classList.contains("separator")
+              ? { separator: true }
+              : {
+                  tag: b.localName,
+                  label: b.label ?? null,
+                  disabled: b.disabled ?? false,
+                  selected: b.selected ?? null,
+                  control: b.control ?? null,
+                }
+          )
+        : null,
+      rgb: (() => {
+        const picker = root.querySelector("light-color-rgb-picker");
+        if (!picker) return null;
+        const hs = picker.shadowRoot?.querySelector("ha-hs-color-picker");
+        return {
+          hs: hs?.value ?? null,
+          colorBrightness: hs?.colorBrightness ?? null,
+          wv: hs?.wv ?? null,
+          cw: hs?.cw ?? null,
+          ww: hs?.ww ?? null,
+          minKelvin: hs?.minKelvin ?? null,
+          maxKelvin: hs?.maxKelvin ?? null,
+          sliders: [...(picker.shadowRoot?.querySelectorAll("ha-labeled-slider") ?? [])].map((l) => ({
+            caption: l.caption ?? null,
+            name: l.name ?? null,
+            icon: l.icon ?? null,
+            value: l.value ?? null,
+          })),
+        };
+      })(),
+      menus: menus.map((m) => ({
+        label: m.label ?? null,
+        value: m.value ?? null,
+        disabled: m.disabled ?? false,
+        options: (m.options ?? []).map((o) => ({ value: o.value, label: o.label })),
+      })),
+    };
+  };
+  const variants = (stateObj) => {
+    // As the server reports a light off or unavailable: its capabilities stay, its colour and brightness go
+    const kept = {};
+    for (const key of ["friendly_name", "icon", "supported_color_modes", "supported_features", "min_color_temp_kelvin",
+      "max_color_temp_kelvin", "min_mireds", "max_mireds", "effect_list", "entity_picture", "assumed_state"]) {
+      if (key in stateObj.attributes) kept[key] = stateObj.attributes[key];
+    }
+    const off = { ...kept };
+    for (const key of ["brightness", "color_mode", "color_temp_kelvin", "color_temp", "hs_color", "rgb_color",
+      "rgbw_color", "rgbww_color", "xy_color", "effect"]) {
+      if (key in stateObj.attributes) off[key] = null;
+    }
+    return {
+      as_is: stateObj,
+      off: { ...stateObj, state: "off", attributes: off },
+      unavailable: { ...stateObj, state: "unavailable", attributes: { ...kept, restored: true } },
+    };
+  };
+  const out = {};
+  for (const entityId of entityIds) {
+    const current = ha.hass.states[entityId];
+    if (!current) continue;
+    const domain = entityId.split(".")[0];
+    out[entityId] = {};
+    for (const [name, stateObj] of Object.entries(variants(g.clone(current)))) {
+      const el = document.createElement(`more-info-${domain}`);
+      el.hass = ha.hass;
+      el.stateObj = stateObj;
+      ha.shadowRoot.appendChild(el);
+      await sleep(300);
+      const shown = { stateObj: g.clone(stateObj), main: controls(el), pickers: {} };
+      // Each other main control in turn, as its button shows it
+      const toggles = [...(el.shadowRoot.querySelector("ha-icon-button-group")?.querySelectorAll("ha-icon-button-toggle") ?? [])];
+      for (const button of toggles) {
+        if (button.control === "brightness") continue;
+        button.click();
+        await sleep(300);
+        shown.pickers[button.control] = controls(el);
+      }
+      out[entityId][name] = shown;
+      el.remove();
+    }
+    if (domain === "light") out[entityId].as_is.calls = await lightCalls(g.clone(current));
+  }
+  return { capturedAt: new Date().toISOString(), entities: out };
+
+  /**
+   * The service calls each light control makes for a set value, each on a fresh dialog: intercepted, so the light
+   * doesn't change.
+   */
+  async function lightCalls(stateObj) {
+    const conn = ha.hass.connection;
+    const calls = [];
+    const origSend = conn.sendMessagePromise;
+    conn.sendMessagePromise = async function (msg) {
+      if (msg.type === "call_service") {
+        calls.push(g.clone({ domain: msg.domain, service: msg.service, data: msg.service_data ?? null }));
+        return { context: { id: "golden" } };
+      }
+      return origSend.call(this, msg);
+    };
+    const recorded = [];
+    const interact = async (control, label, find, detail) => {
+      const el = document.createElement("more-info-light");
+      el.hass = ha.hass;
+      el.stateObj = stateObj;
+      ha.shadowRoot.appendChild(el);
+      await sleep(200);
+      const button = el.shadowRoot.querySelector(`ha-icon-button-toggle[control="${control}"]`)
+        ?? [...el.shadowRoot.querySelectorAll("ha-icon-button-toggle")].find((b) => b.control === control);
+      if (button) {
+        button.click();
+        await sleep(200);
+      }
+      const target = find(el.shadowRoot);
+      if (target) {
+        calls.length = 0;
+        target.dispatchEvent(new CustomEvent("value-changed", { detail }));
+        await sleep(200);
+        recorded.push({ control, label, detail: g.clone(detail), calls: g.clone(calls) });
+      }
+      el.remove();
+    };
+    const brightness = (r) => r.querySelector("ha-state-control-light-brightness")?.shadowRoot?.querySelector("ha-control-slider");
+    const temp = (r) => r.querySelector("light-color-temp-picker")?.shadowRoot?.querySelector("ha-control-slider");
+    const rgb = (r) => r.querySelector("light-color-rgb-picker")?.shadowRoot;
+    await interact("brightness", "brightness 40", brightness, { value: 40 });
+    await interact("color_temp", "temperature 3000", temp, { value: 3000 });
+    for (const hs of [[120, 0.5], [0, 0], [300, 1]]) {
+      await interact("color", `hs ${hs}`, (r) => rgb(r)?.querySelector("ha-hs-color-picker"), { value: hs });
+    }
+    const sliders = (r) => [...(rgb(r)?.querySelectorAll("ha-labeled-slider") ?? [])];
+    for (let i = 0; i < 3; i++) {
+      for (const value of [40, 100]) {
+        await interact("color", `slider ${i} ${value}`, (r) => sliders(r)[i], { value });
+      }
+    }
+    // The white and effect buttons
+    const el = document.createElement("more-info-light");
+    el.hass = ha.hass;
+    el.stateObj = stateObj;
+    ha.shadowRoot.appendChild(el);
+    await sleep(200);
+    for (const button of el.shadowRoot.querySelectorAll("ha-icon-button-group > ha-icon-button")) {
+      calls.length = 0;
+      button.click();
+      await sleep(200);
+      recorded.push({ control: "button", label: button.label, detail: null, calls: g.clone(calls) });
+    }
+    const menu = el.shadowRoot.querySelector("ha-control-select-menu");
+    const effect = stateObj.attributes.effect_list?.find((e) => e !== stateObj.attributes.effect);
+    if (menu && effect) {
+      calls.length = 0;
+      menu.dispatchEvent(new CustomEvent("wa-select", { detail: { item: { value: effect } } }));
+      await sleep(200);
+      recorded.push({ control: "effect", label: effect, detail: null, calls: g.clone(calls) });
+    }
+    el.remove();
+    conn.sendMessagePromise = origSend;
+    return recorded;
+  }
+}
+
 /**
  * Loads the energy collection for each of [periods] and records the WS requests it made with their results (what
  * `getEnergyData` fetches), on the energy panel's page.
@@ -1358,6 +1615,8 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
   // The same for every user: recorded once
   const historyData = variant === "admin" ? await page.evaluate(captureMoreInfoHistory, HISTORY_ENTITIES) : null;
   if (historyData) console.log(`  recorded the history of ${Object.keys(historyData.entities).length} entities`);
+  const controlsData = variant === "admin" ? await page.evaluate(captureMoreInfoControls, CONTROL_ENTITIES) : null;
+  if (controlsData) console.log(`  recorded the controls of ${Object.keys(controlsData.entities).length} entities`);
   await page.evaluate(() => window.__golden.navigate("/home/overview"));
   await page.waitForTimeout(500);
 
@@ -1422,6 +1681,7 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir }) {
   }
   if (historyData) write("history/more-info.json", historyData, true);
   if (logbookData) write("logbook/more-info.json", logbookData, true);
+  if (controlsData) write("more-info/controls.json", controlsData);
   write("outputs/expanded.json", cap.expanded);
   write("outputs/entity-display.json", cap.display);
   write("outputs/cards.json", cap.cards);
