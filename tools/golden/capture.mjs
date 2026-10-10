@@ -861,6 +861,9 @@ const CONTROL_ENTITIES = [
   "cover.pergola_roof",
   "valve.front_garden",
   "valve.back_garden",
+  "lock.front_door",
+  "lock.kitchen_door",
+  "lock.openable_lock",
   "fan.living_room_fan",
   "fan.ceiling_fan",
   "fan.percentage_limited_fan",
@@ -930,7 +933,7 @@ async function captureMoreInfoControls(entityIds) {
   const controls = (el) => {
     const root = el.shadowRoot;
     const toggle = root.querySelector(
-      "ha-state-control-toggle, ha-state-control-cover-toggle, ha-state-control-valve-toggle"
+      "ha-state-control-toggle, ha-state-control-cover-toggle, ha-state-control-valve-toggle, ha-state-control-lock-toggle"
     );
     const switchEl = toggle?.shadowRoot?.querySelector("ha-control-switch");
     const toggleButtons = [...(toggle?.shadowRoot?.querySelectorAll("ha-control-button") ?? [])];
@@ -950,6 +953,7 @@ async function captureMoreInfoControls(entityIds) {
                   offColor: switchEl.style.getPropertyValue("--control-switch-off-color") || null,
                 }
               : null,
+            icons: [...(toggle.shadowRoot?.querySelectorAll("ha-state-icon") ?? [])].map((i) => i.stateValue ?? null),
             buttons: toggleButtons.map((b) => ({
               label: b.label ?? null,
               disabled: b.disabled ?? false,
@@ -1009,6 +1013,15 @@ async function captureMoreInfoControls(entityIds) {
           slider(root.querySelector(`ha-state-control-${name}`)?.shadowRoot?.querySelector("ha-control-slider")),
         ])
       ),
+      lock: el.localName === "more-info-lock" ? {
+        status: !!root.querySelector(".status"),
+        open: (() => {
+          const b = root.querySelector(".open-button");
+          return b ? { text: text(b), disabled: b.disabled ?? false } : null;
+        })(),
+        openDone: text(root.querySelector(".open-done")),
+        jammed: [...root.querySelectorAll(".jammed ha-control-button")].map((b) => text(b)),
+      } : undefined,
       speedSelect: (() => {
         const select = root.querySelector("ha-state-control-fan-speed")?.shadowRoot?.querySelector("ha-control-select");
         return select && {
@@ -1150,6 +1163,11 @@ async function captureMoreInfoControls(entityIds) {
         off: { ...stateObj, state: "off", attributes: off },
         unavailable: { ...stateObj, state: "unavailable", attributes: { ...stateObj.attributes, restored: true } },
       };
+      if (domain === "lock") {
+        for (const name of ["jammed", "unknown", "locking", "unlocking", "open"]) {
+          shown[name] = { ...stateObj, state: name };
+        }
+      }
       if (domain === "fan") {
         // The test fans are off: on at two of three speeds, and with a fine step (the slider)
         const a = stateObj.attributes;
@@ -1222,6 +1240,24 @@ async function captureMoreInfoControls(entityIds) {
     if (domain === "climate") out[entityId].as_is.calls = await climateCalls(g.clone(current));
     if (domain === "water_heater") {
       out[entityId].as_is.calls = await dialCalls(g.clone(current), "ha-state-control-water_heater-temperature", 50);
+    }
+    if (domain === "lock") {
+      for (const name of ["as_is", "jammed", "unknown"]) {
+        out[entityId][name].calls = await lockCalls(g.clone(out[entityId][name].stateObj));
+      }
+      out[entityId].as_is.openConfirm = await (async () => {
+        const el = document.createElement("more-info-lock");
+        el.hass = ha.hass;
+        el.stateObj = g.clone(out[entityId].as_is.stateObj);
+        ha.shadowRoot.appendChild(el);
+        await sleep(300);
+        const b = el.shadowRoot.querySelector(".open-button");
+        b?.click();
+        await sleep(200);
+        const confirm = text(el.shadowRoot.querySelector(".open-button"));
+        el.remove();
+        return b ? confirm : null;
+      })();
     }
     if (domain === "fan") {
       for (const name of ["on", "on_fine"]) {
@@ -1323,6 +1359,31 @@ async function captureMoreInfoControls(entityIds) {
       );
     }
     return recorded;
+  }
+
+  /** The calls of a lock's controls: the switch or its buttons, open (confirmed), and the jammed buttons. */
+  async function lockCalls(stateObj) {
+    const recorded = [];
+    const record = async (control, label, act) =>
+      recorded.push({ control, label, detail: null, calls: await recordCalls(stateObj, act, 600) });
+    const toggle = (r) => r.querySelector("ha-state-control-lock-toggle")?.shadowRoot;
+    await record("toggle", "switch", (r) => {
+      const control = toggle(r)?.querySelector("ha-control-switch");
+      if (control) {
+        control.checked = !control.checked;
+        control.dispatchEvent(new Event("change"));
+      }
+    });
+    for (const [index, label] of [[0, "lock"], [1, "unlock"]]) {
+      await record("toggle-button", label, (r) => toggle(r)?.querySelectorAll("ha-control-button")[index]?.click());
+      await record("jammed", label, (r) => r.querySelectorAll(".jammed ha-control-button")[1 - index]?.click());
+    }
+    await record("open", "open", async (r) => {
+      r.querySelector(".open-button")?.click();
+      await sleep(100);
+      r.querySelector(".open-button")?.click();
+    });
+    return recorded.filter((r) => r.calls.length > 0);
   }
 
   /** The calls of a fan's controls: each speed or the slider, the power button, and each menu. */

@@ -134,20 +134,27 @@ private fun HassSnapshot.lockCommands(state: EntityState): TileFeature? {
         label = localize("ui.card.lock.$service"),
         icon = icon,
         enabled = can(target),
-        action = CardAction.CallService(
-            "lock",
-            service,
-            entityData(state),
-            target = null,
-            code = state.attributes.string("code_format")?.ifEmpty { null }?.let {
-                CodeRequest(state.entityId, "lock", codeFormat = TEXT_CODE, title = localize("ui.card.lock.$service"))
-            },
-        ),
+        action = lockCall(state, service),
     )
     return TileFeature.Buttons(
         listOf(button("lock", "mdi:lock", "locked"), button("unlock", "mdi:lock-open-variant", "unlocked")),
     )
 }
+
+/**
+ * The lock's [service] (lock, unlock or open), asking for a code when the lock has a format for one and no default
+ * code saved. Port of `callProtectedLockService` (src/data/lock.ts).
+ */
+internal fun HassSnapshot.lockCall(state: EntityState, service: String): CardAction.CallService =
+    CardAction.CallService(
+        "lock",
+        service,
+        entityData(state),
+        target = null,
+        code = state.attributes.string("code_format")?.ifEmpty { null }?.let {
+            CodeRequest(state.entityId, "lock", codeFormat = TEXT_CODE, title = localize("ui.card.lock.$service"))
+        },
+    )
 
 /**
  * The translated name of an attribute. Port of `computeAttributeNameDisplay`

@@ -1,11 +1,11 @@
 {
-  "capturedAt": "2026-10-10T04:56:54.255Z",
+  "capturedAt": "2026-10-10T05:12:20.999Z",
   "entities": {
     "light.bed_light": {
       "as_is": {
         "stateObj": {
           "entity_id": "light.bed_light",
-          "state": "on",
+          "state": "off",
           "attributes": {
             "min_color_temp_kelvin": 2000,
             "max_color_temp_kelvin": 6535,
@@ -17,33 +17,23 @@
               "color_temp",
               "hs"
             ],
-            "effect": "rainbow",
-            "color_mode": "color_temp",
-            "brightness": 180,
-            "color_temp_kelvin": 4166,
-            "hs_color": [
-              26.752,
-              31.945
-            ],
-            "rgb_color": [
-              255,
-              210,
-              174
-            ],
-            "xy_color": [
-              0.41,
-              0.362
-            ],
+            "effect": null,
+            "color_mode": null,
+            "brightness": null,
+            "color_temp_kelvin": null,
+            "hs_color": null,
+            "rgb_color": null,
+            "xy_color": null,
             "friendly_name": "Bed Light",
             "supported_features": 4
           },
           "context": {
-            "id": "01M4J1RPPHHKXTGDYQZRPZM0ZQ",
+            "id": "01M4J2XAJX6G0CNN20JBAMFV6D",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T04:40:00.478Z",
-          "last_updated": "2026-10-10T04:40:00.478Z"
+          "last_changed": "2026-10-10T05:00:00.483Z",
+          "last_updated": "2026-10-10T05:00:00.483Z"
         },
         "entry": {
           "area_id": null,
@@ -91,22 +81,22 @@
           "original_icon": null
         },
         "main": {
-          "state": "71%",
+          "state": "Off",
           "toggle": null,
           "brightness": {
-            "value": 71,
+            "value": null,
             "min": 1,
             "max": 100,
             "step": 1,
             "mode": "start",
             "vertical": true,
             "inverted": false,
-            "showHandle": true,
+            "showHandle": false,
             "disabled": false,
             "label": "Brightness",
             "unit": "%",
-            "color": "#ffc699",
-            "background": "#ffc699",
+            "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
+            "background": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
             "gradient": null,
             "inactiveColor": null
           },
@@ -147,7 +137,7 @@
           "menus": [
             {
               "label": "Effect",
-              "value": "rainbow",
+              "value": null,
               "disabled": false,
               "options": [
                 {
@@ -266,7 +256,7 @@
         },
         "pickers": {
           "color": {
-            "state": "71%",
+            "state": "Off",
             "toggle": null,
             "buttons": [
               {
@@ -302,11 +292,8 @@
               }
             ],
             "rgb": {
-              "hs": [
-                26.666666666666664,
-                0.3176470588235294
-              ],
-              "colorBrightness": 255,
+              "hs": null,
+              "colorBrightness": null,
               "wv": null,
               "cw": null,
               "ww": null,
@@ -317,7 +304,7 @@
             "menus": [
               {
                 "label": "Effect",
-                "value": "rainbow",
+                "value": null,
                 "disabled": false,
                 "options": [
                   {
@@ -435,10 +422,10 @@
             }
           },
           "color_temp": {
-            "state": "71%",
+            "state": "Off",
             "toggle": null,
             "colorTemp": {
-              "value": 4166,
+              "value": null,
               "min": 2000,
               "max": 6535,
               "step": 1,
@@ -449,7 +436,7 @@
               "disabled": false,
               "label": "Temperature",
               "unit": "K",
-              "color": "var(--state-light-on-color, var(--state-light-active-color, var(--state-active-color)))",
+              "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
               "background": null,
               "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%",
               "inactiveColor": null
@@ -491,7 +478,7 @@
             "menus": [
               {
                 "label": "Effect",
-                "value": "rainbow",
+                "value": null,
                 "disabled": false,
                 "options": [
                   {
@@ -974,7 +961,7 @@
             "calls": [
               {
                 "domain": "light",
-                "service": "turn_off",
+                "service": "turn_on",
                 "data": {
                   "entity_id": "light.bed_light"
                 }
@@ -983,7 +970,7 @@
           },
           {
             "control": "effect",
-            "label": "off",
+            "label": "rainbow",
             "detail": null,
             "calls": [
               {
@@ -991,7 +978,7 @@
                 "service": "turn_on",
                 "data": {
                   "entity_id": "light.bed_light",
-                  "effect": "off"
+                  "effect": "rainbow"
                 }
               }
             ]
@@ -1024,12 +1011,12 @@
             "effect": null
           },
           "context": {
-            "id": "01M4J1RPPHHKXTGDYQZRPZM0ZQ",
+            "id": "01M4J2XAJX6G0CNN20JBAMFV6D",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T04:40:00.478Z",
-          "last_updated": "2026-10-10T04:40:00.478Z"
+          "last_changed": "2026-10-10T05:00:00.483Z",
+          "last_updated": "2026-10-10T05:00:00.483Z"
         },
         "entry": {
           "area_id": null,
@@ -1613,12 +1600,12 @@
             "restored": true
           },
           "context": {
-            "id": "01M4J1RPPHHKXTGDYQZRPZM0ZQ",
+            "id": "01M4J2XAJX6G0CNN20JBAMFV6D",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T04:40:00.478Z",
-          "last_updated": "2026-10-10T04:40:00.478Z"
+          "last_changed": "2026-10-10T05:00:00.483Z",
+          "last_updated": "2026-10-10T05:00:00.483Z"
         },
         "entry": {
           "area_id": null,
@@ -10053,6 +10040,7 @@
               "onColor": "var(--state-switch-outlet-on-color, var(--state-switch-on-color, var(--state-switch-active-color, var(--state-active-color))))",
               "offColor": "var(--state-switch-outlet-off-color, var(--state-switch-off-color, var(--state-switch-inactive-color, var(--state-inactive-color))))"
             },
+            "icons": [],
             "buttons": []
           },
           "buttons": null,
@@ -10128,6 +10116,7 @@
               "onColor": "var(--state-switch-on-color, var(--state-switch-active-color, var(--state-active-color)))",
               "offColor": "var(--state-switch-off-color, var(--state-switch-inactive-color, var(--state-inactive-color)))"
             },
+            "icons": [],
             "buttons": []
           },
           "buttons": null,
@@ -10204,6 +10193,7 @@
               "onColor": "var(--state-switch-on-color, var(--state-switch-active-color, var(--state-active-color)))",
               "offColor": "var(--state-switch-off-color, var(--state-switch-inactive-color, var(--state-inactive-color)))"
             },
+            "icons": [],
             "buttons": []
           },
           "buttons": null,
@@ -10275,6 +10265,7 @@
           "state": "On",
           "toggle": {
             "switch": null,
+            "icons": [],
             "buttons": [
               {
                 "label": "Turn on",
@@ -10357,6 +10348,7 @@
           "state": "Off",
           "toggle": {
             "switch": null,
+            "icons": [],
             "buttons": [
               {
                 "label": "Turn on",
@@ -10440,6 +10432,7 @@
           "state": "Unavailable",
           "toggle": {
             "switch": null,
+            "icons": [],
             "buttons": [
               {
                 "label": "Turn on",
@@ -10532,6 +10525,7 @@
               "onColor": "var(--state-input_boolean-on-color, var(--state-input_boolean-active-color, var(--state-active-color)))",
               "offColor": "var(--state-input_boolean-off-color, var(--state-input_boolean-inactive-color, var(--state-inactive-color)))"
             },
+            "icons": [],
             "buttons": []
           },
           "buttons": null,
@@ -10608,6 +10602,7 @@
               "onColor": "var(--state-input_boolean-on-color, var(--state-input_boolean-active-color, var(--state-active-color)))",
               "offColor": "var(--state-input_boolean-off-color, var(--state-input_boolean-inactive-color, var(--state-inactive-color)))"
             },
+            "icons": [],
             "buttons": []
           },
           "buttons": null,
@@ -10685,6 +10680,7 @@
               "onColor": "var(--state-input_boolean-on-color, var(--state-input_boolean-active-color, var(--state-active-color)))",
               "offColor": "var(--state-input_boolean-off-color, var(--state-input_boolean-inactive-color, var(--state-inactive-color)))"
             },
+            "icons": [],
             "buttons": []
           },
           "buttons": null,
@@ -19570,6 +19566,10 @@
               "onColor": "var(--state-cover-garage-open-color, var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color))))",
               "offColor": "var(--state-cover-garage-closed-color, var(--state-cover-closed-color, var(--state-cover-inactive-color, var(--state-inactive-color))))"
             },
+            "icons": [
+              null,
+              null
+            ],
             "buttons": []
           },
           "buttons": null,
@@ -19665,6 +19665,10 @@
               "onColor": "var(--state-cover-garage-open-color, var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color))))",
               "offColor": "var(--state-cover-garage-closed-color, var(--state-cover-closed-color, var(--state-cover-inactive-color, var(--state-inactive-color))))"
             },
+            "icons": [
+              null,
+              null
+            ],
             "buttons": []
           },
           "buttons": null,
@@ -19744,6 +19748,10 @@
               "onColor": "var(--state-cover-garage-open-color, var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color))))",
               "offColor": "var(--state-cover-garage-closed-color, var(--state-cover-closed-color, var(--state-cover-inactive-color, var(--state-inactive-color))))"
             },
+            "icons": [
+              null,
+              null
+            ],
             "buttons": []
           },
           "buttons": null,
@@ -20875,6 +20883,10 @@
               "onColor": "var(--state-valve-open-color, var(--state-valve-active-color, var(--state-active-color)))",
               "offColor": "var(--state-valve-closed-color, var(--state-valve-inactive-color, var(--state-inactive-color)))"
             },
+            "icons": [
+              null,
+              null
+            ],
             "buttons": []
           },
           "buttons": null,
@@ -21010,6 +21022,10 @@
               "onColor": "var(--state-valve-open-color, var(--state-valve-active-color, var(--state-active-color)))",
               "offColor": "var(--state-valve-closed-color, var(--state-valve-inactive-color, var(--state-inactive-color)))"
             },
+            "icons": [
+              null,
+              null
+            ],
             "buttons": []
           },
           "buttons": null,
@@ -21088,6 +21104,10 @@
               "onColor": "var(--state-valve-open-color, var(--state-valve-active-color, var(--state-active-color)))",
               "offColor": "var(--state-valve-closed-color, var(--state-valve-inactive-color, var(--state-inactive-color)))"
             },
+            "icons": [
+              null,
+              null
+            ],
             "buttons": []
           },
           "buttons": null,
@@ -22022,6 +22042,1569 @@
         }
       }
     },
+    "lock.front_door": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "lock.front_door",
+          "state": "locked",
+          "attributes": {
+            "friendly_name": "Front Door",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Locked",
+          "toggle": {
+            "switch": {
+              "checked": true,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Unlock",
+              "onColor": "var(--state-lock-locked-color, var(--state-lock-inactive-color, var(--state-inactive-color)))",
+              "offColor": "var(--state-lock-locked-color, var(--state-lock-inactive-color, var(--state-inactive-color)))"
+            },
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": null,
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "toggle",
+            "label": "switch",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "unlock",
+                "data": {
+                  "entity_id": "lock.front_door"
+                }
+              }
+            ]
+          }
+        ],
+        "openConfirm": null
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "lock.front_door",
+          "state": "off",
+          "attributes": {
+            "friendly_name": "Front Door",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "off",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Lock",
+              "onColor": "var(--state-lock-off-color, var(--state-lock-inactive-color, var(--state-inactive-color)))",
+              "offColor": "var(--state-lock-off-color, var(--state-lock-inactive-color, var(--state-inactive-color)))"
+            },
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": null,
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "lock.front_door",
+          "state": "unavailable",
+          "attributes": {
+            "friendly_name": "Front Door",
+            "supported_features": 0,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Unavailable",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": true,
+              "label": "Lock",
+              "onColor": "var(--state-unavailable-color)",
+              "offColor": "var(--state-unavailable-color)"
+            },
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": null,
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "jammed": {
+        "stateObj": {
+          "entity_id": "lock.front_door",
+          "state": "jammed",
+          "attributes": {
+            "friendly_name": "Front Door",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Jammed",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": true,
+            "open": null,
+            "openDone": null,
+            "jammed": [
+              "Unlock",
+              "Lock"
+            ]
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "jammed",
+            "label": "lock",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "lock",
+                "data": {
+                  "entity_id": "lock.front_door"
+                }
+              }
+            ]
+          },
+          {
+            "control": "jammed",
+            "label": "unlock",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "unlock",
+                "data": {
+                  "entity_id": "lock.front_door"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "unknown": {
+        "stateObj": {
+          "entity_id": "lock.front_door",
+          "state": "unknown",
+          "attributes": {
+            "friendly_name": "Front Door",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Unknown",
+          "toggle": {
+            "switch": null,
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": [
+              {
+                "label": "Lock",
+                "disabled": false,
+                "active": false,
+                "color": null
+              },
+              {
+                "label": "Unlock",
+                "disabled": false,
+                "active": false,
+                "color": null
+              }
+            ]
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": null,
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "toggle-button",
+            "label": "lock",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "lock",
+                "data": {
+                  "entity_id": "lock.front_door"
+                }
+              }
+            ]
+          },
+          {
+            "control": "toggle-button",
+            "label": "unlock",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "unlock",
+                "data": {
+                  "entity_id": "lock.front_door"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "locking": {
+        "stateObj": {
+          "entity_id": "lock.front_door",
+          "state": "locking",
+          "attributes": {
+            "friendly_name": "Front Door",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Locking",
+          "toggle": {
+            "switch": {
+              "checked": true,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Unlock",
+              "onColor": "var(--state-lock-locking-color, var(--state-lock-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-lock-locking-color, var(--state-lock-active-color, var(--state-active-color)))"
+            },
+            "icons": [
+              "locking",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": null,
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unlocking": {
+        "stateObj": {
+          "entity_id": "lock.front_door",
+          "state": "unlocking",
+          "attributes": {
+            "friendly_name": "Front Door",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Unlocking",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Lock",
+              "onColor": "var(--state-lock-unlocking-color, var(--state-lock-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-lock-unlocking-color, var(--state-lock-active-color, var(--state-active-color)))"
+            },
+            "icons": [
+              "locked",
+              "unlocking"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": null,
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "open": {
+        "stateObj": {
+          "entity_id": "lock.front_door",
+          "state": "open",
+          "attributes": {
+            "friendly_name": "Front Door",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Open",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Lock",
+              "onColor": "var(--state-lock-open-color, var(--state-lock-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-lock-open-color, var(--state-lock-active-color, var(--state-active-color)))"
+            },
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": null,
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "lock.kitchen_door": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "lock.kitchen_door",
+          "state": "unlocked",
+          "attributes": {
+            "friendly_name": "Kitchen Door",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HX3BCA3GJ404M8XH8XE2M0",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T03:18:28.445Z",
+          "last_updated": "2026-10-10T03:18:28.445Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Unlocked",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Lock",
+              "onColor": "var(--state-lock-unlocked-color, var(--state-lock-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-lock-unlocked-color, var(--state-lock-active-color, var(--state-active-color)))"
+            },
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": null,
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "toggle",
+            "label": "switch",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "lock",
+                "data": {
+                  "entity_id": "lock.kitchen_door"
+                }
+              }
+            ]
+          }
+        ],
+        "openConfirm": null
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "lock.kitchen_door",
+          "state": "off",
+          "attributes": {
+            "friendly_name": "Kitchen Door",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HX3BCA3GJ404M8XH8XE2M0",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T03:18:28.445Z",
+          "last_updated": "2026-10-10T03:18:28.445Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "off",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Lock",
+              "onColor": "var(--state-lock-off-color, var(--state-lock-inactive-color, var(--state-inactive-color)))",
+              "offColor": "var(--state-lock-off-color, var(--state-lock-inactive-color, var(--state-inactive-color)))"
+            },
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": null,
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "lock.kitchen_door",
+          "state": "unavailable",
+          "attributes": {
+            "friendly_name": "Kitchen Door",
+            "supported_features": 0,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HX3BCA3GJ404M8XH8XE2M0",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T03:18:28.445Z",
+          "last_updated": "2026-10-10T03:18:28.445Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Unavailable",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": true,
+              "label": "Lock",
+              "onColor": "var(--state-unavailable-color)",
+              "offColor": "var(--state-unavailable-color)"
+            },
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": null,
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "jammed": {
+        "stateObj": {
+          "entity_id": "lock.kitchen_door",
+          "state": "jammed",
+          "attributes": {
+            "friendly_name": "Kitchen Door",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HX3BCA3GJ404M8XH8XE2M0",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T03:18:28.445Z",
+          "last_updated": "2026-10-10T03:18:28.445Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Jammed",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": true,
+            "open": null,
+            "openDone": null,
+            "jammed": [
+              "Unlock",
+              "Lock"
+            ]
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "jammed",
+            "label": "lock",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "lock",
+                "data": {
+                  "entity_id": "lock.kitchen_door"
+                }
+              }
+            ]
+          },
+          {
+            "control": "jammed",
+            "label": "unlock",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "unlock",
+                "data": {
+                  "entity_id": "lock.kitchen_door"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "unknown": {
+        "stateObj": {
+          "entity_id": "lock.kitchen_door",
+          "state": "unknown",
+          "attributes": {
+            "friendly_name": "Kitchen Door",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HX3BCA3GJ404M8XH8XE2M0",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T03:18:28.445Z",
+          "last_updated": "2026-10-10T03:18:28.445Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Unknown",
+          "toggle": {
+            "switch": null,
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": [
+              {
+                "label": "Lock",
+                "disabled": false,
+                "active": false,
+                "color": null
+              },
+              {
+                "label": "Unlock",
+                "disabled": false,
+                "active": false,
+                "color": null
+              }
+            ]
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": null,
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "toggle-button",
+            "label": "lock",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "lock",
+                "data": {
+                  "entity_id": "lock.kitchen_door"
+                }
+              }
+            ]
+          },
+          {
+            "control": "toggle-button",
+            "label": "unlock",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "unlock",
+                "data": {
+                  "entity_id": "lock.kitchen_door"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "locking": {
+        "stateObj": {
+          "entity_id": "lock.kitchen_door",
+          "state": "locking",
+          "attributes": {
+            "friendly_name": "Kitchen Door",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HX3BCA3GJ404M8XH8XE2M0",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T03:18:28.445Z",
+          "last_updated": "2026-10-10T03:18:28.445Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Locking",
+          "toggle": {
+            "switch": {
+              "checked": true,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Unlock",
+              "onColor": "var(--state-lock-locking-color, var(--state-lock-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-lock-locking-color, var(--state-lock-active-color, var(--state-active-color)))"
+            },
+            "icons": [
+              "locking",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": null,
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unlocking": {
+        "stateObj": {
+          "entity_id": "lock.kitchen_door",
+          "state": "unlocking",
+          "attributes": {
+            "friendly_name": "Kitchen Door",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HX3BCA3GJ404M8XH8XE2M0",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T03:18:28.445Z",
+          "last_updated": "2026-10-10T03:18:28.445Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Unlocking",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Lock",
+              "onColor": "var(--state-lock-unlocking-color, var(--state-lock-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-lock-unlocking-color, var(--state-lock-active-color, var(--state-active-color)))"
+            },
+            "icons": [
+              "locked",
+              "unlocking"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": null,
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "open": {
+        "stateObj": {
+          "entity_id": "lock.kitchen_door",
+          "state": "open",
+          "attributes": {
+            "friendly_name": "Kitchen Door",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HX3BCA3GJ404M8XH8XE2M0",
+            "parent_id": null,
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+          },
+          "last_changed": "2026-10-10T03:18:28.445Z",
+          "last_updated": "2026-10-10T03:18:28.445Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Open",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Lock",
+              "onColor": "var(--state-lock-open-color, var(--state-lock-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-lock-open-color, var(--state-lock-active-color, var(--state-active-color)))"
+            },
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": null,
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "lock.openable_lock": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "lock.openable_lock",
+          "state": "locked",
+          "attributes": {
+            "friendly_name": "Openable Lock",
+            "supported_features": 1
+          },
+          "context": {
+            "id": "01M4HEKT3FT3GB67A8CK3SJ508",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Locked",
+          "toggle": {
+            "switch": {
+              "checked": true,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Unlock",
+              "onColor": "var(--state-lock-locked-color, var(--state-lock-inactive-color, var(--state-inactive-color)))",
+              "offColor": "var(--state-lock-locked-color, var(--state-lock-inactive-color, var(--state-inactive-color)))"
+            },
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": {
+              "text": "Open door",
+              "disabled": false
+            },
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "toggle",
+            "label": "switch",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "unlock",
+                "data": {
+                  "entity_id": "lock.openable_lock"
+                }
+              }
+            ]
+          },
+          {
+            "control": "open",
+            "label": "open",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "open",
+                "data": {
+                  "entity_id": "lock.openable_lock"
+                }
+              }
+            ]
+          }
+        ],
+        "openConfirm": "Really open?"
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "lock.openable_lock",
+          "state": "off",
+          "attributes": {
+            "friendly_name": "Openable Lock",
+            "supported_features": 1
+          },
+          "context": {
+            "id": "01M4HEKT3FT3GB67A8CK3SJ508",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "off",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Lock",
+              "onColor": "var(--state-lock-off-color, var(--state-lock-inactive-color, var(--state-inactive-color)))",
+              "offColor": "var(--state-lock-off-color, var(--state-lock-inactive-color, var(--state-inactive-color)))"
+            },
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": {
+              "text": "Open door",
+              "disabled": false
+            },
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "lock.openable_lock",
+          "state": "unavailable",
+          "attributes": {
+            "friendly_name": "Openable Lock",
+            "supported_features": 1,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3FT3GB67A8CK3SJ508",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Unavailable",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": true,
+              "label": "Lock",
+              "onColor": "var(--state-unavailable-color)",
+              "offColor": "var(--state-unavailable-color)"
+            },
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": {
+              "text": "Open door",
+              "disabled": true
+            },
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "jammed": {
+        "stateObj": {
+          "entity_id": "lock.openable_lock",
+          "state": "jammed",
+          "attributes": {
+            "friendly_name": "Openable Lock",
+            "supported_features": 1
+          },
+          "context": {
+            "id": "01M4HEKT3FT3GB67A8CK3SJ508",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Jammed",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": true,
+            "open": {
+              "text": "Open door",
+              "disabled": false
+            },
+            "openDone": null,
+            "jammed": [
+              "Unlock",
+              "Lock"
+            ]
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "jammed",
+            "label": "lock",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "lock",
+                "data": {
+                  "entity_id": "lock.openable_lock"
+                }
+              }
+            ]
+          },
+          {
+            "control": "jammed",
+            "label": "unlock",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "unlock",
+                "data": {
+                  "entity_id": "lock.openable_lock"
+                }
+              }
+            ]
+          },
+          {
+            "control": "open",
+            "label": "open",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "open",
+                "data": {
+                  "entity_id": "lock.openable_lock"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "unknown": {
+        "stateObj": {
+          "entity_id": "lock.openable_lock",
+          "state": "unknown",
+          "attributes": {
+            "friendly_name": "Openable Lock",
+            "supported_features": 1
+          },
+          "context": {
+            "id": "01M4HEKT3FT3GB67A8CK3SJ508",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Unknown",
+          "toggle": {
+            "switch": null,
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": [
+              {
+                "label": "Lock",
+                "disabled": false,
+                "active": false,
+                "color": null
+              },
+              {
+                "label": "Unlock",
+                "disabled": false,
+                "active": false,
+                "color": null
+              }
+            ]
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": {
+              "text": "Open door",
+              "disabled": false
+            },
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "toggle-button",
+            "label": "lock",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "lock",
+                "data": {
+                  "entity_id": "lock.openable_lock"
+                }
+              }
+            ]
+          },
+          {
+            "control": "toggle-button",
+            "label": "unlock",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "unlock",
+                "data": {
+                  "entity_id": "lock.openable_lock"
+                }
+              }
+            ]
+          },
+          {
+            "control": "open",
+            "label": "open",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "lock",
+                "service": "open",
+                "data": {
+                  "entity_id": "lock.openable_lock"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "locking": {
+        "stateObj": {
+          "entity_id": "lock.openable_lock",
+          "state": "locking",
+          "attributes": {
+            "friendly_name": "Openable Lock",
+            "supported_features": 1
+          },
+          "context": {
+            "id": "01M4HEKT3FT3GB67A8CK3SJ508",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Locking",
+          "toggle": {
+            "switch": {
+              "checked": true,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Unlock",
+              "onColor": "var(--state-lock-locking-color, var(--state-lock-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-lock-locking-color, var(--state-lock-active-color, var(--state-active-color)))"
+            },
+            "icons": [
+              "locking",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": {
+              "text": "Open door",
+              "disabled": true
+            },
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unlocking": {
+        "stateObj": {
+          "entity_id": "lock.openable_lock",
+          "state": "unlocking",
+          "attributes": {
+            "friendly_name": "Openable Lock",
+            "supported_features": 1
+          },
+          "context": {
+            "id": "01M4HEKT3FT3GB67A8CK3SJ508",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Unlocking",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Lock",
+              "onColor": "var(--state-lock-unlocking-color, var(--state-lock-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-lock-unlocking-color, var(--state-lock-active-color, var(--state-active-color)))"
+            },
+            "icons": [
+              "locked",
+              "unlocking"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": {
+              "text": "Open door",
+              "disabled": true
+            },
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "open": {
+        "stateObj": {
+          "entity_id": "lock.openable_lock",
+          "state": "open",
+          "attributes": {
+            "friendly_name": "Openable Lock",
+            "supported_features": 1
+          },
+          "context": {
+            "id": "01M4HEKT3FT3GB67A8CK3SJ508",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.167Z",
+          "last_updated": "2026-10-09T23:05:17.167Z"
+        },
+        "entry": null,
+        "main": {
+          "state": "Open",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Lock",
+              "onColor": "var(--state-lock-open-color, var(--state-lock-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-lock-open-color, var(--state-lock-active-color, var(--state-active-color)))"
+            },
+            "icons": [
+              "locked",
+              "unlocked"
+            ],
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "lock": {
+            "status": false,
+            "open": {
+              "text": "Open door",
+              "disabled": true
+            },
+            "openDone": null,
+            "jammed": []
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
     "fan.living_room_fan": {
       "as_is": {
         "stateObj": {
@@ -22036,19 +23619,19 @@
             ],
             "direction": "forward",
             "oscillating": false,
-            "percentage": null,
+            "percentage": 0,
             "percentage_step": 33.333333333333336,
             "preset_mode": null,
             "friendly_name": "Living Room Fan",
             "supported_features": 55
           },
           "context": {
-            "id": "01M4HEKT3EFCX8T5SEXF8ZJG0E",
+            "id": "01M4J377BJWDTCCZK5YPE8R7QC",
             "parent_id": null,
-            "user_id": null
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-09T23:05:17.166Z",
-          "last_updated": "2026-10-09T23:05:17.166Z"
+          "last_changed": "2026-10-10T05:05:24.852Z",
+          "last_updated": "2026-10-10T05:05:24.852Z"
         },
         "entry": {
           "area_id": "living_room",
@@ -22184,19 +23767,19 @@
             ],
             "direction": "forward",
             "oscillating": false,
-            "percentage": null,
+            "percentage": 0,
             "percentage_step": 33.333333333333336,
             "preset_mode": null,
             "friendly_name": "Living Room Fan",
             "supported_features": 55
           },
           "context": {
-            "id": "01M4HEKT3EFCX8T5SEXF8ZJG0E",
+            "id": "01M4J377BJWDTCCZK5YPE8R7QC",
             "parent_id": null,
-            "user_id": null
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-09T23:05:17.166Z",
-          "last_updated": "2026-10-09T23:05:17.166Z"
+          "last_changed": "2026-10-10T05:05:24.852Z",
+          "last_updated": "2026-10-10T05:05:24.852Z"
         },
         "entry": {
           "area_id": "living_room",
@@ -22324,7 +23907,7 @@
             ],
             "direction": "forward",
             "oscillating": false,
-            "percentage": null,
+            "percentage": 0,
             "percentage_step": 33.333333333333336,
             "preset_mode": null,
             "friendly_name": "Living Room Fan",
@@ -22332,12 +23915,12 @@
             "restored": true
           },
           "context": {
-            "id": "01M4HEKT3EFCX8T5SEXF8ZJG0E",
+            "id": "01M4J377BJWDTCCZK5YPE8R7QC",
             "parent_id": null,
-            "user_id": null
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-09T23:05:17.166Z",
-          "last_updated": "2026-10-09T23:05:17.166Z"
+          "last_changed": "2026-10-10T05:05:24.852Z",
+          "last_updated": "2026-10-10T05:05:24.852Z"
         },
         "entry": {
           "area_id": "living_room",
@@ -22472,12 +24055,12 @@
             "supported_features": 55
           },
           "context": {
-            "id": "01M4HEKT3EFCX8T5SEXF8ZJG0E",
+            "id": "01M4J377BJWDTCCZK5YPE8R7QC",
             "parent_id": null,
-            "user_id": null
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-09T23:05:17.166Z",
-          "last_updated": "2026-10-09T23:05:17.166Z"
+          "last_changed": "2026-10-10T05:05:24.852Z",
+          "last_updated": "2026-10-10T05:05:24.852Z"
         },
         "entry": {
           "area_id": "living_room",
@@ -22719,12 +24302,12 @@
             "supported_features": 55
           },
           "context": {
-            "id": "01M4HEKT3EFCX8T5SEXF8ZJG0E",
+            "id": "01M4J377BJWDTCCZK5YPE8R7QC",
             "parent_id": null,
-            "user_id": null
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-09T23:05:17.166Z",
-          "last_updated": "2026-10-09T23:05:17.166Z"
+          "last_changed": "2026-10-10T05:05:24.852Z",
+          "last_updated": "2026-10-10T05:05:24.852Z"
         },
         "entry": {
           "area_id": "living_room",
@@ -24215,6 +25798,7 @@
               "onColor": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
               "offColor": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))"
             },
+            "icons": [],
             "buttons": []
           },
           "buttons": null,
@@ -24337,6 +25921,7 @@
               "onColor": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
               "offColor": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))"
             },
+            "icons": [],
             "buttons": []
           },
           "buttons": null,
@@ -24452,6 +26037,7 @@
               "onColor": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
               "offColor": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))"
             },
+            "icons": [],
             "buttons": []
           },
           "buttons": null,
@@ -24567,6 +26153,7 @@
               "onColor": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
               "offColor": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))"
             },
+            "icons": [],
             "buttons": []
           },
           "buttons": null,
@@ -24714,6 +26301,7 @@
               "onColor": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
               "offColor": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))"
             },
+            "icons": [],
             "buttons": []
           },
           "buttons": null,

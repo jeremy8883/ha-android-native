@@ -17,6 +17,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.ClimateMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.FanMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.HumidifierMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.LightMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.LockMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.PositionMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.StateToggle
 import io.homeassistant.companion.android.dashboard.moreinfo.WaterHeaterMoreInfo
@@ -24,6 +25,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.climateMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.fanMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.humidifierMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.lightMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.lockMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.positionMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.stateToggle
 import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterMoreInfo
@@ -50,6 +52,7 @@ import kotlinx.serialization.json.put
  * @property humidifier a humidifier's controls
  * @property position a cover's or valve's controls
  * @property fan a fan's controls
+ * @property lock a lock's controls
  * @property stateToggle the large on/off switch of a switch or input boolean
  * @property controls the entity's main controls, as tile features, for domains without controls of their own yet
  * @property media the media controls of a media player
@@ -72,6 +75,7 @@ data class MoreInfoModel(
     val humidifier: HumidifierMoreInfo?,
     val position: PositionMoreInfo?,
     val fan: FanMoreInfo?,
+    val lock: LockMoreInfo?,
     val stateToggle: StateToggle?,
     val controls: List<TileFeature>,
     val media: MediaControlModel?,
@@ -109,7 +113,8 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
             .joinToString(" › ").ifEmpty { null },
         icon = entityIcon(entityId),
         state = light?.state ?: position?.state ?: fan?.state ?: formatEntityState(state),
-        changed = formats.relativeTime(Instant.ofEpochMilli((state.lastChanged * MILLIS).toLong()), now)
+        // A change the server stamped ahead of this device's clock happened just now, not in the future
+        changed = formats.relativeTime(minOf(Instant.ofEpochMilli((state.lastChanged * MILLIS).toLong()), now), now)
             .replaceFirstChar { it.uppercaseChar() },
         active = state.isActive(),
         toggle = toggleEntity(entityId).takeIf { domain in HEADER_TOGGLE_DOMAINS && state.state in ON_OFF },
@@ -121,6 +126,7 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         humidifier = humidifierMoreInfo(state),
         position = position,
         fan = fan,
+        lock = lockMoreInfo(state),
         stateToggle = stateToggle,
         controls = tileFeatures(controlCard),
         media = if (domain == "media_player") mediaControlModel(CardConfig(controlCard.json)) else null,
@@ -152,7 +158,6 @@ private val STATE_TOGGLE_DOMAINS = setOf("input_boolean", "switch")
 
 /** The control each domain's more-info dialog leads with, as card features. */
 private val MORE_INFO_FEATURES = mapOf(
-    "lock" to listOf("lock-commands"),
     "alarm_control_panel" to listOf("alarm-modes"),
 )
 

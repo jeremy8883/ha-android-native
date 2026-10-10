@@ -60,6 +60,7 @@ import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoClimate
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoFan
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLight
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLock
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLogbook
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoPosition
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.SingleDialControls
@@ -152,6 +153,7 @@ private fun DomainControls(
     model.climate?.let { MoreInfoClimate(it, state, onAction) }
     model.position?.let { MoreInfoPosition(it, state, hass, onAction) }
     model.fan?.let { MoreInfoFan(it, onAction) }
+    model.lock?.let { MoreInfoLock(it, onAction) }
     model.waterHeater?.let { heater ->
         SingleDialControls(
             current = heater.current,

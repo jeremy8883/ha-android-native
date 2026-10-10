@@ -153,6 +153,7 @@ class MoreInfoControlsGoldenTest {
             }
         }
         val toggle = hass.lightMoreInfo(state)?.toggle ?: hass.positionMoreInfo(state)?.toggle ?: hass.fanMoreInfo(state)?.toggle
+            ?: hass.lockMoreInfo(state)?.toggle
             ?: hass.moreInfoModel(state.entityId, Instant.EPOCH)?.stateToggle
         val actual = toggle?.let {
             if (it.buttons) {
