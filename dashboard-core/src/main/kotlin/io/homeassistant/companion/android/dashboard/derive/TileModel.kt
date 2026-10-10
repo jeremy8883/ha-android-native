@@ -2,6 +2,7 @@ package io.homeassistant.companion.android.dashboard.derive
 
 import io.homeassistant.companion.android.dashboard.display.StateDisplayOptions
 import io.homeassistant.companion.android.dashboard.display.stateDisplay
+import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.feature.TileFeature
 import io.homeassistant.companion.android.dashboard.feature.tileFeatures
@@ -20,6 +21,8 @@ data class TileModel(
     val icon: String?,
     val active: Boolean,
     val available: Boolean,
+    /** The icon's colour (`--tile-color`), which also tints the circle behind it. */
+    val color: DisplayColor = DisplayColor.State(listOf(INACTIVE_COLOR)),
     /** Whether the icon and text are stacked, following the tile card's `vertical` option. */
     val vertical: Boolean = false,
     /** The controls under the tile, see [tileFeatures]. */
@@ -54,7 +57,23 @@ fun HassSnapshot.tileModel(card: CardConfig, now: Instant): TileModel? {
         icon = entityIcon(entityId, configIcon = card.json.string("icon")),
         active = entity.isActive(),
         available = entity.state != STATE_UNAVAILABLE,
+        color = tileColor(entity, card.json.string("color")?.ifEmpty { null })
+            ?: DisplayColor.State(listOf(if (entity.isActive()) ACTIVE_COLOR else INACTIVE_COLOR)),
         vertical = card.json.boolean("vertical") == true,
         features = tileFeatures(card),
     )
 }
+
+/**
+ * Port of the tile card's `_computeStateColor`: a configured colour while active, none for people and device
+ * trackers (whose colour is on their badge), a light's own colour, else the state's; `null` falls back to the
+ * active or inactive icon colour.
+ */
+internal fun tileColor(state: EntityState, color: String?): DisplayColor? = when {
+    color != null -> cssColor(color).takeIf { state.isActive() }
+    state.domain == "person" || state.domain == "device_tracker" -> null
+    else -> lightColor(state) ?: stateColor(state)
+}
+
+private const val ACTIVE_COLOR = "state-icon-color"
+private const val INACTIVE_COLOR = "state-inactive-color"

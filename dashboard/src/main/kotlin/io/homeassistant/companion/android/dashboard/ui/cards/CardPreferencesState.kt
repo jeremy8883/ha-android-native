@@ -21,11 +21,17 @@ import kotlinx.coroutines.launch
 /** The card choices kept on the device, by the frontend's local storage key, and how to change them. */
 internal class CardPreferenceValues(val values: Map<String, String>, val set: (String, String) -> Unit)
 
-/** Gives [content]'s cards the server's URL ([serverUrl], for its pictures) and the card choices kept on the device. */
+/**
+ * Gives [content]'s cards the server's URL ([serverUrl], for its pictures), the brands API's token and the card
+ * choices kept on the device.
+ */
 @Composable
 internal fun ProvideCardLocals(serverUrl: String?, content: @Composable () -> Unit) {
+    val brands = hiltViewModel<BrandsTokenViewModel>()
+    val brandsToken by brands.token.collectAsStateWithLifecycle()
     CompositionLocalProvider(
         LocalServerUrl provides serverUrl,
+        LocalBrandsToken provides brandsToken,
         LocalCardPreferences provides rememberCardPreferences(),
         content = content,
     )

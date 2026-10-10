@@ -1007,7 +1007,8 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
   // "rows" among the entities asks for the entities card rows too
   const wantRows = requested.includes("rows");
   const wantCards = requested.includes("cards");
-  const entityIds = requested.filter((id) => id !== "rows" && id !== "cards");
+  const wantIcons = requested.includes("icons");
+  const entityIds = requested.filter((id) => id !== "rows" && id !== "cards" && id !== "icons");
   /** The attributes whose values each domain's menus list, with the attribute listing them, for their icons. */
   const MENU_ATTRIBUTES = {
     light: { effect: "effect_list" },
@@ -1573,7 +1574,127 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
     entities: out,
     rows: wantRows ? await captureRows() : undefined,
     cards: wantCards ? await captureCards() : undefined,
+    icons: wantIcons ? await captureIcons() : undefined,
   };
+
+  /**
+   * Each entity's icon colour as the cards draw it: a tile's `--tile-color`, an entities row's `state-badge` (as
+   * is, and with `state_color`), a heading badge coloured by state and a view badge, each with the colour the
+   * browser resolved, and the states they were drawn with.
+   */
+  async function captureIcons() {
+    const ids = Object.keys(ha.hass.states).sort();
+    const states = Object.fromEntries(ids.map((id) => [id, g.clone(ha.hass.states[id])]));
+    const mount = async (config) => {
+      const wrapper = document.createElement("hui-card");
+      wrapper.hass = ha.hass;
+      wrapper.config = config;
+      ha.shadowRoot.appendChild(wrapper);
+      wrapper.load();
+      for (let i = 0; i < 100 && !wrapper._element?.shadowRoot?.childElementCount; i++) await sleep(50);
+      await wrapper._element?.updateComplete;
+      return wrapper;
+    };
+    const deep = (root, selector) => {
+      const found = [];
+      const walk = (node) => {
+        node.querySelectorAll?.(selector).forEach((el) => found.push(el));
+        node.querySelectorAll?.("*").forEach((el) => el.shadowRoot && walk(el.shadowRoot));
+      };
+      walk(root);
+      return found;
+    };
+    const iconOf = (el) => deep(el.shadowRoot ?? el, "ha-state-icon")[0];
+    const computed = (el) => (el ? getComputedStyle(el).color : null);
+    const out = {};
+    for (const id of ids) out[id] = {};
+    // Tiles, one each
+    for (const id of ids) {
+      const wrapper = await mount({ type: "tile", entity: id });
+      const card = wrapper._element?.shadowRoot?.querySelector("ha-card");
+      if (card) {
+        out[id].tile = {
+          color: card.style.getPropertyValue("--tile-color") || null,
+          active: card.classList.contains("active"),
+          resolved: getComputedStyle(card).getPropertyValue("--tile-color").trim() || null,
+        };
+      }
+      wrapper.remove();
+    }
+    // Entities rows, all in one card, as is and with state_color
+    for (const [key, extra] of [["row", {}], ["rowStateColor", { state_color: true }]]) {
+      const wrapper = await mount({ type: "entities", entities: ids, ...extra });
+      await sleep(500);
+      for (const badge of deep(wrapper, "state-badge")) {
+        const id = badge.stateObj?.entity_id;
+        if (!id || !out[id]) continue;
+        const icon = badge.shadowRoot?.querySelector("ha-state-icon");
+        out[id][key] = {
+          color: badge._iconStyle?.color ?? null,
+          filter: badge._iconStyle?.filter ?? null,
+          picture: !icon,
+          resolved: icon ? computed(icon) : null,
+        };
+      }
+      wrapper.remove();
+    }
+    // Heading badges coloured by state, all in one heading
+    {
+      const wrapper = await mount({ type: "heading", heading: "Icons", badges: ids.map((entity) => ({ type: "entity", entity, color: "state" })) });
+      await sleep(500);
+      for (const badge of deep(wrapper, "hui-entity-heading-badge")) {
+        const id = badge._config?.entity;
+        if (!id || !out[id]) continue;
+        const inner = badge.shadowRoot?.querySelector("ha-heading-badge");
+        out[id].heading = {
+          color: inner?.style.getPropertyValue("--icon-color") || null,
+          resolved: computed(iconOf(badge)),
+        };
+      }
+      wrapper.remove();
+    }
+    // Glance entities, all in one card (state colours on by default)
+    {
+      const wrapper = await mount({ type: "glance", columns: 5, entities: ids });
+      await sleep(500);
+      for (const badge of deep(wrapper, "state-badge")) {
+        const id = badge.stateObj?.entity_id;
+        if (!id || !out[id]) continue;
+        const icon = badge.shadowRoot?.querySelector("ha-state-icon");
+        out[id].glance = { picture: !icon, filter: badge._iconStyle?.filter ?? null, resolved: icon ? computed(icon) : null };
+      }
+      wrapper.remove();
+    }
+    // Button and entity cards, one each
+    for (const id of ids) {
+      for (const type of ["button", "entity"]) {
+        const wrapper = await mount({ type, entity: id });
+        const icon = wrapper._element?.shadowRoot?.querySelector("ha-state-icon");
+        if (icon) out[id][type] = { filter: icon.style.filter || null, resolved: computed(icon) };
+        wrapper.remove();
+      }
+    }
+    // View badges, one each
+    for (const id of ids) {
+      const badge = document.createElement("hui-badge");
+      badge.hass = ha.hass;
+      badge.config = { type: "entity", entity: id };
+      ha.shadowRoot.appendChild(badge);
+      badge.load?.();
+      for (let i = 0; i < 60 && !badge._element?.shadowRoot?.childElementCount; i++) await sleep(50);
+      await badge._element?.updateComplete;
+      const inner = badge._element?.shadowRoot?.querySelector("ha-badge");
+      if (inner) {
+        out[id].badge = {
+          color: inner.style.getPropertyValue("--badge-color") || null,
+          active: inner.classList.contains("active"),
+          resolved: getComputedStyle(inner).getPropertyValue("--badge-color").trim() || null,
+        };
+      }
+      badge.remove();
+    }
+    return { states, entities: out };
+  }
 
   /** What the simple cards draw for each of CARD_CONFIGS, and a button's tap. */
   async function captureCards() {
@@ -2934,12 +3055,13 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir, contr
     // With --domains, only those domains' entities, merged into the existing controls
     const domains = CONTROL_DOMAINS;
     const entities = domains ? CONTROL_ENTITIES.filter((id) => domains.includes(id.split(".")[0])) : CONTROL_ENTITIES;
-    const extras = ["rows", "cards"].filter((extra) => !domains || domains.includes(extra));
+    const extras = ["rows", "cards", "icons"].filter((extra) => !domains || domains.includes(extra));
     const data = await page.evaluate(captureMoreInfoControls, { entityIds: [...entities, ...extras], rowEntities: ROW_ENTITIES, cardConfigs: CARD_CONFIGS });
     if (domains) {
       const existing = JSON.parse(readFileSync(join(outDir, "more-info", "controls.json"), "utf8"));
       if (!domains.includes("rows")) data.rows = existing.rows;
       if (!domains.includes("cards")) data.cards = existing.cards;
+      if (!domains.includes("icons")) data.icons = existing.icons;
       for (const id of Object.keys(existing.entities)) {
         if (!domains.includes(id.split(".")[0])) data.entities[id] = existing.entities[id];
       }

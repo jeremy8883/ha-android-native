@@ -26,7 +26,16 @@ class TileModelTest {
     @Test
     fun `Given tile without options when derived then friendly name, formatted state and domain icon are used`() {
         assertEquals(
-            TileModel("sensor.temp", "Temperature", "21.5 °C", "mdi:eye", active = true, available = true),
+            // A sensor has no state colour: an active one's icon is the icon colour
+            TileModel(
+                "sensor.temp",
+                "Temperature",
+                "21.5 °C",
+                "mdi:eye",
+                active = true,
+                available = true,
+                color = DisplayColor.State(listOf("state-icon-color")),
+            ),
             tile("""{"type": "tile", "entity": "sensor.temp"}"""),
         )
     }

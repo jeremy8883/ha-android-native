@@ -9,8 +9,8 @@ import io.homeassistant.companion.android.dashboard.model.string
 val CardConfig.tapNavigationPath: String?
     get() = json.obj("tap_action")?.takeIf { it.string("action") == "navigate" }?.string("navigation_path")
 
-/** Display-ready content of an area card. */
-data class AreaCardModel(val name: String, val icon: String?)
+/** Display-ready content of an area card: [color] is its icon's (`--tile-color`). */
+data class AreaCardModel(val name: String, val icon: String?, val color: DisplayColor = STATE_ICON_COLOR)
 
 /**
  * Basic area card: the area's name and icon, or `null` for an unknown area.
@@ -18,5 +18,10 @@ data class AreaCardModel(val name: String, val icon: String?)
  */
 fun HassSnapshot.areaCardModel(card: CardConfig): AreaCardModel? {
     val area = card.json.string("area")?.let(registries.areas::get) ?: return null
-    return AreaCardModel(name = card.json.string("name") ?: area.name, icon = area.icon)
+    return AreaCardModel(
+        name = card.json.string("name") ?: area.name,
+        icon = area.icon,
+        // The configured colour, else `--tile-color: var(--state-icon-color)`
+        color = card.json.string("color")?.ifEmpty { null }?.let(::cssColor) ?: STATE_ICON_COLOR,
+    )
 }

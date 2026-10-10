@@ -65,7 +65,7 @@ class HeadingModelTest {
         )
         val badges = model.badges.map { it as HeadingBadgeModel.Entity }
         assertEquals("15%", badges[0].state)
-        assertEquals(DisplayColor.State(listOf("state-sensor-battery-low-color")), badges[0].color)
+        assertEquals(DisplayColor.State(listOf("state-sensor-battery-low-color")).withInactiveUnset(), badges[0].color)
         // A white light gets a fixed light grey for contrast
         assertEquals(DisplayColor.Literal("#e1e1e1"), badges[1].color)
         assertEquals(null, badges[2].color)

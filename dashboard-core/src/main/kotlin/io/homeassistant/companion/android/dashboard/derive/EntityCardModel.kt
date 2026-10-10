@@ -34,6 +34,7 @@ sealed interface EntityCardModel {
         val icon: String?,
         val color: DisplayColor?,
         val iconHeight: String?,
+        val brightness: Double?,
         val value: ValueParts,
         val actions: ElementActions,
         val graph: SensorGraph?,
@@ -47,6 +48,7 @@ fun HassSnapshot.entityCardModel(card: CardConfig): EntityCardModel {
     // A config the card rejects shows an error card, its message only in the editor's preview
     val invalid = entityId.isNullOrEmpty() || (card.type == SENSOR && entityId.substringBefore('.') !in SENSOR_DOMAINS)
     val state = entityId?.let(states::get)
+    val colored = json.boolean("state_color") ?: (state?.domain == "light")
     return when {
         entityId == null || invalid -> EntityCardModel.Warning(localize("ui.errors.config.configuration_error"))
         state == null -> EntityCardModel.Warning(localize("ui.card.common.entity_not_found"))
@@ -54,14 +56,19 @@ fun HassSnapshot.entityCardModel(card: CardConfig): EntityCardModel {
             name = entityNameDisplay(state, json["name"]),
             icon = entityIcon(entityId, configIcon = json.string("icon")),
             // Lights are coloured unless told otherwise, other entities only when asked
-            color = if (json.boolean("state_color") ?: (state.domain == "light")) badgeColor(state) else null,
+            // The icon's inactive colour is its own (`--state-inactive-color: var(--state-icon-color)`)
+            color = if (colored) entityCardColor(state)?.withInactiveAsIcon() else null,
             iconHeight = json.string("icon_height"),
+            brightness = iconBrightness(state).takeIf { colored },
             value = entityCardValue(state, json),
             actions = elementActions(json, tapWhenUnset = true),
             graph = sensorGraph(card),
         )
     }
 }
+
+/** Port of the entity card's `_computeColor`: a climate's action's, a light's own, else the state's. */
+private fun entityCardColor(state: EntityState): DisplayColor? = badgeColor(state)
 
 /**
  * The value (an attribute's when configured, without its unit) and unit shown: a configured unit trails, and

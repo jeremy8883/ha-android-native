@@ -30,6 +30,7 @@ data class ButtonCardModel(
     val iconHeight: String?,
     val actions: ElementActions,
     val missing: String?,
+    val brightness: Double? = null,
 )
 
 /** The button card of [card]. */
@@ -61,7 +62,9 @@ fun HassSnapshot.buttonCardModel(card: CardConfig): ButtonCardModel {
                 false
         },
         state = state?.takeIf { json.boolean("show_state") == true }?.let { formatEntityState(it) },
-        color = if (color == "none") null else buttonColor(state, color),
+        // The button's inactive colour is its icon colour (`--state-inactive-color: var(--state-icon-color)`)
+        color = if (color == "none") null else buttonColor(state, color)?.withInactiveAsIcon(),
+        brightness = state?.let(::iconBrightness),
         iconHeight = json.string("icon_height"),
         actions = elementActions(JsonObject(defaults + json)),
         missing = localize("ui.card.common.entity_not_found").takeIf { entityId != null && state == null },

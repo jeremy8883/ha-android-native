@@ -21,7 +21,7 @@ import io.homeassistant.companion.android.common.compose.theme.LocalHAColorSchem
 import io.homeassistant.companion.android.dashboard.derive.buttonCardModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
-import io.homeassistant.companion.android.dashboard.ui.theme.toColor
+import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 
 /**
  * A button card, port of `hui-button-card` (frontend@20260624.6 src/panels/lovelace/cards/hui-button-card.ts): a
@@ -47,7 +47,7 @@ internal fun ButtonCard(
             model.icon?.let { icon ->
                 DashboardIcon(
                     icon,
-                    model.color?.toColor() ?: colors.colorTextSecondary,
+                    entityIconTint(model.color, brightness = model.brightness),
                     Modifier.size(iconSize(model.iconHeight)),
                 )
             }

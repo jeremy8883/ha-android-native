@@ -132,7 +132,8 @@ private fun HassSnapshot.entityBadge(badge: JsonObject, now: Instant): HeadingBa
  */
 private fun badgeColor(state: EntityState, color: String?): DisplayColor? = when {
     color.isNullOrEmpty() || color == "none" -> null
-    color == "state" -> lightColor(state) ?: stateColor(state)
+    // Heading badges unset the inactive colour, so an inactive state shows the badge's own colour
+    color == "state" -> (lightColor(state) ?: stateColor(state))?.withInactiveUnset()
     state.isActive() -> cssColor(color)
     else -> null
 }

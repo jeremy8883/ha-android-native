@@ -5,11 +5,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -22,16 +26,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
+import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
 import io.homeassistant.companion.android.common.compose.composable.HAModalBottomSheet
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.theme.HADimens
@@ -41,6 +49,7 @@ import io.homeassistant.companion.android.common.compose.theme.LocalHAColorSchem
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.MoreInfoModel
+import io.homeassistant.companion.android.dashboard.derive.StateCard
 import io.homeassistant.companion.android.dashboard.derive.moreInfoModel
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -53,8 +62,10 @@ import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterTemperat
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.EntityToggle
+import io.homeassistant.companion.android.dashboard.ui.cards.ServerImage
 import io.homeassistant.companion.android.dashboard.ui.controls.StateToggleControl
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesMenu
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.LogbookSection
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoAlarm
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoClimate
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoFan
@@ -63,11 +74,13 @@ import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLight
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLock
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoMediaPlayer
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoPosition
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoUpdateFooter
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoVacuum
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.SimpleDomainControls
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.SingleDialControls
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.logbookItems
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.rememberLogbookSection
+import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -91,7 +104,9 @@ internal fun MoreInfoSheet(
         derivedStateOf { hass.value?.moreInfoModel(entityId, now.value?.toInstant() ?: Instant.EPOCH) }
     }
     val model = info ?: return
-    HAModalBottomSheet(bottomSheetState = rememberModalBottomSheetState(), onDismissRequest = onDismiss) {
+    // Upstream opens updates at full height
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = model.fullHeight)
+    HAModalBottomSheet(bottomSheetState = sheetState, onDismissRequest = onDismiss) {
         val snapshot = hass.value ?: return@HAModalBottomSheet
         MoreInfoContent(model, snapshot, now.value?.toInstant() ?: Instant.EPOCH, interactions, onShowFull)
         // The sheet's content may extend below the screen, so messages go at the bottom of the window instead
@@ -115,48 +130,87 @@ private fun MoreInfoContent(
     interactions: CardInteractions,
     onShowFull: (() -> Unit)?,
 ) {
-    val logbook = if (hass.showsLogbook(model.entityId)) rememberLogbookSection(model.entityId, hass, now) else null
-    val section = Modifier.padding(bottom = HADimens.SPACE4)
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth().navigationBarsPadding(),
-        contentPadding = PaddingValues(horizontal = HADimens.SPACE6),
+    val logbook = if (model.sections && hass.showsLogbook(model.entityId)) {
+        rememberLogbookSection(model.entityId, hass, now)
+    } else {
+        null
+    }
+    val state = hass.states[model.entityId]
+    val update = model.update
+    // Each opening starts at the top: a saved scroll position would carry over to the next details
+    val listState = remember(model.entityId) { LazyListState() }
+    val details = DetailsList(model, hass, now, interactions, onShowFull, logbook)
+    // At full height the footer sits at the bottom of the screen, as upstream's
+    Column(
+        Modifier.fillMaxWidth().then(
+            if (model.fullHeight) Modifier.fillMaxHeight() else Modifier,
+        ).navigationBarsPadding(),
     ) {
-        item(key = "header") {
-            Box(section) {
-                MoreInfoHeader(model, interactions) {
-                    hass.states[model.entityId]?.takeIf {
-                        it.domain in FAVORITES_DOMAINS
-                    }?.let { FavoritesMenu(it, hass) }
-                }
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.fillMaxWidth().weight(1f, fill = model.fullHeight),
+            contentPadding = PaddingValues(horizontal = HADimens.SPACE6),
+        ) { detailsItems(details) }
+        if (update != null && state != null && model.stateCard != null) {
+            HAHorizontalDivider()
+            Box(Modifier.padding(horizontal = HADimens.SPACE6, vertical = HADimens.SPACE4)) {
+                MoreInfoUpdateFooter(update, state, hass, now, interactions.onAction)
             }
         }
-        if (model.stateHeader) item(key = "state") { Box(section) { MoreInfoState(model) } }
-        hass.states[model.entityId]?.let { state ->
-            item(key = "controls") {
-                Column(section, verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
-                    DomainControls(model, state, hass, now, interactions.onAction)
-                }
+    }
+}
+
+/** What the details' list shows. */
+private class DetailsList(
+    val model: MoreInfoModel,
+    val hass: HassSnapshot,
+    val now: Instant,
+    val interactions: CardInteractions,
+    val onShowFull: (() -> Unit)?,
+    val logbook: LogbookSection?,
+)
+
+/** The details' items: the header, state, controls, then (unless kept elsewhere) history, logbook and attributes. */
+private fun LazyListScope.detailsItems(details: DetailsList) {
+    val (model, hass, now) = Triple(details.model, details.hass, details.now)
+    val interactions = details.interactions
+    val section = Modifier.padding(bottom = HADimens.SPACE4)
+    item(key = "header") {
+        Box(section) {
+            MoreInfoHeader(model, interactions) {
+                hass.states[model.entityId]?.takeIf {
+                    it.domain in FAVORITES_DOMAINS
+                }?.let { FavoritesMenu(it, hass) }
             }
         }
-        if (hass.showsHistory(model.entityId)) {
-            item(key = "history") { Box(section) { MoreInfoHistory(model.entityId, hass, now, interactions) } }
-        }
-        logbook?.let { logbookItems(it, hass, now, interactions) }
-        if (model.attributes.isNotEmpty()) {
-            item(key = "attributes") {
-                Column(
-                    Modifier.padding(vertical = HADimens.SPACE4),
-                    verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
-                ) {
-                    MoreInfoAttributes(model.attributes)
-                }
+    }
+    if (model.stateHeader) item(key = "state") { Box(section) { MoreInfoState(model) } }
+    model.stateCard?.let { card -> item(key = "state-card") { Box(section) { StateCardRow(card) } } }
+    hass.states[model.entityId]?.let { state ->
+        item(key = "controls") {
+            Column(section, verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+                DomainControls(model, state, hass, now, interactions.onAction)
             }
         }
-        onShowFull?.let {
-            item(key = "full") {
-                Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
-                    HAPlainButton(stringResource(R.string.native_dashboard_more_info_full), it)
-                }
+    }
+    if (model.sections && hass.showsHistory(model.entityId)) {
+        item(key = "history") { Box(section) { MoreInfoHistory(model.entityId, hass, now, interactions) } }
+    }
+    details.logbook?.let { logbookItems(it, hass, now, interactions) }
+    if (model.sections && model.attributes.isNotEmpty()) {
+        item(key = "attributes") {
+            Column(
+                Modifier.padding(vertical = HADimens.SPACE4),
+                verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+            ) {
+                MoreInfoAttributes(model.attributes)
+            }
+        }
+    }
+    details.onShowFull?.let {
+        item(key = "full") {
+            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
+                HAPlainButton(stringResource(R.string.native_dashboard_more_info_full), it)
             }
         }
     }
@@ -179,7 +233,7 @@ private fun DomainControls(
     model.alarm?.let { MoreInfoAlarm(it, onAction) }
     model.mediaPlayer?.let { MoreInfoMediaPlayer(it, state.entityId, hass, now, onAction) }
     model.vacuum?.let { MoreInfoVacuum(it, state, hass, onAction) }
-    SimpleDomainControls(model, state, hass, now, onAction)
+    SimpleDomainControls(model, state, onAction)
     model.waterHeater?.let { heater ->
         SingleDialControls(
             current = heater.current,
@@ -214,11 +268,14 @@ private fun MoreInfoHeader(model: MoreInfoModel, interactions: CardInteractions,
         horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        DashboardIcon(
-            name = model.icon,
-            tint = if (model.active) colors.colorFillPrimaryLoudResting else colors.colorTextSecondary,
-            modifier = Modifier.size(HASize.X3L),
-        )
+        // Upstream's toolbar has no icon: the state card below has the entity's
+        if (model.stateCard == null) {
+            DashboardIcon(
+                name = model.icon,
+                tint = if (model.active) colors.colorFillPrimaryLoudResting else colors.colorTextSecondary,
+                modifier = Modifier.size(HASize.X3L),
+            )
+        }
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 model.name,
@@ -233,6 +290,43 @@ private fun MoreInfoHeader(model: MoreInfoModel, interactions: CardInteractions,
             })
         }
         menu()
+    }
+}
+
+/** Port of `state-card-display` in the dialog: the badge, the name over when it changed, and the state. */
+@Composable
+private fun StateCardRow(card: StateCard) {
+    val colors = LocalHAColorScheme.current
+    Row(
+        Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+    ) {
+        val picture = card.badge.picture
+        if (picture != null) {
+            ServerImage(picture, card.name, Modifier.size(STATE_BADGE_SIZE).clip(CircleShape))
+        } else {
+            DashboardIcon(
+                card.badge.icon,
+                entityIconTint(card.badge.color, card.badge.unavailable, card.badge.brightness),
+                Modifier.size(HASize.X2L),
+            )
+        }
+        Column(Modifier.weight(1f)) {
+            Text(
+                card.name,
+                style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+                color = colors.colorTextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                card.changed,
+                style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+                color = colors.colorTextSecondary,
+            )
+        }
+        Text(card.state, style = HATextStyle.Body.copy(textAlign = TextAlign.End), color = colors.colorTextPrimary)
     }
 }
 
@@ -283,6 +377,9 @@ private fun MoreInfoAttributes(attributes: List<Pair<String, String>>) {
 
 /** The domains with favourites, whose menu the header shows. */
 private val FAVORITES_DOMAINS = setOf("light", "cover", "valve")
+
+/** `state-badge`'s 40 × 40. */
+private val STATE_BADGE_SIZE = 40.dp
 
 /** The state's size in the header (36px). */
 private val STATE_FONT_SIZE = 36.sp

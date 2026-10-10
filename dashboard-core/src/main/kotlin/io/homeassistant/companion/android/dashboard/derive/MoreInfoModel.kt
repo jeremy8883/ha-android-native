@@ -47,6 +47,8 @@ import io.homeassistant.companion.android.dashboard.moreinfo.updateMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.vacuumMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterMoreInfo
 import java.time.Instant
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 
 /**
  * The native quick view of an entity, shown before (or instead of) upstream's full more-info dialog.
@@ -78,6 +80,11 @@ import java.time.Instant
  * @property update an update's versions, notes and buttons
  * @property input the entity's row control (a number, select, text, date or time), which upstream's dialog leads with
  * @property attributes the displayable attributes, as (name, formatted value)
+ * @property fullHeight whether the details open at the screen's full height (`DOMAINS_FULL_HEIGHT_MORE_INFO`)
+ * @property stateCard the row upstream's dialog leads with instead of the state header (`state-card-content`), for
+ * the domains ported that way (updates for now)
+ * @property sections whether the history, activity and attributes follow the controls; upstream keeps them in other
+ * views of the dialog, which the native details show inline except for [stateCard] domains
  */
 data class MoreInfoModel(
     val entityId: String,
@@ -110,7 +117,16 @@ data class MoreInfoModel(
     val update: UpdateMoreInfo?,
     val input: RowControl?,
     val attributes: List<Pair<String, String>>,
+    val fullHeight: Boolean = false,
+    val stateCard: StateCard? = null,
+    val sections: Boolean = true,
 )
+
+/**
+ * Port of `state-card-display` in the dialog: the entity's [badge] (coloured by its state), its own [name] and
+ * when it [changed], with its formatted [state] on the right.
+ */
+data class StateCard(val badge: StateBadge, val name: String, val changed: String, val state: String)
 
 /**
  * Derive the quick view of [entityId], or `null` when it does not exist. The name and context follow
@@ -139,7 +155,7 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         active = state.isActive(),
         toggle = toggleEntity(entityId).takeIf { domain in HEADER_TOGGLE_DOMAINS && state.state in ON_OFF },
         updatedAt = state.lastUpdated,
-        stateHeader = domain !in NO_STATE_HEADER_DOMAINS,
+        stateHeader = domain !in NO_STATE_HEADER_DOMAINS && domain !in STATE_CARD_DOMAINS,
         light = light,
         climate = climateMoreInfo(state),
         waterHeater = waterHeaterMoreInfo(state),
@@ -160,8 +176,19 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         update = updateMoreInfo(state),
         input = if (domain in INPUT_DOMAINS) inputRowControl(state, name) else null,
         attributes = displayAttributes(state).map { attributeName(state, it) to formatEntityAttributeValue(state, it) },
+        fullHeight = domain in FULL_HEIGHT_DOMAINS,
+        stateCard = if (domain in STATE_CARD_DOMAINS) stateCard(state, now) else null,
+        sections = domain !in STATE_CARD_DOMAINS,
     )
 }
+
+private fun HassSnapshot.stateCard(state: EntityState, now: Instant) = StateCard(
+    badge = stateBadge(state, overrideIcon = null, stateColor = true),
+    name = entityNameDisplay(state, JsonObject(mapOf("type" to JsonPrimitive("entity")))),
+    changed = formats.relativeTime(minOf(Instant.ofEpochMilli((state.lastChanged * MILLIS).toLong()), now), now)
+        .replaceFirstChar { it.uppercaseChar() },
+    state = formatEntityState(state),
+)
 
 /**
  * The name and context ("Kitchen › Kitchen speaker") of [state] as entity pickers show them (the details' header,
@@ -195,6 +222,12 @@ private val INPUT_DOMAINS = setOf(
     "input_number", "number", "input_select", "select", "input_text", "text", "input_datetime", "date", "time",
     "datetime",
 )
+
+/** Port of `DOMAINS_FULL_HEIGHT_MORE_INFO`. */
+private val FULL_HEIGHT_DOMAINS = setOf("update")
+
+/** The domains whose details lead with `state-card-content`, as upstream's, rather than the native state header. */
+private val STATE_CARD_DOMAINS = setOf("update")
 
 /** The domains whose controls replace the state header (`more-info-climate` renders none). */
 private val NO_STATE_HEADER_DOMAINS = setOf("climate", "humidifier", "media_player", "water_heater")

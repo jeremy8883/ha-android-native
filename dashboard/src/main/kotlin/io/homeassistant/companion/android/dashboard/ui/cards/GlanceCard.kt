@@ -28,7 +28,7 @@ import io.homeassistant.companion.android.dashboard.derive.GlanceEntity
 import io.homeassistant.companion.android.dashboard.derive.glanceCardModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
-import io.homeassistant.companion.android.dashboard.ui.theme.toColor
+import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -102,7 +102,7 @@ private fun GlanceEntityView(entity: GlanceEntity, modifier: Modifier) {
             )
             entity.icon != null -> DashboardIcon(
                 entity.icon,
-                entity.color?.toColor() ?: colors.colorTextSecondary,
+                entityIconTint(entity.color, entity.unavailable, entity.brightness),
                 Modifier.padding(HADimens.SPACE2).size(HASize.X2L),
             )
         }

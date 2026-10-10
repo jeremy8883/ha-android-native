@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.ui.cards
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -16,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -32,6 +35,7 @@ import io.homeassistant.companion.android.dashboard.derive.TileModel
 import io.homeassistant.companion.android.dashboard.derive.tileModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
+import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -62,7 +66,7 @@ internal fun TileCardContent(
     iconModifier: Modifier = Modifier,
     onAction: (CardAction) -> Unit = {},
 ) {
-    DashboardCardSurface(modifier = modifier, active = tile.active) {
+    DashboardCardSurface(modifier = modifier) {
         Column(modifier = Modifier.fillMaxWidth()) {
             TileInfo(tile, iconModifier)
             if (tile.features.isNotEmpty()) {
@@ -74,7 +78,8 @@ internal fun TileCardContent(
                     ),
                     verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
                 ) {
-                    tile.features.forEach { feature -> TileFeatureControl(feature, tile.available, onAction) }
+                    val color = tile.color.toColor() ?: LocalHAColorScheme.current.colorFillPrimaryLoudResting
+                    tile.features.forEach { feature -> TileFeatureControl(feature, tile.available, color, onAction) }
                 }
             }
         }
@@ -114,20 +119,18 @@ private fun VerticalTileInfo(tile: TileModel, iconModifier: Modifier) {
     }
 }
 
+/** Port of `ha-tile-icon`: the icon in the tile's colour on a circle of it at a fifth of its strength. */
 @Composable
 private fun TileIcon(tile: TileModel, modifier: Modifier) {
-    val colors = LocalHAColorScheme.current
+    val color = tile.color.toColor() ?: LocalHAColorScheme.current.colorTextSecondary
     tile.icon?.let { icon ->
-        Box(modifier = Modifier.size(HASize.X5L).then(modifier), contentAlignment = Alignment.Center) {
-            DashboardIcon(
-                name = icon,
-                tint = when {
-                    !tile.available -> colors.colorTextDisabled
-                    tile.active -> colors.colorOnPrimaryQuiet
-                    else -> colors.colorTextSecondary
-                },
-                modifier = Modifier.size(HASize.X2L),
-            )
+        Box(
+            modifier = Modifier.size(
+                HASize.X5L,
+            ).clip(CircleShape).background(color.copy(alpha = ICON_BACKGROUND_ALPHA)).then(modifier),
+            contentAlignment = Alignment.Center,
+        ) {
+            DashboardIcon(name = icon, tint = color, modifier = Modifier.size(HASize.X2L))
         }
     }
 }
@@ -195,3 +198,6 @@ private fun VerticalTileCardContentPreview() {
 }
 
 private val VERTICAL_TILE_MIN_HEIGHT = 112.dp
+
+/** `--tile-icon-opacity`. */
+private const val ICON_BACKGROUND_ALPHA = 0.2f

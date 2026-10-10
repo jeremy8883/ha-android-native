@@ -25,6 +25,7 @@ import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
+import io.homeassistant.companion.android.dashboard.derive.DisplayColor
 import io.homeassistant.companion.android.dashboard.derive.HeadingBadgeModel
 import io.homeassistant.companion.android.dashboard.derive.headingModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -124,7 +125,9 @@ private fun HeadingBadge(badge: HeadingBadgeModel, interactions: CardInteraction
             is HeadingBadgeModel.Entity -> badge.icon
             is HeadingBadgeModel.Button -> badge.icon
         }
-        DashboardIcon(name = icon, tint = tint ?: colors.colorTextSecondary, modifier = Modifier.size(HASize.L))
+        // Without a colour, the icon inherits the badge's text colour (`--secondary-text-color`)
+        val inherited = DisplayColor.State(listOf("secondary-text-color")).toColor() ?: colors.colorTextSecondary
+        DashboardIcon(name = icon, tint = tint ?: inherited, modifier = Modifier.size(HASize.L))
         val text = when (badge) {
             is HeadingBadgeModel.Entity -> badge.state
             is HeadingBadgeModel.Button -> badge.text

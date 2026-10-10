@@ -27,7 +27,7 @@ import androidx.core.net.toUri
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.R as commonR
-import io.homeassistant.companion.android.common.compose.composable.HAFilledButton
+import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
 import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HASwitch
@@ -53,17 +53,10 @@ import java.time.Instant
 /**
  * The controls of an update's details, port of `more-info-update` (frontend@20260624.6
  * src/dialogs/more-info/controls/more-info-update.ts): its progress, title, versions and release announcement,
- * the release notes, the backup switch, and skip and update.
+ * and the release notes; [MoreInfoUpdateFooter] has the backup switch, and skip and update.
  */
 @Composable
-internal fun MoreInfoUpdate(
-    info: UpdateMoreInfo,
-    state: EntityState,
-    hass: HassSnapshot,
-    now: Instant,
-    onAction: (CardAction) -> Unit,
-) {
-    val entityId = state.entityId
+internal fun MoreInfoUpdate(info: UpdateMoreInfo, entityId: String) {
     val colors = LocalHAColorScheme.current
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3)) {
         when (val progress = info.progress) {
@@ -80,7 +73,23 @@ internal fun MoreInfoUpdate(
         info.versions.forEach { (key, value) -> VersionRow(key, value) }
         info.releaseUrl?.let { url -> ReleaseLink(info.releaseLabel, url) }
         ReleaseNotes(info, entityId)
-        val backup = info.install?.backupType?.let { type -> rememberBackupOption(type, state, hass, now) }
+    }
+}
+
+/**
+ * The update's footer, pinned under its details as upstream's: the backup switch (from the server's backup
+ * settings), then skip and update.
+ */
+@Composable
+internal fun MoreInfoUpdateFooter(
+    info: UpdateMoreInfo,
+    state: EntityState,
+    hass: HassSnapshot,
+    now: Instant,
+    onAction: (CardAction) -> Unit,
+) {
+    val backup = info.install?.backupType?.let { type -> rememberBackupOption(type, state, hass, now) }
+    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3)) {
         UpdateFooter(info, backup, onAction)
     }
 }
@@ -187,7 +196,8 @@ private fun UpdateFooter(info: UpdateMoreInfo, option: UpdateBackupOption?, onAc
             }
         }, enabled = skip.enabled)
         install?.let {
-            HAFilledButton(it.label, { onAction(it.call(backup)) }, enabled = it.enabled && !it.installing)
+            // `ha-button` defaults to the accent appearance
+            HAAccentButton(it.label, { onAction(it.call(backup)) }, enabled = it.enabled && !it.installing)
         }
     }
     if (explainSkip) {

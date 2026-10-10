@@ -214,9 +214,6 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - [x] Theme colours: the extractor also reads `semantic.globals.ts` (`--ha-color-text-*`...), so `primary-text-color` and friends resolve
 - [x] Home dashboard "Today's energy" summary: its own `energy_home_dashboard` collection, always today, golden-tested against the frontend's tile; says it couldn't load rather than showing nothing
 
-### Maybe
-- [ ] Native Updates page (`/config/updates`): the available updates, each opening its details (where the backup switch is). Until then the overview's Updates card is left out (its tap leads to a page that isn't native), so updates are only reachable from dashboards that show update entities
-
 ### Later — Startup time
 - [ ] Cold launch straight to the dashboard: the dashboard app has no splash wait (it starts from the cache); measure it on a release-like build on a real device
 - [x] Don't start Chromium at launch (dashboard app: no WebView cookies)
@@ -262,6 +259,18 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - Dependency lockfiles are global, so avoid adding new libraries to `:app`/`:automotive` (merge conflicts).
 
 ## Handover notes
+
+### 2026-10-10: icon colour audit and the update sheet (Opus)
+- Icon colours are audited against the frontend's resolved colours (`IconColorsGoldenTest`, `icons` in more-info/controls.json): every test entity as a tile, entities row (as is and with `state_color`), glance entity, button card, entity card, heading badge and view badge. `resolveDisplayColor` (core) resolves as the app draws, fallbacks included. What was wrong, and why upstream draws what it does:
+  - Tiles ignored state colours (theme blue when active, tinted card). `hui-tile-card._computeStateColor`: a configured colour while active, none for person and device tracker, a light's own colour, else `stateColorCss`, falling back to `--state-icon-color` (active) or `--state-inactive-color`; the icon sits on a circle of it at 0.2 (`ha-tile-icon`), and features take it (`--feature-color`).
+  - Inactive icons in `state-badge` (rows, glance) and heading badges were grey: they set `--state-inactive-color: initial`, so a chain ending there is invalid and the icon inherits (`--state-icon-color`, or the heading badge's `--secondary-text-color`). Modelled as `DisplayColor.State.unset` (`withInactiveUnset`).
+  - Button and entity cards redefine `--state-inactive-color: var(--state-icon-color)` (`withInactiveAsIcon`).
+  - Entities rows were never coloured: `state-badge` colours lights by default and everything with `state_color` (the card's passes to its rows); now `StateBadge`, pictures included.
+  - Lights' icons are dimmed by `stateColorBrightness` in `state-badge`, the button and the entity card; now ported.
+  - Area card icons were the theme's on-primary: `--tile-color` is the configured `color`, else `--state-icon-color`.
+  - Brand pictures (`/api/brands/...`, common on update entities) never loaded outside the media browser: they need the brands token, now given to all cards (`LocalBrandsToken`).
+- Not audited: the details header icon (a native addition; upstream's toolbar has none), the media control card's icon (upstream's follows the artwork's colours), the area card's backdrop.
+- The update details follow upstream: full height (`DOMAINS_FULL_HEIGHT_MORE_INFO`), `state-card-content` instead of the state header, no inline history, logbook or attributes, the backup switch and buttons pinned at the bottom. Other domains still show their history and attributes inline, which upstream keeps in other views of the dialog (only `DOMAINS_WITH_NEW_MORE_INFO` draw the state header); deciding that for all domains is open. The details no longer reopen scrolled where the last ones were.
 
 ### 2026-10-10: update backups (Opus)
 - Home Assistant, OS and app updates now install from the native details: the backup switch reads `hassio/update/config/info` and `backup/config/info` (`UpdateBackupRepository`) as `more-info-update` does, for its title, description and default. The test instance has no Supervisor, so only the generic switch can be seen there; the other cases are unit-tested (`UpdateBackupTest`).

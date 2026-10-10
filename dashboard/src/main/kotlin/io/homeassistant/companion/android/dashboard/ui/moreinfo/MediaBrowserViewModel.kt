@@ -3,6 +3,7 @@ package io.homeassistant.companion.android.dashboard.ui.moreinfo
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.homeassistant.companion.android.dashboard.data.BrandsRepository
 import io.homeassistant.companion.android.dashboard.data.Fetched
 import io.homeassistant.companion.android.dashboard.data.LoadError
 import io.homeassistant.companion.android.dashboard.data.MediaBrowserRepository
@@ -32,7 +33,10 @@ internal data class ThumbnailAuth(val brandsToken: String?, val authorization: S
 
 /** A player's media browser: the pages opened, newest last, and what its thumbnails need. */
 @HiltViewModel
-internal class MediaBrowserViewModel @Inject constructor(private val repository: MediaBrowserRepository) : ViewModel() {
+internal class MediaBrowserViewModel @Inject constructor(
+    private val repository: MediaBrowserRepository,
+    private val brands: BrandsRepository,
+) : ViewModel() {
     private var entityId: String? = null
     private val _pages = MutableStateFlow<List<BrowsePage>>(emptyList())
     private val _thumbnails = MutableStateFlow(ThumbnailAuth(null, null))
@@ -50,7 +54,7 @@ internal class MediaBrowserViewModel @Inject constructor(private val repository:
         _pages.value = emptyList()
         open(MediaBrowseId(null, null))
         viewModelScope.launch {
-            val token = when (val result = repository.brandsToken()) {
+            val token = when (val result = brands.token()) {
                 is Fetched.Success -> result.value
                 is Fetched.Failure -> null.also { Timber.w("Couldn't get the brands token: ${result.error}") }
             }

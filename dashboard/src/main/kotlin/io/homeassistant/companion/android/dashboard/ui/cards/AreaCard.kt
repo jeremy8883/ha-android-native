@@ -20,6 +20,8 @@ import io.homeassistant.companion.android.common.compose.theme.LocalHAColorSchem
 import io.homeassistant.companion.android.dashboard.derive.areaCardModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
+import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
+import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 @Composable
 internal fun AreaCard(card: CardConfig, hass: State<HassSnapshot?>, modifier: Modifier = Modifier) {
@@ -34,7 +36,7 @@ internal fun AreaCard(card: CardConfig, hass: State<HassSnapshot?>, modifier: Mo
         ) {
             DashboardIcon(
                 name = model.icon,
-                tint = colors.colorOnPrimaryNormal,
+                tint = model.color.toColor() ?: entityIconTint(null),
                 modifier = Modifier.size(HASize.X4L),
             )
             Text(text = model.name, style = HATextStyle.Body, color = colors.colorTextPrimary)

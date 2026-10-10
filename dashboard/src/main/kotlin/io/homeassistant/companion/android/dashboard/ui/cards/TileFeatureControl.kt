@@ -45,13 +45,21 @@ import java.math.RoundingMode
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 
-/** One control under a tile. Values change locally while the user interacts, and are sent once they settle. */
+/**
+ * One control under a tile, in the tile's [color] (`--feature-color`) unless it has its own. Values change locally
+ * while the user interacts, and are sent once they settle.
+ */
 @Composable
-internal fun TileFeatureControl(feature: TileFeature, available: Boolean, onAction: (CardAction) -> Unit) {
+internal fun TileFeatureControl(
+    feature: TileFeature,
+    available: Boolean,
+    color: Color,
+    onAction: (CardAction) -> Unit,
+) {
     when (feature) {
-        is TileFeature.Slider -> FeatureSlider(feature, onAction)
+        is TileFeature.Slider -> FeatureSlider(feature, color, onAction)
         is TileFeature.Buttons -> FeatureButtons(feature, onAction)
-        is TileFeature.Select -> FeatureSelect(feature, onAction)
+        is TileFeature.Select -> FeatureSelect(feature, color, onAction)
         is TileFeature.NumberButtons -> Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
             feature.items.forEach { FeatureNumber(it, available, onAction, Modifier.weight(1f)) }
         }
@@ -60,8 +68,7 @@ internal fun TileFeatureControl(feature: TileFeature, available: Boolean, onActi
 
 /** Port of the tile's `ha-control-slider`: a bar the height of the other features, which keeps its track when off. */
 @Composable
-private fun FeatureSlider(slider: TileFeature.Slider, onAction: (CardAction) -> Unit) {
-    val color = LocalHAColorScheme.current.colorFillPrimaryLoudResting
+private fun FeatureSlider(slider: TileFeature.Slider, color: Color, onAction: (CardAction) -> Unit) {
     ControlSlider(
         value = slider.value?.toDouble(),
         range = slider.min.toDouble()..slider.max.toDouble(),
@@ -112,9 +119,9 @@ private fun FeatureButtons(buttons: TileFeature.Buttons, onAction: (CardAction) 
 
 /** Icon segments in one pill, the selected one tinted, like `ha-control-select` with hidden labels. */
 @Composable
-private fun FeatureSelect(select: TileFeature.Select, onAction: (CardAction) -> Unit) {
+private fun FeatureSelect(select: TileFeature.Select, featureColor: Color, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current
-    val accent = select.color?.toColor() ?: colors.colorFillPrimaryLoudResting
+    val accent = select.color?.toColor() ?: featureColor
     Row(
         modifier = Modifier
             .fillMaxWidth()

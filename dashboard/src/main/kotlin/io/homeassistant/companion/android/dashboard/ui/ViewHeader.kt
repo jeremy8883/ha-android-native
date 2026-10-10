@@ -24,6 +24,7 @@ import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
+import io.homeassistant.companion.android.dashboard.derive.DisplayColor
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.layout.ViewBadgeModel
 import io.homeassistant.companion.android.dashboard.layout.viewHeader
@@ -87,7 +88,10 @@ private fun ViewBadge(badge: ViewBadgeModel, interactions: CardInteractions) {
     ) {
         DashboardIcon(
             name = badge.icon,
-            tint = badge.color?.toColor() ?: colors.colorTextSecondary,
+            // `--badge-color`: the primary colour while active, else the inactive one
+            tint = badge.color?.toColor()
+                ?: DisplayColor.State(listOf(if (badge.active) "primary-color" else "state-inactive-color")).toColor()
+                ?: colors.colorTextSecondary,
             modifier = Modifier.size(HASize.L),
         )
         Column {

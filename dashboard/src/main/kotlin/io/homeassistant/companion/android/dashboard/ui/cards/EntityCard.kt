@@ -27,7 +27,7 @@ import io.homeassistant.companion.android.dashboard.derive.entityCardModel
 import io.homeassistant.companion.android.dashboard.display.ValueParts
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
-import io.homeassistant.companion.android.dashboard.ui.theme.toColor
+import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.ZonedDateTime
 
 /**
@@ -71,7 +71,7 @@ internal fun EntityCard(
                 )
                 DashboardIcon(
                     model.icon,
-                    model.color?.toColor() ?: colors.colorTextSecondary,
+                    entityIconTint(model.color, brightness = model.brightness),
                     Modifier.size(iconHeight(model.iconHeight)),
                 )
             }

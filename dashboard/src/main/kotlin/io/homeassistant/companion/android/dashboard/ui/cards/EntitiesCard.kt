@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -17,9 +18,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
@@ -35,6 +38,7 @@ import io.homeassistant.companion.android.dashboard.derive.RowTimer
 import io.homeassistant.companion.android.dashboard.derive.entitiesModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
+import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -86,11 +90,7 @@ private fun EntityRow(row: EntityRowModel, now: Instant, interactions: CardInter
             horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            DashboardIcon(
-                name = row.icon,
-                tint = if (row.missing) colors.colorOnDangerNormal else colors.colorTextSecondary,
-                modifier = Modifier.size(HASize.X2L),
-            )
+            RowBadge(row)
             if (!namedControl) {
                 Text(
                     text = row.name,
@@ -143,3 +143,23 @@ private fun RowScope.EntityRowControl(
         null -> row.state?.let { Text(it, style = HATextStyle.BodyMedium, color = textColor, maxLines = 1) }
     }
 }
+
+/** Port of `state-badge` in a row: the entity's picture, else its icon in its badge colour; a warning when missing. */
+@Composable
+private fun RowBadge(row: EntityRowModel) {
+    val colors = LocalHAColorScheme.current
+    val badge = row.badge
+    val picture = badge?.picture
+    when {
+        badge == null -> DashboardIcon(row.icon, colors.colorOnDangerNormal, Modifier.size(HASize.X2L))
+        picture != null -> ServerImage(picture, row.name, Modifier.size(BADGE_SIZE).clip(CircleShape))
+        else -> DashboardIcon(
+            badge.icon,
+            entityIconTint(badge.color, badge.unavailable, badge.brightness),
+            Modifier.size(HASize.X2L),
+        )
+    }
+}
+
+/** `state-badge`'s 40 × 40. */
+private val BADGE_SIZE = 40.dp

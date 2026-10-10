@@ -41,6 +41,8 @@ data class GlanceEntity(
     val state: String?,
     val actions: ElementActions,
     val missing: Boolean,
+    val brightness: Double? = null,
+    val unavailable: Boolean = false,
 )
 
 /** The glance card of [card] at [now] (for relative times). */
@@ -93,15 +95,18 @@ private fun HassSnapshot.glanceEntity(config: JsonObject, options: GlanceOptions
         )
     val picture = (state.attributes.string("entity_picture_local") ?: state.attributes.string("entity_picture"))
         ?.takeIf { config.string("icon") == null }
+    val colored = config.boolean("state_color") ?: options.stateColor
     return GlanceEntity(
         entityId = entityId,
         name = entityNameDisplay(state, config["name"]).takeIf { options.name },
         icon = entityIcon(entityId, configIcon = config.string("icon")).takeIf { options.icon },
         picture = (config.string("image") ?: picture)?.takeIf { options.icon },
-        color = if (config.boolean("state_color") ?: options.stateColor) badgeColor(state) else null,
+        color = if (colored) badgeColor(state)?.withInactiveUnset() else null,
         state = glanceState(state, config, now).takeIf { options.state && config.boolean("show_state") != false },
         actions = actions,
         missing = false,
+        brightness = iconBrightness(state).takeIf { colored },
+        unavailable = state.state == STATE_UNAVAILABLE,
     )
 }
 

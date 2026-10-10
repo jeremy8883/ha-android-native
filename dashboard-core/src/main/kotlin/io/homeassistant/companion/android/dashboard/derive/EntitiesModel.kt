@@ -11,6 +11,7 @@ import io.homeassistant.companion.android.dashboard.display.stateDisplay
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
+import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.jsTruthy
 import io.homeassistant.companion.android.dashboard.model.string
 import java.time.Instant
@@ -29,6 +30,7 @@ data class EntitiesModel(val title: String?, val icon: String?, val rows: List<E
  * @property state the formatted state, shown when the row has no control
  * @property control the row's control, `null` for a text-only row
  * @property actions the gestures of the row's name and icon (more-info by default)
+ * @property badge the row's icon (or picture) as `state-badge` draws it, `null` for a missing entity
  */
 data class EntityRowModel(
     val entityId: String,
@@ -39,6 +41,7 @@ data class EntityRowModel(
     val missing: Boolean,
     val control: RowControl?,
     val actions: ElementActions,
+    val badge: StateBadge? = null,
 )
 
 /** The control on the right of an entity row. */
@@ -77,11 +80,15 @@ fun HassSnapshot.entitiesModel(card: CardConfig, now: Instant): EntitiesModel = 
             entry is JsonPrimitive && entry.isString -> JsonObject(mapOf("entity" to entry))
             else -> null
         }
-        config?.takeIf { it.string("entity") != null }?.let { entityRow(it, now) }
+        config?.takeIf { it.string("entity") != null }?.let { entityRow(it, now, cardStateColor(card)) }
     },
 )
 
-private fun HassSnapshot.entityRow(config: JsonObject, now: Instant): EntityRowModel {
+/** The card's `state_color`, which rows without their own take; `null` when the card doesn't set it. */
+private fun cardStateColor(card: CardConfig): Boolean? =
+    if ("state_color" in card.json) card.json.boolean("state_color") else null
+
+private fun HassSnapshot.entityRow(config: JsonObject, now: Instant, cardStateColor: Boolean?): EntityRowModel {
     val entityId = config.string("entity").orEmpty()
     // Rows default to more-info on tap, like the tile card
     val actions = cardActions(CardConfig(JsonObject(config + ("type" to JsonPrimitive("tile"))))).card
@@ -98,6 +105,7 @@ private fun HassSnapshot.entityRow(config: JsonObject, now: Instant): EntityRowM
         missing = false,
         control = control,
         actions = actions,
+        badge = stateBadge(state, config.string("icon"), config.boolean("state_color") ?: cardStateColor),
     )
 }
 
