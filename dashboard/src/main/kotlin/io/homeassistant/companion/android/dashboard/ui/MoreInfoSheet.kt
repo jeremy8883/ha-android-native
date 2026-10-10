@@ -1,12 +1,14 @@
 package io.homeassistant.companion.android.dashboard.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,11 +25,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -41,18 +44,17 @@ import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
 import io.homeassistant.companion.android.common.compose.composable.HAModalBottomSheet
-import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
-import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.MoreInfoModel
 import io.homeassistant.companion.android.dashboard.derive.StateCard
 import io.homeassistant.companion.android.dashboard.derive.moreInfoModel
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
+import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.history.showsHistory
 import io.homeassistant.companion.android.dashboard.logbook.showsLogbook
 import io.homeassistant.companion.android.dashboard.moreinfo.humidifierHumidityCall
@@ -61,7 +63,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterTarget
 import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterTemperatureCall
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
-import io.homeassistant.companion.android.dashboard.ui.cards.EntityToggle
+import io.homeassistant.companion.android.dashboard.ui.cards.RowControlContent
 import io.homeassistant.companion.android.dashboard.ui.cards.ServerImage
 import io.homeassistant.companion.android.dashboard.ui.controls.StateToggleControl
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesMenu
@@ -104,11 +106,30 @@ internal fun MoreInfoSheet(
         derivedStateOf { hass.value?.moreInfoModel(entityId, now.value?.toInstant() ?: Instant.EPOCH) }
     }
     val model = info ?: return
-    // Upstream opens updates at full height
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = model.fullHeight)
-    HAModalBottomSheet(bottomSheetState = sheetState, onDismissRequest = onDismiss) {
+    var view by remember(entityId) { mutableStateOf<MoreInfoView>(MoreInfoView.Main) }
+    // Upstream's sheet is the screen's height less the larger of the status bar and 48px, whatever it shows
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    HAModalBottomSheet(bottomSheetState = sheetState, onDismissRequest = onDismiss, dragHandle = null) {
         val snapshot = hass.value ?: return@HAModalBottomSheet
-        MoreInfoContent(model, snapshot, now.value?.toInstant() ?: Instant.EPOCH, interactions, onShowFull)
+        val instant = now.value?.toInstant() ?: Instant.EPOCH
+        // Back returns to the main view first, as the dialog's back button does
+        BackHandler(enabled = view != MoreInfoView.Main) { view = MoreInfoView.Main }
+        Column(Modifier.fillMaxWidth().height(sheetHeight()).navigationBarsPadding()) {
+            MoreInfoToolbar(
+                model = model,
+                view = view,
+                showsHistory = snapshot.showsHistory(entityId) || snapshot.showsLogbook(entityId),
+                onView = { view = it },
+                onClose = onDismiss,
+                onShowFull = onShowFull,
+                localize = snapshot.localize,
+            )
+            when (view) {
+                MoreInfoView.Main -> MoreInfoMain(model, snapshot, instant, interactions)
+                MoreInfoView.History -> MoreInfoHistoryView(model.entityId, snapshot, instant, interactions)
+                MoreInfoView.Details -> MoreInfoDetailsView(model, snapshot.localize)
+            }
+        }
         // The sheet's content may extend below the screen, so messages go at the bottom of the window instead
         if (snackbar?.currentSnackbarData != null) {
             Popup(popupPositionProvider = WindowBottom) {
@@ -119,18 +140,19 @@ internal fun MoreInfoSheet(
 }
 
 /**
- * The details as one lazy list: the header, state, controls and history are single items, then the logbook one
- * item per row, so only what's on screen is built however long the day's logbook is.
+ * Port of `ha-more-info-info`: the state card (or the state header), the controls, and for domains without
+ * details of their own the history, activity and attributes after them. One lazy list, the logbook one item per
+ * row, so only what's on screen is built however long the day's logbook is. An update's buttons are pinned under
+ * it.
  */
 @Composable
-private fun MoreInfoContent(
+private fun ColumnScope.MoreInfoMain(
     model: MoreInfoModel,
     hass: HassSnapshot,
     now: Instant,
     interactions: CardInteractions,
-    onShowFull: (() -> Unit)?,
 ) {
-    val logbook = if (model.sections && hass.showsLogbook(model.entityId)) {
+    val logbook = if (model.inlineHistory && hass.showsLogbook(model.entityId)) {
         rememberLogbookSection(model.entityId, hass, now)
     } else {
         null
@@ -139,53 +161,46 @@ private fun MoreInfoContent(
     val update = model.update
     // Each opening starts at the top: a saved scroll position would carry over to the next details
     val listState = remember(model.entityId) { LazyListState() }
-    val details = DetailsList(model, hass, now, interactions, onShowFull, logbook)
-    // At full height the footer sits at the bottom of the screen, as upstream's
-    Column(
-        Modifier.fillMaxWidth().then(
-            if (model.fullHeight) Modifier.fillMaxHeight() else Modifier,
-        ).navigationBarsPadding(),
-    ) {
-        LazyColumn(
-            state = listState,
-            modifier = Modifier.fillMaxWidth().weight(1f, fill = model.fullHeight),
-            contentPadding = PaddingValues(horizontal = HADimens.SPACE6),
-        ) { detailsItems(details) }
-        if (update != null && state != null && model.stateCard != null) {
-            HAHorizontalDivider()
-            Box(Modifier.padding(horizontal = HADimens.SPACE6, vertical = HADimens.SPACE4)) {
-                MoreInfoUpdateFooter(update, state, hass, now, interactions.onAction)
-            }
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.fillMaxWidth().weight(1f),
+        contentPadding = PaddingValues(horizontal = HADimens.SPACE6),
+    ) { mainItems(MainList(model, hass, now, interactions, logbook)) }
+    if (update != null && state != null) {
+        HAHorizontalDivider()
+        Box(Modifier.padding(horizontal = HADimens.SPACE6, vertical = HADimens.SPACE4)) {
+            MoreInfoUpdateFooter(update, state, hass, now, interactions.onAction)
         }
     }
 }
 
-/** What the details' list shows. */
-private class DetailsList(
+/** What the main view's list shows. */
+private class MainList(
     val model: MoreInfoModel,
     val hass: HassSnapshot,
     val now: Instant,
     val interactions: CardInteractions,
-    val onShowFull: (() -> Unit)?,
     val logbook: LogbookSection?,
 )
 
-/** The details' items: the header, state, controls, then (unless kept elsewhere) history, logbook and attributes. */
-private fun LazyListScope.detailsItems(details: DetailsList) {
-    val (model, hass, now) = Triple(details.model, details.hass, details.now)
-    val interactions = details.interactions
+private fun LazyListScope.mainItems(list: MainList) {
+    val (model, hass, now) = Triple(list.model, list.hass, list.now)
+    val interactions = list.interactions
     val section = Modifier.padding(bottom = HADimens.SPACE4)
-    item(key = "header") {
-        Box(section) {
-            MoreInfoHeader(model, interactions) {
-                hass.states[model.entityId]?.takeIf {
-                    it.domain in FAVORITES_DOMAINS
-                }?.let { FavoritesMenu(it, hass) }
+    model.stateCard?.let { card ->
+        item(key = "state-card") { Box(section) { StateCardRow(card, now, interactions.onAction) } }
+    }
+    if (model.stateHeader) {
+        item(key = "state") {
+            Box(section) {
+                MoreInfoState(model) {
+                    hass.states[model.entityId]?.takeIf {
+                        it.domain in FAVORITES_DOMAINS
+                    }?.let { FavoritesMenu(it, hass) }
+                }
             }
         }
     }
-    if (model.stateHeader) item(key = "state") { Box(section) { MoreInfoState(model) } }
-    model.stateCard?.let { card -> item(key = "state-card") { Box(section) { StateCardRow(card) } } }
     hass.states[model.entityId]?.let { state ->
         item(key = "controls") {
             Column(section, verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
@@ -193,24 +208,55 @@ private fun LazyListScope.detailsItems(details: DetailsList) {
             }
         }
     }
-    if (model.sections && hass.showsHistory(model.entityId)) {
+    if (model.inlineHistory && hass.showsHistory(model.entityId)) {
         item(key = "history") { Box(section) { MoreInfoHistory(model.entityId, hass, now, interactions) } }
     }
-    details.logbook?.let { logbookItems(it, hass, now, interactions) }
-    if (model.sections && model.attributes.isNotEmpty()) {
+    list.logbook?.let { logbookItems(it, hass, now, interactions) }
+    if (model.inlineAttributes && model.attributes.isNotEmpty()) {
         item(key = "attributes") {
             Column(
                 Modifier.padding(vertical = HADimens.SPACE4),
                 verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
             ) {
-                MoreInfoAttributes(model.attributes)
+                MoreInfoAttributes(model.attributes, hass.localize("ui.dialogs.more_info_control.attributes"))
             }
         }
     }
-    details.onShowFull?.let {
-        item(key = "full") {
-            Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
-                HAPlainButton(stringResource(R.string.native_dashboard_more_info_full), it)
+}
+
+/** Port of `ha-more-info-history-and-logbook`: the history, then the activity. */
+@Composable
+private fun ColumnScope.MoreInfoHistoryView(
+    entityId: String,
+    hass: HassSnapshot,
+    now: Instant,
+    interactions: CardInteractions,
+) {
+    val logbook = if (hass.showsLogbook(entityId)) rememberLogbookSection(entityId, hass, now) else null
+    LazyColumn(Modifier.fillMaxWidth().weight(1f), contentPadding = PaddingValues(horizontal = HADimens.SPACE6)) {
+        if (hass.showsHistory(entityId)) {
+            item(key = "history") {
+                Box(Modifier.padding(bottom = HADimens.SPACE4)) { MoreInfoHistory(entityId, hass, now, interactions) }
+            }
+        }
+        logbook?.let { logbookItems(it, hass, now, interactions) }
+    }
+}
+
+/** Port of `ha-more-info-details`: the state's entries, then the attributes. */
+@Composable
+private fun ColumnScope.MoreInfoDetailsView(model: MoreInfoModel, localize: Localize) {
+    LazyColumn(
+        Modifier.fillMaxWidth().weight(1f),
+        contentPadding = PaddingValues(horizontal = HADimens.SPACE6, vertical = HADimens.SPACE4),
+        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+    ) {
+        item(key = "state") {
+            MoreInfoAttributes(model.details, localize("ui.components.entity.entity-state-picker.state"))
+        }
+        if (model.attributes.isNotEmpty()) {
+            item(key = "attributes") {
+                MoreInfoAttributes(model.attributes, localize("ui.dialogs.more_info_control.attributes"))
             }
         }
     }
@@ -260,42 +306,12 @@ private fun DomainControls(
     }
 }
 
-/** The entity's icon, name and context, with its switch when it turns on and off. */
+/**
+ * Port of `state-card-content` in the dialog: the badge, the name over when it changed, then the entity's row
+ * control (a switch, buttons or an input), else its state.
+ */
 @Composable
-private fun MoreInfoHeader(model: MoreInfoModel, interactions: CardInteractions, menu: @Composable () -> Unit) {
-    val colors = LocalHAColorScheme.current
-    Row(
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        // Upstream's toolbar has no icon: the state card below has the entity's
-        if (model.stateCard == null) {
-            DashboardIcon(
-                name = model.icon,
-                tint = if (model.active) colors.colorFillPrimaryLoudResting else colors.colorTextSecondary,
-                modifier = Modifier.size(HASize.X3L),
-            )
-        }
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                model.name,
-                style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start),
-                color = colors.colorTextPrimary,
-            )
-            model.context?.let { Text(it, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start)) }
-        }
-        model.toggle?.let { toggle ->
-            EntityToggle(checked = model.active, updatedAt = model.updatedAt, onToggle = {
-                interactions.onAction(toggle)
-            })
-        }
-        menu()
-    }
-}
-
-/** Port of `state-card-display` in the dialog: the badge, the name over when it changed, and the state. */
-@Composable
-private fun StateCardRow(card: StateCard) {
+private fun StateCardRow(card: StateCard, now: Instant, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current
     Row(
         Modifier.fillMaxWidth(),
@@ -326,13 +342,21 @@ private fun StateCardRow(card: StateCard) {
                 color = colors.colorTextSecondary,
             )
         }
-        Text(card.state, style = HATextStyle.Body.copy(textAlign = TextAlign.End), color = colors.colorTextPrimary)
+        RowControlContent(card.control, card.state, colors.colorTextPrimary, now, onAction)
     }
 }
 
-/** Port of `ha-more-info-state-header`: the state, and when it last changed, centred. */
+/** Port of `ha-more-info-state-header`: the state, and when it last changed, centred; [menu] at its end. */
 @Composable
-private fun MoreInfoState(model: MoreInfoModel) {
+private fun MoreInfoState(model: MoreInfoModel, menu: @Composable () -> Unit) {
+    Box(Modifier.fillMaxWidth()) {
+        Box(Modifier.align(Alignment.TopEnd)) { menu() }
+        MoreInfoStateText(model)
+    }
+}
+
+@Composable
+private fun MoreInfoStateText(model: MoreInfoModel) {
     val colors = LocalHAColorScheme.current
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
@@ -358,12 +382,12 @@ private fun MoreInfoState(model: MoreInfoModel) {
     }
 }
 
-/** The displayable attributes, as name and formatted value. */
+/** A titled list of names and values: the attributes, or the details' state entries. */
 @Composable
-private fun MoreInfoAttributes(attributes: List<Pair<String, String>>) {
+private fun MoreInfoAttributes(attributes: List<Pair<String, String>>, title: String) {
     val colors = LocalHAColorScheme.current
     Text(
-        stringResource(R.string.native_dashboard_more_info_attributes),
+        title,
         style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
         color = colors.colorTextPrimary,
     )

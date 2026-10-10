@@ -120,7 +120,8 @@ private fun HassSnapshot.rowStateText(state: EntityState, config: JsonObject, no
         formatEntityState(state)
     }
 
-private fun HassSnapshot.rowControl(state: EntityState, config: JsonObject): RowControl? {
+/** The control of [state]'s entities row (a switch or buttons), `null` for rows that show text. */
+internal fun HassSnapshot.rowControl(state: EntityState, config: JsonObject): RowControl? {
     val available = state.state != STATE_UNAVAILABLE
     fun call(domain: String, service: String) =
         CardAction.CallService(domain, service, buildJsonObject { put("entity_id", state.entityId) }, target = null)

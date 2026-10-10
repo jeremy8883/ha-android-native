@@ -1,7 +1,5 @@
 package io.homeassistant.companion.android.dashboard.derive
 
-import io.homeassistant.companion.android.dashboard.action.CardAction
-import io.homeassistant.companion.android.dashboard.action.toggleEntity
 import io.homeassistant.companion.android.dashboard.display.formatEntityAttributeValue
 import io.homeassistant.companion.android.dashboard.display.formatEntityState
 import io.homeassistant.companion.android.dashboard.display.relativeTime
@@ -55,7 +53,6 @@ import kotlinx.serialization.json.JsonPrimitive
  *
  * @property context the area and device, for example "Kitchen › Kitchen speaker"
  * @property changed when the state last changed, as a relative time
- * @property toggle a switch for entities that turn on and off
  * @property updatedAt when the entity's state object last changed (epoch seconds), so a switch knows when the server
  * answered
  * @property stateHeader whether the state and when it changed show above the controls (not for domains whose
@@ -78,13 +75,15 @@ import kotlinx.serialization.json.JsonPrimitive
  * @property timer a timer's duration and buttons
  * @property remote a remote's activity menu
  * @property update an update's versions, notes and buttons
- * @property input the entity's row control (a number, select, text, date or time), which upstream's dialog leads with
  * @property attributes the displayable attributes, as (name, formatted value)
- * @property fullHeight whether the details open at the screen's full height (`DOMAINS_FULL_HEIGHT_MORE_INFO`)
- * @property stateCard the row upstream's dialog leads with instead of the state header (`state-card-content`), for
- * the domains ported that way (updates for now)
- * @property sections whether the history, activity and attributes follow the controls; upstream keeps them in other
- * views of the dialog, which the native details show inline except for [stateCard] domains
+ * @property fullHeight whether the content fills the dialog (`DOMAINS_FULL_HEIGHT_MORE_INFO`), so an update's
+ * buttons sit at its bottom
+ * @property stateCard the row the dialog leads with (`state-card-content`), for the domains without the newer
+ * details (`DOMAINS_WITH_NEW_MORE_INFO`)
+ * @property inlineHistory whether the history and activity follow the controls (`ha-more-info-info`: domains
+ * without details of their own); for the others they are only in the history view
+ * @property inlineAttributes whether the attributes follow them (`more-info-default`); else only in the details view
+ * @property details the details view's state entries (`ha-more-info-details`), as (label, value)
  */
 data class MoreInfoModel(
     val entityId: String,
@@ -94,7 +93,6 @@ data class MoreInfoModel(
     val state: String,
     val changed: String,
     val active: Boolean,
-    val toggle: CardAction.CallService?,
     val updatedAt: Double,
     val stateHeader: Boolean,
     val light: LightMoreInfo?,
@@ -115,18 +113,26 @@ data class MoreInfoModel(
     val timer: TimerMoreInfo?,
     val remote: SelectMenu?,
     val update: UpdateMoreInfo?,
-    val input: RowControl?,
     val attributes: List<Pair<String, String>>,
     val fullHeight: Boolean = false,
     val stateCard: StateCard? = null,
-    val sections: Boolean = true,
+    val inlineHistory: Boolean = true,
+    val inlineAttributes: Boolean = true,
+    val details: List<Pair<String, String>> = emptyList(),
 )
 
 /**
- * Port of `state-card-display` in the dialog: the entity's [badge] (coloured by its state), its own [name] and
- * when it [changed], with its formatted [state] on the right.
+ * Port of `state-card-content` in the dialog: the entity's [badge] (coloured by its state), its own [name] and
+ * when it [changed], then its [control] as its entities row has one (a switch, buttons or an input), else its
+ * formatted [state].
  */
-data class StateCard(val badge: StateBadge, val name: String, val changed: String, val state: String)
+data class StateCard(
+    val badge: StateBadge,
+    val name: String,
+    val changed: String,
+    val state: String,
+    val control: RowControl?,
+)
 
 /**
  * Derive the quick view of [entityId], or `null` when it does not exist. The name and context follow
@@ -153,9 +159,8 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         changed = formats.relativeTime(minOf(Instant.ofEpochMilli((state.lastChanged * MILLIS).toLong()), now), now)
             .replaceFirstChar { it.uppercaseChar() },
         active = state.isActive(),
-        toggle = toggleEntity(entityId).takeIf { domain in HEADER_TOGGLE_DOMAINS && state.state in ON_OFF },
         updatedAt = state.lastUpdated,
-        stateHeader = domain !in NO_STATE_HEADER_DOMAINS && domain !in STATE_CARD_DOMAINS,
+        stateHeader = domain in STATE_HEADER_DOMAINS,
         light = light,
         climate = climateMoreInfo(state),
         waterHeater = waterHeaterMoreInfo(state),
@@ -174,21 +179,44 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         timer = timerMoreInfo(state),
         remote = remoteActivity(state),
         update = updateMoreInfo(state),
-        input = if (domain in INPUT_DOMAINS) inputRowControl(state, name) else null,
         attributes = displayAttributes(state).map { attributeName(state, it) to formatEntityAttributeValue(state, it) },
         fullHeight = domain in FULL_HEIGHT_DOMAINS,
-        stateCard = if (domain in STATE_CARD_DOMAINS) stateCard(state, now) else null,
-        sections = domain !in STATE_CARD_DOMAINS,
+        stateCard = if (domain !in NEW_MORE_INFO_DOMAINS && domain !in NO_INFO_DOMAINS) stateCard(state, now) else null,
+        inlineHistory = domain !in WITH_MORE_INFO_DOMAINS,
+        inlineAttributes = domain !in WITH_MORE_INFO_DOMAINS && domain !in HIDE_DEFAULT_MORE_INFO_DOMAINS,
+        details = detailEntries(state),
     )
 }
 
-private fun HassSnapshot.stateCard(state: EntityState, now: Instant) = StateCard(
-    badge = stateBadge(state, overrideIcon = null, stateColor = true),
-    name = entityNameDisplay(state, JsonObject(mapOf("type" to JsonPrimitive("entity")))),
-    changed = formats.relativeTime(minOf(Instant.ofEpochMilli((state.lastChanged * MILLIS).toLong()), now), now)
-        .replaceFirstChar { it.uppercaseChar() },
-    state = formatEntityState(state),
-)
+private fun HassSnapshot.stateCard(state: EntityState, now: Instant): StateCard {
+    val name = entityNameDisplay(state, JsonObject(mapOf("type" to JsonPrimitive("entity"))))
+    // An unavailable entity's card only displays it (`stateCardType`)
+    val control = if (state.state == STATE_UNAVAILABLE) {
+        null
+    } else {
+        rowControl(state, JsonObject(emptyMap())) ?: inputRowControl(state, name)
+    }
+    return StateCard(
+        badge = stateBadge(state, overrideIcon = null, stateColor = true),
+        name = name,
+        changed = formats.relativeTime(minOf(Instant.ofEpochMilli((state.lastChanged * MILLIS).toLong()), now), now)
+            .replaceFirstChar { it.uppercaseChar() },
+        state = formatEntityState(state),
+        control = control,
+    )
+}
+
+/** Port of `_getDetailData`'s state entries: the translated and raw state, and when it changed and updated. */
+private fun HassSnapshot.detailEntries(state: EntityState): List<Pair<String, String>> {
+    val strings = "ui.dialogs.more_info_control"
+    val at = { seconds: Double -> formats.dateTimeWithSeconds(Instant.ofEpochMilli((seconds * MILLIS).toLong())) }
+    return listOf(
+        localize("$strings.translated") to formatEntityState(state),
+        localize("$strings.raw") to state.state,
+        localize("$strings.last_changed") to at(state.lastChanged),
+        localize("$strings.last_updated") to at(state.lastUpdated),
+    )
+}
 
 /**
  * The name and context ("Kitchen › Kitchen speaker") of [state] as entity pickers show them (the details' header,
@@ -215,25 +243,44 @@ private fun displayAttributes(state: EntityState): List<String> {
 }
 
 private const val MILLIS = 1000.0
-private val ON_OFF = setOf("on", "off")
-
-/** The domains whose details lead with their row's input (`state-card-content`). */
-private val INPUT_DOMAINS = setOf(
-    "input_number", "number", "input_select", "select", "input_text", "text", "input_datetime", "date", "time",
-    "datetime",
-)
 
 /** Port of `DOMAINS_FULL_HEIGHT_MORE_INFO`. */
 private val FULL_HEIGHT_DOMAINS = setOf("update")
 
-/** The domains whose details lead with `state-card-content`, as upstream's, rather than the native state header. */
-private val STATE_CARD_DOMAINS = setOf("update")
+/** Port of `DOMAINS_NO_INFO`: no state card. */
+private val NO_INFO_DOMAINS = setOf("camera", "configurator")
 
-/** The domains whose controls replace the state header (`more-info-climate` renders none). */
-private val NO_STATE_HEADER_DOMAINS = setOf("climate", "humidifier", "media_player", "water_heater")
+/** Port of `DOMAINS_WITH_NEW_MORE_INFO`: their controls replace the state card. */
+private val NEW_MORE_INFO_DOMAINS = setOf(
+    "alarm_control_panel", "cover", "climate", "conversation", "fan", "humidifier", "input_boolean", "lawn_mower",
+    "light", "lock", "siren", "script", "switch", "vacuum", "valve", "water_heater", "weather", "media_player",
+)
 
-/** The domains whose switch is in the header, until they have controls of their own. */
-private val HEADER_TOGGLE_DOMAINS = setOf("automation", "remote")
+/** The new details that lead with `ha-more-info-state-header` (the others show their own readings). */
+private val STATE_HEADER_DOMAINS = setOf(
+    "alarm_control_panel", "cover", "fan", "input_boolean", "lawn_mower", "light", "lock", "script", "siren",
+    "switch", "vacuum", "valve",
+)
+
+/** Port of `DOMAINS_WITH_MORE_INFO`: details of their own, whose history is in its own view. */
+private val WITH_MORE_INFO_DOMAINS = setOf(
+    "alarm_control_panel", "automation", "camera", "climate", "configurator", "conversation", "counter", "cover",
+    "date", "datetime", "fan", "group", "humidifier", "image", "input_boolean", "input_datetime", "lawn_mower",
+    "light", "lock", "media_player", "person", "remote", "script", "scene", "siren", "sun", "switch", "time",
+    "timer", "update", "vacuum", "valve", "water_heater", "weather",
+)
+
+/** Port of `DOMAINS_HIDE_DEFAULT_MORE_INFO`: no attributes in the main view. */
+private val HIDE_DEFAULT_MORE_INFO_DOMAINS = setOf(
+    "input_number",
+    "input_select",
+    "input_text",
+    "number",
+    "scene",
+    "select",
+    "text",
+    "update",
+)
 
 /** The domains whose details lead with the large on/off switch (`more-info-switch`, `more-info-input_boolean`). */
 private val STATE_TOGGLE_DOMAINS = setOf("input_boolean", "switch")

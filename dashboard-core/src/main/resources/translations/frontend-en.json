@@ -327,9 +327,11 @@
   },
   "common": {
    "apply": "Apply",
+   "back": "Back",
    "cancel": "Cancel",
    "clear": "Clear",
-   "close": "Close"
+   "close": "Close",
+   "menu": "Menu"
   },
   "components": {
    "date-range-picker": {
@@ -354,6 +356,11 @@
     "start_date": "Start date",
     "time_from": "Time from",
     "time_to": "Time to"
+   },
+   "entity": {
+    "entity-state-picker": {
+     "state": "State"
+    }
    },
    "history_charts": {
     "collapse_legend": "Less",

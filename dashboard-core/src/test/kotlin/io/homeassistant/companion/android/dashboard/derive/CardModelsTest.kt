@@ -120,23 +120,42 @@ class MoreInfoModelTest {
     private val hass = GoldenFixture("test-instance").hass
 
     @Test
-    fun `Given a dimmable light when deriving its quick view then it shows its brightness, its controls and its attributes`() {
+    fun `Given a dimmable light when deriving its details then it shows its brightness and controls, its attributes for the details view`() {
         val model = hass.moreInfoModel("light.kitchen_lights", Instant.parse("2026-01-01T01:00:00Z"))!!
         assertEquals("Kitchen Lights", model.name)
         val percent = kitchenBrightnessPercent(hass)
         assertEquals("$percent%", model.state)
         assertEquals("1 hour ago", model.changed)
-        // Its own power button replaces the header's switch
-        assertNull(model.toggle)
+        // Newer details: no state card, the history and attributes in their own views
+        assertNull(model.stateCard)
+        assertEquals(false, model.inlineHistory)
+        assertEquals(false, model.inlineAttributes)
         assertEquals(percent.toDouble(), model.light?.brightness?.value)
         assertTrue(model.attributes.none { (name, _) -> name == "Friendly name" })
         assertTrue(model.attributes.isNotEmpty())
     }
 
     @Test
-    fun `Given a media player when deriving its quick view then it carries the player's controls and no toggle`() {
+    fun `Given a media player when deriving its details then it carries the player's controls and no state card`() {
         val model = hass.moreInfoModel("media_player.kitchen_speaker", Instant.EPOCH)!!
-        assertNull(model.toggle)
+        assertNull(model.stateCard)
         assertEquals(listOf("media_pause"), model.mediaPlayer?.main?.center?.map { it.action.service })
+    }
+
+    @Test
+    fun `Given a sensor when deriving its details then it leads with its state card, its history and attributes inline`() {
+        val model = hass.moreInfoModel("sensor.outside_temperature", Instant.EPOCH)!!
+        assertEquals(false, model.stateHeader)
+        assertEquals("Outside Temperature", model.stateCard?.name)
+        assertEquals(model.state, model.stateCard?.state)
+        assertNull(model.stateCard?.control)
+        assertTrue(model.inlineHistory && model.inlineAttributes)
+    }
+
+    @Test
+    fun `Given a switch-like entity without new details when deriving them then its state card has its row's switch`() {
+        val model = hass.moreInfoModel("automation.bed_light_schedule", Instant.EPOCH)!!
+        assertTrue(model.stateCard?.control is RowControl.Toggle)
+        assertEquals(false, model.inlineHistory)
     }
 }

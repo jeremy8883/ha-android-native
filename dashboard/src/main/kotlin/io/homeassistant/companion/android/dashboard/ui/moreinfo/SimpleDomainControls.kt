@@ -15,7 +15,6 @@ internal fun SimpleDomainControls(model: MoreInfoModel, state: EntityState, onAc
     model.automation?.let { MoreInfoAutomation(it, onAction) }
     model.timer?.let { MoreInfoTimer(it, state, onAction) }
     model.remote?.let { ControlSelectMenus(listOf(it), onAction) }
-    model.input?.let { MoreInfoInput(it, onAction) }
     // Its footer is pinned under the details
     model.update?.let { MoreInfoUpdate(it, state.entityId) }
 }

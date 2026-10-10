@@ -39,6 +39,8 @@ SUBTREES = [
     "ui.common.apply",
     "ui.common.cancel",
     "ui.common.clear",
+    "ui.common.menu",
+    "ui.common.back",
     "ui.errors.config.configuration_error",
 ]
 

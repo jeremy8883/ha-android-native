@@ -27,6 +27,7 @@ import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
+import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.EntityRowModel
 import io.homeassistant.companion.android.dashboard.derive.RowControl
 import io.homeassistant.companion.android.dashboard.derive.RowDateTime
@@ -112,10 +113,19 @@ private fun RowScope.EntityRowControl(
     textColor: Color,
     now: Instant,
     interactions: CardInteractions,
+) = RowControlContent(row.control, row.state, textColor, now, interactions.onAction)
+
+/** A row's [control] (a switch, buttons or an input), or its [state] text without one. */
+@Composable
+internal fun RowScope.RowControlContent(
+    control: RowControl?,
+    state: String?,
+    textColor: Color,
+    now: Instant,
+    onAction: (CardAction) -> Unit,
 ) {
     val colors = LocalHAColorScheme.current
-    val onAction = interactions.onAction
-    when (val control = row.control) {
+    when (control) {
         is RowControl.Toggle -> EntityToggle(
             checked = control.checked,
             updatedAt = control.updatedAt,
@@ -140,7 +150,7 @@ private fun RowScope.EntityRowControl(
         is RowTextInput -> RowTextControl(control, onAction)
         is RowDateTime -> RowDateTimeControl(control, onAction)
         is RowTimer -> RowTimerText(control, now)
-        null -> row.state?.let { Text(it, style = HATextStyle.BodyMedium, color = textColor, maxLines = 1) }
+        null -> state?.let { Text(it, style = HATextStyle.BodyMedium, color = textColor, maxLines = 1) }
     }
 }
 
