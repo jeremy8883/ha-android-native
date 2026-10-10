@@ -4,6 +4,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
+import kotlin.math.abs
 import kotlin.math.ceil
 import kotlin.math.log10
 import kotlin.math.max
@@ -144,12 +145,20 @@ fun suggestedMax(period: StatisticPeriod, end: ZonedDateTime): ZonedDateTime = w
 /** The fraction digits the y axis needs for values from [min] to [max]. Port of `computeYAxisFractionDigits`. */
 fun yAxisFractionDigits(min: Double, max: Double): Int {
     val range = max - min
-    if (!range.isFinite() || range <= 0) return 1
+    // UPSTREAM-DIFF: a range of floating point noise (a flat line at 13.2 and 13.199999999999998) counts as flat.
+    // Upstream asks for 16 digits there and labels the axis "13.2000000000000000".
+    if (!range.isFinite() || isRoundingNoise(min, max)) return 1
     return max(0, ceil(-log10(range / TEN)).toInt())
 }
+
+/** Whether [min] and [max] differ by floating point noise at most, so values between them are one value. */
+fun isRoundingNoise(min: Double, max: Double): Boolean = max - min <= ROUNDING_NOISE * maxOf(abs(min), abs(max))
 
 private const val FIVE_MINUTES_MS = 5 * 60 * 1000L
 private const val HOUR_MS = 60 * 60 * 1000L
 private const val MONTH_AXIS_PADDING_DAYS = 5L
 private const val HALF_HOUR = 30
 private const val TEN = 10.0
+
+/** Differences this small relative to the values are floating point noise (doubles carry about 16 digits). */
+private const val ROUNDING_NOISE = 1e-12

@@ -47,6 +47,7 @@ internal fun HassSnapshot.timerRowControl(state: EntityState): RowTimer? {
             ?.let { parseJsDate(it, ZoneOffset.UTC) },
         remaining = remaining,
         state = formatEntityState(state),
+        // UPSTREAM-DIFF: an unavailable timer reads "Unavailable", where upstream shows "0"
         showState = state.state == "idle" || state.state == STATE_UNAVAILABLE,
         paused = state.state == "paused",
     )

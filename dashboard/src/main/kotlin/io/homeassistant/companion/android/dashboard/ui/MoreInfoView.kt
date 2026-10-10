@@ -102,6 +102,8 @@ internal fun MoreInfoToolbar(
                     onView(MoreInfoView.History)
                 }
             }
+            // UPSTREAM-DIFF: no settings button, and the menu has no device, edit, related or "add to" items (they
+            // stay in the companion app); it is for every user, not only admins, and adds the frontend's full dialog
             Box {
                 ToolbarButton(MENU_ICON, localize("ui.common.menu")) { menu = true }
                 DropdownMenu(expanded = menu, onDismissRequest = { menu = false }) {

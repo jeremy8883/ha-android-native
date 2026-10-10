@@ -22,7 +22,9 @@ import kotlin.math.pow
 fun niceTicks(min: Double, max: Double, splitNumber: Int = DEFAULT_SPLIT, scale: Boolean = false): List<Double> {
     var low = if (scale) min else minOf(min, 0.0)
     var high = if (scale) max else maxOf(max, 0.0)
-    if (scale && low == high && low.isFinite()) {
+    // UPSTREAM-DIFF: values differing by floating point noise are flat too, as `yAxisFractionDigits` takes them
+    if (scale && (high - low).isFinite() && isRoundingNoise(low, high)) {
+        high = low
         val expand = abs(low).takeIf { it != 0.0 } ?: 1.0
         low -= expand / 2
         high += expand / 2
