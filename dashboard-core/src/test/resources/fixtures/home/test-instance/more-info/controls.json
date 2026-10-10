@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-10T10:58:41.005Z",
+  "capturedAt": "2026-10-10T11:05:29.993Z",
   "entities": {
     "media_player.living_room_tv": {
       "as_is": {
@@ -50952,7 +50952,7 @@
       "states": {
         "light.bed_light": {
           "entity_id": "light.bed_light",
-          "state": "off",
+          "state": "on",
           "attributes": {
             "min_color_temp_kelvin": 2000,
             "max_color_temp_kelvin": 6535,
@@ -50964,23 +50964,33 @@
               "color_temp",
               "hs"
             ],
-            "effect": null,
-            "color_mode": null,
-            "brightness": null,
-            "color_temp_kelvin": null,
-            "hs_color": null,
-            "rgb_color": null,
-            "xy_color": null,
+            "effect": "rainbow",
+            "color_mode": "color_temp",
+            "brightness": 180,
+            "color_temp_kelvin": 4166,
+            "hs_color": [
+              26.752,
+              31.945
+            ],
+            "rgb_color": [
+              255,
+              210,
+              174
+            ],
+            "xy_color": [
+              0.41,
+              0.362
+            ],
             "friendly_name": "Bed Light",
             "supported_features": 4
           },
           "context": {
-            "id": "01M4JPBWBFVP290YQYKZMNMHPJ",
+            "id": "01M4JQGG7E248ZHN1ZW71BEXV3",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:40:00.367Z",
-          "last_updated": "2026-10-10T10:40:00.367Z"
+          "last_changed": "2026-10-10T11:00:00.377Z",
+          "last_updated": "2026-10-10T11:00:00.377Z"
         }
       },
       "warning": null,
@@ -50989,13 +50999,13 @@
         "state": null,
         "icon": null,
         "showsIcon": true,
-        "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))"
+        "color": "rgb(255,210,174)"
       },
       "tap": {
         "calls": [
           {
             "domain": "light",
-            "service": "turn_on",
+            "service": "turn_off",
             "data": {
               "entity_id": "light.bed_light"
             },
@@ -51433,18 +51443,18 @@
         },
         "binary_sensor.kitchen_motion": {
           "entity_id": "binary_sensor.kitchen_motion",
-          "state": "on",
+          "state": "off",
           "attributes": {
             "device_class": "motion",
             "friendly_name": "Kitchen motion"
           },
           "context": {
-            "id": "01M4JQCV0BJ1953H272BVYK890",
+            "id": "01M4JQSN5B5D5EBT30G3SWPVT3",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:58:00.331Z",
-          "last_updated": "2026-10-10T10:58:00.331Z"
+          "last_changed": "2026-10-10T11:05:00.331Z",
+          "last_updated": "2026-10-10T11:05:00.331Z"
         },
         "lock.back_door_lock": {
           "entity_id": "lock.back_door_lock",
@@ -51510,9 +51520,9 @@
           {
             "warning": false,
             "name": "Kitchen motion",
-            "state": "Detected",
+            "state": "Clear",
             "showsBadge": true,
-            "color": "var(--state-binary_sensor-motion-on-color, var(--state-binary_sensor-on-color, var(--state-binary_sensor-active-color, var(--state-active-color))))",
+            "color": "var(--state-binary_sensor-motion-off-color, var(--state-binary_sensor-off-color, var(--state-binary_sensor-inactive-color, var(--state-inactive-color))))",
             "picture": false
           },
           {
@@ -51554,7 +51564,7 @@
       "states": {
         "light.bed_light": {
           "entity_id": "light.bed_light",
-          "state": "off",
+          "state": "on",
           "attributes": {
             "min_color_temp_kelvin": 2000,
             "max_color_temp_kelvin": 6535,
@@ -51566,23 +51576,33 @@
               "color_temp",
               "hs"
             ],
-            "effect": null,
-            "color_mode": null,
-            "brightness": null,
-            "color_temp_kelvin": null,
-            "hs_color": null,
-            "rgb_color": null,
-            "xy_color": null,
+            "effect": "rainbow",
+            "color_mode": "color_temp",
+            "brightness": 180,
+            "color_temp_kelvin": 4166,
+            "hs_color": [
+              26.752,
+              31.945
+            ],
+            "rgb_color": [
+              255,
+              210,
+              174
+            ],
+            "xy_color": [
+              0.41,
+              0.362
+            ],
             "friendly_name": "Bed Light",
             "supported_features": 4
           },
           "context": {
-            "id": "01M4JPBWBFVP290YQYKZMNMHPJ",
+            "id": "01M4JQGG7E248ZHN1ZW71BEXV3",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:40:00.367Z",
-          "last_updated": "2026-10-10T10:40:00.367Z"
+          "last_changed": "2026-10-10T11:00:00.377Z",
+          "last_updated": "2026-10-10T11:00:00.377Z"
         },
         "light.kitchen_lights": {
           "entity_id": "light.kitchen_lights",
@@ -51697,9 +51717,9 @@
           {
             "warning": false,
             "name": null,
-            "state": "Off",
+            "state": "On",
             "showsBadge": true,
-            "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
+            "color": "rgb(255,210,174)",
             "picture": false
           },
           {
@@ -51769,7 +51789,7 @@
       "states": {
         "light.bed_light": {
           "entity_id": "light.bed_light",
-          "state": "off",
+          "state": "on",
           "attributes": {
             "min_color_temp_kelvin": 2000,
             "max_color_temp_kelvin": 6535,
@@ -51781,23 +51801,33 @@
               "color_temp",
               "hs"
             ],
-            "effect": null,
-            "color_mode": null,
-            "brightness": null,
-            "color_temp_kelvin": null,
-            "hs_color": null,
-            "rgb_color": null,
-            "xy_color": null,
+            "effect": "rainbow",
+            "color_mode": "color_temp",
+            "brightness": 180,
+            "color_temp_kelvin": 4166,
+            "hs_color": [
+              26.752,
+              31.945
+            ],
+            "rgb_color": [
+              255,
+              210,
+              174
+            ],
+            "xy_color": [
+              0.41,
+              0.362
+            ],
             "friendly_name": "Bed Light",
             "supported_features": 4
           },
           "context": {
-            "id": "01M4JPBWBFVP290YQYKZMNMHPJ",
+            "id": "01M4JQGG7E248ZHN1ZW71BEXV3",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:40:00.367Z",
-          "last_updated": "2026-10-10T10:40:00.367Z"
+          "last_changed": "2026-10-10T11:00:00.377Z",
+          "last_updated": "2026-10-10T11:00:00.377Z"
         },
         "climate.hvac": {
           "entity_id": "climate.hvac",
@@ -51895,7 +51925,7 @@
       "states": {
         "sensor.living_room_humidity": {
           "entity_id": "sensor.living_room_humidity",
-          "state": "47",
+          "state": "50",
           "attributes": {
             "state_class": "measurement",
             "unit_of_measurement": "%",
@@ -51903,25 +51933,25 @@
             "friendly_name": "Living room humidity"
           },
           "context": {
-            "id": "01M4JQCTSXJ5F8ZVYW23MPE9FE",
+            "id": "01M4JQSMYXFK9NMPP0NN0PTMRD",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:58:00.125Z",
-          "last_updated": "2026-10-10T10:58:00.125Z"
+          "last_changed": "2026-10-10T11:05:00.125Z",
+          "last_updated": "2026-10-10T11:05:00.125Z"
         }
       },
       "warning": null,
       "gauge": {
         "min": 0,
         "max": 100,
-        "value": 47,
-        "valueText": "47%",
+        "value": 50,
+        "valueText": "50%",
         "label": "",
         "color": "var(--success-color)",
         "needle": false,
         "levels": [],
-        "text": "47%",
+        "text": "50%",
         "name": "Living room humidity"
       }
     },
@@ -51936,7 +51966,7 @@
       "states": {
         "sensor.house_power": {
           "entity_id": "sensor.house_power",
-          "state": "706",
+          "state": "335",
           "attributes": {
             "state_class": "measurement",
             "unit_of_measurement": "W",
@@ -51944,20 +51974,20 @@
             "friendly_name": "House power"
           },
           "context": {
-            "id": "01M4JQCTZ4SC7J20VPVQWNAACV",
+            "id": "01M4JQSN43B8BC5MKB4F6CT2T3",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:58:00.292Z",
-          "last_updated": "2026-10-10T10:58:00.292Z"
+          "last_changed": "2026-10-10T11:05:00.291Z",
+          "last_updated": "2026-10-10T11:05:00.291Z"
         }
       },
       "warning": null,
       "gauge": {
         "min": 0,
         "max": 1000,
-        "value": 706,
-        "valueText": "706 W",
+        "value": 335,
+        "valueText": "335 W",
         "label": "",
         "color": null,
         "needle": true,
@@ -51968,7 +51998,7 @@
             "label": null
           }
         ],
-        "text": "706 W",
+        "text": "335 W",
         "name": "House power"
       }
     },
@@ -51995,7 +52025,7 @@
       "states": {
         "sensor.living_room_humidity": {
           "entity_id": "sensor.living_room_humidity",
-          "state": "47",
+          "state": "50",
           "attributes": {
             "state_class": "measurement",
             "unit_of_measurement": "%",
@@ -52003,25 +52033,25 @@
             "friendly_name": "Living room humidity"
           },
           "context": {
-            "id": "01M4JQCTSXJ5F8ZVYW23MPE9FE",
+            "id": "01M4JQSMYXFK9NMPP0NN0PTMRD",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:58:00.125Z",
-          "last_updated": "2026-10-10T10:58:00.125Z"
+          "last_changed": "2026-10-10T11:05:00.125Z",
+          "last_updated": "2026-10-10T11:05:00.125Z"
         }
       },
       "warning": null,
       "gauge": {
         "min": 0,
         "max": 100,
-        "value": 47,
-        "valueText": "47%",
+        "value": 50,
+        "valueText": "50%",
         "label": "",
         "color": "green",
         "needle": false,
         "levels": [],
-        "text": "47%",
+        "text": "50%",
         "name": "Living room humidity"
       }
     },
@@ -52051,7 +52081,7 @@
       "states": {
         "sensor.living_room_humidity": {
           "entity_id": "sensor.living_room_humidity",
-          "state": "47",
+          "state": "50",
           "attributes": {
             "state_class": "measurement",
             "unit_of_measurement": "%",
@@ -52059,20 +52089,20 @@
             "friendly_name": "Living room humidity"
           },
           "context": {
-            "id": "01M4JQCTSXJ5F8ZVYW23MPE9FE",
+            "id": "01M4JQSMYXFK9NMPP0NN0PTMRD",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:58:00.125Z",
-          "last_updated": "2026-10-10T10:58:00.125Z"
+          "last_changed": "2026-10-10T11:05:00.125Z",
+          "last_updated": "2026-10-10T11:05:00.125Z"
         }
       },
       "warning": null,
       "gauge": {
         "min": 0,
         "max": 100,
-        "value": 47,
-        "valueText": "47%",
+        "value": 50,
+        "valueText": "50%",
         "label": "",
         "color": null,
         "needle": true,
@@ -52230,7 +52260,7 @@
       "states": {
         "sensor.living_room_humidity": {
           "entity_id": "sensor.living_room_humidity",
-          "state": "47",
+          "state": "50",
           "attributes": {
             "state_class": "measurement",
             "unit_of_measurement": "%",
@@ -52238,25 +52268,25 @@
             "friendly_name": "Living room humidity"
           },
           "context": {
-            "id": "01M4JQCTSXJ5F8ZVYW23MPE9FE",
+            "id": "01M4JQSMYXFK9NMPP0NN0PTMRD",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:58:00.125Z",
-          "last_updated": "2026-10-10T10:58:00.125Z"
+          "last_changed": "2026-10-10T11:05:00.125Z",
+          "last_updated": "2026-10-10T11:05:00.125Z"
         }
       },
       "warning": null,
       "gauge": {
         "min": 0,
         "max": 100,
-        "value": 47,
-        "valueText": "47%",
+        "value": 50,
+        "valueText": "50%",
         "label": "",
         "color": "var(--success-color)",
         "needle": false,
         "levels": [],
-        "text": "47%",
+        "text": "50%",
         "name": "Living room humidity"
       }
     },
@@ -52268,7 +52298,7 @@
       "states": {
         "light.bed_light": {
           "entity_id": "light.bed_light",
-          "state": "off",
+          "state": "on",
           "attributes": {
             "min_color_temp_kelvin": 2000,
             "max_color_temp_kelvin": 6535,
@@ -52280,23 +52310,33 @@
               "color_temp",
               "hs"
             ],
-            "effect": null,
-            "color_mode": null,
-            "brightness": null,
-            "color_temp_kelvin": null,
-            "hs_color": null,
-            "rgb_color": null,
-            "xy_color": null,
+            "effect": "rainbow",
+            "color_mode": "color_temp",
+            "brightness": 180,
+            "color_temp_kelvin": 4166,
+            "hs_color": [
+              26.752,
+              31.945
+            ],
+            "rgb_color": [
+              255,
+              210,
+              174
+            ],
+            "xy_color": [
+              0.41,
+              0.362
+            ],
             "friendly_name": "Bed Light",
             "supported_features": 4
           },
           "context": {
-            "id": "01M4JPBWBFVP290YQYKZMNMHPJ",
+            "id": "01M4JQGG7E248ZHN1ZW71BEXV3",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:40:00.367Z",
-          "last_updated": "2026-10-10T10:40:00.367Z"
+          "last_changed": "2026-10-10T11:00:00.377Z",
+          "last_updated": "2026-10-10T11:00:00.377Z"
         }
       },
       "warning": "Entity is non-numeric: light.bed_light",
@@ -52353,7 +52393,7 @@
       "states": {
         "light.bed_light": {
           "entity_id": "light.bed_light",
-          "state": "off",
+          "state": "on",
           "attributes": {
             "min_color_temp_kelvin": 2000,
             "max_color_temp_kelvin": 6535,
@@ -52365,33 +52405,43 @@
               "color_temp",
               "hs"
             ],
-            "effect": null,
-            "color_mode": null,
-            "brightness": null,
-            "color_temp_kelvin": null,
-            "hs_color": null,
-            "rgb_color": null,
-            "xy_color": null,
+            "effect": "rainbow",
+            "color_mode": "color_temp",
+            "brightness": 180,
+            "color_temp_kelvin": 4166,
+            "hs_color": [
+              26.752,
+              31.945
+            ],
+            "rgb_color": [
+              255,
+              210,
+              174
+            ],
+            "xy_color": [
+              0.41,
+              0.362
+            ],
             "friendly_name": "Bed Light",
             "supported_features": 4
           },
           "context": {
-            "id": "01M4JPBWBFVP290YQYKZMNMHPJ",
+            "id": "01M4JQGG7E248ZHN1ZW71BEXV3",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:40:00.367Z",
-          "last_updated": "2026-10-10T10:40:00.367Z"
+          "last_changed": "2026-10-10T11:00:00.377Z",
+          "last_updated": "2026-10-10T11:00:00.377Z"
         }
       },
       "warning": null,
       "entity": {
         "name": "Bed Light",
-        "value": "Off",
+        "value": "On",
         "unit": null,
         "unitFirst": false,
         "icon": null,
-        "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))"
+        "color": "rgb(255, 210, 174)"
       }
     },
     {
@@ -52404,7 +52454,7 @@
       "states": {
         "light.bed_light": {
           "entity_id": "light.bed_light",
-          "state": "off",
+          "state": "on",
           "attributes": {
             "min_color_temp_kelvin": 2000,
             "max_color_temp_kelvin": 6535,
@@ -52416,29 +52466,39 @@
               "color_temp",
               "hs"
             ],
-            "effect": null,
-            "color_mode": null,
-            "brightness": null,
-            "color_temp_kelvin": null,
-            "hs_color": null,
-            "rgb_color": null,
-            "xy_color": null,
+            "effect": "rainbow",
+            "color_mode": "color_temp",
+            "brightness": 180,
+            "color_temp_kelvin": 4166,
+            "hs_color": [
+              26.752,
+              31.945
+            ],
+            "rgb_color": [
+              255,
+              210,
+              174
+            ],
+            "xy_color": [
+              0.41,
+              0.362
+            ],
             "friendly_name": "Bed Light",
             "supported_features": 4
           },
           "context": {
-            "id": "01M4JPBWBFVP290YQYKZMNMHPJ",
+            "id": "01M4JQGG7E248ZHN1ZW71BEXV3",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:40:00.367Z",
-          "last_updated": "2026-10-10T10:40:00.367Z"
+          "last_changed": "2026-10-10T11:00:00.377Z",
+          "last_updated": "2026-10-10T11:00:00.377Z"
         }
       },
       "warning": null,
       "entity": {
         "name": "Bed",
-        "value": "Off",
+        "value": "On",
         "unit": null,
         "unitFirst": false,
         "icon": null,
@@ -52638,7 +52698,7 @@
       "states": {
         "sensor.house_power": {
           "entity_id": "sensor.house_power",
-          "state": "706",
+          "state": "335",
           "attributes": {
             "state_class": "measurement",
             "unit_of_measurement": "W",
@@ -52646,18 +52706,18 @@
             "friendly_name": "House power"
           },
           "context": {
-            "id": "01M4JQCTZ4SC7J20VPVQWNAACV",
+            "id": "01M4JQSN43B8BC5MKB4F6CT2T3",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:58:00.292Z",
-          "last_updated": "2026-10-10T10:58:00.292Z"
+          "last_changed": "2026-10-10T11:05:00.291Z",
+          "last_updated": "2026-10-10T11:05:00.291Z"
         }
       },
       "warning": null,
       "entity": {
         "name": "House power",
-        "value": "706",
+        "value": "335",
         "unit": "watts",
         "unitFirst": false,
         "icon": null,
@@ -52813,14 +52873,14 @@
         "color": null
       },
       "graph": {
-        "now": 1791629935975,
+        "now": 1791630344969,
         "width": 1398,
         "loading": false,
         "history": {
           "sensor.outside_temperature": [
             {
               "s": "15.6",
-              "lu": 1791543535.659
+              "lu": 1791543944.661
             },
             {
               "s": "15.6",
@@ -52830,11 +52890,11 @@
         },
         "coordinates": [
           [
-            -0.005113055555555556,
+            -0.0049836111111111105,
             139.8
           ],
           [
-            705.1679471989272,
+            698.5501970600383,
             139.8
           ],
           [
@@ -52855,7 +52915,7 @@
       "states": {
         "sensor.house_power": {
           "entity_id": "sensor.house_power",
-          "state": "706",
+          "state": "335",
           "attributes": {
             "state_class": "measurement",
             "unit_of_measurement": "W",
@@ -52863,60 +52923,32 @@
             "friendly_name": "House power"
           },
           "context": {
-            "id": "01M4JQCTZ4SC7J20VPVQWNAACV",
+            "id": "01M4JQSN43B8BC5MKB4F6CT2T3",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:58:00.292Z",
-          "last_updated": "2026-10-10T10:58:00.292Z"
+          "last_changed": "2026-10-10T11:05:00.291Z",
+          "last_updated": "2026-10-10T11:05:00.291Z"
         }
       },
       "warning": null,
       "entity": {
         "name": "House power",
-        "value": "706",
+        "value": "335",
         "unit": "W",
         "unitFirst": false,
         "icon": null,
         "color": null
       },
       "graph": {
-        "now": 1791629936327,
+        "now": 1791630345322,
         "width": 1398,
         "loading": false,
         "history": {
           "sensor.house_power": [
             {
-              "s": "706",
-              "lu": 1791608335.981
-            },
-            {
-              "s": "713",
-              "lu": 1791608340.4631727
-            },
-            {
-              "s": "300",
-              "lu": 1791608400.4631748
-            },
-            {
-              "s": "307",
-              "lu": 1791608460.4625032
-            },
-            {
-              "s": "314",
-              "lu": 1791608520.4626381
-            },
-            {
-              "s": "321",
-              "lu": 1791608580.4623659
-            },
-            {
-              "s": "328",
-              "lu": 1791608640.4631343
-            },
-            {
               "s": "335",
-              "lu": 1791608700.4631479
+              "lu": 1791608744.977
             },
             {
               "s": "342",
@@ -54337,1461 +54369,1489 @@
             {
               "s": "706",
               "lu": 1791629880.2921386
+            },
+            {
+              "s": "713",
+              "lu": 1791629940.291668
+            },
+            {
+              "s": "300",
+              "lu": 1791630000.2911992
+            },
+            {
+              "s": "307",
+              "lu": 1791630060.290881
+            },
+            {
+              "s": "314",
+              "lu": 1791630120.2911582
+            },
+            {
+              "s": "321",
+              "lu": 1791630180.291649
+            },
+            {
+              "s": "328",
+              "lu": 1791630240.2911012
+            },
+            {
+              "s": "335",
+              "lu": 1791630300.291653
             }
           ]
         },
         "coordinates": [
           [
-            -0.02239388888888889,
+            -0.022329166666666667,
+            236.5542372881356
+          ],
+          [
+            0.9799582027859157,
+            232.60508474576272
+          ],
+          [
+            4.863290208808052,
+            228.65593220338985
+          ],
+          [
+            8.746619497002497,
+            224.70677966101695
+          ],
+          [
+            12.629945814548067,
+            220.75762711864408
+          ],
+          [
+            16.51328131266276,
+            216.80847457627118
+          ],
+          [
+            20.396595320977106,
+            212.8593220338983
+          ],
+          [
+            24.279924672376843,
+            208.91016949152544
+          ],
+          [
+            28.163239454956056,
+            204.96101694915254
+          ],
+          [
+            32.04660323744032,
+            201.01186440677967
+          ],
+          [
+            35.92995684387207,
+            197.0627118644068
+          ],
+          [
+            39.81327300116645,
+            193.1135593220339
+          ],
+          [
+            43.69662515387641,
+            189.16440677966102
+          ],
+          [
+            47.58002949835883,
+            185.21525423728815
+          ],
+          [
+            51.46327982733832,
+            181.26610169491525
+          ],
+          [
+            55.34659844963921,
+            177.31694915254238
+          ],
+          [
+            59.2299483585612,
+            173.36779661016948
+          ],
+          [
+            63.113280475192596,
+            169.4186440677966
+          ],
+          [
+            66.99661030063206,
+            165.46949152542373
+          ],
+          [
+            70.87992494099935,
+            161.52033898305083
+          ],
+          [
+            74.76328938713922,
+            157.57118644067796
+          ],
+          [
+            78.64662273627387,
+            153.6220338983051
+          ],
+          [
+            82.52992476718478,
+            149.6728813559322
+          ],
+          [
+            86.41325791090223,
+            145.72372881355932
+          ],
+          [
+            90.29660445414227,
+            141.77457627118645
+          ],
+          [
+            94.17995461588542,
+            137.82542372881358
+          ],
+          [
+            98.0632773465305,
+            133.87627118644068
+          ],
+          [
+            101.94658806816949,
+            129.92711864406778
+          ],
+          [
+            105.82993611253526,
+            125.97796610169493
+          ],
+          [
+            109.71330536227757,
+            122.02881355932203
+          ],
+          [
+            113.59662400037978,
+            118.07966101694913
+          ],
+          [
+            117.48000179863824,
+            114.13050847457629
+          ],
+          [
+            121.36329964219834,
+            110.18135593220339
+          ],
+          [
+            125.24663651502821,
+            106.23220338983049
+          ],
+          [
+            129.13001603563097,
+            102.28305084745764
+          ],
+          [
+            133.0132541659885,
+            98.33389830508474
+          ],
+          [
+            136.89658481309678,
+            94.38474576271184
+          ],
+          [
+            140.77994978068034,
+            90.43559322033894
+          ],
+          [
+            144.66329910495332,
+            86.4864406779661
+          ],
+          [
+            148.54666084906685,
+            82.5372881355932
+          ],
+          [
+            152.42994981228298,
+            78.5881355932203
+          ],
+          [
+            156.31329001919215,
+            74.63898305084746
+          ],
+          [
+            160.19659072279188,
+            70.68983050847456
+          ],
+          [
+            164.0799409951443,
+            66.74067796610166
+          ],
+          [
+            167.96328875508627,
+            62.791525423728814
+          ],
+          [
+            171.84663077914766,
+            58.842372881355914
+          ],
+          [
+            175.72992833828397,
+            54.893220338983014
+          ],
+          [
+            179.61327206888834,
+            50.94406779661017
+          ],
+          [
+            183.49663314934625,
+            46.99491525423727
+          ],
+          [
+            187.37991727735732,
+            43.04576271186437
+          ],
+          [
+            191.2633017279731,
+            39.09661016949153
+          ],
+          [
+            195.1466212351481,
+            35.14745762711863
+          ],
+          [
+            199.02997125467937,
+            31.198305084745726
+          ],
+          [
+            202.91331425842284,
             27.249152542372883
           ],
           [
-            0.2677022826470269,
+            206.79667753526476,
             23.299999999999955
           ],
           [
-            4.1510357581922745,
+            210.6799809724935,
             256.3
           ],
           [
-            8.034325622083877,
+            214.56326138719348,
             252.35084745762714
           ],
           [
-            11.917667693549262,
+            218.44661900716144,
             248.40169491525424
           ],
           [
-            15.800983408406577,
+            222.33008854790583,
             244.45254237288137
           ],
           [
-            19.68436646850586,
+            226.2137847902425,
             240.50338983050847
           ],
           [
-            23.567700686713323,
+            230.09660194173176,
             236.5542372881356
           ],
           [
-            27.45102348056369,
+            233.97998076707628,
             232.60508474576272
           ],
           [
-            31.33435548658583,
+            237.86329825168187,
             228.65593220338985
           ],
           [
-            35.217684774780274,
+            241.74660009297688,
             224.70677966101695
           ],
           [
-            39.10101109232585,
+            245.62993862494577,
             220.75762711864408
           ],
           [
-            42.98434659044054,
+            249.51328282958985,
             216.80847457627118
           ],
           [
-            46.86766059875489,
+            253.39663063693575,
             212.8593220338983
           ],
           [
-            50.75098995015462,
+            257.2799320041911,
             208.91016949152544
           ],
           [
-            54.63430473273383,
+            261.1632821975369,
             204.96101694915254
           ],
           [
-            58.5176685152181,
+            265.04663904324,
             201.01186440677967
           ],
           [
-            62.401022121649845,
+            268.9299482479519,
             197.0627118644068
           ],
           [
-            66.28433827894422,
+            272.81325953843856,
             193.1135593220339
           ],
           [
-            70.1676904316542,
+            276.69663656243216,
             189.16440677966102
           ],
           [
-            74.05109477613661,
+            280.57996660909015,
             185.21525423728815
           ],
           [
-            77.9343451051161,
+            284.4633075902642,
             181.26610169491525
           ],
           [
-            81.81766372741698,
+            288.34660568664555,
             177.31694915254238
           ],
           [
-            85.70101363633898,
+            292.22995719150117,
             173.36779661016948
           ],
           [
-            89.58434575297038,
+            296.1132547664388,
             169.4186440677966
           ],
           [
-            93.46767557840982,
+            299.99659408847384,
             165.46949152542373
           ],
           [
-            97.35099021877713,
+            303.8799528777398,
             161.52033898305083
           ],
           [
-            101.23435466491699,
+            307.76330270765516,
             157.57118644067796
           ],
           [
-            105.11768801405165,
+            311.64660002977155,
             153.6220338983051
           ],
           [
-            109.00099004496256,
+            315.5299757422553,
             149.6728813559322
           ],
           [
-            112.88432318868001,
+            319.4132933690728,
             145.72372881355932
           ],
           [
-            116.76766973192004,
+            323.2966029688178,
             141.77457627118645
           ],
           [
-            120.65101989366319,
+            327.179933805542,
             137.82542372881358
           ],
           [
-            124.53434262430827,
+            331.06330540968156,
             133.87627118644068
           ],
           [
-            128.41765334594726,
+            334.94663814256455,
             129.92711864406778
           ],
           [
-            132.30100139031305,
+            338.8299082390001,
             125.97796610169493
           ],
           [
-            136.18437064005533,
+            342.7132899875895,
             122.02881355932203
           ],
           [
-            140.06768927815756,
+            346.5965990974935,
             118.07966101694913
           ],
           [
-            143.951067076416,
+            350.4799800402154,
             114.13050847457629
           ],
           [
-            147.83436491997614,
+            354.363286448093,
             110.18135593220339
           ],
           [
-            151.717701792806,
+            358.24658967990456,
             106.23220338983049
           ],
           [
-            155.60108131340874,
+            362.1299406633165,
             102.28305084745764
           ],
           [
-            159.48431944376628,
+            366.0132670440674,
             98.33389830508474
           ],
           [
-            163.36765009087458,
+            369.89662926222064,
             94.38474576271184
           ],
           [
-            167.2510150584581,
+            373.77992765882703,
             90.43559322033894
           ],
           [
-            171.13436438273112,
+            377.66330553609214,
             86.4864406779661
           ],
           [
-            175.01772612684462,
+            381.54661859632705,
             82.5372881355932
           ],
           [
-            178.90101509006075,
+            385.4299703382026,
             78.5881355932203
           ],
           [
-            182.78435529696992,
+            389.3132769831,
             74.63898305084746
           ],
           [
-            186.66765600056968,
+            393.1966104112413,
             70.68983050847456
           ],
           [
-            190.55100627292208,
+            397.0799550583225,
             66.74067796610166
           ],
           [
-            194.43435403286404,
+            400.96330967603893,
             62.791525423728814
           ],
           [
-            198.31769605692543,
+            404.84666043823245,
             58.842372881355914
           ],
           [
-            202.20099361606177,
+            408.7299552637397,
             54.893220338983014
           ],
           [
-            206.08433734666613,
+            412.613262635498,
             50.94406779661017
           ],
           [
-            209.96769842712402,
+            416.49658520812994,
             46.99491525423727
           ],
           [
-            213.85098255513506,
+            420.37994224344885,
             43.04576271186437
           ],
           [
-            217.7343670057509,
+            424.26331394239634,
             39.09661016949153
           ],
           [
-            221.61768651292587,
+            428.14664763916016,
             35.14745762711863
           ],
           [
-            225.50103653245714,
+            432.02995350979273,
             31.198305084745726
           ],
           [
-            229.38437953620064,
+            435.9133061207411,
             27.249152542372883
           ],
           [
-            233.26774281304253,
+            439.7965947679308,
             23.299999999999955
           ],
           [
-            237.15104625027126,
+            443.679940931939,
             256.3
           ],
           [
-            241.03432666497125,
+            447.5632565045844,
             252.35084745762714
           ],
           [
-            244.91768428493924,
+            451.4466035376655,
             248.40169491525424
           ],
           [
-            248.80115382568357,
+            455.32994551432296,
             244.45254237288137
           ],
           [
-            252.6848500680203,
+            459.21326645941843,
             240.50338983050847
           ],
           [
-            256.5676672195096,
+            463.0965985128445,
             236.5542372881356
           ],
           [
-            260.4510460448541,
+            466.97994105834965,
             232.60508474576272
           ],
           [
-            264.3343635294596,
+            470.8632572946506,
             228.65593220338985
           ],
           [
-            268.2176653707547,
+            474.74663833218045,
             224.70677966101695
           ],
           [
-            272.1010039027235,
+            478.6299494962565,
             220.75762711864408
           ],
           [
-            275.9843481073676,
+            482.5132810440403,
             216.80847457627118
           ],
           [
-            279.8676959147135,
+            486.39661214938695,
             212.8593220338983
           ],
           [
-            283.75099728196886,
+            490.2799454037136,
             208.91016949152544
           ],
           [
-            287.63434747531466,
+            494.163310750529,
             204.96101694915254
           ],
           [
-            291.5177043210178,
+            498.04662986267084,
             201.01186440677967
           ],
           [
-            295.4010135257297,
+            501.92992592068146,
             197.0627118644068
           ],
           [
-            299.2843248162164,
+            505.81329087246365,
             193.1135593220339
           ],
           [
-            303.16770184021,
+            509.6966093525526,
             189.16440677966102
           ],
           [
-            307.051031886868,
+            513.5799340899658,
             185.21525423728815
           ],
           [
-            310.934372868042,
+            517.4632679921468,
             181.26610169491525
           ],
           [
-            314.81767096442326,
+            521.3466073931885,
             177.31694915254238
           ],
           [
-            318.701022469279,
+            525.229958787435,
             173.36779661016948
           ],
           [
-            322.5843200442166,
+            529.1132931004503,
             169.4186440677966
           ],
           [
-            326.4676593662516,
+            532.9965938672553,
             165.46949152542373
           ],
           [
-            330.3510181555176,
+            536.8799331260851,
             161.52033898305083
           ],
           [
-            334.2343679854329,
+            540.763286400689,
             157.57118644067796
           ],
           [
-            338.1176653075494,
+            544.646578334554,
             153.6220338983051
           ],
           [
-            342.0010410200331,
+            548.5299767377387,
             149.6728813559322
           ],
           [
-            345.8843586468506,
+            552.4133151907009,
             145.72372881355932
           ],
           [
-            349.76766824659563,
+            556.2966497407363,
             141.77457627118645
           ],
           [
-            353.65099908331973,
+            560.179931024509,
             137.82542372881358
           ],
           [
-            357.53437068745933,
+            564.0632871907552,
             133.87627118644068
           ],
           [
-            361.4177034203423,
+            567.9465938830567,
             129.92711864406778
           ],
           [
-            365.3009735167779,
+            571.8299224127875,
             125.97796610169493
           ],
           [
-            369.1843552653673,
+            575.71327829461,
             122.02881355932203
           ],
           [
-            373.06766437527125,
+            579.596648998074,
             118.07966101694913
           ],
           [
-            376.9510453179932,
+            583.4799800876193,
             114.13050847457629
           ],
           [
-            380.8343517258708,
+            587.3632441953532,
             110.18135593220339
           ],
           [
-            384.71765495768227,
+            591.2466208559164,
             106.23220338983049
           ],
           [
-            388.60100594109434,
+            595.1299638438585,
             102.28305084745764
           ],
           [
-            392.4843323218451,
+            599.0132776941596,
             98.33389830508474
           ],
           [
-            396.36769453999835,
+            602.8965920501031,
             94.38474576271184
           ],
           [
-            400.2509929366048,
+            606.7799242457411,
             90.43559322033894
           ],
           [
-            404.1343708138699,
+            610.6632576422797,
             86.4864406779661
           ],
           [
-            408.0176838741048,
+            614.546612101983,
             82.5372881355932
           ],
           [
-            411.90103561598033,
+            618.4299400628662,
             78.5881355932203
           ],
           [
-            415.78434226087785,
+            622.3132745812989,
             74.63898305084746
           ],
           [
-            419.6676756890191,
+            626.1965765332031,
             70.68983050847456
           ],
           [
-            423.55102033610024,
+            630.0799610786269,
             66.74067796610166
           ],
           [
-            427.4343749538167,
+            633.9632611975776,
             62.791525423728814
           ],
           [
-            431.31772571601016,
+            637.8465831539578,
             58.842372881355914
           ],
           [
-            435.2010205415175,
+            641.7299520718723,
             54.893220338983014
           ],
           [
-            439.08432791327584,
+            645.6132842675103,
             50.94406779661017
           ],
           [
-            442.96765048590765,
+            649.4965805309381,
             46.99491525423727
           ],
           [
-            446.8510075212267,
+            653.379921117079,
             43.04576271186437
           ],
           [
-            450.73437922017416,
+            657.2632915519206,
             39.09661016949153
           ],
           [
-            454.61771291693793,
+            661.1465906279839,
             35.14745762711863
           ],
           [
-            458.50101878757056,
+            665.0300170469156,
             31.198305084745726
           ],
           [
-            462.38437139851885,
+            668.9132896715631,
             27.249152542372883
           ],
           [
-            466.26766004570857,
+            672.7966125128173,
             23.299999999999955
           ],
           [
-            470.1510062097168,
+            676.6799229500325,
             256.3
           ],
           [
-            474.0343217823622,
+            680.5632712788222,
             252.35084745762714
           ],
           [
-            477.9176688154432,
+            684.446592050103,
             248.40169491525424
           ],
           [
-            481.80101079210067,
+            688.329949275038,
             244.45254237288137
           ],
           [
-            485.6843317371962,
+            690.1712714363606,
+            31.198305084745726
+          ],
+          [
+            692.2022388893636,
             240.50338983050847
           ],
           [
-            489.5676637906223,
+            696.0855314868843,
             236.5542372881356
           ],
           [
-            493.45100633612736,
+            699.9688908449978,
             232.60508474576272
           ],
           [
-            497.3343225724284,
+            703.8521976637098,
             228.65593220338985
           ],
           [
-            501.21770360995816,
+            707.7355108187527,
             224.70677966101695
           ],
           [
-            505.1010147740343,
+            711.6188289512125,
             220.75762711864408
           ],
           [
-            508.984346321818,
+            715.5022179368083,
             216.80847457627118
           ],
           [
-            512.8676774271647,
+            719.3854948752171,
             212.8593220338983
           ],
           [
-            516.7510106814915,
+            723.2688913664416,
             208.91016949152544
           ],
           [
-            520.6343760283067,
+            727.1521899526639,
             204.96101694915254
           ],
           [
-            524.5176951404487,
+            731.0355239970568,
             201.01186440677967
           ],
           [
-            528.4009911984592,
+            734.9188908766005,
             197.0627118644068
           ],
           [
-            532.2843561502415,
+            738.8021702958171,
             193.1135593220339
           ],
           [
-            536.1676746303303,
+            742.6855266990831,
             189.16440677966102
           ],
           [
-            540.0509993677437,
+            746.5688986508518,
             185.21525423728815
           ],
           [
-            543.9343332699245,
+            750.452199085829,
             181.26610169491525
           ],
           [
-            547.8176726709663,
+            754.3355166810438,
             177.31694915254238
           ],
           [
-            551.7010240652127,
+            758.218848450046,
             173.36779661016948
           ],
           [
-            555.5843583782281,
+            762.1022132280139,
             169.4186440677966
           ],
           [
-            559.467659145033,
+            765.9855498796251,
             165.46949152542373
           ],
           [
-            563.3509984038628,
+            769.8688507728408,
             161.52033898305083
           ],
           [
-            567.2343516784667,
+            773.7522160722522,
             157.57118644067796
           ],
           [
-            571.1176436123318,
+            777.6355206629775,
             153.6220338983051
           ],
           [
-            575.0010420155165,
+            781.5189310277642,
             149.6728813559322
           ],
           [
-            578.8843804684788,
+            785.4022098307291,
             145.72372881355932
           ],
           [
-            582.767715018514,
+            789.2854957126872,
             141.77457627118645
           ],
           [
-            586.6509963022868,
+            793.1688767344157,
             137.82542372881358
           ],
           [
-            590.534352468533,
+            797.0521874876573,
             133.87627118644068
           ],
           [
-            594.4176591608344,
+            800.9355298909504,
             129.92711864406778
           ],
           [
-            598.3009876905653,
+            804.8188836237929,
             125.97796610169493
           ],
           [
-            602.1843435723877,
+            808.7021916276041,
             122.02881355932203
           ],
           [
-            606.0677142758518,
+            812.5855162228055,
             118.07966101694913
           ],
           [
-            609.9510453653971,
+            816.4688746170384,
             114.13050847457629
           ],
           [
-            613.8343094731309,
+            820.352155015937,
             110.18135593220339
           ],
           [
-            617.7176861336941,
+            824.2354861686877,
             106.23220338983049
           ],
           [
-            621.6010291216363,
+            828.1188400121391,
             102.28305084745764
           ],
           [
-            625.4843429719374,
+            832.0021596457248,
             98.33389830508474
           ],
           [
-            629.3676573278809,
+            835.8854966449653,
             94.38474576271184
           ],
           [
-            633.2509895235189,
+            839.7688951429578,
             90.43559322033894
           ],
           [
-            637.1343229200575,
+            843.6522126433648,
             86.4864406779661
           ],
           [
-            641.0176773797607,
+            847.5355759360081,
             82.5372881355932
           ],
           [
-            644.901005340644,
+            851.4188902129448,
             78.5881355932203
           ],
           [
-            648.7843398590766,
+            855.3022325530328,
             74.63898305084746
           ],
           [
-            652.6676418109809,
+            859.1855324665663,
             70.68983050847456
           ],
           [
-            656.5510263564046,
+            863.0688667163764,
             66.74067796610166
           ],
           [
-            660.4343264753554,
+            866.9521928601074,
             62.791525423728814
           ],
           [
-            664.3176484317356,
+            870.8355198887126,
             58.842372881355914
           ],
           [
-            668.2010173496501,
+            874.7188899917263,
             54.893220338983014
           ],
           [
-            672.0843495452881,
+            878.6021928601074,
             50.94406779661017
           ],
           [
-            675.9676458087158,
+            882.485526161838,
             46.99491525423727
           ],
           [
-            679.8509863948568,
+            886.3688143981934,
             43.04576271186437
           ],
           [
-            683.7343568296984,
+            890.2521957833524,
             39.09661016949153
           ],
           [
-            687.6176559057617,
+            894.1355245343017,
             35.14745762711863
           ],
           [
-            691.5010823246935,
+            898.0188828653294,
             31.198305084745726
           ],
           [
-            695.3843549493408,
+            901.9021922122531,
             27.249152542372883
           ],
           [
-            699.2676777905951,
+            905.7855730759685,
             23.299999999999955
           ],
           [
-            703.1509882278103,
+            909.6688999623617,
             256.3
           ],
           [
-            707.0343365566,
+            913.5522088194446,
             252.35084745762714
           ],
           [
-            710.9176573278808,
+            917.4355215952555,
             248.40169491525424
           ],
           [
-            714.8010145528157,
+            921.3188558134631,
             244.45254237288137
           ],
           [
-            716.6423367141384,
-            31.198305084745726
-          ],
-          [
-            716.7045131218805,
-            244.45254237288137
-          ],
-          [
-            722.556596764662,
-            236.5542372881356
-          ],
-          [
-            726.4399561227756,
-            232.60508474576272
-          ],
-          [
-            730.3232629414877,
-            228.65593220338985
-          ],
-          [
-            734.2065760965304,
-            224.70677966101695
-          ],
-          [
-            738.0898942289903,
-            220.75762711864408
-          ],
-          [
-            741.973283214586,
-            216.80847457627118
-          ],
-          [
-            745.8565601529948,
-            212.8593220338983
-          ],
-          [
-            749.7399566442193,
-            208.91016949152544
-          ],
-          [
-            753.6232552304417,
-            204.96101694915254
-          ],
-          [
-            757.5065892748345,
-            201.01186440677967
-          ],
-          [
-            761.3899561543782,
-            197.0627118644068
-          ],
-          [
-            765.2732355735948,
-            193.1135593220339
-          ],
-          [
-            769.1565919768609,
-            189.16440677966102
-          ],
-          [
-            773.0399639286296,
-            185.21525423728815
-          ],
-          [
-            776.9232643636068,
-            181.26610169491525
-          ],
-          [
-            780.8065819588217,
-            177.31694915254238
-          ],
-          [
-            784.689913727824,
-            173.36779661016948
-          ],
-          [
-            788.5732785057916,
-            169.4186440677966
-          ],
-          [
-            792.456615157403,
-            165.46949152542373
-          ],
-          [
-            796.3399160506185,
-            161.52033898305083
-          ],
-          [
-            800.2232813500299,
-            157.57118644067796
-          ],
-          [
-            804.1065859407552,
-            153.6220338983051
-          ],
-          [
-            807.989996305542,
-            149.6728813559322
-          ],
-          [
-            811.8732751085068,
-            145.72372881355932
-          ],
-          [
-            815.756560990465,
-            141.77457627118645
-          ],
-          [
-            819.6399420121935,
-            137.82542372881358
-          ],
-          [
-            823.5232527654351,
-            133.87627118644068
-          ],
-          [
-            827.4065951687284,
-            129.92711864406778
-          ],
-          [
-            831.2899489015706,
-            125.97796610169493
-          ],
-          [
-            835.173256905382,
-            122.02881355932203
-          ],
-          [
-            839.0565815005832,
-            118.07966101694913
-          ],
-          [
-            842.9399398948161,
-            114.13050847457629
-          ],
-          [
-            846.8232202937147,
-            110.18135593220339
-          ],
-          [
-            850.7065514464654,
-            106.23220338983049
-          ],
-          [
-            854.589905289917,
-            102.28305084745764
-          ],
-          [
-            858.4732249235027,
-            98.33389830508474
-          ],
-          [
-            862.356561922743,
-            94.38474576271184
-          ],
-          [
-            866.2399604207358,
-            90.43559322033894
-          ],
-          [
-            870.1232779211425,
-            86.4864406779661
-          ],
-          [
-            874.0066412137858,
-            82.5372881355932
-          ],
-          [
-            877.8899554907227,
-            78.5881355932203
-          ],
-          [
-            881.7732978308105,
-            74.63898305084746
-          ],
-          [
-            885.656597744344,
-            70.68983050847456
-          ],
-          [
-            889.5399319941542,
-            66.74067796610166
-          ],
-          [
-            893.4232581378851,
-            62.791525423728814
-          ],
-          [
-            897.3065851664903,
-            58.842372881355914
-          ],
-          [
-            901.189955269504,
-            54.893220338983014
-          ],
-          [
-            905.0732581378851,
-            50.94406779661017
-          ],
-          [
-            908.9565914396159,
-            46.99491525423727
-          ],
-          [
-            912.8398796759711,
-            43.04576271186437
-          ],
-          [
-            916.7232610611302,
-            39.09661016949153
-          ],
-          [
-            920.6065898120795,
-            35.14745762711863
-          ],
-          [
-            924.4899481431072,
-            31.198305084745726
-          ],
-          [
-            928.3732574900309,
-            27.249152542372883
-          ],
-          [
-            932.2566383537462,
-            23.299999999999955
-          ],
-          [
-            936.1399652401394,
-            256.3
-          ],
-          [
-            940.0232740972223,
-            252.35084745762714
-          ],
-          [
-            943.9065868730332,
-            248.40169491525424
-          ],
-          [
-            947.7899210912408,
-            244.45254237288137
-          ],
-          [
-            951.6732416255019,
+            925.2021763477242,
             240.50338983050847
           ],
           [
-            955.5566285411242,
+            929.0855632633464,
             236.5542372881356
           ],
           [
-            959.4398949084473,
+            932.9688296306695,
             232.60508474576272
           ],
           [
-            963.3232498579916,
+            936.8521845802137,
             228.65593220338985
           ],
           [
-            967.206624337972,
+            940.7355590601943,
             224.70677966101695
           ],
           [
-            971.0898911003283,
+            944.6188258225504,
             220.75762711864408
           ],
           [
-            974.973257442627,
+            948.5021921648491,
             216.80847457627118
           ],
           [
-            978.8566238955349,
+            952.3855586177572,
             212.8593220338983
           ],
           [
-            982.7399564704046,
+            956.2688911926269,
             208.91016949152544
           ],
           [
-            986.6232715216065,
+            960.1522062438287,
             204.96101694915254
           ],
           [
-            990.5065874418809,
+            964.0355221641032,
             201.01186440677967
           ],
           [
-            994.3899620008681,
+            967.9188967230904,
             197.0627118644068
           ],
           [
-            998.2732527654351,
+            971.8021874876573,
             193.1135593220339
           ],
           [
-            1002.1566008888075,
+            975.6855356110296,
             189.16440677966102
           ],
           [
-            1006.0399303192138,
+            979.5688650414361,
             185.21525423728815
           ],
           [
-            1009.9232986208768,
+            983.4522333430989,
             181.26610169491525
           ],
           [
-            1013.8066275298395,
+            987.3355622520615,
             177.31694915254238
           ],
           [
-            1017.689956976047,
+            991.2188916982693,
             173.36779661016948
           ],
           [
-            1021.5733086705187,
+            995.1022433927409,
             169.4186440677966
           ],
           [
-            1025.4565903809273,
+            998.9855251031494,
             165.46949152542373
           ],
           [
-            1029.3399593778483,
+            1002.8688941000705,
             161.52033898305083
           ],
           [
-            1033.2232562101237,
+            1006.7521909323459,
             157.57118644067796
           ],
           [
-            1037.1065971438936,
+            1010.6355318661159,
             153.6220338983051
           ],
           [
-            1040.9898783802626,
+            1014.5188131024848,
             149.6728813559322
           ],
           [
-            1044.873220214708,
+            1018.4021549369303,
             145.72372881355932
           ],
           [
-            1048.7566406765407,
+            1022.285575398763,
             141.77457627118645
           ],
           [
-            1052.6399084027778,
+            1026.168843125,
             137.82542372881358
           ],
           [
-            1056.5232757563613,
+            1030.0522104785834,
             133.87627118644068
           ],
           [
-            1060.4065841868082,
+            1033.9355189090304,
             129.92711864406778
           ],
           [
-            1064.2899371927897,
+            1037.818871915012,
             125.97796610169493
           ],
           [
-            1068.1732512327067,
+            1041.702185954929,
             122.02881355932203
           ],
           [
-            1072.05657442159,
+            1045.5855091438125,
             118.07966101694913
           ],
           [
-            1075.9399239670818,
+            1049.468858689304,
             114.13050847457629
           ],
           [
-            1079.823292632175,
+            1053.3522273543972,
             110.18135593220339
           ],
           [
-            1083.7066065140787,
+            1057.235541236301,
             106.23220338983049
           ],
           [
-            1087.5899440979683,
+            1061.1188788201903,
             102.28305084745764
           ],
           [
-            1091.4732629730902,
+            1065.0021976953126,
             98.33389830508474
           ],
           [
-            1095.3566164689128,
+            1068.885551191135,
             94.38474576271184
           ],
           [
-            1099.2399050844997,
+            1072.768839806722,
             90.43559322033894
           ],
           [
-            1103.123251248508,
+            1076.6521859707302,
             86.4864406779661
           ],
           [
-            1107.0065852138944,
+            1080.5355199361165,
             82.5372881355932
           ],
           [
-            1110.8899189422607,
+            1084.4188536644829,
             78.5881355932203
           ],
           [
-            1114.7732916050888,
+            1088.3022263273112,
             74.63898305084746
           ],
           [
-            1118.6565831281196,
+            1092.1855178503417,
             70.68983050847456
           ],
           [
-            1122.5399127639432,
+            1096.0688474861654,
             66.74067796610166
           ],
           [
-            1126.4232507112629,
+            1099.9521854334853,
             62.791525423728814
           ],
           [
-            1130.306577787272,
+            1103.8355125094943,
             58.842372881355914
           ],
           [
-            1134.189939784207,
+            1107.718874506429,
             54.893220338983014
           ],
           [
-            1138.0732474245876,
+            1111.6021821468098,
             50.94406779661017
           ],
           [
-            1141.9566028323702,
+            1115.4855375545926,
             46.99491525423727
           ],
           [
-            1145.8399498654514,
+            1119.3688845876736,
             43.04576271186437
           ],
           [
-            1149.7232878759767,
+            1123.2522225981988,
             39.09661016949153
           ],
           [
-            1153.6066157262505,
+            1127.1355504484727,
             35.14745762711863
           ],
           [
-            1157.4899552537029,
+            1131.018889975925,
             31.198305084745726
           ],
           [
-            1161.373271063368,
+            1134.9022057855902,
             27.249152542372883
           ],
           [
-            1165.2566296314155,
+            1138.7855643536377,
             23.299999999999955
           ],
           [
-            1169.1399139490425,
+            1142.6688486712646,
             256.3
           ],
           [
-            1173.0232366480848,
+            1146.5521713703072,
             252.35084745762714
           ],
           [
-            1176.9065985502116,
+            1150.4355332724338,
             248.40169491525424
           ],
           [
-            1180.789932815823,
+            1154.3188675380452,
             244.45254237288137
           ],
           [
-            1184.6733130158827,
+            1158.202247738105,
             240.50338983050847
           ],
           [
-            1188.556591834649,
+            1162.0855265568712,
             236.5542372881356
           ],
           [
-            1192.4399242515055,
+            1165.9688589737277,
             232.60508474576272
           ],
           [
-            1196.3232719324408,
+            1169.8522066546632,
             228.65593220338985
           ],
           [
-            1200.2065988030329,
+            1173.7355335252548,
             224.70677966101695
           ],
           [
-            1204.0899194953072,
+            1177.6188542175294,
             220.75762711864408
           ],
           [
-            1207.973278774414,
+            1181.5022134966364,
             216.80847457627118
           ],
           [
-            1211.8566087578668,
+            1185.385543480089,
             212.8593220338983
           ],
           [
-            1215.7399190686713,
+            1189.2688537908937,
             208.91016949152544
           ],
           [
-            1219.6232505374485,
+            1193.1521852596707,
             204.96101694915254
           ],
           [
-            1223.5066099587673,
+            1197.0355446809895,
             201.01186440677967
           ],
           [
-            1227.3899027301027,
+            1200.9188374523246,
             197.0627118644068
           ],
           [
-            1231.2732736547853,
+            1204.8022083770074,
             193.1135593220339
           ],
           [
-            1235.1566045389134,
+            1208.6855392611355,
             189.16440677966102
           ],
           [
-            1239.0399230822075,
+            1212.5688578044299,
             185.21525423728815
           ],
           [
-            1242.9232835938178,
+            1216.4522183160402,
             181.26610169491525
           ],
           [
-            1246.8066135614692,
+            1220.3355482836914,
             177.31694915254238
           ],
           [
-            1250.6899718450927,
+            1224.218906567315,
             173.36779661016948
           ],
           [
-            1254.573255056627,
+            1228.1021897788494,
             169.4186440677966
           ],
           [
-            1258.4565636292862,
+            1231.985498351508,
             165.46949152542373
           ],
           [
-            1262.3399133643934,
+            1235.8688480866158,
             161.52033898305083
           ],
           [
-            1266.2232356368002,
+            1239.7521703590223,
             157.57118644067796
           ],
           [
-            1270.1066093425159,
+            1243.635544064738,
             153.6220338983051
           ],
           [
-            1273.9899534365504,
+            1247.5188881587728,
             149.6728813559322
           ],
           [
-            1277.8732464449056,
+            1251.4021811671278,
             145.72372881355932
           ],
           [
-            1281.7565841394044,
+            1255.2855188616265,
             141.77457627118645
           ],
           [
-            1285.6399253259956,
+            1259.1688600482178,
             137.82542372881358
           ],
           [
-            1289.5232603026666,
+            1263.0521950248888,
             133.87627118644068
           ],
           [
-            1293.4066065930854,
+            1266.9355413153075,
             129.92711864406778
           ],
           [
-            1297.2899398790148,
+            1270.818874601237,
             125.97796610169493
           ],
           [
-            1301.1732869594998,
+            1274.702221681722,
             122.02881355932203
           ],
           [
-            1305.0566387487793,
+            1278.5855734710015,
             118.07966101694913
           ],
           [
-            1308.939957750312,
+            1282.4688924725342,
             114.13050847457629
           ],
           [
-            1312.8232577744548,
+            1286.352192496677,
             110.18135593220339
           ],
           [
-            1316.706638527561,
+            1290.2355732497829,
             106.23220338983049
           ],
           [
-            1320.589934474962,
+            1294.1188691971843,
             102.28305084745764
           ],
           [
-            1324.473252860243,
+            1298.0021875824652,
             98.33389830508474
           ],
           [
-            1328.3566135930719,
+            1301.885548315294,
             94.38474576271184
           ],
           [
-            1332.2398981319172,
+            1305.7688328541396,
             90.43559322033894
           ],
           [
-            1336.1232595284016,
+            1309.652194250624,
             86.4864406779661
           ],
           [
-            1340.0066187601046,
+            1313.535553482327,
             82.5372881355932
           ],
           [
-            1343.8899436555312,
+            1317.4188783777533,
             78.5881355932203
           ],
           [
-            1347.7732927111817,
+            1321.302227433404,
             74.63898305084746
           ],
           [
-            1351.6566060716418,
+            1325.185540793864,
             70.68983050847456
           ],
           [
-            1355.5399187842474,
+            1329.0688535064698,
             66.74067796610166
           ],
           [
-            1359.42322358039,
+            1332.9521583026124,
             62.791525423728814
           ],
           [
-            1363.3065813267685,
+            1336.835516048991,
             58.842372881355914
           ],
           [
-            1367.1899909172905,
+            1340.7189256395127,
             54.893220338983014
           ],
           [
-            1371.0732303907607,
+            1344.602165112983,
             50.94406779661017
           ],
           [
-            1374.9565750378417,
+            1348.4855097600641,
             46.99491525423727
           ],
           [
-            1378.839907091268,
+            1352.36884181349,
             43.04576271186437
           ],
           [
-            1382.723244564548,
+            1356.2521792867703,
             39.09661016949153
           ],
           [
-            1386.6065657150607,
+            1360.135500437283,
             35.14745762711863
           ],
           [
-            1390.4899126849366,
+            1364.0188474071588,
             31.198305084745726
           ],
           [
-            1394.3732992529297,
+            1367.9022339751518,
             27.249152542372883
+          ],
+          [
+            1371.785536843533,
+            23.299999999999955
+          ],
+          [
+            1375.6688398383246,
+            256.3
+          ],
+          [
+            1379.5521525667318,
+            252.35084745762714
+          ],
+          [
+            1383.4355038503688,
+            248.40169491525424
+          ],
+          [
+            1387.3188689601643,
+            244.45254237288137
+          ],
+          [
+            1391.2021668353273,
+            240.50338983050847
+          ],
+          [
+            1395.085535863851,
+            236.5542372881356
           ],
           [
             1398,
-            27.249152542372883
+            236.5542372881356
           ]
         ]
       }
@@ -55809,7 +55869,7 @@
       "states": {
         "sensor.living_room_humidity": {
           "entity_id": "sensor.living_room_humidity",
-          "state": "47",
+          "state": "50",
           "attributes": {
             "state_class": "measurement",
             "unit_of_measurement": "%",
@@ -55817,60 +55877,32 @@
             "friendly_name": "Living room humidity"
           },
           "context": {
-            "id": "01M4JQCTSXJ5F8ZVYW23MPE9FE",
+            "id": "01M4JQSMYXFK9NMPP0NN0PTMRD",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:58:00.125Z",
-          "last_updated": "2026-10-10T10:58:00.125Z"
+          "last_changed": "2026-10-10T11:05:00.125Z",
+          "last_updated": "2026-10-10T11:05:00.125Z"
         }
       },
       "warning": null,
       "entity": {
         "name": "Living room humidity",
-        "value": "47",
+        "value": "50",
         "unit": "%",
         "unitFirst": false,
         "icon": null,
         "color": null
       },
       "graph": {
-        "now": 1791629936680,
+        "now": 1791630345676,
         "width": 1398,
         "loading": false,
         "history": {
           "sensor.living_room_humidity": [
             {
-              "s": "47",
-              "lu": 1791543536.333
-            },
-            {
-              "s": "48",
-              "lu": 1791543540.3969812
-            },
-            {
-              "s": "45",
-              "lu": 1791543600.396981
-            },
-            {
-              "s": "46",
-              "lu": 1791543660.3987434
-            },
-            {
-              "s": "47",
-              "lu": 1791543720.3967943
-            },
-            {
-              "s": "48",
-              "lu": 1791543780.397512
-            },
-            {
-              "s": "49",
-              "lu": 1791543840.3974643
-            },
-            {
               "s": "50",
-              "lu": 1791543900.397983
+              "lu": 1791543945.328
             },
             {
               "s": "51",
@@ -61291,104 +61323,136 @@
             {
               "s": "47",
               "lu": 1791629880.1252327
+            },
+            {
+              "s": "48",
+              "lu": 1791629940.124887
+            },
+            {
+              "s": "45",
+              "lu": 1791630000.1262136
+            },
+            {
+              "s": "46",
+              "lu": 1791630060.1260176
+            },
+            {
+              "s": "47",
+              "lu": 1791630120.1249292
+            },
+            {
+              "s": "48",
+              "lu": 1791630180.1247082
+            },
+            {
+              "s": "49",
+              "lu": 1791630240.1258075
+            },
+            {
+              "s": "50",
+              "lu": 1791630300.1258698
             }
           ]
         },
         "coordinates": [
           [
-            -0.0056146527777777774,
-            146.79000000000002
+            -0.005630833333333333,
+            139.8
           ],
           [
-            28.699740679524737,
+            28.877791184980605,
             144.693
           ],
           [
-            86.94973513721042,
+            87.12778590733846,
             144.693
           ],
           [
-            145.19973623540244,
+            145.377787763994,
             144.693
           ],
           [
-            203.44973632626002,
+            203.62778685541787,
             144.693
           ],
           [
-            261.6997373177931,
+            261.8777882024807,
             144.693
           ],
           [
-            319.9497376535712,
+            320.1277879141066,
             144.693
           ],
           [
-            378.1997397907003,
+            378.3777919118415,
             144.693
           ],
           [
-            436.4497405570645,
+            436.6277911731296,
             144.693
           ],
           [
-            494.69973998821683,
+            494.8777916945733,
             144.693
           ],
           [
-            552.949740252889,
+            553.1277900433349,
             144.693
           ],
           [
-            611.1997379182434,
+            611.3777897431098,
             144.693
           ],
           [
-            669.4497377483792,
-            144.693
-          ],
-          [
-            726.9697614731853,
+            670.5605737771436,
             144.61032258064517
           ],
           [
-            785.946286004503,
+            727.8743365573629,
             144.693
           ],
           [
-            834.4879534177823,
-            144.8095
-          ],
-          [
-            961.6694700533718,
-            144.5805172413793
-          ],
-          [
-            1018.9462872133043,
+            786.1243373158264,
             144.693
           ],
           [
-            1077.1962863442316,
+            831.2680876160515,
+            144.6718181818182
+          ],
+          [
+            929.34950097936,
+            144.46
+          ],
+          [
+            960.8743390460713,
             144.693
           ],
           [
-            1135.446286518046,
+            1019.1243378530714,
             144.693
           ],
           [
-            1193.6962886946785,
+            1077.3743365929158,
             144.693
           ],
           [
-            1251.162092499712,
+            1135.6243375330946,
+            144.693
+          ],
+          [
+            1194.750777159373,
             144.76064516129034
           ],
           [
-            1310.1953277253215,
+            1252.1233787364197,
             144.693
           ],
           [
-            1368.4453294674174,
+            1310.3733794237771,
+            144.693
+          ],
+          [
+            1368.6233798030091,
             144.693
           ],
           [
@@ -61407,7 +61471,7 @@
       "states": {
         "sensor.grid_power": {
           "entity_id": "sensor.grid_power",
-          "state": "-554",
+          "state": "-530",
           "attributes": {
             "state_class": "measurement",
             "unit_of_measurement": "W",
@@ -61415,60 +61479,32 @@
             "friendly_name": "Grid power"
           },
           "context": {
-            "id": "01M4JQCTRSDEAX7R643F3Q30VJ",
+            "id": "01M4JQSMXTY6B6WJZQJGY7A36M",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:58:00.089Z",
-          "last_updated": "2026-10-10T10:58:00.089Z"
+          "last_changed": "2026-10-10T11:05:00.090Z",
+          "last_updated": "2026-10-10T11:05:00.090Z"
         }
       },
       "warning": null,
       "entity": {
         "name": "Grid power",
-        "value": "-554",
+        "value": "-530",
         "unit": "W",
         "unitFirst": false,
         "icon": null,
         "color": null
       },
       "graph": {
-        "now": 1791629937033,
+        "now": 1791630346028,
         "width": 1398,
         "loading": false,
         "history": {
           "sensor.grid_power": [
             {
-              "s": "-554",
-              "lu": 1791543536.685
-            },
-            {
-              "s": "-551",
-              "lu": 1791543540.1787174
-            },
-            {
-              "s": "-548",
-              "lu": 1791543600.179367
-            },
-            {
-              "s": "-544",
-              "lu": 1791543660.1788642
-            },
-            {
-              "s": "-541",
-              "lu": 1791543720.1786518
-            },
-            {
-              "s": "-537",
-              "lu": 1791543780.1784048
-            },
-            {
-              "s": "-534",
-              "lu": 1791543840.1773129
-            },
-            {
               "s": "-530",
-              "lu": 1791543900.1780434
+              "lu": 1791543945.679
             },
             {
               "s": "-526",
@@ -62721,45 +62757,77 @@
             {
               "s": "-554",
               "lu": 1791629880.089078
+            },
+            {
+              "s": "-551",
+              "lu": 1791629940.0890095
+            },
+            {
+              "s": "-548",
+              "lu": 1791630000.0885055
+            },
+            {
+              "s": "-544",
+              "lu": 1791630060.0895019
+            },
+            {
+              "s": "-541",
+              "lu": 1791630120.0888755
+            },
+            {
+              "s": "-537",
+              "lu": 1791630180.0887566
+            },
+            {
+              "s": "-534",
+              "lu": 1791630240.0896916
+            },
+            {
+              "s": "-530",
+              "lu": 1791630300.0903332
             }
           ]
         },
         "coordinates": [
           [
-            -0.005630833333333333,
-            239.22064152218556
+            -0.005647013888888888,
+            234.4687580346071
           ],
           [
-            28.69046902367486,
-            199.79982670929618
+            28.868534571990967,
+            198.46417333136142
           ],
           [
-            75.29046007222493,
-            113.67911312705962
+            72.07060889856974,
+            128.7877195308672
           ],
           [
-            1004.3781316864522,
+            987.0811979892815,
             23.30000000000001
           ],
           [
-            1207.28229932095,
-            111.62852180863507
+            1000.6728655645243,
+            68.94280476693308
           ],
           [
-            1251.1558706336637,
-            193.83891829706664
+            1204.8905044322205,
+            140.6483886112453
           ],
           [
-            1307.0292510084194,
-            255.4421467677442
+            1252.117102802192,
+            212.1475766297691
           ],
           [
-            1373.5210509942965,
+            1304.5937456129625,
             256.3
+          ],
+          [
+            1370.9029739119635,
+            252.37251629157183
           ],
           [
             1398,
-            256.3
+            252.37251629157183
           ]
         ]
       }
@@ -62807,7 +62875,7 @@
       "states": {
         "light.bed_light": {
           "entity_id": "light.bed_light",
-          "state": "off",
+          "state": "on",
           "attributes": {
             "min_color_temp_kelvin": 2000,
             "max_color_temp_kelvin": 6535,
@@ -62819,23 +62887,33 @@
               "color_temp",
               "hs"
             ],
-            "effect": null,
-            "color_mode": null,
-            "brightness": null,
-            "color_temp_kelvin": null,
-            "hs_color": null,
-            "rgb_color": null,
-            "xy_color": null,
+            "effect": "rainbow",
+            "color_mode": "color_temp",
+            "brightness": 180,
+            "color_temp_kelvin": 4166,
+            "hs_color": [
+              26.752,
+              31.945
+            ],
+            "rgb_color": [
+              255,
+              210,
+              174
+            ],
+            "xy_color": [
+              0.41,
+              0.362
+            ],
             "friendly_name": "Bed Light",
             "supported_features": 4
           },
           "context": {
-            "id": "01M4JPBWBFVP290YQYKZMNMHPJ",
+            "id": "01M4JQGG7E248ZHN1ZW71BEXV3",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:40:00.367Z",
-          "last_updated": "2026-10-10T10:40:00.367Z"
+          "last_changed": "2026-10-10T11:00:00.377Z",
+          "last_updated": "2026-10-10T11:00:00.377Z"
         }
       },
       "warning": "Configuration error",
@@ -62880,20 +62958,20 @@
             "supported_features": 0
           },
           "context": {
-            "id": "01M4JDD91K2TQ40SEETB1CEYPK",
+            "id": "01M4JQHZ25VP4N2SCZNMNWZY50",
             "parent_id": null,
-            "user_id": null
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
           "last_changed": "2026-10-10T08:03:28.947Z",
-          "last_updated": "2026-10-10T08:03:28.947Z"
+          "last_updated": "2026-10-10T11:00:48.326Z"
         }
       },
       "warning": null,
       "light": {
         "info": [
-          "?lit$882075192$",
+          "?lit$536677353$",
           "%",
-          "?lit$882075192$",
+          "?lit$536677353$",
           "Living Room RGBWW Lights"
         ],
         "brightness": 71,
@@ -62915,7 +62993,7 @@
       "states": {
         "light.bed_light": {
           "entity_id": "light.bed_light",
-          "state": "off",
+          "state": "on",
           "attributes": {
             "min_color_temp_kelvin": 2000,
             "max_color_temp_kelvin": 6535,
@@ -62927,38 +63005,50 @@
               "color_temp",
               "hs"
             ],
-            "effect": null,
-            "color_mode": null,
-            "brightness": null,
-            "color_temp_kelvin": null,
-            "hs_color": null,
-            "rgb_color": null,
-            "xy_color": null,
+            "effect": "rainbow",
+            "color_mode": "color_temp",
+            "brightness": 180,
+            "color_temp_kelvin": 4166,
+            "hs_color": [
+              26.752,
+              31.945
+            ],
+            "rgb_color": [
+              255,
+              210,
+              174
+            ],
+            "xy_color": [
+              0.41,
+              0.362
+            ],
             "friendly_name": "Bed Light",
             "supported_features": 4
           },
           "context": {
-            "id": "01M4JPBWBFVP290YQYKZMNMHPJ",
+            "id": "01M4JQGG7E248ZHN1ZW71BEXV3",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T10:40:00.367Z",
-          "last_updated": "2026-10-10T10:40:00.367Z"
+          "last_changed": "2026-10-10T11:00:00.377Z",
+          "last_updated": "2026-10-10T11:00:00.377Z"
         }
       },
       "warning": null,
       "light": {
         "info": [
-          "?lit$882075192$",
+          "?lit$536677353$",
           "%",
-          "?lit$882075192$",
+          "?lit$536677353$",
           "Bed"
         ],
-        "brightness": 0,
+        "brightness": 71,
         "sliderVisible": true,
         "disabled": false,
-        "color": null,
-        "classes": [],
+        "color": "rgb(255, 210, 174)",
+        "classes": [
+          "state-on"
+        ],
         "icon": null
       }
     },
@@ -63010,9 +63100,9 @@
       "warning": null,
       "light": {
         "info": [
-          "?lit$882075192$",
+          "?lit$536677353$",
           "%",
-          "?lit$882075192$",
+          "?lit$536677353$",
           "Kitchen Lights"
         ],
         "brightness": 71,
@@ -63072,9 +63162,9 @@
       "warning": null,
       "light": {
         "info": [
-          "?lit$882075192$",
+          "?lit$536677353$",
           "%",
-          "?lit$882075192$",
+          "?lit$536677353$",
           "Ceiling Lights"
         ],
         "brightness": 71,
@@ -63120,6 +63210,165 @@
       },
       "warning": "Configuration error",
       "light": null
+    },
+    {
+      "config": {
+        "type": "alarm-panel",
+        "entity": "alarm_control_panel.security"
+      },
+      "states": {
+        "alarm_control_panel.security": {
+          "entity_id": "alarm_control_panel.security",
+          "state": "disarmed",
+          "attributes": {
+            "code_format": "number",
+            "changed_by": null,
+            "code_arm_required": true,
+            "previous_state": null,
+            "next_state": null,
+            "friendly_name": "Security",
+            "supported_features": 63
+          },
+          "context": {
+            "id": "01M4JDD91DE1NKFHZKTS36HK4H",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T08:03:28.941Z",
+          "last_updated": "2026-10-10T08:03:28.941Z"
+        }
+      },
+      "warning": null,
+      "alarm": {
+        "name": "Security",
+        "state": "Disarmed",
+        "color": "var(--state-alarm_control_panel-disarmed-color, var(--state-alarm_control_panel-inactive-color, var(--state-inactive-color)))",
+        "classes": [
+          "disarmed"
+        ],
+        "actions": [
+          {
+            "label": "Arm home",
+            "action": "arm_home",
+            "variant": "brand"
+          },
+          {
+            "label": "Arm away",
+            "action": "arm_away",
+            "variant": "brand"
+          }
+        ],
+        "input": true,
+        "keypad": true
+      }
+    },
+    {
+      "config": {
+        "type": "alarm-panel",
+        "entity": "alarm_control_panel.security",
+        "name": "House",
+        "states": [
+          "arm_home",
+          "arm_away",
+          "arm_night",
+          "arm_vacation",
+          "arm_custom_bypass"
+        ]
+      },
+      "states": {
+        "alarm_control_panel.security": {
+          "entity_id": "alarm_control_panel.security",
+          "state": "disarmed",
+          "attributes": {
+            "code_format": "number",
+            "changed_by": null,
+            "code_arm_required": true,
+            "previous_state": null,
+            "next_state": null,
+            "friendly_name": "Security",
+            "supported_features": 63
+          },
+          "context": {
+            "id": "01M4JDD91DE1NKFHZKTS36HK4H",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T08:03:28.941Z",
+          "last_updated": "2026-10-10T08:03:28.941Z"
+        }
+      },
+      "warning": null,
+      "alarm": {
+        "name": "House",
+        "state": "Disarmed",
+        "color": "var(--state-alarm_control_panel-disarmed-color, var(--state-alarm_control_panel-inactive-color, var(--state-inactive-color)))",
+        "classes": [
+          "disarmed"
+        ],
+        "actions": [
+          {
+            "label": "Arm home",
+            "action": "arm_home",
+            "variant": "brand"
+          },
+          {
+            "label": "Arm away",
+            "action": "arm_away",
+            "variant": "brand"
+          },
+          {
+            "label": "Arm night",
+            "action": "arm_night",
+            "variant": "brand"
+          },
+          {
+            "label": "Arm vacation",
+            "action": "arm_vacation",
+            "variant": "brand"
+          },
+          {
+            "label": "Custom bypass",
+            "action": "arm_custom_bypass",
+            "variant": "brand"
+          }
+        ],
+        "input": true,
+        "keypad": true
+      }
+    },
+    {
+      "config": {
+        "type": "alarm-panel",
+        "entity": "alarm_control_panel.missing"
+      },
+      "states": {},
+      "warning": "Entity not found",
+      "alarm": null
+    },
+    {
+      "config": {
+        "type": "alarm-panel",
+        "entity": "switch.ac"
+      },
+      "states": {
+        "switch.ac": {
+          "entity_id": "switch.ac",
+          "state": "off",
+          "attributes": {
+            "device_class": "outlet",
+            "friendly_name": "AC"
+          },
+          "context": {
+            "id": "01M4JDD91SFKZ4J3BPD7CRXTMK",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T08:03:28.953Z",
+          "last_updated": "2026-10-10T08:03:28.953Z"
+        }
+      },
+      "warning": "Configuration error",
+      "alarm": null
     }
   ]
 }

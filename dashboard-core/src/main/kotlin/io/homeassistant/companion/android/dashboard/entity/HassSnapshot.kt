@@ -62,6 +62,8 @@ data class HassConfig(
  * @property cameraImages signed snapshot paths of the cameras cards show, by entity id
  * @property energy the energy collections the shown cards read, by collection key
  * @property graphHistories the histories the shown cards' graphs draw, absent while loading
+ * @property alarmDefaultCodes whether the alarm panels the shown cards control store a default code, by entity id;
+ * absent while not known
  */
 data class HassSnapshot(
     val states: EntityStates,
@@ -78,4 +80,5 @@ data class HassSnapshot(
     val cameraImages: Map<String, String> = emptyMap(),
     val energy: Map<String, EnergyCollection> = emptyMap(),
     val graphHistories: Map<GraphHistoryKey, GraphHistory> = emptyMap(),
+    val alarmDefaultCodes: Map<String, Boolean> = emptyMap(),
 )

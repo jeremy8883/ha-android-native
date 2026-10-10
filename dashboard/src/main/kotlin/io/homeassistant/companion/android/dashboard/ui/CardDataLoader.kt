@@ -1,9 +1,11 @@
 package io.homeassistant.companion.android.dashboard.ui
 
 import io.homeassistant.companion.android.dashboard.data.EnergyRepository
+import io.homeassistant.companion.android.dashboard.data.Fetched
 import io.homeassistant.companion.android.dashboard.data.HistoryRepository
 import io.homeassistant.companion.android.dashboard.data.LoadError
 import io.homeassistant.companion.android.dashboard.data.Loadable
+import io.homeassistant.companion.android.dashboard.data.ServerActionsRepository
 import io.homeassistant.companion.android.dashboard.history.GraphHistory
 import io.homeassistant.companion.android.dashboard.history.GraphHistoryKey
 import io.homeassistant.companion.android.dashboard.history.historyStreamCommand
@@ -12,13 +14,19 @@ import kotlin.time.Clock
 import kotlin.time.toJavaInstant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
+import timber.log.Timber
 
-/** Loads the data the shown cards ask for beyond the entities' states: energy collections and graph histories. */
+/**
+ * Loads the data the shown cards ask for beyond the entities' states: energy collections, graph histories, and
+ * whether alarm panels have a default code.
+ */
 class CardDataLoader @Inject internal constructor(
     energyRepository: EnergyRepository,
     private val historyRepository: HistoryRepository,
+    private val serverActions: ServerActionsRepository,
     private val clock: Clock,
 ) {
     /** The energy collections of the shown view, with the period each one's date selection chose. */
@@ -44,4 +52,24 @@ class CardDataLoader @Inject internal constructor(
                     key to GraphHistory.Failed((loadable.error as? LoadError.Server)?.let { it.message ?: it.code })
             }
         }
+
+    /**
+     * Whether each alarm panel of [entityIds] stores a default code, read from its registry entry as the alarm
+     * panel card does. One that couldn't be read is left out, so its card asks for the code, as upstream's does.
+     */
+    fun alarmDefaultCodes(entityIds: Set<String>): Flow<Map<String, Boolean>> = flow {
+        val known = mutableMapOf<String, Boolean>()
+        emit(known.toMap())
+        entityIds.forEach { entityId ->
+            when (val code = serverActions.defaultCode(entityId, ALARM_DOMAIN)) {
+                is Fetched.Success -> known[entityId] = code.value != null
+                is Fetched.Failure -> Timber.w("Couldn't read whether $entityId has a default code: ${code.error}")
+            }
+            emit(known.toMap())
+        }
+    }
+
+    private companion object {
+        const val ALARM_DOMAIN = "alarm_control_panel"
+    }
 }

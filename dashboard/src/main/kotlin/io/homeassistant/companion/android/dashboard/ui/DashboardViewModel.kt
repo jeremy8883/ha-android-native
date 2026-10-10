@@ -21,6 +21,7 @@ import io.homeassistant.companion.android.dashboard.data.map
 import io.homeassistant.companion.android.dashboard.data.valueOrNull
 import io.homeassistant.companion.android.dashboard.derive.TemplateRequest
 import io.homeassistant.companion.android.dashboard.derive.TemplateResult
+import io.homeassistant.companion.android.dashboard.derive.alarmPanelEntities
 import io.homeassistant.companion.android.dashboard.derive.cameraSnapshotEntities
 import io.homeassistant.companion.android.dashboard.derive.graphHistoryRequests
 import io.homeassistant.companion.android.dashboard.derive.templateRequests
@@ -433,6 +434,13 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         .flatMapLatest(cardData::graphHistories)
         .onStart { emit(emptyMap()) }
 
+    /** Whether the alarm panels of the shown view's alarm panel cards store a default code. */
+    private val alarmDefaultCodes: Flow<Map<String, Boolean>> = uiState
+        .map { state -> alarmPanelEntities(shownCards(state, withHeader = false)) }
+        .distinctUntilChanged()
+        .flatMapLatest(cardData::alarmDefaultCodes)
+        .onStart { emit(emptyMap()) }
+
     private val energy = cardData.energy
 
     /** The energy collections the shown view's cards read, with their data. */
@@ -459,7 +467,7 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         entityStates.mapNotNull { it.valueOrNull },
         repairsIssues,
         discoveredFlows,
-        combine(templates, cameraImages, energyCollections, graphHistories, ::CardData),
+        combine(templates, cameraImages, energyCollections, graphHistories, alarmDefaultCodes, ::CardData),
     ) { inputs, states, repairs, flows, data ->
         inputs.hass.copy(
             states = states,
@@ -470,6 +478,7 @@ class DashboardViewModel @VisibleForTesting internal constructor(
             cameraImages = data.cameraImages,
             energy = data.energy,
             graphHistories = data.graphHistories,
+            alarmDefaultCodes = data.alarmDefaultCodes,
         )
     }.flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
@@ -705,6 +714,7 @@ private data class CardData(
     val cameraImages: Map<String, String>,
     val energy: Map<String, EnergyCollection>,
     val graphHistories: Map<GraphHistoryKey, GraphHistory>,
+    val alarmDefaultCodes: Map<String, Boolean>,
 )
 
 /** Whether data is being loaded again, why it last failed to, and when it was kept, whatever the value. */

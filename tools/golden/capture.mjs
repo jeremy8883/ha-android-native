@@ -892,6 +892,10 @@ const CARD_CONFIGS = [
   { type: "light", entity: "light.ceiling_lights" },
   { type: "light", entity: "light.missing" },
   { type: "light", entity: "switch.ac" },
+  { type: "alarm-panel", entity: "alarm_control_panel.security" },
+  { type: "alarm-panel", entity: "alarm_control_panel.security", name: "House", states: ["arm_home", "arm_away", "arm_night", "arm_vacation", "arm_custom_bypass"] },
+  { type: "alarm-panel", entity: "alarm_control_panel.missing" },
+  { type: "alarm-panel", entity: "switch.ac" },
 ];
 
 /** The entities whose entities card rows the controls capture records (with "rows" among the entities). */
@@ -1674,6 +1678,17 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
           color: button.style.color || null,
           classes: [...button.classList].filter((c) => c.startsWith("state-")),
           icon: root.querySelector("ha-state-icon")?.icon ?? null,
+        } : null;
+      } else if (config.type === "alarm-panel") {
+        const chip = root.querySelector("ha-assist-chip");
+        shown.alarm = chip ? {
+          name: [...root.querySelector(".card-header").childNodes].filter((n) => n.nodeType === Node.TEXT_NODE).map((n) => n.textContent.trim()).join(""),
+          state: chip.label ?? null,
+          color: chip.style.getPropertyValue("--alarm-state-color") || null,
+          classes: [...chip.classList],
+          actions: [...root.querySelectorAll("#armActions ha-button")].map((b) => ({ label: text(b), action: b.action, variant: b.variant })),
+          input: !!root.querySelector("ha-input"),
+          keypad: !!root.querySelector(".keypad"),
         } : null;
       } else if (config.type === "gauge") {
         const gauge = root.querySelector("ha-gauge");

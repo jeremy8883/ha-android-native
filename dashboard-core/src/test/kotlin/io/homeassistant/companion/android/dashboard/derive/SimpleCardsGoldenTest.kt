@@ -119,8 +119,9 @@ class SimpleCardsGoldenTest {
         }
         model as EntityCardModel.Shown
         assertEquals(
-            listOf(captured.string("name"), captured.string("value"), captured.string("unit"), captured.boolean("unitFirst"), captured.string("color")),
-            listOf(model.name, model.value.value, model.value.unit, model.value.unitFirst, model.color?.css()),
+            // The browser spaces out the colours it was given
+            listOf(captured.string("name"), captured.string("value"), captured.string("unit"), captured.boolean("unitFirst"), captured.string("color")?.replace(" ", "")),
+            listOf(model.name, model.value.value, model.value.unit, model.value.unitFirst, model.color?.css()?.replace(" ", "")),
         )
         captured.string("icon")?.let { assertEquals(it, model.icon) }
         val graph = shown.obj("graph")
@@ -169,6 +170,28 @@ class SimpleCardsGoldenTest {
             }
         assertEquals(expectedColor, model.color)
         light.string("icon")?.let { assertEquals(it, model.icon) }
+    }
+
+    @TestFactory
+    fun `Given captured alarm panel cards when deriving them then they show and arm as the frontend's`() = cards("alarm-panel") { config, shown ->
+        val model = alarmPanelCardModel(config)
+        val alarm = shown.obj("alarm")
+        if (alarm == null) {
+            assertEquals(shown.string("warning"), (model as? AlarmPanelCardModel.Warning)?.text)
+            return@cards
+        }
+        model as AlarmPanelCardModel.Shown
+        val pulsing = alarm.array("classes")!!.any { it.stringOrNull in setOf("triggered", "arming", "pending") }
+        assertEquals(
+            listOf(alarm.string("name"), alarm.string("state"), alarm.string("color"), pulsing),
+            listOf(model.name, model.stateLabel, model.stateColor?.css(), model.pulsing),
+        )
+        assertEquals(
+            alarm.objects("actions").map { Triple(it.string("label"), "alarm_" + it.string("action"), it.string("variant") == "danger") },
+            model.actions.map { Triple(it.label, it.service, it.disarm) },
+        )
+        assertEquals(alarm.boolean("input"), model.code != null)
+        assertEquals(alarm.boolean("keypad"), model.code?.keypad == true)
     }
 
     /** Each captured card of [type], checked against the snapshot with the states it was drawn with. */

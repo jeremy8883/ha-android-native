@@ -71,6 +71,7 @@ private fun EntityCards(
         CARD_GLANCE -> GlanceCard(card, hass, now, interactions, modifier)
         CARD_GAUGE -> GaugeCard(card, hass, interactions, rounded)
         CARD_LIGHT -> LightCard(card, hass, interactions, rounded)
+        CARD_ALARM_PANEL -> AlarmPanelCard(card, hass, interactions, rounded)
         else -> EntityCard(card, hass, now, interactions, rounded)
     }
 }
@@ -106,7 +107,8 @@ private val INFO_TILES: Map<String, HassSnapshot.(CardConfig) -> InfoTileModel?>
 )
 
 private const val CARD_TILE = "tile"
-private val ENTITY_CARD_TYPES = setOf(CARD_BUTTON, CARD_GLANCE, CARD_GAUGE, CARD_LIGHT, CARD_ENTITY, CARD_SENSOR)
+private val ENTITY_CARD_TYPES =
+    setOf(CARD_BUTTON, CARD_GLANCE, CARD_GAUGE, CARD_LIGHT, CARD_ALARM_PANEL, CARD_ENTITY, CARD_SENSOR)
 private const val CARD_HEADING = "heading"
 private const val CARD_AREA = "area"
 private const val CARD_HOME_SUMMARY = "home-summary"
@@ -117,6 +119,7 @@ private const val CARD_GLANCE = "glance"
 private const val CARD_GAUGE = "gauge"
 private const val CARD_ENTITY = "entity"
 private const val CARD_LIGHT = "light"
+private const val CARD_ALARM_PANEL = "alarm-panel"
 private const val CARD_SENSOR = "sensor"
 private const val CARD_MEDIA_CONTROL = "media-control"
 private const val CARD_EMPTY_STATE = "empty-state"
