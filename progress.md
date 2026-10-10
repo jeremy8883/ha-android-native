@@ -214,6 +214,9 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - [x] Theme colours: the extractor also reads `semantic.globals.ts` (`--ha-color-text-*`...), so `primary-text-color` and friends resolve
 - [x] Home dashboard "Today's energy" summary: its own `energy_home_dashboard` collection, always today, golden-tested against the frontend's tile; says it couldn't load rather than showing nothing
 
+### Maybe
+- [ ] Native Updates page (`/config/updates`): the available updates, each opening its details (where the backup switch is). Until then the overview's Updates card is left out (its tap leads to a page that isn't native), so updates are only reachable from dashboards that show update entities
+
 ### Later — Startup time
 - [ ] Cold launch straight to the dashboard: the dashboard app has no splash wait (it starts from the cache); measure it on a release-like build on a real device
 - [x] Don't start Chromium at launch (dashboard app: no WebView cookies)
