@@ -41,8 +41,7 @@ internal fun MoreInfoFan(info: FanMoreInfo, onAction: (CardAction) -> Unit) {
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
     ) {
         when (val speed = info.speed) {
-            is FanSpeedControl.Buttons ->
-                VerticalSelect(speed.label, speed.value, speed.options, speed.color, speed.enabled, onAction)
+            is FanSpeedControl.Buttons -> VerticalSelect(speed.select, onAction)
             is FanSpeedControl.Slider ->
                 StateControlSlider(speed.slider, valueText = { "${it.roundToInt()}%" }, onAction = onAction)
             null -> info.toggle?.let { StateToggleControl(it, onAction) }

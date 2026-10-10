@@ -53,9 +53,9 @@ import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterTemperat
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.EntityToggle
-import io.homeassistant.companion.android.dashboard.ui.cards.TileFeatureControl
 import io.homeassistant.companion.android.dashboard.ui.controls.StateToggleControl
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesMenu
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoAlarm
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoClimate
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoFan
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
@@ -120,7 +120,6 @@ private fun MoreInfoContent(
         }
         if (model.stateHeader) MoreInfoState(model)
         hass.states[model.entityId]?.let { DomainControls(model, it, hass, interactions.onAction) }
-        model.controls.forEach { TileFeatureControl(it, available = true, onAction = interactions.onAction) }
         model.media?.let { media ->
             Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
                 media.controls.forEach { control ->
@@ -154,6 +153,7 @@ private fun DomainControls(
     model.position?.let { MoreInfoPosition(it, state, hass, onAction) }
     model.fan?.let { MoreInfoFan(it, onAction) }
     model.lock?.let { MoreInfoLock(it, onAction) }
+    model.alarm?.let { MoreInfoAlarm(it, onAction) }
     model.waterHeater?.let { heater ->
         SingleDialControls(
             current = heater.current,

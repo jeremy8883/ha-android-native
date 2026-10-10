@@ -20,12 +20,8 @@ import io.homeassistant.companion.android.dashboard.feature.lockCall
  */
 data class LockMoreInfo(val toggle: StateToggle?, val jammed: JammedLock?, val open: LockOpen?)
 
-/** A jammed lock: its [icon] in its [color], and the [buttons] to unlock or lock it again. */
-data class JammedLock(
-    val icon: String,
-    val color: DisplayColor?,
-    val buttons: List<Pair<String, CardAction.CallService>>,
-)
+/** A jammed lock: its [status] icon, and the [buttons] to unlock or lock it again. */
+data class JammedLock(val status: StatusIcon, val buttons: List<Pair<String, CardAction.CallService>>)
 
 /**
  * The open button: [label], then [confirmLabel] for [CONFIRM_SECONDS] after a first tap, then [doneLabel] for
@@ -84,8 +80,7 @@ private fun HassSnapshot.lockToggle(state: EntityState): StateToggle {
 }
 
 private fun HassSnapshot.jammedLock(state: EntityState) = JammedLock(
-    icon = entityIcon(state.entityId).orEmpty(),
-    color = stateColor(state),
+    status = StatusIcon(entityIcon(state.entityId).orEmpty(), stateColor(state)),
     buttons = listOf("unlock", "lock").map { localize("ui.card.lock.$it") to lockCall(state, it) },
 )
 

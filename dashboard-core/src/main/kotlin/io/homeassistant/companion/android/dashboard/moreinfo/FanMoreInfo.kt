@@ -1,7 +1,6 @@
 package io.homeassistant.companion.android.dashboard.moreinfo
 
 import io.homeassistant.companion.android.dashboard.action.CardAction
-import io.homeassistant.companion.android.dashboard.derive.DisplayColor
 import io.homeassistant.companion.android.dashboard.derive.EntityFeature
 import io.homeassistant.companion.android.dashboard.derive.isActive
 import io.homeassistant.companion.android.dashboard.derive.stateColor
@@ -40,14 +39,8 @@ data class FanMoreInfo(
 
 /** How a fan's speed is set. */
 sealed interface FanSpeedControl {
-    /** Named speeds, the fastest at the top, filled in [color] when chosen. */
-    data class Buttons(
-        val label: String,
-        val value: String,
-        val enabled: Boolean,
-        val color: DisplayColor?,
-        val options: List<MenuOption>,
-    ) : FanSpeedControl
+    /** Named speeds, the fastest at the top. */
+    data class Buttons(val select: ControlSelect) : FanSpeedControl
 
     /** A percentage slider. */
     data class Slider(val slider: ControlSlider) : FanSpeedControl
@@ -92,24 +85,28 @@ private fun percentage(state: EntityState) =
 private fun HassSnapshot.speedButtons(state: EntityState, speeds: List<String>): FanSpeedControl.Buttons {
     val step = step(state)
     val call = ValueService(FAN, "set_percentage", entityData(state), PERCENTAGE)
+    val color = stateColor(state)
     return FanSpeedControl.Buttons(
-        label = attributeName(state, PERCENTAGE),
-        // Port of `fanPercentageToSpeed`
-        value = speeds.getOrElse(Math.round(percentage(state) / step).toInt()) { "off" },
-        enabled = state.available(),
-        color = stateColor(state),
-        options = speeds.mapIndexed { index, speed ->
-            MenuOption(
-                speed,
-                fanSpeedLabel(state, speed),
-                fanSpeedIcon(speed, index),
-                call.withValue(
-                    Math.floor(
-                        index * step,
+        ControlSelect(
+            label = attributeName(state, PERCENTAGE),
+            // Port of `fanPercentageToSpeed`
+            value = speeds.getOrElse(Math.round(percentage(state) / step).toInt()) { "off" },
+            enabled = state.available(),
+            color = color,
+            background = color,
+            options = speeds.mapIndexed { index, speed ->
+                MenuOption(
+                    speed,
+                    fanSpeedLabel(state, speed),
+                    fanSpeedIcon(speed, index),
+                    call.withValue(
+                        Math.floor(
+                            index * step,
+                        ),
                     ),
-                ),
-            )
-        }.reversed(),
+                )
+            }.reversed(),
+        ),
     )
 }
 

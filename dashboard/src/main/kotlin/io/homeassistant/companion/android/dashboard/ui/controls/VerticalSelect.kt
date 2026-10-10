@@ -23,44 +23,48 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
-import io.homeassistant.companion.android.dashboard.derive.DisplayColor
+import io.homeassistant.companion.android.dashboard.moreinfo.ControlSelect
 import io.homeassistant.companion.android.dashboard.moreinfo.MenuOption
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
- * Port of `ha-control-select` vertical, as the state controls size it: tall options, top to bottom, on a tint of
- * [color], the chosen one filled with it. An option shows its icon, else its label.
+ * Port of `ha-control-select` vertical, as the state controls size it: [select]'s options top to bottom, on a tint
+ * of its background, the chosen one filled with its colour. An option shows its icon, else its label; choosing the
+ * one already chosen does nothing.
  */
 @Composable
 internal fun VerticalSelect(
-    label: String,
-    value: String?,
-    options: List<MenuOption>,
-    color: DisplayColor?,
-    enabled: Boolean,
+    select: ControlSelect,
     onAction: (CardAction) -> Unit,
     modifier: Modifier = Modifier,
+    height: Dp = STATE_CONTROL_HEIGHT,
 ) {
-    val tint = color?.toColor() ?: LocalHAColorScheme.current.colorFillPrimaryLoudResting
+    val colors = LocalHAColorScheme.current
+    val tint = select.color?.toColor() ?: colors.colorFillPrimaryLoudResting
+    val background = select.background?.toColor() ?: colors.colorFillDisabledLoudResting
     Column(
         modifier = modifier
-            .size(STATE_CONTROL_THICKNESS, STATE_CONTROL_HEIGHT)
-            .alpha(if (enabled) 1f else DISABLED_ALPHA)
+            .size(STATE_CONTROL_THICKNESS, height)
+            .alpha(if (select.enabled) 1f else DISABLED_ALPHA)
             .clip(RoundedCornerShape(STATE_CONTROL_RADIUS))
-            .background(tint.copy(alpha = BACKGROUND_ALPHA))
+            .background(background.copy(alpha = BACKGROUND_ALPHA))
             .padding(SELECT_PADDING)
             .selectableGroup()
-            .semantics { contentDescription = label },
+            .semantics { contentDescription = select.label },
         verticalArrangement = Arrangement.spacedBy(SELECT_PADDING),
     ) {
-        options.forEach { option ->
-            SelectOption(option, option.value == value, tint, enabled, Modifier.weight(1f)) { onAction(option.action) }
+        select.options.forEach { option ->
+            val selected = option.value == select.value
+            SelectOption(option, selected, tint, select.enabled, Modifier.weight(1f)) {
+                if (!selected) onAction(option.action)
+            }
         }
     }
 }

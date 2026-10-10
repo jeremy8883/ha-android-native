@@ -33,7 +33,7 @@ class FanMoreInfoGoldenTest {
                 select.objects("options").map { it.string("value") to it.string("label") },
             )
         }
-        val actual = (hass.fanMoreInfo(state)!!.speed as? FanSpeedControl.Buttons)?.let { buttons ->
+        val actual = (hass.fanMoreInfo(state)!!.speed as? FanSpeedControl.Buttons)?.select?.let { buttons ->
             listOf(
                 buttons.value,
                 buttons.label,
@@ -86,7 +86,7 @@ class FanMoreInfoGoldenTest {
             val value = label.substringAfterLast(' ')
             val actual = when (call.string("control")) {
                 // Upstream sets 0% for a speed it doesn't name
-                "speed" -> (info.speed as FanSpeedControl.Buttons).options.singleOrNull { it.value == value }?.action
+                "speed" -> (info.speed as FanSpeedControl.Buttons).select.options.singleOrNull { it.value == value }?.action
                     ?: return@forEach
                 "slider" -> (info.speed as FanSpeedControl.Slider).slider.service.withValue(value.toDouble())
                 "power" -> info.power!!

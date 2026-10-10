@@ -861,6 +861,7 @@ const CONTROL_ENTITIES = [
   "cover.pergola_roof",
   "valve.front_garden",
   "valve.back_garden",
+  "alarm_control_panel.security",
   "lock.front_door",
   "lock.kitchen_door",
   "lock.openable_lock",
@@ -1013,6 +1014,20 @@ async function captureMoreInfoControls(entityIds) {
           slider(root.querySelector(`ha-state-control-${name}`)?.shadowRoot?.querySelector("ha-control-slider")),
         ])
       ),
+      alarm: el.localName === "more-info-alarm_control_panel" ? {
+        status: !!root.querySelector(".status"),
+        disarm: text(root.querySelector(".disarm")),
+        modes: (() => {
+          const select = root.querySelector("ha-state-control-alarm_control_panel-modes")?.shadowRoot?.querySelector("ha-control-select");
+          return select ? {
+            value: select.value ?? null,
+            label: select.label ?? null,
+            disabled: select.disabled ?? false,
+            color: select.style.getPropertyValue("--control-select-color") || null,
+            options: (select.options ?? []).map((o) => ({ value: o.value, label: o.label ?? null })),
+          } : null;
+        })(),
+      } : undefined,
       lock: el.localName === "more-info-lock" ? {
         status: !!root.querySelector(".status"),
         open: (() => {
@@ -1163,6 +1178,15 @@ async function captureMoreInfoControls(entityIds) {
         off: { ...stateObj, state: "off", attributes: off },
         unavailable: { ...stateObj, state: "unavailable", attributes: { ...stateObj.attributes, restored: true } },
       };
+      if (domain === "alarm_control_panel") {
+        for (const name of ["armed_away", "armed_night", "triggered", "arming", "pending"]) {
+          shown[name] = { ...stateObj, state: name };
+        }
+        // Without a code to ask for, so its calls go straight out
+        const { code_format: _, ...uncoded } = stateObj.attributes;
+        shown.no_code = { ...stateObj, attributes: uncoded };
+        shown.no_code_triggered = { ...stateObj, state: "triggered", attributes: uncoded };
+      }
       if (domain === "lock") {
         for (const name of ["jammed", "unknown", "locking", "unlocking", "open"]) {
           shown[name] = { ...stateObj, state: name };
@@ -1240,6 +1264,11 @@ async function captureMoreInfoControls(entityIds) {
     if (domain === "climate") out[entityId].as_is.calls = await climateCalls(g.clone(current));
     if (domain === "water_heater") {
       out[entityId].as_is.calls = await dialCalls(g.clone(current), "ha-state-control-water_heater-temperature", 50);
+    }
+    if (domain === "alarm_control_panel") {
+      for (const name of ["no_code", "no_code_triggered"]) {
+        out[entityId][name].calls = await alarmCalls(g.clone(out[entityId][name].stateObj));
+      }
     }
     if (domain === "lock") {
       for (const name of ["as_is", "jammed", "unknown"]) {
@@ -1359,6 +1388,21 @@ async function captureMoreInfoControls(entityIds) {
       );
     }
     return recorded;
+  }
+
+  /** The calls of an alarm panel's controls: each mode, and the disarm button while it's triggered. */
+  async function alarmCalls(stateObj) {
+    const recorded = [];
+    const record = async (control, label, act) =>
+      recorded.push({ control, label, detail: null, calls: await recordCalls(stateObj, act, 600) });
+    for (const value of ["armed_home", "armed_away", "armed_night", "armed_vacation", "armed_custom_bypass", "disarmed"]) {
+      await record("mode", value, (r) =>
+        r.querySelector("ha-state-control-alarm_control_panel-modes")?.shadowRoot?.querySelector("ha-control-select")
+          ?.dispatchEvent(new CustomEvent("value-changed", { detail: { value } }))
+      );
+    }
+    await record("disarm", "disarm", (r) => r.querySelector(".disarm")?.click());
+    return recorded.filter((r) => r.calls.length > 0);
   }
 
   /** The calls of a lock's controls: the switch or its buttons, open (confirmed), and the jammed buttons. */

@@ -126,9 +126,8 @@ class MoreInfoModelTest {
         val percent = kitchenBrightnessPercent(hass)
         assertEquals("$percent%", model.state)
         assertEquals("1 hour ago", model.changed)
-        // Its own power button replaces the header's switch, its own controls the tile's
+        // Its own power button replaces the header's switch
         assertNull(model.toggle)
-        assertTrue(model.controls.isEmpty())
         assertEquals(percent.toDouble(), model.light?.brightness?.value)
         assertTrue(model.attributes.none { (name, _) -> name == "Friendly name" })
         assertTrue(model.attributes.isNotEmpty())

@@ -8,11 +8,10 @@ import io.homeassistant.companion.android.dashboard.display.relativeTime
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.entityContext
-import io.homeassistant.companion.android.dashboard.feature.TileFeature
 import io.homeassistant.companion.android.dashboard.feature.attributeName
-import io.homeassistant.companion.android.dashboard.feature.tileFeatures
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.string
+import io.homeassistant.companion.android.dashboard.moreinfo.AlarmMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.ClimateMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.FanMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.HumidifierMoreInfo
@@ -21,6 +20,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.LockMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.PositionMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.StateToggle
 import io.homeassistant.companion.android.dashboard.moreinfo.WaterHeaterMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.alarmMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.climateMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.fanMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.humidifierMoreInfo
@@ -30,9 +30,6 @@ import io.homeassistant.companion.android.dashboard.moreinfo.positionMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.stateToggle
 import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterMoreInfo
 import java.time.Instant
-import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
@@ -54,7 +51,7 @@ import kotlinx.serialization.json.put
  * @property fan a fan's controls
  * @property lock a lock's controls
  * @property stateToggle the large on/off switch of a switch or input boolean
- * @property controls the entity's main controls, as tile features, for domains without controls of their own yet
+ * @property alarm an alarm panel's controls
  * @property media the media controls of a media player
  * @property attributes the displayable attributes, as (name, formatted value)
  */
@@ -77,7 +74,7 @@ data class MoreInfoModel(
     val fan: FanMoreInfo?,
     val lock: LockMoreInfo?,
     val stateToggle: StateToggle?,
-    val controls: List<TileFeature>,
+    val alarm: AlarmMoreInfo?,
     val media: MediaControlModel?,
     val attributes: List<Pair<String, String>>,
 )
@@ -85,8 +82,8 @@ data class MoreInfoModel(
 /**
  * Derive the quick view of [entityId], or `null` when it does not exist. The name and context follow
  * `computeEntityPickerDisplay`, attributes the filter of `ha-attributes` (frontend@20260624.6
- * src/common/entity/compute_entity_name_display.ts, src/components/ha-attributes.ts); the controls reuse the card
- * features each domain's more-info dialog leads with.
+ * src/common/entity/compute_entity_name_display.ts, src/components/ha-attributes.ts); each domain's controls
+ * port its more-info dialog's.
  */
 fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
     val state = states[entityId] ?: return null
@@ -94,12 +91,10 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
     val deviceName = context.device?.deviceName()
     val entityName = entityName(state)
     val domain = state.domain
-    val features = MORE_INFO_FEATURES[domain].orEmpty()
-    val controlCard = CardConfig(
+    val mediaCard = CardConfig(
         buildJsonObject {
             put("type", "tile")
             put("entity", entityId)
-            put("features", JsonArray(features.map { JsonObject(mapOf("type" to JsonPrimitive(it))) }))
         },
     )
     val light = lightMoreInfo(state)
@@ -128,8 +123,8 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         fan = fan,
         lock = lockMoreInfo(state),
         stateToggle = stateToggle,
-        controls = tileFeatures(controlCard),
-        media = if (domain == "media_player") mediaControlModel(CardConfig(controlCard.json)) else null,
+        alarm = alarmMoreInfo(state),
+        media = if (domain == "media_player") mediaControlModel(mediaCard) else null,
         attributes = displayAttributes(state).map { attributeName(state, it) to formatEntityAttributeValue(state, it) },
     )
 }
@@ -155,11 +150,6 @@ private val HEADER_TOGGLE_DOMAINS = setOf("automation", "remote", "siren")
 
 /** The domains whose details lead with the large on/off switch (`more-info-switch`, `more-info-input_boolean`). */
 private val STATE_TOGGLE_DOMAINS = setOf("input_boolean", "switch")
-
-/** The control each domain's more-info dialog leads with, as card features. */
-private val MORE_INFO_FEATURES = mapOf(
-    "alarm_control_panel" to listOf("alarm-modes"),
-)
 
 /** Port of `STATE_ATTRIBUTES` (src/data/entity/entity_attributes.ts). */
 private val STATE_ATTRIBUTES = setOf(

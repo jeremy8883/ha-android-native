@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-10T05:12:20.999Z",
+  "capturedAt": "2026-10-10T05:24:57.014Z",
   "entities": {
     "light.bed_light": {
       "as_is": {
@@ -22042,6 +22042,1041 @@
         }
       }
     },
+    "alarm_control_panel.security": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "alarm_control_panel.security",
+          "state": "disarmed",
+          "attributes": {
+            "code_format": "number",
+            "changed_by": null,
+            "code_arm_required": true,
+            "previous_state": null,
+            "next_state": null,
+            "friendly_name": "Security",
+            "supported_features": 63
+          },
+          "context": {
+            "id": "01M4HEKT38RCRA2AGA2QKNJBQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.160Z",
+          "last_updated": "2026-10-09T23:05:17.160Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.216263,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "alarm_control_panel.security",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "5080afe1893aecf9f83752d75403faae",
+          "labels": [],
+          "modified_at": 1791433963.391702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Security",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_alarm_control_panel",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Disarmed",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "alarm": {
+            "status": false,
+            "disarm": null,
+            "modes": {
+              "value": "disarmed",
+              "label": "Modes",
+              "disabled": false,
+              "color": "var(--state-alarm_control_panel-disarmed-color, var(--state-alarm_control_panel-inactive-color, var(--state-inactive-color)))",
+              "options": [
+                {
+                  "value": "armed_home",
+                  "label": "Home"
+                },
+                {
+                  "value": "armed_away",
+                  "label": "Away"
+                },
+                {
+                  "value": "armed_night",
+                  "label": "Night"
+                },
+                {
+                  "value": "armed_vacation",
+                  "label": "Vacation"
+                },
+                {
+                  "value": "armed_custom_bypass",
+                  "label": "Custom"
+                },
+                {
+                  "value": "disarmed",
+                  "label": "Disarmed"
+                }
+              ]
+            }
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "alarm_control_panel.security",
+          "state": "off",
+          "attributes": {
+            "code_format": "number",
+            "changed_by": null,
+            "code_arm_required": true,
+            "previous_state": null,
+            "next_state": null,
+            "friendly_name": "Security",
+            "supported_features": 63
+          },
+          "context": {
+            "id": "01M4HEKT38RCRA2AGA2QKNJBQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.160Z",
+          "last_updated": "2026-10-09T23:05:17.160Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.216263,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "alarm_control_panel.security",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "5080afe1893aecf9f83752d75403faae",
+          "labels": [],
+          "modified_at": 1791433963.391702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Security",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_alarm_control_panel",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "off",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "alarm": {
+            "status": false,
+            "disarm": null,
+            "modes": {
+              "value": null,
+              "label": "Modes",
+              "disabled": false,
+              "color": "var(--state-alarm_control_panel-off-color, var(--state-alarm_control_panel-inactive-color, var(--state-inactive-color)))",
+              "options": [
+                {
+                  "value": "armed_home",
+                  "label": "Home"
+                },
+                {
+                  "value": "armed_away",
+                  "label": "Away"
+                },
+                {
+                  "value": "armed_night",
+                  "label": "Night"
+                },
+                {
+                  "value": "armed_vacation",
+                  "label": "Vacation"
+                },
+                {
+                  "value": "armed_custom_bypass",
+                  "label": "Custom"
+                },
+                {
+                  "value": "disarmed",
+                  "label": "Disarmed"
+                }
+              ]
+            }
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "alarm_control_panel.security",
+          "state": "unavailable",
+          "attributes": {
+            "code_format": "number",
+            "changed_by": null,
+            "code_arm_required": true,
+            "previous_state": null,
+            "next_state": null,
+            "friendly_name": "Security",
+            "supported_features": 63,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT38RCRA2AGA2QKNJBQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.160Z",
+          "last_updated": "2026-10-09T23:05:17.160Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.216263,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "alarm_control_panel.security",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "5080afe1893aecf9f83752d75403faae",
+          "labels": [],
+          "modified_at": 1791433963.391702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Security",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_alarm_control_panel",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "alarm": {
+            "status": false,
+            "disarm": null,
+            "modes": {
+              "value": null,
+              "label": "Modes",
+              "disabled": true,
+              "color": "var(--state-unavailable-color)",
+              "options": [
+                {
+                  "value": "armed_home",
+                  "label": "Home"
+                },
+                {
+                  "value": "armed_away",
+                  "label": "Away"
+                },
+                {
+                  "value": "armed_night",
+                  "label": "Night"
+                },
+                {
+                  "value": "armed_vacation",
+                  "label": "Vacation"
+                },
+                {
+                  "value": "armed_custom_bypass",
+                  "label": "Custom"
+                },
+                {
+                  "value": "disarmed",
+                  "label": "Disarmed"
+                }
+              ]
+            }
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "armed_away": {
+        "stateObj": {
+          "entity_id": "alarm_control_panel.security",
+          "state": "armed_away",
+          "attributes": {
+            "code_format": "number",
+            "changed_by": null,
+            "code_arm_required": true,
+            "previous_state": null,
+            "next_state": null,
+            "friendly_name": "Security",
+            "supported_features": 63
+          },
+          "context": {
+            "id": "01M4HEKT38RCRA2AGA2QKNJBQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.160Z",
+          "last_updated": "2026-10-09T23:05:17.160Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.216263,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "alarm_control_panel.security",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "5080afe1893aecf9f83752d75403faae",
+          "labels": [],
+          "modified_at": 1791433963.391702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Security",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_alarm_control_panel",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Armed away",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "alarm": {
+            "status": false,
+            "disarm": null,
+            "modes": {
+              "value": "armed_away",
+              "label": "Modes",
+              "disabled": false,
+              "color": "var(--state-alarm_control_panel-armed_away-color, var(--state-alarm_control_panel-active-color, var(--state-active-color)))",
+              "options": [
+                {
+                  "value": "armed_home",
+                  "label": "Home"
+                },
+                {
+                  "value": "armed_away",
+                  "label": "Away"
+                },
+                {
+                  "value": "armed_night",
+                  "label": "Night"
+                },
+                {
+                  "value": "armed_vacation",
+                  "label": "Vacation"
+                },
+                {
+                  "value": "armed_custom_bypass",
+                  "label": "Custom"
+                },
+                {
+                  "value": "disarmed",
+                  "label": "Disarmed"
+                }
+              ]
+            }
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "armed_night": {
+        "stateObj": {
+          "entity_id": "alarm_control_panel.security",
+          "state": "armed_night",
+          "attributes": {
+            "code_format": "number",
+            "changed_by": null,
+            "code_arm_required": true,
+            "previous_state": null,
+            "next_state": null,
+            "friendly_name": "Security",
+            "supported_features": 63
+          },
+          "context": {
+            "id": "01M4HEKT38RCRA2AGA2QKNJBQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.160Z",
+          "last_updated": "2026-10-09T23:05:17.160Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.216263,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "alarm_control_panel.security",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "5080afe1893aecf9f83752d75403faae",
+          "labels": [],
+          "modified_at": 1791433963.391702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Security",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_alarm_control_panel",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Armed night",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "alarm": {
+            "status": false,
+            "disarm": null,
+            "modes": {
+              "value": "armed_night",
+              "label": "Modes",
+              "disabled": false,
+              "color": "var(--state-alarm_control_panel-armed_night-color, var(--state-alarm_control_panel-active-color, var(--state-active-color)))",
+              "options": [
+                {
+                  "value": "armed_home",
+                  "label": "Home"
+                },
+                {
+                  "value": "armed_away",
+                  "label": "Away"
+                },
+                {
+                  "value": "armed_night",
+                  "label": "Night"
+                },
+                {
+                  "value": "armed_vacation",
+                  "label": "Vacation"
+                },
+                {
+                  "value": "armed_custom_bypass",
+                  "label": "Custom"
+                },
+                {
+                  "value": "disarmed",
+                  "label": "Disarmed"
+                }
+              ]
+            }
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "triggered": {
+        "stateObj": {
+          "entity_id": "alarm_control_panel.security",
+          "state": "triggered",
+          "attributes": {
+            "code_format": "number",
+            "changed_by": null,
+            "code_arm_required": true,
+            "previous_state": null,
+            "next_state": null,
+            "friendly_name": "Security",
+            "supported_features": 63
+          },
+          "context": {
+            "id": "01M4HEKT38RCRA2AGA2QKNJBQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.160Z",
+          "last_updated": "2026-10-09T23:05:17.160Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.216263,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "alarm_control_panel.security",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "5080afe1893aecf9f83752d75403faae",
+          "labels": [],
+          "modified_at": 1791433963.391702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Security",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_alarm_control_panel",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Triggered",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "alarm": {
+            "status": true,
+            "disarm": "Disarm",
+            "modes": null
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "arming": {
+        "stateObj": {
+          "entity_id": "alarm_control_panel.security",
+          "state": "arming",
+          "attributes": {
+            "code_format": "number",
+            "changed_by": null,
+            "code_arm_required": true,
+            "previous_state": null,
+            "next_state": null,
+            "friendly_name": "Security",
+            "supported_features": 63
+          },
+          "context": {
+            "id": "01M4HEKT38RCRA2AGA2QKNJBQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.160Z",
+          "last_updated": "2026-10-09T23:05:17.160Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.216263,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "alarm_control_panel.security",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "5080afe1893aecf9f83752d75403faae",
+          "labels": [],
+          "modified_at": 1791433963.391702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Security",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_alarm_control_panel",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Arming",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "alarm": {
+            "status": true,
+            "disarm": "Disarm",
+            "modes": null
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "pending": {
+        "stateObj": {
+          "entity_id": "alarm_control_panel.security",
+          "state": "pending",
+          "attributes": {
+            "code_format": "number",
+            "changed_by": null,
+            "code_arm_required": true,
+            "previous_state": null,
+            "next_state": null,
+            "friendly_name": "Security",
+            "supported_features": 63
+          },
+          "context": {
+            "id": "01M4HEKT38RCRA2AGA2QKNJBQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.160Z",
+          "last_updated": "2026-10-09T23:05:17.160Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.216263,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "alarm_control_panel.security",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "5080afe1893aecf9f83752d75403faae",
+          "labels": [],
+          "modified_at": 1791433963.391702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Security",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_alarm_control_panel",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Pending",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "alarm": {
+            "status": true,
+            "disarm": "Disarm",
+            "modes": null
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "no_code": {
+        "stateObj": {
+          "entity_id": "alarm_control_panel.security",
+          "state": "disarmed",
+          "attributes": {
+            "changed_by": null,
+            "code_arm_required": true,
+            "previous_state": null,
+            "next_state": null,
+            "friendly_name": "Security",
+            "supported_features": 63
+          },
+          "context": {
+            "id": "01M4HEKT38RCRA2AGA2QKNJBQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.160Z",
+          "last_updated": "2026-10-09T23:05:17.160Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.216263,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "alarm_control_panel.security",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "5080afe1893aecf9f83752d75403faae",
+          "labels": [],
+          "modified_at": 1791433963.391702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Security",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_alarm_control_panel",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Disarmed",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "alarm": {
+            "status": false,
+            "disarm": null,
+            "modes": {
+              "value": "disarmed",
+              "label": "Modes",
+              "disabled": false,
+              "color": "var(--state-alarm_control_panel-disarmed-color, var(--state-alarm_control_panel-inactive-color, var(--state-inactive-color)))",
+              "options": [
+                {
+                  "value": "armed_home",
+                  "label": "Home"
+                },
+                {
+                  "value": "armed_away",
+                  "label": "Away"
+                },
+                {
+                  "value": "armed_night",
+                  "label": "Night"
+                },
+                {
+                  "value": "armed_vacation",
+                  "label": "Vacation"
+                },
+                {
+                  "value": "armed_custom_bypass",
+                  "label": "Custom"
+                },
+                {
+                  "value": "disarmed",
+                  "label": "Disarmed"
+                }
+              ]
+            }
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "mode",
+            "label": "armed_home",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "alarm_control_panel",
+                "service": "alarm_arm_home",
+                "data": {
+                  "entity_id": "alarm_control_panel.security"
+                }
+              }
+            ]
+          },
+          {
+            "control": "mode",
+            "label": "armed_away",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "alarm_control_panel",
+                "service": "alarm_arm_away",
+                "data": {
+                  "entity_id": "alarm_control_panel.security"
+                }
+              }
+            ]
+          },
+          {
+            "control": "mode",
+            "label": "armed_night",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "alarm_control_panel",
+                "service": "alarm_arm_night",
+                "data": {
+                  "entity_id": "alarm_control_panel.security"
+                }
+              }
+            ]
+          },
+          {
+            "control": "mode",
+            "label": "armed_vacation",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "alarm_control_panel",
+                "service": "alarm_arm_vacation",
+                "data": {
+                  "entity_id": "alarm_control_panel.security"
+                }
+              }
+            ]
+          },
+          {
+            "control": "mode",
+            "label": "armed_custom_bypass",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "alarm_control_panel",
+                "service": "alarm_arm_custom_bypass",
+                "data": {
+                  "entity_id": "alarm_control_panel.security"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "no_code_triggered": {
+        "stateObj": {
+          "entity_id": "alarm_control_panel.security",
+          "state": "triggered",
+          "attributes": {
+            "changed_by": null,
+            "code_arm_required": true,
+            "previous_state": null,
+            "next_state": null,
+            "friendly_name": "Security",
+            "supported_features": 63
+          },
+          "context": {
+            "id": "01M4HEKT38RCRA2AGA2QKNJBQA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.160Z",
+          "last_updated": "2026-10-09T23:05:17.160Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.216263,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "alarm_control_panel.security",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "5080afe1893aecf9f83752d75403faae",
+          "labels": [],
+          "modified_at": 1791433963.391702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": "Security",
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "demo_alarm_control_panel",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Triggered",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "alarm": {
+            "status": true,
+            "disarm": "Disarm",
+            "modes": null
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "disarm",
+            "label": "disarm",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "alarm_control_panel",
+                "service": "alarm_disarm",
+                "data": {
+                  "entity_id": "alarm_control_panel.security"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
     "lock.front_door": {
       "as_is": {
         "stateObj": {
@@ -22052,12 +23087,12 @@
             "supported_features": 0
           },
           "context": {
-            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "id": "01M4J3X1B32TD63QQCCAGRYDM5",
             "parent_id": null,
-            "user_id": null
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-09T23:05:17.167Z",
-          "last_updated": "2026-10-09T23:05:17.167Z"
+          "last_changed": "2026-10-10T05:17:21.589Z",
+          "last_updated": "2026-10-10T05:17:21.589Z"
         },
         "entry": null,
         "main": {
@@ -22122,12 +23157,12 @@
             "supported_features": 0
           },
           "context": {
-            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "id": "01M4J3X1B32TD63QQCCAGRYDM5",
             "parent_id": null,
-            "user_id": null
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-09T23:05:17.167Z",
-          "last_updated": "2026-10-09T23:05:17.167Z"
+          "last_changed": "2026-10-10T05:17:21.589Z",
+          "last_updated": "2026-10-10T05:17:21.589Z"
         },
         "entry": null,
         "main": {
@@ -22176,12 +23211,12 @@
             "restored": true
           },
           "context": {
-            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "id": "01M4J3X1B32TD63QQCCAGRYDM5",
             "parent_id": null,
-            "user_id": null
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-09T23:05:17.167Z",
-          "last_updated": "2026-10-09T23:05:17.167Z"
+          "last_changed": "2026-10-10T05:17:21.589Z",
+          "last_updated": "2026-10-10T05:17:21.589Z"
         },
         "entry": null,
         "main": {
@@ -22229,12 +23264,12 @@
             "supported_features": 0
           },
           "context": {
-            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "id": "01M4J3X1B32TD63QQCCAGRYDM5",
             "parent_id": null,
-            "user_id": null
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-09T23:05:17.167Z",
-          "last_updated": "2026-10-09T23:05:17.167Z"
+          "last_changed": "2026-10-10T05:17:21.589Z",
+          "last_updated": "2026-10-10T05:17:21.589Z"
         },
         "entry": null,
         "main": {
@@ -22301,12 +23336,12 @@
             "supported_features": 0
           },
           "context": {
-            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "id": "01M4J3X1B32TD63QQCCAGRYDM5",
             "parent_id": null,
-            "user_id": null
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-09T23:05:17.167Z",
-          "last_updated": "2026-10-09T23:05:17.167Z"
+          "last_changed": "2026-10-10T05:17:21.589Z",
+          "last_updated": "2026-10-10T05:17:21.589Z"
         },
         "entry": null,
         "main": {
@@ -22390,12 +23425,12 @@
             "supported_features": 0
           },
           "context": {
-            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "id": "01M4J3X1B32TD63QQCCAGRYDM5",
             "parent_id": null,
-            "user_id": null
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-09T23:05:17.167Z",
-          "last_updated": "2026-10-09T23:05:17.167Z"
+          "last_changed": "2026-10-10T05:17:21.589Z",
+          "last_updated": "2026-10-10T05:17:21.589Z"
         },
         "entry": null,
         "main": {
@@ -22443,12 +23478,12 @@
             "supported_features": 0
           },
           "context": {
-            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "id": "01M4J3X1B32TD63QQCCAGRYDM5",
             "parent_id": null,
-            "user_id": null
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-09T23:05:17.167Z",
-          "last_updated": "2026-10-09T23:05:17.167Z"
+          "last_changed": "2026-10-10T05:17:21.589Z",
+          "last_updated": "2026-10-10T05:17:21.589Z"
         },
         "entry": null,
         "main": {
@@ -22496,12 +23531,12 @@
             "supported_features": 0
           },
           "context": {
-            "id": "01M4HEKT3FQ5G8VXCXVHM5E60G",
+            "id": "01M4J3X1B32TD63QQCCAGRYDM5",
             "parent_id": null,
-            "user_id": null
+            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
           },
-          "last_changed": "2026-10-09T23:05:17.167Z",
-          "last_updated": "2026-10-09T23:05:17.167Z"
+          "last_changed": "2026-10-10T05:17:21.589Z",
+          "last_updated": "2026-10-10T05:17:21.589Z"
         },
         "entry": null,
         "main": {

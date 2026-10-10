@@ -117,6 +117,19 @@ data class SelectMenu(
     val optionIcons: Boolean = true,
 )
 
+/**
+ * Port of `ha-control-select` as the state controls draw it: tall options top to bottom on a tint of
+ * [background] (neutral when `null`), the chosen one ([value]) filled with [color].
+ */
+data class ControlSelect(
+    val label: String,
+    val value: String?,
+    val enabled: Boolean,
+    val color: DisplayColor?,
+    val background: DisplayColor?,
+    val options: List<MenuOption>,
+)
+
 /** One choice of a [SelectMenu], with its [icon] when it has one. */
 data class MenuOption(val value: String, val label: String, val icon: String?, val action: CardAction.CallService)
 

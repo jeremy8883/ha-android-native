@@ -51,7 +51,7 @@ private fun HassSnapshot.alarmModeSelect(state: EntityState, feature: JsonObject
 }
 
 /** The service setting [mode], asking for the code when the panel needs one for it. */
-private fun HassSnapshot.alarmCall(state: EntityState, mode: String): CardAction.CallService {
+internal fun HassSnapshot.alarmCall(state: EntityState, mode: String): CardAction.CallService {
     val codeFormat = state.attributes.string("code_format")?.ifEmpty { null }
     val codeArmRequired = (state.attributes["code_arm_required"] as? JsonPrimitive)?.content == "true"
     val disarm = mode == DISARMED
@@ -70,7 +70,7 @@ private const val DISARMED = "disarmed"
 private val ALARM_DISARM_ONLY_STATES = setOf("triggered", "arming", "pending")
 
 /** Port of `ALARM_MODES` (src/data/alarm_control_panel.ts): mode to service and supported-features flag. */
-private val ALARM_MODES: Map<String, Pair<String, Int?>> = linkedMapOf(
+internal val ALARM_MODES: Map<String, Pair<String, Int?>> = linkedMapOf(
     "armed_home" to ("alarm_arm_home" to ALARM_ARM_HOME),
     "armed_away" to ("alarm_arm_away" to ALARM_ARM_AWAY),
     "armed_night" to ("alarm_arm_night" to ALARM_ARM_NIGHT),
@@ -78,7 +78,7 @@ private val ALARM_MODES: Map<String, Pair<String, Int?>> = linkedMapOf(
     "armed_custom_bypass" to ("alarm_arm_custom_bypass" to ALARM_ARM_CUSTOM_BYPASS),
     DISARMED to ("alarm_disarm" to null),
 )
-private val ALARM_MODE_ICONS = mapOf(
+internal val ALARM_MODE_ICONS = mapOf(
     "armed_home" to "mdi:home",
     "armed_away" to "mdi:lock",
     "armed_night" to "mdi:moon-waning-crescent",
