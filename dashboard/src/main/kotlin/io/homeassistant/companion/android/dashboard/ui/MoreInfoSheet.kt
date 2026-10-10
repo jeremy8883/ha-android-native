@@ -57,6 +57,7 @@ import io.homeassistant.companion.android.dashboard.ui.cards.TileFeatureControl
 import io.homeassistant.companion.android.dashboard.ui.controls.StateToggleControl
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesMenu
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoClimate
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoFan
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLight
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLogbook
@@ -150,6 +151,7 @@ private fun DomainControls(
     model.light?.let { MoreInfoLight(it, state, hass, onAction) }
     model.climate?.let { MoreInfoClimate(it, state, onAction) }
     model.position?.let { MoreInfoPosition(it, state, hass, onAction) }
+    model.fan?.let { MoreInfoFan(it, onAction) }
     model.waterHeater?.let { heater ->
         SingleDialControls(
             current = heater.current,

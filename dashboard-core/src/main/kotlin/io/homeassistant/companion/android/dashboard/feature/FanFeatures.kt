@@ -30,11 +30,7 @@ private fun HassSnapshot.fanSpeedSelect(
         options = speeds.mapIndexed { index, speed ->
             TileFeature.Option(
                 value = speed,
-                label = if (speed == "on" || speed == "off") {
-                    formatEntityState(state, speed)
-                } else {
-                    localize("ui.card.fan.speed.$speed").ifEmpty { speed }
-                },
+                label = fanSpeedLabel(state, speed),
                 icon = fanSpeedIcon(speed, index),
                 action = call(Math.floor(index * step)),
             )
@@ -43,6 +39,15 @@ private fun HassSnapshot.fanSpeedSelect(
         enabled = state.available(),
         color = null,
     )
+}
+
+/** The name of [speed]: the state for on and off, else the card's speed name. */
+internal fun HassSnapshot.fanSpeedLabel(state: EntityState, speed: String): String = if (speed == "on" ||
+    speed == "off"
+) {
+    formatEntityState(state, speed)
+} else {
+    localize("ui.card.fan.speed.$speed").ifEmpty { speed }
 }
 
 /** A percentage slider, for fans with many speeds. */
@@ -60,14 +65,14 @@ private fun HassSnapshot.fanSpeedSlider(state: EntityState, step: Double, percen
     )
 
 /** Port of `computeFanSpeedIcon` (src/data/fan.ts). */
-private fun fanSpeedIcon(speed: String, index: Int) = when (speed) {
+internal fun fanSpeedIcon(speed: String, index: Int) = when (speed) {
     "on" -> "mdi:fan"
     "off" -> "mdi:fan-off"
     else -> FAN_SPEED_ICONS.getOrElse(index - 1) { "mdi:fan" }
 }
 
 /** Port of `FAN_SPEEDS` (src/data/fan.ts): speed names by speed count, for counts up to 4. */
-private val FAN_SPEEDS = mapOf(
+internal val FAN_SPEEDS = mapOf(
     2 to listOf("off", "on"),
     3 to listOf("off", "low", "high"),
     4 to listOf("off", "low", "medium", "high"),

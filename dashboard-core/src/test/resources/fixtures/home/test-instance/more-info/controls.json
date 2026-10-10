@@ -1,11 +1,11 @@
 {
-  "capturedAt": "2026-10-10T04:37:19.527Z",
+  "capturedAt": "2026-10-10T04:56:54.255Z",
   "entities": {
     "light.bed_light": {
       "as_is": {
         "stateObj": {
           "entity_id": "light.bed_light",
-          "state": "off",
+          "state": "on",
           "attributes": {
             "min_color_temp_kelvin": 2000,
             "max_color_temp_kelvin": 6535,
@@ -17,23 +17,33 @@
               "color_temp",
               "hs"
             ],
-            "effect": null,
-            "color_mode": null,
-            "brightness": null,
-            "color_temp_kelvin": null,
-            "hs_color": null,
-            "rgb_color": null,
-            "xy_color": null,
+            "effect": "rainbow",
+            "color_mode": "color_temp",
+            "brightness": 180,
+            "color_temp_kelvin": 4166,
+            "hs_color": [
+              26.752,
+              31.945
+            ],
+            "rgb_color": [
+              255,
+              210,
+              174
+            ],
+            "xy_color": [
+              0.41,
+              0.362
+            ],
             "friendly_name": "Bed Light",
             "supported_features": 4
           },
           "context": {
-            "id": "01M4J0M2TJN7F0P3N8ZJG5EZDW",
+            "id": "01M4J1RPPHHKXTGDYQZRPZM0ZQ",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T04:20:00.470Z",
-          "last_updated": "2026-10-10T04:20:00.470Z"
+          "last_changed": "2026-10-10T04:40:00.478Z",
+          "last_updated": "2026-10-10T04:40:00.478Z"
         },
         "entry": {
           "area_id": null,
@@ -81,22 +91,22 @@
           "original_icon": null
         },
         "main": {
-          "state": "Off",
+          "state": "71%",
           "toggle": null,
           "brightness": {
-            "value": null,
+            "value": 71,
             "min": 1,
             "max": 100,
             "step": 1,
             "mode": "start",
             "vertical": true,
             "inverted": false,
-            "showHandle": false,
+            "showHandle": true,
             "disabled": false,
             "label": "Brightness",
             "unit": "%",
-            "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
-            "background": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
+            "color": "#ffc699",
+            "background": "#ffc699",
             "gradient": null,
             "inactiveColor": null
           },
@@ -137,7 +147,7 @@
           "menus": [
             {
               "label": "Effect",
-              "value": null,
+              "value": "rainbow",
               "disabled": false,
               "options": [
                 {
@@ -152,6 +162,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -255,7 +266,7 @@
         },
         "pickers": {
           "color": {
-            "state": "Off",
+            "state": "71%",
             "toggle": null,
             "buttons": [
               {
@@ -291,8 +302,11 @@
               }
             ],
             "rgb": {
-              "hs": null,
-              "colorBrightness": null,
+              "hs": [
+                26.666666666666664,
+                0.3176470588235294
+              ],
+              "colorBrightness": 255,
               "wv": null,
               "cw": null,
               "ww": null,
@@ -303,7 +317,7 @@
             "menus": [
               {
                 "label": "Effect",
-                "value": null,
+                "value": "rainbow",
                 "disabled": false,
                 "options": [
                   {
@@ -318,6 +332,7 @@
               }
             ],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -420,10 +435,10 @@
             }
           },
           "color_temp": {
-            "state": "Off",
+            "state": "71%",
             "toggle": null,
             "colorTemp": {
-              "value": null,
+              "value": 4166,
               "min": 2000,
               "max": 6535,
               "step": 1,
@@ -434,7 +449,7 @@
               "disabled": false,
               "label": "Temperature",
               "unit": "K",
-              "color": "var(--state-light-off-color, var(--state-light-inactive-color, var(--state-inactive-color)))",
+              "color": "var(--state-light-on-color, var(--state-light-active-color, var(--state-active-color)))",
               "background": null,
               "gradient": "#ff890e 0%, #ff9d42 10%, #ffae67 20%, #ffbc85 30.000000000000004%, #ffc99d 40%, #ffd4b2 50%, #ffdec4 60.00000000000001%, #ffe7d4 70%, #fff0e2 80%, #fff7ef 90%, #fffffb 100%",
               "inactiveColor": null
@@ -476,7 +491,7 @@
             "menus": [
               {
                 "label": "Effect",
-                "value": null,
+                "value": "rainbow",
                 "disabled": false,
                 "options": [
                   {
@@ -491,6 +506,7 @@
               }
             ],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -958,7 +974,7 @@
             "calls": [
               {
                 "domain": "light",
-                "service": "turn_on",
+                "service": "turn_off",
                 "data": {
                   "entity_id": "light.bed_light"
                 }
@@ -967,7 +983,7 @@
           },
           {
             "control": "effect",
-            "label": "rainbow",
+            "label": "off",
             "detail": null,
             "calls": [
               {
@@ -975,7 +991,7 @@
                 "service": "turn_on",
                 "data": {
                   "entity_id": "light.bed_light",
-                  "effect": "rainbow"
+                  "effect": "off"
                 }
               }
             ]
@@ -1008,12 +1024,12 @@
             "effect": null
           },
           "context": {
-            "id": "01M4J0M2TJN7F0P3N8ZJG5EZDW",
+            "id": "01M4J1RPPHHKXTGDYQZRPZM0ZQ",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T04:20:00.470Z",
-          "last_updated": "2026-10-10T04:20:00.470Z"
+          "last_changed": "2026-10-10T04:40:00.478Z",
+          "last_updated": "2026-10-10T04:40:00.478Z"
         },
         "entry": {
           "area_id": null,
@@ -1132,6 +1148,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -1298,6 +1315,7 @@
               }
             ],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -1471,6 +1489,7 @@
               }
             ],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -1594,12 +1613,12 @@
             "restored": true
           },
           "context": {
-            "id": "01M4J0M2TJN7F0P3N8ZJG5EZDW",
+            "id": "01M4J1RPPHHKXTGDYQZRPZM0ZQ",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T04:20:00.470Z",
-          "last_updated": "2026-10-10T04:20:00.470Z"
+          "last_changed": "2026-10-10T04:40:00.478Z",
+          "last_updated": "2026-10-10T04:40:00.478Z"
         },
         "entry": {
           "area_id": null,
@@ -1718,6 +1737,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -1884,6 +1904,7 @@
               }
             ],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -2057,6 +2078,7 @@
               }
             ],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -2297,6 +2319,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -2450,6 +2473,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -2607,6 +2631,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -3202,6 +3227,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -3352,6 +3378,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -3509,6 +3536,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -3732,6 +3760,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -3882,6 +3911,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -4039,6 +4069,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -4279,6 +4310,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -4432,6 +4464,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -4589,6 +4622,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -5184,6 +5218,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -5334,6 +5369,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -5491,6 +5527,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -5714,6 +5751,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -5864,6 +5902,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -6021,6 +6060,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -6256,6 +6296,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -6320,6 +6361,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -6652,6 +6694,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -6713,6 +6756,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -6831,6 +6875,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -6892,6 +6937,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -7059,6 +7105,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -7185,6 +7232,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -7781,6 +7829,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -7904,6 +7953,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -8104,6 +8154,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -8227,6 +8278,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -8426,6 +8478,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -8598,6 +8651,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -9237,6 +9291,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -9406,6 +9461,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -9644,6 +9700,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -9813,6 +9870,7 @@
             },
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [],
@@ -10001,6 +10059,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -10075,6 +10134,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -10150,6 +10210,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -10233,6 +10294,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -10314,6 +10376,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -10396,6 +10459,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -10474,6 +10538,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -10549,6 +10614,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -10625,6 +10691,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -10724,6 +10791,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -10940,6 +11008,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -11089,6 +11158,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -11391,6 +11461,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -11580,6 +11651,7 @@
               }
             ],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [
@@ -11768,6 +11840,7 @@
               }
             ],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [
@@ -12242,6 +12315,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -12431,6 +12505,7 @@
               }
             ],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [
@@ -12619,6 +12694,7 @@
               }
             ],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [
@@ -12935,6 +13011,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -13113,6 +13190,7 @@
               }
             ],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [
@@ -13290,6 +13368,7 @@
               }
             ],
             "positions": {},
+            "power": null,
             "positionButtons": null,
             "favoritePositions": null,
             "current": [
@@ -13564,6 +13643,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -14023,6 +14103,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -14319,6 +14400,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -14517,6 +14599,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -14798,6 +14881,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -14992,6 +15076,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -15169,6 +15254,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -15450,6 +15536,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -15644,6 +15731,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -15729,6 +15817,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -15899,6 +15988,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -16006,6 +16096,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -16102,6 +16193,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -16271,6 +16363,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -16377,6 +16470,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [
@@ -16490,6 +16584,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -16689,6 +16784,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -16807,6 +16903,7 @@
             }
           ],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -16910,6 +17007,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": {
             "layout": "line",
             "buttons": [
@@ -17040,6 +17138,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": {
             "layout": "line",
             "buttons": [
@@ -17126,6 +17225,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": {
             "layout": "line",
             "buttons": [
@@ -17254,6 +17354,7 @@
               "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
             }
           },
+          "power": null,
           "positionButtons": null,
           "favoritePositions": [
             {
@@ -17328,6 +17429,7 @@
                 "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
               }
             },
+            "power": null,
             "positionButtons": null,
             "favoritePositions": [
               {
@@ -17383,6 +17485,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": {
               "layout": "line",
               "buttons": [
@@ -17675,6 +17778,7 @@
               "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
             }
           },
+          "power": null,
           "positionButtons": null,
           "favoritePositions": [
             {
@@ -17749,6 +17853,7 @@
                 "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
               }
             },
+            "power": null,
             "positionButtons": null,
             "favoritePositions": [
               {
@@ -17804,6 +17909,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": {
               "layout": "line",
               "buttons": [
@@ -17958,6 +18064,7 @@
               "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
             }
           },
+          "power": null,
           "positionButtons": null,
           "favoritePositions": [
             {
@@ -18032,6 +18139,7 @@
                 "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
               }
             },
+            "power": null,
             "positionButtons": null,
             "favoritePositions": [
               {
@@ -18087,6 +18195,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": {
               "layout": "line",
               "buttons": [
@@ -18149,18 +18258,18 @@
           "state": "open",
           "attributes": {
             "is_closed": false,
-            "current_position": 70,
+            "current_position": 20,
             "current_tilt_position": 50,
             "friendly_name": "Living Room Window",
             "supported_features": 255
           },
           "context": {
-            "id": "01M4HEKT3DASQ07WZ8HCV4AZBM",
+            "id": "01M4J2C260GRJKHJSTMEV9MJXN",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-09T23:05:17.165Z",
-          "last_updated": "2026-10-09T23:05:17.165Z"
+          "last_changed": "2026-10-10T04:50:34.816Z",
+          "last_updated": "2026-10-10T04:50:34.816Z"
         },
         "entry": {
           "area_id": null,
@@ -18200,7 +18309,7 @@
           "original_icon": null
         },
         "main": {
-          "state": "Open · 70%",
+          "state": "Open · 20%",
           "toggle": null,
           "buttons": [
             {
@@ -18222,7 +18331,7 @@
           "menus": [],
           "positions": {
             "cover-position": {
-              "value": 70,
+              "value": 20,
               "min": 0,
               "max": 100,
               "step": 1,
@@ -18256,6 +18365,7 @@
               "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
             }
           },
+          "power": null,
           "positionButtons": null,
           "favoritePositions": [
             {
@@ -18297,7 +18407,7 @@
         },
         "pickers": {
           "position": {
-            "state": "Open · 70%",
+            "state": "Open · 20%",
             "toggle": null,
             "buttons": [
               {
@@ -18319,7 +18429,7 @@
             "menus": [],
             "positions": {
               "cover-position": {
-                "value": 70,
+                "value": 20,
                 "min": 0,
                 "max": 100,
                 "step": 1,
@@ -18353,6 +18463,7 @@
                 "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
               }
             },
+            "power": null,
             "positionButtons": null,
             "favoritePositions": [
               {
@@ -18393,7 +18504,7 @@
             "favorites": null
           },
           "button": {
-            "state": "Open · 70%",
+            "state": "Open · 20%",
             "toggle": null,
             "buttons": [
               {
@@ -18414,6 +18525,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": {
               "layout": "cross",
               "buttons": [
@@ -18710,18 +18822,18 @@
           "state": "off",
           "attributes": {
             "is_closed": false,
-            "current_position": 70,
+            "current_position": 20,
             "current_tilt_position": 50,
             "friendly_name": "Living Room Window",
             "supported_features": 255
           },
           "context": {
-            "id": "01M4HEKT3DASQ07WZ8HCV4AZBM",
+            "id": "01M4J2C260GRJKHJSTMEV9MJXN",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-09T23:05:17.165Z",
-          "last_updated": "2026-10-09T23:05:17.165Z"
+          "last_changed": "2026-10-10T04:50:34.816Z",
+          "last_updated": "2026-10-10T04:50:34.816Z"
         },
         "entry": {
           "area_id": null,
@@ -18783,7 +18895,7 @@
           "menus": [],
           "positions": {
             "cover-position": {
-              "value": 70,
+              "value": 20,
               "min": 0,
               "max": 100,
               "step": 1,
@@ -18817,6 +18929,7 @@
               "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
             }
           },
+          "power": null,
           "positionButtons": null,
           "favoritePositions": [
             {
@@ -18880,7 +18993,7 @@
             "menus": [],
             "positions": {
               "cover-position": {
-                "value": 70,
+                "value": 20,
                 "min": 0,
                 "max": 100,
                 "step": 1,
@@ -18914,6 +19027,7 @@
                 "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
               }
             },
+            "power": null,
             "positionButtons": null,
             "favoritePositions": [
               {
@@ -18975,6 +19089,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": {
               "layout": "cross",
               "buttons": [
@@ -19051,19 +19166,19 @@
           "state": "unavailable",
           "attributes": {
             "is_closed": false,
-            "current_position": 70,
+            "current_position": 20,
             "current_tilt_position": 50,
             "friendly_name": "Living Room Window",
             "supported_features": 255,
             "restored": true
           },
           "context": {
-            "id": "01M4HEKT3DASQ07WZ8HCV4AZBM",
+            "id": "01M4J2C260GRJKHJSTMEV9MJXN",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-09T23:05:17.165Z",
-          "last_updated": "2026-10-09T23:05:17.165Z"
+          "last_changed": "2026-10-10T04:50:34.816Z",
+          "last_updated": "2026-10-10T04:50:34.816Z"
         },
         "entry": {
           "area_id": null,
@@ -19125,7 +19240,7 @@
           "menus": [],
           "positions": {
             "cover-position": {
-              "value": 70,
+              "value": 20,
               "min": 0,
               "max": 100,
               "step": 1,
@@ -19159,6 +19274,7 @@
               "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
             }
           },
+          "power": null,
           "positionButtons": null,
           "favoritePositions": [
             {
@@ -19222,7 +19338,7 @@
             "menus": [],
             "positions": {
               "cover-position": {
-                "value": 70,
+                "value": 20,
                 "min": 0,
                 "max": 100,
                 "step": 1,
@@ -19256,6 +19372,7 @@
                 "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
               }
             },
+            "power": null,
             "positionButtons": null,
             "favoritePositions": [
               {
@@ -19317,6 +19434,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": {
               "layout": "cross",
               "buttons": [
@@ -19458,6 +19576,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -19552,6 +19671,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -19630,6 +19750,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -19732,6 +19853,7 @@
               "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
             }
           },
+          "power": null,
           "positionButtons": null,
           "favoritePositions": [
             {
@@ -19812,6 +19934,7 @@
                 "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
               }
             },
+            "power": null,
             "positionButtons": null,
             "favoritePositions": [
               {
@@ -19873,6 +19996,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": {
               "layout": "line",
               "buttons": [
@@ -20186,6 +20310,7 @@
               "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
             }
           },
+          "power": null,
           "positionButtons": null,
           "favoritePositions": [
             {
@@ -20266,6 +20391,7 @@
                 "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
               }
             },
+            "power": null,
             "positionButtons": null,
             "favoritePositions": [
               {
@@ -20327,6 +20453,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": {
               "layout": "line",
               "buttons": [
@@ -20480,6 +20607,7 @@
               "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
             }
           },
+          "power": null,
           "positionButtons": null,
           "favoritePositions": [
             {
@@ -20560,6 +20688,7 @@
                 "inactiveColor": "var(--state-cover-open-color, var(--state-cover-active-color, var(--state-active-color)))"
               }
             },
+            "power": null,
             "positionButtons": null,
             "favoritePositions": [
               {
@@ -20621,6 +20750,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": {
               "layout": "line",
               "buttons": [
@@ -20751,6 +20881,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -20885,6 +21016,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -20962,6 +21094,7 @@
           "rgb": null,
           "menus": [],
           "positions": {},
+          "power": null,
           "positionButtons": null,
           "favoritePositions": null,
           "current": [],
@@ -21070,6 +21203,7 @@
               "inactiveColor": null
             }
           },
+          "power": null,
           "positionButtons": null,
           "favoritePositions": [
             {
@@ -21138,6 +21272,7 @@
                 "inactiveColor": null
               }
             },
+            "power": null,
             "positionButtons": null,
             "favoritePositions": [
               {
@@ -21187,6 +21322,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": {
               "layout": "line",
               "buttons": [
@@ -21450,6 +21586,7 @@
               "inactiveColor": null
             }
           },
+          "power": null,
           "positionButtons": null,
           "favoritePositions": [
             {
@@ -21518,6 +21655,7 @@
                 "inactiveColor": null
               }
             },
+            "power": null,
             "positionButtons": null,
             "favoritePositions": [
               {
@@ -21567,6 +21705,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": {
               "layout": "line",
               "buttons": [
@@ -21714,6 +21853,7 @@
               "inactiveColor": null
             }
           },
+          "power": null,
           "positionButtons": null,
           "favoritePositions": [
             {
@@ -21782,6 +21922,7 @@
                 "inactiveColor": null
               }
             },
+            "power": null,
             "positionButtons": null,
             "favoritePositions": [
               {
@@ -21831,6 +21972,7 @@
             "rgb": null,
             "menus": [],
             "positions": {},
+            "power": null,
             "positionButtons": {
               "layout": "line",
               "buttons": [
@@ -21878,6 +22020,2769 @@
             "favorites": null
           }
         }
+      }
+    },
+    "fan.living_room_fan": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "fan.living_room_fan",
+          "state": "off",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "direction": "forward",
+            "oscillating": false,
+            "percentage": null,
+            "percentage_step": 33.333333333333336,
+            "preset_mode": null,
+            "friendly_name": "Living Room Fan",
+            "supported_features": 55
+          },
+          "context": {
+            "id": "01M4HEKT3EFCX8T5SEXF8ZJG0E",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220549,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.living_room_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "fd8a539f8efd143fbe2fd2bd2b78d9b0",
+          "labels": [],
+          "modified_at": 1791433963.398274,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Living Room Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Off",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Direction",
+              "value": "forward",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "forward",
+                  "label": "Forward"
+                },
+                {
+                  "value": "reverse",
+                  "label": "Reverse"
+                }
+              ]
+            },
+            {
+              "label": "Oscillating",
+              "value": "false",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "true",
+                  "label": "Yes"
+                },
+                {
+                  "value": "false",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "speedSelect": {
+            "value": "off",
+            "label": "Speed",
+            "disabled": false,
+            "color": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))",
+            "options": [
+              {
+                "value": "high",
+                "label": "High"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "low",
+                "label": "Low"
+              },
+              {
+                "value": "off",
+                "label": "Off"
+              }
+            ]
+          },
+          "speedSlider": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "menuIcons": {
+          "preset_mode": {
+            "auto": "mdi:fan-auto",
+            "smart": "mdi:brain",
+            "sleep": "mdi:bed",
+            "on": "mdi:power"
+          }
+        }
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "fan.living_room_fan",
+          "state": "off",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "direction": "forward",
+            "oscillating": false,
+            "percentage": null,
+            "percentage_step": 33.333333333333336,
+            "preset_mode": null,
+            "friendly_name": "Living Room Fan",
+            "supported_features": 55
+          },
+          "context": {
+            "id": "01M4HEKT3EFCX8T5SEXF8ZJG0E",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220549,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.living_room_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "fd8a539f8efd143fbe2fd2bd2b78d9b0",
+          "labels": [],
+          "modified_at": 1791433963.398274,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Living Room Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Off",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Direction",
+              "value": "forward",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "forward",
+                  "label": "Forward"
+                },
+                {
+                  "value": "reverse",
+                  "label": "Reverse"
+                }
+              ]
+            },
+            {
+              "label": "Oscillating",
+              "value": "false",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "true",
+                  "label": "Yes"
+                },
+                {
+                  "value": "false",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "speedSelect": {
+            "value": "off",
+            "label": "Speed",
+            "disabled": false,
+            "color": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))",
+            "options": [
+              {
+                "value": "high",
+                "label": "High"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "low",
+                "label": "Low"
+              },
+              {
+                "value": "off",
+                "label": "Off"
+              }
+            ]
+          },
+          "speedSlider": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "fan.living_room_fan",
+          "state": "unavailable",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "direction": "forward",
+            "oscillating": false,
+            "percentage": null,
+            "percentage_step": 33.333333333333336,
+            "preset_mode": null,
+            "friendly_name": "Living Room Fan",
+            "supported_features": 55,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3EFCX8T5SEXF8ZJG0E",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220549,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.living_room_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "fd8a539f8efd143fbe2fd2bd2b78d9b0",
+          "labels": [],
+          "modified_at": 1791433963.398274,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Living Room Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Direction",
+              "value": "forward",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "forward",
+                  "label": "Forward"
+                },
+                {
+                  "value": "reverse",
+                  "label": "Reverse"
+                }
+              ]
+            },
+            {
+              "label": "Oscillating",
+              "value": "false",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "true",
+                  "label": "Yes"
+                },
+                {
+                  "value": "false",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "speedSelect": {
+            "value": "off",
+            "label": "Speed",
+            "disabled": true,
+            "color": "var(--state-unavailable-color)",
+            "options": [
+              {
+                "value": "high",
+                "label": "High"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "low",
+                "label": "Low"
+              },
+              {
+                "value": "off",
+                "label": "Off"
+              }
+            ]
+          },
+          "speedSlider": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "on": {
+        "stateObj": {
+          "entity_id": "fan.living_room_fan",
+          "state": "on",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "direction": "forward",
+            "oscillating": false,
+            "percentage": 66.66666666666667,
+            "percentage_step": 33.333333333333336,
+            "preset_mode": "sleep",
+            "friendly_name": "Living Room Fan",
+            "supported_features": 55
+          },
+          "context": {
+            "id": "01M4HEKT3EFCX8T5SEXF8ZJG0E",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220549,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.living_room_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "fd8a539f8efd143fbe2fd2bd2b78d9b0",
+          "labels": [],
+          "modified_at": 1791433963.398274,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Living Room Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "67%",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Direction",
+              "value": "forward",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "forward",
+                  "label": "Forward"
+                },
+                {
+                  "value": "reverse",
+                  "label": "Reverse"
+                }
+              ]
+            },
+            {
+              "label": "Oscillating",
+              "value": "false",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "true",
+                  "label": "Yes"
+                },
+                {
+                  "value": "false",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "speedSelect": {
+            "value": "medium",
+            "label": "Speed",
+            "disabled": false,
+            "color": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
+            "options": [
+              {
+                "value": "high",
+                "label": "High"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "low",
+                "label": "Low"
+              },
+              {
+                "value": "off",
+                "label": "Off"
+              }
+            ]
+          },
+          "speedSlider": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "speed",
+            "label": "speed off",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.living_room_fan",
+                  "percentage": 0
+                }
+              }
+            ]
+          },
+          {
+            "control": "speed",
+            "label": "speed low",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.living_room_fan",
+                  "percentage": 33
+                }
+              }
+            ]
+          },
+          {
+            "control": "speed",
+            "label": "speed medium",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.living_room_fan",
+                  "percentage": 66
+                }
+              }
+            ]
+          },
+          {
+            "control": "speed",
+            "label": "speed high",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.living_room_fan",
+                  "percentage": 100
+                }
+              }
+            ]
+          },
+          {
+            "control": "speed",
+            "label": "speed on",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.living_room_fan",
+                  "percentage": 0
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Direction reverse",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_direction",
+                "data": {
+                  "entity_id": "fan.living_room_fan",
+                  "direction": "reverse"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Oscillating true",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "oscillate",
+                "data": {
+                  "entity_id": "fan.living_room_fan",
+                  "oscillating": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "on_fine": {
+        "stateObj": {
+          "entity_id": "fan.living_room_fan",
+          "state": "on",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "direction": "forward",
+            "oscillating": false,
+            "percentage": 42,
+            "percentage_step": 1,
+            "preset_mode": null,
+            "friendly_name": "Living Room Fan",
+            "supported_features": 55
+          },
+          "context": {
+            "id": "01M4HEKT3EFCX8T5SEXF8ZJG0E",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": "living_room",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220549,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.living_room_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "fd8a539f8efd143fbe2fd2bd2b78d9b0",
+          "labels": [],
+          "modified_at": 1791433963.398274,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Living Room Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "42%",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Direction",
+              "value": "forward",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "forward",
+                  "label": "Forward"
+                },
+                {
+                  "value": "reverse",
+                  "label": "Reverse"
+                }
+              ]
+            },
+            {
+              "label": "Oscillating",
+              "value": "false",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "true",
+                  "label": "Yes"
+                },
+                {
+                  "value": "false",
+                  "label": "No"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "speedSelect": null,
+          "speedSlider": {
+            "value": 42,
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "mode": "start",
+            "vertical": true,
+            "inverted": false,
+            "showHandle": false,
+            "disabled": false,
+            "label": "Speed",
+            "unit": "%",
+            "color": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
+            "background": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
+            "gradient": null,
+            "inactiveColor": null
+          },
+          "power": {
+            "disabled": false
+          },
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "slider",
+            "label": "slider 70",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.living_room_fan",
+                  "percentage": 70
+                }
+              }
+            ]
+          },
+          {
+            "control": "power",
+            "label": "power",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "turn_off",
+                "data": {
+                  "entity_id": "fan.living_room_fan"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Direction reverse",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_direction",
+                "data": {
+                  "entity_id": "fan.living_room_fan",
+                  "direction": "reverse"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Oscillating true",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "oscillate",
+                "data": {
+                  "entity_id": "fan.living_room_fan",
+                  "oscillating": true
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "fan.ceiling_fan": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "fan.ceiling_fan",
+          "state": "off",
+          "attributes": {
+            "preset_modes": null,
+            "percentage": null,
+            "percentage_step": 33.333333333333336,
+            "preset_mode": null,
+            "friendly_name": "Ceiling Fan",
+            "supported_features": 49
+          },
+          "context": {
+            "id": "01M4HEKT3EA7EGM6H3QNZHH7X8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": "bedroom",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220643,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.ceiling_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "289103b8cf8faba7d6cea6e25c9aa877",
+          "labels": [],
+          "modified_at": 1791433963.415882,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Ceiling Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": null
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Off",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "speedSelect": {
+            "value": "off",
+            "label": "Speed",
+            "disabled": false,
+            "color": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))",
+            "options": [
+              {
+                "value": "high",
+                "label": "High"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "low",
+                "label": "Low"
+              },
+              {
+                "value": "off",
+                "label": "Off"
+              }
+            ]
+          },
+          "speedSlider": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "menuIcons": {
+          "preset_mode": {}
+        }
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "fan.ceiling_fan",
+          "state": "off",
+          "attributes": {
+            "preset_modes": null,
+            "percentage": null,
+            "percentage_step": 33.333333333333336,
+            "preset_mode": null,
+            "friendly_name": "Ceiling Fan",
+            "supported_features": 49
+          },
+          "context": {
+            "id": "01M4HEKT3EA7EGM6H3QNZHH7X8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": "bedroom",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220643,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.ceiling_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "289103b8cf8faba7d6cea6e25c9aa877",
+          "labels": [],
+          "modified_at": 1791433963.415882,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Ceiling Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": null
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Off",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "speedSelect": {
+            "value": "off",
+            "label": "Speed",
+            "disabled": false,
+            "color": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))",
+            "options": [
+              {
+                "value": "high",
+                "label": "High"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "low",
+                "label": "Low"
+              },
+              {
+                "value": "off",
+                "label": "Off"
+              }
+            ]
+          },
+          "speedSlider": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "fan.ceiling_fan",
+          "state": "unavailable",
+          "attributes": {
+            "preset_modes": null,
+            "percentage": null,
+            "percentage_step": 33.333333333333336,
+            "preset_mode": null,
+            "friendly_name": "Ceiling Fan",
+            "supported_features": 49,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3EA7EGM6H3QNZHH7X8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": "bedroom",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220643,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.ceiling_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "289103b8cf8faba7d6cea6e25c9aa877",
+          "labels": [],
+          "modified_at": 1791433963.415882,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Ceiling Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": null
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "speedSelect": {
+            "value": "off",
+            "label": "Speed",
+            "disabled": true,
+            "color": "var(--state-unavailable-color)",
+            "options": [
+              {
+                "value": "high",
+                "label": "High"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "low",
+                "label": "Low"
+              },
+              {
+                "value": "off",
+                "label": "Off"
+              }
+            ]
+          },
+          "speedSlider": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "on": {
+        "stateObj": {
+          "entity_id": "fan.ceiling_fan",
+          "state": "on",
+          "attributes": {
+            "preset_modes": null,
+            "percentage": 66.66666666666667,
+            "percentage_step": 33.333333333333336,
+            "preset_mode": null,
+            "friendly_name": "Ceiling Fan",
+            "supported_features": 49
+          },
+          "context": {
+            "id": "01M4HEKT3EA7EGM6H3QNZHH7X8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": "bedroom",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220643,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.ceiling_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "289103b8cf8faba7d6cea6e25c9aa877",
+          "labels": [],
+          "modified_at": 1791433963.415882,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Ceiling Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": null
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "67%",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "speedSelect": {
+            "value": "medium",
+            "label": "Speed",
+            "disabled": false,
+            "color": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
+            "options": [
+              {
+                "value": "high",
+                "label": "High"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "low",
+                "label": "Low"
+              },
+              {
+                "value": "off",
+                "label": "Off"
+              }
+            ]
+          },
+          "speedSlider": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "speed",
+            "label": "speed off",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.ceiling_fan",
+                  "percentage": 0
+                }
+              }
+            ]
+          },
+          {
+            "control": "speed",
+            "label": "speed low",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.ceiling_fan",
+                  "percentage": 33
+                }
+              }
+            ]
+          },
+          {
+            "control": "speed",
+            "label": "speed medium",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.ceiling_fan",
+                  "percentage": 66
+                }
+              }
+            ]
+          },
+          {
+            "control": "speed",
+            "label": "speed high",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.ceiling_fan",
+                  "percentage": 100
+                }
+              }
+            ]
+          },
+          {
+            "control": "speed",
+            "label": "speed on",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.ceiling_fan",
+                  "percentage": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "on_fine": {
+        "stateObj": {
+          "entity_id": "fan.ceiling_fan",
+          "state": "on",
+          "attributes": {
+            "preset_modes": null,
+            "percentage": 42,
+            "percentage_step": 1,
+            "preset_mode": null,
+            "friendly_name": "Ceiling Fan",
+            "supported_features": 49
+          },
+          "context": {
+            "id": "01M4HEKT3EA7EGM6H3QNZHH7X8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": "bedroom",
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220643,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.ceiling_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "289103b8cf8faba7d6cea6e25c9aa877",
+          "labels": [],
+          "modified_at": 1791433963.415882,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Ceiling Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": null
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "42%",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "speedSelect": null,
+          "speedSlider": {
+            "value": 42,
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "mode": "start",
+            "vertical": true,
+            "inverted": false,
+            "showHandle": false,
+            "disabled": false,
+            "label": "Speed",
+            "unit": "%",
+            "color": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
+            "background": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
+            "gradient": null,
+            "inactiveColor": null
+          },
+          "power": {
+            "disabled": false
+          },
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "slider",
+            "label": "slider 70",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.ceiling_fan",
+                  "percentage": 70
+                }
+              }
+            ]
+          },
+          {
+            "control": "power",
+            "label": "power",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "turn_off",
+                "data": {
+                  "entity_id": "fan.ceiling_fan"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "fan.percentage_limited_fan": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "fan.percentage_limited_fan",
+          "state": "off",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "percentage": null,
+            "percentage_step": 33.333333333333336,
+            "preset_mode": null,
+            "friendly_name": "Percentage Limited Fan",
+            "supported_features": 49
+          },
+          "context": {
+            "id": "01M4HEKT3E2DK5D6TWCPMA6CX8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220801,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.percentage_limited_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "e563a13d63b69be5078d5ddd25b1b072",
+          "labels": [],
+          "modified_at": 1791433963.200702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Percentage Limited Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan4",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Off",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "speedSelect": {
+            "value": "off",
+            "label": "Speed",
+            "disabled": false,
+            "color": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))",
+            "options": [
+              {
+                "value": "high",
+                "label": "High"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "low",
+                "label": "Low"
+              },
+              {
+                "value": "off",
+                "label": "Off"
+              }
+            ]
+          },
+          "speedSlider": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "menuIcons": {
+          "preset_mode": {
+            "auto": "mdi:fan-auto",
+            "smart": "mdi:brain",
+            "sleep": "mdi:bed",
+            "on": "mdi:power"
+          }
+        }
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "fan.percentage_limited_fan",
+          "state": "off",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "percentage": null,
+            "percentage_step": 33.333333333333336,
+            "preset_mode": null,
+            "friendly_name": "Percentage Limited Fan",
+            "supported_features": 49
+          },
+          "context": {
+            "id": "01M4HEKT3E2DK5D6TWCPMA6CX8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220801,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.percentage_limited_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "e563a13d63b69be5078d5ddd25b1b072",
+          "labels": [],
+          "modified_at": 1791433963.200702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Percentage Limited Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan4",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Off",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "speedSelect": {
+            "value": "off",
+            "label": "Speed",
+            "disabled": false,
+            "color": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))",
+            "options": [
+              {
+                "value": "high",
+                "label": "High"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "low",
+                "label": "Low"
+              },
+              {
+                "value": "off",
+                "label": "Off"
+              }
+            ]
+          },
+          "speedSlider": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "fan.percentage_limited_fan",
+          "state": "unavailable",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "percentage": null,
+            "percentage_step": 33.333333333333336,
+            "preset_mode": null,
+            "friendly_name": "Percentage Limited Fan",
+            "supported_features": 49,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3E2DK5D6TWCPMA6CX8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220801,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.percentage_limited_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "e563a13d63b69be5078d5ddd25b1b072",
+          "labels": [],
+          "modified_at": 1791433963.200702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Percentage Limited Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan4",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "speedSelect": {
+            "value": "off",
+            "label": "Speed",
+            "disabled": true,
+            "color": "var(--state-unavailable-color)",
+            "options": [
+              {
+                "value": "high",
+                "label": "High"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "low",
+                "label": "Low"
+              },
+              {
+                "value": "off",
+                "label": "Off"
+              }
+            ]
+          },
+          "speedSlider": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "on": {
+        "stateObj": {
+          "entity_id": "fan.percentage_limited_fan",
+          "state": "on",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "percentage": 66.66666666666667,
+            "percentage_step": 33.333333333333336,
+            "preset_mode": "sleep",
+            "friendly_name": "Percentage Limited Fan",
+            "supported_features": 49
+          },
+          "context": {
+            "id": "01M4HEKT3E2DK5D6TWCPMA6CX8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220801,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.percentage_limited_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "e563a13d63b69be5078d5ddd25b1b072",
+          "labels": [],
+          "modified_at": 1791433963.200702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Percentage Limited Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan4",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "67%",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "speedSelect": {
+            "value": "medium",
+            "label": "Speed",
+            "disabled": false,
+            "color": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
+            "options": [
+              {
+                "value": "high",
+                "label": "High"
+              },
+              {
+                "value": "medium",
+                "label": "Medium"
+              },
+              {
+                "value": "low",
+                "label": "Low"
+              },
+              {
+                "value": "off",
+                "label": "Off"
+              }
+            ]
+          },
+          "speedSlider": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "speed",
+            "label": "speed off",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.percentage_limited_fan",
+                  "percentage": 0
+                }
+              }
+            ]
+          },
+          {
+            "control": "speed",
+            "label": "speed low",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.percentage_limited_fan",
+                  "percentage": 33
+                }
+              }
+            ]
+          },
+          {
+            "control": "speed",
+            "label": "speed medium",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.percentage_limited_fan",
+                  "percentage": 66
+                }
+              }
+            ]
+          },
+          {
+            "control": "speed",
+            "label": "speed high",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.percentage_limited_fan",
+                  "percentage": 100
+                }
+              }
+            ]
+          },
+          {
+            "control": "speed",
+            "label": "speed on",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.percentage_limited_fan",
+                  "percentage": 0
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "on_fine": {
+        "stateObj": {
+          "entity_id": "fan.percentage_limited_fan",
+          "state": "on",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "percentage": 42,
+            "percentage_step": 1,
+            "preset_mode": null,
+            "friendly_name": "Percentage Limited Fan",
+            "supported_features": 49
+          },
+          "context": {
+            "id": "01M4HEKT3E2DK5D6TWCPMA6CX8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220801,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.percentage_limited_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "e563a13d63b69be5078d5ddd25b1b072",
+          "labels": [],
+          "modified_at": 1791433963.200702,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Percentage Limited Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan4",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "42%",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "speedSelect": null,
+          "speedSlider": {
+            "value": 42,
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "mode": "start",
+            "vertical": true,
+            "inverted": false,
+            "showHandle": false,
+            "disabled": false,
+            "label": "Speed",
+            "unit": "%",
+            "color": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
+            "background": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
+            "gradient": null,
+            "inactiveColor": null
+          },
+          "power": {
+            "disabled": false
+          },
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "slider",
+            "label": "slider 70",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_percentage",
+                "data": {
+                  "entity_id": "fan.percentage_limited_fan",
+                  "percentage": 70
+                }
+              }
+            ]
+          },
+          {
+            "control": "power",
+            "label": "power",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "turn_off",
+                "data": {
+                  "entity_id": "fan.percentage_limited_fan"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "fan.preset_only_limited_fan": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "fan.preset_only_limited_fan",
+          "state": "off",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "preset_mode": null,
+            "friendly_name": "Preset Only Limited Fan",
+            "supported_features": 56
+          },
+          "context": {
+            "id": "01M4HEKT3EX9KSTBTDEZ9M8KDA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220877,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.preset_only_limited_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "821722aae792ac28e84f814da4cfc779",
+          "labels": [],
+          "modified_at": 1791433963.200744,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Preset Only Limited Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan5",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Off",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Toggle",
+              "onColor": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))"
+            },
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Preset mode",
+              "value": null,
+              "disabled": false,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "smart",
+                  "label": "Smart"
+                },
+                {
+                  "value": "sleep",
+                  "label": "Sleep"
+                },
+                {
+                  "value": "on",
+                  "label": "On"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "menuIcons": {
+          "preset_mode": {
+            "auto": "mdi:fan-auto",
+            "smart": "mdi:brain",
+            "sleep": "mdi:bed",
+            "on": "mdi:power"
+          }
+        }
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "fan.preset_only_limited_fan",
+          "state": "off",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "preset_mode": null,
+            "friendly_name": "Preset Only Limited Fan",
+            "supported_features": 56
+          },
+          "context": {
+            "id": "01M4HEKT3EX9KSTBTDEZ9M8KDA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220877,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.preset_only_limited_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "821722aae792ac28e84f814da4cfc779",
+          "labels": [],
+          "modified_at": 1791433963.200744,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Preset Only Limited Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan5",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Off",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": false,
+              "label": "Toggle",
+              "onColor": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))"
+            },
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Preset mode",
+              "value": null,
+              "disabled": false,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "smart",
+                  "label": "Smart"
+                },
+                {
+                  "value": "sleep",
+                  "label": "Sleep"
+                },
+                {
+                  "value": "on",
+                  "label": "On"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "fan.preset_only_limited_fan",
+          "state": "unavailable",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "preset_mode": null,
+            "friendly_name": "Preset Only Limited Fan",
+            "supported_features": 56,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3EX9KSTBTDEZ9M8KDA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220877,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.preset_only_limited_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "821722aae792ac28e84f814da4cfc779",
+          "labels": [],
+          "modified_at": 1791433963.200744,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Preset Only Limited Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan5",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": {
+            "switch": {
+              "checked": false,
+              "showHandle": false,
+              "disabled": true,
+              "label": "Toggle",
+              "onColor": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))"
+            },
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Preset mode",
+              "value": null,
+              "disabled": true,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "smart",
+                  "label": "Smart"
+                },
+                {
+                  "value": "sleep",
+                  "label": "Sleep"
+                },
+                {
+                  "value": "on",
+                  "label": "On"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "on": {
+        "stateObj": {
+          "entity_id": "fan.preset_only_limited_fan",
+          "state": "on",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "preset_mode": "sleep",
+            "friendly_name": "Preset Only Limited Fan",
+            "supported_features": 56,
+            "percentage": 66.66666666666667
+          },
+          "context": {
+            "id": "01M4HEKT3EX9KSTBTDEZ9M8KDA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220877,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.preset_only_limited_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "821722aae792ac28e84f814da4cfc779",
+          "labels": [],
+          "modified_at": 1791433963.200744,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Preset Only Limited Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan5",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "67%",
+          "toggle": {
+            "switch": {
+              "checked": true,
+              "showHandle": true,
+              "disabled": false,
+              "label": "Toggle",
+              "onColor": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))"
+            },
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Preset mode",
+              "value": "sleep",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "smart",
+                  "label": "Smart"
+                },
+                {
+                  "value": "sleep",
+                  "label": "Sleep"
+                },
+                {
+                  "value": "on",
+                  "label": "On"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "toggle",
+            "label": "switch",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "turn_off",
+                "data": {
+                  "entity_id": "fan.preset_only_limited_fan"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Preset mode auto",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_preset_mode",
+                "data": {
+                  "entity_id": "fan.preset_only_limited_fan",
+                  "preset_mode": "auto"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "on_fine": {
+        "stateObj": {
+          "entity_id": "fan.preset_only_limited_fan",
+          "state": "on",
+          "attributes": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ],
+            "preset_mode": null,
+            "friendly_name": "Preset Only Limited Fan",
+            "supported_features": 56,
+            "percentage": 42,
+            "percentage_step": 1
+          },
+          "context": {
+            "id": "01M4HEKT3EX9KSTBTDEZ9M8KDA",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.166Z",
+          "last_updated": "2026-10-09T23:05:17.166Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.220877,
+          "device_id": null,
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "fan.preset_only_limited_fan",
+          "has_entity_name": false,
+          "hidden_by": null,
+          "icon": null,
+          "id": "821722aae792ac28e84f814da4cfc779",
+          "labels": [],
+          "modified_at": 1791433963.200744,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": "Preset Only Limited Fan",
+          "platform": "demo",
+          "translation_key": "demo",
+          "unique_id": "fan5",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "preset_modes": [
+              "auto",
+              "smart",
+              "sleep",
+              "on"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "42%",
+          "toggle": {
+            "switch": {
+              "checked": true,
+              "showHandle": true,
+              "disabled": false,
+              "label": "Toggle",
+              "onColor": "var(--state-fan-on-color, var(--state-fan-active-color, var(--state-active-color)))",
+              "offColor": "var(--state-fan-off-color, var(--state-fan-inactive-color, var(--state-inactive-color)))"
+            },
+            "buttons": []
+          },
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Preset mode",
+              "value": null,
+              "disabled": false,
+              "options": [
+                {
+                  "value": "auto",
+                  "label": "Auto"
+                },
+                {
+                  "value": "smart",
+                  "label": "Smart"
+                },
+                {
+                  "value": "sleep",
+                  "label": "Sleep"
+                },
+                {
+                  "value": "on",
+                  "label": "On"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "toggle",
+            "label": "switch",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "turn_off",
+                "data": {
+                  "entity_id": "fan.preset_only_limited_fan"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Preset mode auto",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "fan",
+                "service": "set_preset_mode",
+                "data": {
+                  "entity_id": "fan.preset_only_limited_fan",
+                  "preset_mode": "auto"
+                }
+              }
+            ]
+          }
+        ]
       }
     }
   }

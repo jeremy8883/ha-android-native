@@ -861,6 +861,10 @@ const CONTROL_ENTITIES = [
   "cover.pergola_roof",
   "valve.front_garden",
   "valve.back_garden",
+  "fan.living_room_fan",
+  "fan.ceiling_fan",
+  "fan.percentage_limited_fan",
+  "fan.preset_only_limited_fan",
 ];
 
 
@@ -880,6 +884,7 @@ async function captureMoreInfoControls(entityIds) {
       swing_horizontal_mode: "swing_horizontal_modes",
     },
     water_heater: { operation_mode: "operation_list" },
+    fan: { preset_mode: "preset_modes" },
     humidifier: { mode: "available_modes" },
   };
   const g = window.__golden;
@@ -1004,6 +1009,20 @@ async function captureMoreInfoControls(entityIds) {
           slider(root.querySelector(`ha-state-control-${name}`)?.shadowRoot?.querySelector("ha-control-slider")),
         ])
       ),
+      speedSelect: (() => {
+        const select = root.querySelector("ha-state-control-fan-speed")?.shadowRoot?.querySelector("ha-control-select");
+        return select && {
+          value: select.value ?? null,
+          label: select.label ?? null,
+          disabled: select.disabled ?? false,
+          color: select.style.getPropertyValue("--control-select-color") || null,
+          options: (select.options ?? []).map((o) => ({ value: o.value, label: o.label ?? null })),
+        };
+      })(),
+      speedSlider: slider(root.querySelector("ha-state-control-fan-speed")?.shadowRoot?.querySelector("ha-control-slider")),
+      power: root.querySelector(".controls .buttons ha-outlined-icon-button") ? {
+        disabled: root.querySelector(".controls .buttons ha-outlined-icon-button").disabled ?? false,
+      } : null,
       positionButtons: (() => {
         const control = root.querySelector("ha-state-control-cover-buttons, ha-state-control-valve-buttons");
         if (!control) return null;
@@ -1126,11 +1145,18 @@ async function captureMoreInfoControls(entityIds) {
       // Turned off, an entity keeps its capabilities; what it's doing stops
       const off = { ...stateObj.attributes };
       if ("hvac_action" in off) off.hvac_action = "off";
-      return {
+      const shown = {
         as_is: stateObj,
         off: { ...stateObj, state: "off", attributes: off },
         unavailable: { ...stateObj, state: "unavailable", attributes: { ...stateObj.attributes, restored: true } },
       };
+      if (domain === "fan") {
+        // The test fans are off: on at two of three speeds, and with a fine step (the slider)
+        const a = stateObj.attributes;
+        shown.on = { ...stateObj, state: "on", attributes: { ...a, percentage: 66.66666666666667, preset_mode: a.preset_modes?.[2] ?? null } };
+        shown.on_fine = { ...stateObj, state: "on", attributes: { ...a, percentage: 42, percentage_step: 1 } };
+      }
+      return shown;
     }
     // As the server reports a light off or unavailable: its capabilities stay, its colour and brightness go
     const kept = {};
@@ -1196,6 +1222,11 @@ async function captureMoreInfoControls(entityIds) {
     if (domain === "climate") out[entityId].as_is.calls = await climateCalls(g.clone(current));
     if (domain === "water_heater") {
       out[entityId].as_is.calls = await dialCalls(g.clone(current), "ha-state-control-water_heater-temperature", 50);
+    }
+    if (domain === "fan") {
+      for (const name of ["on", "on_fine"]) {
+        out[entityId][name].calls = await fanCalls(g.clone(out[entityId][name].stateObj));
+      }
     }
     if (domain === "cover" || domain === "valve") {
       out[entityId].as_is.calls = await positionCalls(g.clone(current), entry);
@@ -1292,6 +1323,32 @@ async function captureMoreInfoControls(entityIds) {
       );
     }
     return recorded;
+  }
+
+  /** The calls of a fan's controls: each speed or the slider, the power button, and each menu. */
+  async function fanCalls(stateObj) {
+    const recorded = [];
+    const record = async (control, label, act) =>
+      recorded.push({ control, label, detail: null, calls: await recordCalls(stateObj, act) });
+    const speed = (r) => r.querySelector("ha-state-control-fan-speed")?.shadowRoot;
+    for (const value of ["off", "low", "medium", "high", "on"]) {
+      await record("speed", `speed ${value}`, (r) =>
+        speed(r)?.querySelector("ha-control-select")?.dispatchEvent(new CustomEvent("value-changed", { detail: { value } }))
+      );
+    }
+    await record("slider", "slider 70", (r) =>
+      speed(r)?.querySelector("ha-control-slider")?.dispatchEvent(new CustomEvent("value-changed", { detail: { value: 70 } }))
+    );
+    await record("power", "power", (r) => r.querySelector(".buttons ha-outlined-icon-button")?.click());
+    await record("toggle", "switch", (r) => {
+      const control = r.querySelector("ha-state-control-toggle")?.shadowRoot?.querySelector("ha-control-switch");
+      if (control) {
+        control.checked = !control.checked;
+        control.dispatchEvent(new Event("change"));
+      }
+    });
+    await menuCalls(stateObj, recorded, async (control, label, act) => record(control, label, act));
+    return recorded.filter((r) => r.calls.length > 0);
   }
 
   /** The calls of a cover's or valve's controls: each slider, button, the switch, and each favourite. */
