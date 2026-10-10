@@ -6,7 +6,7 @@ import io.homeassistant.companion.android.dashboard.derive.MoreInfoModel
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.ui.controls.ControlSelectMenus
 
-/** The smaller domains' controls: a siren's, a counter's, an automation's, a timer's, a remote's and the inputs. */
+/** The smaller domains' controls: a siren's, a counter's, an automation's, a timer's, a remote's, the inputs and an update's. */
 @Composable
 internal fun SimpleDomainControls(model: MoreInfoModel, state: EntityState, onAction: (CardAction) -> Unit) {
     model.siren?.let { MoreInfoSiren(it, state, onAction) }
@@ -15,4 +15,5 @@ internal fun SimpleDomainControls(model: MoreInfoModel, state: EntityState, onAc
     model.timer?.let { MoreInfoTimer(it, state, onAction) }
     model.remote?.let { ControlSelectMenus(listOf(it), onAction) }
     model.input?.let { MoreInfoInput(it, onAction) }
+    model.update?.let { MoreInfoUpdate(it, state.entityId, onAction) }
 }

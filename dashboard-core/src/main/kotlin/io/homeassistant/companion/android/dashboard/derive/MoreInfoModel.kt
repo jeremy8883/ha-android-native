@@ -24,6 +24,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.SelectMenu
 import io.homeassistant.companion.android.dashboard.moreinfo.SirenMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.StateToggle
 import io.homeassistant.companion.android.dashboard.moreinfo.TimerMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.UpdateMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.VacuumMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.WaterHeaterMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.alarmMoreInfo
@@ -40,6 +41,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.remoteActivity
 import io.homeassistant.companion.android.dashboard.moreinfo.sirenMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.stateToggle
 import io.homeassistant.companion.android.dashboard.moreinfo.timerMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.updateMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.vacuumMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterMoreInfo
 import java.time.Instant
@@ -70,6 +72,7 @@ import java.time.Instant
  * @property automation an automation's last run and run button
  * @property timer a timer's duration and buttons
  * @property remote a remote's activity menu
+ * @property update an update's versions, notes and buttons
  * @property input the entity's row control (a number, select, text, date or time), which upstream's dialog leads with
  * @property attributes the displayable attributes, as (name, formatted value)
  */
@@ -100,6 +103,7 @@ data class MoreInfoModel(
     val automation: AutomationMoreInfo?,
     val timer: TimerMoreInfo?,
     val remote: SelectMenu?,
+    val update: UpdateMoreInfo?,
     val input: RowControl?,
     val attributes: List<Pair<String, String>>,
 )
@@ -151,6 +155,7 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         automation = automationMoreInfo(state, now),
         timer = timerMoreInfo(state),
         remote = remoteActivity(state),
+        update = updateMoreInfo(state),
         input = if (domain in INPUT_DOMAINS) inputRowControl(state, entityName ?: deviceName ?: entityId) else null,
         attributes = displayAttributes(state).map { attributeName(state, it) to formatEntityAttributeValue(state, it) },
     )

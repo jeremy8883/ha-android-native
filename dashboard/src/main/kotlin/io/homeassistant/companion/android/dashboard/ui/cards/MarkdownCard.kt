@@ -41,8 +41,6 @@ internal fun MarkdownCard(card: CardConfig, hass: State<HassSnapshot?>, modifier
 @Composable
 private fun MarkdownCardContent(model: MarkdownModel, modifier: Modifier = Modifier) {
     val colors = LocalHAColorScheme.current
-    val body = HATextStyle.Body.copy(textAlign = TextAlign.Start, color = colors.colorTextPrimary)
-    val heading = body.copy(fontWeight = FontWeight.Bold)
     val content = @Composable {
         Column(modifier = Modifier.fillMaxWidth().padding(if (model.textOnly) HADimens.SPACE0 else HADimens.SPACE4)) {
             model.error?.let { Text(it, style = HATextStyle.BodyMedium, color = colors.colorOnDangerNormal) }
@@ -54,27 +52,7 @@ private fun MarkdownCardContent(model: MarkdownModel, modifier: Modifier = Modif
                 )
             }
             (model.content ?: model.placeholder)?.let { text ->
-                Markdown(
-                    content = text,
-                    colors = markdownColor(text = colors.colorTextPrimary),
-                    typography = markdownTypography(
-                        text = body,
-                        paragraph = body,
-                        ordered = body,
-                        bullet = body,
-                        list = body,
-                        table = body,
-                        quote = body,
-                        h1 = heading.copy(fontSize = HAFontSize.X2L, lineHeight = HAFontSize.X3L),
-                        h2 = heading.copy(fontSize = HAFontSize.XL, lineHeight = HAFontSize.X2L),
-                        h3 = heading.copy(fontSize = HAFontSize.L, lineHeight = HAFontSize.X2L),
-                        h4 = heading.copy(fontSize = HAFontSize.L, lineHeight = HAFontSize.X2L),
-                        h5 = heading.copy(fontSize = HAFontSize.M, lineHeight = HAFontSize.XL),
-                        h6 = heading.copy(fontSize = HAFontSize.M, lineHeight = HAFontSize.XL),
-                        textLink = HATextStyle.Link,
-                    ),
-                    modifier = Modifier.fillMaxWidth().alpha(if (model.content == null) 0f else 1f),
-                )
+                MarkdownText(text, Modifier.fillMaxWidth().alpha(if (model.content == null) 0f else 1f))
             }
         }
     }
@@ -83,6 +61,35 @@ private fun MarkdownCardContent(model: MarkdownModel, modifier: Modifier = Modif
     } else {
         DashboardCardSurface(modifier = modifier) { content() }
     }
+}
+
+/** Markdown in the theme's text styles, as `ha-markdown` renders it. */
+@Composable
+internal fun MarkdownText(text: String, modifier: Modifier = Modifier) {
+    val colors = LocalHAColorScheme.current
+    val body = HATextStyle.Body.copy(textAlign = TextAlign.Start, color = colors.colorTextPrimary)
+    val heading = body.copy(fontWeight = FontWeight.Bold)
+    Markdown(
+        content = text,
+        colors = markdownColor(text = colors.colorTextPrimary),
+        typography = markdownTypography(
+            text = body,
+            paragraph = body,
+            ordered = body,
+            bullet = body,
+            list = body,
+            table = body,
+            quote = body,
+            h1 = heading.copy(fontSize = HAFontSize.X2L, lineHeight = HAFontSize.X3L),
+            h2 = heading.copy(fontSize = HAFontSize.XL, lineHeight = HAFontSize.X2L),
+            h3 = heading.copy(fontSize = HAFontSize.L, lineHeight = HAFontSize.X2L),
+            h4 = heading.copy(fontSize = HAFontSize.L, lineHeight = HAFontSize.X2L),
+            h5 = heading.copy(fontSize = HAFontSize.M, lineHeight = HAFontSize.XL),
+            h6 = heading.copy(fontSize = HAFontSize.M, lineHeight = HAFontSize.XL),
+            textLink = HATextStyle.Link,
+        ),
+        modifier = modifier,
+    )
 }
 
 @Preview

@@ -1,6 +1,3899 @@
 {
-  "capturedAt": "2026-10-10T06:30:41.090Z",
+  "capturedAt": "2026-10-10T06:45:43.253Z",
   "entities": {
+    "update.demo_update_no_install": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "update.demo_update_no_install",
+          "state": "on",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "Awesomesoft Inc.",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update No Install",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3MXGB4G2JJC8010CW6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340582,
+          "device_id": "64c4cede4625fa9abce2395ef3c249a4",
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "entity_id": "update.demo_update_no_install",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "79e319e269550dbdb8866db8e9161011",
+          "labels": [],
+          "modified_at": 1791433963.201937,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_no_install",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": false,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "Awesomesoft Inc.",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.1",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.0.1"
+              }
+            ],
+            "progress": null,
+            "markdown": "Awesome update, fixing everything!",
+            "loader": false,
+            "hr": true,
+            "backup": null
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "skip",
+                "data": {
+                  "entity_id": "update.demo_update_no_install"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "update.demo_update_no_install",
+          "state": "off",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "Awesomesoft Inc.",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update No Install",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3MXGB4G2JJC8010CW6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340582,
+          "device_id": "64c4cede4625fa9abce2395ef3c249a4",
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "entity_id": "update.demo_update_no_install",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "79e319e269550dbdb8866db8e9161011",
+          "labels": [],
+          "modified_at": 1791433963.201937,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_no_install",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "Awesomesoft Inc.",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.1",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.0.1"
+              }
+            ],
+            "progress": null,
+            "markdown": "Awesome update, fixing everything!",
+            "loader": false,
+            "hr": true,
+            "backup": null
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "update.demo_update_no_install",
+          "state": "unavailable",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "Awesomesoft Inc.",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update No Install",
+            "supported_features": 0,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3MXGB4G2JJC8010CW6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340582,
+          "device_id": "64c4cede4625fa9abce2395ef3c249a4",
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "entity_id": "update.demo_update_no_install",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "79e319e269550dbdb8866db8e9161011",
+          "labels": [],
+          "modified_at": 1791433963.201937,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_no_install",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [],
+          "update": {
+            "title": null,
+            "rows": [],
+            "progress": null,
+            "markdown": null,
+            "loader": false,
+            "hr": false,
+            "backup": null
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "installing": {
+        "stateObj": {
+          "entity_id": "update.demo_update_no_install",
+          "state": "on",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": true,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "Awesomesoft Inc.",
+            "update_percentage": 42,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update No Install",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3MXGB4G2JJC8010CW6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340582,
+          "device_id": "64c4cede4625fa9abce2395ef3c249a4",
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "entity_id": "update.demo_update_no_install",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "79e319e269550dbdb8866db8e9161011",
+          "labels": [],
+          "modified_at": 1791433963.201937,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_no_install",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "Awesomesoft Inc.",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.1",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.0.1"
+              }
+            ],
+            "progress": {
+              "value": 0,
+              "indeterminate": true
+            },
+            "markdown": "Awesome update, fixing everything!",
+            "loader": false,
+            "hr": true,
+            "backup": null
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "installing_unknown": {
+        "stateObj": {
+          "entity_id": "update.demo_update_no_install",
+          "state": "on",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": true,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "Awesomesoft Inc.",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update No Install",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3MXGB4G2JJC8010CW6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340582,
+          "device_id": "64c4cede4625fa9abce2395ef3c249a4",
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "entity_id": "update.demo_update_no_install",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "79e319e269550dbdb8866db8e9161011",
+          "labels": [],
+          "modified_at": 1791433963.201937,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_no_install",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "Awesomesoft Inc.",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.1",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.0.1"
+              }
+            ],
+            "progress": {
+              "value": 0,
+              "indeterminate": true
+            },
+            "markdown": "Awesome update, fixing everything!",
+            "loader": false,
+            "hr": true,
+            "backup": null
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "skipped": {
+        "stateObj": {
+          "entity_id": "update.demo_update_no_install",
+          "state": "off",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": "1.0.1",
+            "title": "Awesomesoft Inc.",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update No Install",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3MXGB4G2JJC8010CW6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340582,
+          "device_id": "64c4cede4625fa9abce2395ef3c249a4",
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "entity_id": "update.demo_update_no_install",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "79e319e269550dbdb8866db8e9161011",
+          "labels": [],
+          "modified_at": 1791433963.201937,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_no_install",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Clear skipped",
+              "disabled": false,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "Awesomesoft Inc.",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.1",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.0.1"
+              }
+            ],
+            "progress": null,
+            "markdown": "Awesome update, fixing everything!",
+            "loader": false,
+            "hr": true,
+            "backup": null
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "clear_skipped",
+                "data": {
+                  "entity_id": "update.demo_update_no_install"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "auto": {
+        "stateObj": {
+          "entity_id": "update.demo_update_no_install",
+          "state": "on",
+          "attributes": {
+            "auto_update": true,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "Awesomesoft Inc.",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update No Install",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3MXGB4G2JJC8010CW6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340582,
+          "device_id": "64c4cede4625fa9abce2395ef3c249a4",
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "entity_id": "update.demo_update_no_install",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "79e319e269550dbdb8866db8e9161011",
+          "labels": [],
+          "modified_at": 1791433963.201937,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_no_install",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": false,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "Awesomesoft Inc.",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.1",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.0.1"
+              }
+            ],
+            "progress": null,
+            "markdown": "Awesome update, fixing everything!",
+            "loader": false,
+            "hr": true,
+            "backup": null
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "summary": {
+        "stateObj": {
+          "entity_id": "update.demo_update_no_install",
+          "state": "on",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.1",
+            "release_summary": "Fixes **two** bugs",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "Awesomesoft Inc.",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update No Install",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3MXGB4G2JJC8010CW6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340582,
+          "device_id": "64c4cede4625fa9abce2395ef3c249a4",
+          "disabled_by": null,
+          "entity_category": "diagnostic",
+          "entity_id": "update.demo_update_no_install",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "79e319e269550dbdb8866db8e9161011",
+          "labels": [],
+          "modified_at": 1791433963.201937,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_no_install",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": false,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "Awesomesoft Inc.",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.1",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.0.1"
+              }
+            ],
+            "progress": null,
+            "markdown": "Fixes **two** bugs",
+            "loader": false,
+            "hr": true,
+            "backup": null
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "skip",
+                "data": {
+                  "entity_id": "update.demo_update_no_install"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "update.demo_no_update": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "update.demo_no_update",
+          "state": "off",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.0",
+            "release_summary": null,
+            "release_url": null,
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo No Update",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3M7GNEX82V31G3M4HE",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340779,
+          "device_id": "c7477af1594a6424f09f3f7d92832214",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_no_update",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "740b6cb9ce3e78985d685479c50f7692",
+          "labels": [],
+          "modified_at": 1791433963.201968,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_2_date",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": true,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "AdGuard Home",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.0",
+                "href": null
+              }
+            ],
+            "progress": null,
+            "markdown": null,
+            "loader": false,
+            "hr": false,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "update.demo_no_update",
+          "state": "off",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.0",
+            "release_summary": null,
+            "release_url": null,
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo No Update",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3M7GNEX82V31G3M4HE",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340779,
+          "device_id": "c7477af1594a6424f09f3f7d92832214",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_no_update",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "740b6cb9ce3e78985d685479c50f7692",
+          "labels": [],
+          "modified_at": 1791433963.201968,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_2_date",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": true,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "AdGuard Home",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.0",
+                "href": null
+              }
+            ],
+            "progress": null,
+            "markdown": null,
+            "loader": false,
+            "hr": false,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "update.demo_no_update",
+          "state": "unavailable",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.0",
+            "release_summary": null,
+            "release_url": null,
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo No Update",
+            "supported_features": 11,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3M7GNEX82V31G3M4HE",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340779,
+          "device_id": "c7477af1594a6424f09f3f7d92832214",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_no_update",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "740b6cb9ce3e78985d685479c50f7692",
+          "labels": [],
+          "modified_at": 1791433963.201968,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_2_date",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [],
+          "update": {
+            "title": null,
+            "rows": [],
+            "progress": null,
+            "markdown": null,
+            "loader": false,
+            "hr": false,
+            "backup": null
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "installing": {
+        "stateObj": {
+          "entity_id": "update.demo_no_update",
+          "state": "off",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": true,
+            "latest_version": "1.0.0",
+            "release_summary": null,
+            "release_url": null,
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": 42,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo No Update",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3M7GNEX82V31G3M4HE",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340779,
+          "device_id": "c7477af1594a6424f09f3f7d92832214",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_no_update",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "740b6cb9ce3e78985d685479c50f7692",
+          "labels": [],
+          "modified_at": 1791433963.201968,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_2_date",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": true,
+              "loading": true
+            }
+          ],
+          "update": {
+            "title": "AdGuard Home",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.0",
+                "href": null
+              }
+            ],
+            "progress": {
+              "value": 0,
+              "indeterminate": true
+            },
+            "markdown": null,
+            "loader": false,
+            "hr": false,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "installing_unknown": {
+        "stateObj": {
+          "entity_id": "update.demo_no_update",
+          "state": "off",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": true,
+            "latest_version": "1.0.0",
+            "release_summary": null,
+            "release_url": null,
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo No Update",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3M7GNEX82V31G3M4HE",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340779,
+          "device_id": "c7477af1594a6424f09f3f7d92832214",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_no_update",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "740b6cb9ce3e78985d685479c50f7692",
+          "labels": [],
+          "modified_at": 1791433963.201968,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_2_date",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": true,
+              "loading": true
+            }
+          ],
+          "update": {
+            "title": "AdGuard Home",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.0",
+                "href": null
+              }
+            ],
+            "progress": {
+              "value": 0,
+              "indeterminate": true
+            },
+            "markdown": null,
+            "loader": false,
+            "hr": false,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "skipped": {
+        "stateObj": {
+          "entity_id": "update.demo_no_update",
+          "state": "off",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.0",
+            "release_summary": null,
+            "release_url": null,
+            "skipped_version": "1.0.0",
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo No Update",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3M7GNEX82V31G3M4HE",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340779,
+          "device_id": "c7477af1594a6424f09f3f7d92832214",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_no_update",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "740b6cb9ce3e78985d685479c50f7692",
+          "labels": [],
+          "modified_at": 1791433963.201968,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_2_date",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Clear skipped",
+              "disabled": false,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": false,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "AdGuard Home",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.0",
+                "href": null
+              }
+            ],
+            "progress": null,
+            "markdown": null,
+            "loader": false,
+            "hr": false,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "clear_skipped",
+                "data": {
+                  "entity_id": "update.demo_no_update"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "install",
+                "data": {
+                  "entity_id": "update.demo_no_update",
+                  "version": "1.0.0"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "auto": {
+        "stateObj": {
+          "entity_id": "update.demo_no_update",
+          "state": "off",
+          "attributes": {
+            "auto_update": true,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.0",
+            "release_summary": null,
+            "release_url": null,
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo No Update",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3M7GNEX82V31G3M4HE",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340779,
+          "device_id": "c7477af1594a6424f09f3f7d92832214",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_no_update",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "740b6cb9ce3e78985d685479c50f7692",
+          "labels": [],
+          "modified_at": 1791433963.201968,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_2_date",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": true,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "AdGuard Home",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.0",
+                "href": null
+              }
+            ],
+            "progress": null,
+            "markdown": null,
+            "loader": false,
+            "hr": false,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "summary": {
+        "stateObj": {
+          "entity_id": "update.demo_no_update",
+          "state": "off",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.0",
+            "release_summary": "Fixes **two** bugs",
+            "release_url": null,
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo No Update",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3M7GNEX82V31G3M4HE",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340779,
+          "device_id": "c7477af1594a6424f09f3f7d92832214",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_no_update",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "740b6cb9ce3e78985d685479c50f7692",
+          "labels": [],
+          "modified_at": 1791433963.201968,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_2_date",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": true,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "AdGuard Home",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.0",
+                "href": null
+              }
+            ],
+            "progress": null,
+            "markdown": "Fixes **two** bugs",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      }
+    },
+    "update.demo_add_on": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "update.demo_add_on",
+          "state": "on",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo add-on",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3MXB83S6CYZKSF4HG8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340899,
+          "device_id": "1e1605c64faf6e7fc6117f979c4bd797",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_add_on",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "77f901ba3917c807dedd6ff76562bdb4",
+          "labels": [],
+          "modified_at": 1791433963.201998,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_addon",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": false,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": false,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "AdGuard Home",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.1",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.0.1"
+              }
+            ],
+            "progress": null,
+            "markdown": "Awesome update, fixing everything!",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "skip",
+                "data": {
+                  "entity_id": "update.demo_add_on"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "install",
+                "data": {
+                  "entity_id": "update.demo_add_on",
+                  "version": "1.0.1"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "update.demo_add_on",
+          "state": "off",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo add-on",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3MXB83S6CYZKSF4HG8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340899,
+          "device_id": "1e1605c64faf6e7fc6117f979c4bd797",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_add_on",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "77f901ba3917c807dedd6ff76562bdb4",
+          "labels": [],
+          "modified_at": 1791433963.201998,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_addon",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": true,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "AdGuard Home",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.1",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.0.1"
+              }
+            ],
+            "progress": null,
+            "markdown": "Awesome update, fixing everything!",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "update.demo_add_on",
+          "state": "unavailable",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo add-on",
+            "supported_features": 11,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3MXB83S6CYZKSF4HG8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340899,
+          "device_id": "1e1605c64faf6e7fc6117f979c4bd797",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_add_on",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "77f901ba3917c807dedd6ff76562bdb4",
+          "labels": [],
+          "modified_at": 1791433963.201998,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_addon",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [],
+          "update": {
+            "title": null,
+            "rows": [],
+            "progress": null,
+            "markdown": null,
+            "loader": false,
+            "hr": false,
+            "backup": null
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "installing": {
+        "stateObj": {
+          "entity_id": "update.demo_add_on",
+          "state": "on",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": true,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": 42,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo add-on",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3MXB83S6CYZKSF4HG8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340899,
+          "device_id": "1e1605c64faf6e7fc6117f979c4bd797",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_add_on",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "77f901ba3917c807dedd6ff76562bdb4",
+          "labels": [],
+          "modified_at": 1791433963.201998,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_addon",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": false,
+              "loading": true
+            }
+          ],
+          "update": {
+            "title": "AdGuard Home",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.1",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.0.1"
+              }
+            ],
+            "progress": {
+              "value": 0,
+              "indeterminate": true
+            },
+            "markdown": "Awesome update, fixing everything!",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "installing_unknown": {
+        "stateObj": {
+          "entity_id": "update.demo_add_on",
+          "state": "on",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": true,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo add-on",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3MXB83S6CYZKSF4HG8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340899,
+          "device_id": "1e1605c64faf6e7fc6117f979c4bd797",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_add_on",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "77f901ba3917c807dedd6ff76562bdb4",
+          "labels": [],
+          "modified_at": 1791433963.201998,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_addon",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": false,
+              "loading": true
+            }
+          ],
+          "update": {
+            "title": "AdGuard Home",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.1",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.0.1"
+              }
+            ],
+            "progress": {
+              "value": 0,
+              "indeterminate": true
+            },
+            "markdown": "Awesome update, fixing everything!",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "skipped": {
+        "stateObj": {
+          "entity_id": "update.demo_add_on",
+          "state": "off",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": "1.0.1",
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo add-on",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3MXB83S6CYZKSF4HG8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340899,
+          "device_id": "1e1605c64faf6e7fc6117f979c4bd797",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_add_on",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "77f901ba3917c807dedd6ff76562bdb4",
+          "labels": [],
+          "modified_at": 1791433963.201998,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_addon",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Clear skipped",
+              "disabled": false,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": false,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "AdGuard Home",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.1",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.0.1"
+              }
+            ],
+            "progress": null,
+            "markdown": "Awesome update, fixing everything!",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "clear_skipped",
+                "data": {
+                  "entity_id": "update.demo_add_on"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "install",
+                "data": {
+                  "entity_id": "update.demo_add_on",
+                  "version": "1.0.1"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "auto": {
+        "stateObj": {
+          "entity_id": "update.demo_add_on",
+          "state": "on",
+          "attributes": {
+            "auto_update": true,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo add-on",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3MXB83S6CYZKSF4HG8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340899,
+          "device_id": "1e1605c64faf6e7fc6117f979c4bd797",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_add_on",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "77f901ba3917c807dedd6ff76562bdb4",
+          "labels": [],
+          "modified_at": 1791433963.201998,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_addon",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": false,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": false,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "AdGuard Home",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.1",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.0.1"
+              }
+            ],
+            "progress": null,
+            "markdown": "Awesome update, fixing everything!",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "install",
+                "data": {
+                  "entity_id": "update.demo_add_on",
+                  "version": "1.0.1"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "summary": {
+        "stateObj": {
+          "entity_id": "update.demo_add_on",
+          "state": "on",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.1",
+            "release_summary": "Fixes **two** bugs",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo add-on",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4HEKT3MXB83S6CYZKSF4HG8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.340899,
+          "device_id": "1e1605c64faf6e7fc6117f979c4bd797",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_add_on",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "77f901ba3917c807dedd6ff76562bdb4",
+          "labels": [],
+          "modified_at": 1791433963.201998,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_addon",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": false,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": false,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "AdGuard Home",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.0.0",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.0.1",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.0.1"
+              }
+            ],
+            "progress": null,
+            "markdown": "Fixes **two** bugs",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "skip",
+                "data": {
+                  "entity_id": "update.demo_add_on"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "install",
+                "data": {
+                  "entity_id": "update.demo_add_on",
+                  "version": "1.0.1"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "update.demo_update_with_progress": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "update.demo_update_with_progress",
+          "state": "on",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.93.3",
+            "in_progress": false,
+            "latest_version": "1.94.2",
+            "release_summary": "Added support for effects",
+            "release_url": "https://www.example.com/release/1.93.3",
+            "skipped_version": null,
+            "title": "Philips Lamps Firmware",
+            "update_percentage": null,
+            "device_class": "firmware",
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update with Progress",
+            "supported_features": 31
+          },
+          "context": {
+            "id": "01M4HEKT3MWXM2N82XVQ8HRZRC",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34117,
+          "device_id": "42cc967f01f180aa53b7f590dc446a34",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_update_with_progress",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "fb3b4bf7f81445d0b719394bed008af5",
+          "labels": [],
+          "modified_at": 1791433963.202053,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_support_progress",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": "firmware",
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": false,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": false,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "Philips Lamps Firmware",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.93.3",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.94.2",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.93.3"
+              }
+            ],
+            "progress": null,
+            "markdown": "Long release notes.\n\n**With** markdown support!\n\n***\n\nAdded support for effects",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "skip",
+                "data": {
+                  "entity_id": "update.demo_update_with_progress"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "install",
+                "data": {
+                  "entity_id": "update.demo_update_with_progress",
+                  "version": "1.94.2"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "update.demo_update_with_progress",
+          "state": "off",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.93.3",
+            "in_progress": false,
+            "latest_version": "1.94.2",
+            "release_summary": "Added support for effects",
+            "release_url": "https://www.example.com/release/1.93.3",
+            "skipped_version": null,
+            "title": "Philips Lamps Firmware",
+            "update_percentage": null,
+            "device_class": "firmware",
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update with Progress",
+            "supported_features": 31
+          },
+          "context": {
+            "id": "01M4HEKT3MWXM2N82XVQ8HRZRC",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34117,
+          "device_id": "42cc967f01f180aa53b7f590dc446a34",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_update_with_progress",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "fb3b4bf7f81445d0b719394bed008af5",
+          "labels": [],
+          "modified_at": 1791433963.202053,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_support_progress",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": "firmware",
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": true,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "Philips Lamps Firmware",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.93.3",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.94.2",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.93.3"
+              }
+            ],
+            "progress": null,
+            "markdown": "Long release notes.\n\n**With** markdown support!\n\n***\n\nAdded support for effects",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "update.demo_update_with_progress",
+          "state": "unavailable",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.93.3",
+            "in_progress": false,
+            "latest_version": "1.94.2",
+            "release_summary": "Added support for effects",
+            "release_url": "https://www.example.com/release/1.93.3",
+            "skipped_version": null,
+            "title": "Philips Lamps Firmware",
+            "update_percentage": null,
+            "device_class": "firmware",
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update with Progress",
+            "supported_features": 31,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3MWXM2N82XVQ8HRZRC",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34117,
+          "device_id": "42cc967f01f180aa53b7f590dc446a34",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_update_with_progress",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "fb3b4bf7f81445d0b719394bed008af5",
+          "labels": [],
+          "modified_at": 1791433963.202053,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_support_progress",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": "firmware",
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [],
+          "update": {
+            "title": null,
+            "rows": [],
+            "progress": null,
+            "markdown": null,
+            "loader": false,
+            "hr": false,
+            "backup": null
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "installing": {
+        "stateObj": {
+          "entity_id": "update.demo_update_with_progress",
+          "state": "on",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.93.3",
+            "in_progress": true,
+            "latest_version": "1.94.2",
+            "release_summary": "Added support for effects",
+            "release_url": "https://www.example.com/release/1.93.3",
+            "skipped_version": null,
+            "title": "Philips Lamps Firmware",
+            "update_percentage": 42,
+            "device_class": "firmware",
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update with Progress",
+            "supported_features": 31
+          },
+          "context": {
+            "id": "01M4HEKT3MWXM2N82XVQ8HRZRC",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34117,
+          "device_id": "42cc967f01f180aa53b7f590dc446a34",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_update_with_progress",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "fb3b4bf7f81445d0b719394bed008af5",
+          "labels": [],
+          "modified_at": 1791433963.202053,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_support_progress",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": "firmware",
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": false,
+              "loading": true
+            }
+          ],
+          "update": {
+            "title": "Philips Lamps Firmware",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.93.3",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.94.2",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.93.3"
+              }
+            ],
+            "progress": {
+              "value": 42,
+              "indeterminate": false
+            },
+            "markdown": "Long release notes.\n\n**With** markdown support!\n\n***\n\nAdded support for effects",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "installing_unknown": {
+        "stateObj": {
+          "entity_id": "update.demo_update_with_progress",
+          "state": "on",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.93.3",
+            "in_progress": true,
+            "latest_version": "1.94.2",
+            "release_summary": "Added support for effects",
+            "release_url": "https://www.example.com/release/1.93.3",
+            "skipped_version": null,
+            "title": "Philips Lamps Firmware",
+            "update_percentage": null,
+            "device_class": "firmware",
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update with Progress",
+            "supported_features": 31
+          },
+          "context": {
+            "id": "01M4HEKT3MWXM2N82XVQ8HRZRC",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34117,
+          "device_id": "42cc967f01f180aa53b7f590dc446a34",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_update_with_progress",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "fb3b4bf7f81445d0b719394bed008af5",
+          "labels": [],
+          "modified_at": 1791433963.202053,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_support_progress",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": "firmware",
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": true,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": false,
+              "loading": true
+            }
+          ],
+          "update": {
+            "title": "Philips Lamps Firmware",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.93.3",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.94.2",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.93.3"
+              }
+            ],
+            "progress": {
+              "value": 0,
+              "indeterminate": true
+            },
+            "markdown": "Long release notes.\n\n**With** markdown support!\n\n***\n\nAdded support for effects",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "skipped": {
+        "stateObj": {
+          "entity_id": "update.demo_update_with_progress",
+          "state": "off",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.93.3",
+            "in_progress": false,
+            "latest_version": "1.94.2",
+            "release_summary": "Added support for effects",
+            "release_url": "https://www.example.com/release/1.93.3",
+            "skipped_version": "1.94.2",
+            "title": "Philips Lamps Firmware",
+            "update_percentage": null,
+            "device_class": "firmware",
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update with Progress",
+            "supported_features": 31
+          },
+          "context": {
+            "id": "01M4HEKT3MWXM2N82XVQ8HRZRC",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34117,
+          "device_id": "42cc967f01f180aa53b7f590dc446a34",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_update_with_progress",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "fb3b4bf7f81445d0b719394bed008af5",
+          "labels": [],
+          "modified_at": 1791433963.202053,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_support_progress",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": "firmware",
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Clear skipped",
+              "disabled": false,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": false,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "Philips Lamps Firmware",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.93.3",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.94.2",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.93.3"
+              }
+            ],
+            "progress": null,
+            "markdown": "Long release notes.\n\n**With** markdown support!\n\n***\n\nAdded support for effects",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "clear_skipped",
+                "data": {
+                  "entity_id": "update.demo_update_with_progress"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "install",
+                "data": {
+                  "entity_id": "update.demo_update_with_progress",
+                  "version": "1.94.2"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "auto": {
+        "stateObj": {
+          "entity_id": "update.demo_update_with_progress",
+          "state": "on",
+          "attributes": {
+            "auto_update": true,
+            "display_precision": 0,
+            "installed_version": "1.93.3",
+            "in_progress": false,
+            "latest_version": "1.94.2",
+            "release_summary": "Added support for effects",
+            "release_url": "https://www.example.com/release/1.93.3",
+            "skipped_version": null,
+            "title": "Philips Lamps Firmware",
+            "update_percentage": null,
+            "device_class": "firmware",
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update with Progress",
+            "supported_features": 31
+          },
+          "context": {
+            "id": "01M4HEKT3MWXM2N82XVQ8HRZRC",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34117,
+          "device_id": "42cc967f01f180aa53b7f590dc446a34",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_update_with_progress",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "fb3b4bf7f81445d0b719394bed008af5",
+          "labels": [],
+          "modified_at": 1791433963.202053,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_support_progress",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": "firmware",
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": false,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": false,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "Philips Lamps Firmware",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.93.3",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.94.2",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.93.3"
+              }
+            ],
+            "progress": null,
+            "markdown": "Long release notes.\n\n**With** markdown support!\n\n***\n\nAdded support for effects",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "install",
+                "data": {
+                  "entity_id": "update.demo_update_with_progress",
+                  "version": "1.94.2"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "summary": {
+        "stateObj": {
+          "entity_id": "update.demo_update_with_progress",
+          "state": "on",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.93.3",
+            "in_progress": false,
+            "latest_version": "1.94.2",
+            "release_summary": "Fixes **two** bugs",
+            "release_url": "https://www.example.com/release/1.93.3",
+            "skipped_version": null,
+            "title": "Philips Lamps Firmware",
+            "update_percentage": null,
+            "device_class": "firmware",
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo Update with Progress",
+            "supported_features": 31
+          },
+          "context": {
+            "id": "01M4HEKT3MWXM2N82XVQ8HRZRC",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34117,
+          "device_id": "42cc967f01f180aa53b7f590dc446a34",
+          "disabled_by": null,
+          "entity_category": "config",
+          "entity_id": "update.demo_update_with_progress",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "fb3b4bf7f81445d0b719394bed008af5",
+          "labels": [],
+          "modified_at": 1791433963.202053,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": false
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": null,
+          "unique_id": "update_support_progress",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": "firmware",
+          "original_icon": null
+        },
+        "main": {
+          "state": null,
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "actions": [
+            {
+              "text": "Skip",
+              "disabled": false,
+              "loading": false
+            },
+            {
+              "text": "Update",
+              "disabled": false,
+              "loading": false
+            }
+          ],
+          "update": {
+            "title": "Philips Lamps Firmware",
+            "rows": [
+              {
+                "key": "Installed version",
+                "value": "1.93.3",
+                "href": null
+              },
+              {
+                "key": "Latest version",
+                "value": "1.94.2",
+                "href": null
+              },
+              {
+                "key": "Read release announcement",
+                "value": null,
+                "href": "https://www.example.com/release/1.93.3"
+              }
+            ],
+            "progress": null,
+            "markdown": "Long release notes.\n\n**With** markdown support!\n\n***\n\nAdded support for effects",
+            "loader": false,
+            "hr": true,
+            "backup": "Create backup"
+          },
+          "lastTriggered": null,
+          "duration": null,
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "action",
+            "label": "action 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "skip",
+                "data": {
+                  "entity_id": "update.demo_update_with_progress"
+                }
+              }
+            ]
+          },
+          {
+            "control": "action",
+            "label": "action 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "update",
+                "service": "install",
+                "data": {
+                  "entity_id": "update.demo_update_with_progress",
+                  "version": "1.94.2"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
     "siren.siren": {
       "as_is": {
         "stateObj": {

@@ -11,6 +11,7 @@
     <string name="native_dashboard_action_unsupported">The %1$s action is not available in the native dashboard yet</string>
     <string name="native_dashboard_more_info_full">More details</string>
     <string name="native_dashboard_more_info_attributes">Attributes</string>
+    <string name="native_dashboard_update_full_dialog">Home Assistant and its apps update with your backup settings: install them from More details.</string>
     <string name="native_dashboard_menu">Open navigation</string>
     <string name="native_dashboard_more_options">More options</string>
     <string name="native_dashboard_settings">Settings</string>

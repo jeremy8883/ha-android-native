@@ -1016,6 +1016,10 @@ const CONTROL_ENTITIES = [
   "counter.coffee_cups",
   "automation.bed_light_schedule",
   "timer.laundry",
+  "update.demo_update_no_install",
+  "update.demo_no_update",
+  "update.demo_add_on",
+  "update.demo_update_with_progress",
   "alarm_control_panel.security",
   "media_player.living_room_tv",
   "media_player.kitchen_speaker",
@@ -1177,7 +1181,19 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
           slider(root.querySelector(`ha-state-control-${name}`)?.shadowRoot?.querySelector("ha-control-slider")),
         ])
       ),
-      actions: [...root.querySelectorAll(".actions ha-button")].map((b) => ({ text: text(b), disabled: b.disabled ?? false })),
+      actions: [...root.querySelectorAll(".actions ha-button")].map((b) => ({ text: text(b), disabled: b.disabled ?? false, loading: b.loading ?? false })),
+      update: el.localName === "more-info-update" ? {
+        title: text(root.querySelector("h3")),
+        rows: [...root.querySelectorAll(".summary .row")].map((r) => ({ key: text(r.querySelector(".key")), value: text(r.querySelector(".value")), href: r.querySelector("a")?.getAttribute("href") ?? null })),
+        progress: (() => {
+          const bar = root.querySelector("ha-progress-bar");
+          return bar ? { value: bar.value ?? null, indeterminate: bar.hasAttribute("indeterminate") || bar.indeterminate === true } : null;
+        })(),
+        markdown: root.querySelector("ha-markdown")?.content ?? null,
+        loader: !!root.querySelector(".loader"),
+        hr: !!root.querySelector("hr"),
+        backup: text(root.querySelector(".footer ha-row-item")),
+      } : undefined,
       lastTriggered: root.querySelector("ha-relative-time") ? text(root.querySelector(".flex")) : null,
       duration: (() => {
         const d = root.querySelector("ha-duration-input");
@@ -1388,6 +1404,14 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
         off: { ...stateObj, state: "off", attributes: off },
         unavailable: { ...stateObj, state: "unavailable", attributes: { ...stateObj.attributes, restored: true } },
       };
+      if (domain === "update") {
+        const a = stateObj.attributes;
+        shown.installing = { ...stateObj, attributes: { ...a, in_progress: true, update_percentage: 42 } };
+        shown.installing_unknown = { ...stateObj, attributes: { ...a, in_progress: true, update_percentage: null } };
+        shown.skipped = { ...stateObj, state: "off", attributes: { ...a, skipped_version: a.latest_version } };
+        shown.auto = { ...stateObj, attributes: { ...a, auto_update: true } };
+        shown.summary = { ...stateObj, attributes: { ...a, release_summary: "Fixes **two** bugs" } };
+      }
       if (domain === "timer") {
         const a = stateObj.attributes;
         shown.active = { ...stateObj, state: "active", attributes: { ...a, remaining: "0:42:13", finishes_at: new Date(Date.now() + 2533000).toISOString() } };
@@ -1502,7 +1526,7 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
     if (domain === "water_heater") {
       out[entityId].as_is.calls = await dialCalls(g.clone(current), "ha-state-control-water_heater-temperature", 50);
     }
-    if (["timer", "counter", "automation", "siren"].includes(domain)) {
+    if (["timer", "counter", "automation", "siren", "update"].includes(domain)) {
       for (const name of Object.keys(out[entityId])) {
         if (name === "unavailable") continue;
         out[entityId][name].calls = await actionCalls(g.clone(out[entityId][name].stateObj));
