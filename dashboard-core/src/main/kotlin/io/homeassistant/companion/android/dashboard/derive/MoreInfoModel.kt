@@ -19,6 +19,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.LockMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.MediaPlayerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.PositionMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.StateToggle
+import io.homeassistant.companion.android.dashboard.moreinfo.VacuumMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.WaterHeaterMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.alarmMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.climateMoreInfo
@@ -29,6 +30,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.lockMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.mediaPlayerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.positionMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.stateToggle
+import io.homeassistant.companion.android.dashboard.moreinfo.vacuumMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterMoreInfo
 import java.time.Instant
 
@@ -52,6 +54,7 @@ import java.time.Instant
  * @property stateToggle the large on/off switch of a switch or input boolean
  * @property alarm an alarm panel's controls
  * @property mediaPlayer a media player's controls
+ * @property vacuum a vacuum's controls
  * @property attributes the displayable attributes, as (name, formatted value)
  */
 data class MoreInfoModel(
@@ -75,6 +78,7 @@ data class MoreInfoModel(
     val stateToggle: StateToggle?,
     val alarm: AlarmMoreInfo?,
     val mediaPlayer: MediaPlayerMoreInfo?,
+    val vacuum: VacuumMoreInfo?,
     val attributes: List<Pair<String, String>>,
 )
 
@@ -93,6 +97,7 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
     val light = lightMoreInfo(state)
     val position = positionMoreInfo(state)
     val fan = fanMoreInfo(state)
+    val vacuum = vacuumMoreInfo(state)
     val stateToggle = if (domain in STATE_TOGGLE_DOMAINS) stateToggle(state, "mdi:power", "mdi:power-off") else null
     return MoreInfoModel(
         entityId = entityId,
@@ -100,7 +105,7 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         context = listOfNotNull(context.area?.name?.trim()?.ifEmpty { null }, deviceName.takeIf { entityName != null })
             .joinToString(" › ").ifEmpty { null },
         icon = entityIcon(entityId),
-        state = light?.state ?: position?.state ?: fan?.state ?: formatEntityState(state),
+        state = light?.state ?: position?.state ?: fan?.state ?: vacuum?.state ?: formatEntityState(state),
         // A change the server stamped ahead of this device's clock happened just now, not in the future
         changed = formats.relativeTime(minOf(Instant.ofEpochMilli((state.lastChanged * MILLIS).toLong()), now), now)
             .replaceFirstChar { it.uppercaseChar() },
@@ -118,6 +123,7 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         stateToggle = stateToggle,
         alarm = alarmMoreInfo(state),
         mediaPlayer = mediaPlayerMoreInfo(state),
+        vacuum = vacuum,
         attributes = displayAttributes(state).map { attributeName(state, it) to formatEntityAttributeValue(state, it) },
     )
 }

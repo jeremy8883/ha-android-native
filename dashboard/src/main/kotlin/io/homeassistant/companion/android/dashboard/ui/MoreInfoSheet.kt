@@ -64,6 +64,7 @@ import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLock
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLogbook
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoMediaPlayer
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoPosition
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoVacuum
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.SingleDialControls
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -150,6 +151,7 @@ private fun DomainControls(
     model.lock?.let { MoreInfoLock(it, onAction) }
     model.alarm?.let { MoreInfoAlarm(it, onAction) }
     model.mediaPlayer?.let { MoreInfoMediaPlayer(it, now, onAction) }
+    model.vacuum?.let { MoreInfoVacuum(it, onAction) }
     model.waterHeater?.let { heater ->
         SingleDialControls(
             current = heater.current,
@@ -216,11 +218,21 @@ private fun MoreInfoState(model: MoreInfoModel) {
             style = HATextStyle.Headline.copy(fontSize = STATE_FONT_SIZE, fontWeight = FontWeight.Normal),
             color = colors.colorTextPrimary,
         )
-        Text(
-            model.changed,
-            style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium),
-            color = colors.colorTextPrimary,
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+        ) {
+            Text(
+                model.changed,
+                style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium),
+                color = colors.colorTextPrimary,
+            )
+            // The `after-time` slot: a vacuum's battery
+            model.vacuum?.battery?.let { battery ->
+                battery.text?.let { Text(it, style = HATextStyle.Body, color = colors.colorTextSecondary) }
+                battery.icon?.let { DashboardIcon(it, colors.colorTextSecondary, Modifier.size(HASize.XL)) }
+            }
+        }
     }
 }
 

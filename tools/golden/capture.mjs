@@ -40,8 +40,9 @@ function parseArgs(argv) {
     if (a === "--variant") args.variant = argv[++i];
     else if (a === "--out") args.out = argv[++i];
     else if (a === "--controls-only") args.controlsOnly = true;
+    else if (a === "--domains") args.domains = argv[++i].split(",");
     else if (a === "-h" || a === "--help") {
-      console.log("node capture.mjs [--variant admin|nonadmin|all] [--out <fixtures/home dir>] [--controls-only]");
+      console.log("node capture.mjs [--variant admin|nonadmin|all] [--out <fixtures/home dir>] [--controls-only [--domains a,b]]");
       process.exit(0);
     } else throw new Error(`Unknown argument: ${a}`);
   }
@@ -861,6 +862,10 @@ const CONTROL_ENTITIES = [
   "cover.pergola_roof",
   "valve.front_garden",
   "valve.back_garden",
+  "vacuum.demo_vacuum_0_ground_floor",
+  "vacuum.demo_vacuum_1_first_floor",
+  "vacuum.demo_vacuum_3_third_floor",
+  "vacuum.demo_vacuum_4_fourth_floor",
   "alarm_control_panel.security",
   "media_player.living_room_tv",
   "media_player.kitchen_speaker",
@@ -1019,6 +1024,14 @@ async function captureMoreInfoControls(entityIds) {
           slider(root.querySelector(`ha-state-control-${name}`)?.shadowRoot?.querySelector("ha-control-slider")),
         ])
       ),
+      vacuum: el.localName === "more-info-vacuum" ? {
+        battery: text(root.querySelector("ha-more-info-state-header .battery")),
+        batteryIcon: root.querySelector("ha-more-info-state-header .battery ha-icon")?.icon ?? null,
+        visual: [...(root.querySelector("ha-state-control-vacuum-status")?.shadowRoot?.querySelector(".container")?.classList ?? [])].filter((c) => c !== "container")[0] ?? null,
+        statusColor: root.querySelector("ha-state-control-vacuum-status")?.shadowRoot?.querySelector(".container")?.style.getPropertyValue("--vacuum-color") || null,
+        buttons: [...root.querySelectorAll(".buttons ha-control-button")].map((b) => ({ label: b.label ?? null, disabled: b.disabled ?? false, icon: b.querySelector("ha-svg-icon")?.path ?? null })),
+        cleanAreas: !!root.querySelector(".clean-areas-button"),
+      } : undefined,
       media: el.localName === "more-info-media_player" ? (() => {
         const img = root.querySelector(".cover-image:not(.empty-cover)");
         const empty = root.querySelector(".empty-cover");
@@ -1215,6 +1228,14 @@ async function captureMoreInfoControls(entityIds) {
         off: { ...stateObj, state: "off", attributes: off },
         unavailable: { ...stateObj, state: "unavailable", attributes: { ...stateObj.attributes, restored: true } },
       };
+      if (domain === "vacuum") {
+        for (const name of ["cleaning", "returning", "paused", "error", "idle"]) {
+          shown[name] = { ...stateObj, state: name };
+        }
+        const a = stateObj.attributes;
+        shown.battery = { ...stateObj, attributes: { ...a, supported_features: (a.supported_features ?? 0) | 64, battery_level: 73.4, battery_icon: "mdi:battery-70", status: "Charging" } };
+        shown.status = { ...stateObj, state: "cleaning", attributes: { ...a, supported_features: (a.supported_features ?? 0) | 128, status: "Cleaning the kitchen" } };
+      }
       if (domain === "media_player") {
         const a = stateObj.attributes;
         shown.paused = { ...stateObj, state: "paused" };
@@ -1310,6 +1331,11 @@ async function captureMoreInfoControls(entityIds) {
     if (domain === "climate") out[entityId].as_is.calls = await climateCalls(g.clone(current));
     if (domain === "water_heater") {
       out[entityId].as_is.calls = await dialCalls(g.clone(current), "ha-state-control-water_heater-temperature", 50);
+    }
+    if (domain === "vacuum") {
+      for (const name of ["as_is", "cleaning"]) {
+        out[entityId][name].calls = await vacuumCalls(g.clone(out[entityId][name].stateObj));
+      }
     }
     if (domain === "media_player") {
       for (const name of ["as_is", "muted", "assumed", "off"]) {
@@ -1439,6 +1465,18 @@ async function captureMoreInfoControls(entityIds) {
       );
     }
     return recorded;
+  }
+
+  /** The calls of a vacuum's controls: each button, and the fan speed menu. */
+  async function vacuumCalls(stateObj) {
+    const recorded = [];
+    const record = async (control, label, act) =>
+      recorded.push({ control, label, detail: null, calls: await recordCalls(stateObj, act, 400) });
+    for (let index = 0; index < 5; index++) {
+      await record("button", `button ${index}`, (r) => r.querySelectorAll(".buttons ha-control-button")[index]?.click());
+    }
+    await menuCalls(stateObj, recorded, async (control, label, act) => record(control, label, act));
+    return recorded.filter((r) => r.calls.length > 0);
   }
 
   /** The calls of a media player's controls: each button, mute, volume, seek, source and sound mode. */
@@ -2169,7 +2207,7 @@ function sanitizeFile(name) {
 // --------------------------------------------------------------------------------------------
 // One variant
 
-async function captureVariant(browser, { baseUrl, variant, tokens, outDir, controlsOnly }) {
+async function captureVariant(browser, { baseUrl, variant, tokens, outDir, controlsOnly, domains: CONTROL_DOMAINS }) {
   console.log(`\n== variant ${variant} -> ${relative(REPO, outDir)}`);
   const context = await browser.newContext({
     locale: "en-US",
@@ -2211,7 +2249,16 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir, contr
   await waitForHomePanel(page);
   if (controlsOnly) {
     // Only the more-info controls, written over the variant's existing fixtures
-    const data = await page.evaluate(captureMoreInfoControls, CONTROL_ENTITIES);
+    // With --domains, only those domains' entities, merged into the existing controls
+    const domains = CONTROL_DOMAINS;
+    const entities = domains ? CONTROL_ENTITIES.filter((id) => domains.includes(id.split(".")[0])) : CONTROL_ENTITIES;
+    const data = await page.evaluate(captureMoreInfoControls, entities);
+    if (domains) {
+      const existing = JSON.parse(readFileSync(join(outDir, "more-info", "controls.json"), "utf8"));
+      for (const id of Object.keys(existing.entities)) {
+        if (!domains.includes(id.split(".")[0])) data.entities[id] = existing.entities[id];
+      }
+    }
     writeFileSync(join(outDir, "more-info", "controls.json"), stableStringify(data));
     console.log(`  recorded the controls of ${Object.keys(data.entities).length} entities`);
     await context.close();
@@ -2437,7 +2484,7 @@ async function main() {
         tokens = { ...t, expires: Date.now() + t.expires_in * 1000 };
       }
       const dir = join(outRoot, variant === "admin" ? "test-instance" : "test-instance-nonadmin");
-      const { checks, problems } = await captureVariant(browser, { baseUrl, variant, tokens, outDir: dir, controlsOnly: args.controlsOnly });
+      const { checks, problems } = await captureVariant(browser, { baseUrl, variant, tokens, outDir: dir, controlsOnly: args.controlsOnly, domains: args.domains });
       if (problems.length || checks.some((c) => !c.ok)) failed = true;
     }
   } finally {

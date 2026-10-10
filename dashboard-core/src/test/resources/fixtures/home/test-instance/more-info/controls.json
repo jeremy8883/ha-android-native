@@ -1,6 +1,4510 @@
 {
-  "capturedAt": "2026-10-10T05:58:14.252Z",
+  "capturedAt": "2026-10-10T06:09:32.161Z",
   "entities": {
+    "vacuum.demo_vacuum_0_ground_floor": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "state": "docked",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 0 ground floor",
+            "supported_features": 32700
+          },
+          "context": {
+            "id": "01M4HEKT3MJS4Z3N3SCRN3P8RX",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341515,
+          "device_id": "802de5381b5f27cf5161e45bb6c5228f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "82453accc2b878a5fed4e9955d17dd4d",
+          "labels": [],
+          "modified_at": 1791433963.202115,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Docked",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "docked",
+            "statusColor": "var(--state-vacuum-docked-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": false,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": true,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              },
+              {
+                "label": "Locate",
+                "disabled": false,
+                "icon": "M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"
+              },
+              {
+                "label": "Clean spot",
+                "disabled": false,
+                "icon": "M22.08,11.04H20.08V4H13.05V2H11.04V4H4V11.04H2V13.05H4V20.08H11.04V22.08H13.05V20.08H20.08V13.05H22.08V11.04M18.07,18.07H13.05V16.06H11.04V18.07H6V13.05H8.03V11.04H6V6H11.04V8.03H13.05V6H18.07V11.04H16.06V13.05H18.07V18.07M13.05,12.05A1,1 0 0,1 12.05,13.05C11.5,13.05 11.04,12.6 11.04,12.05C11.04,11.5 11.5,11.04 12.05,11.04C12.6,11.04 13.05,11.5 13.05,12.05Z"
+              }
+            ],
+            "cleanAreas": true
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "button",
+            "label": "button 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "start",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_0_ground_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "button 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "stop",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_0_ground_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "button 2",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "return_to_base",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_0_ground_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "button 3",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "locate",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_0_ground_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "button 4",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "clean_spot",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_0_ground_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Fan speed min",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "set_fan_speed",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+                  "fan_speed": "min"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "state": "off",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 0 ground floor",
+            "supported_features": 32700
+          },
+          "context": {
+            "id": "01M4HEKT3MJS4Z3N3SCRN3P8RX",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341515,
+          "device_id": "802de5381b5f27cf5161e45bb6c5228f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "82453accc2b878a5fed4e9955d17dd4d",
+          "labels": [],
+          "modified_at": 1791433963.202115,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Off",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "idle",
+            "statusColor": "var(--state-vacuum-off-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": false,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": true,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              },
+              {
+                "label": "Locate",
+                "disabled": false,
+                "icon": "M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"
+              },
+              {
+                "label": "Clean spot",
+                "disabled": false,
+                "icon": "M22.08,11.04H20.08V4H13.05V2H11.04V4H4V11.04H2V13.05H4V20.08H11.04V22.08H13.05V20.08H20.08V13.05H22.08V11.04M18.07,18.07H13.05V16.06H11.04V18.07H6V13.05H8.03V11.04H6V6H11.04V8.03H13.05V6H18.07V11.04H16.06V13.05H18.07V18.07M13.05,12.05A1,1 0 0,1 12.05,13.05C11.5,13.05 11.04,12.6 11.04,12.05C11.04,11.5 11.5,11.04 12.05,11.04C12.6,11.04 13.05,11.5 13.05,12.05Z"
+              }
+            ],
+            "cleanAreas": true
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "state": "unavailable",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 0 ground floor",
+            "supported_features": 32700,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3MJS4Z3N3SCRN3P8RX",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341515,
+          "device_id": "802de5381b5f27cf5161e45bb6c5228f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "82453accc2b878a5fed4e9955d17dd4d",
+          "labels": [],
+          "modified_at": 1791433963.202115,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "idle",
+            "statusColor": "var(--state-unavailable-color)",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": true,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": true,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": true,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              },
+              {
+                "label": "Locate",
+                "disabled": true,
+                "icon": "M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"
+              },
+              {
+                "label": "Clean spot",
+                "disabled": true,
+                "icon": "M22.08,11.04H20.08V4H13.05V2H11.04V4H4V11.04H2V13.05H4V20.08H11.04V22.08H13.05V20.08H20.08V13.05H22.08V11.04M18.07,18.07H13.05V16.06H11.04V18.07H6V13.05H8.03V11.04H6V6H11.04V8.03H13.05V6H18.07V11.04H16.06V13.05H18.07V18.07M13.05,12.05A1,1 0 0,1 12.05,13.05C11.5,13.05 11.04,12.6 11.04,12.05C11.04,11.5 11.5,11.04 12.05,11.04C12.6,11.04 13.05,11.5 13.05,12.05Z"
+              }
+            ],
+            "cleanAreas": true
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "cleaning": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "state": "cleaning",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 0 ground floor",
+            "supported_features": 32700
+          },
+          "context": {
+            "id": "01M4HEKT3MJS4Z3N3SCRN3P8RX",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341515,
+          "device_id": "802de5381b5f27cf5161e45bb6c5228f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "82453accc2b878a5fed4e9955d17dd4d",
+          "labels": [],
+          "modified_at": 1791433963.202115,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Cleaning",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "cleaning",
+            "statusColor": "var(--state-vacuum-cleaning-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [
+              {
+                "label": "Pause",
+                "disabled": false,
+                "icon": "M14,19H18V5H14M6,19H10V5H6V19Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": false,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              },
+              {
+                "label": "Locate",
+                "disabled": false,
+                "icon": "M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"
+              },
+              {
+                "label": "Clean spot",
+                "disabled": false,
+                "icon": "M22.08,11.04H20.08V4H13.05V2H11.04V4H4V11.04H2V13.05H4V20.08H11.04V22.08H13.05V20.08H20.08V13.05H22.08V11.04M18.07,18.07H13.05V16.06H11.04V18.07H6V13.05H8.03V11.04H6V6H11.04V8.03H13.05V6H18.07V11.04H16.06V13.05H18.07V18.07M13.05,12.05A1,1 0 0,1 12.05,13.05C11.5,13.05 11.04,12.6 11.04,12.05C11.04,11.5 11.5,11.04 12.05,11.04C12.6,11.04 13.05,11.5 13.05,12.05Z"
+              }
+            ],
+            "cleanAreas": true
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "button",
+            "label": "button 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "pause",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_0_ground_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "button 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "stop",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_0_ground_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "button 2",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "return_to_base",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_0_ground_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "button 3",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "locate",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_0_ground_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "button 4",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "clean_spot",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_0_ground_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Fan speed min",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "set_fan_speed",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+                  "fan_speed": "min"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "returning": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "state": "returning",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 0 ground floor",
+            "supported_features": 32700
+          },
+          "context": {
+            "id": "01M4HEKT3MJS4Z3N3SCRN3P8RX",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341515,
+          "device_id": "802de5381b5f27cf5161e45bb6c5228f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "82453accc2b878a5fed4e9955d17dd4d",
+          "labels": [],
+          "modified_at": 1791433963.202115,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Returning to dock",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "returning",
+            "statusColor": "var(--state-vacuum-returning-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": false,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": false,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": true,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              },
+              {
+                "label": "Locate",
+                "disabled": false,
+                "icon": "M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"
+              },
+              {
+                "label": "Clean spot",
+                "disabled": false,
+                "icon": "M22.08,11.04H20.08V4H13.05V2H11.04V4H4V11.04H2V13.05H4V20.08H11.04V22.08H13.05V20.08H20.08V13.05H22.08V11.04M18.07,18.07H13.05V16.06H11.04V18.07H6V13.05H8.03V11.04H6V6H11.04V8.03H13.05V6H18.07V11.04H16.06V13.05H18.07V18.07M13.05,12.05A1,1 0 0,1 12.05,13.05C11.5,13.05 11.04,12.6 11.04,12.05C11.04,11.5 11.5,11.04 12.05,11.04C12.6,11.04 13.05,11.5 13.05,12.05Z"
+              }
+            ],
+            "cleanAreas": true
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "paused": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "state": "paused",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 0 ground floor",
+            "supported_features": 32700
+          },
+          "context": {
+            "id": "01M4HEKT3MJS4Z3N3SCRN3P8RX",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341515,
+          "device_id": "802de5381b5f27cf5161e45bb6c5228f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "82453accc2b878a5fed4e9955d17dd4d",
+          "labels": [],
+          "modified_at": 1791433963.202115,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Paused",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "paused",
+            "statusColor": "var(--state-vacuum-paused-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": false,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": false,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              },
+              {
+                "label": "Locate",
+                "disabled": false,
+                "icon": "M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"
+              },
+              {
+                "label": "Clean spot",
+                "disabled": false,
+                "icon": "M22.08,11.04H20.08V4H13.05V2H11.04V4H4V11.04H2V13.05H4V20.08H11.04V22.08H13.05V20.08H20.08V13.05H22.08V11.04M18.07,18.07H13.05V16.06H11.04V18.07H6V13.05H8.03V11.04H6V6H11.04V8.03H13.05V6H18.07V11.04H16.06V13.05H18.07V18.07M13.05,12.05A1,1 0 0,1 12.05,13.05C11.5,13.05 11.04,12.6 11.04,12.05C11.04,11.5 11.5,11.04 12.05,11.04C12.6,11.04 13.05,11.5 13.05,12.05Z"
+              }
+            ],
+            "cleanAreas": true
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "error": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "state": "error",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 0 ground floor",
+            "supported_features": 32700
+          },
+          "context": {
+            "id": "01M4HEKT3MJS4Z3N3SCRN3P8RX",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341515,
+          "device_id": "802de5381b5f27cf5161e45bb6c5228f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "82453accc2b878a5fed4e9955d17dd4d",
+          "labels": [],
+          "modified_at": 1791433963.202115,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Error",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "error",
+            "statusColor": "var(--state-vacuum-error-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": false,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": false,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              },
+              {
+                "label": "Locate",
+                "disabled": false,
+                "icon": "M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"
+              },
+              {
+                "label": "Clean spot",
+                "disabled": false,
+                "icon": "M22.08,11.04H20.08V4H13.05V2H11.04V4H4V11.04H2V13.05H4V20.08H11.04V22.08H13.05V20.08H20.08V13.05H22.08V11.04M18.07,18.07H13.05V16.06H11.04V18.07H6V13.05H8.03V11.04H6V6H11.04V8.03H13.05V6H18.07V11.04H16.06V13.05H18.07V18.07M13.05,12.05A1,1 0 0,1 12.05,13.05C11.5,13.05 11.04,12.6 11.04,12.05C11.04,11.5 11.5,11.04 12.05,11.04C12.6,11.04 13.05,11.5 13.05,12.05Z"
+              }
+            ],
+            "cleanAreas": true
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "idle": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "state": "idle",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 0 ground floor",
+            "supported_features": 32700
+          },
+          "context": {
+            "id": "01M4HEKT3MJS4Z3N3SCRN3P8RX",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341515,
+          "device_id": "802de5381b5f27cf5161e45bb6c5228f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "82453accc2b878a5fed4e9955d17dd4d",
+          "labels": [],
+          "modified_at": 1791433963.202115,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Idle",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "idle",
+            "statusColor": "var(--state-vacuum-idle-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": false,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": true,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              },
+              {
+                "label": "Locate",
+                "disabled": false,
+                "icon": "M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"
+              },
+              {
+                "label": "Clean spot",
+                "disabled": false,
+                "icon": "M22.08,11.04H20.08V4H13.05V2H11.04V4H4V11.04H2V13.05H4V20.08H11.04V22.08H13.05V20.08H20.08V13.05H22.08V11.04M18.07,18.07H13.05V16.06H11.04V18.07H6V13.05H8.03V11.04H6V6H11.04V8.03H13.05V6H18.07V11.04H16.06V13.05H18.07V18.07M13.05,12.05A1,1 0 0,1 12.05,13.05C11.5,13.05 11.04,12.6 11.04,12.05C11.04,11.5 11.5,11.04 12.05,11.04C12.6,11.04 13.05,11.5 13.05,12.05Z"
+              }
+            ],
+            "cleanAreas": true
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "battery": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "state": "docked",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 0 ground floor",
+            "supported_features": 32764,
+            "battery_level": 73.4,
+            "battery_icon": "mdi:battery-70",
+            "status": "Charging"
+          },
+          "context": {
+            "id": "01M4HEKT3MJS4Z3N3SCRN3P8RX",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341515,
+          "device_id": "802de5381b5f27cf5161e45bb6c5228f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "82453accc2b878a5fed4e9955d17dd4d",
+          "labels": [],
+          "modified_at": 1791433963.202115,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Charging",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": "73%",
+            "batteryIcon": "mdi:battery-70",
+            "visual": "docked",
+            "statusColor": "var(--state-vacuum-docked-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": false,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": true,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              },
+              {
+                "label": "Locate",
+                "disabled": false,
+                "icon": "M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"
+              },
+              {
+                "label": "Clean spot",
+                "disabled": false,
+                "icon": "M22.08,11.04H20.08V4H13.05V2H11.04V4H4V11.04H2V13.05H4V20.08H11.04V22.08H13.05V20.08H20.08V13.05H22.08V11.04M18.07,18.07H13.05V16.06H11.04V18.07H6V13.05H8.03V11.04H6V6H11.04V8.03H13.05V6H18.07V11.04H16.06V13.05H18.07V18.07M13.05,12.05A1,1 0 0,1 12.05,13.05C11.5,13.05 11.04,12.6 11.04,12.05C11.04,11.5 11.5,11.04 12.05,11.04C12.6,11.04 13.05,11.5 13.05,12.05Z"
+              }
+            ],
+            "cleanAreas": true
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "status": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "state": "cleaning",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 0 ground floor",
+            "supported_features": 32700,
+            "status": "Cleaning the kitchen"
+          },
+          "context": {
+            "id": "01M4HEKT3MJS4Z3N3SCRN3P8RX",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341515,
+          "device_id": "802de5381b5f27cf5161e45bb6c5228f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_0_ground_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "82453accc2b878a5fed4e9955d17dd4d",
+          "labels": [],
+          "modified_at": 1791433963.202115,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_1",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Cleaning the kitchen",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "cleaning",
+            "statusColor": "var(--state-vacuum-cleaning-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [
+              {
+                "label": "Pause",
+                "disabled": false,
+                "icon": "M14,19H18V5H14M6,19H10V5H6V19Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": false,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              },
+              {
+                "label": "Locate",
+                "disabled": false,
+                "icon": "M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z"
+              },
+              {
+                "label": "Clean spot",
+                "disabled": false,
+                "icon": "M22.08,11.04H20.08V4H13.05V2H11.04V4H4V11.04H2V13.05H4V20.08H11.04V22.08H13.05V20.08H20.08V13.05H22.08V11.04M18.07,18.07H13.05V16.06H11.04V18.07H6V13.05H8.03V11.04H6V6H11.04V8.03H13.05V6H18.07V11.04H16.06V13.05H18.07V18.07M13.05,12.05A1,1 0 0,1 12.05,13.05C11.5,13.05 11.04,12.6 11.04,12.05C11.04,11.5 11.5,11.04 12.05,11.04C12.6,11.04 13.05,11.5 13.05,12.05Z"
+              }
+            ],
+            "cleanAreas": true
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "vacuum.demo_vacuum_1_first_floor": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "state": "docked",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 1 first floor",
+            "supported_features": 12348
+          },
+          "context": {
+            "id": "01M4HEKT3MJNXB67J6FAA3T9B1",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34164,
+          "device_id": "2e915b402f95c00fd154e96bd981c039",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "7401800af14b85a1f7c529397f635df5",
+          "labels": [],
+          "modified_at": 1791433963.202147,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Docked",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "docked",
+            "statusColor": "var(--state-vacuum-docked-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": false,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": true,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              }
+            ],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "button",
+            "label": "button 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "start",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_1_first_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "button 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "stop",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_1_first_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "button 2",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "return_to_base",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_1_first_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Fan speed min",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "set_fan_speed",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_1_first_floor",
+                  "fan_speed": "min"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "state": "off",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 1 first floor",
+            "supported_features": 12348
+          },
+          "context": {
+            "id": "01M4HEKT3MJNXB67J6FAA3T9B1",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34164,
+          "device_id": "2e915b402f95c00fd154e96bd981c039",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "7401800af14b85a1f7c529397f635df5",
+          "labels": [],
+          "modified_at": 1791433963.202147,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Off",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "idle",
+            "statusColor": "var(--state-vacuum-off-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": false,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": true,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              }
+            ],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "state": "unavailable",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 1 first floor",
+            "supported_features": 12348,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3MJNXB67J6FAA3T9B1",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34164,
+          "device_id": "2e915b402f95c00fd154e96bd981c039",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "7401800af14b85a1f7c529397f635df5",
+          "labels": [],
+          "modified_at": 1791433963.202147,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": true,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "idle",
+            "statusColor": "var(--state-unavailable-color)",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": true,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": true,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": true,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              }
+            ],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "cleaning": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "state": "cleaning",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 1 first floor",
+            "supported_features": 12348
+          },
+          "context": {
+            "id": "01M4HEKT3MJNXB67J6FAA3T9B1",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34164,
+          "device_id": "2e915b402f95c00fd154e96bd981c039",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "7401800af14b85a1f7c529397f635df5",
+          "labels": [],
+          "modified_at": 1791433963.202147,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Cleaning",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "cleaning",
+            "statusColor": "var(--state-vacuum-cleaning-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [
+              {
+                "label": "Pause",
+                "disabled": false,
+                "icon": "M14,19H18V5H14M6,19H10V5H6V19Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": false,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              }
+            ],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": [
+          {
+            "control": "button",
+            "label": "button 0",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "pause",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_1_first_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "button 1",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "stop",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_1_first_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "button",
+            "label": "button 2",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "return_to_base",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_1_first_floor"
+                }
+              }
+            ]
+          },
+          {
+            "control": "menu",
+            "label": "Fan speed min",
+            "detail": null,
+            "calls": [
+              {
+                "domain": "vacuum",
+                "service": "set_fan_speed",
+                "data": {
+                  "entity_id": "vacuum.demo_vacuum_1_first_floor",
+                  "fan_speed": "min"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "returning": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "state": "returning",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 1 first floor",
+            "supported_features": 12348
+          },
+          "context": {
+            "id": "01M4HEKT3MJNXB67J6FAA3T9B1",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34164,
+          "device_id": "2e915b402f95c00fd154e96bd981c039",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "7401800af14b85a1f7c529397f635df5",
+          "labels": [],
+          "modified_at": 1791433963.202147,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Returning to dock",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "returning",
+            "statusColor": "var(--state-vacuum-returning-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": false,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": false,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": true,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              }
+            ],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "paused": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "state": "paused",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 1 first floor",
+            "supported_features": 12348
+          },
+          "context": {
+            "id": "01M4HEKT3MJNXB67J6FAA3T9B1",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34164,
+          "device_id": "2e915b402f95c00fd154e96bd981c039",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "7401800af14b85a1f7c529397f635df5",
+          "labels": [],
+          "modified_at": 1791433963.202147,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Paused",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "paused",
+            "statusColor": "var(--state-vacuum-paused-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": false,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": false,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              }
+            ],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "error": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "state": "error",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 1 first floor",
+            "supported_features": 12348
+          },
+          "context": {
+            "id": "01M4HEKT3MJNXB67J6FAA3T9B1",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34164,
+          "device_id": "2e915b402f95c00fd154e96bd981c039",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "7401800af14b85a1f7c529397f635df5",
+          "labels": [],
+          "modified_at": 1791433963.202147,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Error",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "error",
+            "statusColor": "var(--state-vacuum-error-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": false,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": false,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              }
+            ],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "idle": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "state": "idle",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 1 first floor",
+            "supported_features": 12348
+          },
+          "context": {
+            "id": "01M4HEKT3MJNXB67J6FAA3T9B1",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34164,
+          "device_id": "2e915b402f95c00fd154e96bd981c039",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "7401800af14b85a1f7c529397f635df5",
+          "labels": [],
+          "modified_at": 1791433963.202147,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Idle",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "idle",
+            "statusColor": "var(--state-vacuum-idle-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": false,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": true,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              }
+            ],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "battery": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "state": "docked",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 1 first floor",
+            "supported_features": 12412,
+            "battery_level": 73.4,
+            "battery_icon": "mdi:battery-70",
+            "status": "Charging"
+          },
+          "context": {
+            "id": "01M4HEKT3MJNXB67J6FAA3T9B1",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34164,
+          "device_id": "2e915b402f95c00fd154e96bd981c039",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "7401800af14b85a1f7c529397f635df5",
+          "labels": [],
+          "modified_at": 1791433963.202147,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Docked",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": "73%",
+            "batteryIcon": "mdi:battery-70",
+            "visual": "docked",
+            "statusColor": "var(--state-vacuum-docked-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [
+              {
+                "label": "Start",
+                "disabled": false,
+                "icon": "M8,5.14V19.14L19,12.14L8,5.14Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": true,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              }
+            ],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "status": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "state": "cleaning",
+          "attributes": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ],
+            "fan_speed": "medium",
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 1 first floor",
+            "supported_features": 12476,
+            "status": "Cleaning the kitchen"
+          },
+          "context": {
+            "id": "01M4HEKT3MJNXB67J6FAA3T9B1",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34164,
+          "device_id": "2e915b402f95c00fd154e96bd981c039",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_1_first_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "7401800af14b85a1f7c529397f635df5",
+          "labels": [],
+          "modified_at": 1791433963.202147,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_2",
+          "aliases": [
+            null
+          ],
+          "capabilities": {
+            "fan_speed_list": [
+              "min",
+              "medium",
+              "high",
+              "max"
+            ]
+          },
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Cleaning the kitchen",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [
+            {
+              "label": "Fan speed",
+              "value": "medium",
+              "disabled": false,
+              "options": [
+                {
+                  "value": "min",
+                  "label": "min"
+                },
+                {
+                  "value": "medium",
+                  "label": "medium"
+                },
+                {
+                  "value": "high",
+                  "label": "high"
+                },
+                {
+                  "value": "max",
+                  "label": "max"
+                }
+              ]
+            }
+          ],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "cleaning",
+            "statusColor": "var(--state-vacuum-cleaning-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [
+              {
+                "label": "Pause",
+                "disabled": false,
+                "icon": "M14,19H18V5H14M6,19H10V5H6V19Z"
+              },
+              {
+                "label": "Stop",
+                "disabled": false,
+                "icon": "M18,18H6V6H18V18Z"
+              },
+              {
+                "label": "Return home",
+                "disabled": false,
+                "icon": "M15 13L11 17V14H2V12H11V9L15 13M5 20V16H7V18H17V10.19L12 5.69L7.21 10H4.22L12 3L22 12H19V20H5Z"
+              }
+            ],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "vacuum.demo_vacuum_3_third_floor": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "state": "docked",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 3 third floor",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4HEKT3MDNSECWEGTNHZ31NS",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341857,
+          "device_id": "ef48be141c9842f742f8c6abd0f2b12f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "50b078663a6b7f36a1c3026f91fa4738",
+          "labels": [],
+          "modified_at": 1791433963.202203,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_4",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Docked",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "docked",
+            "statusColor": "var(--state-vacuum-docked-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "state": "off",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 3 third floor",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4HEKT3MDNSECWEGTNHZ31NS",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341857,
+          "device_id": "ef48be141c9842f742f8c6abd0f2b12f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "50b078663a6b7f36a1c3026f91fa4738",
+          "labels": [],
+          "modified_at": 1791433963.202203,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_4",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Off",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "idle",
+            "statusColor": "var(--state-vacuum-off-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "state": "unavailable",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 3 third floor",
+            "supported_features": 3,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3MDNSECWEGTNHZ31NS",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341857,
+          "device_id": "ef48be141c9842f742f8c6abd0f2b12f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "50b078663a6b7f36a1c3026f91fa4738",
+          "labels": [],
+          "modified_at": 1791433963.202203,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_4",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "idle",
+            "statusColor": "var(--state-unavailable-color)",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "cleaning": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "state": "cleaning",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 3 third floor",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4HEKT3MDNSECWEGTNHZ31NS",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341857,
+          "device_id": "ef48be141c9842f742f8c6abd0f2b12f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "50b078663a6b7f36a1c3026f91fa4738",
+          "labels": [],
+          "modified_at": 1791433963.202203,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_4",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Cleaning",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "cleaning",
+            "statusColor": "var(--state-vacuum-cleaning-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "returning": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "state": "returning",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 3 third floor",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4HEKT3MDNSECWEGTNHZ31NS",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341857,
+          "device_id": "ef48be141c9842f742f8c6abd0f2b12f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "50b078663a6b7f36a1c3026f91fa4738",
+          "labels": [],
+          "modified_at": 1791433963.202203,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_4",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Returning to dock",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "returning",
+            "statusColor": "var(--state-vacuum-returning-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "paused": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "state": "paused",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 3 third floor",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4HEKT3MDNSECWEGTNHZ31NS",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341857,
+          "device_id": "ef48be141c9842f742f8c6abd0f2b12f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "50b078663a6b7f36a1c3026f91fa4738",
+          "labels": [],
+          "modified_at": 1791433963.202203,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_4",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Paused",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "paused",
+            "statusColor": "var(--state-vacuum-paused-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "error": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "state": "error",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 3 third floor",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4HEKT3MDNSECWEGTNHZ31NS",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341857,
+          "device_id": "ef48be141c9842f742f8c6abd0f2b12f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "50b078663a6b7f36a1c3026f91fa4738",
+          "labels": [],
+          "modified_at": 1791433963.202203,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_4",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Error",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "error",
+            "statusColor": "var(--state-vacuum-error-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "idle": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "state": "idle",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 3 third floor",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4HEKT3MDNSECWEGTNHZ31NS",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341857,
+          "device_id": "ef48be141c9842f742f8c6abd0f2b12f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "50b078663a6b7f36a1c3026f91fa4738",
+          "labels": [],
+          "modified_at": 1791433963.202203,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_4",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Idle",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "idle",
+            "statusColor": "var(--state-vacuum-idle-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "battery": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "state": "docked",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 3 third floor",
+            "supported_features": 67,
+            "battery_level": 73.4,
+            "battery_icon": "mdi:battery-70",
+            "status": "Charging"
+          },
+          "context": {
+            "id": "01M4HEKT3MDNSECWEGTNHZ31NS",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341857,
+          "device_id": "ef48be141c9842f742f8c6abd0f2b12f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "50b078663a6b7f36a1c3026f91fa4738",
+          "labels": [],
+          "modified_at": 1791433963.202203,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_4",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Docked",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": "73%",
+            "batteryIcon": "mdi:battery-70",
+            "visual": "docked",
+            "statusColor": "var(--state-vacuum-docked-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "status": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "state": "cleaning",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 3 third floor",
+            "supported_features": 131,
+            "status": "Cleaning the kitchen"
+          },
+          "context": {
+            "id": "01M4HEKT3MDNSECWEGTNHZ31NS",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.341857,
+          "device_id": "ef48be141c9842f742f8c6abd0f2b12f",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_3_third_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "50b078663a6b7f36a1c3026f91fa4738",
+          "labels": [],
+          "modified_at": 1791433963.202203,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_4",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Cleaning the kitchen",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "cleaning",
+            "statusColor": "var(--state-vacuum-cleaning-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
+    "vacuum.demo_vacuum_4_fourth_floor": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "state": "docked",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 4 fourth floor",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3M1PBHPJCW32GYK7A6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34196,
+          "device_id": "a3afd687cfc44c60258b374d2a8fbfe4",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "9e3d322e60e24ed721cdc3b950e8a0a0",
+          "labels": [],
+          "modified_at": 1791433963.202231,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_5",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Docked",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "docked",
+            "statusColor": "var(--state-vacuum-docked-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "off": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "state": "off",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 4 fourth floor",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3M1PBHPJCW32GYK7A6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34196,
+          "device_id": "a3afd687cfc44c60258b374d2a8fbfe4",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "9e3d322e60e24ed721cdc3b950e8a0a0",
+          "labels": [],
+          "modified_at": 1791433963.202231,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_5",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Off",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "idle",
+            "statusColor": "var(--state-vacuum-off-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "state": "unavailable",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 4 fourth floor",
+            "supported_features": 0,
+            "restored": true
+          },
+          "context": {
+            "id": "01M4HEKT3M1PBHPJCW32GYK7A6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34196,
+          "device_id": "a3afd687cfc44c60258b374d2a8fbfe4",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "9e3d322e60e24ed721cdc3b950e8a0a0",
+          "labels": [],
+          "modified_at": 1791433963.202231,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_5",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Unavailable",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "idle",
+            "statusColor": "var(--state-unavailable-color)",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "cleaning": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "state": "cleaning",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 4 fourth floor",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3M1PBHPJCW32GYK7A6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34196,
+          "device_id": "a3afd687cfc44c60258b374d2a8fbfe4",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "9e3d322e60e24ed721cdc3b950e8a0a0",
+          "labels": [],
+          "modified_at": 1791433963.202231,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_5",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Cleaning",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "cleaning",
+            "statusColor": "var(--state-vacuum-cleaning-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {},
+        "calls": []
+      },
+      "returning": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "state": "returning",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 4 fourth floor",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3M1PBHPJCW32GYK7A6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34196,
+          "device_id": "a3afd687cfc44c60258b374d2a8fbfe4",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "9e3d322e60e24ed721cdc3b950e8a0a0",
+          "labels": [],
+          "modified_at": 1791433963.202231,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_5",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Returning to dock",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "returning",
+            "statusColor": "var(--state-vacuum-returning-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "paused": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "state": "paused",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 4 fourth floor",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3M1PBHPJCW32GYK7A6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34196,
+          "device_id": "a3afd687cfc44c60258b374d2a8fbfe4",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "9e3d322e60e24ed721cdc3b950e8a0a0",
+          "labels": [],
+          "modified_at": 1791433963.202231,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_5",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Paused",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "paused",
+            "statusColor": "var(--state-vacuum-paused-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "error": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "state": "error",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 4 fourth floor",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3M1PBHPJCW32GYK7A6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34196,
+          "device_id": "a3afd687cfc44c60258b374d2a8fbfe4",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "9e3d322e60e24ed721cdc3b950e8a0a0",
+          "labels": [],
+          "modified_at": 1791433963.202231,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_5",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Error",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "error",
+            "statusColor": "var(--state-vacuum-error-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "idle": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "state": "idle",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 4 fourth floor",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4HEKT3M1PBHPJCW32GYK7A6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34196,
+          "device_id": "a3afd687cfc44c60258b374d2a8fbfe4",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "9e3d322e60e24ed721cdc3b950e8a0a0",
+          "labels": [],
+          "modified_at": 1791433963.202231,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_5",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Idle",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "idle",
+            "statusColor": "var(--state-vacuum-idle-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "battery": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "state": "docked",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 4 fourth floor",
+            "supported_features": 64,
+            "battery_level": 73.4,
+            "battery_icon": "mdi:battery-70",
+            "status": "Charging"
+          },
+          "context": {
+            "id": "01M4HEKT3M1PBHPJCW32GYK7A6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34196,
+          "device_id": "a3afd687cfc44c60258b374d2a8fbfe4",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "9e3d322e60e24ed721cdc3b950e8a0a0",
+          "labels": [],
+          "modified_at": 1791433963.202231,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_5",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Docked",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": "73%",
+            "batteryIcon": "mdi:battery-70",
+            "visual": "docked",
+            "statusColor": "var(--state-vacuum-docked-color, var(--state-vacuum-inactive-color, var(--state-inactive-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      },
+      "status": {
+        "stateObj": {
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "state": "cleaning",
+          "attributes": {
+            "cleaned_area": 0,
+            "friendly_name": "Demo vacuum 4 fourth floor",
+            "supported_features": 128,
+            "status": "Cleaning the kitchen"
+          },
+          "context": {
+            "id": "01M4HEKT3M1PBHPJCW32GYK7A6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-09T23:05:17.172Z",
+          "last_updated": "2026-10-09T23:05:17.172Z"
+        },
+        "entry": {
+          "area_id": null,
+          "categories": {},
+          "config_entry_id": "01M4CWHWMEDWDVBA64BRF3YHDH",
+          "config_subentry_id": null,
+          "created_at": 1791433962.34196,
+          "device_id": "a3afd687cfc44c60258b374d2a8fbfe4",
+          "disabled_by": null,
+          "entity_category": null,
+          "entity_id": "vacuum.demo_vacuum_4_fourth_floor",
+          "has_entity_name": true,
+          "hidden_by": null,
+          "icon": null,
+          "id": "9e3d322e60e24ed721cdc3b950e8a0a0",
+          "labels": [],
+          "modified_at": 1791433963.202231,
+          "name": null,
+          "options": {
+            "conversation": {
+              "should_expose": true
+            }
+          },
+          "original_name": null,
+          "platform": "demo",
+          "translation_key": "model_s",
+          "unique_id": "vacuum_5",
+          "aliases": [
+            null
+          ],
+          "capabilities": null,
+          "device_class": null,
+          "original_device_class": null,
+          "original_icon": null
+        },
+        "main": {
+          "state": "Cleaning the kitchen",
+          "toggle": null,
+          "buttons": null,
+          "rgb": null,
+          "menus": [],
+          "positions": {},
+          "vacuum": {
+            "battery": null,
+            "batteryIcon": null,
+            "visual": "cleaning",
+            "statusColor": "var(--state-vacuum-cleaning-color, var(--state-vacuum-active-color, var(--state-active-color)))",
+            "buttons": [],
+            "cleanAreas": false
+          },
+          "power": null,
+          "positionButtons": null,
+          "favoritePositions": null,
+          "current": [],
+          "circular": null,
+          "favorites": null
+        },
+        "pickers": {}
+      }
+    },
     "light.bed_light": {
       "as_is": {
         "stateObj": {
