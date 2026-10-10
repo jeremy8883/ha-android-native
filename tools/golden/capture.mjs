@@ -862,6 +862,11 @@ const CONTROL_ENTITIES = [
   "valve.front_garden",
   "valve.back_garden",
   "alarm_control_panel.security",
+  "media_player.living_room_tv",
+  "media_player.kitchen_speaker",
+  "media_player.lounge_room",
+  "media_player.browse",
+  "media_player.group",
   "lock.front_door",
   "lock.kitchen_door",
   "lock.openable_lock",
@@ -1014,6 +1019,38 @@ async function captureMoreInfoControls(entityIds) {
           slider(root.querySelector(`ha-state-control-${name}`)?.shadowRoot?.querySelector("ha-control-slider")),
         ])
       ),
+      media: el.localName === "more-info-media_player" ? (() => {
+        const img = root.querySelector(".cover-image:not(.empty-cover)");
+        const empty = root.querySelector(".empty-cover");
+        const position = root.querySelector("#position-slider");
+        const volume = root.querySelector(".volume");
+        const dropdown = (id) => {
+          const d = root.querySelector(`#${id}`)?.closest("ha-dropdown");
+          return d ? [...d.querySelectorAll("ha-dropdown-item")].map((i) => ({ value: i.value, label: text(i), selected: !!i.selected })) : null;
+        };
+        return {
+          capturedAt: Date.now(),
+          cover: img ? { src: img.getAttribute("src"), playing: img.classList.contains("cover-image--playing") } : null,
+          emptyCover: empty ? { text: text(empty) || null, icon: !!empty.querySelector("ha-svg-icon") } : null,
+          title: text(root.querySelector(".media-title")),
+          artist: text(root.querySelector(".media-artist")),
+          position: position ? {
+            max: Number(position.max), value: Number(position.value), disabled: position.disabled ?? false,
+            times: [...root.querySelectorAll(".position-time")].map((t) => text(t)),
+          } : null,
+          main: root.querySelector(".main-controls") ? [...root.querySelector(".main-controls").children].map((c) =>
+            c.classList.contains("spacer") ? null : { action: c.getAttribute("action"), label: c.label ?? c.querySelector("ha-svg-icon")?.getAttribute("aria-label") ?? null, center: c.classList.contains("center-control") }) : null,
+          volume: volume ? {
+            buttons: [...volume.querySelectorAll("ha-icon-button")].map((b) => ({ action: b.getAttribute("action"), label: b.label ?? null })),
+            slider: volume.querySelector(".volume-slider") ? Number(volume.querySelector(".volume-slider").value) : null,
+            icon: !!volume.querySelector(":scope > ha-svg-icon"),
+          } : null,
+          row: [...(root.querySelector(".controls-row")?.querySelectorAll("ha-icon-button") ?? [])].map((b) => b.id || b.getAttribute("action")),
+          rowLabels: [...(root.querySelector(".controls-row")?.querySelectorAll("ha-icon-button") ?? [])].map((b) => b.label ?? b.title ?? null),
+          sources: dropdown("source-button"),
+          soundModes: dropdown("sound-mode-button"),
+        };
+      })() : undefined,
       alarm: el.localName === "more-info-alarm_control_panel" ? {
         status: !!root.querySelector(".status"),
         disarm: text(root.querySelector(".disarm")),
@@ -1178,6 +1215,15 @@ async function captureMoreInfoControls(entityIds) {
         off: { ...stateObj, state: "off", attributes: off },
         unavailable: { ...stateObj, state: "unavailable", attributes: { ...stateObj.attributes, restored: true } },
       };
+      if (domain === "media_player") {
+        const a = stateObj.attributes;
+        shown.paused = { ...stateObj, state: "paused" };
+        shown.idle = { ...stateObj, state: "idle" };
+        shown.muted = { ...stateObj, attributes: { ...a, is_volume_muted: true, volume_level: 0.35, repeat: a.repeat && "all", shuffle: true } };
+        shown.assumed = { ...stateObj, state: "off", attributes: { ...a, assumed_state: true } };
+        // Fixed in time: playing for 30 s since the last update at the capture's clock
+        shown.playing_fixed = { ...stateObj, state: "playing", attributes: { ...a, media_position: 10, media_position_updated_at: new Date(Date.now() - 30000).toISOString() } };
+      }
       if (domain === "alarm_control_panel") {
         for (const name of ["armed_away", "armed_night", "triggered", "arming", "pending"]) {
           shown[name] = { ...stateObj, state: name };
@@ -1264,6 +1310,11 @@ async function captureMoreInfoControls(entityIds) {
     if (domain === "climate") out[entityId].as_is.calls = await climateCalls(g.clone(current));
     if (domain === "water_heater") {
       out[entityId].as_is.calls = await dialCalls(g.clone(current), "ha-state-control-water_heater-temperature", 50);
+    }
+    if (domain === "media_player") {
+      for (const name of ["as_is", "muted", "assumed", "off"]) {
+        out[entityId][name].calls = await mediaCalls(g.clone(out[entityId][name].stateObj));
+      }
     }
     if (domain === "alarm_control_panel") {
       for (const name of ["no_code", "no_code_triggered"]) {
@@ -1388,6 +1439,40 @@ async function captureMoreInfoControls(entityIds) {
       );
     }
     return recorded;
+  }
+
+  /** The calls of a media player's controls: each button, mute, volume, seek, source and sound mode. */
+  async function mediaCalls(stateObj) {
+    const recorded = [];
+    const record = async (control, label, act) =>
+      recorded.push({ control, label, detail: null, calls: await recordCalls(stateObj, act, 400) });
+    const actions = ["repeat_set", "media_previous_track", "media_play_pause", "media_pause", "media_play", "media_stop",
+      "media_next_track", "shuffle_set", "volume_down", "volume_up", "turn_on", "turn_off"];
+    for (const action of actions) {
+      await record("button", action, (r) => r.querySelector(`[action="${action}"]`)?.click());
+    }
+    await record("mute", "mute", (r) => r.querySelector(".volume ha-icon-button:not([action])")?.click());
+    await record("volume", "volume 40", (r) => {
+      const slider = r.querySelector(".volume-slider");
+      if (slider) {
+        slider.value = 40;
+        slider.dispatchEvent(new Event("change"));
+      }
+    });
+    await record("seek", "seek 60", (r) => {
+      const slider = r.querySelector("#position-slider");
+      if (slider) {
+        slider.value = 60;
+        slider.dispatchEvent(new Event("change"));
+      }
+    });
+    for (const [control, id, value] of [["source", "source-button", "youtube"], ["sound_mode", "sound-mode-button", "Movie"]]) {
+      await record(control, `${control} ${value}`, (r) =>
+        r.querySelector(`#${id}`)?.closest("ha-dropdown")
+          ?.dispatchEvent(new CustomEvent("wa-select", { detail: { item: { value } } }))
+      );
+    }
+    return recorded.filter((r) => r.calls.length > 0);
   }
 
   /** The calls of an alarm panel's controls: each mode, and the disarm button while it's triggered. */

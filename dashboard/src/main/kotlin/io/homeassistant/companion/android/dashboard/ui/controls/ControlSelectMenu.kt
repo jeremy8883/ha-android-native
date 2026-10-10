@@ -116,7 +116,7 @@ internal fun ControlSelectMenu(menu: SelectMenu, onAction: (CardAction) -> Unit,
 
 /** The options of [menu] with their icons, the selected one highlighted. */
 @Composable
-private fun SelectMenuOptions(
+internal fun SelectMenuOptions(
     menu: SelectMenu,
     expanded: Boolean,
     onDismiss: () -> Unit,

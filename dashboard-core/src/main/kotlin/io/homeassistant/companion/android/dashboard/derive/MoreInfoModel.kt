@@ -9,7 +9,6 @@ import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.entityContext
 import io.homeassistant.companion.android.dashboard.feature.attributeName
-import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.moreinfo.AlarmMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.ClimateMoreInfo
@@ -17,6 +16,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.FanMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.HumidifierMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.LightMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.LockMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.MediaPlayerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.PositionMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.StateToggle
 import io.homeassistant.companion.android.dashboard.moreinfo.WaterHeaterMoreInfo
@@ -26,12 +26,11 @@ import io.homeassistant.companion.android.dashboard.moreinfo.fanMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.humidifierMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.lightMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.lockMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.mediaPlayerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.positionMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.stateToggle
 import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterMoreInfo
 import java.time.Instant
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 
 /**
  * The native quick view of an entity, shown before (or instead of) upstream's full more-info dialog.
@@ -52,7 +51,7 @@ import kotlinx.serialization.json.put
  * @property lock a lock's controls
  * @property stateToggle the large on/off switch of a switch or input boolean
  * @property alarm an alarm panel's controls
- * @property media the media controls of a media player
+ * @property mediaPlayer a media player's controls
  * @property attributes the displayable attributes, as (name, formatted value)
  */
 data class MoreInfoModel(
@@ -75,7 +74,7 @@ data class MoreInfoModel(
     val lock: LockMoreInfo?,
     val stateToggle: StateToggle?,
     val alarm: AlarmMoreInfo?,
-    val media: MediaControlModel?,
+    val mediaPlayer: MediaPlayerMoreInfo?,
     val attributes: List<Pair<String, String>>,
 )
 
@@ -91,12 +90,6 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
     val deviceName = context.device?.deviceName()
     val entityName = entityName(state)
     val domain = state.domain
-    val mediaCard = CardConfig(
-        buildJsonObject {
-            put("type", "tile")
-            put("entity", entityId)
-        },
-    )
     val light = lightMoreInfo(state)
     val position = positionMoreInfo(state)
     val fan = fanMoreInfo(state)
@@ -124,7 +117,7 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         lock = lockMoreInfo(state),
         stateToggle = stateToggle,
         alarm = alarmMoreInfo(state),
-        media = if (domain == "media_player") mediaControlModel(mediaCard) else null,
+        mediaPlayer = mediaPlayerMoreInfo(state),
         attributes = displayAttributes(state).map { attributeName(state, it) to formatEntityAttributeValue(state, it) },
     )
 }
@@ -143,7 +136,7 @@ private const val MILLIS = 1000.0
 private val ON_OFF = setOf("on", "off")
 
 /** The domains whose controls replace the state header (`more-info-climate` renders none). */
-private val NO_STATE_HEADER_DOMAINS = setOf("climate", "humidifier", "water_heater")
+private val NO_STATE_HEADER_DOMAINS = setOf("climate", "humidifier", "media_player", "water_heater")
 
 /** The domains whose switch is in the header, until they have controls of their own. */
 private val HEADER_TOGGLE_DOMAINS = setOf("automation", "remote", "siren")

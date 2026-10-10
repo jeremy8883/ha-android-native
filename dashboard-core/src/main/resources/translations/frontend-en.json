@@ -838,7 +838,8 @@
        "self_consumed_solar_energy": "Self-consumed solar energy"
       },
       "water_total_title": "Water flow rate"
-     }
+     },
+     "show_more_info": "Show more information"
     },
     "components": {
      "energy_period_selector": {

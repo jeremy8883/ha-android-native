@@ -1,11 +1,12 @@
 package io.homeassistant.companion.android.dashboard.entity
 
+import io.homeassistant.companion.android.dashboard.display.parseJsDate
 import io.homeassistant.companion.android.dashboard.model.has
 import io.homeassistant.companion.android.dashboard.model.number
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
-import java.time.Instant
+import java.time.ZoneOffset
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -94,9 +95,10 @@ fun parseStates(result: JsonArray): EntityStates = result.filterIsInstance<JsonO
     )
 }.toMap()
 
-private fun epochSeconds(iso: String): Double? = runCatching {
-    Instant.parse(iso).let { it.epochSecond + it.nano / NANOS_PER_SECOND }
-}.getOrNull()
+// Android's java.time rejects Instant.parse("…+00:00"), the form get_states uses
+private fun epochSeconds(iso: String): Double? = parseJsDate(iso, ZoneOffset.UTC)?.let {
+    it.epochSecond + it.nano / NANOS_PER_SECOND
+}
 
 private const val NANOS_PER_SECOND = 1_000_000_000.0
 

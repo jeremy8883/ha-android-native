@@ -24,6 +24,8 @@ import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
+import io.homeassistant.companion.android.dashboard.action.CardAction
+import io.homeassistant.companion.android.dashboard.derive.MediaControlModel
 import io.homeassistant.companion.android.dashboard.derive.mediaControlModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
@@ -53,13 +55,7 @@ internal fun MediaControlCard(
                 modifier = Modifier.fillMaxWidth().padding(HADimens.SPACE4),
                 verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
             ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    DashboardIcon(model.icon, colors.colorTextSecondary, Modifier.size(HASize.XL))
-                    Text(model.name, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary, maxLines = 1)
-                }
+                MediaCardHeader(model, interactions)
                 if (!model.unavailable) {
                     model.title?.let {
                         Text(
@@ -87,6 +83,32 @@ internal fun MediaControlCard(
                     }
                 }
             }
+        }
+    }
+}
+
+/** The player's icon and name, with upstream's button opening its details. */
+@Composable
+private fun MediaCardHeader(model: MediaControlModel, interactions: CardInteractions) {
+    val colors = LocalHAColorScheme.current
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        DashboardIcon(model.icon, colors.colorTextSecondary, Modifier.size(HASize.XL))
+        Text(
+            model.name,
+            style = HATextStyle.BodyMedium,
+            color = colors.colorTextSecondary,
+            maxLines = 1,
+            modifier = Modifier.weight(1f),
+        )
+        // Upstream's `.more-info` button
+        IconButton(
+            onClick = { interactions.onAction(CardAction.MoreInfo(model.entityId)) },
+            modifier = Modifier.semantics { contentDescription = model.moreInfoLabel },
+        ) {
+            DashboardIcon("mdi:dots-vertical", colors.colorTextSecondary, Modifier.size(HASize.X2L))
         }
     }
 }

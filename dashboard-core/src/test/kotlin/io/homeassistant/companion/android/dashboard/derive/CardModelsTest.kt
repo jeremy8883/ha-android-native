@@ -134,9 +134,9 @@ class MoreInfoModelTest {
     }
 
     @Test
-    fun `Given a media player when deriving its quick view then it carries the media controls and no toggle`() {
+    fun `Given a media player when deriving its quick view then it carries the player's controls and no toggle`() {
         val model = hass.moreInfoModel("media_player.kitchen_speaker", Instant.EPOCH)!!
         assertNull(model.toggle)
-        assertEquals(4, model.media?.controls?.size)
+        assertEquals(listOf("media_pause"), model.mediaPlayer?.main?.center?.map { it.action.service })
     }
 }

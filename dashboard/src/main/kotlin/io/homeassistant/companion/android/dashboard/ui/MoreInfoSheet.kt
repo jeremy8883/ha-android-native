@@ -62,6 +62,7 @@ import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLight
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLock
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLogbook
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoMediaPlayer
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoPosition
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.SingleDialControls
 import java.time.Instant
@@ -119,14 +120,7 @@ private fun MoreInfoContent(
             hass.states[model.entityId]?.takeIf { it.domain in FAVORITES_DOMAINS }?.let { FavoritesMenu(it, hass) }
         }
         if (model.stateHeader) MoreInfoState(model)
-        hass.states[model.entityId]?.let { DomainControls(model, it, hass, interactions.onAction) }
-        model.media?.let { media ->
-            Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
-                media.controls.forEach { control ->
-                    HAPlainButton(control.label, { interactions.onAction(control.action) })
-                }
-            }
-        }
+        hass.states[model.entityId]?.let { DomainControls(model, it, hass, now, interactions.onAction) }
         if (hass.showsHistory(model.entityId)) MoreInfoHistory(model.entityId, hass, now, interactions)
         if (hass.showsLogbook(model.entityId)) MoreInfoLogbook(model.entityId, hass, now, interactions)
         if (model.attributes.isNotEmpty()) MoreInfoAttributes(model.attributes)
@@ -146,6 +140,7 @@ private fun DomainControls(
     model: MoreInfoModel,
     state: EntityState,
     hass: HassSnapshot,
+    now: Instant,
     onAction: (CardAction) -> Unit,
 ) {
     model.light?.let { MoreInfoLight(it, state, hass, onAction) }
@@ -154,6 +149,7 @@ private fun DomainControls(
     model.fan?.let { MoreInfoFan(it, onAction) }
     model.lock?.let { MoreInfoLock(it, onAction) }
     model.alarm?.let { MoreInfoAlarm(it, onAction) }
+    model.mediaPlayer?.let { MoreInfoMediaPlayer(it, now, onAction) }
     model.waterHeater?.let { heater ->
         SingleDialControls(
             current = heater.current,
