@@ -82,3 +82,5 @@ Compose
 - Don't put logic in composables (filtering, mapping config, computing names or states). Ask for a model field.
 - Don't edit upstream modules (`:app`, `:common`, ...) for UI work.
 - Don't commit anything from a real Home Assistant instance.
+- Don't differ from upstream's look or behaviour silently: mark each deliberate difference with a
+  `// UPSTREAM-DIFF:` comment saying what upstream does instead (see `progress.md`, Context).
