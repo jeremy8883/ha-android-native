@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.derive
 
+import io.homeassistant.companion.android.dashboard.feature.kitchenBrightnessPercent
 import io.homeassistant.companion.android.dashboard.golden.GoldenFixture
 import io.homeassistant.companion.android.dashboard.json
 import io.homeassistant.companion.android.dashboard.model.CardConfig
@@ -122,12 +123,13 @@ class MoreInfoModelTest {
     fun `Given a dimmable light when deriving its quick view then it shows its brightness, its controls and its attributes`() {
         val model = hass.moreInfoModel("light.kitchen_lights", Instant.parse("2026-01-01T01:00:00Z"))!!
         assertEquals("Kitchen Lights", model.name)
-        assertEquals("71%", model.state)
+        val percent = kitchenBrightnessPercent(hass)
+        assertEquals("$percent%", model.state)
         assertEquals("1 hour ago", model.changed)
         // Its own power button replaces the header's switch, its own controls the tile's
         assertNull(model.toggle)
         assertTrue(model.controls.isEmpty())
-        assertEquals(71.0, model.light?.brightness?.value)
+        assertEquals(percent.toDouble(), model.light?.brightness?.value)
         assertTrue(model.attributes.none { (name, _) -> name == "Friendly name" })
         assertTrue(model.attributes.isNotEmpty())
     }

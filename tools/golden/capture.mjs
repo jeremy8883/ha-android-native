@@ -966,7 +966,50 @@ async function captureMoreInfoControls(entityIds) {
         disabled: m.disabled ?? false,
         options: (m.options ?? []).map((o) => ({ value: o.value, label: o.label })),
       })),
+      favorites: (() => {
+        const favorites = root.querySelector("ha-more-info-light-favorite-colors");
+        if (!favorites) return null;
+        const list = favorites.shadowRoot?.querySelector("ha-more-info-favorites");
+        return {
+          colors: g.clone(favorites._favoriteColors ?? []),
+          buttons: deep(favorites.shadowRoot, "ha-favorite-color-button").map((b) => {
+            const button = b.shadowRoot?.querySelector("button");
+            return {
+              label: b.label ?? null,
+              disabled: b.disabled ?? false,
+              background: button?.style.backgroundColor || null,
+              border: button?.style.borderColor || null,
+            };
+          }),
+          deleteLabels: [...(list?.shadowRoot?.querySelectorAll(".delete") ?? [])].map((d) => d.getAttribute("aria-label")),
+          buttonsLabels: [...(list?.shadowRoot?.querySelectorAll("ha-outlined-icon-button") ?? [])].map((d) => d.label ?? null),
+        };
+      })(),
     };
+  };
+  // The icon `ha-attribute-icon` resolves for each of a light's effects
+  const effectIcons = async (stateObj) => {
+    const icons = {};
+    for (const effect of stateObj.attributes.effect_list ?? []) {
+      const icon = document.createElement("ha-attribute-icon");
+      icon.hass = ha.hass;
+      icon.stateObj = stateObj;
+      icon.attribute = "effect";
+      icon.attributeValue = effect;
+      ha.shadowRoot.appendChild(icon);
+      await sleep(300);
+      icons[effect] = icon.shadowRoot?.querySelector("ha-icon")?.icon ?? null;
+      icon.remove();
+    }
+    return icons;
+  };
+  // The entity registry entry the dialog loads (`null` when the entity has none, as the dialog sets it)
+  const registryEntry = async (entityId) => {
+    try {
+      return await ha.hass.callWS({ type: "config/entity_registry/get", entity_id: entityId });
+    } catch (_e) {
+      return null;
+    }
   };
   const variants = (stateObj) => {
     // As the server reports a light off or unavailable: its capabilities stay, its colour and brightness go
@@ -992,13 +1035,24 @@ async function captureMoreInfoControls(entityIds) {
     if (!current) continue;
     const domain = entityId.split(".")[0];
     out[entityId] = {};
+    const entry = await registryEntry(entityId);
     for (const [name, stateObj] of Object.entries(variants(g.clone(current)))) {
       const el = document.createElement(`more-info-${domain}`);
       el.hass = ha.hass;
       el.stateObj = stateObj;
+      el.entry = entry;
       ha.shadowRoot.appendChild(el);
       await sleep(300);
-      const shown = { stateObj: g.clone(stateObj), main: controls(el), pickers: {} };
+      const shown = { stateObj: g.clone(stateObj), entry: g.clone(entry), main: controls(el), pickers: {} };
+      if (name === "as_is" && domain === "light") {
+        shown.effectIcons = await effectIcons(stateObj);
+        // As an admin's long press shows them
+        el.editMode = true;
+        await sleep(300);
+        shown.editMode = controls(el).favorites;
+        el.editMode = false;
+        await sleep(200);
+      }
       // Each other main control in turn, as its button shows it
       const toggles = [...(el.shadowRoot.querySelector("ha-icon-button-group")?.querySelectorAll("ha-icon-button-toggle") ?? [])];
       for (const button of toggles) {
@@ -1030,10 +1084,12 @@ async function captureMoreInfoControls(entityIds) {
       return origSend.call(this, msg);
     };
     const recorded = [];
+    const entry = await registryEntry(stateObj.entity_id);
     const interact = async (control, label, find, detail) => {
       const el = document.createElement("more-info-light");
       el.hass = ha.hass;
       el.stateObj = stateObj;
+      el.entry = entry;
       ha.shadowRoot.appendChild(el);
       await sleep(200);
       const button = el.shadowRoot.querySelector(`ha-icon-button-toggle[control="${control}"]`)
@@ -1065,12 +1121,21 @@ async function captureMoreInfoControls(entityIds) {
         await interact("color", `slider ${i} ${value}`, (r) => sliders(r)[i], { value });
       }
     }
-    // The white and effect buttons
+    // The white and effect buttons, and each favourite
     const el = document.createElement("more-info-light");
     el.hass = ha.hass;
     el.stateObj = stateObj;
+    el.entry = entry;
     ha.shadowRoot.appendChild(el);
-    await sleep(200);
+    await sleep(300);
+    const favorites = el.shadowRoot.querySelector("ha-more-info-light-favorite-colors");
+    const items = [...(favorites?.shadowRoot?.querySelector("ha-more-info-favorites")?.shadowRoot?.querySelectorAll(".item") ?? [])];
+    for (const item of items) {
+      calls.length = 0;
+      item.dispatchEvent(new CustomEvent("action", { detail: { action: "tap" } }));
+      await sleep(200);
+      recorded.push({ control: "favorite", label: item.dataset.index, detail: null, calls: g.clone(calls) });
+    }
     for (const button of el.shadowRoot.querySelectorAll("ha-icon-button-group > ha-icon-button")) {
       calls.length = 0;
       button.click();

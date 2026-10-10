@@ -360,6 +360,30 @@ async def seed_usage(ws: Ws, states: list[dict]) -> None:
     await asyncio.sleep(6)
 
 
+# Lights' favourite colours (entity registry options): saved ones of every kind on one light, and none on another,
+# which hides them. The rest keep the defaults the frontend computes.
+FAVORITE_COLORS = {
+    "light.living_room_rgbww_lights": [
+        {"rgbww_color": [255, 0, 0, 0, 0]},
+        {"hs_color": [240, 100]},
+        {"rgb_color": [255, 255, 255]},
+        {"color_temp_kelvin": 3000},
+    ],
+    "light.office_rgbw_lights": [],
+}
+
+
+async def seed_favorites(ws: Ws) -> None:
+    for entity_id, colors in FAVORITE_COLORS.items():
+        await ws.call(
+            "config/entity_registry/update",
+            entity_id=entity_id,
+            options_domain="light",
+            options={"favorite_colors": colors},
+        )
+    log(f"saved the favourite colours of {len(FAVORITE_COLORS)} lights")
+
+
 async def seed_energy(ws: Ws, session: aiohttp.ClientSession, base: str, token: str) -> None:
     # Imported here: seed_energy imports this module's helpers
     from seed_energy import import_history, save_prefs
@@ -403,6 +427,7 @@ async def main(base: str, skip_usage: bool) -> None:
         states = await wait_for_demo(ws)
         await seed_structure(ws)
         await seed_dashboard(ws)
+        await seed_favorites(ws)
         # Usage history accumulates, so only seed it on a fresh instance.
         if not onboarded and not skip_usage:
             await seed_usage(ws, states)

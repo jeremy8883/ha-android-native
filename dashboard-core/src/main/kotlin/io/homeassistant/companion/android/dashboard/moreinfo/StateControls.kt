@@ -84,6 +84,7 @@ data class StateToggle(
 /**
  * A dropdown of choices (`ha-control-select-menu`).
  *
+ * @property icon the menu's icon, shown when the selected option has none
  * @property value the selected option's value, `null` when none
  */
 data class SelectMenu(
@@ -94,8 +95,8 @@ data class SelectMenu(
     val options: List<MenuOption>,
 )
 
-/** One choice of a [SelectMenu]. */
-data class MenuOption(val value: String, val label: String, val action: CardAction.CallService)
+/** One choice of a [SelectMenu], with its [icon] when it has one. */
+data class MenuOption(val value: String, val label: String, val icon: String?, val action: CardAction.CallService)
 
 /** Port of `ha-state-control-toggle` for [state], with [onIcon] and [offIcon] for its two sides. */
 fun HassSnapshot.stateToggle(state: EntityState, onIcon: String, offIcon: String): StateToggle {

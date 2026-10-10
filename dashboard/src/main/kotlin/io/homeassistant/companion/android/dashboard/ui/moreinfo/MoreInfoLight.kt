@@ -36,8 +36,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.composable.HADropdownItem
-import io.homeassistant.companion.android.common.compose.composable.HADropdownMenu
 import io.homeassistant.companion.android.common.compose.theme.HABorderWidth
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HAFontSize
@@ -53,12 +51,12 @@ import io.homeassistant.companion.android.dashboard.moreinfo.LightChannel
 import io.homeassistant.companion.android.dashboard.moreinfo.LightChannelSlider
 import io.homeassistant.companion.android.dashboard.moreinfo.LightMainControl
 import io.homeassistant.companion.android.dashboard.moreinfo.LightMoreInfo
-import io.homeassistant.companion.android.dashboard.moreinfo.SelectMenu
 import io.homeassistant.companion.android.dashboard.moreinfo.lightColorBrightnessCall
 import io.homeassistant.companion.android.dashboard.moreinfo.lightColorPicker
 import io.homeassistant.companion.android.dashboard.moreinfo.lightHueCall
 import io.homeassistant.companion.android.dashboard.moreinfo.lightWhiteCall
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.controls.ControlSelectMenus
 import io.homeassistant.companion.android.dashboard.ui.controls.ControlSlider
 import io.homeassistant.companion.android.dashboard.ui.controls.ControlSliderStyle
 import io.homeassistant.companion.android.dashboard.ui.controls.HsColorWheel
@@ -101,13 +99,14 @@ internal fun MoreInfoLight(
             LightMainControl.Color -> LightColorControl(state, hass, onAction)
         }
         if (light.buttons.isNotEmpty()) LightButtons(light.buttons, main, onShow = { main = it }, onAction = onAction)
-        light.effect?.let { EffectMenu(it, onAction) }
+        LightFavoritesSection(state, hass, onAction)
+        ControlSelectMenus(listOfNotNull(light.effect), onAction)
     }
 }
 
 /** The colour wheel and, for RGBW and RGBWW lights, the sliders of their channels. */
 @Composable
-private fun LightColorControl(state: EntityState, hass: HassSnapshot, onAction: (CardAction) -> Unit) {
+internal fun LightColorControl(state: EntityState, hass: HassSnapshot, onAction: (CardAction) -> Unit) {
     val picker = remember(state) { hass.lightColorPicker(state) }
     val toWheel = { value: Double? -> value?.let { it * RGB_MAX / PERCENT } }
     var moving by remember { mutableStateOf<Pair<Double, Double>?>(null) }
@@ -246,7 +245,7 @@ private fun ButtonIcon(icon: String, label: String, enabled: Boolean) {
  * is filled in and the swatches are ringed.
  */
 @Composable
-private fun ShowButton(button: LightButton.Show, selected: Boolean, onClick: () -> Unit) {
+internal fun ShowButton(button: LightButton.Show, selected: Boolean, onClick: () -> Unit) {
     val colors = LocalHAColorScheme.current
     val shape = RoundedCornerShape(HARadius.X2L)
     val ring = selected && button.enabled
@@ -295,21 +294,6 @@ private fun ShowButton(button: LightButton.Show, selected: Boolean, onClick: () 
             }
         }
     }
-}
-
-/** Port of the effect `ha-control-select-menu`, as the app's dropdown. */
-@Composable
-private fun EffectMenu(menu: SelectMenu, onAction: (CardAction) -> Unit) {
-    HADropdownMenu(
-        items = menu.options.map { HADropdownItem(it.value, it.label) },
-        selectedKey = menu.value,
-        onItemSelected = { value ->
-            if (value != menu.value) menu.options.firstOrNull { it.value == value }?.let { onAction(it.action) }
-        },
-        label = menu.label,
-        enabled = menu.enabled,
-        modifier = Modifier.width(STATE_CONTROL_WIDE),
-    )
 }
 
 private val MainControlSaver = Saver<MutableState<LightMainControl>, String>(

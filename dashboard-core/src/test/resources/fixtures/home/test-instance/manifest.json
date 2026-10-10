@@ -7,7 +7,7 @@
   },
   "ha_version": "2026.7.4",
   "frontend_version": "20260624.6",
-  "capture_date": "2026-10-10T01:30:31.410Z",
+  "capture_date": "2026-10-10T03:19:07.150Z",
   "user": {
     "name": "Dev",
     "is_admin": true
@@ -132,13 +132,13 @@
   "files": [
     {
       "path": "energy/data.json",
-      "bytes": 1693768,
-      "sha256": "4424673a256a1ce08555bb54bf13a5a940e0d86a323246feb22fd1e445d583d2"
+      "bytes": 1702290,
+      "sha256": "7b7493d13e2b4d17fc2a77c824dcb276a26d59b2265db7539ca468300858ac43"
     },
     {
       "path": "history/more-info.json",
-      "bytes": 243967,
-      "sha256": "aec529f631bd4bcbb67c0558a0fa1223126983329fcdd8bb228437b1c786de8e"
+      "bytes": 238568,
+      "sha256": "3e0e0c0b262221b702b49ac204fb95d0ce43dfed0190997063d5dfe56fda4935"
     },
     {
       "path": "inputs/areas.json",
@@ -207,8 +207,8 @@
     },
     {
       "path": "inputs/states.json",
-      "bytes": 96843,
-      "sha256": "4d7affc2ac1f1cc42e9cc139565f3dabf5dcaccb41b0642c2b882305b7d6dfc6"
+      "bytes": 96862,
+      "sha256": "e3fadee92084afa6f157dd41589aab87a2d2c6d16f354d374c7931e05212c7a8"
     },
     {
       "path": "inputs/strategy-config.json",
@@ -237,18 +237,18 @@
     },
     {
       "path": "logbook/more-info.json",
-      "bytes": 301920,
-      "sha256": "9be8b9f42860eeb4b8140eceb6083c2b025891ef99a07fac44fa6a81d706def1"
+      "bytes": 322097,
+      "sha256": "32bfa4b155fbacc6031dc071c5782e68a88800e2dfbf10e054e45ff308c2b7c0"
     },
     {
       "path": "more-info/controls.json",
-      "bytes": 125790,
-      "sha256": "82c1f1454c259cfee784a98cf9be783b502583d932a1575b6dc2ce3be08976a7"
+      "bytes": 297891,
+      "sha256": "6fe47c6012b24220e73e037757d02fc7c9513c0caff72730ffb2b58072ee39d2"
     },
     {
       "path": "outputs/cards.json",
-      "bytes": 2085,
-      "sha256": "19219cc29a4509a0f036a3946ffb9c24b4298b415d349c2116335d74acb1ff35"
+      "bytes": 2083,
+      "sha256": "e01f797006fcec42f69a827289842d63389e6c709b6966985e8ef6579bafc8bb"
     },
     {
       "path": "outputs/dashboard.json",
@@ -287,8 +287,8 @@
     },
     {
       "path": "outputs/entity-display.json",
-      "bytes": 78781,
-      "sha256": "8251b2069ebf6e473483ca7bc381d480980f90981bef1c7351f05c473bf7fb46"
+      "bytes": 78773,
+      "sha256": "20e81ed677a8e4319e3207945a4d02e8c66897fb44ee20ced93e5a55a538e7fc"
     },
     {
       "path": "outputs/expanded.json",
@@ -462,8 +462,8 @@
     },
     {
       "path": "ws/get_states.json",
-      "bytes": 107964,
-      "sha256": "d813f76cf584f87111ad269e71d77fab18caad695f84ccc1a60216715e7ed7c5"
+      "bytes": 107983,
+      "sha256": "7a1fe249c1794926c680efbf99fc035140e974c63495595979f36e9fb659377e"
     },
     {
       "path": "ws/manifest-get-frontend.json",

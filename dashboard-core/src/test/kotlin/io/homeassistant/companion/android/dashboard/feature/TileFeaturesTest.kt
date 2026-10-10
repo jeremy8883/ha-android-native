@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.feature
 
+import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.golden.GoldenFixture
 import io.homeassistant.companion.android.dashboard.json
 import io.homeassistant.companion.android.dashboard.model.CardConfig
@@ -19,7 +20,8 @@ class TileFeaturesTest {
     @Test
     fun `Given a dimmable light when deriving brightness then the slider shows its percentage`() {
         val slider = feature("light.kitchen_lights", "light-brightness") as TileFeature.Slider
-        assertEquals(71, slider.value)
+        // The capture records the light as it was: compute its percentage the way upstream does
+        assertEquals(kitchenBrightnessPercent(hass), slider.value)
         assertTrue(slider.showHandle)
         assertEquals(
             json("""{"entity_id": "light.kitchen_lights", "brightness_pct": 40}"""),
@@ -86,4 +88,10 @@ class TileFeaturesTest {
         assertNull(feature("lock.front_door_deadbolt", "light-brightness"))
         assertNull(feature("lock.front_door_deadbolt", "unknown-feature"))
     }
+}
+
+/** The kitchen light's brightness as a percentage, rounded as the brightness feature and more-info show it. */
+internal fun kitchenBrightnessPercent(hass: HassSnapshot): Int {
+    val brightness = hass.states.getValue("light.kitchen_lights").attributes["brightness"].toString().toDouble()
+    return Math.round(brightness * 100 / 255).toInt()
 }

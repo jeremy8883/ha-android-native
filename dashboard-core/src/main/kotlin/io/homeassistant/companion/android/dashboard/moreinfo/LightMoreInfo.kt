@@ -5,6 +5,7 @@ import io.homeassistant.companion.android.dashboard.color.DEFAULT_MAX_KELVIN
 import io.homeassistant.companion.android.dashboard.color.DEFAULT_MIN_KELVIN
 import io.homeassistant.companion.android.dashboard.color.rgb2hex
 import io.homeassistant.companion.android.dashboard.color.temperature2rgb
+import io.homeassistant.companion.android.dashboard.derive.attributeIcon
 import io.homeassistant.companion.android.dashboard.derive.isActive
 import io.homeassistant.companion.android.dashboard.derive.lightColor
 import io.homeassistant.companion.android.dashboard.derive.stateColor
@@ -200,6 +201,7 @@ private fun HassSnapshot.effectMenu(state: EntityState): SelectMenu? {
             MenuOption(
                 value = effect,
                 label = formatEntityAttributeValue(state, "effect", JsonPrimitive(effect)),
+                icon = attributeIcon(state, "effect", effect),
                 action = CardAction.CallService(
                     LIGHT,
                     TURN_ON,

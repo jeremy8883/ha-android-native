@@ -48,6 +48,7 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.EntityToggle
 import io.homeassistant.companion.android.dashboard.ui.cards.TileFeatureControl
 import io.homeassistant.companion.android.dashboard.ui.controls.StateToggleControl
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.LightFavoritesMenu
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLight
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLogbook
@@ -102,7 +103,9 @@ private fun MoreInfoContent(
             .navigationBarsPadding(),
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
     ) {
-        MoreInfoHeader(model, interactions)
+        MoreInfoHeader(model, interactions) {
+            hass.states[model.entityId]?.takeIf { model.light != null }?.let { LightFavoritesMenu(it, hass) }
+        }
         MoreInfoState(model)
         val state = hass.states[model.entityId]
         model.light?.let { light -> state?.let { MoreInfoLight(light, it, hass, interactions.onAction) } }
@@ -132,7 +135,7 @@ private fun MoreInfoContent(
 
 /** The entity's icon, name and context, with its switch when it turns on and off. */
 @Composable
-private fun MoreInfoHeader(model: MoreInfoModel, interactions: CardInteractions) {
+private fun MoreInfoHeader(model: MoreInfoModel, interactions: CardInteractions, menu: @Composable () -> Unit) {
     val colors = LocalHAColorScheme.current
     Row(
         horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
@@ -156,6 +159,7 @@ private fun MoreInfoHeader(model: MoreInfoModel, interactions: CardInteractions)
                 interactions.onAction(toggle)
             })
         }
+        menu()
     }
 }
 

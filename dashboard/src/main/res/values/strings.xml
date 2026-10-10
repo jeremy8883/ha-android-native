@@ -29,4 +29,8 @@
     <string name="native_dashboard_updated">Updated %1$s</string>
     <string name="native_dashboard_updated_just_now">Updated just now</string>
     <string name="native_dashboard_page_unavailable">This page isn\'t available in this app</string>
+    <string name="native_dashboard_reset">Reset</string>
+    <string name="native_dashboard_copy">Copy</string>
+    <string name="native_dashboard_favorites_save_failed">Couldn\'t save the favorite colors: %1$s</string>
+    <string name="native_dashboard_favorites_copy_failed">Couldn\'t copy the favorite colors to %1$d lights: %2$s</string>
 </resources>

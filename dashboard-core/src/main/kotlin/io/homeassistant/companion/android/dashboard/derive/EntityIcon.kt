@@ -52,7 +52,7 @@ private fun HassSnapshot.componentIcon(state: EntityState, value: String): Strin
 }
 
 /** Port of `getIconFromTranslations`: an exact state icon, else a range icon for numeric states, else the default. */
-private fun iconFromTranslations(state: String, translations: JsonObject): String? {
+internal fun iconFromTranslations(state: String, translations: JsonObject): String? {
     val exact = if (state.isNotEmpty()) translations.obj("state")?.string(state) else null
     val range = translations.obj("range")
     val number = jsNumber(state)

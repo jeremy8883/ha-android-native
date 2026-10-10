@@ -115,7 +115,8 @@ class MoreInfoControlsGoldenTest {
             val states = parseStates(JsonArray(listOf(stateObj)))
             val hass = fixture.hass.copy(states = fixture.hass.states + states)
             val state = states.getValue(entityId)
-            captured.objects("calls").map { call ->
+            // Favourite taps need the registry entry: LightFavoritesGoldenTest checks them
+            captured.objects("calls").filter { it.string("control") != "favorite" }.map { call ->
                 DynamicTest.dynamicTest("$entityId ${call.string("label")}") {
                     val expected = call.objects("calls").map {
                         CardAction.CallService(it.string("domain")!!, it.string("service")!!, it.obj("data"), null)
