@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -18,8 +19,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -29,8 +33,10 @@ import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.EntityRowModel
+import io.homeassistant.companion.android.dashboard.derive.RowButton
 import io.homeassistant.companion.android.dashboard.derive.RowControl
 import io.homeassistant.companion.android.dashboard.derive.RowDateTime
+import io.homeassistant.companion.android.dashboard.derive.RowIconButton
 import io.homeassistant.companion.android.dashboard.derive.RowNumberBox
 import io.homeassistant.companion.android.dashboard.derive.RowSelect
 import io.homeassistant.companion.android.dashboard.derive.RowSlider
@@ -124,7 +130,6 @@ internal fun RowScope.RowControlContent(
     now: Instant,
     onAction: (CardAction) -> Unit,
 ) {
-    val colors = LocalHAColorScheme.current
     when (control) {
         is RowControl.Toggle -> EntityToggle(
             checked = control.checked,
@@ -132,15 +137,8 @@ internal fun RowScope.RowControlContent(
             onToggle = { onAction(control.action) },
             enabled = control.enabled,
         )
-        is RowControl.Buttons -> control.buttons.forEach { button ->
-            TextButton(onClick = { onAction(button.action) }, enabled = button.enabled) {
-                Text(
-                    button.label,
-                    style = HATextStyle.BodyMedium,
-                    color = if (button.danger) colors.colorOnDangerNormal else colors.colorOnPrimaryNormal,
-                )
-            }
-        }
+        is RowControl.Buttons -> control.buttons.forEach { button -> RowTextButton(button, onAction) }
+        is RowControl.IconButtons -> control.buttons.forEach { button -> RowIconButtonView(button, onAction) }
         is RowSlider -> Row(
             modifier = Modifier.weight(1f),
             verticalAlignment = Alignment.CenterVertically,
@@ -151,6 +149,40 @@ internal fun RowScope.RowControlContent(
         is RowDateTime -> RowDateTimeControl(control, onAction)
         is RowTimer -> RowTimerText(control, now)
         null -> state?.let { Text(it, style = HATextStyle.BodyMedium, color = textColor, maxLines = 1) }
+    }
+}
+
+/** A text button of a row, a cancelling one in the danger colour. */
+@Composable
+private fun RowTextButton(button: RowButton, onAction: (CardAction) -> Unit) {
+    val colors = LocalHAColorScheme.current
+    TextButton(onClick = { onAction(button.action) }, enabled = button.enabled) {
+        Text(
+            button.label,
+            style = HATextStyle.BodyMedium,
+            color = if (button.danger) colors.colorOnDangerNormal else colors.colorOnPrimaryNormal,
+        )
+    }
+}
+
+/** An icon button of a row; an unsupported one keeps its place, invisible. The current state's is in the accent. */
+@Composable
+private fun RowIconButtonView(button: RowIconButton, onAction: (CardAction) -> Unit) {
+    val colors = LocalHAColorScheme.current
+    IconButton(
+        onClick = { onAction(button.action) },
+        enabled = button.enabled && button.shown,
+        modifier = Modifier.alpha(if (button.shown) 1f else 0f).semantics { contentDescription = button.label },
+    ) {
+        DashboardIcon(
+            button.icon,
+            when {
+                !button.enabled -> colors.colorTextDisabled
+                button.active -> colors.colorOnPrimaryNormal
+                else -> colors.colorTextPrimary
+            },
+            Modifier.size(HASize.X2L),
+        )
     }
 }
 

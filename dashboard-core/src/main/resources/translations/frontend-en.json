@@ -754,6 +754,25 @@
     "zone": {
      "graph_unit": "People in zone"
     }
+   },
+   "voice_command": {
+    "conversation_no_control": "This assistant cannot control your home.",
+    "did_not_hear": "Home Assistant did not hear anything",
+    "did_not_understand": "Didn't quite get that",
+    "error": "Oops, an error has occurred",
+    "found": "I found the following for you:",
+    "how_can_i_help": "How can I assist?",
+    "input_label": "Enter a request",
+    "manage_assistants": "Manage assistants",
+    "not_found_error_load_assist": "Cannot find the Assist pipeline",
+    "not_supported_microphone_browser": "Your connection to Home Assistant is not secured using HTTPS. This causes browsers to block Home Assistant from accessing the microphone.",
+    "not_supported_microphone_documentation": "Use the Home Assistant app or visit {documentation_link} to learn how to use a secure URL",
+    "not_supported_microphone_documentation_link": "the documentation",
+    "send_text": "Send text",
+    "show_details": "Show details",
+    "start_listening": "Start listening",
+    "title": "Assist",
+    "unknown_error_load_assist": "Loading the Assist pipeline failed"
    }
   },
   "errors": {

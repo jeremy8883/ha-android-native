@@ -105,6 +105,10 @@ media_player:
     device_class: speaker
 
 template:
+  # An image entity for the image details (the frontend's own icon, served by the instance itself)
+  - image:
+      - name: Front camera still
+        url: "http://localhost:8123/static/icons/favicon-192x192.png"
   - lock:
       - name: Front door deadbolt
         unique_id: tpl_front_door_deadbolt
@@ -335,3 +339,61 @@ script:
       - action: lock.lock
         target:
           entity_id: lock.back_door_lock
+  # A script with fields, for the script details' form
+  announce:
+    alias: Announce
+    mode: parallel
+    max: 3
+    fields:
+      message:
+        name: Message
+        description: What to say
+        required: true
+        example: Dinner is ready
+        selector:
+          text:
+      volume:
+        name: Volume
+        default: 40
+        selector:
+          number:
+            min: 0
+            max: 100
+            unit_of_measurement: "%"
+      chime:
+        name: Chime first
+        selector:
+          boolean:
+      room:
+        name: Room
+        selector:
+          select:
+            options:
+              - Kitchen
+              - Living room
+              - Bedroom
+    sequence:
+      - delay: 2
+
+# Old-style groups, for the group details: one of lights (drawn with the light's details) and one of mixed domains
+group:
+  downstairs_lights:
+    name: Downstairs lights
+    entities:
+      - light.kitchen_lights
+      - light.living_room_rgbww_lights
+  doors:
+    name: Doors
+    entities:
+      - lock.front_door
+      - binary_sensor.front_door
+      - cover.garage_door
+
+scene:
+  - id: movie_time
+    name: Movie time
+    entities:
+      light.living_room_rgbww_lights:
+        state: on
+        brightness: 60
+      media_player.living_room_tv: on

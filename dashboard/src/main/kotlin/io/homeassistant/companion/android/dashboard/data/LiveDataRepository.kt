@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
+import kotlinx.coroutines.flow.merge
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
@@ -107,6 +108,20 @@ class LiveDataRepository @Inject constructor(
                 }
             },
         ) { session.request("repairs/list_issues").expect<JsonObject>() }
+    }
+
+    /**
+     * The server's actions (`get_services`), by domain and name, loaded again when one is registered or removed, as
+     * the frontend's `subscribeServices` keeps them.
+     */
+    @OptIn(FlowPreview::class)
+    fun services(): Flow<Loadable<Map<String, Map<String, JsonObject>>>> = sessions.withServer { session ->
+        session.parsed(
+            name = "services",
+            refreshes = merge(session.events(SERVICE_REGISTERED_EVENT), session.events(SERVICE_REMOVED_EVENT))
+                .debounce(REPAIRS_REFETCH_DEBOUNCE),
+            parse = ::parseServices,
+        ) { session.request("get_services").expect<JsonObject>() }
     }
 
     /**
@@ -214,4 +229,16 @@ private val CAMERA_REFRESH = 10.seconds
 private const val SUBSCRIBE_ENTITIES = "subscribe_entities"
 private const val SUBSCRIBE_CONFIG_FLOWS = "config_entries/flow/subscribe"
 private const val REPAIRS_UPDATED_EVENT = "repairs_issue_registry_updated"
+private const val SERVICE_REGISTERED_EVENT = "service_registered"
+private const val SERVICE_REMOVED_EVENT = "service_removed"
+
+/** `get_services`' domains, each a map of its actions' descriptions; anything else is unexpected, never "none". */
+private fun parseServices(result: JsonObject): Fetched<Map<String, Map<String, JsonObject>>> {
+    if (result.values.any { it !is JsonObject }) return Fetched.Failure(LoadError.UnexpectedResponse("get_services"))
+    return Fetched.Success(
+        result.mapValues { (_, actions) ->
+            (actions as JsonObject).mapValues { (_, action) -> action as? JsonObject ?: JsonObject(emptyMap()) }
+        },
+    )
+}
 private const val RENDER_TEMPLATE = "render_template"

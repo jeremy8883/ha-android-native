@@ -1,0 +1,40 @@
+package io.homeassistant.companion.android.dashboard.assist
+
+import io.homeassistant.companion.android.dashboard.json
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+
+class AssistChatTest {
+    private val chat = AssistChat.start("How can I assist?").send("Turn on the light")
+
+    @Test
+    fun `Given a sent message when the answer streams in then it grows until the spoken response replaces it`() {
+        val streamed = chat
+            .apply(json("""{"type": "intent-progress", "data": {"chat_log_delta": {"role": "assistant"}}}"""))
+            .apply(json("""{"type": "intent-progress", "data": {"chat_log_delta": {"content": "Turning"}}}"""))
+        assertEquals("Turning…", streamed.messages.last().text)
+        assertEquals(true, streamed.processing)
+        val ended = streamed.apply(
+            json(
+                """{"type": "intent-end", "data": {"intent_output": {"conversation_id": "c1",
+                "response": {"response_type": "action_done", "speech": {"plain": {"speech": "Turned on the light"}}}}}}""",
+            ),
+        )
+        assertEquals(ChatMessage(fromUser = false, "Turned on the light"), ended.messages.last())
+        assertEquals("c1", ended.conversationId)
+        assertEquals(false, ended.processing)
+    }
+
+    @Test
+    fun `Given a sent message when the run fails then the answer shows the error`() {
+        val failed = chat.apply(json("""{"type": "error", "data": {"code": "x", "message": "No agent"}}"""))
+        assertEquals(ChatMessage(fromUser = false, "No agent", error = true), failed.messages.last())
+        assertEquals(listOf(true, false), failed.messages.drop(1).map { it.fromUser })
+    }
+
+    @Test
+    fun `Given a conversation when the next message is sent then it continues it`() {
+        assertEquals("c1", assistRunParams("p", "Hi", "c1")["conversation_id"])
+        assertEquals(false, "conversation_id" in assistRunParams("p", "Hi", null))
+    }
+}

@@ -165,7 +165,7 @@ private fun CurrentWeatherRow(current: CurrentWeather, size: WeatherSize) {
 
 /** The entries spread across the card, scrolling sideways when they don't fit. */
 @Composable
-private fun ForecastRow(forecast: ForecastColumns, width: Dp, modifier: Modifier) {
+internal fun ForecastRow(forecast: ForecastColumns, width: Dp, modifier: Modifier) {
     Row(
         modifier
             .horizontalScroll(rememberScrollState())

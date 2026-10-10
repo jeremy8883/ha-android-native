@@ -89,7 +89,7 @@ internal fun HassSnapshot.positionButtons(state: EntityState): PositionButtons {
     }
 }
 
-private fun HassSnapshot.positionButton(state: EntityState, slot: ButtonSlot): PositionButton {
+internal fun HassSnapshot.positionButton(state: EntityState, slot: ButtonSlot): PositionButton {
     val domain = state.domain
     val noun = if (domain == COVER) "cover" else "valve"
     val call = { service: String -> CardAction.CallService(domain, service, entityData(state), target = null) }

@@ -89,8 +89,8 @@ Update it in the same commit as the work it describes.
 - [x] Slice verified on a physical device (2026-10-08) against the test container via `adb reverse tcp:8124 tcp:8124`: tiles render, a light toggled on the server updates within ~2 s, and a `lovelace/config/save` re-renders within ~3 s
 
 ### Step 4 — Card renderers
-- [ ] Entities
-- [ ] Tile
+- [x] Entities (rows with their controls; `EntitiesModel`, golden-tested against `hui-entities-card`)
+- [x] Tile (with its features; `TileModel`)
 - [x] Button (`ButtonCardModel`: name, icon or picture, state, the state colour; golden-tested against `hui-button-card`)
 - [x] Entity and sensor (`EntityCardModel`: value and unit apart via `formatEntityStateParts`; the sensor's graph is `SensorGraph`, from a `history/stream` per graph in `CardDataLoader`; golden-tested, coordinates included)
 - [x] Gauge (`GaugeCardModel`: min, max, severity or segments, needle; warnings as upstream's)
@@ -99,16 +99,16 @@ Update it in the same commit as the work it describes.
 - [x] Thermostat (`ThermostatCardModel`: the details' dial, with the current temperature under it; no features or `show_current_as_primary` yet)
 - [x] Alarm panel (`AlarmPanelCardModel`: mode buttons, code field and keypad unless the registry entry has a default code, read per shown card)
 - [x] Weather forecast (`WeatherForecastCardModel`, drawn conditions in `weather/WeatherIcons.kt`, `weather/subscribe_forecast` per configured card; regular height only, no compact layout)
-- [ ] Markdown
-- [ ] Conditional
-- [ ] Unsupported-card fallback (placeholder, then WebView investigation)
-- [ ] Layouts: masonry, sections, panel, sidebar
+- [x] Markdown (templates rendered by the server)
+- [x] Conditional (see Step 3)
+- [x] Unsupported-card placeholder (`UnsupportedCard`); the WebView fallback is under the dashboard app below
+- [x] Layouts: masonry, sections, panel, sidebar (`layout/ViewLayout.kt`)
 - [x] Vertical/horizontal stacks and grid (`StackCard`; cards in a row aren't stretched to the tallest)
 
 ### Step 5 — Reactive state and actions
-- [ ] Derived display state (state display, icons, colors)
-- [ ] Actions: toggle, perform-action, navigate, more-info (basic)
-- [ ] Unavailable / unknown / disconnected handling
+- [x] Derived display state (state display, icons, colours: see the icon colour audit)
+- [x] Actions: toggle, perform-action, navigate, more-info
+- [x] Unavailable / unknown / disconnected handling (offline bar, cached states)
 
 ### Step 6 — Offline foundations
 - [x] Persist last dashboard config (Room, `data/cache/`)
@@ -184,7 +184,7 @@ Anywhere:
     - [x] Lawn mower: the battery beside the header's time (shared with the vacuum, `DeviceBattery`), start mowing or pause, and return to dock. Golden-tested against the demo mower (the test instance now enables the demo lawn mower and remote). Upstream's drawn mower is ported on a Canvas (`MowerStatus`/`MowerDrawing`/`MowerGrass`): wandering and turning with grass flying while it mows, heading for its dock, docked, a warning glow on error
     - [x] The details sheet is one lazy list (`LazyColumn`): the header, controls and history are single items and the logbook one item per row, so a day of hundreds of entries (an energy sensor's) only builds what's on screen. On the emulator with 150 entries, flinging went from 15% to 5% janky frames (95th percentile 31 to 17 ms)
     - [x] The history bar's time axis follows the frontend's ticks for short ranges too (minutes under 3 hours, `historyTimeTicks`), and the history follows the live stream
-    - [ ] Remaining details: script (fields and run), scene, button, person, sun, weather, camera, image, group and the rest
+    - [x] Remaining details (2026-10-11): upstream's state card for every domain (`state-card-content`: `StateCardRight`, golden-tested on all 180 test entities as is and unavailable), the sun, date/time/datetime/input datetime fields, image, group (its members' shared details sent to the group, then each member's card), person (CARTO map at zoom 14, "Create zone"), script (description, queue, the fields' form with native selectors, cancel and run), camera (HLS, else MJPEG; snapshot download through the system's file picker), weather (conditions, readings, forecast tabs), conversation (Assist text chat) and configurator. Scene and button have no details beyond their state card, as upstream
   - [ ] Settings and related (registry editing: companion app for now)
 
 Drawer panels (shown only when the setting is on):
@@ -260,6 +260,13 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - Dependency lockfiles are global, so avoid adding new libraries to `:app`/`:automotive` (merge conflicts).
 
 ## Handover notes
+
+### 2026-10-11: the remaining details (Opus)
+- The dialog's state card is ported from `state-card-content` (`derive/StateCardRight.kt`, `StateCardTexts.kt`, `StateCardControls.kt`), not the entities row: dates and times show as text, climate and humidifier their targets and readings, covers their open/stop/close, locks open and lock/unlock, vacuums and mowers their next action, events their type. `canToggleState` reads the server's actions (`get_services`, reloaded on `service_registered`/`service_removed`; `HassSnapshot.services`), which also give a script's fields. Golden-tested on every test entity (`StateCardsGoldenTest`, controls.json `stateCards`, `--domains statecards`).
+- New details (`moreinfo/MoreInfoExtra.kt`), golden-tested in `MoreInfoExtraGoldenTest` (`--domains sun,date,datetime,time,input_datetime,image,group,person,script,camera,weather,conversation`): sun, date and time fields, image, group (a stand-in entity of the members' domain whose calls go to the group; a group of lights has no state card of its own, `computeShowNewMoreInfo`), person (map tiles drawn natively), script (the fields' form; the run uses the registry entry's unique ID), camera, weather, conversation (`assist/AssistChat.kt`, `assist_pipeline/run`), configurator.
+- The test instance gained a group of lights, a mixed group, a scene, an image and a script with fields; the test dashboard a Details view listing the entities with these details.
+- Camera streams need the app's HTTP client without its debug body logger (`CameraRepository.streamClient`), which otherwise waits for an endless MJPEG body. Media3 (ExoPlayer with HLS) was added to `:dashboard` for HLS cameras; the demo camera's stream can't start, so HLS isn't seen on the test instance.
+- Not ported: WebRTC cameras (they show their MJPEG stream), the agent's thinking and tool calls in the chat, and selectors other than text, number, boolean, select, entity, date, time, datetime, duration and constant (edited as text). Each is marked `UPSTREAM-DIFF`.
 
 ### 2026-10-10: icon colour audit and the update sheet (Opus)
 - Icon colours are audited against the frontend's resolved colours (`IconColorsGoldenTest`, `icons` in more-info/controls.json): every test entity as a tile, entities row (as is and with `state_color`), glance entity, button card, entity card, heading badge and view badge. `resolveDisplayColor` (core) resolves as the app draws, fallbacks included. What was wrong, and why upstream draws what it does:

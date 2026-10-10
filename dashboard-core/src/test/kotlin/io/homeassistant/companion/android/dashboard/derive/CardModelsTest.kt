@@ -148,8 +148,8 @@ class MoreInfoModelTest {
         val model = hass.moreInfoModel("sensor.outside_temperature", Instant.EPOCH)!!
         assertEquals(false, model.stateHeader)
         assertEquals("Outside Temperature", model.stateCard?.name)
-        assertEquals(model.state, model.stateCard?.state)
-        assertNull(model.stateCard?.control)
+        assertEquals(model.state, model.stateCard?.right?.state)
+        assertNull(model.stateCard?.right?.control)
         assertTrue(model.inlineHistory && model.inlineAttributes)
         // Its history is already inline
         assertEquals(false, model.historyButton)
@@ -164,8 +164,10 @@ class MoreInfoModelTest {
 
     @Test
     fun `Given a switch-like entity without new details when deriving them then its state card has its row's switch`() {
-        val model = hass.moreInfoModel("automation.bed_light_schedule", Instant.EPOCH)!!
-        assertTrue(model.stateCard?.control is RowControl.Toggle)
+        // Its domain can turn on (`canToggleState` reads the server's actions)
+        val services = mapOf("automation" to mapOf("turn_on" to kotlinx.serialization.json.JsonObject(emptyMap())))
+        val model = hass.copy(services = services).moreInfoModel("automation.bed_light_schedule", Instant.EPOCH)!!
+        assertTrue(model.stateCard?.right?.control is RowControl.Toggle)
         assertEquals(false, model.inlineHistory)
     }
 }

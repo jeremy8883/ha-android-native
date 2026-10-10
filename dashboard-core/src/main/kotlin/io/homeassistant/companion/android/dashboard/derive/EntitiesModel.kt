@@ -59,7 +59,26 @@ sealed interface RowControl {
 
     /** Text buttons, such as "Press", "Activate", "Run" or "Unlock". */
     data class Buttons(val buttons: List<RowButton>) : RowControl
+
+    /**
+     * Icon buttons: a cover's open, stop and close (`ha-cover-controls`), or the off and on of an entity whose
+     * state is only assumed (`ha-entity-toggle`).
+     */
+    data class IconButtons(val buttons: List<RowIconButton>) : RowControl
 }
+
+/**
+ * An icon button of a row: [shown] unless its feature isn't supported (it keeps its place), [active] when it is the
+ * entity's current state.
+ */
+data class RowIconButton(
+    val icon: String,
+    val label: String,
+    val enabled: Boolean,
+    val shown: Boolean,
+    val active: Boolean,
+    val action: CardAction.CallService,
+)
 
 /** A text button of an entity row. */
 data class RowButton(val label: String, val enabled: Boolean, val danger: Boolean, val action: CardAction.CallService)
@@ -150,7 +169,7 @@ internal fun HassSnapshot.rowControl(state: EntityState, config: JsonObject): Ro
 }
 
 /** Port of the script row: cancel while running, run when off or when more runs are allowed. */
-private fun HassSnapshot.scriptButtons(
+internal fun HassSnapshot.scriptButtons(
     state: EntityState,
     actionName: String?,
     call: (String, String) -> CardAction.CallService,

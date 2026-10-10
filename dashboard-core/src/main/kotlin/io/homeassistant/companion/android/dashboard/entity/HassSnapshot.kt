@@ -67,6 +67,8 @@ data class HassConfig(
  * @property alarmDefaultCodes whether the alarm panels the shown cards control store a default code, by entity id;
  * absent while not known
  * @property forecasts the weather forecasts the shown cards subscribed to, absent until the server sent them
+ * @property services the server's actions (`get_services`): each domain's, by name, with their descriptions (a
+ * script's fields); `null` while loading
  */
 data class HassSnapshot(
     val states: EntityStates,
@@ -85,4 +87,5 @@ data class HassSnapshot(
     val graphHistories: Map<GraphHistoryKey, GraphHistory> = emptyMap(),
     val alarmDefaultCodes: Map<String, Boolean> = emptyMap(),
     val forecasts: Map<ForecastKey, ForecastEvent> = emptyMap(),
+    val services: Map<String, Map<String, JsonObject>>? = null,
 )

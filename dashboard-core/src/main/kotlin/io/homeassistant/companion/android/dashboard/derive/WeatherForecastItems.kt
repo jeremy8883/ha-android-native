@@ -18,8 +18,15 @@ import kotlinx.serialization.json.JsonObject
 // The weather forecast card's forecast entries. Port of its `_groupForecastByDay` and `_renderForecastItem`
 // (frontend@20260624.6 src/panels/lovelace/cards/hui-weather-forecast-card.ts).
 
-/** The forecast's entries with a temperature, grouped by day (with the weekday on the first) when not daily. */
-internal fun HassSnapshot.forecastColumns(forecast: Forecast, digits: Int?): ForecastColumns {
+/**
+ * The forecast's entries with a temperature, grouped by day (with the weekday on the first) when not daily. A
+ * missing low shows as "—" on the card ([dashForMissingLow]), as nothing in the details.
+ */
+internal fun HassSnapshot.forecastColumns(
+    forecast: Forecast,
+    digits: Int?,
+    dashForMissingLow: Boolean = true,
+): ForecastColumns {
     val dayHeaders = forecast.type == HOURLY || forecast.type == TWICE_DAILY
     val dated = forecast.entries.map { it to it.string("datetime")?.let { text -> parseJsDate(text, formats.zone) } }
     val groups = if (dayHeaders) {
@@ -39,7 +46,7 @@ internal fun HassSnapshot.forecastColumns(forecast: Forecast, digits: Int?): For
                         forecast.type,
                         digits,
                         dayHeaders && index == 0,
-                    )
+                    ).let { item -> if (dashForMissingLow || item.low != NO_VALUE) item else item.copy(low = null) }
                 }
         }.filter { it.isNotEmpty() },
         dayHeaders = dayHeaders,

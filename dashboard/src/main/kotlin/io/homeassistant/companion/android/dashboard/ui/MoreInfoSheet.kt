@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -30,15 +29,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
@@ -50,7 +46,6 @@ import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.MoreInfoModel
-import io.homeassistant.companion.android.dashboard.derive.StateCard
 import io.homeassistant.companion.android.dashboard.derive.moreInfoModel
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -63,14 +58,13 @@ import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterTarget
 import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterTemperatureCall
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
-import io.homeassistant.companion.android.dashboard.ui.cards.RowControlContent
-import io.homeassistant.companion.android.dashboard.ui.cards.ServerImage
 import io.homeassistant.companion.android.dashboard.ui.controls.StateToggleControl
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesMenuHost
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesMenuItems
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.LogbookSection
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoAlarm
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoClimate
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoExtraView
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoFan
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoLight
@@ -81,9 +75,9 @@ import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoUpdateFo
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoVacuum
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.SimpleDomainControls
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.SingleDialControls
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.StateCardRow
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.logbookItems
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.rememberLogbookSection
-import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -259,7 +253,7 @@ private fun ColumnScope.MoreInfoDetailsView(model: MoreInfoModel, localize: Loca
 
 /** The controls of the entity's domain, as its `more-info-<domain>` leads with them. */
 @Composable
-private fun DomainControls(
+internal fun DomainControls(
     model: MoreInfoModel,
     state: EntityState,
     hass: HassSnapshot,
@@ -299,46 +293,7 @@ private fun DomainControls(
     model.stateToggle?.let { toggle ->
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { StateToggleControl(toggle, onAction) }
     }
-}
-
-/**
- * Port of `state-card-content` in the dialog: the badge, the name over when it changed, then the entity's row
- * control (a switch, buttons or an input), else its state.
- */
-@Composable
-private fun StateCardRow(card: StateCard, now: Instant, onAction: (CardAction) -> Unit) {
-    val colors = LocalHAColorScheme.current
-    Row(
-        Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
-    ) {
-        val picture = card.badge.picture
-        if (picture != null) {
-            ServerImage(picture, card.name, Modifier.size(STATE_BADGE_SIZE).clip(CircleShape))
-        } else {
-            DashboardIcon(
-                card.badge.icon,
-                entityIconTint(card.badge.color, card.badge.unavailable, card.badge.brightness),
-                Modifier.size(HASize.X2L),
-            )
-        }
-        Column(Modifier.weight(1f)) {
-            Text(
-                card.name,
-                style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
-                color = colors.colorTextPrimary,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-            Text(
-                card.changed,
-                style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
-                color = colors.colorTextSecondary,
-            )
-        }
-        RowControlContent(card.control, card.state, colors.colorTextPrimary, now, onAction)
-    }
+    model.extra?.let { MoreInfoExtraView(it, state, hass, now, onAction) }
 }
 
 /** [content] with the favourites' menu items of [state], for the domains with favourites. */
@@ -353,7 +308,7 @@ private fun WithFavoritesMenu(
 
 /** Port of `ha-more-info-state-header`: the state, and when it last changed, centred. */
 @Composable
-private fun MoreInfoStateText(model: MoreInfoModel) {
+internal fun MoreInfoStateText(model: MoreInfoModel) {
     val colors = LocalHAColorScheme.current
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
@@ -398,9 +353,6 @@ private fun MoreInfoAttributes(attributes: List<Pair<String, String>>, title: St
 
 /** The domains with favourites, whose items the menu has. */
 private val FAVORITES_DOMAINS = setOf("light", "cover", "valve")
-
-/** `state-badge`'s 40 × 40. */
-private val STATE_BADGE_SIZE = 40.dp
 
 /** The state's size in the header (36px). */
 private val STATE_FONT_SIZE = 36.sp

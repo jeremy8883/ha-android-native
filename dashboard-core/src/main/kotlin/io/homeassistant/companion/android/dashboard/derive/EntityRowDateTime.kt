@@ -114,7 +114,8 @@ internal fun HassSnapshot.dateTimeRowControl(state: EntityState, name: String): 
         val zone = formats.zone
         row.copy(
             zone = zone,
-            dateText = row.date?.let { formats.date(LocalDate.parse(it).atStartOfDay(zone).toInstant(), zone) },
+            dateText = row.date?.let { runCatching { LocalDate.parse(it) }.getOrNull() }
+                ?.let { formats.date(it.atStartOfDay(zone).toInstant(), zone) },
             timeText = row.time?.let { runCatching { LocalTime.parse(it) }.getOrNull() }
                 ?.let { formats.time(LocalDate.of(YEAR, 1, 1).atTime(it).atZone(zone).toInstant(), zone) },
         )

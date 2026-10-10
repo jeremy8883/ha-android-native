@@ -20,6 +20,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.LightMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.LockMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.MediaPlayerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.MoreInfoAction
+import io.homeassistant.companion.android.dashboard.moreinfo.MoreInfoExtra
 import io.homeassistant.companion.android.dashboard.moreinfo.PositionMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.SelectMenu
 import io.homeassistant.companion.android.dashboard.moreinfo.SirenMoreInfo
@@ -38,6 +39,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.lawnMowerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.lightMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.lockMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.mediaPlayerMoreInfo
+import io.homeassistant.companion.android.dashboard.moreinfo.moreInfoExtra
 import io.homeassistant.companion.android.dashboard.moreinfo.positionMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.remoteActivity
 import io.homeassistant.companion.android.dashboard.moreinfo.sirenMoreInfo
@@ -47,6 +49,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.updateMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.vacuumMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterMoreInfo
 import java.time.Instant
+import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
@@ -88,6 +91,8 @@ import kotlinx.serialization.json.JsonPrimitive
  * @property inlineAttributes whether the attributes follow them (`more-info-default`); else only in the details view
  * @property historyButton whether the toolbar has the history button (`_shouldShowHistory`: the domains whose
  * history isn't inline, when it has a history or activity)
+ * @property extra the details of the domains with controls of their own beyond the shared ones (sun, script,
+ * weather, group...)
  * @property details the details view's state entries (`ha-more-info-details`), as (label, value)
  */
 data class MoreInfoModel(
@@ -124,20 +129,20 @@ data class MoreInfoModel(
     val inlineHistory: Boolean = true,
     val inlineAttributes: Boolean = true,
     val historyButton: Boolean = false,
+    val extra: MoreInfoExtra? = null,
     val details: List<Pair<String, String>> = emptyList(),
 )
 
 /**
  * Port of `state-card-content` in the dialog: the entity's [badge] (coloured by its state), its own [name] and
- * when it [changed], then its [control] as its entities row has one (a switch, buttons or an input), else its
- * formatted [state].
+ * when it [changed] (in the dialog's own card), then what its card shows on the right ([right]: its state, or a switch, buttons or an input).
  */
 data class StateCard(
+    val entityId: String,
     val badge: StateBadge,
     val name: String,
-    val changed: String,
-    val state: String,
-    val control: RowControl?,
+    val changed: String?,
+    val right: StateCardRight,
 )
 
 /**
@@ -155,15 +160,20 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
     val fan = fanMoreInfo(state)
     val vacuum = vacuumMoreInfo(state)
     val stateToggle = if (domain in STATE_TOGGLE_DOMAINS) stateToggle(state, "mdi:power", "mdi:power-off") else null
+    val extra = moreInfoExtra(state, now)
+    // A script's header shows whether it runs, and when it last ran (`stateOverride`, `changedOverride`)
+    val script = (extra as? MoreInfoExtra.Script)?.script
     return MoreInfoModel(
         entityId = entityId,
         name = name,
         context = context.joinToString(" ▸ ").ifEmpty { null },
         icon = entityIcon(entityId),
-        state = light?.state ?: position?.state ?: fan?.state ?: vacuum?.state ?: formatEntityState(state),
+        state = headerState(
+            state,
+            listOfNotNull(script?.state, light?.state, position?.state, fan?.state, vacuum?.state),
+        ),
         // A change the server stamped ahead of this device's clock happened just now, not in the future
-        changed = formats.relativeTime(minOf(Instant.ofEpochMilli((state.lastChanged * MILLIS).toLong()), now), now)
-            .replaceFirstChar { it.uppercaseChar() },
+        changed = headerChanged(state, script?.changed, now),
         active = state.isActive(),
         updatedAt = state.lastUpdated,
         stateHeader = domain in STATE_HEADER_DOMAINS,
@@ -187,33 +197,49 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         update = updateMoreInfo(state),
         attributes = displayAttributes(state).map { attributeName(state, it) to formatEntityAttributeValue(state, it) },
         fullHeight = domain in FULL_HEIGHT_DOMAINS,
-        stateCard = if (domain !in NEW_MORE_INFO_DOMAINS && domain !in NO_INFO_DOMAINS) stateCard(state, now) else null,
+        stateCard = if (!showsNewMoreInfo(state) && domain !in NO_INFO_DOMAINS) stateCard(state, now) else null,
         inlineHistory = domain !in WITH_MORE_INFO_DOMAINS,
         inlineAttributes = domain !in WITH_MORE_INFO_DOMAINS && domain !in HIDE_DEFAULT_MORE_INFO_DOMAINS,
         historyButton = domain in WITH_MORE_INFO_DOMAINS &&
             domain !in NO_HISTORY_DOMAINS &&
             (showsHistory(entityId) || showsLogbook(entityId)),
+        extra = extra,
         details = detailEntries(state),
     )
 }
 
-private fun HassSnapshot.stateCard(state: EntityState, now: Instant): StateCard {
-    val name = entityNameDisplay(state, JsonObject(mapOf("type" to JsonPrimitive("entity"))))
-    // An unavailable entity's card only displays it (`stateCardType`)
-    val control = if (state.state == STATE_UNAVAILABLE) {
-        null
-    } else {
-        rowControl(state, JsonObject(emptyMap())) ?: inputRowControl(state, name)
-    }
-    return StateCard(
-        badge = stateBadge(state, overrideIcon = null, stateColor = true),
-        name = name,
-        changed = formats.relativeTime(minOf(Instant.ofEpochMilli((state.lastChanged * MILLIS).toLong()), now), now)
-            .replaceFirstChar { it.uppercaseChar() },
-        state = formatEntityState(state),
-        control = control,
-    )
+/** The header's state: the first of the domain's own [readings], else the formatted state. */
+private fun HassSnapshot.headerState(state: EntityState, readings: List<String>): String =
+    readings.firstOrNull() ?: formatEntityState(state)
+
+/** When the header says the entity changed: a script's last run, else its state's change at [now]. */
+private fun HassSnapshot.headerChanged(state: EntityState, script: String?, now: Instant): String = script
+    ?: formats.relativeTime(minOf(Instant.ofEpochMilli((state.lastChanged * MILLIS).toLong()), now), now)
+        .replaceFirstChar { it.uppercaseChar() }
+
+/**
+ * Port of `computeShowNewMoreInfo`: the domains with the newer details, and a group whose members share one of them
+ * (its details are theirs, without the group's state card).
+ */
+private fun showsNewMoreInfo(state: EntityState): Boolean {
+    if (state.domain != "group") return state.domain in NEW_MORE_INFO_DOMAINS
+    val domains = (state.attributes["entity_id"] as? JsonArray).orEmpty()
+        .mapNotNull { (it as? JsonPrimitive)?.content?.substringBefore('.') }.distinct()
+    return domains.singleOrNull()?.let { it != "group" && it in NEW_MORE_INFO_DOMAINS } == true
 }
+
+/**
+ * The state card of [state], as the dialog leads with it ([inDialog], with when it changed) and a group lists its
+ * members (without).
+ */
+fun HassSnapshot.stateCard(state: EntityState, now: Instant, inDialog: Boolean = true): StateCard = StateCard(
+    entityId = state.entityId,
+    badge = stateBadge(state, overrideIcon = null, stateColor = true),
+    name = entityNameDisplay(state, JsonObject(mapOf("type" to JsonPrimitive("entity")))),
+    changed = formats.relativeTime(minOf(Instant.ofEpochMilli((state.lastChanged * MILLIS).toLong()), now), now)
+        .replaceFirstChar { it.uppercaseChar() }.takeIf { inDialog },
+    right = stateCardRight(state, now),
+)
 
 /** Port of `_getDetailData`'s state entries: the translated and raw state, and when it changed and updated. */
 private fun HassSnapshot.detailEntries(state: EntityState): List<Pair<String, String>> {
@@ -280,7 +306,7 @@ private val STATE_HEADER_DOMAINS = setOf(
 )
 
 /** Port of `DOMAINS_WITH_MORE_INFO`: details of their own, whose history is in its own view. */
-private val WITH_MORE_INFO_DOMAINS = setOf(
+internal val WITH_MORE_INFO_DOMAINS = setOf(
     "alarm_control_panel", "automation", "camera", "climate", "configurator", "conversation", "counter", "cover",
     "date", "datetime", "fan", "group", "humidifier", "image", "input_boolean", "input_datetime", "lawn_mower",
     "light", "lock", "media_player", "person", "remote", "script", "scene", "siren", "sun", "switch", "time",

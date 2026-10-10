@@ -995,6 +995,21 @@ const CONTROL_ENTITIES = [
   "fan.ceiling_fan",
   "fan.percentage_limited_fan",
   "fan.preset_only_limited_fan",
+  "sun.sun",
+  "date.date",
+  "datetime.date_and_time",
+  "time.time",
+  "input_datetime.wake_up",
+  "image.front_camera_still",
+  "group.downstairs_lights",
+  "group.doors",
+  "person.dev",
+  "script.lock_up",
+  "script.announce",
+  "camera.demo_camera",
+  "weather.demo_weather_south",
+  "weather.demo_weather_north",
+  "conversation.home_assistant",
 ];
 
 
@@ -1008,7 +1023,8 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
   const wantRows = requested.includes("rows");
   const wantCards = requested.includes("cards");
   const wantIcons = requested.includes("icons");
-  const entityIds = requested.filter((id) => id !== "rows" && id !== "cards" && id !== "icons");
+  const wantStateCards = requested.includes("statecards");
+  const entityIds = requested.filter((id) => !["rows", "cards", "icons", "statecards"].includes(id));
   /** The attributes whose values each domain's menus list, with the attribute listing them, for their icons. */
   const MENU_ATTRIBUTES = {
     light: { effect: "effect_list" },
@@ -1035,6 +1051,20 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
     return found;
   };
   const text = (n) => n?.textContent.replace(/\s+/g, " ").trim() ?? null;
+  // Text as drawn: through shadow roots (slots resolved), without styles, hidden parts or tooltips
+  const deepText = (node) => {
+    if (!node) return "";
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.nodeType !== Node.ELEMENT_NODE && node.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) return "";
+    if (["style", "script", "ha-tooltip", "simple-tooltip", "paper-tooltip"].includes(node.localName) || node.hidden) return "";
+    if (node.localName === "slot") {
+      const assigned = node.assignedNodes({ flatten: true });
+      return (assigned.length ? assigned : [...node.childNodes]).map(deepText).join(" ");
+    }
+    const children = node.shadowRoot ? [...node.shadowRoot.childNodes] : [...node.childNodes];
+    return children.map(deepText).join(" ");
+  };
+  const drawn = (n) => (n ? deepText(n).replace(/\s+/g, " ").trim() || null : null);
   // Each domain's controls load with its dialog: open one once
   for (const domain of new Set(entityIds.map((id) => id.split(".")[0]))) {
     const tag = `more-info-${domain}`;
@@ -1062,6 +1092,90 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
     gradient: el.style.getPropertyValue("--gradient") || null,
     inactiveColor: el.style.getPropertyValue("--state-cover-inactive-color") || null,
   };
+  /** What the details of the domains drawn without the shared controls show. */
+  const domainDetails = (el) => {
+    const root = el.shadowRoot;
+    const input = (n) => n && { value: n.value ?? null, disabled: n.disabled ?? false };
+    switch (el.localName) {
+      case "more-info-sun":
+        return {
+          rows: [...root.querySelectorAll(".row")].map((r) => ({
+            key: drawn(r.querySelector(".key span")) ?? drawn(r.querySelector(".key")),
+            relative: drawn(r.querySelector("ha-relative-time")),
+            value: drawn(r.querySelector(".value")),
+          })),
+        };
+      case "more-info-date":
+      case "more-info-datetime":
+      case "more-info-time":
+      case "more-info-input_datetime":
+        return { date: input(root.querySelector("ha-date-input")), time: input(root.querySelector("ha-time-input")) };
+      case "more-info-image":
+        return { src: root.querySelector("img")?.getAttribute("src") ?? null };
+      case "more-info-group":
+        return {
+          inner: [...root.children].find((c) => c.localName.startsWith("more-info-"))?.localName ?? null,
+          members: [...root.querySelectorAll("state-card-content")].map((c) => c.stateObj?.entity_id ?? null),
+        };
+      case "more-info-person":
+        return {
+          map: !!root.querySelector("ha-map"),
+          entities: root.querySelector("ha-map")?.entities ?? null,
+          createZone: drawn(root.querySelector(".actions ha-button")),
+        };
+      case "more-info-script": {
+        const control = root.querySelector("ha-service-control");
+        return {
+          state: drawn(root.querySelector("ha-more-info-state-header")?.shadowRoot?.querySelector(".state")),
+          changed: drawn(root.querySelector("ha-more-info-state-header")?.shadowRoot?.querySelector("ha-relative-time")),
+          description: root.querySelector("ha-markdown")?.content ?? null,
+          queue: drawn(root.querySelector(".queue")),
+          fieldsTitle: drawn(root.querySelector(".fields .title")),
+          fields: control ? [...control.shadowRoot.querySelectorAll("ha-settings-row")].map((row) => {
+            const selector = row.querySelector("ha-selector");
+            const checkbox = row.querySelector("ha-checkbox");
+            return {
+              key: selector?.key ?? null,
+              name: drawn(row.querySelector('[slot="heading"]')),
+              description: drawn(row.querySelector('[slot="description"]')),
+              checkbox: checkbox ? { checked: checkbox.checked ?? false } : null,
+              selector: selector ? Object.keys(selector.selector ?? {})[0] ?? null : null,
+              value: selector?.value ?? null,
+              disabled: selector?.disabled ?? false,
+              required: selector?.required ?? false,
+            };
+          }) : null,
+          data: control?.value?.data ?? null,
+          buttons: [...root.querySelectorAll("ha-control-button")].map((b) => ({ text: drawn(b), disabled: b.disabled ?? false })),
+        };
+      }
+      case "more-info-camera":
+        return {
+          stream: !!root.querySelector("ha-camera-stream"),
+          download: drawn(root.querySelector(".actions ha-progress-button")),
+          downloadDisabled: root.querySelector(".actions ha-progress-button")?.disabled ?? null,
+        };
+      case "more-info-weather":
+        return {
+          state: drawn(root.querySelector(".name-state .state")),
+          time: drawn(root.querySelector(".time-ago ha-relative-time")),
+          temp: drawn(root.querySelector(".temp")),
+          attribute: drawn(root.querySelector(".attribute")),
+          rows: [...root.children].filter((c) => c.classList.contains("flex")).map((r) => ({ name: drawn(r.querySelector(".main")), value: drawn(r.lastElementChild) })),
+          section: drawn(root.querySelector(".section")),
+          tabs: [...root.querySelectorAll("ha-tab-group-tab")].map((t) => ({ label: drawn(t), active: t.active ?? false })),
+          days: [...root.querySelectorAll(".forecast-day")].map((d) => ({
+            header: drawn(d.querySelector(".forecast-day-header")),
+            items: [...d.querySelectorAll(".forecast-item")].map((i) => drawn(i)),
+          })),
+        };
+      case "more-info-conversation":
+        return { chat: !!root.querySelector("ha-assist-chat"), error: drawn(root.querySelector("ha-alert")) };
+      default:
+        return undefined;
+    }
+  };
+
   const controls = (el) => {
     const root = el.shadowRoot;
     const toggle = root.querySelector(
@@ -1158,6 +1272,7 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
         hr: !!root.querySelector("hr"),
         backup: text(root.querySelector(".footer ha-row-item")),
       } : undefined,
+      details: domainDetails(el),
       lastTriggered: root.querySelector("ha-relative-time") ? text(root.querySelector(".flex")) : null,
       duration: (() => {
         const d = root.querySelector("ha-duration-input");
@@ -1382,6 +1497,10 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
         off: { ...stateObj, state: "off", attributes: off },
         unavailable: { ...stateObj, state: "unavailable", attributes: { ...stateObj.attributes, restored: true } },
       };
+      if (domain === "person") {
+        // Away with its own coordinates: the map, and the zone button for admins
+        shown.located = { ...stateObj, state: "not_home", attributes: { ...stateObj.attributes, latitude: 52.3731, longitude: 4.8922, gps_accuracy: 20 } };
+      }
       if (domain === "lawn_mower") {
         for (const name of ["mowing", "paused", "returning", "error", "docked"]) {
           shown[name] = { ...stateObj, state: name };
@@ -1474,7 +1593,8 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
       el.stateObj = stateObj;
       el.entry = entry;
       ha.shadowRoot.appendChild(el);
-      await sleep(300);
+      // Forecasts, the assist pipeline and the map arrive later
+      await sleep(["weather", "conversation", "person", "group"].includes(domain) ? 2000 : 300);
       const shown = { stateObj: g.clone(stateObj), entry: g.clone(entry), main: controls(el), pickers: {} };
       if (name === "as_is" && MENU_ATTRIBUTES[domain]) {
         shown.menuIcons = {};
@@ -1508,6 +1628,9 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
     if (domain === "climate") out[entityId].as_is.calls = await climateCalls(g.clone(current));
     if (domain === "water_heater") {
       out[entityId].as_is.calls = await dialCalls(g.clone(current), "ha-state-control-water_heater-temperature", 50);
+    }
+    if (domain === "script") {
+      out[entityId].as_is.calls = await scriptCalls(g.clone(current));
     }
     if (["timer", "counter", "automation", "siren", "update"].includes(domain)) {
       for (const name of Object.keys(out[entityId])) {
@@ -1575,7 +1698,94 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
     rows: wantRows ? await captureRows() : undefined,
     cards: wantCards ? await captureCards() : undefined,
     icons: wantIcons ? await captureIcons() : undefined,
+    stateCards: wantStateCards ? await captureStateCards() : undefined,
   };
+
+  /**
+   * Each entity's `state-card-content` as the more-info dialog leads with it (and a group lists its members), as
+   * is and unavailable: which card it is, the name and time of `state-info`, the text on its right, and its
+   * buttons, switch and inputs. With the states they were drawn with.
+   */
+  async function captureStateCards() {
+    if (!customElements.get("state-card-content")) {
+      ha.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId: "sun.sun" }, bubbles: true, composed: true }));
+      for (let i = 0; i < 100 && !customElements.get("state-card-content"); i++) await sleep(100);
+      ha.dispatchEvent(new CustomEvent("hass-more-info", { detail: { entityId: "" }, bubbles: true, composed: true }));
+      await sleep(500);
+    }
+    const ids = Object.keys(ha.hass.states).sort();
+    const states = Object.fromEntries(ids.map((id) => [id, g.clone(ha.hass.states[id])]));
+    const visible = (n) => {
+      for (let e = n; e; e = e.parentNode || e.host) {
+        if (e.hidden || e.hasAttribute?.("hidden")) return false;
+      }
+      return true;
+    };
+    // Text as drawn: through shadow roots (slots resolved), without styles, hidden parts or tooltips
+    const deepText = (node) => {
+      if (!node) return "";
+      if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+      if (node.nodeType !== Node.ELEMENT_NODE && node.nodeType !== Node.DOCUMENT_FRAGMENT_NODE) return "";
+      if (["style", "script", "ha-tooltip", "simple-tooltip", "paper-tooltip"].includes(node.localName) || node.hidden) return "";
+      if (node.localName === "slot") {
+        const assigned = node.assignedNodes({ flatten: true });
+        return (assigned.length ? assigned : [...node.childNodes]).map(deepText).join(" ");
+      }
+      const children = node.shadowRoot ? [...node.shadowRoot.childNodes] : [...node.childNodes];
+      return children.map(deepText).join(" ");
+    };
+    const cards = {};
+    for (const id of ids) {
+      cards[id] = {};
+      const variants = { as_is: states[id], unavailable: { ...states[id], state: "unavailable" } };
+      for (const [name, stateObj] of Object.entries(variants)) {
+        const el = document.createElement("state-card-content");
+        el.hass = { ...ha.hass, states: { ...ha.hass.states, [id]: g.clone(stateObj) } };
+        el.stateObj = g.clone(stateObj);
+        el.inDialog = true;
+        ha.shadowRoot.appendChild(el);
+        let card = null;
+        for (let i = 0; i < 50; i++) {
+          await el.updateComplete;
+          card = el.shadowRoot?.firstElementChild ?? el.firstElementChild;
+          if (card?.shadowRoot) break;
+          await sleep(50);
+        }
+        await card?.updateComplete;
+        await sleep(50);
+        const root = card?.shadowRoot;
+        const info = root?.querySelector("state-info");
+        const infoRoot = info?.shadowRoot;
+        const all = (sel) => deep(root, sel).filter(visible);
+        const toggle = all("ha-entity-toggle")[0];
+        const right = root ? [...(root.querySelector(".layout")?.children ?? [])].filter((n) => n.localName !== "state-info" && n.localName !== "style") : [];
+        cards[id][name] = {
+          tag: card?.localName ?? null,
+          name: text(infoRoot?.querySelector(".name")) || null,
+          time: text({ textContent: deepText(infoRoot?.querySelector("ha-relative-time")) }) || null,
+          right: text({ textContent: right.filter(visible).map(deepText).join(" ") }) || null,
+          buttons: all("ha-button, mwc-button, ha-control-button").map((b) => ({ text: text(b) || null, label: b.label ?? null, disabled: b.disabled ?? false })),
+          iconButtons: all("ha-icon-button").map((b) => ({ label: b.label ?? null, disabled: b.disabled ?? false })),
+          toggle: toggle ? {
+            switch: !!toggle.shadowRoot?.querySelector("ha-switch"),
+            checked: toggle.shadowRoot?.querySelector("ha-switch")?.checked ?? null,
+            disabled: toggle.shadowRoot?.querySelector("ha-switch")?.disabled ?? null,
+            buttons: [...(toggle.shadowRoot?.querySelectorAll("ha-icon-button") ?? [])].map((b) => b.label ?? null),
+          } : null,
+          slider: (() => { const sl = all("ha-slider")[0]; return sl ? { value: sl.value, min: sl.min, max: sl.max, step: sl.step, disabled: sl.disabled ?? false } : null; })(),
+          input: (() => { const i = all("ha-input, ha-textfield")[0]; return i ? { value: i.value ?? null, type: i.type ?? null, label: i.label ?? null, disabled: i.disabled ?? false } : null; })(),
+          select: (() => { const se = all("ha-select")[0]; return se ? { value: se.value ?? null, label: se.label ?? null, disabled: se.disabled ?? false } : null; })(),
+        };
+        el.remove();
+      }
+    }
+    // The actions decide which entities have a switch; a script's carry its fields
+    const services = Object.fromEntries(Object.entries(ha.hass.services).map(([domain, actions]) => [
+      domain,
+      Object.fromEntries(Object.entries(actions).map(([name, action]) => [name, domain === "script" ? g.clone(action) : {}])),
+    ]));
+    return { states, services, cards };
+  }
 
   /**
    * Each entity's icon colour as the cards draw it: a tile's `--tile-color`, an entities row's `state-badge` (as
@@ -2088,6 +2298,15 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
   }
 
   /** The calls of the plain action buttons under a dialog (counter, timer, automation), and a tall switch. */
+  /** A script's run (with its form as it opens) and cancel. */
+  async function scriptCalls(stateObj) {
+    const recorded = [];
+    for (const [label, selector] of [["run", ".run-button"], ["cancel", ".cancel-button"]]) {
+      recorded.push({ control: label, label, detail: null, calls: await recordCalls(stateObj, (r) => r.querySelector(selector)?.click(), 400) });
+    }
+    return recorded.filter((r) => r.calls.length > 0);
+  }
+
   async function actionCalls(stateObj) {
     const recorded = [];
     const record = async (control, label, act) =>
@@ -3055,13 +3274,14 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir, contr
     // With --domains, only those domains' entities, merged into the existing controls
     const domains = CONTROL_DOMAINS;
     const entities = domains ? CONTROL_ENTITIES.filter((id) => domains.includes(id.split(".")[0])) : CONTROL_ENTITIES;
-    const extras = ["rows", "cards", "icons"].filter((extra) => !domains || domains.includes(extra));
+    const extras = ["rows", "cards", "icons", "statecards"].filter((extra) => !domains || domains.includes(extra));
     const data = await page.evaluate(captureMoreInfoControls, { entityIds: [...entities, ...extras], rowEntities: ROW_ENTITIES, cardConfigs: CARD_CONFIGS });
     if (domains) {
       const existing = JSON.parse(readFileSync(join(outDir, "more-info", "controls.json"), "utf8"));
       if (!domains.includes("rows")) data.rows = existing.rows;
       if (!domains.includes("cards")) data.cards = existing.cards;
       if (!domains.includes("icons")) data.icons = existing.icons;
+      if (!domains.includes("statecards")) data.stateCards = existing.stateCards;
       for (const id of Object.keys(existing.entities)) {
         if (!domains.includes(id.split(".")[0])) data.entities[id] = existing.entities[id];
       }

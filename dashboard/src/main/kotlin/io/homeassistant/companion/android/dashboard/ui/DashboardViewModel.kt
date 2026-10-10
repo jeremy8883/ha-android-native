@@ -319,6 +319,10 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         .flatMapLatest { if (it) live.discoveredFlows() else flowOf(Loadable.Loading) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), Loadable.Loading)
 
+    // The server's actions: which entities can toggle, and a script's fields
+    private val services = live.services()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), Loadable.Loading)
+
     /** The selected dashboard's stored config with the structure inputs, as one. */
     private val dashboard: StateFlow<Pair<String?, Loadable<Pair<StoredDashboardConfig, StructureInputs>>>?> =
         selectedDashboard
@@ -477,20 +481,20 @@ class DashboardViewModel @VisibleForTesting internal constructor(
     val hass: StateFlow<HassSnapshot?> = combine(
         structureInputs.mapNotNull { it.valueOrNull },
         entityStates.mapNotNull { it.valueOrNull },
-        repairsIssues,
-        discoveredFlows,
+        combine(repairsIssues, discoveredFlows, services, ::Triple),
         combine(
             combine(templates, cameraImages, energyCollections, ::Triple),
             combine(graphHistories, alarmDefaultCodes, forecasts, ::Triple),
         ) { (rendered, cameras, energy), (histories, codes, weather) ->
             CardData(rendered, cameras, energy, histories, codes, weather)
         },
-    ) { inputs, states, repairs, flows, data ->
+    ) { inputs, states, (repairs, flows, actions), data ->
         inputs.hass.copy(
             states = states,
             // Not loaded (or not readable) collections stay `null`, never empty
             repairsIssues = repairs.valueOrNull,
             discoveredFlows = flows.valueOrNull,
+            services = actions.valueOrNull,
             templates = data.templates,
             cameraImages = data.cameraImages,
             energy = data.energy,

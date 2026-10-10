@@ -20,6 +20,10 @@ dependencies {
     implementation(libs.markdown.renderer.m3)
     implementation(libs.coil.compose)
     implementation(libs.coil.okhttp)
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.exoplayer.hls)
+    implementation(libs.media3.datasource.okhttp)
+    implementation(libs.media3.ui.compose)
     ksp(libs.androidx.room.compiler)
 
     testImplementation(libs.turbine)

@@ -29,6 +29,7 @@ SUBTREES = [
     "ui.panel.lovelace.strategy",
     "ui.panel.page-authorize",
     "ui.dialogs.more_info_control",
+    "ui.dialogs.voice_command",
     "ui.components.statistics_charts",
     "ui.components.history_charts",
     "ui.components.logbook",

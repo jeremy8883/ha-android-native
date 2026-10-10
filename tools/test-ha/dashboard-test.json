@@ -178,7 +178,7 @@
             {
               "type": "markdown",
               "title": "Status",
-              "content": "**{{ states('sensor.lights_on') }}** lights on.\n\nHouse mode: *{{ states('input_select.house_mode') }}*\n\n- Living room: {{ states('sensor.living_room_temperature') }} °C"
+              "content": "**{{ states('sensor.lights_on') }}** lights on.\n\nHouse mode: *{{ states('input_select.house_mode') }}*\n\n- Living room: {{ states('sensor.living_room_temperature') }} \u00b0C"
             },
             {
               "type": "conditional",
@@ -338,6 +338,37 @@
           "forecast_type": "hourly",
           "forecast_slots": 8,
           "secondary_info_attribute": "wind_speed"
+        }
+      ]
+    },
+    {
+      "title": "Details",
+      "path": "details",
+      "cards": [
+        {
+          "type": "entities",
+          "title": "Details",
+          "entities": [
+            "sun.sun",
+            "person.dev",
+            "weather.demo_weather_north",
+            "camera.demo_camera",
+            "image.front_camera_still",
+            "script.announce",
+            "script.lock_up",
+            "group.downstairs_lights",
+            "group.doors",
+            "scene.movie_time",
+            "conversation.home_assistant",
+            "date.date",
+            "datetime.date_and_time",
+            "time.time",
+            "input_datetime.wake_up",
+            "climate.ecobee",
+            "event.push_button_press",
+            "input_text.welcome_message",
+            "input_select.house_mode"
+          ]
         }
       ]
     }
