@@ -20,10 +20,20 @@ fun HassSnapshot.formatEntityAttributeValue(
     state: EntityState,
     attribute: String,
     value: JsonElement? = state.attributes[attribute],
-): String = if (value == null || value is JsonNull) {
-    localize("state.default.unknown")
+): String = formatEntityAttributeValueParts(state, attribute, value).text
+
+/**
+ * [formatEntityAttributeValue] with the unit apart from the value, for cards that style them apart. Port of
+ * `computeAttributeValueToParts`.
+ */
+fun HassSnapshot.formatEntityAttributeValueParts(
+    state: EntityState,
+    attribute: String,
+    value: JsonElement? = state.attributes[attribute],
+): ValueParts = if (value == null || value is JsonNull) {
+    ValueParts(localize("state.default.unknown"))
 } else {
-    deviceClassName(state, attribute, value) ?: formatPresentAttributeValue(state, attribute, value)
+    deviceClassName(state, attribute, value)?.let(::ValueParts) ?: formatPresentAttributeValue(state, attribute, value)
 }
 
 /** The translated name of a `device_class` attribute's value, `null` when it has none. */
@@ -35,22 +45,24 @@ private fun HassSnapshot.formatPresentAttributeValue(
     state: EntityState,
     attribute: String,
     value: JsonElement,
-): String {
+): ValueParts {
     val primitive = value as? JsonPrimitive
     val number = primitive?.takeUnless { it.isString }?.content?.toDoubleOrNull()
-    return when {
-        number != null -> formatAttributeNumber(state, attribute, number)
-        value is JsonObject || (value is JsonArray && value.any { it is JsonObject || it is JsonArray }) ->
-            value.toString()
-        value is JsonArray -> value.joinToString(", ") { formatEntityAttributeValue(state, attribute, it) }
-        else -> primitive?.takeIf { it.isString }?.content?.let(::formatAttributeDate)
-            ?: value.jsString().let { text ->
-                entityTranslation(state, "state_attributes.$attribute.state.$text") ?: text
-            }
-    }
+    if (number != null) return formatAttributeNumber(state, attribute, number)
+    return ValueParts(
+        when {
+            value is JsonObject || (value is JsonArray && value.any { it is JsonObject || it is JsonArray }) ->
+                value.toString()
+            value is JsonArray -> value.joinToString(", ") { formatEntityAttributeValue(state, attribute, it) }
+            else -> primitive?.takeIf { it.isString }?.content?.let(::formatAttributeDate)
+                ?: value.jsString().let { text ->
+                    entityTranslation(state, "state_attributes.$attribute.state.$text") ?: text
+                }
+        },
+    )
 }
 
-private fun HassSnapshot.formatAttributeNumber(state: EntityState, attribute: String, number: Double): String {
+private fun HassSnapshot.formatAttributeNumber(state: EntityState, attribute: String, number: Double): ValueParts {
     val domain = state.domain
     val formatted = when {
         domain == "light" && attribute == "brightness" -> jsRound(number / BRIGHTNESS_MAX * PERCENT).toString()
@@ -63,7 +75,7 @@ private fun HassSnapshot.formatAttributeNumber(state: EntityState, attribute: St
         attribute in TEMPERATURE_ATTRIBUTES -> config.temperatureUnit
         else -> DOMAIN_ATTRIBUTES_UNITS[domain]?.get(attribute)
     }?.ifEmpty { null }
-    return if (unit != null) formatted + blankBeforeUnit(unit) + unit else formatted
+    return ValueParts(formatted, unit, separator = unit?.let(::blankBeforeUnit).orEmpty())
 }
 
 /** A date or timestamp attribute, formatted; `null` when [value] isn't one. */

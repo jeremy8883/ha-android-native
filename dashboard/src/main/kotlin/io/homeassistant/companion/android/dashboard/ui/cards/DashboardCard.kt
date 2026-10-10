@@ -16,6 +16,7 @@ import io.homeassistant.companion.android.dashboard.derive.repairsModel
 import io.homeassistant.companion.android.dashboard.derive.updatesModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.layout.conditionalInnerCard
+import io.homeassistant.companion.android.dashboard.layout.stackCard
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.cards.energy.ENERGY_CARD_TYPES
 import io.homeassistant.companion.android.dashboard.ui.cards.energy.EnergyCard
@@ -32,6 +33,8 @@ internal fun DashboardCard(
 ) {
     // A conditional card is only laid out while its conditions pass, so it shows its card
     card.conditionalInnerCard()?.let { inner -> return DashboardCard(inner, hass, now, interactions, modifier) }
+    val stack = remember(card) { card.stackCard() }
+    if (stack != null) return StackCardView(stack, hass, now, interactions, modifier)
     val actions = remember(card) { cardActions(card) }
     // Gestures work on every card, so actions are available before every card type is native
     val cardModifier = modifier.clip(RoundedCornerShape(HARadius.XL)).elementGestures(actions.card, interactions)
@@ -50,6 +53,13 @@ internal fun DashboardCard(
         CARD_BUTTON -> ButtonCard(card, hass, interactions, modifier.clip(RoundedCornerShape(HARadius.XL)))
         CARD_GLANCE -> GlanceCard(card, hass, now, interactions, modifier)
         CARD_GAUGE -> GaugeCard(card, hass, interactions, modifier.clip(RoundedCornerShape(HARadius.XL)))
+        CARD_ENTITY, CARD_SENSOR -> EntityCard(
+            card,
+            hass,
+            now,
+            interactions,
+            modifier.clip(RoundedCornerShape(HARadius.XL)),
+        )
         in ENERGY_CARD_TYPES -> EnergyCard(card, hass, now, interactions, modifier)
         else -> OtherCard(card, hass, interactions, modifier, cardModifier)
     }
@@ -94,6 +104,8 @@ private const val CARD_ENTITIES = "entities"
 private const val CARD_BUTTON = "button"
 private const val CARD_GLANCE = "glance"
 private const val CARD_GAUGE = "gauge"
+private const val CARD_ENTITY = "entity"
+private const val CARD_SENSOR = "sensor"
 private const val CARD_MEDIA_CONTROL = "media-control"
 private const val CARD_EMPTY_STATE = "empty-state"
 private const val CARD_SHORTCUT = "shortcut"

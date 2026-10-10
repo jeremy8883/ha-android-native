@@ -328,6 +328,7 @@
   "common": {
    "apply": "Apply",
    "cancel": "Cancel",
+   "clear": "Clear",
    "close": "Close"
   },
   "components": {
@@ -746,6 +747,11 @@
     "zone": {
      "graph_unit": "People in zone"
     }
+   }
+  },
+  "errors": {
+   "config": {
+    "configuration_error": "Configuration error"
    }
   },
   "notification_toast": {

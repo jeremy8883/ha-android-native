@@ -38,6 +38,8 @@ SUBTREES = [
     "ui.common.close",
     "ui.common.apply",
     "ui.common.cancel",
+    "ui.common.clear",
+    "ui.errors.config.configuration_error",
 ]
 
 OUT_DIR = Path(__file__).resolve().parents[2] / "dashboard-core/src/main/resources/translations"

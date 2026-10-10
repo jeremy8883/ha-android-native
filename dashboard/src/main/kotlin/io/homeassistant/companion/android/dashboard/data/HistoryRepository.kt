@@ -34,24 +34,27 @@ class HistoryRepository @Inject constructor(private val sessions: ServerSessions
 
     /**
      * The states of the history stream [command] subscribes to, kept up to date: each message is added to the
-     * history, and states older than [HISTORY_HOURS] are dropped as it goes. After a reconnection the stream starts
-     * again from its first message. Port of `HistoryStream`.
+     * history, and states older than [hours] (by default [HISTORY_HOURS]) are dropped as it goes. After a
+     * reconnection the stream starts again from its first message. Port of `HistoryStream`.
      */
-    fun stream(description: String, command: () -> WsCommand): Flow<Loadable<HistoryStates>> =
-        sessions.withServer { session ->
-            KeptData<HistoryStates>(description, NotKept(), session.connection).subscribed<JsonElement>(
-                subscribe = {
-                    val subscription = command()
-                    session.subscribe(subscription.type, subscription.params)
-                },
-                reduce = { current, event ->
-                    (event as? JsonObject)?.obj("states")?.let { states ->
-                        val purgeBefore = (clock.now() - HISTORY_HOURS.hours).toJavaInstant().epochSecond.toDouble()
-                        current.orEmpty().merge(parseHistoryStates(states), purgeBefore)
-                    } ?: null.also { Timber.w("Ignoring an unexpected $description message") }
-                },
-            )
-        }
+    fun stream(
+        description: String,
+        hours: Double = HISTORY_HOURS.toDouble(),
+        command: () -> WsCommand,
+    ): Flow<Loadable<HistoryStates>> = sessions.withServer { session ->
+        KeptData<HistoryStates>(description, NotKept(), session.connection).subscribed<JsonElement>(
+            subscribe = {
+                val subscription = command()
+                session.subscribe(subscription.type, subscription.params)
+            },
+            reduce = { current, event ->
+                (event as? JsonObject)?.obj("states")?.let { states ->
+                    val purgeBefore = (clock.now() - hours.hours).toJavaInstant().epochSecond.toDouble()
+                    current.orEmpty().merge(parseHistoryStates(states), purgeBefore)
+                } ?: null.also { Timber.w("Ignoring an unexpected $description message") }
+            },
+        )
+    }
 
     /**
      * [entityId]'s 5-minute statistics over the last day, loaded again every minute as the frontend does; `null`

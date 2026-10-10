@@ -836,7 +836,7 @@ async function captureMoreInfoLogbook(entityIds) {
   return { capturedAt: new Date().toISOString(), entities: out };
 }
 
-/** The button, glance and gauge cards the controls capture draws (with "cards" among the entities). */
+/** The simple cards the controls capture draws (with "cards" among the entities). */
 const CARD_CONFIGS = [
   { type: "button", entity: "switch.decorative_lights", show_state: true, tap_action: { action: "toggle" } },
   { type: "button", name: "Ring bell", icon: "mdi:bell", show_state: false },
@@ -869,6 +869,23 @@ const CARD_CONFIGS = [
   { type: "gauge", entity: "sensor.living_room_humidity", severity: { green: 40, yellow: 60 } },
   { type: "gauge", entity: "light.bed_light" },
   { type: "gauge", entity: "sensor.missing" },
+  { type: "entity", entity: "sensor.outside_temperature" },
+  { type: "entity", entity: "light.bed_light" },
+  { type: "entity", entity: "light.bed_light", state_color: false, name: "Bed" },
+  { type: "entity", entity: "switch.ac", state_color: true, icon: "mdi:snowflake" },
+  { type: "entity", entity: "climate.hvac", attribute: "current_temperature" },
+  { type: "entity", entity: "climate.hvac", attribute: "no_such_attribute" },
+  { type: "entity", entity: "sensor.house_power", unit: "watts" },
+  { type: "entity", entity: "sensor.thermostat" },
+  { type: "entity", entity: "sensor.sun_next_dawn" },
+  { type: "entity", entity: "counter.coffee_cups" },
+  { type: "entity", entity: "sensor.missing" },
+  { type: "sensor", entity: "sensor.outside_temperature", graph: "line" },
+  { type: "sensor", entity: "sensor.house_power", graph: "line", detail: 2, hours_to_show: 6 },
+  { type: "sensor", entity: "sensor.living_room_humidity", graph: "line", limits: { min: 0, max: 100 } },
+  { type: "sensor", entity: "sensor.grid_power", graph: "line" },
+  { type: "sensor", entity: "sensor.garage_battery" },
+  { type: "sensor", entity: "light.bed_light", graph: "line" },
 ];
 
 /** The entities whose entities card rows the controls capture records (with "rows" among the entities). */
@@ -1534,7 +1551,7 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
     cards: wantCards ? await captureCards() : undefined,
   };
 
-  /** What the button, glance and gauge cards draw for each of CARD_CONFIGS, and a button's tap. */
+  /** What the simple cards draw for each of CARD_CONFIGS, and a button's tap. */
   async function captureCards() {
     const out = [];
     for (const config of CARD_CONFIGS) {
@@ -1548,12 +1565,14 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
       for (let i = 0; i < 60; i++) {
         el = wrapper._element;
         if (el?.localName === `hui-${config.type}-card` && el.shadowRoot?.childElementCount) break;
+        // A config the card rejects shows an error card in its place
+        if (el?.localName === "hui-error-card" && el.shadowRoot?.childElementCount) break;
         await sleep(50);
       }
       await el.updateComplete;
       await sleep(300);
       const root = el.shadowRoot;
-      const warning = text(root.querySelector("hui-warning"));
+      const warning = text(root.querySelector("hui-warning")) || (el.localName === "hui-error-card" ? text(root) : "");
       // The states it was drawn with, which change while the capture runs
       const ids = [config.entity, ...(config.entities ?? []).map((e) => (typeof e === "string" ? e : e.entity))].filter(Boolean);
       const states = Object.fromEntries(ids.filter((id) => ha.hass.states[id]).map((id) => [id, g.clone(ha.hass.states[id])]));
@@ -1603,6 +1622,39 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
             };
           }),
         };
+      } else if (config.type === "entity" || config.type === "sensor") {
+        const icon = root.querySelector("ha-state-icon");
+        const unit = root.querySelector(".measurement");
+        shown.entity = el.localName === "hui-error-card" || warning ? null : {
+          name: text(root.querySelector(".name")),
+          // An attribute's value draws in its own shadow root
+          value: text(root.querySelector(".value ha-attribute-value")?.shadowRoot) || text(root.querySelector(".value")),
+          unit: unit ? text(unit) : null,
+          unitFirst: !!unit?.classList.contains("first-part"),
+          icon: icon?.icon ?? null,
+          color: icon?.style.color || null,
+        };
+        const footer = root.querySelector("hui-graph-header-footer");
+        if (footer) {
+          // Wait for the history stream's first message, then draw at a known time
+          for (let i = 0; i < 60 && footer._loading; i++) await sleep(50);
+          const now = Date.now();
+          const realNow = Date.now;
+          Date.now = () => now;
+          try {
+            footer._computeCoordinates();
+          } finally {
+            Date.now = realNow;
+          }
+          const entityId = config.entity;
+          shown.graph = {
+            now,
+            width: footer.clientWidth || footer.offsetWidth,
+            loading: footer._loading,
+            history: footer._history ? { [entityId]: g.clone(footer._history[entityId] ?? []) } : null,
+            coordinates: g.clone(footer._coordinates ?? null),
+          };
+        }
       } else if (config.type === "gauge") {
         const gauge = root.querySelector("ha-gauge");
         shown.gauge = gauge ? {

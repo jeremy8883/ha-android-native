@@ -32,14 +32,19 @@ fun HassSnapshot.historyWithoutAttributes(entityId: String): Boolean =
     entityId in states && entityId.substringBefore('.') !in NEED_ATTRIBUTE_DOMAINS
 
 /**
- * The subscription to [entityId]'s states over the [HISTORY_HOURS] before [now], kept up to date, without
- * attributes when [withoutAttributes] (see [historyWithoutAttributes]).
+ * The subscription to [entityId]'s states over the [hours] (by default [HISTORY_HOURS]) before [now], kept up to
+ * date, without attributes when [withoutAttributes] (see [historyWithoutAttributes]).
  */
-fun historyStreamCommand(entityId: String, withoutAttributes: Boolean, now: Instant): WsCommand = WsCommand(
+fun historyStreamCommand(
+    entityId: String,
+    withoutAttributes: Boolean,
+    now: Instant,
+    hours: Double = HISTORY_HOURS.toDouble(),
+): WsCommand = WsCommand(
     "history/stream",
     buildJsonObject {
         putJsonArray("entity_ids") { add(JsonPrimitive(entityId)) }
-        put("start_time", isoString(now.minus(HISTORY_HOURS, ChronoUnit.HOURS)))
+        put("start_time", isoString(now.minusMillis((hours * MILLIS_PER_HOUR).toLong())))
         put("minimal_response", true)
         put("significant_changes_only", true)
         put("no_attributes", withoutAttributes)
@@ -66,6 +71,7 @@ fun historyStatisticsCommand(entityId: String, now: Instant): WsCommand = WsComm
 /** How many hours back the details show. */
 const val HISTORY_HOURS = 24L
 
+private const val MILLIS_PER_HOUR = 3_600_000.0
 private const val HISTORY = "history"
 private const val RECORDER = "recorder"
 private val NO_HISTORY_DOMAINS = setOf("camera", "configurator")

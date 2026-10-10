@@ -9,7 +9,6 @@ import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.action.Gesture
 import io.homeassistant.companion.android.dashboard.action.resolveAction
 import io.homeassistant.companion.android.dashboard.data.DashboardRepository
-import io.homeassistant.companion.android.dashboard.data.EnergyRepository
 import io.homeassistant.companion.android.dashboard.data.LiveDataRepository
 import io.homeassistant.companion.android.dashboard.data.LoadError
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -23,6 +22,7 @@ import io.homeassistant.companion.android.dashboard.data.valueOrNull
 import io.homeassistant.companion.android.dashboard.derive.TemplateRequest
 import io.homeassistant.companion.android.dashboard.derive.TemplateResult
 import io.homeassistant.companion.android.dashboard.derive.cameraSnapshotEntities
+import io.homeassistant.companion.android.dashboard.derive.graphHistoryRequests
 import io.homeassistant.companion.android.dashboard.derive.templateRequests
 import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
 import io.homeassistant.companion.android.dashboard.energy.EnergyCollection
@@ -34,6 +34,8 @@ import io.homeassistant.companion.android.dashboard.entity.JsonTranslations
 import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.entity.Registries
 import io.homeassistant.companion.android.dashboard.entity.withFallback
+import io.homeassistant.companion.android.dashboard.history.GraphHistory
+import io.homeassistant.companion.android.dashboard.history.GraphHistoryKey
 import io.homeassistant.companion.android.dashboard.layout.CardGroup
 import io.homeassistant.companion.android.dashboard.layout.cardGroups
 import io.homeassistant.companion.android.dashboard.layout.viewHeaderCard
@@ -184,7 +186,7 @@ class DashboardViewModel @VisibleForTesting internal constructor(
     private val repository: DashboardRepository,
     live: LiveDataRepository,
     serverActions: ServerActionsRepository,
-    energyRepository: EnergyRepository,
+    cardData: CardDataLoader,
     clock: Clock,
     private val dispatchers: DashboardDispatchers,
 ) : ViewModel() {
@@ -194,13 +196,13 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         repository: DashboardRepository,
         live: LiveDataRepository,
         serverActions: ServerActionsRepository,
-        energyRepository: EnergyRepository,
+        cardData: CardDataLoader,
         clock: Clock,
     ) : this(
         repository,
         live,
         serverActions,
-        energyRepository,
+        cardData,
         clock,
         DashboardDispatchers(default = Dispatchers.Default, io = Dispatchers.IO),
     )
@@ -422,7 +424,16 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         .flatMapLatest { cameras -> if (cameras.isEmpty()) flowOf(emptyMap()) else live.cameraSnapshots(cameras) }
         .onStart { emit(emptyMap()) }
 
-    private val energy = EnergyCollections(energyRepository)
+    /** The histories the graphs of the shown view's cards draw, each once its stream answers. */
+    private val graphHistories: Flow<Map<GraphHistoryKey, GraphHistory>> = uiState
+        .combine(structureInputs.mapNotNull { it.valueOrNull }) { state, inputs ->
+            inputs.hass.graphHistoryRequests(shownCards(state, withHeader = false))
+        }
+        .distinctUntilChanged()
+        .flatMapLatest(cardData::graphHistories)
+        .onStart { emit(emptyMap()) }
+
+    private val energy = cardData.energy
 
     /** The energy collections the shown view's cards read, with their data. */
     private val energyCollections: Flow<Map<String, EnergyCollection>> = energy.collections(
@@ -448,16 +459,17 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         entityStates.mapNotNull { it.valueOrNull },
         repairsIssues,
         discoveredFlows,
-        combine(templates, cameraImages, energyCollections, ::Triple),
-    ) { inputs, states, repairs, flows, (rendered, cameras, energyCollections) ->
+        combine(templates, cameraImages, energyCollections, graphHistories, ::CardData),
+    ) { inputs, states, repairs, flows, data ->
         inputs.hass.copy(
             states = states,
             // Not loaded (or not readable) collections stay `null`, never empty
             repairsIssues = repairs.valueOrNull,
             discoveredFlows = flows.valueOrNull,
-            templates = rendered,
-            cameraImages = cameras,
-            energy = energyCollections,
+            templates = data.templates,
+            cameraImages = data.cameraImages,
+            energy = data.energy,
+            graphHistories = data.graphHistories,
         )
     }.flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
@@ -686,6 +698,14 @@ private const val HEADING = "heading"
 private const val ACTION = "action"
 private const val NAVIGATE = "navigate"
 private const val NAVIGATION_PATH = "navigation_path"
+
+/** The data the shown cards asked for, loaded apart from the dashboard. */
+private data class CardData(
+    val templates: Map<TemplateRequest, TemplateResult>,
+    val cameraImages: Map<String, String>,
+    val energy: Map<String, EnergyCollection>,
+    val graphHistories: Map<GraphHistoryKey, GraphHistory>,
+)
 
 /** Whether data is being loaded again, why it last failed to, and when it was kept, whatever the value. */
 private data class Progress(val refreshing: Boolean, val refreshError: LoadError?, val keptAt: Instant?)

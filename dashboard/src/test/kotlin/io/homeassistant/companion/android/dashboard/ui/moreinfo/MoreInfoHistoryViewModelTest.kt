@@ -25,7 +25,7 @@ class MoreInfoHistoryViewModelTest {
     private val states = mapOf("sensor.power" to listOf(HistoryState("1", null, null, 1.0)))
     private val statistics = EntityStatistics(StatisticsMetadata("sensor.power", "W", "recorder", null, false, "power"), emptyList())
     private val repository = mockk<HistoryRepository> {
-        every { stream(any(), any()) } returns flowOf(Loadable.Ready(states))
+        every { stream(any(), any(), any()) } returns flowOf(Loadable.Ready(states))
     }
 
     private fun viewModel() = MoreInfoHistoryViewModel(repository, FakeClock())
@@ -40,7 +40,7 @@ class MoreInfoHistoryViewModelTest {
             assertEquals(Loadable.Loading, awaitItem())
             assertEquals(Loadable.Ready(EntityHistory.Statistics(statistics)), awaitItem())
         }
-        verify(exactly = 0) { repository.stream(any(), any()) }
+        verify(exactly = 0) { repository.stream(any(), any(), any()) }
     }
 
     @Test
@@ -57,7 +57,7 @@ class MoreInfoHistoryViewModelTest {
             polls.value = Loadable.Ready(null, refreshing = true)
             expectNoEvents()
         }
-        verify(exactly = 1) { repository.stream(any(), any()) }
+        verify(exactly = 1) { repository.stream(any(), any(), any()) }
     }
 
     @Test

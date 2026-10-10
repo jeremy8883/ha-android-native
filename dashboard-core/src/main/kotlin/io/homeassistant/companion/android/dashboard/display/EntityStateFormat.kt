@@ -24,15 +24,23 @@ import kotlinx.serialization.json.JsonObject
  *
  * Port of `computeStateDisplay` (frontend@20260624.6 src/common/entity/compute_state_display.ts).
  */
-fun HassSnapshot.formatEntityState(state: EntityState, stateValue: String? = null): String {
+fun HassSnapshot.formatEntityState(state: EntityState, stateValue: String? = null): String =
+    formatEntityStateParts(state, stateValue).text
+
+/**
+ * [formatEntityState] with the unit apart from the value, for cards that style them apart. Port of
+ * `computeStateToParts`.
+ */
+fun HassSnapshot.formatEntityStateParts(state: EntityState, stateValue: String? = null): ValueParts {
     val value = stateValue ?: state.state
     val deviceClass = state.attributes.string("device_class")
     return when {
-        value == STATE_UNKNOWN || value == STATE_UNAVAILABLE -> localize("state.default.$value")
+        value == STATE_UNKNOWN || value == STATE_UNAVAILABLE -> ValueParts(localize("state.default.$value"))
         isNumericState(state, deviceClass) -> formatNumericState(state, value, registries.entities[state.entityId])
-        state.domain in DATE_TIME_DOMAINS -> formatDateTimeState(value)
-        isTimestampState(state, deviceClass) -> parseJsDate(value, formats.zone)?.let(formats::dateTime) ?: value
-        else -> entityTranslation(state, "state.$value") ?: value
+        state.domain in DATE_TIME_DOMAINS -> ValueParts(formatDateTimeState(value))
+        isTimestampState(state, deviceClass) ->
+            ValueParts(parseJsDate(value, formats.zone)?.let(formats::dateTime) ?: value)
+        else -> ValueParts(entityTranslation(state, "state.$value") ?: value)
     }
 }
 
@@ -64,31 +72,36 @@ internal fun HassSnapshot.entityTranslation(state: EntityState, key: String): St
         ?: localize("component.$domain.entity_component._.$key").ifEmpty { null }
 }
 
-private fun HassSnapshot.formatNumericState(state: EntityState, value: String, entry: EntityEntry?): String {
+private fun HassSnapshot.formatNumericState(state: EntityState, value: String, entry: EntityEntry?): ValueParts {
     val unitAttribute = state.attributes.string("unit_of_measurement")
     val deviceClass = state.attributes.string("device_class")
     val durationUnit = unitAttribute?.takeIf { deviceClass == "duration" && it in DURATION_UNITS }
     val (minDigits, maxDigits) = numberFormatOptions(state, value, entry)
     val monetary = if (deviceClass == "monetary") formatMonetary(value, unitAttribute, minDigits, maxDigits) else null
-    return durationUnit?.let { formatDuration(value, it, entry?.displayPrecision) }
+    return durationUnit?.let { unit -> formatDuration(value, unit, entry?.displayPrecision)?.let(::ValueParts) }
         ?: monetary
         ?: numberWithUnit(state, formatNumber(value, minDigits, maxDigits), entry)
 }
 
 /** [number] with the entity's unit: its translated unit, else its `unit_of_measurement`. */
-private fun HassSnapshot.numberWithUnit(state: EntityState, number: String, entry: EntityEntry?): String {
+private fun HassSnapshot.numberWithUnit(state: EntityState, number: String, entry: EntityEntry?): ValueParts {
     val unit = entry?.translationKey?.let {
         localize("component.${entry.platform}.entity.${state.domain}.$it.unit_of_measurement").ifEmpty { null }
     } ?: state.attributes.string("unit_of_measurement")?.ifEmpty { null }
-    return if (unit != null) number + blankBeforeUnit(unit) + unit else number
+    return ValueParts(number, unit, separator = unit?.let(::blankBeforeUnit).orEmpty())
 }
 
-private fun HassSnapshot.formatMonetary(value: String, currency: String?, minDigits: Int?, maxDigits: Int?): String? {
+private fun HassSnapshot.formatMonetary(
+    value: String,
+    currency: String?,
+    minDigits: Int?,
+    maxDigits: Int?,
+): ValueParts? {
     val number = jsNumber(value).takeUnless { it.isNaN() || it.isInfinite() }
     val code = currency?.let { runCatching { Currency.getInstance(it) }.getOrNull() }
     if (number == null || code == null) return null
     val min = minDigits ?: MONETARY_FRACTION_DIGITS
-    return formats.currency(BigDecimal.valueOf(number), code, min, maxOf(min, maxDigits ?: min))
+    return currencyParts(formats.currency(BigDecimal.valueOf(number), code, min, maxOf(min, maxDigits ?: min)))
 }
 
 /**

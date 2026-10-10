@@ -60,13 +60,18 @@ fun cardGroups(view: ViewConfig): List<CardGroup> = when (view.viewType) {
  */
 fun HassSnapshot.visibleCards(group: CardGroup, context: ConditionContext): List<CardConfig>? {
     if (group.disabled || (group.visibility.isNotEmpty() && !conditionsMet(group.visibility, context))) return null
-    val cards = group.cards.filter { card ->
-        (card.visibility.isEmpty() || conditionsMet(card.visibility, context.copy(entityId = card.entity))) &&
-            conditionalCardShown(card, context) &&
-            !cardHidesItself(card)
-    }
+    val cards = group.cards.filter { cardShown(it, context) }
     return cards.takeUnless { group.cards.isNotEmpty() && it.isEmpty() }
 }
+
+/**
+ * Whether [card] shows: its `hui-card` hides it while its visibility conditions fail, as conditional cards whose
+ * conditions fail and cards that hide themselves are.
+ */
+internal fun HassSnapshot.cardShown(card: CardConfig, context: ConditionContext): Boolean =
+    (card.visibility.isEmpty() || conditionsMet(card.visibility, context.copy(entityId = card.entity))) &&
+        conditionalCardShown(card, context) &&
+        !cardHidesItself(card)
 
 /**
  * Whether a conditional card's conditions pass (other cards always pass). Port of `HuiConditionalBase`
@@ -83,8 +88,9 @@ fun HassSnapshot.conditionalCardShown(card: CardConfig, context: ConditionContex
 fun CardConfig.conditionalInnerCard(): CardConfig? =
     if (type == CONDITIONAL) json.obj("card")?.let(::CardConfig) else null
 
-/** [cards] with the cards nested in them (conditional cards), for data that inner cards need. */
-fun withNestedCards(cards: List<CardConfig>): List<CardConfig> =
-    cards.flatMap { card -> listOf(card) + withNestedCards(listOfNotNull(card.conditionalInnerCard())) }
+/** [cards] with the cards nested in them (conditional cards, stacks), for data that inner cards need. */
+fun withNestedCards(cards: List<CardConfig>): List<CardConfig> = cards.flatMap { card ->
+    listOf(card) + withNestedCards(listOfNotNull(card.conditionalInnerCard()) + card.stackCard()?.cards.orEmpty())
+}
 
 private const val CONDITIONAL = "conditional"

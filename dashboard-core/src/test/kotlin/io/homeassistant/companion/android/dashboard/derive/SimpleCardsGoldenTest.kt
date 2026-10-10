@@ -6,6 +6,8 @@ import io.homeassistant.companion.android.dashboard.action.resolveAction
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.parseStates
 import io.homeassistant.companion.android.dashboard.golden.GoldenFixture
+import io.homeassistant.companion.android.dashboard.history.parseHistoryStates
+import io.homeassistant.companion.android.dashboard.history.sensorGraphCoordinates
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.number
@@ -17,17 +19,23 @@ import io.homeassistant.companion.android.dashboard.moreinfo.recordedCalls
 import java.time.Instant
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.double
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 
 /**
- * Differential tests of the button, glance and gauge cards against the real frontend's (20260624.6, drawn by
+ * Differential tests of the simple cards against the real frontend's (20260624.6, drawn by
  * tools/golden/capture.mjs from the configs of its CARD_CONFIGS, more-info/controls.json `cards`): what each shows,
  * and what a button's tap does.
  */
 class SimpleCardsGoldenTest {
     private val fixture = GoldenFixture("test-instance")
+
+    private companion object {
+        const val COORDINATE_TOLERANCE = 1e-6
+    }
 
     @TestFactory
     fun `Given captured button cards when deriving them then they show and act as the frontend's`() = cards("button") { config, shown ->
@@ -94,6 +102,45 @@ class SimpleCardsGoldenTest {
                 model.name,
             ),
         )
+    }
+
+    @TestFactory
+    fun `Given captured entity and sensor cards when deriving them then they show as the frontend's`() = cards("entity") { config, shown -> assertEntityCard(config, shown) } +
+        cards("sensor") { config, shown -> assertEntityCard(config, shown) }
+
+    private fun HassSnapshot.assertEntityCard(config: CardConfig, shown: JsonObject) {
+        val model = entityCardModel(config)
+        val captured = shown.obj("entity")
+        if (captured == null) {
+            assertEquals(shown.string("warning"), (model as? EntityCardModel.Warning)?.text)
+            return
+        }
+        model as EntityCardModel.Shown
+        assertEquals(
+            listOf(captured.string("name"), captured.string("value"), captured.string("unit"), captured.boolean("unitFirst"), captured.string("color")),
+            listOf(model.name, model.value.value, model.value.unit, model.value.unitFirst, model.color?.css()),
+        )
+        captured.string("icon")?.let { assertEquals(it, model.icon) }
+        val graph = shown.obj("graph")
+        val sensorGraph = model.graph
+        assertEquals(graph != null, sensorGraph != null, "graph")
+        if (graph == null || sensorGraph == null) return
+        val history = graph.obj("history")?.let(::parseHistoryStates)?.get(sensorGraph.entityId)
+        val coordinates = sensorGraphCoordinates(
+            sensorGraph,
+            history,
+            states[sensorGraph.entityId],
+            graph.number("width")!!,
+            graph.number("now")!!,
+        )
+        val expected = (graph["coordinates"] as JsonArray).map { point ->
+            (point as JsonArray).map { (it as JsonPrimitive).double }
+        }
+        assertEquals(expected.size, coordinates.points.size, "points")
+        expected.zip(coordinates.points).forEach { (e, a) ->
+            assertEquals(e[0], a.x, COORDINATE_TOLERANCE, "x")
+            assertEquals(e[1], a.y, COORDINATE_TOLERANCE, "y")
+        }
     }
 
     /** Each captured card of [type], checked against the snapshot with the states it was drawn with. */
