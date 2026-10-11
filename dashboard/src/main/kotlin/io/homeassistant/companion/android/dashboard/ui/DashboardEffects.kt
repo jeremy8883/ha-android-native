@@ -34,6 +34,7 @@ import timber.log.Timber
  * Shows the dashboard's one-off [events]: messages as snackbars, confirmations as a dialog, links in the browser.
  *
  * @param onConfirmed runs an action the user confirmed
+ * @param onMoreInfo shows the details of an entity, or closes them with `null`
  */
 @Composable
 internal fun DashboardEffects(
@@ -41,7 +42,7 @@ internal fun DashboardEffects(
     snackbar: SnackbarHostState,
     onConfirmed: (CardAction) -> Unit,
     onCodeEntered: (CardAction.CallService, String) -> Unit,
-    onMoreInfo: (String) -> Unit,
+    onMoreInfo: (String?) -> Unit,
     onOpenWeb: ((String) -> Unit)?,
 ) {
     val context = LocalContext.current
@@ -107,12 +108,13 @@ private fun performFailureHaptic(view: View) {
 }
 
 /** Where navigation events lead. */
-private data class NavigationCallbacks(val onMoreInfo: (String) -> Unit, val onOpenWeb: ((String) -> Unit)?)
+private data class NavigationCallbacks(val onMoreInfo: (String?) -> Unit, val onOpenWeb: ((String) -> Unit)?)
 
 /** Follow [event] when it navigates somewhere. @return whether it did */
 private fun navigate(event: DashboardEvent, uriHandler: UriHandler, callbacks: NavigationCallbacks): Boolean =
     when (event) {
         is DashboardEvent.MoreInfo -> true.also { callbacks.onMoreInfo(event.entityId) }
+        DashboardEvent.CloseDialogs -> true.also { callbacks.onMoreInfo(null) }
         is DashboardEvent.OpenWeb -> callbacks.onOpenWeb?.let { open -> true.also { open(event.path) } } ?: false
         is DashboardEvent.OpenUrl -> true.also { openUrl(uriHandler, event.url) }
         else -> false

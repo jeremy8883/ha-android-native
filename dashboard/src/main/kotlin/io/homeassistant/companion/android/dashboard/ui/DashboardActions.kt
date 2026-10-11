@@ -27,7 +27,10 @@ internal class DashboardActions(
 ) {
     suspend fun run(action: CardAction) {
         when (action) {
-            is CardAction.Navigate -> navigate(action.path)
+            is CardAction.Navigate -> {
+                events.send(DashboardEvent.CloseDialogs)
+                navigate(action.path)
+            }
             is CardAction.CallService -> callProtectedService(action)
             is CardAction.MoreInfo -> events.send(DashboardEvent.MoreInfo(action.entityId))
             is CardAction.OpenUrl -> events.send(DashboardEvent.OpenUrl(action.url))

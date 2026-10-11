@@ -116,7 +116,7 @@ private fun DashboardMessages(
     viewModel: DashboardViewModel,
     snackbar: SnackbarHostState,
     onOpenWeb: ((String) -> Unit)?,
-    onMoreInfo: (String) -> Unit,
+    onMoreInfo: (String?) -> Unit,
 ) {
     RefreshErrorMessages(
         refreshErrors = remember(viewModel) {

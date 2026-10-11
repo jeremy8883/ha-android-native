@@ -24,6 +24,12 @@ sealed interface DashboardEvent {
     /** Show more information about [entityId]. */
     data class MoreInfo(val entityId: String) : DashboardEvent
 
+    /**
+     * Close the details and any dialog over the page, as a link is followed: the frontend's `navigate` closes every
+     * dialog before changing page.
+     */
+    data object CloseDialogs : DashboardEvent
+
     /** Open [path] (a panel other than a native dashboard) in the web frontend. */
     data class OpenWeb(val path: String) : DashboardEvent
 
