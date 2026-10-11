@@ -100,16 +100,11 @@ internal fun DashboardScreen(
                 snackbar = snackbar,
                 status = status,
                 onRetry = viewModel::onRetry,
+                onOpenElsewhere = onOpenWeb?.let { { viewModel.onOpenShownInWeb() } },
             )
         }
         moreInfo?.let { entityId ->
-            // The full details are a page of the frontend
-            val onShowFull = onOpenWeb?.let {
-                {
-                    moreInfo = null
-                    viewModel.onShowFullMoreInfo(entityId)
-                }
-            }
+            val onShowFull = onOpenWeb?.let { { viewModel.onOpenShownInWeb(entityId).also { moreInfo = null } } }
             MoreInfoSheet(entityId, hass, now, interactions, onShowFull, onDismiss = { moreInfo = null }, snackbar)
         }
     }
@@ -231,6 +226,7 @@ internal fun DashboardScreenContent(
     snackbar: SnackbarHostState = remember { SnackbarHostState() },
     status: DashboardStatus = DashboardStatus.CURRENT,
     onRetry: () -> Unit = {},
+    onOpenElsewhere: (() -> Unit)? = null,
 ) {
     val content = uiState as? DashboardUiState.Content
     val panel = uiState as? DashboardUiState.Panel
@@ -252,8 +248,9 @@ internal fun DashboardScreenContent(
                 }
                 DashboardUiState.NotFound -> Message(stringResource(R.string.native_dashboard_not_found))
                 is DashboardUiState.Error -> LoadErrorScreen(uiState.error, onRetry)
-                is DashboardUiState.UnsupportedStrategy -> Message(
-                    stringResource(R.string.native_dashboard_unsupported_strategy, uiState.type.orEmpty()),
+                is DashboardUiState.UnsupportedStrategy -> UnsupportedMessage(
+                    stringResource(R.string.native_dashboard_unsupported_strategy),
+                    onOpenElsewhere,
                 )
                 is DashboardUiState.Content -> DashboardView(uiState, hass, now, onSelectTab, interactions)
                 is DashboardUiState.Panel -> NativePanel(uiState, panelToolbar, hass, now, interactions)

@@ -1,9 +1,7 @@
 package net.jeremycasey.homeassistantnative.settings
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -21,10 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
 import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
-import io.homeassistant.companion.android.common.compose.composable.HASwitch
 import io.homeassistant.companion.android.common.compose.composable.HATopBar
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
@@ -32,17 +28,14 @@ import io.homeassistant.companion.android.common.compose.theme.LocalHAColorSchem
 import net.jeremycasey.homeassistantnative.R
 
 /**
- * The app's settings: the servers it's logged in to (to switch to, log out of, or add another), and whether pages the
- * dashboards don't show open in the companion app.
+ * The app's settings: the servers it's logged in to (to switch to, log out of, or add another).
  *
  * @param onAddServer opens the login for another server
  */
 @Composable
 internal fun SettingsScreen(onBack: () -> Unit, onAddServer: () -> Unit) {
     val servers: ServersViewModel = hiltViewModel()
-    val settings: SettingsViewModel = hiltViewModel()
     val items by servers.items.collectAsStateWithLifecycle()
-    val openOtherPages by settings.openOtherPages.collectAsStateWithLifecycle()
     var loggingOut by rememberSaveable { mutableStateOf<Int?>(null) }
     Scaffold(
         topBar = { HATopBar(title = { Text(stringResource(R.string.settings_title)) }, onBackClick = onBack) },
@@ -65,8 +58,6 @@ internal fun SettingsScreen(onBack: () -> Unit, onAddServer: () -> Unit) {
                 onAddServer,
                 Modifier.padding(horizontal = HADimens.SPACE2),
             )
-            HAHorizontalDivider(Modifier.padding(vertical = HADimens.SPACE2))
-            openOtherPages?.let { open -> OtherPagesSetting(open, settings::onOpenOtherPagesChange) }
         }
     }
     loggingOut?.let { serverId ->
@@ -88,27 +79,6 @@ private fun SectionTitle(text: String) {
         style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
         modifier = Modifier.padding(horizontal = HADimens.SPACE4, vertical = HADimens.SPACE2),
     )
-}
-
-@Composable
-private fun OtherPagesSetting(open: Boolean, onChange: (Boolean) -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = HADimens.SPACE4, vertical = HADimens.SPACE2),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Column(modifier = Modifier.weight(1f).padding(end = HADimens.SPACE3)) {
-            Text(
-                stringResource(R.string.settings_other_pages),
-                style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
-                color = LocalHAColorScheme.current.colorTextPrimary,
-            )
-            Text(
-                stringResource(R.string.settings_other_pages_description),
-                style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
-            )
-        }
-        HASwitch(checked = open, onCheckedChange = onChange)
-    }
 }
 
 @Composable

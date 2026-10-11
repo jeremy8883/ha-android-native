@@ -23,10 +23,12 @@ data class CardActions(val card: ElementActions, val icon: ElementActions?)
 /**
  * How [card] reacts to gestures. Tiles default to more-info on tap and toggle (for toggleable domains) on the
  * icon, as `hui-tile-card.setConfig` does (frontend@20260624.6 src/panels/lovelace/cards/hui-tile-card.ts);
- * other cards react only to the actions they configure.
+ * the repairs, updates and discovered devices cards open their settings page on tap without a `tap_action`, as
+ * their `_handleAction` does (src/panels/lovelace/cards/hui-repairs-card.ts, hui-updates-card.ts,
+ * hui-discovered-devices-card.ts); other cards react only to the actions they configure.
  */
 fun cardActions(card: CardConfig): CardActions {
-    val json = card.json
+    val json = withDefaultTap(card)
     if (card.type != TILE) return CardActions(elementActions(json, tapWhenUnset = false), icon = null)
 
     val entity = json.string("entity").orEmpty()
@@ -47,6 +49,16 @@ fun cardActions(card: CardConfig): CardActions {
         card = elementActions(config, tapWhenUnset = true),
         icon = elementActions(iconConfig, tapWhenUnset = true),
     )
+}
+
+/** [card]'s config, with its settings page as the tap action for the cards that open one without a `tap_action`. */
+private fun withDefaultTap(card: CardConfig): JsonObject {
+    val path = DEFAULT_TAP_PATHS[card.type]?.takeIf { card.json[Gesture.TAP.configKey] == null } ?: return card.json
+    val tap = buildJsonObject {
+        put("action", "navigate")
+        put("navigation_path", path)
+    }
+    return JsonObject(card.json + (Gesture.TAP.configKey to tap))
 }
 
 /** The gestures an element with its own `*_action` options responds to; unset actions do nothing. */
@@ -70,6 +82,15 @@ private fun defaultTileIconAction(entityId: String): String {
 }
 
 private const val TILE = "tile"
+
+/** Where the cards that open a settings page on tap go. */
+private val DEFAULT_TAP_PATHS = mapOf(
+    "repairs" to "/config/repairs",
+    "updates" to "/config/updates",
+    // UPSTREAM-DIFF: upstream opens the add-integration dialog on its discovered devices; the companion app opens
+    // the integrations page that lists them (unsupported features open there, as the user decided)
+    "discovered-devices" to "/config/integrations/dashboard",
+)
 
 /** Port of `DOMAINS_TOGGLE` (src/common/const.ts). */
 internal val DOMAINS_TOGGLE =

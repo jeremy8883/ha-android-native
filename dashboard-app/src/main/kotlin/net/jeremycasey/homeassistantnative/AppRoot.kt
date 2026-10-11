@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -82,14 +83,12 @@ private fun Dashboard(viewModel: AppViewModel, onOpenSettings: () -> Unit) {
     val scope = rememberCoroutineScope()
     val request = remember { NativeDashboardRequest() }
     var chooseServer by remember { mutableStateOf<((Int) -> Unit)?>(null) }
-    val openOtherPages by viewModel.openOtherPages.collectAsStateWithLifecycle()
     val openWeb: (String) -> Unit = { path ->
         scope.launch { openWebPage(context, path, viewModel.webUrl(path)) }
     }
     NativeDashboard(
         request = request,
-        // Off, other pages are left out rather than switching apps unasked
-        onOpenWeb = openWeb.takeIf { openOtherPages == true },
+        onOpenWeb = openWeb,
         onShowServerSwitcher = { onSelected -> chooseServer = onSelected },
         onOpenSettings = onOpenSettings,
     )
@@ -106,25 +105,35 @@ private fun Dashboard(viewModel: AppViewModel, onOpenSettings: () -> Unit) {
 
 /**
  * Open a page the native dashboards don't show: in the companion app when it's installed (its
- * `homeassistant://navigate` link, on its own active server), otherwise at [webUrl] in the browser.
+ * `homeassistant://navigate` link, on its own active server), otherwise at [webUrl] in the browser. A toast says so
+ * first, and stays on screen over the other app.
  */
 private fun openWebPage(context: Context, path: String, webUrl: Uri?) {
     val companionLink = Uri.parse("$COMPANION_NAVIGATE/${path.removePrefix("/")}")
     try {
         context.startActivity(Intent(Intent.ACTION_VIEW, companionLink))
+        toast(context, R.string.unsupported_opening_companion)
         return
     } catch (e: ActivityNotFoundException) {
         Timber.d(e, "No companion app to open $path in, using the browser")
     }
     if (webUrl == null) {
         Timber.w("No safe address to open $path at")
+        toast(context, R.string.unsupported_no_address)
         return
     }
     try {
         context.startActivity(Intent(Intent.ACTION_VIEW, webUrl))
+        toast(context, R.string.unsupported_opening_browser)
     } catch (e: ActivityNotFoundException) {
         Timber.w(e, "No browser to open $path in")
+        toast(context, R.string.unsupported_no_app)
     }
+}
+
+/** A toast rather than a snackbar: it stays on screen while another app opens. */
+private fun toast(context: Context, message: Int) {
+    Toast.makeText(context.applicationContext, message, Toast.LENGTH_LONG).show()
 }
 
 private const val COMPANION_NAVIGATE = "homeassistant://navigate"

@@ -595,13 +595,19 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         }
     }
 
-    /** Open upstream's full more-info dialog for [entityId] in the app's web frontend. */
-    fun onShowFullMoreInfo(entityId: String) {
+    /**
+     * Open the dashboard shown (with its view) in the web frontend, as it can't be drawn natively; with [entityId],
+     * upstream's full more-info dialog for it over the dashboard shown, back to it natively once closed.
+     */
+    fun onOpenShownInWeb(entityId: String? = null) {
         viewModelScope.launch {
-            // The frontend's more-info dialog over the dashboard shown now, back to it natively once closed
             val urlPath = selectedDashboard.value ?: sidebar.loaded(_events)?.defaultPanel ?: return@launch
-            val encoded = java.net.URLEncoder.encode(entityId, Charsets.UTF_8)
-            _events.send(DashboardEvent.OpenWeb("/$urlPath?$MORE_INFO_PARAM=$encoded"))
+            val path = if (entityId != null) {
+                "/$urlPath?$MORE_INFO_PARAM=${java.net.URLEncoder.encode(entityId, Charsets.UTF_8)}"
+            } else {
+                (listOf(urlPath) + viewStack.value).joinToString("/", prefix = "/")
+            }
+            _events.send(DashboardEvent.OpenWeb(path))
         }
     }
 

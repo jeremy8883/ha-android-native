@@ -50,6 +50,25 @@ class CardActionTest {
         assertEquals(hass.toggleEntity("light.desk"), hass.resolveAction(actions.icon!!.config, Gesture.TAP)?.action)
     }
 
+    @ParameterizedTest
+    @CsvSource(
+        "repairs, /config/repairs",
+        "updates, /config/updates",
+        "discovered-devices, /config/integrations/dashboard",
+    )
+    fun `Given a settings card without a tap action when tapping it then it opens its settings page`(type: String, path: String) {
+        val actions = cardActions(CardConfig(json("""{"type": "$type"}""")))
+
+        assertEquals(CardAction.Navigate(path, replace = false), hass.resolveAction(actions.card.config, Gesture.TAP)?.action)
+    }
+
+    @Test
+    fun `Given a settings card with its own tap action when tapping it then that runs instead`() {
+        val actions = cardActions(CardConfig(json("""{"type": "repairs", "tap_action": {"action": "none"}}""")))
+
+        assertFalse(actions.card.interactive)
+    }
+
     @Test
     fun `Given a sensor tile when looking at its icon then it is not interactive`() {
         val actions = cardActions(CardConfig(json("""{"type": "tile", "entity": "sensor.temp"}""")))
