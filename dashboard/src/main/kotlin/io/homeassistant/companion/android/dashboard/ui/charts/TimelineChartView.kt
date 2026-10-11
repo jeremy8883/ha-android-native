@@ -24,6 +24,7 @@ import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.display.DisplayFormats
 import io.homeassistant.companion.android.dashboard.history.TimelineBand
@@ -128,10 +129,21 @@ private fun BandTooltip(
     val timeline = timelines.getOrNull(row) ?: return
     val band = timeline.bands.getOrNull(index) ?: return
     val words = tooltip(timeline to band)
+    // Over whatever is below: the tooltip is taller than a row or two of timelines
+    Popup(alignment = Alignment.TopStart) { TooltipContent(words, bandColors[row][index]) }
+}
+
+/**
+ * The tooltip's lines: the entity, then the state by its [color], its start, end and duration.
+ *
+ * Upstream: part of `state-history-chart-timeline` (src/components/chart/state-history-chart-timeline.ts)
+ */
+@Composable
+private fun TooltipContent(words: TimelineTooltip, color: Color) {
     ChartTooltipCard(
         title = words.title,
         rows = listOf(
-            TooltipLine(bandColors[row][index], words.state),
+            TooltipLine(color, words.state),
             TooltipLine(null, words.start),
             TooltipLine(null, words.end),
             TooltipLine(null, words.duration),
