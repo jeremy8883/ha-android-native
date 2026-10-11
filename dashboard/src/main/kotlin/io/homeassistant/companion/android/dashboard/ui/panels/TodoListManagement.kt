@@ -13,6 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.composable.ButtonVariant
+import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -103,7 +104,7 @@ private fun DeleteDialog(hass: HassSnapshot, entityId: String, onDelete: () -> U
         title = { Text(hass.localize("$TODO.delete_confirm_title", mapOf("name" to name))) },
         text = { Text(hass.localize("$TODO.delete_confirm_text")) },
         confirmButton = {
-            HAPlainButton(
+            HAAccentButton(
                 hass.localize("ui.common.delete"),
                 {
                     onDone()

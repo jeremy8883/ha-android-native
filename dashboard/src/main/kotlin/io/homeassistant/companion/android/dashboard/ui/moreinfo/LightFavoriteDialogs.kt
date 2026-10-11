@@ -28,6 +28,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import io.homeassistant.companion.android.common.R as commonR
 import io.homeassistant.companion.android.common.compose.composable.ButtonVariant
+import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
 import io.homeassistant.companion.android.common.compose.composable.HACheckbox
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.theme.HADimens
@@ -120,7 +121,8 @@ internal fun FavoriteColorDialog(
 }
 
 /**
- * A question before something that can't be undone, with its [confirm] button styled as dangerous.
+ * A question before something that can't be undone, with its [confirm] button filled in the danger colour
+ * (`destructive`).
  *
  * Upstream: `showConfirmationDialog` (src/dialogs/generic/show-dialog-box.ts)
  */
@@ -130,7 +132,7 @@ internal fun ConfirmDialog(title: String, text: String, confirm: String, onConfi
         onDismissRequest = onDismiss,
         title = { Text(title, style = HATextStyle.HeadlineMedium) },
         text = { Text(text, style = HATextStyle.Body.copy(textAlign = TextAlign.Start)) },
-        confirmButton = { HAPlainButton(confirm, onConfirm, variant = ButtonVariant.DANGER) },
+        confirmButton = { HAAccentButton(confirm, onConfirm, variant = ButtonVariant.DANGER) },
         dismissButton = { HAPlainButton(stringResource(commonR.string.cancel), onDismiss) },
     )
 }

@@ -146,7 +146,8 @@ private fun DetailsEntry(name: String, value: String) {
 @Composable
 internal fun ColumnScope.MoreInfoDetailsYamlView(entityId: String, hass: HassSnapshot) {
     val yaml = remember(hass.states[entityId], hass.localize) { hass.moreInfoDetailsYaml(entityId) } ?: return
-    val lines = remember(yaml) { yaml.removeSuffix("\n").split('\n') }
+    // The final line break leaves an empty last line, as the code editor shows it
+    val lines = remember(yaml) { yaml.split('\n') }
     val dark = isSystemInDarkTheme()
     val colors = LocalHAColorScheme.current
     val background = resolveVariable(CODE_BACKGROUND, dark) ?: colors.colorSurfaceLow
@@ -163,14 +164,13 @@ internal fun ColumnScope.MoreInfoDetailsYamlView(entityId: String, hass: HassSna
                 Modifier.background(gutter).padding(horizontal = HADimens.SPACE2),
                 horizontalAlignment = Alignment.End,
             ) {
-                lines.indices.forEach { index ->
-                    Text(
-                        "${index + 1}",
-                        style = code.copy(textAlign = TextAlign.End),
-                        color = colors.colorTextSecondary,
-                        modifier = Modifier.widthIn(min = GUTTER_MIN_WIDTH),
-                    )
-                }
+                // One text like the code's, so the numbers keep to its lines
+                Text(
+                    lines.indices.joinToString("\n") { "${it + 1}" },
+                    style = code.copy(textAlign = TextAlign.End),
+                    color = colors.colorTextSecondary,
+                    modifier = Modifier.widthIn(min = GUTTER_MIN_WIDTH),
+                )
             }
             SelectionContainer(Modifier.weight(1f).horizontalScroll(rememberScrollState())) {
                 Text(
