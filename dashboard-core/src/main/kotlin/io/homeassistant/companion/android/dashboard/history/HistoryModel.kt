@@ -28,8 +28,15 @@ data class LineChartUnit(
  * An entity's line: its states over time.
  *
  * @property states the states, with the attributes the line charts read for climate, humidifiers and water heaters
+ * @property statistics its long-term statistics (hourly means) before its states, when they were merged in
  */
-data class LineChartEntity(val domain: String, val name: String, val entityId: String, val states: List<LineChartState>)
+data class LineChartEntity(
+    val domain: String,
+    val name: String,
+    val entityId: String,
+    val states: List<LineChartState>,
+    val statistics: List<LineChartState>? = null,
+)
 
 /** A state of a line at [lastChanged] (epoch ms). */
 data class LineChartState(val state: String, val lastChanged: Long, val attributes: JsonObject)
@@ -42,41 +49,49 @@ data class TimelineState(val stateLocalize: String, val state: String, val lastC
 
 /**
  * The lines and timelines of [history] for [entityIds] and the entities it has, those without history shown with
- * their current state. Entities with numbers (a unit, a state class, a numeric domain or device class) are lines
- * grouped by unit, the others timelines.
+ * their current state. Entities with numbers (a unit, a state class, a numeric domain or device class, or every one
+ * when [forceNumeric]) are lines grouped by unit (and device class when [splitDeviceClasses]), the others timelines.
  */
-fun HassSnapshot.computeHistory(history: HistoryStates, entityIds: List<String>): HistoryResult {
+fun HassSnapshot.computeHistory(
+    history: HistoryStates,
+    entityIds: List<String>,
+    splitDeviceClasses: Boolean = false,
+    forceNumeric: Boolean = false,
+): HistoryResult {
     val local = linkedMapOf<String, List<HistoryState>>()
     (entityIds + history.keys).distinct().forEach { id ->
         val states = history[id] ?: this.states[id]?.let(::limitedHistory)
         if (states != null) local[id] = states
     }
     val lineDevices = linkedMapOf<String, LinkedHashMap<String, List<HistoryState>>>()
+    val groups = mutableMapOf<String, Pair<String, String?>>()
     val timeline = mutableListOf<TimelineEntity>()
     local.forEach { (id, states) ->
         if (states.isEmpty()) return@forEach
-        val unit = historyUnit(id, states)
+        val unit = historyUnit(id, states, forceNumeric)
         if (unit.isNullOrEmpty()) {
             timeline += timelineEntity(id, states)
         } else {
-            val group = lineDevices.getOrPut(unit) { linkedMapOf() }
+            val deviceClass = historyDeviceClass(id, states)
+            val key = groupKey(unit, deviceClass, splitDeviceClasses)
+            groups[key] = unit to deviceClass?.takeIf { splitDeviceClasses }
+            val group = lineDevices.getOrPut(key) { linkedMapOf() }
             group[id] = group[id].orEmpty() + states
         }
     }
-    val lines = lineDevices.map { (unit, entities) -> lineChartUnit(unit, entities) }
+    val lines = lineDevices.map { (key, entities) ->
+        val (unit, deviceClass) = groups.getValue(key)
+        lineChartUnit(unit, deviceClass, entities)
+    }
     return HistoryResult(lines, timeline)
 }
 
 /** The unit of [id]'s line, `null` (or empty) when it's a timeline. */
-private fun HassSnapshot.historyUnit(id: String, states: List<HistoryState>): String? {
+private fun HassSnapshot.historyUnit(id: String, states: List<HistoryState>, forceNumeric: Boolean): String? {
     val domain = id.substringBefore('.')
     val current = this.states[id]
-    val numericFromHistory = if (current != null || domain in NUMERICAL_DOMAINS) {
-        null
-    } else {
-        states.firstOrNull { it.attributes?.let(::isNumericFromAttributes) == true }
-    }
-    val numeric = isNumericEntity(domain, current) || numericFromHistory != null
+    val numericFromHistory = numericStateFromHistory(domain, current, states)
+    val numeric = forceNumeric || isNumericEntity(domain, current) || numericFromHistory != null
     return if (numeric) {
         current?.attributes?.unit()
             ?: numericFromHistory?.attributes?.unit()
@@ -113,7 +128,11 @@ private fun HassSnapshot.timelineEntity(id: String, states: List<HistoryState>):
 }
 
 /** Port of `processLineChartEntities`: each entity's states, without the middle of runs of equal states. */
-private fun HassSnapshot.lineChartUnit(unit: String, entities: Map<String, List<HistoryState>>): LineChartUnit {
+private fun HassSnapshot.lineChartUnit(
+    unit: String,
+    deviceClass: String?,
+    entities: Map<String, List<HistoryState>>,
+): LineChartUnit {
     val data = entities.map { (id, states) ->
         val domain = id.substringBefore('.')
         val useLastUpdated = domain in DOMAINS_USE_LAST_UPDATED
@@ -136,8 +155,7 @@ private fun HassSnapshot.lineChartUnit(unit: String, entities: Map<String, List<
             ?: first.attributes?.takeIf { "friendly_name" in it }
         LineChartEntity(domain, stateName(id, attributes.orEmpty()), id, processed)
     }
-    // Without splitting by device class, the groups carry none (computeGroupKey)
-    return LineChartUnit(unit, null, entities.keys.joinToString(""), data)
+    return LineChartUnit(unit, deviceClass, entities.keys.joinToString(""), data)
 }
 
 private fun equalState(a: LineChartState, b: LineChartState): Boolean =
@@ -162,10 +180,11 @@ internal fun isNumericEntity(domain: String, current: EntityState?): Boolean = d
 private fun limitedHistory(state: EntityState) =
     listOf(HistoryState(state.state, state.attributes, null, state.lastUpdated))
 
-private fun isNumericFromAttributes(attributes: JsonObject) =
+internal fun isNumericFromAttributes(attributes: JsonObject) =
     "unit_of_measurement" in attributes || "state_class" in attributes
 
-private val NUMERICAL_DOMAINS = setOf("counter", "input_number", "number")
+internal val NUMERICAL_DOMAINS = setOf("counter", "input_number", "number")
+
 private val DOMAINS_USE_LAST_UPDATED = setOf("climate", "humidifier", "water_heater")
 private val LINE_ATTRIBUTES_TO_KEEP = listOf(
     "temperature",

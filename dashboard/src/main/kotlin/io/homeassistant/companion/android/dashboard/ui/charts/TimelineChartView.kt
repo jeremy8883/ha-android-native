@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -34,6 +35,7 @@ import java.time.Instant
 /**
  * The timelines of entities' states, drawn like the frontend's (state-history-chart-timeline): a row per entity,
  * a band per state in its colour, labelled when it fits, over [time]. A tap on a band shows its state and times.
+ * With [showNames], each row's entity is named on its left, in a column at least [minLeft] wide.
  */
 @Composable
 internal fun TimelineChartView(
@@ -42,11 +44,19 @@ internal fun TimelineChartView(
     formats: DisplayFormats,
     dark: Boolean,
     modifier: Modifier = Modifier,
+    showNames: Boolean = false,
+    minLeft: Dp = 0.dp,
 ) {
     val measurer = rememberTextMeasurer()
     val colors = LocalHAColorScheme.current
     val text =
-        ChartText(measurer, TextStyle(color = colors.colorTextSecondary, fontSize = ChartText.FONT_SIZE), formats)
+        ChartText(
+            measurer,
+            TextStyle(color = colors.colorTextSecondary, fontSize = ChartText.FONT_SIZE),
+            formats,
+            LocalDensity.current.density,
+        )
+    val nameColor = colors.colorTextPrimary
     val bandColors = remember(timelines, dark) {
         timelines.map { timeline -> timeline.bands.map { TimelineColors.resolve(it.color, dark) } }
     }
@@ -56,17 +66,24 @@ internal fun TimelineChartView(
         Canvas(
             Modifier.fillMaxWidth().height(height).pointerInput(timelines) {
                 detectTapGestures { offset ->
-                    val hit = bandAt(offset, timelines, time, size.width.toFloat(), ROW_HEIGHT.toPx())
+                    val left = plotLeft(timelines, showNames, minLeft.toPx(), text)
+                    val hit =
+                        bandAt(offset.copy(x = offset.x - left), timelines, time, size.width - left, ROW_HEIGHT.toPx())
                     selected = if (hit == selected) null else hit
                 }
             },
         ) {
+            val left = plotLeft(timelines, showNames, minLeft.toPx(), text)
             timelines.forEachIndexed { row, timeline ->
-                timeline.bands.forEachIndexed { index, band ->
-                    drawBand(band, bandColors[row][index], row, time, text)
+                if (showNames) drawName(timeline.name, row, left, text, nameColor)
+                val span = (time.end - time.start).coerceAtLeast(1.0)
+                // Bands start no further left than the plot
+                val x = { at: Double ->
+                    (left + (at - time.start) / span * (size.width - left)).toFloat().coerceIn(left, size.width)
                 }
+                timeline.bands.forEachIndexed { index, band -> drawBand(band, bandColors[row][index], row, x, text) }
             }
-            drawTimeAxis(0f, size.width, ROW_HEIGHT.toPx() * timelines.size + LABEL_GAP.toPx(), time, text)
+            drawTimeAxis(left, size.width, ROW_HEIGHT.toPx() * timelines.size + LABEL_GAP.toPx(), time, text)
         }
         selected?.let { (row, index) ->
             val band = timelines.getOrNull(row)?.bands?.getOrNull(index) ?: return@let
@@ -84,10 +101,31 @@ internal fun TimelineChartView(
     }
 }
 
-private fun DrawScope.drawBand(band: TimelineBand, color: Color, row: Int, time: TimeSpan, text: ChartText) {
-    val span = (time.end - time.start).coerceAtLeast(1.0)
-    val left = ((band.start - time.start) / span * size.width).toFloat().coerceAtLeast(0f)
-    val right = ((band.end - time.start) / span * size.width).toFloat().coerceAtMost(size.width)
+/** Where the bands start: after the names' column when they're shown, at least [minLeft]. */
+private fun plotLeft(timelines: List<TimelineChart>, showNames: Boolean, minLeft: Float, text: ChartText): Float =
+    if (showNames) maxOf(text.timelineNamesWidth(timelines.map { it.name }), minLeft) else minLeft
+
+/**
+ * The width of the names' column of timelines named [names]: the widest name and its margin, at most
+ * [MAX_NAMES_WIDTH] (the frontend's `maxInternalLabelWidth` on a phone), px.
+ */
+internal fun ChartText.timelineNamesWidth(names: List<String>): Float {
+    val widest = names.maxOfOrNull { measure(it).size.width } ?: 0
+    return minOf(widest + NAME_MARGIN.value * density, MAX_NAMES_WIDTH.value * density)
+}
+
+/** [name] right-aligned before the plot at [left], cut with an ellipsis to fit. */
+private fun DrawScope.drawName(name: String, row: Int, left: Float, text: ChartText, color: Color) {
+    val width = (left - NAME_MARGIN.toPx()).toInt().coerceAtLeast(0)
+    val label = text.measureFitting(name, width, color)
+    val top = ROW_HEIGHT.toPx() * row + (ROW_HEIGHT.toPx() - label.size.height) / 2
+    drawText(label, topLeft = Offset(left - NAME_MARGIN.toPx() - label.size.width, top))
+}
+
+/** [band] in [row], [x] placing its times, in [color] with its label when it fits. */
+private fun DrawScope.drawBand(band: TimelineBand, color: Color, row: Int, x: (Double) -> Float, text: ChartText) {
+    val left = x(band.start)
+    val right = x(band.end)
     if (right <= left) return
     val top = ROW_HEIGHT.toPx() * row + (ROW_HEIGHT - BAR_HEIGHT).toPx() / 2
     drawRect(color, Offset(left, top), Size(right - left, BAR_HEIGHT.toPx()))
@@ -122,6 +160,8 @@ private fun bandAt(
 private fun Double.toInstant() = Instant.ofEpochMilli(toLong())
 
 private val ROW_HEIGHT: Dp = 30.dp
+private val NAME_MARGIN: Dp = 5.dp
+private val MAX_NAMES_WIDTH: Dp = 105.dp
 private val BAR_HEIGHT: Dp = 20.dp
 private val AXIS_HEIGHT: Dp = 30.dp
 private val LABEL_PADDING: Dp = 4.dp

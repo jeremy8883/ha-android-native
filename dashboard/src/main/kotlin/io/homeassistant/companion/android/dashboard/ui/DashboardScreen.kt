@@ -16,7 +16,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -38,6 +37,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.ProvideCardLocals
 import io.homeassistant.companion.android.dashboard.ui.panels.NativePanel
+import io.homeassistant.companion.android.dashboard.ui.panels.PanelToolbar
 import java.time.ZonedDateTime
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -235,7 +235,7 @@ internal fun DashboardScreenContent(
     val content = uiState as? DashboardUiState.Content
     val panel = uiState as? DashboardUiState.Panel
     // A panel's refresh button asks it to load again
-    var panelRefreshes by remember(panel?.name) { mutableIntStateOf(0) }
+    val panelToolbar = remember(panel?.name) { PanelToolbar() }
     Scaffold(
         // Over the content, so they never move it
         snackbarHost = {
@@ -243,7 +243,7 @@ internal fun DashboardScreenContent(
         },
         // A view's footer (the energy date selection) stays at the bottom, below the messages
         bottomBar = { content?.view?.let { ViewFooter(it, hass, now, interactions) } },
-        topBar = { DashboardTopBar(uiState, onBack, onOpenMenu, hass, onRefreshPanel = { panelRefreshes++ }) },
+        topBar = { DashboardTopBar(uiState, onBack, onOpenMenu, panelToolbar.actions) },
     ) { padding ->
         Box(Modifier.padding(padding).fillMaxSize()) {
             when (uiState) {
@@ -256,7 +256,7 @@ internal fun DashboardScreenContent(
                     stringResource(R.string.native_dashboard_unsupported_strategy, uiState.type.orEmpty()),
                 )
                 is DashboardUiState.Content -> DashboardView(uiState, hass, now, onSelectTab, interactions)
-                is DashboardUiState.Panel -> NativePanel(uiState, panelRefreshes, hass, now, interactions)
+                is DashboardUiState.Panel -> NativePanel(uiState, panelToolbar, hass, now, interactions)
             }
             // Offline, the offline bar says it; retries would flicker the bar
             RefreshIndicator(

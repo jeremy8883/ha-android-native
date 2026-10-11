@@ -7,20 +7,22 @@ import io.homeassistant.companion.android.dashboard.ui.DashboardUiState
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import java.time.ZonedDateTime
 
-/** A panel drawn natively that isn't a dashboard (one of `NATIVE_PANELS`); a new [refresh] loads it again. */
+/** A panel drawn natively that isn't a dashboard (one of `NATIVE_PANELS`), with its buttons in the [toolbar]. */
 @Composable
 internal fun NativePanel(
     panel: DashboardUiState.Panel,
-    refresh: Int,
+    toolbar: PanelToolbar,
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
     interactions: CardInteractions,
 ) {
     when (panel.name) {
         TODO -> TodoPanel(hass, now, interactions)
-        LOGBOOK -> LogbookPanel(hass, now, panel.query, refresh, interactions)
+        LOGBOOK -> LogbookPanel(hass, now, panel.query, toolbar, interactions)
+        HISTORY -> HistoryPanel(hass, now, panel.query, toolbar, interactions)
     }
 }
 
 private const val TODO = "todo"
 private const val LOGBOOK = "logbook"
+private const val HISTORY = "history"

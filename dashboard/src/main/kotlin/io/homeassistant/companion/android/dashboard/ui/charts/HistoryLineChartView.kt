@@ -16,9 +16,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.display.DisplayFormats
@@ -35,7 +37,7 @@ import java.time.Instant
 /**
  * A history line chart drawn like the frontend's (state-history-chart-line): stepped lines (each value holds until
  * the next), broken at gaps, and the climate's or humidifier's areas, over [time] in [unit]. A tap shows the values
- * at the nearest time.
+ * at the nearest time. The series in [hidden] are left out; the plot starts at least [minLeft] from the left.
  */
 @Composable
 internal fun HistoryLineChartView(
@@ -45,13 +47,17 @@ internal fun HistoryLineChartView(
     formats: DisplayFormats,
     dark: Boolean,
     modifier: Modifier = Modifier,
+    hidden: Set<String> = emptySet(),
+    minLeft: Dp = 0.dp,
 ) {
     val measurer = rememberTextMeasurer()
     val colors = LocalHAColorScheme.current
     val text =
         ChartText(measurer, TextStyle(color = colors.colorTextSecondary, fontSize = ChartText.FONT_SIZE), formats)
     val seriesColors = remember(chart, dark) { chart.series.map { seriesColor(it.color, dark) } }
-    val values = remember(chart) { chart.series.flatMap { s -> s.points.mapNotNull { it.y } } }
+    val values = remember(chart, hidden) {
+        chart.series.filterNot { it.id in hidden }.flatMap { s -> s.points.mapNotNull { it.y } }
+    }
     val times = remember(chart) { chart.series.flatMap { s -> s.points.map { it.x } }.distinct().sorted() }
     val frame = remember { arrayOfNulls<HistoryFrame>(1) }
     var selected by remember(chart) { mutableStateOf<Double?>(null) }
@@ -64,11 +70,13 @@ internal fun HistoryLineChartView(
                 }
             },
         ) {
-            val layout = historyFrame(values, time, chart.yFractionDigits, text)
+            val layout = historyFrame(values, time, chart.yFractionDigits, text, minLeft.toPx())
             frame[0] = layout
             drawValueAxis(layout, unit, chart.yFractionDigits, text, colors.colorBorderNeutralQuiet)
             drawTimeAxis(layout.left, layout.right, layout.bottom + LABEL_GAP.toPx(), time, text)
-            chart.series.forEachIndexed { index, series -> drawSeries(layout, series, seriesColors[index]) }
+            chart.series.forEachIndexed { index, series ->
+                if (series.id !in hidden) drawSeries(layout, series, seriesColors[index])
+            }
             selected?.let { at ->
                 val x = layout.x(at)
                 drawLine(colors.colorBorderNeutralQuiet, Offset(x, layout.top), Offset(x, layout.bottom), 1.dp.toPx())
@@ -76,7 +84,7 @@ internal fun HistoryLineChartView(
         }
         selected?.let { at ->
             val rows = chart.series.mapIndexedNotNull { index, series ->
-                if (series.fill) return@mapIndexedNotNull null
+                if (series.fill || series.id in hidden) return@mapIndexedNotNull null
                 series.valueAt(at)?.let { value ->
                     val number = formats.number(
                         BigDecimal.valueOf(value),
@@ -97,8 +105,22 @@ internal fun HistoryLineChartView(
     }
 }
 
-/** A series' stepped line, or its area down to the axis's base when it's filled. */
+/**
+ * A series' stepped line, or its area down to the axis's base when it's filled; the part from statistics (before
+ * [HistoryLineSeries.dimBefore]) half transparent.
+ */
 private fun DrawScope.drawSeries(frame: HistoryFrame, series: HistoryLineSeries, color: Color) {
+    val dimBefore = series.dimBefore
+    if (dimBefore == null) {
+        drawSeriesPath(frame, series, color)
+        return
+    }
+    val split = frame.x(dimBefore)
+    clipRect(right = split) { drawSeriesPath(frame, series, color.copy(alpha = color.alpha * STATISTICS_ALPHA)) }
+    clipRect(left = split) { drawSeriesPath(frame, series, color) }
+}
+
+private fun DrawScope.drawSeriesPath(frame: HistoryFrame, series: HistoryLineSeries, color: Color) {
     runsBetweenGaps(series.points) { it.y == null }.forEach { run ->
         val path = Path()
         run.forEachIndexed { index, point ->
@@ -134,6 +156,9 @@ private fun seriesColor(color: SeriesColor, dark: Boolean): Color = when (color)
 } ?: Color.Gray
 
 private val CHART_HEIGHT = 200.dp
+
+/** How opaque the statistics before the states are, as the frontend's `colorAlpha`. */
+private const val STATISTICS_ALPHA = 0.5f
 private val LINE_WIDTH = 1.5.dp
 
 /** The areas' fill, `7F` of the frontend's colour. */

@@ -12,10 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -51,7 +50,6 @@ import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookMessage
 import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookRequest
 import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookSource
 import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookViewModel
-import io.homeassistant.companion.android.dashboard.ui.logbook.parsePickedTarget
 import io.homeassistant.companion.android.dashboard.ui.target.TargetPicker
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -60,18 +58,19 @@ import java.time.ZonedDateTime
  * Port of `ha-panel-logbook` on a phone: the period (from the start of the last hour to the end of the next one at
  * first) and the entities to list (every entity's when none is picked), then their entries, newest first, each
  * naming what it is about and what caused it. [query] is the panel's address's ("entity_id=…&start_date=…"), as the
- * details' "Show more" opens it; a new [refresh] loads it again.
+ * details' "Show more" opens it. Its refresh button goes in the [toolbar].
  */
 @Composable
 internal fun LogbookPanel(
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
     query: String?,
-    refresh: Int,
+    toolbar: PanelToolbar,
     interactions: CardInteractions,
 ) {
     val snapshot = hass.value ?: return
     val current = now.value ?: return
+    val refresh = rememberRefresh(toolbar, snapshot.localize("ui.common.refresh"))
     val initial = remember(query) { historyLogbookQuery(query) }
     var range by rememberSaveable(query, stateSaver = DateRangeSaver) {
         val around = DateRange.aroundNow(current)
@@ -124,6 +123,14 @@ internal fun LogbookPanel(
     }
 }
 
+/** The panel's refresh button, in the [toolbar]: how many times it was pressed, each loading the logbook again. */
+@Composable
+private fun rememberRefresh(toolbar: PanelToolbar, label: String): Int {
+    var refresh by rememberSaveable { mutableIntStateOf(0) }
+    toolbar.Actions(PanelActions(buttons = listOf(PanelAction(REFRESH_ICON, label) { refresh++ })))
+    return refresh
+}
+
 /** The entries as items: the day headers and rows, else that it loads, that there are none, or why not. */
 private fun LazyListScope.logbookContent(
     rows: Loadable<List<LogbookRow>>,
@@ -173,16 +180,5 @@ private fun LazyListScope.logbookContent(
     }
 }
 
-/** Keeps the target across configuration changes, as its JSON. */
-private val TargetSaver = Saver<Target, String>(
-    save = { it.toJson().toString() },
-    restore = { parsePickedTarget(it) },
-)
-
-/** Keeps the period across configuration changes, as its ends' epoch milliseconds. */
-private val DateRangeSaver = listSaver<DateRange, Long>(
-    save = { listOf(it.start.toEpochMilli(), it.end.toEpochMilli()) },
-    restore = { DateRange(Instant.ofEpochMilli(it[0]), Instant.ofEpochMilli(it[1])) },
-)
-
 private const val LOGBOOK = "ui.components.logbook"
+private const val REFRESH_ICON = "mdi:refresh"

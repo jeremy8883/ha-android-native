@@ -15,7 +15,8 @@ data class HistoryLineChart(val series: List<HistoryLineSeries>, val yFractionDi
 
 /**
  * A stepped line (each value holds until the next), or with [fill] an area under it and no line (the climate's
- * heating, the humidifier's on), in [color]. A `null` value is a gap.
+ * heating, the humidifier's on), in [color]. A `null` value is a gap. The part before [dimBefore] (epoch ms) comes
+ * from long-term statistics and is drawn half transparent.
  */
 data class HistoryLineSeries(
     val id: String,
@@ -24,6 +25,7 @@ data class HistoryLineSeries(
     val color: SeriesColor,
     val fill: Boolean,
     val points: List<HistoryPoint>,
+    val dimBefore: Double? = null,
 )
 
 /** [y] at [x] (epoch ms), `null` for a gap. */
@@ -36,9 +38,17 @@ sealed interface SeriesColor {
     data class Variable(val name: String) : SeriesColor
 }
 
-/** The lines of [entities] up to [end] at [now] (epoch ms); a sensor shown up to now ends with its current state. */
-fun HassSnapshot.historyLineChart(entities: List<LineChartEntity>, end: Double, now: Double): HistoryLineChart {
-    val builder = LineBuilder(end)
+/**
+ * The lines of [entities] up to [end] at [now] (epoch ms); a sensor shown up to now ends with its current state. With
+ * [showNames], a climate's or humidifier's lines say whose they are ("Hvac current temperature").
+ */
+fun HassSnapshot.historyLineChart(
+    entities: List<LineChartEntity>,
+    end: Double,
+    now: Double,
+    showNames: Boolean = false,
+): HistoryLineChart {
+    val builder = LineBuilder(end, showNames)
     entities.forEach { entity ->
         val series = when (entity.domain) {
             "thermostat", "climate", "water_heater" -> builder.climate(this, entity)
@@ -53,13 +63,17 @@ fun HassSnapshot.historyLineChart(entities: List<LineChartEntity>, end: Double, 
             series.lines.single().points += HistoryPoint(now, current)
             builder.track(current)
         }
-        builder.series += series.lines.map { it.toSeries() }
+        // Statistics are drawn half transparent, up to the first state
+        val dimBefore = entity.statistics?.takeIf { it.isNotEmpty() }?.let {
+            entity.states.firstOrNull()?.lastChanged?.toDouble() ?: end
+        }
+        builder.series += series.lines.map { it.toSeries().copy(dimBefore = dimBefore) }
     }
     return HistoryLineChart(builder.series, yAxisFractionDigits(builder.yMin, builder.yMax))
 }
 
 /** The series being built for the chart, and the range of their values. */
-private class LineBuilder(val end: Double) {
+private class LineBuilder(val end: Double, val showNames: Boolean) {
     val series = mutableListOf<HistoryLineSeries>()
     var yMin = Double.POSITIVE_INFINITY
     var yMax = Double.NEGATIVE_INFINITY
@@ -73,6 +87,10 @@ private class LineBuilder(val end: Double) {
     }
 
     fun newPalette() = SeriesColor.Palette(colorIndex++)
+
+    /** A line's name: [named] with the entity's [name] when names show, else the attribute's or state's [plain]. */
+    fun label(hass: HassSnapshot, named: String, plain: String, name: String, extra: Map<String, String> = emptyMap()) =
+        if (showNames) hass.localize(named, mapOf("name" to name) + extra) else hass.localize(plain)
 }
 
 /** An entity's lines being built: each data point has a value per line. */
@@ -117,7 +135,10 @@ private fun LineBuilder.plain(entity: LineChartEntity): EntitySeries {
     var lastValue: Double? = null
     var lastDate = 0.0
     var lastNullDate: Double? = null
-    entity.states.forEach { state ->
+    // The statistics up to the first state, then the states
+    val stopTime = entity.states.firstOrNull()?.lastChanged
+    val statistics = entity.statistics.orEmpty().takeWhile { stopTime == null || it.lastChanged < stopTime }
+    (statistics + entity.states).forEach { state ->
         val value = safeParseFloat(state.state)
         val date = state.lastChanged.toDouble()
         val nullDate = lastNullDate
@@ -158,21 +179,20 @@ private fun LineBuilder.climate(hass: HassSnapshot, entity: LineChartEntity): En
         mode to active
     }.filter { (_, active) -> entity.states.any(active) }
     val hasTargetRange = entity.states.any { it.attributes["target_temp_high"] != it.attributes["target_temp_low"] }
-    series.add("$id-current_temperature", hass.localize("$CLIMATE_ATTRIBUTES.current_temperature.name"))
+    val name = entity.name
+    series.add(
+        "$id-current_temperature",
+        label(hass, "$CLIMATE_CARD.current_temperature", "$CLIMATE_ATTRIBUTES.current_temperature.name", name),
+    )
     modes.forEach { (mode, _) ->
         series.add(
             "$id-${mode.action}",
-            hass.localize("$CLIMATE_ATTRIBUTES.hvac_action.state.${mode.action}"),
+            label(hass, "$CLIMATE_CARD.${mode.action}", "$CLIMATE_ATTRIBUTES.hvac_action.state.${mode.action}", name),
             SeriesColor.Variable(mode.colorVariable),
             fill = true,
         )
     }
-    if (hasTargetRange) {
-        series.add("$id-target_temperature_mode", hass.localize("$CLIMATE_ATTRIBUTES.target_temp_high.name"))
-        series.add("$id-target_temperature_mode_low", hass.localize("$CLIMATE_ATTRIBUTES.target_temp_low.name"))
-    } else {
-        series.add("$id-target_temperature", hass.localize("$CLIMATE_ATTRIBUTES.temperature.name"))
-    }
+    climateTargets(hass, series, entity, hasTargetRange)
     entity.states.forEach { state ->
         val attributes = state.attributes
         val current = safeParseFloat(attributes["current_temperature"])
@@ -189,6 +209,40 @@ private fun LineBuilder.climate(hass: HassSnapshot, entity: LineChartEntity): En
     return series
 }
 
+/** The climate's target temperature line, or its high and low target lines when it has a range. */
+private fun LineBuilder.climateTargets(
+    hass: HassSnapshot,
+    series: EntitySeries,
+    entity: LineChartEntity,
+    hasTargetRange: Boolean,
+) {
+    val id = entity.entityId
+    val name = entity.name
+    if (hasTargetRange) {
+        val high = mapOf("mode" to hass.localize("$CLIMATE_CARD.high"))
+        val low = mapOf("mode" to hass.localize("$CLIMATE_CARD.low"))
+        series.add(
+            "$id-target_temperature_mode",
+            label(
+                hass,
+                "$CLIMATE_CARD.target_temperature_mode",
+                "$CLIMATE_ATTRIBUTES.target_temp_high.name",
+                name,
+                high,
+            ),
+        )
+        series.add(
+            "$id-target_temperature_mode_low",
+            label(hass, "$CLIMATE_CARD.target_temperature_mode", "$CLIMATE_ATTRIBUTES.target_temp_low.name", name, low),
+        )
+    } else {
+        series.add(
+            "$id-target_temperature",
+            label(hass, "$CLIMATE_CARD.target_temperature_entity", "$CLIMATE_ATTRIBUTES.temperature.name", name),
+        )
+    }
+}
+
 /** The humidifier's target and current humidity, with an area while it humidifies, dries or is on. */
 private fun LineBuilder.humidifier(hass: HassSnapshot, entity: LineChartEntity): EntitySeries {
     val series = EntitySeries(this, entity.entityId)
@@ -198,17 +252,35 @@ private fun LineBuilder.humidifier(hass: HassSnapshot, entity: LineChartEntity):
     val shaded = listOf("humidifying", "drying").firstOrNull { action ->
         hasAction && entity.states.any { it.attributes.text("action") == action }
     }
-    series.add("$id-target_humidity", hass.localize("$HUMIDIFIER_ATTRIBUTES.humidity.name"))
-    if (hasCurrent) series.add("$id-current_humidity", hass.localize("$HUMIDIFIER_ATTRIBUTES.current_humidity.name"))
+    val name = entity.name
+    series.add(
+        "$id-target_humidity",
+        label(hass, "$HUMIDIFIER_CARD.target_humidity_entity", "$HUMIDIFIER_ATTRIBUTES.humidity.name", name),
+    )
+    if (hasCurrent) {
+        series.add(
+            "$id-current_humidity",
+            label(
+                hass,
+                "$HUMIDIFIER_CARD.current_humidity_entity",
+                "$HUMIDIFIER_ATTRIBUTES.current_humidity.name",
+                name,
+            ),
+        )
+    }
     if (shaded != null) {
         series.add(
             "$id-$shaded",
-            hass.localize("$HUMIDIFIER_ATTRIBUTES.action.state.$shaded"),
+            label(hass, "$HUMIDIFIER_CARD.$shaded", "$HUMIDIFIER_ATTRIBUTES.action.state.$shaded", name),
             SeriesColor.Variable(HUMIDIFIER_ON_COLOR),
             fill = true,
         )
     } else {
-        series.add("$id-on", hass.localize("component.humidifier.entity_component._.state.on"), fill = true)
+        series.add(
+            "$id-on",
+            label(hass, "$HUMIDIFIER_CARD.on_entity", "component.humidifier.entity_component._.state.on", name),
+            fill = true,
+        )
     }
     entity.states.forEach { state ->
         val target = safeParseFloat(state.attributes["humidity"])
@@ -260,4 +332,6 @@ private fun Map<String, JsonElement>.text(key: String): String? = (this[key] as?
 private const val NOW_LEEWAY = 1000.0
 private const val CLIMATE_ATTRIBUTES = "component.climate.entity_component._.state_attributes"
 private const val HUMIDIFIER_ATTRIBUTES = "component.humidifier.entity_component._.state_attributes"
+private const val CLIMATE_CARD = "ui.card.climate"
+private const val HUMIDIFIER_CARD = "ui.card.humidifier"
 private const val HUMIDIFIER_ON_COLOR = "state-humidifier-on-color"

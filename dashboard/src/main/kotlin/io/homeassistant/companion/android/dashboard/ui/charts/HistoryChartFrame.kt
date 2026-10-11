@@ -6,13 +6,15 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.text.TextMeasurer
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.homeassistant.companion.android.dashboard.display.DisplayFormats
-import io.homeassistant.companion.android.dashboard.energy.StatisticPeriod
 import io.homeassistant.companion.android.dashboard.energy.niceTicks
-import io.homeassistant.companion.android.dashboard.energy.timeTickLabel
 import io.homeassistant.companion.android.dashboard.energy.valueLabel
+import io.homeassistant.companion.android.dashboard.history.historyTimeLabel
 import io.homeassistant.companion.android.dashboard.history.historyTimeTicks
 import kotlin.math.abs
 
@@ -21,14 +23,29 @@ internal class ChartText(
     private val measurer: TextMeasurer,
     private val style: TextStyle,
     val formats: DisplayFormats,
+    /** The screen's density, for sizes given in dp. */
+    val density: Float = 1f,
 ) {
-    fun measure(text: String) = measurer.measure(text, style)
+    /** [text] on one line in [color] (else the labels'), cut with an ellipsis to fit [width] px. */
+    fun measureFitting(text: String, width: Int, color: Color? = null) = measurer.measure(
+        text,
+        color?.let { style.copy(color = it) } ?: style,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1,
+        constraints = Constraints(maxWidth = width.coerceAtLeast(0)),
+    )
+
+    fun measure(text: String, bold: Boolean = false) =
+        measurer.measure(text, if (bold) style.copy(fontWeight = FontWeight.Bold) else style)
 
     companion object {
         /** The axis labels' size, as the frontend's charts. */
         val FONT_SIZE = 12.sp
     }
 }
+
+/** What the legend says: its toggle's label and its overflow chip's ("More", "Less"). */
+internal data class HistoryLegendTexts(val toggle: String, val more: String, val less: String)
 
 /** The span of a chart's time axis, epoch ms. */
 internal class TimeSpan(val start: Double, val end: Double)
@@ -64,14 +81,21 @@ internal class HistoryFrame(
         if (px < left || px > right) null else times.minByOrNull { abs(x(it) - px) }
 }
 
-/** The frame of a chart of [values] over [time], its value labels with [digits] fraction digits. */
-internal fun DrawScope.historyFrame(values: List<Double>, time: TimeSpan, digits: Int, text: ChartText): HistoryFrame {
-    val formats = text.formats
-    val ticks = niceTicks(values.minOrNull() ?: 0.0, values.maxOrNull() ?: 0.0, scale = true)
-    val labelWidth = ticks.maxOf { text.measure(formats.valueLabel(it, digits)).size.width }
+/**
+ * The frame of a chart of [values] over [time], its value labels with [digits] fraction digits, its plot starting at
+ * least [minLeft] px from the left (so charts drawn one above the other line up).
+ */
+internal fun DrawScope.historyFrame(
+    values: List<Double>,
+    time: TimeSpan,
+    digits: Int,
+    text: ChartText,
+    minLeft: Float = 0f,
+): HistoryFrame {
+    val ticks = valueTicks(values)
     val labelHeight = text.measure("0").size.height
     return HistoryFrame(
-        left = labelWidth + LABEL_GAP.toPx(),
+        left = maxOf(valueAxisWidth(ticks, digits, text) + LABEL_GAP.toPx(), minLeft),
         // Room for the unit above the axis and half the top label
         top = labelHeight * 2f,
         right = size.width - EDGE.toPx(),
@@ -80,6 +104,14 @@ internal fun DrawScope.historyFrame(values: List<Double>, time: TimeSpan, digits
         ticks = ticks,
     )
 }
+
+/** The value axis's ticks for [values]. */
+internal fun valueTicks(values: List<Double>): List<Double> =
+    niceTicks(values.minOrNull() ?: 0.0, values.maxOrNull() ?: 0.0, scale = true)
+
+/** The width of the value axis's widest label, px. */
+internal fun valueAxisWidth(ticks: List<Double>, digits: Int, text: ChartText): Int =
+    ticks.maxOf { text.measure(text.formats.valueLabel(it, digits)).size.width }
 
 /** The value axis: [unit] above it, a grid line and a label at each tick. */
 internal fun DrawScope.drawValueAxis(
@@ -104,8 +136,10 @@ internal fun DrawScope.drawTimeAxis(left: Float, right: Float, top: Float, time:
     val formats = text.formats
     val span = (time.end - time.start).coerceAtLeast(1.0)
     val maxLabels = ((right - left) / MIN_TICK_SPACING.toPx()).toInt().coerceAtLeast(1)
+    val spanMillis = (time.end - time.start).toLong()
     formats.historyTimeTicks(time.start.toLong(), time.end.toLong(), maxLabels).forEach { tick ->
-        val label = text.measure(formats.timeTickLabel(tick, StatisticPeriod.HOUR))
+        val axisLabel = formats.historyTimeLabel(tick, spanMillis)
+        val label = text.measure(axisLabel.text, bold = axisLabel.bold)
         val x = (left + (tick - time.start) / span * (right - left)).toFloat()
         drawText(label, topLeft = Offset((x - label.size.width / 2).coerceIn(0f, size.width - label.size.width), top))
     }

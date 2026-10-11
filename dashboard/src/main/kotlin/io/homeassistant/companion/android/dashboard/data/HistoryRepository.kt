@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard.data
 
 import io.homeassistant.companion.android.dashboard.energy.StatisticValue
+import io.homeassistant.companion.android.dashboard.energy.Statistics
 import io.homeassistant.companion.android.dashboard.energy.StatisticsMetadata
 import io.homeassistant.companion.android.dashboard.energy.WsCommand
 import io.homeassistant.companion.android.dashboard.energy.parseStatistics
@@ -34,12 +35,13 @@ class HistoryRepository @Inject constructor(private val sessions: ServerSessions
 
     /**
      * The states of the history stream [command] subscribes to, kept up to date: each message is added to the
-     * history, and states older than [hours] (by default [HISTORY_HOURS]) are dropped as it goes. After a
-     * reconnection the stream starts again from its first message. Port of `HistoryStream`.
+     * history, and states older than [hours] (by default [HISTORY_HOURS]; none when `null`, for a fixed period) are
+     * dropped as it goes. After a reconnection the stream starts again from its first message. Port of
+     * `HistoryStream`.
      */
     fun stream(
         description: String,
-        hours: Double = HISTORY_HOURS.toDouble(),
+        hours: Double? = HISTORY_HOURS.toDouble(),
         command: () -> WsCommand,
     ): Flow<Loadable<HistoryStates>> = sessions.withServer { session ->
         KeptData<HistoryStates>(description, NotKept(), session.connection).subscribed<JsonElement>(
@@ -49,7 +51,7 @@ class HistoryRepository @Inject constructor(private val sessions: ServerSessions
             },
             reduce = { current, event ->
                 (event as? JsonObject)?.obj("states")?.let { states ->
-                    val purgeBefore = (clock.now() - hours.hours).toJavaInstant().epochSecond.toDouble()
+                    val purgeBefore = hours?.let { (clock.now() - it.hours).toJavaInstant().epochSecond.toDouble() }
                     current.orEmpty().merge(parseHistoryStates(states), purgeBefore)
                 } ?: null.also { Timber.w("Ignoring an unexpected $description message") }
             },
@@ -86,6 +88,22 @@ class HistoryRepository @Inject constructor(private val sessions: ServerSessions
                     }
                 }
                 delay(STATISTICS_REFRESH)
+            }
+        }
+    }
+
+    /**
+     * The hourly statistics [command] asks for, loaded once, as the History panel loads them for its period. A
+     * failure is logged and shown as such.
+     */
+    fun periodStatistics(command: WsCommand): Flow<Loadable<Statistics>> = sessions.withServer { session ->
+        flow {
+            when (val result = session.request(command).expect<JsonObject>()) {
+                is Fetched.Success -> emit(Loadable.Ready(parseStatistics(result.value)))
+                is Fetched.Failure -> {
+                    Timber.w("Couldn't load the statistics for the history: ${result.error}")
+                    emit(Loadable.Failed(result.error))
+                }
             }
         }
     }

@@ -921,6 +921,16 @@
      "water": "Water"
     }
    },
+   "history": {
+    "add_all": "Add all entities",
+    "add_card": "Add current view as card",
+    "add_card_error": "Unable to add card",
+    "download_data": "Download data",
+    "download_data_error": "Unable to download data",
+    "error_no_data": "You need to select some data sources first.",
+    "remove_all": "Remove all selections",
+    "start_search": "Select areas, devices, entities or labels above"
+   },
    "lovelace": {
     "cards": {
      "actions": {

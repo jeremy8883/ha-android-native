@@ -42,6 +42,7 @@ function parseArgs(argv) {
     else if (a === "--controls-only") args.controlsOnly = true;
     else if (a === "--domains") args.domains = argv[++i].split(",");
     else if (a === "--logbook-panel") args.logbookPanel = true;
+    else if (a === "--history-panel") args.historyPanel = true;
     else if (a === "--target-picker") args.targetPicker = true;
     else if (a === "-h" || a === "--help") {
       console.log("node capture.mjs [--variant admin|nonadmin|all] [--out <fixtures/home dir>] [--controls-only [--domains a,b]]");
@@ -1006,6 +1007,88 @@ async function capturePanelTargetPicker({ searches, targets }) {
     expansions,
     resolved,
     chips,
+  };
+}
+
+/** The entities the History panel capture shows: lines (with statistics), climate, humidifier and timelines. */
+const HISTORY_PANEL_ENTITIES = [
+  "sensor.living_room_temperature",
+  "sensor.living_room_humidity",
+  "sensor.bedroom_temperature",
+  "sensor.house_power",
+  "input_number.target_humidity",
+  "counter.coffee_cups",
+  "climate.hvac",
+  "humidifier.humidifier",
+  "water_heater.demo_water_heater",
+  "light.bed_light",
+  "binary_sensor.kitchen_motion",
+  "lock.back_door_lock",
+  "input_select.house_mode",
+  "person.dev",
+];
+
+/**
+ * Opens the History panel at [path] (its entities and period) and returns what it fetched (the history stream's
+ * messages, the statistics), the history it merged, and what each chart drew: the timelines' rows and the line
+ * charts' series and legends. Runs in the page.
+ */
+async function captureHistoryPanel(path) {
+  const g = window.__golden;
+  const ha = document.querySelector("home-assistant");
+  const conn = ha.hass.connection;
+  const requests = [];
+  const messages = [];
+  let statistics = null;
+  const origSubscribe = conn.subscribeMessage.bind(conn);
+  const origSend = conn.sendMessagePromise.bind(conn);
+  conn.subscribeMessage = (callback, message, options) => {
+    if (message.type !== "history/stream") return origSubscribe(callback, message, options);
+    requests.push(g.clone(message));
+    return origSubscribe((event) => {
+      messages.push(g.clone(event));
+      callback(event);
+    }, message, options);
+  };
+  conn.sendMessagePromise = async (message) => {
+    const result = await origSend(message);
+    if (message.type === "recorder/statistics_during_period") {
+      requests.push(g.clone(message));
+      statistics = g.clone(result);
+    }
+    return result;
+  };
+  g.navigate(path);
+  const panel = () => ha.shadowRoot.querySelector("home-assistant-main")?.shadowRoot?.querySelector("ha-panel-history");
+  for (let i = 0; i < 150 && !(panel()?._mungedStateHistory && !panel()._isLoading); i++) await new Promise((r) => setTimeout(r, 100));
+  // The statistics load alongside
+  await new Promise((r) => setTimeout(r, 2500));
+  conn.subscribeMessage = origSubscribe;
+  conn.sendMessagePromise = origSend;
+  const p = panel();
+  const charts = p?.shadowRoot?.querySelector("state-history-charts");
+  const lines = [...(charts?.shadowRoot?.querySelectorAll("state-history-chart-line") ?? [])].map((el) => ({
+    unit: el.unit ?? null,
+    identifier: el.identifier ?? null,
+    series: (el._chartData ?? []).map((d) => ({ id: d.id, name: d.name, points: (d.data ?? []).length, fill: !!d.areaStyle })),
+    legend: (el._chartOptions?.legend?.data ?? []).map((item) => ({ id: item.id, name: item.name, value: item.value ?? null })),
+    yAxisFractionDigits: el._yAxisFractionDigits ?? null,
+  }));
+  const timelines = [...(charts?.shadowRoot?.querySelectorAll("state-history-chart-timeline") ?? [])].map((el) => ({
+    rows: (el._chartData ?? []).map((d) => ({ id: d.id, name: d.name, bands: (d.data ?? []).length })),
+  }));
+  return {
+    capturedAt: new Date().toISOString(),
+    path,
+    range: p ? [p._startDate.toISOString(), p._endDate.toISOString()] : null,
+    entityIds: p ? p._getEntityIds() : null,
+    states: g.clone(ha.hass.states),
+    requests,
+    messages,
+    statistics,
+    history: p?._mungedStateHistory ? g.clone(p._mungedStateHistory) : null,
+    lines,
+    timelines,
   };
 }
 
@@ -3441,7 +3524,7 @@ function sanitizeFile(name) {
 // --------------------------------------------------------------------------------------------
 // One variant
 
-async function captureVariant(browser, { baseUrl, variant, tokens, outDir, controlsOnly, logbookPanel, targetPicker, domains: CONTROL_DOMAINS }) {
+async function captureVariant(browser, { baseUrl, variant, tokens, outDir, controlsOnly, logbookPanel, historyPanel, targetPicker, domains: CONTROL_DOMAINS }) {
   console.log(`\n== variant ${variant} -> ${relative(REPO, outDir)}`);
   const context = await browser.newContext({
     locale: "en-US",
@@ -3489,6 +3572,20 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir, contr
     mkdirSync(join(outDir, "target-picker"), { recursive: true });
     writeFileSync(join(outDir, "target-picker", "logbook.json"), stableStringify(data));
     console.log(`  recorded the target picker: ${Object.keys(data.items).length} searches, ${data.expansions.length} expansions`);
+    await context.close();
+    return { checks: [], problems: [] };
+  }
+  if (historyPanel) {
+    // Only the History panel over the last three hours of its entities, written over the existing fixtures
+    const end = new Date();
+    const start = new Date(end.getTime() - 3 * 3600 * 1000);
+    const path = `/history?entity_id=${HISTORY_PANEL_ENTITIES.join(",")}&start_date=${start.toISOString()}&end_date=${end.toISOString()}`;
+    await page.setViewportSize({ width: 412, height: 3000 });
+    await page.waitForTimeout(500);
+    const data = await page.evaluate(captureHistoryPanel, path);
+    mkdirSync(join(outDir, "history"), { recursive: true });
+    writeFileSync(join(outDir, "history", "panel.json"), stableStringify(data));
+    console.log(`  recorded ${data.lines.length} line charts and ${data.timelines.length} timelines of the History panel`);
     await context.close();
     return { checks: [], problems: [] };
   }
@@ -3754,7 +3851,7 @@ async function main() {
         tokens = { ...t, expires: Date.now() + t.expires_in * 1000 };
       }
       const dir = join(outRoot, variant === "admin" ? "test-instance" : "test-instance-nonadmin");
-      const { checks, problems } = await captureVariant(browser, { baseUrl, variant, tokens, outDir: dir, controlsOnly: args.controlsOnly, logbookPanel: args.logbookPanel, targetPicker: args.targetPicker, domains: args.domains });
+      const { checks, problems } = await captureVariant(browser, { baseUrl, variant, tokens, outDir: dir, controlsOnly: args.controlsOnly, logbookPanel: args.logbookPanel, historyPanel: args.historyPanel, targetPicker: args.targetPicker, domains: args.domains });
       if (problems.length || checks.some((c) => !c.ok)) failed = true;
     }
   } finally {
