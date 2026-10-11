@@ -16,6 +16,7 @@ import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
+import io.homeassistant.companion.android.dashboard.moreinfo.CircularSecondary
 import io.homeassistant.companion.android.dashboard.moreinfo.css
 import io.homeassistant.companion.android.dashboard.moreinfo.recordedCalls
 import io.homeassistant.companion.android.dashboard.weather.ForecastKey
@@ -251,7 +252,7 @@ class SimpleCardsGoldenTest {
             return@cards
         }
         model as ThermostatCardModel.Shown
-        assertEquals(listOf(thermostat.string("name"), thermostat.string("secondary")), listOf(model.name, model.secondary))
+        assertEquals(listOf(thermostat.string("name"), thermostat.string("secondary")), listOf(model.name, (model.secondary as? CircularSecondary.Current)?.text))
     }
 
     private fun JsonObject.drawingClasses(): List<String?>? = (this["drawing"] as? JsonArray)?.map { it.stringOrNull }

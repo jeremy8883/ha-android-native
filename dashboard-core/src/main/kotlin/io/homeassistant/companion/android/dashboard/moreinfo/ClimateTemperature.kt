@@ -38,30 +38,70 @@ fun HassSnapshot.climateTemperatureStep(state: EntityState): Double =
         ?: if (config.temperatureUnit == UNIT_F) 1.0 else HALF_DEGREE
 
 /** Which of upstream's three renders the dial is: a single target, a range, or the current reading only. */
-private class TemperatureRender(state: EntityState, targets: CircularTargets) {
-    val unavailable = state.state == UNAVAILABLE
-    val target = state.supportsFeature(FEATURE_TARGET_TEMPERATURE) && targets.value != null
-    val range = state.supportsFeature(FEATURE_TARGET_TEMPERATURE_RANGE) && targets.low != null && targets.high != null
+private class TemperatureRender(val unavailable: Boolean, val target: Boolean, val range: Boolean) {
+    constructor(state: EntityState, targets: CircularTargets) : this(
+        unavailable = state.state == UNAVAILABLE,
+        target = state.supportsFeature(FEATURE_TARGET_TEMPERATURE) && targets.value != null,
+        range = state.supportsFeature(FEATURE_TARGET_TEMPERATURE_RANGE) && targets.low != null && targets.high != null,
+    )
+
     val interactive = (target || range) && !unavailable
     val dual = interactive && !target
+
+    /** No target in the middle: `_renderPrimary` falls through to the state when the current is primary. */
+    fun withoutTargets() = TemperatureRender(unavailable, target = false, range = false)
 }
 
-/** The temperature dial of [state]. */
-internal fun HassSnapshot.climateTemperature(state: EntityState): CircularControl {
+/**
+ * The secondary line under the big number of [state]'s dial (`show-secondary`): the current temperature, or with
+ * [currentAsPrimary] the targets. Port of `_renderSecondary`.
+ */
+fun HassSnapshot.climateSecondary(state: EntityState, currentAsPrimary: Boolean): CircularSecondary? {
+    val targets = climateTargets(state)
+    val render = TemperatureRender(state, targets)
+    val current = state.attributes[CURRENT_TEMPERATURE]
+    val number = BigNumber(0.0, config.temperatureUnit.orEmpty(), fractionDigits(climateTemperatureStep(state)))
+    return when {
+        // `currentTemperature &&`: 0 shows nothing
+        !currentAsPrimary ->
+            current
+                ?.takeIf { (state.attributes.numberOrNull(CURRENT_TEMPERATURE) ?: 0.0) != 0.0 }
+                ?.let { CircularSecondary.Current(formatEntityAttributeValue(state, CURRENT_TEMPERATURE, it)) }
+        render.target -> CircularSecondary.Targets(number, range = false)
+        render.range -> CircularSecondary.Targets(number, range = true)
+        else -> null
+    }
+}
+
+/** `_renderCurrent`'s big number: at most one decimal. */
+private fun currentNumber(current: Double, unit: String): BigNumber {
+    val rounded = Math.round(current * TENTHS) / TENTHS
+    return BigNumber(rounded, unit, if (rounded % 1.0 == 0.0) 0 else 1)
+}
+
+/**
+ * The temperature dial of [state]; with [currentAsPrimary] (the thermostat card's `show_current_as_primary`) the
+ * current temperature is the big number and the targets go under it.
+ */
+internal fun HassSnapshot.climateTemperature(state: EntityState, currentAsPrimary: Boolean = false): CircularControl {
     val targets = climateTargets(state)
     val render = TemperatureRender(state, targets)
     val step = climateTemperatureStep(state)
     val active = state.isActive()
+    val current = state.attributes.numberOrNull(CURRENT_TEMPERATURE)
+    val number = BigNumber(0.0, config.temperatureUnit.orEmpty(), fractionDigits(step))
     return CircularControl(
         slider = temperatureSlider(state, targets, render, step),
-        label = climateLabel(state, render.target || render.range),
-        labelDisabled = render.unavailable,
-        primary = temperaturePrimary(
+        label = climateLabel(
             state,
-            targets,
-            render,
-            BigNumber(0.0, config.temperatureUnit.orEmpty(), fractionDigits(step)),
+            if (currentAsPrimary) current != null else render.target || render.range,
         ),
+        labelDisabled = render.unavailable,
+        primary = when {
+            currentAsPrimary && current != null -> CircularPrimary.Current(currentNumber(current, number.unit))
+            currentAsPrimary -> temperaturePrimary(state, targets, render.withoutTargets(), number)
+            else -> temperaturePrimary(state, targets, render, number)
+        },
         buttons = render.interactive,
         lowButtonColor = stateColor(state, "heat").takeIf { render.dual && active },
         highButtonColor = stateColor(state, "cool").takeIf { render.dual && active },
@@ -148,6 +188,7 @@ private fun sliderMode(state: EntityState): CircularMode {
 }
 
 private const val OFF = "off"
+private const val TENTHS = 10.0
 private const val UNAVAILABLE = "unavailable"
 private const val UNIT_F = "°F"
 private const val HALF_DEGREE = 0.5

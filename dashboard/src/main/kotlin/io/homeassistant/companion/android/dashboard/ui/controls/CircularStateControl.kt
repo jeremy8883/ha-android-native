@@ -39,9 +39,11 @@ import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
+import io.homeassistant.companion.android.dashboard.display.blankBeforeUnit
 import io.homeassistant.companion.android.dashboard.moreinfo.BigNumber
 import io.homeassistant.companion.android.dashboard.moreinfo.CircularControl
 import io.homeassistant.companion.android.dashboard.moreinfo.CircularPrimary
+import io.homeassistant.companion.android.dashboard.moreinfo.CircularSecondary
 import io.homeassistant.companion.android.dashboard.moreinfo.CircularTarget
 import io.homeassistant.companion.android.dashboard.moreinfo.CircularTargets
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
@@ -71,7 +73,7 @@ internal fun CircularStateControl(
     onSet: (CircularTargets, CircularTarget) -> Unit,
     modifier: Modifier = Modifier,
     bottomUnit: Boolean = false,
-    secondary: String? = null,
+    secondary: CircularSecondary? = null,
 ) {
     var local by remember(targets) { mutableStateOf(targets) }
     var selected by remember {
@@ -118,19 +120,57 @@ internal fun CircularStateControl(
 }
 
 /**
- * The secondary label under the target: the current temperature, with a thermometer (`show-secondary`).
+ * The secondary label under the big number (`show-secondary`): the current temperature after a thermometer, or the
+ * [targets] after a thermostat, a range's ends choosing the one the buttons change; in the action's [color] like
+ * the label.
  *
  * Upstream: part of `ha-state-control-climate-temperature`
  * (src/state-control/climate/ha-state-control-climate-temperature.ts)
  */
 @Composable
-private fun CurrentTemperature(text: String) {
-    val colors = LocalHAColorScheme.current
+private fun SecondaryLine(
+    secondary: CircularSecondary,
+    targets: CircularTargets,
+    selected: CircularTarget,
+    color: Color,
+    onSelect: (CircularTarget) -> Unit,
+) {
+    val style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium)
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1)) {
-        DashboardIcon(THERMOMETER, colors.colorTextPrimary, Modifier.size(HASize.L))
-        Text(text, style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium), color = colors.colorTextPrimary)
+        when (secondary) {
+            is CircularSecondary.Current -> {
+                DashboardIcon(THERMOMETER, color, Modifier.size(HASize.L))
+                Text(secondary.text, style = style, color = color)
+            }
+            is CircularSecondary.Targets -> {
+                DashboardIcon(THERMOSTAT, color, Modifier.size(HASize.L))
+                val number = secondary.number
+                if (secondary.range) {
+                    listOf(CircularTarget.Low, CircularTarget.High).forEachIndexed { index, target ->
+                        if (index > 0) Text(RANGE_SEPARATOR, style = style, color = color)
+                        Text(
+                            targets[target]?.let { formatTarget(it, number.fractionDigits) }.orEmpty(),
+                            style = style,
+                            color = color,
+                            modifier = Modifier
+                                .alpha(if (selected == target) 1f else UNSELECTED_ALPHA)
+                                .clickable(role = Role.Button) { onSelect(target) },
+                        )
+                    }
+                } else {
+                    targets.value?.let {
+                        val text = formatTarget(it, number.fractionDigits) + blankBeforeUnit(number.unit) + number.unit
+                        Text(text, style = style, color = color)
+                    }
+                }
+            }
+        }
     }
 }
+
+/** `_renderTarget`'s normal style: the number with the step's decimals. */
+private fun formatTarget(value: Double, fractionDigits: Int): String =
+    BigDecimal.valueOf(value).setScale(fractionDigits, RoundingMode.HALF_EVEN).toPlainString()
 
 /**
  * The label, the target (or the low and high targets, tap one to choose it), centred in the slider.
@@ -145,7 +185,7 @@ private fun CircularInfo(
     targets: CircularTargets,
     selected: CircularTarget,
     bottomUnit: Boolean,
-    secondary: String?,
+    secondary: CircularSecondary?,
     onSelect: (CircularTarget) -> Unit,
     modifier: Modifier,
 ) {
@@ -161,33 +201,56 @@ private fun CircularInfo(
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )
-        when (val primary = control.primary) {
-            is CircularPrimary.Target -> BigNumberText(
-                primary.number.copy(value = targets.value ?: primary.number.value),
-                bottomUnit,
-            )
-            is CircularPrimary.Range -> Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE6)) {
-                listOf(
-                    CircularTarget.Low to (targets.low ?: primary.low.value),
-                    CircularTarget.High to (targets.high ?: primary.high.value),
-                )
-                    .forEach { (target, value) ->
-                        Box(
-                            Modifier
-                                .alpha(if (selected == target) 1f else UNSELECTED_ALPHA)
-                                .clickable(role = Role.Button) { onSelect(target) },
-                        ) { BigNumberText(primary.low.copy(value = value), bottomUnit) }
-                    }
-            }
-            is CircularPrimary.Text -> Text(
-                primary.text,
-                style = HATextStyle.Headline.copy(fontSize = STATE_SIZE, fontWeight = FontWeight.Normal),
-                color = colors.colorTextPrimary,
-                textAlign = TextAlign.Center,
-            )
-            CircularPrimary.None -> Unit
+        CircularPrimaryView(control.primary, targets, selected, bottomUnit, onSelect)
+        secondary?.let {
+            val color = control.slider.actionColor?.toColor() ?: colors.colorTextPrimary
+            SecondaryLine(it, targets, selected, color, onSelect)
         }
-        secondary?.let { CurrentTemperature(it) }
+    }
+}
+
+/**
+ * The big number in the middle: the target, the range's ends (tap one to choose it), the current reading or the
+ * state.
+ *
+ * Upstream: part of `ha-state-control-climate-temperature`
+ * (src/state-control/climate/ha-state-control-climate-temperature.ts)
+ */
+@Composable
+private fun CircularPrimaryView(
+    primary: CircularPrimary,
+    targets: CircularTargets,
+    selected: CircularTarget,
+    bottomUnit: Boolean,
+    onSelect: (CircularTarget) -> Unit,
+) {
+    val colors = LocalHAColorScheme.current
+    when (primary) {
+        is CircularPrimary.Target -> BigNumberText(
+            primary.number.copy(value = targets.value ?: primary.number.value),
+            bottomUnit,
+        )
+        is CircularPrimary.Range -> Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE6)) {
+            listOf(
+                CircularTarget.Low to (targets.low ?: primary.low.value),
+                CircularTarget.High to (targets.high ?: primary.high.value),
+            )
+                .forEach { (target, value) ->
+                    Box(
+                        Modifier
+                            .alpha(if (selected == target) 1f else UNSELECTED_ALPHA)
+                            .clickable(role = Role.Button) { onSelect(target) },
+                    ) { BigNumberText(primary.low.copy(value = value), bottomUnit) }
+                }
+        }
+        is CircularPrimary.Current -> BigNumberText(primary.number, bottomUnit)
+        is CircularPrimary.Text -> Text(
+            primary.text,
+            style = HATextStyle.Headline.copy(fontSize = STATE_SIZE, fontWeight = FontWeight.Normal),
+            color = colors.colorTextPrimary,
+            textAlign = TextAlign.Center,
+        )
+        CircularPrimary.None -> Unit
     }
 }
 
@@ -256,6 +319,8 @@ private fun StepButtons(color: Color?, modifier: Modifier, onStep: (Int) -> Unit
 }
 
 private const val THERMOMETER = "mdi:thermometer"
+private const val THERMOSTAT = "mdi:thermostat"
+private const val RANGE_SEPARATOR = "·"
 private const val BUTTON_DEBOUNCE_MS = 1000L
 private const val LABEL_WIDTH = 0.6f
 private const val UNSELECTED_ALPHA = 0.7f

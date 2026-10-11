@@ -58,6 +58,9 @@ sealed interface CircularPrimary {
     /** The low and high targets, side by side; the selected one is the buttons'. */
     data class Range(val low: BigNumber, val high: BigNumber) : CircularPrimary
 
+    /** The current reading, not a target: it doesn't follow drags (`show_current_as_primary`). */
+    data class Current(val number: BigNumber) : CircularPrimary
+
     /** The state, when there is no target. */
     data class Text(val text: String) : CircularPrimary
 

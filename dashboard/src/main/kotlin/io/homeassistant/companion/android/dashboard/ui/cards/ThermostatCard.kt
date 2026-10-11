@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.ui.cards
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,11 +35,12 @@ import io.homeassistant.companion.android.dashboard.moreinfo.climateTemperatureC
 import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterTarget
 import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterTemperatureCall
 import io.homeassistant.companion.android.dashboard.ui.controls.CircularStateControl
+import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
  * A thermostat card, port of `hui-thermostat-card` (frontend@20260624.6
  * src/panels/lovelace/cards/hui-thermostat-card.ts): the entity's name above the temperature dial of its details,
- * and a button opening them.
+ * a button opening them, and its features under the dial.
  *
  * Upstream: `hui-thermostat-card` (src/panels/lovelace/cards/hui-thermostat-card.ts)
  */
@@ -96,6 +98,7 @@ internal fun ThermostatCard(
                         secondary = model.secondary,
                     )
                 }
+                ThermostatFeatures(model, interactions)
             }
             IconButton(
                 onClick = { interactions.onAction(CardAction.MoreInfo(state.entityId)) },
@@ -104,5 +107,23 @@ internal fun ThermostatCard(
                 DashboardIcon("mdi:dots-vertical", colors.colorTextSecondary, Modifier.size(HASize.X2L))
             }
         }
+    }
+}
+
+/**
+ * The card's features under the dial, in the entity's colour (`--feature-color`).
+ *
+ * Upstream: `hui-card-features` in `hui-thermostat-card` (src/panels/lovelace/card-features/hui-card-features.ts;
+ * src/panels/lovelace/cards/hui-thermostat-card.ts)
+ */
+@Composable
+private fun ThermostatFeatures(model: ThermostatCardModel.Shown, interactions: CardInteractions) {
+    if (model.features.isEmpty()) return
+    val color = model.featureColor?.toColor() ?: LocalHAColorScheme.current.colorFillPrimaryLoudResting
+    Column(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = HADimens.SPACE3),
+        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+    ) {
+        model.features.forEach { feature -> TileFeatureControl(feature, model.available, color, interactions.onAction) }
     }
 }
