@@ -16,6 +16,8 @@ import io.github.timoptr.mdiicons.rememberImageVector
 /**
  * Displays an MDI icon name supplied by Home Assistant, ignoring unknown icon names safely. Like the frontend's
  * `ha-icon`, its own icons (logos such as `mdi:music-assistant`) come before MDI's.
+ *
+ * Upstream: `ha-icon` (src/components/ha-icon.ts)
  */
 @Composable
 internal fun DashboardIcon(name: String?, tint: Color, modifier: Modifier = Modifier) {

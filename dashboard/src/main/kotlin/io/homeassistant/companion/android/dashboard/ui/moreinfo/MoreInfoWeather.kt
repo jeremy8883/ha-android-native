@@ -60,6 +60,8 @@ import timber.log.Timber
  * Port of `more-info-weather`: the condition's picture (else the icon), the state and when it changed, the
  * temperature over today's high and low, the readings, then "Forecast:" with a tab per type the entity offers and
  * the chosen type's forecast (a spinner until it comes).
+ *
+ * Upstream: `more-info-weather` (src/dialogs/more-info/controls/more-info-weather.ts)
  */
 @Composable
 internal fun MoreInfoWeather(weather: WeatherMoreInfo, state: EntityState, hass: HassSnapshot, now: Instant) {
@@ -117,7 +119,11 @@ internal fun MoreInfoWeather(weather: WeatherMoreInfo, state: EntityState, hass:
     }
 }
 
-/** The condition's picture (else the icon), the state and when it changed, then the temperature over [secondary]. */
+/**
+ * The condition's picture (else the icon), the state and when it changed, then the temperature over [secondary].
+ *
+ * Upstream: part of `more-info-weather` (src/dialogs/more-info/controls/more-info-weather.ts)
+ */
 @Composable
 private fun WeatherConditions(weather: WeatherMoreInfo, secondary: SecondaryWeather?) {
     val colors = LocalHAColorScheme.current

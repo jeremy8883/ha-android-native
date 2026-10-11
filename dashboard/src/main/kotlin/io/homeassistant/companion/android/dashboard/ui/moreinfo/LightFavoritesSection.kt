@@ -30,6 +30,9 @@ private sealed interface FavoriteDialog {
  * A light's favourite colours under its controls, port of `ha-more-info-light-favorite-colors`: tapping one sets
  * the light; while editing (an admin's long press, or the header's menu) one can be added, edited, deleted or
  * moved, each change saved to the light's registry entry. Hidden until the entry is loaded, and when it has none.
+ *
+ * Upstream: `ha-more-info-light-favorite-colors`
+ * (src/dialogs/more-info/components/lights/ha-more-info-light-favorite-colors.ts)
  */
 @Composable
 internal fun LightFavoritesSection(state: EntityState, hass: HassSnapshot, onAction: (CardAction) -> Unit) {
@@ -62,7 +65,12 @@ internal fun LightFavoritesSection(state: EntityState, hass: HassSnapshot, onAct
     }
 }
 
-/** The open favourites dialog: adding, editing or deleting a favourite, each saved when confirmed. */
+/**
+ * The open favourites dialog: adding, editing or deleting a favourite, each saved when confirmed.
+ *
+ * Upstream: part of `ha-more-info-light-favorite-colors`
+ * (src/dialogs/more-info/components/lights/ha-more-info-light-favorite-colors.ts)
+ */
 @Composable
 private fun FavoriteDialogHost(
     open: FavoriteDialog,

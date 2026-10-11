@@ -45,7 +45,13 @@ import kotlinx.coroutines.delay
 // `ha-timer-remaining-time` (frontend@20260624.6 src/panels/lovelace/entity-rows/). The date and time pickers are
 // in EntityRowDateTime.kt.
 
-/** A number's slider and its state, set when let go. */
+/**
+ * A number's slider and its state, set when let go.
+ *
+ * Upstream: `ha-slider` in `hui-input-number-entity-row`, `hui-number-entity-row` (src/components/ha-slider.ts;
+ * src/panels/lovelace/entity-rows/hui-input-number-entity-row.ts;
+ * src/panels/lovelace/entity-rows/hui-number-entity-row.ts)
+ */
 @Composable
 internal fun RowScope.RowSliderControl(control: RowSlider, onAction: (CardAction) -> Unit) {
     var dragging by remember { mutableStateOf<Float?>(null) }
@@ -67,7 +73,13 @@ internal fun RowScope.RowSliderControl(control: RowSlider, onAction: (CardAction
     Text(control.state, style = HATextStyle.BodyMedium, color = LocalHAColorScheme.current.colorTextPrimary)
 }
 
-/** A number box with its unit, set when done or left. */
+/**
+ * A number box with its unit, set when done or left.
+ *
+ * Upstream: `ha-input` in `hui-input-number-entity-row`, `hui-number-entity-row` (src/components/input/ha-input.ts;
+ * src/panels/lovelace/entity-rows/hui-input-number-entity-row.ts;
+ * src/panels/lovelace/entity-rows/hui-number-entity-row.ts)
+ */
 @Composable
 internal fun RowNumberBoxControl(control: RowNumberBox, onAction: (CardAction) -> Unit) {
     SubmittingField(
@@ -79,7 +91,13 @@ internal fun RowNumberBoxControl(control: RowNumberBox, onAction: (CardAction) -
     ) { text -> if (text != control.value) onAction(control.set(text)) }
 }
 
-/** A dropdown in place of the name. */
+/**
+ * A dropdown in place of the name.
+ *
+ * Upstream: `ha-select` in `hui-input-select-entity-row`, `hui-select-entity-row` (src/components/ha-select.ts;
+ * src/panels/lovelace/entity-rows/hui-input-select-entity-row.ts;
+ * src/panels/lovelace/entity-rows/hui-select-entity-row.ts)
+ */
 @Composable
 internal fun RowScope.RowSelectControl(control: RowSelect, onAction: (CardAction) -> Unit) {
     HADropdownMenu(
@@ -92,7 +110,12 @@ internal fun RowScope.RowSelectControl(control: RowSelect, onAction: (CardAction
     )
 }
 
-/** A text field in place of the name, set when done or left; flagged while it breaks the entity's pattern. */
+/**
+ * A text field in place of the name, set when done or left; flagged while it breaks the entity's pattern.
+ *
+ * Upstream: `ha-input` in `hui-input-text-entity-row`, `hui-text-entity-row` (src/components/input/ha-input.ts;
+ * src/panels/lovelace/entity-rows/hui-input-text-entity-row.ts; src/panels/lovelace/entity-rows/hui-text-entity-row.ts)
+ */
 @Composable
 internal fun RowScope.RowTextControl(control: RowTextInput, onAction: (CardAction) -> Unit) {
     SubmittingField(
@@ -107,7 +130,12 @@ internal fun RowScope.RowTextControl(control: RowTextInput, onAction: (CardActio
     ) { text -> if (text != control.value) control.set(text)?.let(onAction) }
 }
 
-/** The timer's time left, counting down each second while it runs. */
+/**
+ * The timer's time left, counting down each second while it runs.
+ *
+ * Upstream: `ha-timer-remaining-time` in `hui-timer-entity-row` (src/state-display/ha-timer-remaining-time.ts;
+ * src/panels/lovelace/entity-rows/hui-timer-entity-row.ts)
+ */
 @Composable
 internal fun RowTimerText(control: RowTimer, now: Instant) {
     var ticks by remember(now, control) { mutableIntStateOf(0) }
@@ -126,7 +154,11 @@ internal fun RowTimerText(control: RowTimer, now: Instant) {
     )
 }
 
-/** A single-line field holding its own text while edited, handing it over when done or when focus leaves. */
+/**
+ * A single-line field holding its own text while edited, handing it over when done or when focus leaves.
+ *
+ * Upstream: `ha-input` (src/components/input/ha-input.ts)
+ */
 @Composable
 private fun SubmittingField(
     value: String,
@@ -169,7 +201,11 @@ private val NUMBER_WIDTH = 140.dp
 /** Spacing between a row's date and time pickers. */
 internal val PICKER_GAP = HADimens.SPACE1
 
-/** Lays out a row's pickers side by side. */
+/**
+ * Lays out a row's pickers side by side.
+ *
+ * Upstream: part of `hui-datetime-entity-row` (src/panels/lovelace/entity-rows/hui-datetime-entity-row.ts)
+ */
 @Composable
 internal fun PickerRow(content: @Composable RowScope.() -> Unit) {
     Row(

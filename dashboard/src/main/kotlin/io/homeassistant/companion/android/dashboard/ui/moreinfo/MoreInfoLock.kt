@@ -41,6 +41,8 @@ import kotlinx.coroutines.delay
  * The controls of a lock's details, port of `more-info-lock` (frontend@20260624.6
  * src/dialogs/more-info/controls/more-info-lock.ts): the tall switch, or a jammed lock's pulsing icon with unlock
  * and lock buttons, and the open button that asks for a second tap.
+ *
+ * Upstream: `more-info-lock` (src/dialogs/more-info/controls/more-info-lock.ts)
  */
 @Composable
 internal fun MoreInfoLock(info: LockMoreInfo, onAction: (CardAction) -> Unit) {
@@ -69,7 +71,11 @@ internal fun MoreInfoLock(info: LockMoreInfo, onAction: (CardAction) -> Unit) {
     }
 }
 
-/** The open button: a first tap asks to confirm (for a few seconds), the second opens, then says it's done. */
+/**
+ * The open button: a first tap asks to confirm (for a few seconds), the second opens, then says it's done.
+ *
+ * Upstream: part of `more-info-lock` (src/dialogs/more-info/controls/more-info-lock.ts)
+ */
 @Composable
 private fun OpenButton(open: LockOpen, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current

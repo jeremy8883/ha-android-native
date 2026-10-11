@@ -54,6 +54,8 @@ import kotlin.math.min
  * A sankey chart like the frontend's `ha-sankey-chart`: columns of nodes left to right (top to bottom when
  * [vertical]) with flows between them in gradients of their colours. A tap on a node with an entity opens it
  * ([onOpen]); other taps show the node's or flow's value.
+ *
+ * Upstream: `ha-sankey-chart` (src/components/chart/ha-sankey-chart.ts)
  */
 @Composable
 internal fun SankeyChart(
@@ -130,7 +132,11 @@ private fun DrawScope.drawSankey(
     return Drawn(layout, area.topLeft, frame)
 }
 
-/** The tapped node's or flow's value, like the chart's tooltip. */
+/**
+ * The tapped node's or flow's value, like the chart's tooltip.
+ *
+ * Upstream: part of `ha-sankey-chart` (src/components/chart/ha-sankey-chart.ts)
+ */
 @Composable
 private fun SankeyTooltip(text: String) {
     val colors = LocalHAColorScheme.current

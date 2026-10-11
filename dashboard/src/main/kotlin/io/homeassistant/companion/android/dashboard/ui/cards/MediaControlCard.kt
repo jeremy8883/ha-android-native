@@ -30,7 +30,11 @@ import io.homeassistant.companion.android.dashboard.derive.mediaControlModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 
-/** A media control card: artwork, player name, what is playing and its controls. */
+/**
+ * A media control card: artwork, player name, what is playing and its controls.
+ *
+ * Upstream: `hui-media-control-card` (src/panels/lovelace/cards/hui-media-control-card.ts)
+ */
 @Composable
 internal fun MediaControlCard(
     card: CardConfig,
@@ -87,7 +91,11 @@ internal fun MediaControlCard(
     }
 }
 
-/** The player's icon and name, with upstream's button opening its details. */
+/**
+ * The player's icon and name, with upstream's button opening its details.
+ *
+ * Upstream: part of `hui-media-control-card` (src/panels/lovelace/cards/hui-media-control-card.ts)
+ */
 @Composable
 private fun MediaCardHeader(model: MediaControlModel, interactions: CardInteractions) {
     val colors = LocalHAColorScheme.current

@@ -36,6 +36,8 @@ import java.time.Instant
  * The controls of a media player's details, port of `more-info-media_player` (frontend@20260624.6
  * src/dialogs/more-info/controls/more-info-media_player.ts): the artwork (larger while playing), the title and
  * artist, the position, the transport buttons, the volume, and the source, sound mode and power buttons.
+ *
+ * Upstream: `more-info-media_player` (src/dialogs/more-info/controls/more-info-media_player.ts)
  */
 @Composable
 internal fun MoreInfoMediaPlayer(
@@ -64,6 +66,11 @@ internal fun MoreInfoMediaPlayer(
     }
 }
 
+/**
+ * The cover art, larger while playing, else the empty cover.
+ *
+ * Upstream: part of `more-info-media_player` (src/dialogs/more-info/controls/more-info-media_player.ts)
+ */
 @Composable
 private fun Artwork(info: MediaPlayerMoreInfo) {
     // Upstream shrinks the artwork while it isn't playing
@@ -84,7 +91,12 @@ private fun Artwork(info: MediaPlayerMoreInfo) {
     }
 }
 
-/** Upstream's empty cover: a music note (or the state's text when unavailable) on a quiet square. */
+/**
+ * Upstream's empty cover: a music note (or the state's text when unavailable) on a quiet square.
+ *
+ * Upstream: part of `more-info-media_player` (`_renderEmptyCover`)
+ * (src/dialogs/more-info/controls/more-info-media_player.ts)
+ */
 @Composable
 private fun EmptyCover(state: String, icon: Boolean) {
     val colors = LocalHAColorScheme.current
@@ -106,6 +118,11 @@ private fun EmptyCover(state: String, icon: Boolean) {
     }
 }
 
+/**
+ * The title over the artist, each scrolling when too long.
+ *
+ * Upstream: part of `more-info-media_player` (src/dialogs/more-info/controls/more-info-media_player.ts)
+ */
 @Composable
 private fun MediaTitles(title: String?, artist: String?) {
     val colors = LocalHAColorScheme.current

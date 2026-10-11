@@ -42,6 +42,8 @@ import java.time.Instant
  * line at each time tick. A tap shows the values at the nearest time; pinching zooms ([zoom], shared by the History
  * panel's charts), and with a [zoomResetLabel] the chart has its own reset button. The series in [hidden] are left
  * out; the plot starts at least [minLeft] from the left.
+ *
+ * Upstream: `state-history-chart-line` (src/components/chart/state-history-chart-line.ts)
  */
 @Composable
 internal fun HistoryLineChartView(
@@ -107,7 +109,11 @@ internal fun HistoryLineChartView(
     }
 }
 
-/** The values of [chart]'s shown lines (not areas) in effect at [at]. */
+/**
+ * The values of [chart]'s shown lines (not areas) in effect at [at].
+ *
+ * Upstream: part of `state-history-chart-line` (src/components/chart/state-history-chart-line.ts)
+ */
 @Composable
 private fun LineTooltip(
     chart: HistoryLineChart,

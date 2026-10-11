@@ -39,6 +39,8 @@ import io.homeassistant.companion.android.dashboard.ui.controls.CircularStateCon
  * A thermostat card, port of `hui-thermostat-card` (frontend@20260624.6
  * src/panels/lovelace/cards/hui-thermostat-card.ts): the entity's name above the temperature dial of its details,
  * and a button opening them.
+ *
+ * Upstream: `hui-thermostat-card` (src/panels/lovelace/cards/hui-thermostat-card.ts)
  */
 @Composable
 internal fun ThermostatCard(

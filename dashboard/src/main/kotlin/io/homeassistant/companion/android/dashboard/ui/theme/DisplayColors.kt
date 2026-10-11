@@ -10,6 +10,8 @@ import io.homeassistant.companion.android.dashboard.theme.themeColorArgb
 /**
  * The Compose colour of a [DisplayColor] with the frontend's default theme (light or dark like the system),
  * or `null` when it doesn't resolve (see [resolveDisplayColor]).
+ *
+ * Upstream: `computeCssColor` (src/common/color/compute-color.ts; src/resources/theme/color/)
  */
 @Composable
 internal fun DisplayColor.toColor(): Color? = resolveDisplayColor(this, isSystemInDarkTheme())?.let(::Color)
@@ -24,6 +26,8 @@ internal fun parseCssColor(css: String): Color? =
 /**
  * The tint of an entity icon drawn like `state-badge`: its [color], else the unavailable colour when [unavailable],
  * else `--state-icon-color`, dimmed by a light's [brightness] (CSS `brightness()`).
+ *
+ * Upstream: part of `state-badge` (src/components/entity/state-badge.ts)
  */
 @Composable
 internal fun entityIconTint(color: DisplayColor?, unavailable: Boolean = false, brightness: Double? = null): Color {

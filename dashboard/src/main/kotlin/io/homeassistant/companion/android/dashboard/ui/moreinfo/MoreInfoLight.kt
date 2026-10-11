@@ -70,6 +70,8 @@ import kotlinx.coroutines.delay
  * The controls of a light's details, port of `more-info-light` (frontend@20260624.6
  * src/dialogs/more-info/controls/more-info-light.ts): the brightness (or a switch, without one) in the middle, the
  * colour or temperature in its place when chosen below, and the effect menu.
+ *
+ * Upstream: `more-info-light` (src/dialogs/more-info/controls/more-info-light.ts)
  */
 @Composable
 internal fun MoreInfoLight(
@@ -104,7 +106,11 @@ internal fun MoreInfoLight(
     }
 }
 
-/** The colour wheel and, for RGBW and RGBWW lights, the sliders of their channels. */
+/**
+ * The colour wheel and, for RGBW and RGBWW lights, the sliders of their channels.
+ *
+ * Upstream: `light-color-rgb-picker` (src/dialogs/more-info/components/lights/light-color-rgb-picker.ts)
+ */
 @Composable
 internal fun LightColorControl(state: EntityState, hass: HassSnapshot, onAction: (CardAction) -> Unit) {
     val picker = remember(state) { hass.lightColorPicker(state) }
@@ -158,6 +164,8 @@ internal fun LightColorControl(state: EntityState, hass: HassSnapshot, onAction:
 /**
  * Port of `ha-labeled-slider`: a caption with its icon over a 0–100 slider, sent when released. Drawn as the
  * details' other sliders, with its handle always showing, so that 0 still reads as a slider.
+ *
+ * Upstream: `ha-labeled-slider` (src/components/ha-labeled-slider.ts)
  */
 @Composable
 private fun ChannelSlider(slider: LightChannelSlider, enabled: Boolean, onChanged: (Double) -> Unit) {
@@ -193,7 +201,12 @@ private fun ChannelSlider(slider: LightChannelSlider, enabled: Boolean, onChange
     }
 }
 
-/** Port of `ha-icon-button-group`: the power button, the main control choices and the white button in a pill. */
+/**
+ * Port of `ha-icon-button-group`: the power button, the main control choices and the white button in a pill.
+ *
+ * Upstream: part of `more-info-light`, with `ha-icon-button-group` (src/dialogs/more-info/controls/more-info-light.ts;
+ * src/components/ha-icon-button-group.ts)
+ */
 @Composable
 private fun LightButtons(
     buttons: List<LightButton>,
@@ -230,6 +243,11 @@ private fun LightButtons(
     }
 }
 
+/**
+ * An icon of the light's button group, greyed while disabled.
+ *
+ * Upstream: part of `more-info-light` (src/dialogs/more-info/controls/more-info-light.ts)
+ */
 @Composable
 private fun ButtonIcon(icon: String, label: String, enabled: Boolean) {
     val colors = LocalHAColorScheme.current
@@ -243,6 +261,9 @@ private fun ButtonIcon(icon: String, label: String, enabled: Boolean) {
 /**
  * Port of `ha-icon-button-toggle`: the brightness icon, or a swatch of colours or of whites. Selected, the icon
  * is filled in and the swatches are ringed.
+ *
+ * Upstream: `ha-icon-button-toggle` as `more-info-light` draws it (src/components/ha-icon-button-toggle.ts;
+ * src/dialogs/more-info/controls/more-info-light.ts)
  */
 @Composable
 internal fun ShowButton(button: LightButton.Show, selected: Boolean, onClick: () -> Unit) {

@@ -58,6 +58,8 @@ import java.time.Instant
  * The controls of an update's details, port of `more-info-update` (frontend@20260624.6
  * src/dialogs/more-info/controls/more-info-update.ts): its progress, title, versions and release announcement,
  * and the release notes; [MoreInfoUpdateFooter] has the backup switch, and skip and update.
+ *
+ * Upstream: `more-info-update` (src/dialogs/more-info/controls/more-info-update.ts)
  */
 @Composable
 internal fun MoreInfoUpdate(info: UpdateMoreInfo, entityId: String) {
@@ -67,7 +69,11 @@ internal fun MoreInfoUpdate(info: UpdateMoreInfo, entityId: String) {
     }
 }
 
-/** The `summary`: the progress, the title, then the versions and the announcement link, line after line. */
+/**
+ * The `summary`: the progress, the title, then the versions and the announcement link, line after line.
+ *
+ * Upstream: part of `more-info-update` (src/dialogs/more-info/controls/more-info-update.ts)
+ */
 @Composable
 private fun UpdateSummary(info: UpdateMoreInfo) {
     val colors = LocalHAColorScheme.current
@@ -96,6 +102,8 @@ private fun UpdateSummary(info: UpdateMoreInfo) {
 /**
  * The update's footer, pinned under its details as upstream's: the backup switch (from the server's backup
  * settings), then skip and update.
+ *
+ * Upstream: part of `more-info-update` (its `.footer`) (src/dialogs/more-info/controls/more-info-update.ts)
  */
 @Composable
 internal fun MoreInfoUpdateFooter(
@@ -111,6 +119,11 @@ internal fun MoreInfoUpdateFooter(
     }
 }
 
+/**
+ * A version: its name and value at either end.
+ *
+ * Upstream: part of `more-info-update` (src/dialogs/more-info/controls/more-info-update.ts)
+ */
 @Composable
 private fun VersionRow(key: String, value: String) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -119,7 +132,11 @@ private fun VersionRow(key: String, value: String) {
     }
 }
 
-/** The announcement, an underlined link in the primary colour on its own line. */
+/**
+ * The announcement, an underlined link in the primary colour on its own line.
+ *
+ * Upstream: part of `more-info-update` (src/dialogs/more-info/controls/more-info-update.ts)
+ */
 @Composable
 private fun ReleaseLink(label: String, url: String) {
     val context = LocalContext.current
@@ -133,7 +150,11 @@ private fun ReleaseLink(label: String, url: String) {
     )
 }
 
-/** The fetched notes (a spinner while loading, the error if it fails), else the summary, after a rule. */
+/**
+ * The fetched notes (a spinner while loading, the error if it fails), else the summary, after a rule.
+ *
+ * Upstream: part of `more-info-update` (src/dialogs/more-info/controls/more-info-update.ts)
+ */
 @Composable
 private fun ReleaseNotes(info: UpdateMoreInfo, entityId: String) {
     if (!info.fetchNotes) {
@@ -168,6 +189,9 @@ private fun ReleaseNotes(info: UpdateMoreInfo, entityId: String) {
 /**
  * The backup switch of [type]'s update, from the server's backup settings once read; before (or when they can't
  * be read) it starts off and offers a manual backup, as upstream's.
+ *
+ * Upstream: part of `more-info-update` (`_computeCreateBackupTexts`)
+ * (src/dialogs/more-info/controls/more-info-update.ts)
  */
 @Composable
 private fun rememberBackupOption(
@@ -183,7 +207,11 @@ private fun rememberBackupOption(
     return remember(loaded, state, hass, now) { hass.updateBackupOption(state, type, loaded, now) }
 }
 
-/** The backup switch, then skip (or clear skipped) and update; skipping an update that installs itself asks first. */
+/**
+ * The backup switch, then skip (or clear skipped) and update; skipping an update that installs itself asks first.
+ *
+ * Upstream: part of `more-info-update` (src/dialogs/more-info/controls/more-info-update.ts)
+ */
 @Composable
 private fun UpdateFooter(info: UpdateMoreInfo, option: UpdateBackupOption?, onAction: (CardAction) -> Unit) {
     // Starts as the settings say, once they are read; then as the user sets it

@@ -35,6 +35,8 @@ import io.homeassistant.companion.android.dashboard.ui.controls.StateToggleContr
  * The controls of a siren's details, port of `more-info-siren` (frontend@20260624.6
  * src/dialogs/more-info/controls/more-info-siren.ts): the tall switch, and "More controls" opening its tone,
  * volume and duration.
+ *
+ * Upstream: `more-info-siren` (src/dialogs/more-info/controls/more-info-siren.ts)
  */
 @Composable
 internal fun MoreInfoSiren(info: SirenMoreInfo, state: EntityState, onAction: (CardAction) -> Unit) {
@@ -48,7 +50,12 @@ internal fun MoreInfoSiren(info: SirenMoreInfo, state: EntityState, onAction: (C
     }
 }
 
-/** Port of `ha-more-info-siren-advanced-controls`: the options, then buttons turning the siren on with them or off. */
+/**
+ * Port of `ha-more-info-siren-advanced-controls`: the options, then buttons turning the siren on with them or off.
+ *
+ * Upstream: `ha-more-info-siren-advanced-controls`
+ * (src/dialogs/more-info/components/siren/ha-more-info-siren-advanced-controls.ts)
+ */
 @Composable
 private fun SirenAdvancedDialog(
     controls: SirenAdvanced,
@@ -93,6 +100,12 @@ private fun SirenAdvancedDialog(
     )
 }
 
+/**
+ * A number field with its unit, for the volume or the duration.
+ *
+ * Upstream: part of `ha-more-info-siren-advanced-controls`
+ * (src/dialogs/more-info/components/siren/ha-more-info-siren-advanced-controls.ts)
+ */
 @Composable
 private fun NumberField(label: String, value: String, unit: String, onChange: (String) -> Unit) {
     HATextField(

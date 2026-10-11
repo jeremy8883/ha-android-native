@@ -18,6 +18,11 @@ import java.math.BigDecimal
  * The gas, water or solar graph: each source's consumption (or production) by period, with the total in the
  * header. Port of the rendering of `hui-energy-{gas,water,solar}-graph-card` (frontend@20260624.6), without the
  * solar forecast lines.
+ *
+ * Upstream: `hui-energy-gas-graph-card`, `hui-energy-water-graph-card`, `hui-energy-solar-graph-card`
+ * (src/panels/lovelace/cards/energy/hui-energy-gas-graph-card.ts;
+ * src/panels/lovelace/cards/energy/hui-energy-water-graph-card.ts;
+ * src/panels/lovelace/cards/energy/hui-energy-solar-graph-card.ts)
  */
 @Composable
 internal fun EnergySourceGraphCard(

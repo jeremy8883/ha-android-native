@@ -29,7 +29,11 @@ import java.math.BigDecimal
 /** The sankey cards drawn natively. */
 internal val SANKEY_CARD_TYPES = setOf(SANKEY, WATER_SANKEY, POWER_SANKEY, WATER_FLOW_SANKEY)
 
-/** Renders the sankey card [card] (one of [SANKEY_CARD_TYPES]). */
+/**
+ * Renders the sankey card [card] (one of [SANKEY_CARD_TYPES]).
+ *
+ * Upstream: part of `createCardElement` (src/panels/lovelace/create-element/create-card-element.ts)
+ */
 @Composable
 internal fun AnySankeyCard(
     card: CardConfig,
@@ -48,6 +52,8 @@ internal fun AnySankeyCard(
 /**
  * The energy sankey: where the energy came from and where it went, down to floors, areas and devices. Port of the
  * rendering of `hui-energy-sankey-card` (frontend@20260624.6).
+ *
+ * Upstream: `hui-energy-sankey-card` (src/panels/lovelace/cards/energy/hui-energy-sankey-card.ts)
  */
 @Composable
 private fun EnergySankeyCard(
@@ -69,6 +75,8 @@ private fun EnergySankeyCard(
 /**
  * The water sankey: from the water sources to the devices, by floor and area. Port of the rendering of
  * `hui-water-sankey-card` (frontend@20260624.6).
+ *
+ * Upstream: `hui-water-sankey-card` (src/panels/lovelace/cards/water/hui-water-sankey-card.ts)
  */
 @Composable
 private fun WaterSankeyCard(
@@ -90,6 +98,8 @@ private fun WaterSankeyCard(
 /**
  * The power sankey: where the power comes from and goes right now, down to floors, areas and devices. Port of the
  * rendering of `hui-power-sankey-card` (frontend@20260624.6).
+ *
+ * Upstream: `hui-power-sankey-card` (src/panels/lovelace/cards/energy/hui-power-sankey-card.ts)
  */
 @Composable
 private fun PowerSankeyCard(
@@ -112,6 +122,8 @@ private fun PowerSankeyCard(
 /**
  * The water flow sankey: where the water flows right now, from the sources to the devices. Port of the rendering of
  * `hui-water-flow-sankey-card` (frontend@20260624.6).
+ *
+ * Upstream: `hui-water-flow-sankey-card` (src/panels/lovelace/cards/water/hui-water-flow-sankey-card.ts)
  */
 @Composable
 private fun WaterFlowSankeyCard(
@@ -145,7 +157,14 @@ internal class SankeySpec(
     val live: Boolean = false,
 )
 
-/** A sankey card for [data] of the collection, with the frontend's orientation and no-data message. */
+/**
+ * A sankey card for [data] of the collection, with the frontend's orientation and no-data message.
+ *
+ * Upstream: part of `hui-energy-sankey-card`, `hui-water-sankey-card`, `hui-power-sankey-card`,
+ * `hui-water-flow-sankey-card` (src/panels/lovelace/cards/energy/hui-energy-sankey-card.ts;
+ * src/panels/lovelace/cards/water/hui-water-sankey-card.ts; src/panels/lovelace/cards/energy/hui-power-sankey-card.ts;
+ * src/panels/lovelace/cards/water/hui-water-flow-sankey-card.ts)
+ */
 @Composable
 internal fun SankeyCard(
     card: CardConfig,

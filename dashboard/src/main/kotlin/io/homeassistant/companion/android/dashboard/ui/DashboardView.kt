@@ -53,6 +53,11 @@ import io.homeassistant.companion.android.dashboard.ui.cards.LocalConditionConte
 import java.time.ZonedDateTime
 import kotlinx.coroutines.flow.map
 
+/**
+ * A dashboard's view: the tabs of the top-level views when there are several, then the shown view.
+ *
+ * Upstream: part of `hui-root`, `hui-view` (src/panels/lovelace/hui-root.ts; src/panels/lovelace/views/hui-view.ts)
+ */
 @Composable
 internal fun DashboardView(
     content: DashboardUiState.Content,
@@ -96,6 +101,11 @@ internal fun DashboardView(
     }
 }
 
+/**
+ * The view's sections, laid out for the screen and the current states.
+ *
+ * Upstream: part of `hui-sections-view` (src/panels/lovelace/views/hui-sections-view.ts)
+ */
 @Composable
 private fun CardGroups(
     groups: List<CardGroup>,
@@ -124,6 +134,11 @@ private fun CardGroups(
     }
 }
 
+/**
+ * The view's header, then its rows of sections, beside the sidebar or switched with it.
+ *
+ * Upstream: part of `hui-sections-view` (src/panels/lovelace/views/hui-sections-view.ts)
+ */
 @Composable
 private fun ViewRows(
     rows: List<List<SectionLayout>>,
@@ -181,6 +196,11 @@ private fun ViewRows(
     }
 }
 
+/**
+ * The sections of the view's sidebar, one under the other.
+ *
+ * Upstream: `hui-view-sidebar` (src/panels/lovelace/views/hui-view-sidebar.ts)
+ */
 @Composable
 private fun SidebarSections(
     sidebar: SidebarLayout,
@@ -194,7 +214,11 @@ private fun SidebarSections(
     }
 }
 
-/** The switch between the content and the sidebar on narrow screens (upstream's `mobile-tabs`). */
+/**
+ * The switch between the content and the sidebar on narrow screens (upstream's `mobile-tabs`).
+ *
+ * Upstream: part of `hui-sections-view` (src/panels/lovelace/views/hui-sections-view.ts)
+ */
 @Composable
 private fun SidebarSwitch(sidebar: SidebarLayout, showSidebar: Boolean, onChange: (Boolean) -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -214,6 +238,11 @@ private fun SidebarSwitch(sidebar: SidebarLayout, showSidebar: Boolean, onChange
     }
 }
 
+/**
+ * A section's cards on its grid, the cards with fixed rows at least as tall as them.
+ *
+ * Upstream: `hui-grid-section` (src/panels/lovelace/sections/hui-grid-section.ts)
+ */
 @Composable
 private fun SectionGrid(
     section: SectionLayout,
@@ -246,7 +275,11 @@ private const val NARROW_WIDTH_DP = 600
 /** About the offline bar's height with its margins. */
 private val BOTTOM_BAR_CLEARANCE = 80.dp
 
-/** The [view]'s footer card (`footer.card`), if it has one: the energy views' date selection. */
+/**
+ * The [view]'s footer card (`footer.card`), if it has one: the energy views' date selection.
+ *
+ * Upstream: `hui-view-footer` (src/panels/lovelace/views/hui-view-footer.ts)
+ */
 @Composable
 internal fun ViewFooter(
     view: ViewConfig,

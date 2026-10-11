@@ -13,6 +13,9 @@ import io.homeassistant.companion.android.dashboard.layout.GridCell
  * Each item gets its own container, so an item that draws nothing still keeps its cell.
  * Rows are as tall as their tallest single-row child; a child spanning several rows grows the last of them when
  * it needs more room. Children are measured at their cell's width.
+ *
+ * Upstream: part of `hui-grid-section`, `hui-sections-view` (src/panels/lovelace/sections/hui-grid-section.ts;
+ * src/panels/lovelace/views/hui-sections-view.ts)
  */
 @Composable
 internal fun DashboardGrid(

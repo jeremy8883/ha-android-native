@@ -35,6 +35,9 @@ import timber.log.Timber
  *
  * @param onConfirmed runs an action the user confirmed
  * @param onMoreInfo shows the details of an entity, or closes them with `null`
+ *
+ * Upstream: part of `handleAction`, `dialog-box` (src/panels/lovelace/common/handle-action.ts;
+ * src/dialogs/generic/dialog-box.ts)
  */
 @Composable
 internal fun DashboardEffects(

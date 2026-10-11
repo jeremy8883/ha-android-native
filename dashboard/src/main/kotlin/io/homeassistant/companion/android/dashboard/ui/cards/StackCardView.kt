@@ -31,6 +31,10 @@ import java.time.ZonedDateTime
  * A vertical stack, horizontal stack or grid card, port of `HuiStackCard` (frontend@20260624.6
  * src/panels/lovelace/cards/hui-stack-card.ts and its subclasses): its title, then its shown cards one under the
  * other, side by side, or in columns, 8 apart.
+ *
+ * Upstream: `HuiStackCard`, `hui-vertical-stack-card`, `hui-horizontal-stack-card`, `hui-grid-card`
+ * (src/panels/lovelace/cards/hui-stack-card.ts; src/panels/lovelace/cards/hui-vertical-stack-card.ts;
+ * src/panels/lovelace/cards/hui-horizontal-stack-card.ts; src/panels/lovelace/cards/hui-grid-card.ts)
  */
 @Composable
 internal fun StackCardView(
@@ -62,7 +66,11 @@ internal fun StackCardView(
     }
 }
 
-/** The cards in [grid]'s columns, a cell at least as tall as wide when square. */
+/**
+ * The cards in [grid]'s columns, a cell at least as tall as wide when square.
+ *
+ * Upstream: part of `hui-grid-card` (src/panels/lovelace/cards/hui-grid-card.ts)
+ */
 @Composable
 private fun StackGrid(
     cards: List<CardConfig>,
@@ -88,6 +96,11 @@ private fun Modifier.atLeastAsTallAsWide(): Modifier = layout { measurable, cons
     layout(placeable.width, placeable.height) { placeable.place(0, 0) }
 }
 
+/**
+ * A stack's title, as the card header above its cards.
+ *
+ * Upstream: part of `HuiStackCard` (src/panels/lovelace/cards/hui-stack-card.ts)
+ */
 @Composable
 private fun StackTitle(title: String) {
     Text(

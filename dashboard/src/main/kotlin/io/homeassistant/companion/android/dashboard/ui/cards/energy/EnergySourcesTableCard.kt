@@ -54,6 +54,8 @@ import kotlinx.serialization.json.putJsonObject
 /**
  * The energy sources table: each source's energy and cost, the totals, and the compared period's beside them.
  * Port of the rendering of `hui-energy-sources-table-card` (frontend@20260624.6).
+ *
+ * Upstream: `hui-energy-sources-table-card` (src/panels/lovelace/cards/energy/hui-energy-sources-table-card.ts)
  */
 @Composable
 internal fun EnergySourcesTableCard(
@@ -106,7 +108,11 @@ internal fun EnergySourcesTableCard(
     }
 }
 
-/** Each column as wide as its widest cell, like the frontend's table. */
+/**
+ * Each column as wide as its widest cell, like the frontend's table.
+ *
+ * Upstream: part of `hui-energy-sources-table-card` (src/panels/lovelace/cards/energy/hui-energy-sources-table-card.ts)
+ */
 @Composable
 private fun columnWidths(rows: List<SourceRow>, columns: List<(SourceRow) -> String>): List<Dp> {
     val measurer = rememberTextMeasurer()
@@ -122,6 +128,11 @@ private fun columnWidths(rows: List<SourceRow>, columns: List<(SourceRow) -> Str
     }
 }
 
+/**
+ * A row of the table: the source's bullet and name, then its columns.
+ *
+ * Upstream: part of `hui-energy-sources-table-card` (src/panels/lovelace/cards/energy/hui-energy-sources-table-card.ts)
+ */
 @Composable
 private fun TableRow(
     row: SourceRow,
@@ -168,7 +179,11 @@ private fun TableRow(
     }
 }
 
-/** The source's colour, as a square like the frontend's bullet. */
+/**
+ * The source's colour, as a square like the frontend's bullet.
+ *
+ * Upstream: part of `hui-energy-sources-table-card` (src/panels/lovelace/cards/energy/hui-energy-sources-table-card.ts)
+ */
 @Composable
 private fun Bullet(kind: String, index: Int) {
     val variable = SOURCE_COLORS[kind] ?: return

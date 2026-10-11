@@ -36,6 +36,8 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
  * Port of `ha-chart-base`'s custom legend as history line charts show it: an item per line with a check (an empty
  * circle while hidden) that hides or shows it, its name (opening the entity's details) and the entity's value; past
  * [OVERFLOW_LIMIT] items a chip shows the rest.
+ *
+ * Upstream: part of `ha-chart-base` (src/components/chart/ha-chart-base.ts)
  */
 @Composable
 internal fun HistoryLegend(
@@ -76,6 +78,11 @@ internal fun HistoryLegend(
     }
 }
 
+/**
+ * A legend item: its check that hides or shows the line, its name and its value.
+ *
+ * Upstream: part of `ha-chart-base` (src/components/chart/ha-chart-base.ts)
+ */
 @Composable
 private fun LegendItem(
     item: HistoryLegendItem,

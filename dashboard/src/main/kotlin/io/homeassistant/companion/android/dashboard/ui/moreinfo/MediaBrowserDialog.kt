@@ -72,6 +72,9 @@ import io.homeassistant.companion.android.dashboard.ui.loadErrorText
  * Port of `dialog-media-player-browse` with `ha-media-player-browse`: [entityId]'s media, page by page (back goes
  * up a page, then closes), its children as cards or rows; a tap opens a folder or plays the item, which closes the
  * browser as upstream does.
+ *
+ * Upstream: `dialog-media-player-browse`, `ha-media-player-browse`
+ * (src/components/media-player/dialog-media-player-browse.ts; src/components/media-player/ha-media-player-browse.ts)
  */
 @Composable
 internal fun MediaBrowserDialog(
@@ -125,6 +128,11 @@ internal fun MediaBrowserDialog(
     }
 }
 
+/**
+ * The browser's top bar: back (or close on the first page) and the page's title.
+ *
+ * Upstream: part of `dialog-media-player-browse` (src/components/media-player/dialog-media-player-browse.ts)
+ */
 @Composable
 private fun BrowserTopBar(title: String, canGoBack: Boolean, onBack: () -> Unit, onClose: () -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -146,7 +154,11 @@ private fun BrowserTopBar(title: String, canGoBack: Boolean, onBack: () -> Unit,
     }
 }
 
-/** A page: a header with its play button when it plays as a whole, then its children, or why there are none. */
+/**
+ * A page: a header with its play button when it plays as a whole, then its children, or why there are none.
+ *
+ * Upstream: part of `ha-media-player-browse` (src/components/media-player/ha-media-player-browse.ts)
+ */
 @Composable
 private fun BrowserPage(
     page: MediaBrowsePage,
@@ -189,6 +201,11 @@ private fun BrowserPage(
     }
 }
 
+/**
+ * The page's header: its thumbnail and the button playing it as a whole.
+ *
+ * Upstream: part of `ha-media-player-browse` (src/components/media-player/ha-media-player-browse.ts)
+ */
 @Composable
 private fun PageHeader(
     page: MediaBrowsePage,
@@ -217,7 +234,11 @@ private fun PageHeader(
     }
 }
 
-/** A child as a card: its thumbnail (or its class's icon) with a play button when it plays, and its title. */
+/**
+ * A child as a card: its thumbnail (or its class's icon) with a play button when it plays, and its title.
+ *
+ * Upstream: part of `ha-media-player-browse` (src/components/media-player/ha-media-player-browse.ts)
+ */
 @Composable
 private fun GridCard(
     child: MediaBrowseChild,
@@ -252,7 +273,11 @@ private fun GridCard(
     }
 }
 
-/** A child as a row: its thumbnail or icon, its title, and a play button when it plays. */
+/**
+ * A child as a row: its thumbnail or icon, its title, and a play button when it plays.
+ *
+ * Upstream: part of `ha-media-player-browse` (src/components/media-player/ha-media-player-browse.ts)
+ */
 @Composable
 private fun ListRow(
     child: MediaBrowseChild,
@@ -292,6 +317,11 @@ private fun ListRow(
     }
 }
 
+/**
+ * A child's play button.
+ *
+ * Upstream: part of `ha-media-player-browse` (src/components/media-player/ha-media-player-browse.ts)
+ */
 @Composable
 private fun PlayButton(call: CardAction.CallService, label: String, onPlay: (CardAction.CallService) -> Unit) {
     IconButton(onClick = { onPlay(call) }) {
@@ -306,6 +336,11 @@ private fun PlayButton(call: CardAction.CallService, label: String, onPlay: (Car
     }
 }
 
+/**
+ * A note under the children: why there are none, or that some are hidden.
+ *
+ * Upstream: part of `ha-media-player-browse` (src/components/media-player/ha-media-player-browse.ts)
+ */
 @Composable
 private fun FooterText(text: String) {
     Text(
@@ -316,7 +351,11 @@ private fun FooterText(text: String) {
     )
 }
 
-/** The full-screen dialog's system bar icons, dark over a light [surface] as the bottom sheets' are. */
+/**
+ * The full-screen dialog's system bar icons, dark over a light [surface] as the bottom sheets' are.
+ *
+ * Upstream: none (native: Android system bar colours)
+ */
 @Composable
 private fun DialogSystemBars(surface: Color) {
     val view = LocalView.current

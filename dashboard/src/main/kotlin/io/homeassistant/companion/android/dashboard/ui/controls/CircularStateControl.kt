@@ -55,6 +55,14 @@ import kotlinx.coroutines.delay
  * minus/plus buttons inside. It shows the user's targets until [targets] (the server's) change; a drag or tap sets
  * one at once, button presses after a second without another (upstream's debounce). [onSet] gets the targets and
  * which one changed.
+ *
+ * Upstream: `ha-state-control-climate-temperature`, `ha-state-control-climate-humidity`,
+ * `ha-state-control-humidifier-humidity`, `ha-state-control-water_heater-temperature`
+ * (src/state-control/climate/ha-state-control-climate-temperature.ts;
+ * src/state-control/climate/ha-state-control-climate-humidity.ts;
+ * src/state-control/humidifier/ha-state-control-humidifier-humidity.ts;
+ * src/state-control/water_heater/ha-state-control-water_heater-temperature.ts;
+ * src/state-control/state-control-circular-slider-style.ts)
  */
 @Composable
 internal fun CircularStateControl(
@@ -109,7 +117,12 @@ internal fun CircularStateControl(
     }
 }
 
-/** The secondary label under the target: the current temperature, with a thermometer (`show-secondary`). */
+/**
+ * The secondary label under the target: the current temperature, with a thermometer (`show-secondary`).
+ *
+ * Upstream: part of `ha-state-control-climate-temperature`
+ * (src/state-control/climate/ha-state-control-climate-temperature.ts)
+ */
 @Composable
 private fun CurrentTemperature(text: String) {
     val colors = LocalHAColorScheme.current
@@ -119,7 +132,13 @@ private fun CurrentTemperature(text: String) {
     }
 }
 
-/** The label, the target (or the low and high targets, tap one to choose it), centred in the slider. */
+/**
+ * The label, the target (or the low and high targets, tap one to choose it), centred in the slider.
+ *
+ * Upstream: part of `ha-state-control-climate-temperature`
+ * (src/state-control/climate/ha-state-control-climate-temperature.ts;
+ * src/state-control/state-control-circular-slider-style.ts)
+ */
 @Composable
 private fun CircularInfo(
     control: CircularControl,
@@ -175,6 +194,8 @@ private fun CircularInfo(
 /**
  * Port of `ha-big-number`: the whole part large, the decimals and unit small beside it, stacked (unit above), or on
  * one line at the bottom with [bottomUnit].
+ *
+ * Upstream: `ha-big-number` (src/components/ha-big-number.ts)
  */
 @Composable
 private fun BigNumberText(number: BigNumber, bottomUnit: Boolean) {
@@ -209,7 +230,12 @@ private fun BigNumberText(number: BigNumber, bottomUnit: Boolean) {
     }
 }
 
-/** The minus and plus buttons under the number, outlined in [color] (the range end's) or the theme's. */
+/**
+ * The minus and plus buttons under the number, outlined in [color] (the range end's) or the theme's.
+ *
+ * Upstream: part of `ha-state-control-climate-temperature`
+ * (src/state-control/climate/ha-state-control-climate-temperature.ts)
+ */
 @Composable
 private fun StepButtons(color: Color?, modifier: Modifier, onStep: (Int) -> Unit) {
     val colors = LocalHAColorScheme.current

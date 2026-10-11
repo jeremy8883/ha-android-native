@@ -25,6 +25,8 @@ import kotlinx.coroutines.launch
  * @param onShowServerSwitcher shows the app's server picker, which calls back with the chosen server; `null` hides
  *   the drawer's server entry
  * @param onOpenSettings opens the app's own settings from the drawer, in place of the frontend's; `null` keeps those
+ *
+ * Upstream: none (native: the app's destination hosting the dashboards of the active server)
  */
 @Composable
 fun NativeDashboard(

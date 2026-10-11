@@ -37,6 +37,8 @@ import java.time.Instant
  * a band per state in its colour, labelled when it fits, over [time]. A tap on a band shows its state and times.
  * With [showNames], each row's entity is named on its left, in a column at least [minLeft] wide. Pinching zooms
  * ([zoom], shared by the History panel's charts), and with a [zoomResetLabel] the chart has its own reset button.
+ *
+ * Upstream: `state-history-chart-timeline` (src/components/chart/state-history-chart-timeline.ts)
  */
 @Composable
 internal fun TimelineChartView(
@@ -102,7 +104,11 @@ internal fun TimelineChartView(
     }
 }
 
-/** The state of [timelines]' band [index] in [row], and when it started and ended. */
+/**
+ * The state of [timelines]' band [index] in [row], and when it started and ended.
+ *
+ * Upstream: part of `state-history-chart-timeline` (src/components/chart/state-history-chart-timeline.ts)
+ */
 @Composable
 private fun BandTooltip(
     timelines: List<TimelineChart>,

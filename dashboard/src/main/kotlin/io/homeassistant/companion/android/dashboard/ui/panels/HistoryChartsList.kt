@@ -50,6 +50,8 @@ import java.time.Instant
  * The charts of `state-history-charts` with `sync-charts`: the timelines with the entities' names, then each line
  * chart with its legend, divided, all zoomed together ([zoom]), all plots starting at the same distance from the left (`paddingYAxis`), from the
  * period's start to its end (now, when the end is ahead).
+ *
+ * Upstream: `state-history-charts` (src/components/chart/state-history-charts.ts)
  */
 @Composable
 internal fun HistoryChartsList(
@@ -122,6 +124,8 @@ internal fun HistoryChartsList(
 /**
  * How far from the left every plot starts (`paddingYAxis`): past the timelines' names and the widest value axis of
  * what [shown] of the time shows, so a zoom whose values need wider labels moves every plot along, as upstream's.
+ *
+ * Upstream: part of `state-history-charts` (src/components/chart/state-history-charts.ts)
  */
 @Composable
 private fun chartsInset(

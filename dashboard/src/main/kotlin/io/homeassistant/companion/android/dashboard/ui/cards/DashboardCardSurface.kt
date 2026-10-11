@@ -10,6 +10,11 @@ import androidx.compose.ui.Modifier
 import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 
+/**
+ * A card's rounded surface, tinted when [active].
+ *
+ * Upstream: `ha-card` (src/components/ha-card.ts)
+ */
 @Composable
 internal fun DashboardCardSurface(
     modifier: Modifier = Modifier,

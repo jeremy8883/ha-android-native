@@ -59,6 +59,8 @@ import java.time.ZonedDateTime
  * first) and the entities to list (every entity's when none is picked), then their entries, newest first, each
  * naming what it is about and what caused it. [query] is the panel's address's ("entity_id=…&start_date=…"), as the
  * details' "Show more" opens it. Its refresh button goes in the [toolbar].
+ *
+ * Upstream: `ha-panel-logbook` (src/panels/logbook/ha-panel-logbook.ts)
  */
 @Composable
 internal fun LogbookPanel(
@@ -123,7 +125,11 @@ internal fun LogbookPanel(
     }
 }
 
-/** The panel's refresh button, in the [toolbar]: how many times it was pressed, each loading the logbook again. */
+/**
+ * The panel's refresh button, in the [toolbar]: how many times it was pressed, each loading the logbook again.
+ *
+ * Upstream: part of `ha-panel-logbook` (src/panels/logbook/ha-panel-logbook.ts)
+ */
 @Composable
 private fun rememberRefresh(toolbar: PanelToolbar, label: String): Int {
     var refresh by rememberSaveable { mutableIntStateOf(0) }

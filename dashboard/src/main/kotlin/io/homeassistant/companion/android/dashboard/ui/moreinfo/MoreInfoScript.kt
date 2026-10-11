@@ -49,6 +49,8 @@ import kotlinx.serialization.json.JsonElement
  * Port of `more-info-script` below its header: the description, the queue, the fields to run it with (an optional
  * field sent only when ticked) and cancel and run. The script's action is named by its registry entry's unique ID
  * once known.
+ *
+ * Upstream: `more-info-script` (src/dialogs/more-info/controls/more-info-script.ts)
  */
 @Composable
 internal fun MoreInfoScript(
@@ -104,6 +106,9 @@ internal fun MoreInfoScript(
 /**
  * A field as `ha-settings-row` draws it on a phone: the box including an optional one (a gap in its place for the
  * others when some are optional), the name and description, then the editor, disabled while not ticked.
+ *
+ * Upstream: part of `more-info-script`, with `ha-settings-row` (src/dialogs/more-info/controls/more-info-script.ts;
+ * src/components/ha-settings-row.ts)
  */
 @Composable
 private fun ScriptFieldRow(
@@ -157,7 +162,12 @@ private fun ScriptFieldRow(
     }
 }
 
-/** `ha-control-button` with its icon and label, as the script's cancel and run. */
+/**
+ * `ha-control-button` with its icon and label, as the script's cancel and run.
+ *
+ * Upstream: part of `more-info-script`, with `ha-control-button` (src/dialogs/more-info/controls/more-info-script.ts;
+ * src/components/ha-control-button.ts)
+ */
 @Composable
 private fun ScriptButton(icon: String, label: String, enabled: Boolean, modifier: Modifier, onClick: () -> Unit) {
     val colors = LocalHAColorScheme.current

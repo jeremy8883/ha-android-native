@@ -44,6 +44,9 @@ import kotlin.math.abs
  * The power sources graph drawn like the frontend's ECharts lines: smoothed areas stacked above and below 0, the use
  * as a dashed line on top, a value axis with round ticks and a time axis. A tap shows the values at the nearest time
  * ([tooltip]); [hidden] series (by source id) are left out of the stacks.
+ *
+ * Upstream: `ha-chart-base` as `hui-power-sources-graph-card` configures it (src/components/chart/ha-chart-base.ts;
+ * src/panels/lovelace/cards/energy/power-sources-graph-data.ts)
  */
 @Composable
 internal fun PowerLineChart(

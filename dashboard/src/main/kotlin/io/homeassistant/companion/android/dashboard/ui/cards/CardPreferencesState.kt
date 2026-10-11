@@ -24,6 +24,8 @@ internal class CardPreferenceValues(val values: Map<String, String>, val set: (S
 /**
  * Gives [content]'s cards the server's URL ([serverUrl], for its pictures), the brands API's token and the card
  * choices kept on the device.
+ *
+ * Upstream: none (native: hands the cards what the frontend reads from `hass` and local storage)
  */
 @Composable
 internal fun ProvideCardLocals(serverUrl: String?, content: @Composable () -> Unit) {
@@ -37,7 +39,11 @@ internal fun ProvideCardLocals(serverUrl: String?, content: @Composable () -> Un
     )
 }
 
-/** The card choices kept on the device, for the cards to read and change. */
+/**
+ * The card choices kept on the device, for the cards to read and change.
+ *
+ * Upstream: `storage` (src/common/decorators/storage.ts)
+ */
 @Composable
 private fun rememberCardPreferences(): CardPreferenceValues {
     val viewModel = hiltViewModel<CardPreferencesViewModel>()

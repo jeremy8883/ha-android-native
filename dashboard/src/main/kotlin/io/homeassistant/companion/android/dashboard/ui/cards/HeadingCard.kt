@@ -34,6 +34,11 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import java.time.Instant
 import java.time.ZonedDateTime
 
+/**
+ * A heading card: its icon and title (or subtitle), with a chevron when it has an action, and its badges on the right.
+ *
+ * Upstream: `hui-heading-card` (src/panels/lovelace/cards/hui-heading-card.ts)
+ */
 @Composable
 internal fun HeadingCard(
     card: CardConfig,
@@ -97,6 +102,13 @@ internal fun HeadingCard(
     }
 }
 
+/**
+ * A heading's badge: an entity's icon and state, or a button's icon and text.
+ *
+ * Upstream: `hui-entity-heading-badge`, `hui-button-heading-badge`, `ha-heading-badge`
+ * (src/panels/lovelace/heading-badges/hui-entity-heading-badge.ts;
+ * src/panels/lovelace/heading-badges/hui-button-heading-badge.ts; src/components/ha-heading-badge.ts)
+ */
 @Composable
 private fun HeadingBadge(badge: HeadingBadgeModel, interactions: CardInteractions) {
     val colors = LocalHAColorScheme.current

@@ -44,6 +44,8 @@ import java.time.Instant
  * The history section of an entity's details: its last day's states as timelines or lines, or a sensor's 5-minute
  * statistics, kept up to date, with a link to the History panel. Port of `ha-more-info-history`
  * (frontend@20260624.6 src/dialogs/more-info/ha-more-info-history.ts).
+ *
+ * Upstream: `ha-more-info-history` (src/dialogs/more-info/ha-more-info-history.ts)
  */
 @Composable
 internal fun MoreInfoHistory(entityId: String, hass: HassSnapshot, now: Instant, interactions: CardInteractions) {
@@ -71,7 +73,12 @@ internal fun MoreInfoHistory(entityId: String, hass: HassSnapshot, now: Instant,
     }
 }
 
-/** A section's header in the details: its [title] (with a [subtitle]), and a link to see more on its page. */
+/**
+ * A section's header in the details: its [title] (with a [subtitle]), and a link to see more on its page.
+ *
+ * Upstream: the `.header` of `ha-more-info-history`, `ha-more-info-logbook`
+ * (src/dialogs/more-info/ha-more-info-history.ts; src/dialogs/more-info/ha-more-info-logbook.ts)
+ */
 @Composable
 internal fun MoreInfoSectionHeader(
     title: String,
@@ -90,6 +97,11 @@ internal fun MoreInfoSectionHeader(
     }
 }
 
+/**
+ * Why the history couldn't be loaded.
+ *
+ * Upstream: part of `ha-more-info-history` (src/dialogs/more-info/ha-more-info-history.ts)
+ */
 @Composable
 private fun HistoryError(hass: HassSnapshot, message: String) {
     Text(
@@ -99,7 +111,12 @@ private fun HistoryError(hass: HassSnapshot, message: String) {
     )
 }
 
-/** The charts of [history]: a timeline or lines of states, or the statistics. */
+/**
+ * The charts of [history]: a timeline or lines of states, or the statistics.
+ *
+ * Upstream: `state-history-charts`, `statistics-chart` (src/components/chart/state-history-charts.ts;
+ * src/components/chart/statistics-chart.ts)
+ */
 @Composable
 private fun HistoryCharts(entityId: String, history: EntityHistory, hass: HassSnapshot, now: Instant) {
     val dark = isSystemInDarkTheme()

@@ -42,6 +42,8 @@ import timber.log.Timber
  * The server's sign-in page in a web view, as the companion app's onboarding shows it: any sign-in page in front of
  * the server first (its cookies are kept for the app's connection), then Home Assistant's, ending at the app with the
  * code. Back goes back a page, then to the address; a page that can't load says why, with "Try again".
+ *
+ * Upstream: none (native: the server's sign-in page in a web view)
  */
 @Composable
 internal fun WebSignInContent(state: LoginUiState.WebSignIn, events: WebSignInEvents, modifier: Modifier = Modifier) {
@@ -153,6 +155,11 @@ private class SignInWebViewClient(
     }
 }
 
+/**
+ * Why the sign-in page couldn't load, with "Try again".
+ *
+ * Upstream: none (native: the server's sign-in page in a web view)
+ */
 @Composable
 private fun WebSignInProblemContent(problem: WebSignInProblem, onRetry: () -> Unit, modifier: Modifier) {
     Column(

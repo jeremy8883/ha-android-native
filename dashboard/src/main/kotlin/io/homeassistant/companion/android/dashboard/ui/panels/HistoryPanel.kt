@@ -57,6 +57,8 @@ import java.time.ZonedDateTime
  * history as `state-history-charts` draws it: the timelines, then a line chart per unit and device class, the hourly
  * statistics before the period's states drawn faintly. [query] is the panel's address's (as the details' "Show more"
  * opens it); "Remove all selections" and the menu (download as CSV) go in the [toolbar].
+ *
+ * Upstream: `ha-panel-history` (src/panels/history/ha-panel-history.ts)
  */
 @Composable
 internal fun HistoryPanel(
@@ -120,7 +122,11 @@ internal fun HistoryPanel(
     }
 }
 
-/** The charts' one "Reset zoom" button while they're zoomed in, floating at the bottom right (`.reset-button`). */
+/**
+ * The charts' one "Reset zoom" button while they're zoomed in, floating at the bottom right (`.reset-button`).
+ *
+ * Upstream: part of `state-history-charts` (src/components/chart/state-history-charts.ts)
+ */
 @Composable
 private fun HistoryZoomReset(zoom: ChartZoomState, label: String, modifier: Modifier) {
     if (!zoom.zoom.isZoomed) return
@@ -135,7 +141,11 @@ private fun HistoryZoomReset(zoom: ChartZoomState, label: String, modifier: Modi
     )
 }
 
-/** Below the filters: a spinner while it loads, a prompt to pick something, the error, or the charts. */
+/**
+ * Below the filters: a spinner while it loads, a prompt to pick something, the error, or the charts.
+ *
+ * Upstream: part of `ha-panel-history` (src/panels/history/ha-panel-history.ts)
+ */
 @Composable
 private fun HistoryContent(
     state: HistoryPanelState,
@@ -158,7 +168,11 @@ private fun HistoryContent(
     }
 }
 
-/** A message in place of the charts, centred as the frontend's `.start-search` and `.info`. */
+/**
+ * A message in place of the charts, centred as the frontend's `.start-search` and `.info`.
+ *
+ * Upstream: part of `ha-panel-history` (src/panels/history/ha-panel-history.ts)
+ */
 @Composable
 internal fun PanelMessage(text: String, error: Boolean = false) {
     val colors = LocalHAColorScheme.current
@@ -170,7 +184,11 @@ internal fun PanelMessage(text: String, error: Boolean = false) {
     )
 }
 
-/** "Remove all selections" while something is picked, and the menu with "Download data". */
+/**
+ * "Remove all selections" while something is picked, and the menu with "Download data".
+ *
+ * Upstream: part of `ha-panel-history` (src/panels/history/ha-panel-history.ts)
+ */
 @Composable
 private fun HistoryToolbar(
     toolbar: PanelToolbar,
@@ -204,7 +222,11 @@ private fun HistoryToolbar(
     DownloadOutcome(hass, viewModel)
 }
 
-/** Port of the alert `_downloadHistory` shows when there's nothing to download. */
+/**
+ * Port of the alert `_downloadHistory` shows when there's nothing to download.
+ *
+ * Upstream: part of `ha-panel-history` (src/panels/history/ha-panel-history.ts)
+ */
 @Composable
 private fun NoDataDialog(hass: HassSnapshot, onDismiss: () -> Unit) {
     AlertDialog(
@@ -215,7 +237,11 @@ private fun NoDataDialog(hass: HassSnapshot, onDismiss: () -> Unit) {
     )
 }
 
-/** That the CSV couldn't be saved ("Unable to download data"). */
+/**
+ * That the CSV couldn't be saved ("Unable to download data").
+ *
+ * Upstream: part of `ha-panel-history` (src/panels/history/ha-panel-history.ts)
+ */
 @Composable
 private fun DownloadOutcome(hass: HassSnapshot, viewModel: HistoryPanelViewModel) {
     val download by viewModel.download.collectAsStateWithLifecycle()
@@ -231,7 +257,11 @@ private fun DownloadOutcome(hass: HassSnapshot, viewModel: HistoryPanelViewModel
     )
 }
 
-/** The history's charts, or that it has none. */
+/**
+ * The history's charts, or that it has none.
+ *
+ * Upstream: part of `state-history-charts` (src/components/chart/state-history-charts.ts)
+ */
 @Composable
 private fun HistoryCharts(
     history: HistoryResult,

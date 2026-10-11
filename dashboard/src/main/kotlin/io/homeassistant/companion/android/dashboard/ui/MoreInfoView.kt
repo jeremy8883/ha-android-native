@@ -59,6 +59,8 @@ internal sealed interface MoreInfoView {
 
 /**
  * `100dvh - max(var(--safe-area-inset-top), 48px)`, less the navigation bar the sheet adds under its content.
+ *
+ * Upstream: part of `ha-bottom-sheet` (src/components/ha-bottom-sheet.ts)
  */
 @Composable
 internal fun sheetHeight(): Dp {
@@ -73,6 +75,8 @@ internal fun sheetHeight(): Dp {
  * Port of the dialog's toolbar: close (or back from another view), the entity's name under its area and device,
  * then on the main view the history button and a menu with [favorites]' items, the details view and the frontend's
  * full dialog.
+ *
+ * Upstream: part of `ha-more-info-dialog` (src/dialogs/more-info/ha-more-info-dialog.ts)
  */
 @Composable
 internal fun MoreInfoToolbar(
@@ -139,7 +143,11 @@ internal fun MoreInfoToolbar(
     }
 }
 
-/** The title: the entity's name (or the view's) under the breadcrumb of its area and device, which the name ends. */
+/**
+ * The title: the entity's name (or the view's) under the breadcrumb of its area and device, which the name ends.
+ *
+ * Upstream: part of `ha-more-info-dialog` (src/dialogs/more-info/ha-more-info-dialog.ts)
+ */
 @Composable
 private fun ToolbarTitle(model: MoreInfoModel, view: MoreInfoView, localize: Localize, modifier: Modifier) {
     val colors = LocalHAColorScheme.current
@@ -167,6 +175,11 @@ private fun ToolbarTitle(model: MoreInfoModel, view: MoreInfoView, localize: Loc
     }
 }
 
+/**
+ * A toolbar icon button, labelled for accessibility.
+ *
+ * Upstream: `ha-icon-button` (src/components/ha-icon-button.ts)
+ */
 @Composable
 private fun ToolbarButton(icon: String, label: String, onClick: () -> Unit) {
     IconButton(onClick = onClick, modifier = Modifier.semantics { contentDescription = label }) {

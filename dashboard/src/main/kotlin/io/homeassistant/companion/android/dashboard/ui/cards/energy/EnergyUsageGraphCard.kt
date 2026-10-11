@@ -40,6 +40,8 @@ import java.time.ZonedDateTime
 /**
  * The energy usage graph: by period, where the home's energy came from and where the rest went, with the total in
  * the header. Port of the rendering of `hui-energy-usage-graph-card` (frontend@20260624.6).
+ *
+ * Upstream: `hui-energy-usage-graph-card` (src/panels/lovelace/cards/energy/hui-energy-usage-graph-card.ts)
  */
 @Composable
 internal fun EnergyUsageGraphCard(
@@ -87,7 +89,11 @@ internal fun EnergyUsageGraphCard(
     }
 }
 
-/** The chip next to the title (`hui-energy-graph-chip`). */
+/**
+ * The chip next to the title (`hui-energy-graph-chip`).
+ *
+ * Upstream: `hui-energy-graph-chip` (src/panels/lovelace/cards/energy/common/hui-energy-graph-chip.ts)
+ */
 @Composable
 internal fun TotalChip(text: String) {
     val colors = LocalHAColorScheme.current
@@ -101,7 +107,11 @@ internal fun TotalChip(text: String) {
     )
 }
 
-/** An item per shown series; a tap hides or shows it and its compared series. Port of the custom legend. */
+/**
+ * An item per shown series; a tap hides or shows it and its compared series. Port of the custom legend.
+ *
+ * Upstream: part of `ha-chart-base` (src/components/chart/ha-chart-base.ts)
+ */
 @Composable
 internal fun Legend(chart: EnergyBarChart, hidden: Set<String>, onToggle: (String) -> Unit) {
     val fallback = LocalHAColorScheme.current.colorTextSecondary
@@ -115,7 +125,11 @@ internal fun Legend(chart: EnergyBarChart, hidden: Set<String>, onToggle: (Strin
 /** A legend item: what a tap toggles ([id]), its [name] and [color]. */
 internal class LegendEntry(val id: String, val name: String, val color: Color)
 
-/** The custom legend of the frontend's charts: an item per entry, crossed out while [hidden]. */
+/**
+ * The custom legend of the frontend's charts: an item per entry, crossed out while [hidden].
+ *
+ * Upstream: part of `ha-chart-base` (src/components/chart/ha-chart-base.ts)
+ */
 @Composable
 internal fun LegendItems(entries: List<LegendEntry>, hidden: Set<String>, onToggle: (String) -> Unit) {
     val colors = LocalHAColorScheme.current

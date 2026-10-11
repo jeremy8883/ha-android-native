@@ -17,6 +17,8 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
  * The controls of a lawn mower's details, port of `more-info-lawn_mower` (frontend@20260624.6
  * src/dialogs/more-info/controls/more-info-lawn_mower.ts): the mower drawn as it is, and the start/pause and dock
  * buttons. The battery shows beside the header's time.
+ *
+ * Upstream: `more-info-lawn_mower` (src/dialogs/more-info/controls/more-info-lawn_mower.ts)
  */
 @Composable
 internal fun MoreInfoLawnMower(info: LawnMowerMoreInfo, onAction: (CardAction) -> Unit) {

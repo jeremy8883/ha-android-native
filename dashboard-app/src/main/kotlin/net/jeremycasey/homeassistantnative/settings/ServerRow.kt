@@ -23,6 +23,8 @@ import io.homeassistant.companion.android.common.compose.theme.LocalHAColorSchem
 /**
  * A server with its user's avatar, name and user, like the companion app's server chooser (`ServerChooserRow`),
  * plus the address, with [trailing] content such as a log out button.
+ *
+ * Upstream: none (native: the app's server settings)
  */
 @Composable
 internal fun ServerRow(

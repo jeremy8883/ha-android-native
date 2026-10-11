@@ -38,6 +38,8 @@ import java.time.Instant
  * shaded, and the mean as a smoothed line, in the graph palette's first colour, with a vertical grid line at each
  * time tick. A tap shows the values of the nearest period; pinching zooms, with its own reset button labelled
  * [zoomResetLabel].
+ *
+ * Upstream: `statistics-chart` (src/components/chart/statistics-chart.ts)
  */
 @Composable
 internal fun StatisticsChartView(
@@ -99,7 +101,11 @@ internal fun StatisticsChartView(
     }
 }
 
-/** The values of [chart]'s periods in effect at [at]. */
+/**
+ * The values of [chart]'s periods in effect at [at].
+ *
+ * Upstream: part of `statistics-chart` (src/components/chart/statistics-chart.ts)
+ */
 @Composable
 private fun StatisticsTooltip(chart: StatisticsChart, at: Double, formats: DisplayFormats, color: Color) {
     val rows = chart.series.mapNotNull { series ->

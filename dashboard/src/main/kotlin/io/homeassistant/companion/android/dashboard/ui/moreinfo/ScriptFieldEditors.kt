@@ -45,6 +45,8 @@ import kotlinx.serialization.json.doubleOrNull
 /**
  * The editor of [selector] for [value]; [onChange] gets the new value, `null` to leave it out. A date and time's
  * time picked first is on [today].
+ *
+ * Upstream: `ha-selector` (src/components/ha-selector/ha-selector.ts)
  */
 @Composable
 internal fun FieldEditor(
@@ -84,6 +86,11 @@ internal fun FieldEditor(
 
 // UPSTREAM-DIFF: selectors not drawn natively (areas, devices, colours, locations...) are edited as their text, sent
 // as typed; upstream draws each selector's own picker
+/**
+ * The value of a selector not drawn natively, as its text.
+ *
+ * Upstream: none (native: text fallback for selectors without a native editor)
+ */
 @Composable
 private fun UnsupportedEditor(text: String, enabled: Boolean, onChange: (JsonElement?) -> Unit) {
     HATextField(
@@ -94,7 +101,11 @@ private fun UnsupportedEditor(text: String, enabled: Boolean, onChange: (JsonEle
     )
 }
 
-/** `ha-selector-text`: a field, on several lines or hidden as asked. */
+/**
+ * `ha-selector-text`: a field, on several lines or hidden as asked.
+ *
+ * Upstream: `ha-selector-text` (src/components/ha-selector/ha-selector-text.ts)
+ */
 @Composable
 private fun TextEditor(
     selector: FieldSelector.Text,
@@ -115,7 +126,11 @@ private fun TextEditor(
     )
 }
 
-/** `ha-selector-number`: a slider with the value in a box beside it, or the box alone. */
+/**
+ * `ha-selector-number`: a slider with the value in a box beside it, or the box alone.
+ *
+ * Upstream: `ha-selector-number` (src/components/ha-selector/ha-selector-number.ts)
+ */
 @Composable
 private fun NumberEditor(
     selector: FieldSelector.Number,
@@ -155,7 +170,12 @@ private fun NumberEditor(
     }
 }
 
-/** `ha-selector-select`: radio buttons for one of a few options, a menu for more, boxes for several. */
+/**
+ * `ha-selector-select`: radio buttons for one of a few options, a menu for more, boxes for several.
+ *
+ * Upstream: `ha-selector-select`, `ha-selector-entity` (src/components/ha-selector/ha-selector-select.ts;
+ * src/components/ha-selector/ha-selector-entity.ts)
+ */
 @Composable
 private fun SelectEditor(
     options: List<Pair<String, String>>,
@@ -203,7 +223,11 @@ private fun SelectEditor(
     }
 }
 
-/** `ha-selector-duration`: days (when enabled), hours, minutes and seconds, as an object of them. */
+/**
+ * `ha-selector-duration`: days (when enabled), hours, minutes and seconds, as an object of them.
+ *
+ * Upstream: `ha-selector-duration` (src/components/ha-selector/ha-selector-duration.ts)
+ */
 @Composable
 private fun DurationEditor(
     value: JsonElement?,

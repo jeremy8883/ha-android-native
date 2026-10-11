@@ -38,7 +38,12 @@ import io.homeassistant.companion.android.dashboard.moreinfo.GroupablePlayer
 import io.homeassistant.companion.android.dashboard.moreinfo.MediaGrouping
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 
-/** The grouping button: speakers, with how many play together when more than one. Opens [MediaGroupingDialog]. */
+/**
+ * The grouping button: speakers, with how many play together when more than one. Opens [MediaGroupingDialog].
+ *
+ * Upstream: part of `more-info-media_player` (`_renderGrouping`)
+ * (src/dialogs/more-info/controls/more-info-media_player.ts)
+ */
 @Composable
 internal fun MediaGroupingButton(grouping: MediaGrouping, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -78,6 +83,8 @@ internal fun MediaGroupingButton(grouping: MediaGrouping, onAction: (CardAction)
 /**
  * Port of `dialog-join-media-players`: the player itself (always on) and the others it can play with, each with a
  * switch, "Select all", and apply (joining the chosen, unjoining those no longer chosen) or cancel.
+ *
+ * Upstream: `dialog-join-media-players` (src/components/media-player/dialog-join-media-players.ts)
  */
 @Composable
 private fun MediaGroupingDialog(grouping: MediaGrouping, onAction: (CardAction) -> Unit, onDismiss: () -> Unit) {
@@ -110,7 +117,11 @@ private fun MediaGroupingDialog(grouping: MediaGrouping, onAction: (CardAction) 
     )
 }
 
-/** Port of `ha-media-player-toggle`: the player's icon, name and where it is, and its switch. */
+/**
+ * Port of `ha-media-player-toggle`: the player's icon, name and where it is, and its switch.
+ *
+ * Upstream: `ha-media-player-toggle` (src/components/media-player/ha-media-player-toggle.ts)
+ */
 @Composable
 private fun PlayerToggle(player: GroupablePlayer, checked: Boolean, enabled: Boolean, onChange: (Boolean) -> Unit) {
     val colors = LocalHAColorScheme.current

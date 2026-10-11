@@ -25,6 +25,8 @@ import io.homeassistant.companion.android.dashboard.moreinfo.VacuumVisual
  * Port of `ha-state-control-vacuum-status` (frontend@20260624.6 src/state-control/vacuum/): the robot from above
  * in [color], wandering with its brush spinning and dust drawn in while cleaning, turned for home while returning,
  * on its glowing dock when docked, glowing a warning on error, and faded when idle.
+ *
+ * Upstream: `ha-state-control-vacuum-status` (src/state-control/vacuum/ha-state-control-vacuum-status.ts)
  */
 @Composable
 internal fun VacuumStatus(visual: VacuumVisual, color: Color, modifier: Modifier = Modifier) {
@@ -60,6 +62,11 @@ internal class VacuumMotion(
     val drift: Float,
 )
 
+/**
+ * The robot's animated values for [visual], from upstream's keyframes.
+ *
+ * Upstream: part of `ha-state-control-vacuum-status` (src/state-control/vacuum/ha-state-control-vacuum-status.ts)
+ */
 @Composable
 private fun rememberVacuumMotion(visual: VacuumVisual): VacuumMotion {
     val transition = rememberInfiniteTransition(label = "vacuum")

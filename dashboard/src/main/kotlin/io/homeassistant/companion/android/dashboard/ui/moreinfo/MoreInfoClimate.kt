@@ -34,6 +34,8 @@ import io.homeassistant.companion.android.dashboard.ui.controls.IconToggleGroup
  * The controls of a thermostat's details, port of `more-info-climate` (frontend@20260624.6
  * src/dialogs/more-info/controls/more-info-climate.ts): the current readings, the temperature dial (or the
  * humidity dial, when chosen) and the menus.
+ *
+ * Upstream: `more-info-climate` (src/dialogs/more-info/controls/more-info-climate.ts)
  */
 @Composable
 internal fun MoreInfoClimate(climate: ClimateMoreInfo, state: EntityState, onAction: (CardAction) -> Unit) {
@@ -75,7 +77,13 @@ internal fun MoreInfoClimate(climate: ClimateMoreInfo, state: EntityState, onAct
     }
 }
 
-/** The current temperature and humidity, side by side: a small label over each value. */
+/**
+ * The current temperature and humidity, side by side: a small label over each value.
+ *
+ * Upstream: the `.current` of `more-info-climate`, `more-info-humidifier`, `more-info-water_heater`
+ * (src/dialogs/more-info/controls/more-info-climate.ts; src/dialogs/more-info/controls/more-info-humidifier.ts;
+ * src/dialogs/more-info/controls/more-info-water_heater.ts)
+ */
 @Composable
 internal fun CurrentReadings(readings: List<Pair<String, String>>) {
     if (readings.isEmpty()) return

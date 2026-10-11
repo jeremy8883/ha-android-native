@@ -50,6 +50,13 @@ import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
  * An energy gauge card: self-sufficiency, grid neutrality, self-consumed solar or low-carbon energy, with the info
  * the frontend shows in a tooltip behind its info icon. Port of the rendering of the
  * `hui-energy-*-gauge-card`s and `ha-gauge` (frontend@20260624.6).
+ *
+ * Upstream: `hui-energy-self-sufficiency-gauge-card`, `hui-energy-grid-neutrality-gauge-card`,
+ * `hui-energy-solar-consumed-gauge-card`, `hui-energy-carbon-consumed-gauge-card`
+ * (src/panels/lovelace/cards/energy/hui-energy-self-sufficiency-gauge-card.ts;
+ * src/panels/lovelace/cards/energy/hui-energy-grid-neutrality-gauge-card.ts;
+ * src/panels/lovelace/cards/energy/hui-energy-solar-consumed-gauge-card.ts;
+ * src/panels/lovelace/cards/energy/hui-energy-carbon-consumed-gauge-card.ts)
  */
 @Composable
 internal fun EnergyGaugeCard(
@@ -82,6 +89,12 @@ internal fun EnergyGaugeCard(
     }
 }
 
+/**
+ * A gauge with its name under it, and its info on a tap.
+ *
+ * Upstream: part of `hui-energy-self-sufficiency-gauge-card` and the other energy gauge cards
+ * (src/panels/lovelace/cards/energy/hui-energy-self-sufficiency-gauge-card.ts)
+ */
 @Composable
 private fun GaugeContent(model: EnergyGaugeModel.Gauge) {
     val colors = LocalHAColorScheme.current
@@ -123,7 +136,11 @@ private fun GaugeContent(model: EnergyGaugeModel.Gauge) {
     }
 }
 
-/** `ha-gauge`: an arc over a 100×55 view box, filled to the value or with coloured levels and a needle. */
+/**
+ * `ha-gauge`: an arc over a 100×55 view box, filled to the value or with coloured levels and a needle.
+ *
+ * Upstream: `ha-gauge` (src/components/ha-gauge.ts)
+ */
 @Composable
 private fun Gauge(model: EnergyGaugeModel.Gauge, modifier: Modifier) {
     val dark = isSystemInDarkTheme()

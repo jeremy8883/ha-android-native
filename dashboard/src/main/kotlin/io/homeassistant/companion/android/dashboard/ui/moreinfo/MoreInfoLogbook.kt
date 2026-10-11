@@ -65,6 +65,9 @@ import java.time.LocalDate
  * it, kept up to date. Port of `ha-more-info-logbook` (frontend@20260624.6 src/dialogs/more-info/ha-more-info-logbook.ts)
  * with `ha-logbook`'s narrow rows without names. Loaded here; drawn by [logbookItems] as items of the details' list,
  * so only the rows on screen are built (an energy sensor can log hundreds a day).
+ *
+ * Upstream: `ha-more-info-logbook`, `ha-logbook` (src/dialogs/more-info/ha-more-info-logbook.ts;
+ * src/panels/logbook/ha-logbook.ts)
  */
 @Composable
 internal fun rememberLogbookSection(entityId: String, hass: HassSnapshot, now: Instant): LogbookSection {
@@ -154,7 +157,11 @@ private fun LazyListScope.logbookRowItems(
     }
 }
 
-/** A row: its dot on the day's rail, what happened, and what caused it, its trace and its time at the end. */
+/**
+ * A row: its dot on the day's rail, what happened, and what caused it, its trace and its time at the end.
+ *
+ * Upstream: `ha-logbook-entry` (src/panels/logbook/ha-logbook-entry.ts)
+ */
 @Composable
 private fun LogbookRowContent(
     row: LogbookRow,

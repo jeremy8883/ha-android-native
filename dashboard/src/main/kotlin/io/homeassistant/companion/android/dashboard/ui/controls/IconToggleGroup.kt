@@ -24,6 +24,9 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 /**
  * Port of `ha-icon-button-group` with `ha-icon-button-toggle`s (frontend@20260624.6 src/components/): icons in a
  * pill, the selected one filled in. [onSelect] gets the index of the one tapped.
+ *
+ * Upstream: `ha-icon-button-group`, `ha-icon-button-toggle` (src/components/ha-icon-button-group.ts;
+ * src/components/ha-icon-button-toggle.ts)
  */
 @Composable
 internal fun IconToggleGroup(toggles: List<IconToggle>, onSelect: (Int) -> Unit, modifier: Modifier = Modifier) {

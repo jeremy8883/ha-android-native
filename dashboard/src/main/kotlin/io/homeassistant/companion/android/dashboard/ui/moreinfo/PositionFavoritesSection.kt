@@ -50,6 +50,10 @@ private data class PositionDialog(val kind: PositionKind, val index: Int?, val d
  * A cover's or valve's favourite positions, port of `ha-more-info-cover-favorite-positions` and
  * `-valve-favorite-positions`: pills that set the position (the current one filled), and, while editing, added,
  * edited, deleted and moved, each change saved to the registry entry. Hidden until the entry is loaded.
+ *
+ * Upstream: `ha-more-info-cover-favorite-positions`, `ha-more-info-valve-favorite-positions`
+ * (src/dialogs/more-info/components/covers/ha-more-info-cover-favorite-positions.ts;
+ * src/dialogs/more-info/components/valves/ha-more-info-valve-favorite-positions.ts)
  */
 @Composable
 internal fun PositionFavoritesSection(state: EntityState, hass: HassSnapshot, onAction: (CardAction) -> Unit) {
@@ -104,7 +108,13 @@ internal fun PositionFavoritesSection(state: EntityState, hass: HassSnapshot, on
     }
 }
 
-/** A favourite as a pill with its percentage, filled when the entity is there now. */
+/**
+ * A favourite as a pill with its percentage, filled when the entity is there now.
+ *
+ * Upstream: part of `ha-more-info-cover-favorite-positions`, `ha-more-info-valve-favorite-positions`
+ * (src/dialogs/more-info/components/covers/ha-more-info-cover-favorite-positions.ts;
+ * src/dialogs/more-info/components/valves/ha-more-info-valve-favorite-positions.ts)
+ */
 @Composable
 private fun PositionPill(favorite: PositionFavorite, enabled: Boolean, active: Color?, modifier: Modifier) {
     val colors = LocalHAColorScheme.current
@@ -134,7 +144,13 @@ private fun PositionPill(favorite: PositionFavorite, enabled: Boolean, active: C
     }
 }
 
-/** The add and edit prompt, or the delete confirmation, of one favourite; each change is saved. */
+/**
+ * The add and edit prompt, or the delete confirmation, of one favourite; each change is saved.
+ *
+ * Upstream: part of `ha-more-info-cover-favorite-positions`, `ha-more-info-valve-favorite-positions`
+ * (src/dialogs/more-info/components/covers/ha-more-info-cover-favorite-positions.ts;
+ * src/dialogs/more-info/components/valves/ha-more-info-valve-favorite-positions.ts)
+ */
 @Composable
 private fun PositionDialogs(
     open: PositionDialog,
@@ -184,7 +200,11 @@ private fun PositionDialogs(
     )
 }
 
-/** Port of the favourites' `showPromptDialog`: a percentage from 0 to 100, kept within when typed beyond. */
+/**
+ * Port of the favourites' `showPromptDialog`: a percentage from 0 to 100, kept within when typed beyond.
+ *
+ * Upstream: `showPromptDialog` (src/dialogs/generic/show-dialog-box.ts)
+ */
 @Composable
 private fun PositionPrompt(
     title: String,

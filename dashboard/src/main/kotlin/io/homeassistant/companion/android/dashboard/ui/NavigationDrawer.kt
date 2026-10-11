@@ -53,6 +53,8 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
  * @param onOpenSettings opens the app's own settings, in place of the frontend's Settings and profile; `null` keeps
  *   those
  * @param onOpen called with the path of the chosen entry
+ *
+ * Upstream: `ha-sidebar` (src/components/ha-sidebar.ts)
  */
 @Composable
 internal fun NavigationDrawerContent(
@@ -72,6 +74,11 @@ internal fun NavigationDrawerContent(
         unselectedTextColor = colors.colorTextPrimary,
     )
 
+    /**
+     * A panel's entry, selected while it is shown.
+     *
+     * Upstream: part of `ha-sidebar` (src/components/ha-sidebar.ts)
+     */
     @Composable
     fun Entry(path: String, title: String, icon: String) {
         NavigationDrawerItem(
@@ -101,6 +108,11 @@ internal fun NavigationDrawerContent(
         }
         HorizontalDivider()
         Column(modifier = Modifier.padding(vertical = HADimens.SPACE2)) {
+            /**
+             * An entry that does something in the app instead of opening a panel.
+             *
+             * Upstream: none (native: the app's settings and server switching)
+             */
             @Composable
             fun Action(label: String, icon: String, onClick: () -> Unit) = NavigationDrawerItem(
                 label = { Text(label, style = HATextStyle.Body) },
@@ -127,6 +139,8 @@ internal fun NavigationDrawerContent(
 /**
  * The panels: the native ones, then under their own heading those that open in the companion app (left out when
  * [onlyDashboards]); else that they load, or why they couldn't, with [onRetry].
+ *
+ * Upstream: part of `ha-sidebar` (src/components/ha-sidebar.ts)
  */
 @Composable
 private fun PanelEntries(
@@ -177,6 +191,8 @@ private fun PanelEntries(
 
 /**
  * The sidebar's header on a phone (`ha-sidebar`'s `menu`): the app's name on a toolbar-high row, over a divider.
+ *
+ * Upstream: part of `ha-sidebar` (src/components/ha-sidebar.ts)
  */
 // UPSTREAM-DIFF: the header names this app (HADash), where upstream's says "Home Assistant".
 @Composable

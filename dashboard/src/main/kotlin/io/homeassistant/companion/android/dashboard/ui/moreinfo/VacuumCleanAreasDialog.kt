@@ -54,7 +54,11 @@ import io.homeassistant.companion.android.dashboard.moreinfo.vacuumCleanAreas
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.loadErrorText
 
-/** Upstream's "Cleaning · By area" button, opening the areas to clean. */
+/**
+ * Upstream's "Cleaning · By area" button, opening the areas to clean.
+ *
+ * Upstream: part of `more-info-vacuum` (src/dialogs/more-info/controls/more-info-vacuum.ts)
+ */
 @Composable
 internal fun CleanAreasButton(
     label: Pair<String, String>,
@@ -88,6 +92,9 @@ internal fun CleanAreasButton(
 /**
  * Port of `ha-more-info-view-vacuum-clean-areas`: the areas mapped to the vacuum's map (from its registry entry,
  * loaded here), by floor; taps choose them in order (numbered), and start cleans them.
+ *
+ * Upstream: `ha-more-info-view-vacuum-clean-areas`
+ * (src/dialogs/more-info/components/vacuum/ha-more-info-view-vacuum-clean-areas.ts)
  */
 @Composable
 private fun CleanAreasDialog(
@@ -131,6 +138,12 @@ private fun CleanAreasDialog(
     )
 }
 
+/**
+ * The areas by floor, then the hint on the order; or, without mapped areas, why there are none.
+ *
+ * Upstream: part of `ha-more-info-view-vacuum-clean-areas`
+ * (src/dialogs/more-info/components/vacuum/ha-more-info-view-vacuum-clean-areas.ts)
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun CleanAreasContent(view: VacuumCleanAreas, chosen: List<String>, onToggle: (String) -> Unit) {
@@ -175,7 +188,12 @@ private fun CleanAreasContent(view: VacuumCleanAreas, chosen: List<String>, onTo
     }
 }
 
-/** An area to clean: its icon and name, outlined and numbered by when it was chosen. */
+/**
+ * An area to clean: its icon and name, outlined and numbered by when it was chosen.
+ *
+ * Upstream: part of `ha-more-info-view-vacuum-clean-areas` (`_renderAreaCard`)
+ * (src/dialogs/more-info/components/vacuum/ha-more-info-view-vacuum-clean-areas.ts)
+ */
 @Composable
 private fun AreaCard(area: CleanArea, order: Int, onClick: () -> Unit) {
     val colors = LocalHAColorScheme.current

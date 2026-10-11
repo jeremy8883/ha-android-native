@@ -49,6 +49,8 @@ import kotlin.math.sin
  * white at the centre, tinted by the light's [channels]. The marker shows the colour at [hue] and [saturation]
  * (hidden while unknown); dragging moves it, reported to [onMoved] (with `null` when it ends), and [onChanged]
  * gets where it settles, the hue in whole degrees and the saturation to two decimals.
+ *
+ * Upstream: `ha-hs-color-picker` (src/components/ha-hs-color-picker.ts)
  */
 @Composable
 internal fun HsColorWheel(
@@ -101,7 +103,11 @@ internal fun HsColorWheel(
     }
 }
 
-/** The marker at [value], in its colour, grown and lifted above the finger while [pressed]. */
+/**
+ * The marker at [value], in its colour, grown and lifted above the finger while [pressed].
+ *
+ * Upstream: part of `ha-hs-color-picker` (src/components/ha-hs-color-picker.ts)
+ */
 @Composable
 private fun Marker(value: Pair<Double, Double>, channels: WheelChannels, pressed: Boolean) {
     val (hue, saturation) = value

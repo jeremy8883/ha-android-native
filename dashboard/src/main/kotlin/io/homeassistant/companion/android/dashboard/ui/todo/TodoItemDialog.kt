@@ -44,6 +44,8 @@ import java.time.ZoneId
 /**
  * Port of `dialog-todo-item-editor`: an item's box (once it exists), summary, completion time, description and due
  * date (and time, for lists that keep one), with add, or save and delete (after confirming).
+ *
+ * Upstream: `dialog-todo-item-editor` (src/panels/todo/dialog-todo-item-editor.ts)
  */
 @Composable
 internal fun TodoItemDialog(
@@ -137,6 +139,11 @@ private class TodoDraft(edit: TodoEdit, private val zone: ZoneId) {
     }
 }
 
+/**
+ * The item's fields: its box and summary, completion time, description and due date.
+ *
+ * Upstream: part of `dialog-todo-item-editor` (src/panels/todo/dialog-todo-item-editor.ts)
+ */
 @Composable
 private fun DraftFields(
     draft: TodoDraft,
@@ -183,7 +190,11 @@ private fun DraftFields(
     }
 }
 
-/** The due date, the time for lists that keep one, and clearing them. */
+/**
+ * The due date, the time for lists that keep one, and clearing them.
+ *
+ * Upstream: part of `dialog-todo-item-editor` (src/panels/todo/dialog-todo-item-editor.ts)
+ */
 @Composable
 private fun DueFields(
     draft: TodoDraft,

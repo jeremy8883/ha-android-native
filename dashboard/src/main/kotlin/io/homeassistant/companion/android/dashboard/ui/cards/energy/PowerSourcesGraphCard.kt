@@ -30,6 +30,8 @@ import java.time.ZonedDateTime
  * The power sources graph: the power from and to solar, the battery and the grid over the period, and the home's
  * use, with a legend to hide sources. Port of the rendering of `hui-power-sources-graph-card`
  * (frontend@20260624.6).
+ *
+ * Upstream: `hui-power-sources-graph-card` (src/panels/lovelace/cards/energy/hui-power-sources-graph-card.ts)
  */
 @Composable
 internal fun PowerSourcesGraphCard(

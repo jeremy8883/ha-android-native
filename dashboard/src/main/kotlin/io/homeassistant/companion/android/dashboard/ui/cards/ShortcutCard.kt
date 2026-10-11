@@ -11,7 +11,11 @@ import io.homeassistant.companion.android.dashboard.derive.shortcutModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 
-/** A shortcut, drawn like a tile as upstream does (`ha-tile-container`). */
+/**
+ * A shortcut, drawn like a tile as upstream does (`ha-tile-container`).
+ *
+ * Upstream: `hui-shortcut-card` (src/panels/lovelace/cards/hui-shortcut-card.ts)
+ */
 @Composable
 internal fun ShortcutCard(card: CardConfig, hass: State<HassSnapshot?>, modifier: Modifier = Modifier) {
     val shortcut by remember(card) { derivedStateOf { hass.value?.shortcutModel(card) } }

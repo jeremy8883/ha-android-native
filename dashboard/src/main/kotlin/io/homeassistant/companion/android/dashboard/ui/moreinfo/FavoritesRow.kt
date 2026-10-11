@@ -62,6 +62,8 @@ import kotlin.math.roundToInt
  * when tapped. An admin's long press starts editing them: they shake, each with a delete badge (labelled
  * [deleteLabels]), a tap edits one, dragging one moves it, and the add (and, given [doneLabel], done) buttons
  * follow. [item] draws each, with the modifier carrying its gestures.
+ *
+ * Upstream: `ha-more-info-favorites` (src/dialogs/more-info/components/ha-more-info-favorites.ts)
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -113,7 +115,12 @@ internal data class FavoritesRowState(
     val maxWidth: Dp = ROW_MAX_WIDTH,
 )
 
-/** A light's favourite colours as a [FavoritesRow] of swatches. */
+/**
+ * A light's favourite colours as a [FavoritesRow] of swatches.
+ *
+ * Upstream: part of `ha-more-info-light-favorite-colors`
+ * (src/dialogs/more-info/components/lights/ha-more-info-light-favorite-colors.ts)
+ */
 @Composable
 internal fun LightFavoritesRow(
     favorites: LightFavorites,
@@ -128,7 +135,11 @@ internal fun LightFavoritesRow(
     ) { index, modifier -> Swatch(favorites.favorites[index], favorites.enabled, modifier) }
 }
 
-/** One favourite: shaking with a delete badge while editing, and draggable then. */
+/**
+ * One favourite: shaking with a delete badge while editing, and draggable then.
+ *
+ * Upstream: part of `ha-more-info-favorites` (src/dialogs/more-info/components/ha-more-info-favorites.ts)
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun FavoriteBubble(
@@ -188,7 +199,11 @@ private fun FavoriteBubble(
     }
 }
 
-/** The colour swatch, outlined when it's very light, greyed while the light is unavailable. */
+/**
+ * The colour swatch, outlined when it's very light, greyed while the light is unavailable.
+ *
+ * Upstream: `ha-favorite-color-button` (src/dialogs/more-info/components/lights/ha-favorite-color-button.ts)
+ */
 @Composable
 private fun Swatch(favorite: LightFavorite, enabled: Boolean, modifier: Modifier) {
     val colors = LocalHAColorScheme.current
@@ -208,7 +223,11 @@ private fun Swatch(favorite: LightFavorite, enabled: Boolean, modifier: Modifier
     )
 }
 
-/** The small "−" badge that deletes a favourite while editing. */
+/**
+ * The small "−" badge that deletes a favourite while editing.
+ *
+ * Upstream: part of `ha-more-info-favorites` (src/dialogs/more-info/components/ha-more-info-favorites.ts)
+ */
 @Composable
 private fun DeleteBadge(label: String, modifier: Modifier, onClick: () -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -225,7 +244,11 @@ private fun DeleteBadge(label: String, modifier: Modifier, onClick: () -> Unit) 
     }
 }
 
-/** Port of `ha-outlined-icon-button`: an outlined round icon button, the size of a swatch. */
+/**
+ * Port of `ha-outlined-icon-button`: an outlined round icon button, the size of a swatch.
+ *
+ * Upstream: `ha-outlined-icon-button` (src/components/ha-outlined-icon-button.ts)
+ */
 @Composable
 private fun RoundButton(icon: String, label: String, onClick: () -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -242,7 +265,11 @@ private fun RoundButton(icon: String, label: String, onClick: () -> Unit) {
     }
 }
 
-/** Upstream's `shake` keyframes: a small wobble, offset for every third favourite so they don't move together. */
+/**
+ * Upstream's `shake` keyframes: a small wobble, offset for every third favourite so they don't move together.
+ *
+ * Upstream: part of `ha-more-info-favorites` (src/dialogs/more-info/components/ha-more-info-favorites.ts)
+ */
 @Composable
 private fun shakeRotation(index: Int): Float {
     val transition = rememberInfiniteTransition(label = "shake")

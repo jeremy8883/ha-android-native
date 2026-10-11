@@ -30,6 +30,8 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 /**
  * A markdown card: the server-rendered template as markdown, in a card unless `text_only`. Nothing is shown until
  * the template has rendered, as upstream, but its room is kept so that the cards below don't move when it is.
+ *
+ * Upstream: `hui-markdown-card` (src/panels/lovelace/cards/hui-markdown-card.ts)
  */
 @Composable
 internal fun MarkdownCard(card: CardConfig, hass: State<HassSnapshot?>, modifier: Modifier = Modifier) {
@@ -38,6 +40,12 @@ internal fun MarkdownCard(card: CardConfig, hass: State<HassSnapshot?>, modifier
     MarkdownCardContent(model, modifier)
 }
 
+/**
+ * The markdown card's title and text, in a card unless `text_only`; an error in place of the text when the template
+ * failed.
+ *
+ * Upstream: part of `hui-markdown-card` (src/panels/lovelace/cards/hui-markdown-card.ts)
+ */
 @Composable
 private fun MarkdownCardContent(model: MarkdownModel, modifier: Modifier = Modifier) {
     val colors = LocalHAColorScheme.current
@@ -63,7 +71,11 @@ private fun MarkdownCardContent(model: MarkdownModel, modifier: Modifier = Modif
     }
 }
 
-/** Markdown in the theme's text styles, as `ha-markdown` renders it. */
+/**
+ * Markdown in the theme's text styles, as `ha-markdown` renders it.
+ *
+ * Upstream: `ha-markdown` (src/components/ha-markdown.ts)
+ */
 @Composable
 internal fun MarkdownText(text: String, modifier: Modifier = Modifier) {
     val colors = LocalHAColorScheme.current

@@ -70,6 +70,9 @@ import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
  * Port of the target picker's sheet (`ha-generic-picker` with `ha-picker-combo-box` on a phone): the search, the
  * section chips (Entities, Devices, Areas, then Labels), and the list: each section's items under its title, or
  * one section's, the best matches first when searching.
+ *
+ * Upstream: `ha-generic-picker`, `ha-picker-combo-box` (src/components/ha-generic-picker.ts;
+ * src/components/ha-picker-combo-box.ts)
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -112,7 +115,11 @@ private fun rowKey(row: TargetPickerRow): String = when (row) {
     is TargetPickerRow.Empty -> "empty"
 }
 
-/** The section chips: the chosen one filled, a separator before Labels; a tap chooses a section or shows all. */
+/**
+ * The section chips: the chosen one filled, a separator before Labels; a tap chooses a section or shows all.
+ *
+ * Upstream: part of `ha-picker-combo-box` (src/components/ha-picker-combo-box.ts)
+ */
 @Composable
 private fun SectionChips(hass: HassSnapshot, selected: TargetType?, onToggle: (TargetType) -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -162,7 +169,11 @@ private fun SectionChips(hass: HassSnapshot, selected: TargetType?, onToggle: (T
     }
 }
 
-/** A section's title band (`.title`). */
+/**
+ * A section's title band (`.title`).
+ *
+ * Upstream: part of `ha-picker-combo-box` (src/components/ha-picker-combo-box.ts)
+ */
 @Composable
 private fun SectionTitle(text: String) {
     val colors = LocalHAColorScheme.current
@@ -179,6 +190,8 @@ private fun SectionTitle(text: String) {
 /**
  * Port of `_renderRow`: an area under its floor drawn on the floor's tree, the item's icon, its name over its
  * place, and its integration's name at the end.
+ *
+ * Upstream: part of `ha-target-picker` (src/components/ha-target-picker.ts)
  */
 @Composable
 private fun ItemRow(item: TargetPickerItem, hass: HassSnapshot, onClick: () -> Unit) {
@@ -229,7 +242,11 @@ private fun ItemRow(item: TargetPickerItem, hass: HassSnapshot, onClick: () -> U
     }
 }
 
-/** Port of `ha-tree-indicator`: a dashed line down the floor's areas, with a branch to this one. */
+/**
+ * Port of `ha-tree-indicator`: a dashed line down the floor's areas, with a branch to this one.
+ *
+ * Upstream: `ha-tree-indicator` (src/components/ha-tree-indicator.ts)
+ */
 @Composable
 private fun TreeIndicator(end: Boolean, modifier: Modifier) {
     val color = LocalHAColorScheme.current.colorBorderNeutralQuiet
@@ -255,7 +272,11 @@ private fun TreeIndicator(end: Boolean, modifier: Modifier) {
     }
 }
 
-/** That nothing matches the search, or nothing is offered. */
+/**
+ * That nothing matches the search, or nothing is offered.
+ *
+ * Upstream: part of `ha-picker-combo-box` (src/components/ha-picker-combo-box.ts)
+ */
 @Composable
 private fun EmptyRow(text: String, searching: Boolean) {
     val colors = LocalHAColorScheme.current
@@ -276,6 +297,9 @@ private fun EmptyRow(text: String, searching: Boolean) {
 /**
  * An item's or chip's icon: a named icon in [tint], an entity's state badge (in its state's colour for lights), or
  * an integration's logo.
+ *
+ * Upstream: part of `ha-target-picker`, `ha-target-picker-value-chip` (src/components/ha-target-picker.ts;
+ * src/components/target-picker/ha-target-picker-value-chip.ts)
  */
 @Composable
 internal fun TargetIconView(icon: TargetIcon, hass: HassSnapshot, modifier: Modifier, tint: Color) {

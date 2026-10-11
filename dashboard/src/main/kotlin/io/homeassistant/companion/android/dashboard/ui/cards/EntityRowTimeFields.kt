@@ -29,6 +29,9 @@ import java.time.LocalTime
 /**
  * Port of `ha-time-input`: an hours box ("hh"), a minutes box ("mm") and, on a 12-hour clock, AM or PM. The time is
  * set when a box is left or done, or AM/PM changes, keeping the seconds.
+ *
+ * Upstream: `ha-time-input`, `ha-base-time-input` (src/components/ha-time-input.ts;
+ * src/components/ha-base-time-input.ts)
  */
 @Composable
 internal fun TimeFields(control: RowDateTime, onAction: (CardAction) -> Unit) {
@@ -71,6 +74,11 @@ internal fun TimeFields(control: RowDateTime, onAction: (CardAction) -> Unit) {
     }
 }
 
+/**
+ * One two-digit box of the time (hours or minutes), handing it over when done or left.
+ *
+ * Upstream: part of `ha-base-time-input` (src/components/ha-base-time-input.ts)
+ */
 @Composable
 private fun TimeBox(value: String, label: String, enabled: Boolean, onChange: (String) -> Unit, onDone: () -> Unit) {
     var focused by remember { mutableStateOf(false) }

@@ -30,6 +30,8 @@ import net.jeremycasey.homeassistantnative.R
 /**
  * The servers to switch to, as the companion app's `ServerChooser` sheet (app/src/main/kotlin/io/homeassistant/
  * companion/android/settings/server/ServerChooser.kt); [onSelected] gets the one chosen.
+ *
+ * Upstream: none (native: the app's server settings)
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -46,6 +46,10 @@ import java.time.ZonedDateTime
  * comparison of the frontend's period selector (`hui-energy-date-selection-card`, frontend@20260624.6
  * src/panels/lovelace/components/hui-energy-period-selector.ts). The frontend's free date range picker is not
  * offered yet.
+ *
+ * Upstream: `hui-energy-date-selection-card`, `hui-energy-period-selector`
+ * (src/panels/lovelace/cards/energy/hui-energy-date-selection-card.ts;
+ * src/panels/lovelace/components/hui-energy-period-selector.ts)
  */
 @Composable
 internal fun EnergyDateSelectionCard(
@@ -96,6 +100,11 @@ internal fun EnergyDateSelectionCard(
     }
 }
 
+/**
+ * An icon button of the period selector, described by [label].
+ *
+ * Upstream: part of `hui-energy-period-selector` (src/panels/lovelace/components/hui-energy-period-selector.ts)
+ */
 @Composable
 private fun SelectorButton(icon: String, label: String, onClick: () -> Unit) {
     IconButton(onClick = onClick, modifier = Modifier.semantics { contentDescription = label }) {
@@ -103,7 +112,11 @@ private fun SelectorButton(icon: String, label: String, onClick: () -> Unit) {
     }
 }
 
-/** The ranges the frontend's date picker offers, from a calendar button. */
+/**
+ * The ranges the frontend's date picker offers, from a calendar button.
+ *
+ * Upstream: part of `hui-energy-period-selector` (src/panels/lovelace/components/hui-energy-period-selector.ts)
+ */
 @Composable
 private fun RangeMenu(localize: (String) -> String, onPick: (EnergyRangePreset) -> Unit) {
     var open by remember { mutableStateOf(false) }
@@ -123,7 +136,11 @@ private fun RangeMenu(localize: (String) -> String, onPick: (EnergyRangePreset) 
     }
 }
 
-/** Going to now and comparing, which the frontend collapses in a menu on narrow screens. */
+/**
+ * Going to now and comparing, which the frontend collapses in a menu on narrow screens.
+ *
+ * Upstream: part of `hui-energy-period-selector` (src/panels/lovelace/components/hui-energy-period-selector.ts)
+ */
 @Composable
 private fun OverflowMenu(
     nowLabel: String,

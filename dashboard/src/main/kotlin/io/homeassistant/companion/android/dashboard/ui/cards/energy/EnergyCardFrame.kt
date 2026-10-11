@@ -29,6 +29,8 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardCardSurfac
 /**
  * An energy card: its title (`ha-card`'s header), then [content] with its collection's data; "Loading…" until there
  * is data, as the frontend's cards show, and an error when it couldn't be loaded rather than nothing.
+ *
+ * Upstream: `ha-card` (src/components/ha-card.ts)
  */
 @Composable
 internal fun EnergyCardFrame(
@@ -68,6 +70,11 @@ internal fun EnergyCardFrame(
     }
 }
 
+/**
+ * The frame's loading or error message, in secondary text.
+ *
+ * Upstream: none (native: the frame's loading or error text; upstream each energy card writes its own)
+ */
 @Composable
 private fun Message(text: String) {
     Text(

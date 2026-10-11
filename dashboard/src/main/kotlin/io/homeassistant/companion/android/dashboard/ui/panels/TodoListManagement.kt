@@ -30,7 +30,11 @@ internal class TodoListManagement(
     private val viewModel: TodoListsViewModel,
     private val onDelete: (String) -> Unit,
 ) {
-    /** "Delete list" for [entityId] when it's a local list (`local_todo`), else `null`. */
+    /**
+     * "Delete list" for [entityId] when it's a local list (`local_todo`), else `null`.
+     *
+     * Upstream: part of `ha-panel-todo` (src/panels/todo/ha-panel-todo.ts)
+     */
     @Composable
     fun deleter(entityId: String): (() -> Unit)? {
         val entry by remember(entityId) { viewModel.entry(entityId) }.collectAsStateWithLifecycle(Loadable.Loading)
@@ -42,6 +46,8 @@ internal class TodoListManagement(
 /**
  * The to-do panel's list management: the "Create list" flow's dialog, choosing the new list once it shows among
  * [lists], "Delete list" after confirming, and what deleting led to. [onChoose] shows a list (`null`: the first).
+ *
+ * Upstream: part of `ha-panel-todo` (src/panels/todo/ha-panel-todo.ts)
  */
 @Composable
 internal fun rememberTodoListManagement(
@@ -83,7 +89,11 @@ internal fun rememberTodoListManagement(
     return remember(viewModel) { TodoListManagement(viewModel::onCreateList, viewModel) { deleting = it } }
 }
 
-/** Port of `_deleteList`'s confirmation: "Remove Groceries?". */
+/**
+ * Port of `_deleteList`'s confirmation: "Remove Groceries?".
+ *
+ * Upstream: part of `ha-panel-todo` (src/panels/todo/ha-panel-todo.ts)
+ */
 @Composable
 private fun DeleteDialog(hass: HassSnapshot, entityId: String, onDelete: () -> Unit, onDone: () -> Unit) {
     val name = hass.states[entityId]?.stateName() ?: entityId
@@ -101,7 +111,11 @@ private fun DeleteDialog(hass: HassSnapshot, entityId: String, onDelete: () -> U
     )
 }
 
-/** That Home Assistant must restart to finish deleting, or why deleting failed. */
+/**
+ * That Home Assistant must restart to finish deleting, or why deleting failed.
+ *
+ * Upstream: part of `ha-panel-todo` (src/panels/todo/ha-panel-todo.ts)
+ */
 @Composable
 private fun OutcomeDialog(hass: HassSnapshot, event: ListEvent, onClose: () -> Unit) {
     val colors = LocalHAColorScheme.current

@@ -50,6 +50,8 @@ import kotlinx.serialization.json.JsonObject
  * Port of the data entry flow dialog (frontend@20260624.6 src/dialogs/config-flow/) for a config flow: the step's
  * form with its errors, then that the entry was created ("Finish"), or why the flow ended ("Close"). Closing before
  * the end drops the flow.
+ *
+ * Upstream: `dialog-data-entry-flow` (src/dialogs/config-flow/dialog-data-entry-flow.ts)
  */
 @Composable
 internal fun ConfigFlowDialog(flow: ListFlow, localize: Localize, onSubmit: (JsonObject) -> Unit, onClose: () -> Unit) {
@@ -79,7 +81,11 @@ internal fun ConfigFlowDialog(flow: ListFlow, localize: Localize, onSubmit: (Jso
     }
 }
 
-/** A step's form: its description, its fields, its errors, and its submit button. */
+/**
+ * A step's form: its description, its fields, its errors, and its submit button.
+ *
+ * Upstream: `step-flow-form` (src/dialogs/config-flow/step-flow-form.ts)
+ */
 @Composable
 private fun FormStep(
     step: FlowStep.Form,
@@ -123,7 +129,11 @@ private fun FormStep(
     )
 }
 
-/** A field as its type is filled in, with its help and its error under it. */
+/**
+ * A field as its type is filled in, with its help and its error under it.
+ *
+ * Upstream: part of `ha-form` (src/components/ha-form/ha-form.ts)
+ */
 @Composable
 private fun FlowFieldInput(
     field: FlowField,
@@ -188,7 +198,12 @@ private fun FlowFieldInput(
     }
 }
 
-/** A dialog with [title], [content] and one button that closes it. */
+/**
+ * A dialog with [title], [content] and one button that closes it.
+ *
+ * Upstream: `step-flow-create-entry`, `step-flow-abort` (src/dialogs/config-flow/step-flow-create-entry.ts;
+ * src/dialogs/config-flow/step-flow-abort.ts)
+ */
 @Composable
 private fun FlowAlert(title: String?, onClose: () -> Unit, closeLabel: String, content: @Composable () -> Unit) {
     AlertDialog(

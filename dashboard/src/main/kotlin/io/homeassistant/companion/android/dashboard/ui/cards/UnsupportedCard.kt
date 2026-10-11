@@ -10,6 +10,11 @@ import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 
+/**
+ * A placeholder saying that [label] can't be shown.
+ *
+ * Upstream: none (native: a placeholder where the native dashboard can't draw a card)
+ */
 @Composable
 internal fun UnsupportedCard(label: String, modifier: Modifier = Modifier) {
     val colors = LocalHAColorScheme.current

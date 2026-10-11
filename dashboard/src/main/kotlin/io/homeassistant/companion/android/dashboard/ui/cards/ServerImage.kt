@@ -16,6 +16,8 @@ internal val LocalBrandsToken = compositionLocalOf<String?> { null }
  * An image from the server: [path] is resolved against [LocalServerUrl] like the frontend's `hassUrl`, full URLs
  * are used as they are, and the brands API's images get its token ([LocalBrandsToken]); nothing shows until it's
  * known. Loaded with the app's image loader, which uses its HTTP client (certificates included).
+ *
+ * Upstream: `hassUrl` (src/state/connection-mixin.ts)
  */
 @Composable
 internal fun ServerImage(

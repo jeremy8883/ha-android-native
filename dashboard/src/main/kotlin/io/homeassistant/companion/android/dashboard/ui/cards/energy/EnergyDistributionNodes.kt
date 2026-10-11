@@ -33,7 +33,11 @@ internal fun Modifier.pullUp(shift: Dp) = layout { measurable, constraints ->
     layout(placeable.width, (placeable.height - pixels).coerceAtLeast(0)) { placeable.place(0, -pixels) }
 }
 
-/** A circle with its content; [border] `null` draws none (the home with its ring). */
+/**
+ * A circle with its content; [border] `null` draws none (the home with its ring).
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 internal fun Node(border: Color?, content: @Composable () -> Unit) {
     val modifier = Modifier.size(CIRCLE)
@@ -44,17 +48,31 @@ internal fun Node(border: Color?, content: @Composable () -> Unit) {
     ) { content() }
 }
 
+/**
+ * A node's icon.
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 internal fun NodeIcon(icon: String, tint: Color = LocalHAColorScheme.current.colorTextPrimary) {
     DashboardIcon(icon, tint, Modifier.padding(bottom = ICON_GAP).size(ICON))
 }
 
+/**
+ * A line of text in a node.
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 internal fun NodeText(text: String, color: Color = LocalHAColorScheme.current.colorTextPrimary) {
     Text(text, color = color, fontSize = FONT_S, lineHeight = LINE, textAlign = TextAlign.Center, maxLines = 1)
 }
 
-/** An amount with its direction (a small arrow), in its flow's colour. */
+/**
+ * An amount with its direction (a small arrow), in its flow's colour.
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 internal fun Amount(arrow: String?, text: String, color: Color) {
     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -63,6 +81,11 @@ internal fun Amount(arrow: String?, text: String, color: Color) {
     }
 }
 
+/**
+ * A node's name, under or over its circle.
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 internal fun NodeLabel(text: String) {
     Text(

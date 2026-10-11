@@ -50,7 +50,12 @@ import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.Instant
 import java.time.ZonedDateTime
 
-/** An entities card: an optional header, then one row per entity with its control or state. */
+/**
+ * An entities card: an optional header, then one row per entity with its control or state.
+ *
+ * Upstream: `hui-entities-card`, with `hui-entities-toggle` (src/panels/lovelace/cards/hui-entities-card.ts;
+ * src/panels/lovelace/components/hui-entities-toggle.ts)
+ */
 @Composable
 internal fun EntitiesCard(
     card: CardConfig,
@@ -95,6 +100,12 @@ internal fun EntitiesCard(
     }
 }
 
+/**
+ * One row of an entities card: the entity's badge and name opening its details, then its control or state.
+ *
+ * Upstream: `hui-generic-entity-row`, `createRowElement` (src/panels/lovelace/components/hui-generic-entity-row.ts;
+ * src/panels/lovelace/create-element/create-row-element.ts)
+ */
 @Composable
 private fun EntityRow(row: EntityRowModel, now: Instant, interactions: CardInteractions) {
     val colors = LocalHAColorScheme.current
@@ -139,7 +150,11 @@ private fun EntityRow(row: EntityRowModel, now: Instant, interactions: CardInter
     }
 }
 
-/** The control on the right of a row (or filling it, for one carrying the name), else its state. */
+/**
+ * The control on the right of a row (or filling it, for one carrying the name), else its state.
+ *
+ * Upstream: the `hui-*-entity-row` elements (src/panels/lovelace/entity-rows/)
+ */
 @Composable
 private fun RowScope.EntityRowControl(
     row: EntityRowModel,
@@ -148,7 +163,11 @@ private fun RowScope.EntityRowControl(
     interactions: CardInteractions,
 ) = RowControlContent(row.control, row.state, textColor, now, interactions.onAction)
 
-/** A row's [control] (a switch, buttons or an input), or its [state] text without one. */
+/**
+ * A row's [control] (a switch, buttons or an input), or its [state] text without one.
+ *
+ * Upstream: the `hui-*-entity-row` elements (src/panels/lovelace/entity-rows/)
+ */
 @Composable
 internal fun RowScope.RowControlContent(
     control: RowControl?,
@@ -186,7 +205,15 @@ private fun rowIconButtons(control: RowControl): List<RowIconButton> = when (con
     else -> emptyList()
 }
 
-/** A text button of a row, a cancelling one in the danger colour. */
+/**
+ * A text button of a row, a cancelling one in the danger colour.
+ *
+ * Upstream: `hui-button-entity-row`, `hui-input-button-entity-row`, `hui-lock-entity-row`, `hui-scene-entity-row`,
+ * `hui-script-entity-row` (src/panels/lovelace/entity-rows/hui-button-entity-row.ts;
+ * src/panels/lovelace/entity-rows/hui-input-button-entity-row.ts;
+ * src/panels/lovelace/entity-rows/hui-lock-entity-row.ts; src/panels/lovelace/entity-rows/hui-scene-entity-row.ts;
+ * src/panels/lovelace/entity-rows/hui-script-entity-row.ts)
+ */
 @Composable
 private fun RowTextButton(button: RowButton, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -199,7 +226,12 @@ private fun RowTextButton(button: RowButton, onAction: (CardAction) -> Unit) {
     }
 }
 
-/** An icon button of a row; an unsupported one keeps its place, invisible. The current state's is in the accent. */
+/**
+ * An icon button of a row; an unsupported one keeps its place, invisible. The current state's is in the accent.
+ *
+ * Upstream: `ha-cover-controls`, part of `hui-media-player-entity-row` (src/components/ha-cover-controls.ts;
+ * src/panels/lovelace/entity-rows/hui-media-player-entity-row.ts)
+ */
 @Composable
 internal fun RowIconButtonView(button: RowIconButton, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -220,7 +252,11 @@ internal fun RowIconButtonView(button: RowIconButton, onAction: (CardAction) -> 
     }
 }
 
-/** Port of `state-badge` in a row: the entity's picture, else its icon in its badge colour; a warning when missing. */
+/**
+ * Port of `state-badge` in a row: the entity's picture, else its icon in its badge colour; a warning when missing.
+ *
+ * Upstream: `state-badge` (src/components/entity/state-badge.ts)
+ */
 @Composable
 private fun RowBadge(row: EntityRowModel) {
     val colors = LocalHAColorScheme.current

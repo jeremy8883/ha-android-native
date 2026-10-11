@@ -30,7 +30,11 @@ import io.homeassistant.companion.android.dashboard.ui.controls.haSliderColors
 // The parts of the entities card's domain rows: the media under a player's name, a two-line state (climate,
 // humidifier, event), a weather's temperature over today's high and low, and a player's volume line.
 
-/** The row's name, with a second line under it (a media player's media). */
+/**
+ * The row's name, with a second line under it (a media player's media).
+ *
+ * Upstream: part of `hui-generic-entity-row` (src/panels/lovelace/components/hui-generic-entity-row.ts)
+ */
 @Composable
 internal fun RowName(name: String, secondary: String?, color: Color) {
     val colors = LocalHAColorScheme.current
@@ -54,7 +58,14 @@ internal fun RowName(name: String, secondary: String?, color: Color) {
     }
 }
 
-/** A state on two lines, right-aligned: climate and humidifier readings, an event's type, a weather's extremes. */
+/**
+ * A state on two lines, right-aligned: climate and humidifier readings, an event's type, a weather's extremes.
+ *
+ * Upstream: `hui-climate-entity-row`, `hui-humidifier-entity-row`, `hui-event-entity-row`, `hui-weather-entity-row`
+ * (src/panels/lovelace/entity-rows/hui-climate-entity-row.ts;
+ * src/panels/lovelace/entity-rows/hui-humidifier-entity-row.ts;
+ * src/panels/lovelace/entity-rows/hui-event-entity-row.ts; src/panels/lovelace/entity-rows/hui-weather-entity-row.ts)
+ */
 @Composable
 internal fun DomainRowState(state: String?, domain: DomainRow, color: Color) {
     val colors = LocalHAColorScheme.current
@@ -76,7 +87,11 @@ internal fun DomainRowState(state: String?, domain: DomainRow, color: Color) {
     }
 }
 
-/** A playing media player's second line: mute, the volume slider (set when let go) or steps, then its buttons. */
+/**
+ * A playing media player's second line: mute, the volume slider (set when let go) or steps, then its buttons.
+ *
+ * Upstream: part of `hui-media-player-entity-row` (src/panels/lovelace/entity-rows/hui-media-player-entity-row.ts)
+ */
 @Composable
 internal fun MediaVolumeLine(media: RowMedia, volume: RowVolume, onAction: (CardAction) -> Unit) {
     var dragging by remember { mutableStateOf<Float?>(null) }

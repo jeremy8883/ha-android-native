@@ -40,6 +40,8 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 /**
  * While comparing, which periods are compared, with a link to compare with the other kind of period and a button
  * to stop comparing; nothing otherwise. Port of `hui-energy-compare-card` (frontend@20260624.6).
+ *
+ * Upstream: `hui-energy-compare-card` (src/panels/lovelace/cards/energy/hui-energy-compare-card.ts)
  */
 @Composable
 internal fun EnergyCompareCard(

@@ -20,6 +20,8 @@ import io.homeassistant.companion.android.dashboard.ui.controls.VerticalSelect
  * The controls of an alarm panel's details, port of `more-info-alarm_control_panel` (frontend@20260624.6
  * src/dialogs/more-info/controls/): its modes as tall buttons (at least 80 high each), or, while triggered, arming
  * or pending, its pulsing icon with a disarm button.
+ *
+ * Upstream: `more-info-alarm_control_panel` (src/dialogs/more-info/controls/more-info-alarm_control_panel.ts)
  */
 @Composable
 internal fun MoreInfoAlarm(info: AlarmMoreInfo, onAction: (CardAction) -> Unit) {

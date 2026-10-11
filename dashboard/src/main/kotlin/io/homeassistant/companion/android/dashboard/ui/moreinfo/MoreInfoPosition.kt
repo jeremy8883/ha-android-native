@@ -46,6 +46,9 @@ import kotlin.math.roundToInt
  * The controls of a cover's or valve's details, port of `more-info-cover` and `more-info-valve`
  * (frontend@20260624.6 src/dialogs/more-info/controls/): the position (and tilt) sliders, or the buttons (a switch
  * when it only opens and closes), a pair of buttons to switch between them, and the favourite positions.
+ *
+ * Upstream: `more-info-cover`, `more-info-valve` (src/dialogs/more-info/controls/more-info-cover.ts;
+ * src/dialogs/more-info/controls/more-info-valve.ts)
  */
 @Composable
 internal fun MoreInfoPosition(
@@ -84,7 +87,13 @@ internal fun MoreInfoPosition(
     }
 }
 
-/** Port of the buttons' `ha-control-button-group` (a column) or their cross, around stop. */
+/**
+ * Port of the buttons' `ha-control-button-group` (a column) or their cross, around stop.
+ *
+ * Upstream: `ha-state-control-cover-buttons`, `ha-state-control-valve-buttons`
+ * (src/state-control/cover/ha-state-control-cover-buttons.ts;
+ * src/state-control/valve/ha-state-control-valve-buttons.ts)
+ */
 @Composable
 private fun PositionButtonsView(buttons: PositionButtons, onAction: (CardAction) -> Unit) {
     when (buttons) {
@@ -111,7 +120,11 @@ private fun PositionButtonsView(buttons: PositionButtons, onAction: (CardAction)
     }
 }
 
-/** Port of `ha-control-button`: a rounded button with its icon, greyed while it can't be used. */
+/**
+ * Port of `ha-control-button`: a rounded button with its icon, greyed while it can't be used.
+ *
+ * Upstream: `ha-control-button` (src/components/ha-control-button.ts)
+ */
 @Composable
 private fun TallButton(button: PositionButton, onAction: (CardAction) -> Unit, modifier: Modifier) {
     val colors = LocalHAColorScheme.current

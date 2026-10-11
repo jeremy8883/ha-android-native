@@ -59,6 +59,8 @@ import java.time.ZonedDateTime
 /**
  * Port of `ha-date-range-picker` with `time-picker`: the period's ends in a field that opens the picker, with arrows
  * to the period before and after, as long as it.
+ *
+ * Upstream: `ha-date-range-picker` (src/components/date-picker/ha-date-range-picker.ts)
  */
 @Composable
 internal fun DateRangeField(
@@ -85,6 +87,8 @@ internal fun DateRangeField(
 /**
  * The presets ("Today", "Yesterday", "This week"…) on a row that scrolls, the one the period is as of [now] selected;
  * a tap picks its period.
+ *
+ * Upstream: part of `date-range-picker` (src/components/date-picker/date-range-picker.ts)
  */
 // UPSTREAM-DIFF: the presets sit on the page above the field, the period's one selected; upstream lists them inside
 // its picker (the user asked for them on the page)
@@ -112,7 +116,11 @@ private fun PresetChips(
     }
 }
 
-/** The period's field, opening the picker, with the arrows to the period before and after. */
+/**
+ * The period's field, opening the picker, with the arrows to the period before and after.
+ *
+ * Upstream: part of `ha-date-range-picker` (src/components/date-picker/ha-date-range-picker.ts)
+ */
 @Composable
 private fun RangeRow(
     range: DateRange,
@@ -139,6 +147,8 @@ private fun RangeRow(
 /**
  * The read-only field the frontend draws (a filled `ha-textarea`): a small label over the value on the input fill,
  * with a line under it.
+ *
+ * Upstream: `ha-textarea` (src/components/ha-textarea.ts)
  */
 @Composable
 private fun FilledField(label: String, value: String, modifier: Modifier) {
@@ -171,6 +181,12 @@ private fun FilledField(label: String, value: String, modifier: Modifier) {
     }
 }
 
+/**
+ * An arrow to the period before or after, labelled for accessibility.
+ *
+ * Upstream: `ha-icon-button-prev`, `ha-icon-button-next` (src/components/ha-icon-button-prev.ts;
+ * src/components/ha-icon-button-next.ts)
+ */
 @Composable
 private fun ArrowButton(icon: String, label: String, onClick: () -> Unit) {
     IconButton(onClick = onClick, modifier = Modifier.semantics { contentDescription = label }) {
@@ -181,6 +197,8 @@ private fun ArrowButton(icon: String, label: String, onClick: () -> Unit) {
 /**
  * The picker: the presets ("Today", "Yesterday", "This week"…), the days on a calendar, and the start and end times
  * (`time-picker`). A preset is applied at once; the calendar's days with the times when selected.
+ *
+ * Upstream: `date-range-picker` (src/components/date-picker/date-range-picker.ts)
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -229,7 +247,11 @@ private fun DateRangeDialog(
     }
 }
 
-/** A time of the picker, as a field opening the clock. */
+/**
+ * A time of the picker, as a field opening the clock.
+ *
+ * Upstream: `ha-time-input` (src/components/ha-time-input.ts)
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TimeButton(

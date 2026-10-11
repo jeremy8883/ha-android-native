@@ -29,7 +29,11 @@ import kotlin.math.max
 // home's ring. Geometry of the SVGs of `hui-energy-distribution-card` (frontend@20260624.6), whose lines use a
 // 100×100 view box scaled to cover their area (`xMidYMid slice`) with strokes that don't scale.
 
-/** The lines between the grid, solar, battery and home, with a dot along each flow. */
+/**
+ * The lines between the grid, solar, battery and home, with a dot along each flow.
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 internal fun DistributionLines(model: EnergyDistributionModel, colors: DistributionColors, modifier: Modifier) {
     val time = rememberAnimationTime()
@@ -129,7 +133,11 @@ private fun dots(
 
 private class Line(val flow: DistributionFlow, val path: Path, val color: Color)
 
-/** A short vertical line under (or, [upwards], above) gas, water and low-carbon, with a dot when [animated]. */
+/**
+ * A short vertical line under (or, [upwards], above) gas, water and low-carbon, with a dot when [animated].
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 internal fun FlowLine(color: Color, animated: Boolean, upwards: Boolean = false) {
     val time = rememberAnimationTime(animated)
@@ -144,7 +152,11 @@ internal fun FlowLine(color: Color, animated: Boolean, upwards: Boolean = false)
     }
 }
 
-/** The home's ring: the shares of its consumption. Like an SVG circle, it starts at three o'clock, clockwise. */
+/**
+ * The home's ring: the shares of its consumption. Like an SVG circle, it starts at three o'clock, clockwise.
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 internal fun HomeRing(ring: HomeRing, colors: DistributionColors, modifier: Modifier) {
     Canvas(modifier) {
@@ -172,7 +184,11 @@ internal fun HomeRing(ring: HomeRing, colors: DistributionColors, modifier: Modi
     }
 }
 
-/** The milliseconds since the dots started moving, updated every frame while [running]. */
+/**
+ * The milliseconds since the dots started moving, updated every frame while [running].
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 private fun rememberAnimationTime(running: Boolean = true): MutableLongState {
     val time = remember { mutableLongStateOf(0L) }

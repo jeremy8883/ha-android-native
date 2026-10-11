@@ -43,6 +43,8 @@ import timber.log.Timber
  * A card the native dashboard can't draw (a custom card, or a built-in one not ported yet), drawn by the
  * frontend in a web view: signed in as the companion app's web view is, showing only the card at its own height.
  * Its details and pages open in the app. While it loads, a thin progress bar; if it can't, the placeholder.
+ *
+ * Upstream: `hui-card`, drawn by the frontend itself in a web view (src/panels/lovelace/cards/hui-card.ts)
  */
 @Composable
 internal fun WebCard(config: JsonObject, type: String, onAction: (CardAction) -> Unit, modifier: Modifier = Modifier) {

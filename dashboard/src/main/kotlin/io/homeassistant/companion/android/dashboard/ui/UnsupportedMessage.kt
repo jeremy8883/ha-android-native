@@ -15,7 +15,11 @@ import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 
-/** What can't be shown natively, with a button opening it in the companion app when other pages can be opened. */
+/**
+ * What can't be shown natively, with a button opening it in the companion app when other pages can be opened.
+ *
+ * Upstream: none (native: what the native dashboards can't show)
+ */
 @Composable
 internal fun UnsupportedMessage(text: String, onOpenElsewhere: (() -> Unit)?) {
     Column(

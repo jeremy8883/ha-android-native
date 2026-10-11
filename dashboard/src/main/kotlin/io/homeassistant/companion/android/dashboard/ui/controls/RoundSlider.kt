@@ -30,6 +30,8 @@ import kotlin.math.sqrt
  * Port of `@thomasloven/round-slider` 0.6.0 as the light card uses it: a thin 270° arc open at the bottom, its
  * [track] colour behind a [bar] up to [value] (from [min] to [max]) ending in a round handle, as wide as it's given
  * and as tall as the arc. Dragging on the arc reports each value to [onChanging] and the last to [onChanged].
+ *
+ * Upstream: `round-slider` as `hui-light-card` uses it (src/panels/lovelace/cards/hui-light-card.ts)
  */
 @Composable
 internal fun RoundSlider(

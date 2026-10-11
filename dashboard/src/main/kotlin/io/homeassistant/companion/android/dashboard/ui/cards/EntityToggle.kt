@@ -17,6 +17,8 @@ import kotlinx.coroutines.delay
  * (frontend@20260624.6 src/components/entity/ha-entity-toggle.ts), it moves as soon as it is tapped, and moves back
  * when no new state arrived within 2 seconds, for example because the action failed.
  *
+ * Upstream: `ha-entity-toggle` (src/components/entity/ha-entity-toggle.ts)
+ *
  * @param updatedAt when the entity's state object last changed; a change shows the entity's state again
  */
 @Composable

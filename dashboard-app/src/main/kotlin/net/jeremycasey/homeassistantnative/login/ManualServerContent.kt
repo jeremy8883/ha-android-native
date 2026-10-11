@@ -33,6 +33,8 @@ import net.jeremycasey.homeassistantnative.R
 /**
  * The server's address typed in, as the companion app's manual server screen (app/src/main/kotlin/io/homeassistant/
  * companion/android/onboarding/manualserver/ManualServerScreen.kt), with why connecting to it failed.
+ *
+ * Upstream: none (native: the companion app's onboarding)
  */
 @Composable
 internal fun ColumnScope.ManualServerContent(

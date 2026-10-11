@@ -21,6 +21,11 @@ import java.time.ZoneOffset
 /**
  * A date and/or time row's fields: the date shows its value and opens the platform's calendar (`ha-date-input`), the
  * time is typed as hours and minutes with AM/PM on a 12-hour clock (`ha-time-input`), setting the entity when done.
+ *
+ * Upstream: `hui-date-entity-row`, `hui-time-entity-row`, `hui-datetime-entity-row`, `hui-input-datetime-entity-row`
+ * (src/panels/lovelace/entity-rows/hui-date-entity-row.ts; src/panels/lovelace/entity-rows/hui-time-entity-row.ts;
+ * src/panels/lovelace/entity-rows/hui-datetime-entity-row.ts;
+ * src/panels/lovelace/entity-rows/hui-input-datetime-entity-row.ts)
  */
 @Composable
 internal fun RowDateTimeControl(control: RowDateTime, onAction: (CardAction) -> Unit) {
@@ -30,6 +35,11 @@ internal fun RowDateTimeControl(control: RowDateTime, onAction: (CardAction) -> 
     }
 }
 
+/**
+ * The date as a button, opening Android's date picker; the chosen day sets the entity.
+ *
+ * Upstream: `ha-date-input` (src/components/ha-date-input.ts)
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 // UPSTREAM-DIFF: Android's own picker; upstream opens its own calendar (the user chose native pickers for fields)

@@ -65,7 +65,11 @@ import net.jeremycasey.homeassistantnative.R
 // The companion app's server discovery screen (app/src/main/kotlin/io/homeassistant/companion/android/onboarding/
 // serverdiscovery/ServerDiscoveryScreen.kt): searching, then the servers found, or typing the address.
 
-/** Searching the network, with the servers found as they come, and a way to type the address instead. */
+/**
+ * Searching the network, with the servers found as they come, and a way to type the address instead.
+ *
+ * Upstream: none (native: the companion app's onboarding)
+ */
 @Composable
 internal fun ColumnScope.ServerDiscoveryContent(
     discovery: Discovery,
@@ -95,7 +99,11 @@ internal fun ColumnScope.ServerDiscoveryContent(
     )
 }
 
-/** A server found, as a bordered row with the Home Assistant logo, its name and its address. */
+/**
+ * A server found, as a bordered row with the Home Assistant logo, its name and its address.
+ *
+ * Upstream: none (native: the companion app's onboarding)
+ */
 @Composable
 private fun ServerItem(server: HomeAssistantInstance, enabled: Boolean, onClick: () -> Unit) {
     val rowShape = RoundedCornerShape(size = HARadius.XL)
@@ -127,7 +135,11 @@ private fun ServerItem(server: HomeAssistantInstance, enabled: Boolean, onClick:
     }
 }
 
-/** The searching animation; after a while without a server (or when searching failed), what to check. */
+/**
+ * The searching animation; after a while without a server (or when searching failed), what to check.
+ *
+ * Upstream: none (native: the companion app's onboarding)
+ */
 @Composable
 private fun ColumnScope.ScanningForServer(failed: Boolean) {
     var waitedLong by remember { mutableStateOf(false) }
@@ -153,7 +165,11 @@ private fun ColumnScope.ScanningForServer(failed: Boolean) {
     Spacer(modifier = Modifier.weight(1f - 2f * POSITION))
 }
 
-/** Dots turning around the Home Assistant mark, which pulses. */
+/**
+ * Dots turning around the Home Assistant mark, which pulses.
+ *
+ * Upstream: none (native: the companion app's onboarding)
+ */
 @Composable
 private fun AnimatedIcon() {
     Box(modifier = Modifier.padding(HADimens.SPACE3)) {

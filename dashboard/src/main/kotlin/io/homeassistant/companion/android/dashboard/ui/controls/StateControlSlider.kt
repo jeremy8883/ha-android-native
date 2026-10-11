@@ -30,6 +30,13 @@ import kotlinx.coroutines.delay
 /**
  * A [ControlSlider] as the details draw it: tall, in the middle (`ha-state-control-*` styles). With
  * [whileMoving], the value is also sent at most every half second while dragging, as the colour pickers do.
+ *
+ * Upstream: `ha-state-control-light-brightness`, `ha-state-control-fan-speed`, `ha-state-control-cover-position`,
+ * `ha-state-control-valve-position`, `light-color-temp-picker`
+ * (src/state-control/light/ha-state-control-light-brightness.ts; src/state-control/fan/ha-state-control-fan-speed.ts;
+ * src/state-control/cover/ha-state-control-cover-position.ts;
+ * src/state-control/valve/ha-state-control-valve-position.ts;
+ * src/dialogs/more-info/components/lights/light-color-temp-picker.ts)
  */
 @Composable
 internal fun StateControlSlider(

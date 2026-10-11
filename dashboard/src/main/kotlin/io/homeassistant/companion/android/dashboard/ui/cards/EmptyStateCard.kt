@@ -19,7 +19,11 @@ import io.homeassistant.companion.android.dashboard.derive.emptyStateModel
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
-/** An empty state: a large icon, a title, a text and buttons, centred. */
+/**
+ * An empty state: a large icon, a title, a text and buttons, centred.
+ *
+ * Upstream: `hui-empty-state-card` (src/panels/lovelace/cards/hui-empty-state-card.ts)
+ */
 @Composable
 internal fun EmptyStateCard(card: CardConfig, interactions: CardInteractions, modifier: Modifier = Modifier) {
     val model = remember(card) { emptyStateModel(card) }

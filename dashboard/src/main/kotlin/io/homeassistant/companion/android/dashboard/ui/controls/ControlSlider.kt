@@ -53,6 +53,8 @@ import kotlin.math.roundToInt
  * filled from the start (the bottom, when [vertical]) up to the value, or a cursor at the value. Dragging and
  * tapping set it at the finger; [onMoved] follows a drag (with `null` when it ends) and [onChanged] gets the value
  * it settles on. It shows the value it was set to until [value] changes.
+ *
+ * Upstream: `ha-control-slider` (src/components/ha-control-slider.ts)
  */
 @Composable
 internal fun ControlSlider(
@@ -282,7 +284,11 @@ private fun DrawScope.drawCursor(fraction: Float, vertical: Boolean, style: Cont
     }
 }
 
-/** The value while dragging: above a horizontal slider, left of a vertical one, following the value. */
+/**
+ * The value while dragging: above a horizontal slider, left of a vertical one, following the value.
+ *
+ * Upstream: part of `ha-control-slider` (src/components/ha-control-slider.ts)
+ */
 @Composable
 private fun Tooltip(text: String, fraction: Float, vertical: Boolean, style: ControlSliderStyle) {
     val colors = LocalHAColorScheme.current

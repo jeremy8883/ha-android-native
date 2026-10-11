@@ -50,6 +50,8 @@ import kotlin.math.roundToInt
  * Port of `dialog-light-color-favorite` (frontend@20260624.6 src/dialogs/more-info/components/lights/): the colour
  * or temperature picker, which sets the light as it's moved, and saves the colour last set. It starts from
  * [initial], or the light's own colour.
+ *
+ * Upstream: `dialog-light-color-favorite` (src/dialogs/more-info/components/lights/dialog-light-color-favorite.ts)
  */
 @Composable
 internal fun FavoriteColorDialog(
@@ -117,7 +119,11 @@ internal fun FavoriteColorDialog(
     }
 }
 
-/** A question before something that can't be undone, with its [confirm] button styled as dangerous. */
+/**
+ * A question before something that can't be undone, with its [confirm] button styled as dangerous.
+ *
+ * Upstream: `showConfirmationDialog` (src/dialogs/generic/show-dialog-box.ts)
+ */
 @Composable
 internal fun ConfirmDialog(title: String, text: String, confirm: String, onConfirm: () -> Unit, onDismiss: () -> Unit) {
     AlertDialog(
@@ -132,6 +138,8 @@ internal fun ConfirmDialog(title: String, text: String, confirm: String, onConfi
 /**
  * Port of the favourites' copy dialog (`copyFavoriteOptionsToEntities`, src/dialogs/more-info/favorites.ts): the
  * entities that can take the favourites, to pick which receive them.
+ *
+ * Upstream: `copyFavoriteOptionsToEntities` (src/dialogs/more-info/favorites.ts)
  */
 @Composable
 internal fun CopyFavoritesDialog(

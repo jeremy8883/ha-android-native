@@ -65,6 +65,8 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
  * An alarm panel card, port of `hui-alarm-panel-card` (frontend@20260624.6
  * src/panels/lovelace/cards/hui-alarm-panel-card.ts): the panel's name and its state in a coloured chip, the arm (or
  * disarm) buttons, and the code with a keypad when one is needed.
+ *
+ * Upstream: `hui-alarm-panel-card` (src/panels/lovelace/cards/hui-alarm-panel-card.ts)
  */
 @Composable
 internal fun AlarmPanelCard(
@@ -97,7 +99,11 @@ internal fun AlarmPanelCard(
     }
 }
 
-/** The name, and the state chip opening the panel's details. */
+/**
+ * The name, and the state chip opening the panel's details.
+ *
+ * Upstream: part of `hui-alarm-panel-card` (src/panels/lovelace/cards/hui-alarm-panel-card.ts)
+ */
 @Composable
 private fun AlarmHeader(model: AlarmPanelCardModel.Shown, onMoreInfo: () -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -121,7 +127,12 @@ private fun AlarmHeader(model: AlarmPanelCardModel.Shown, onMoreInfo: () -> Unit
     }
 }
 
-/** `ha-assist-chip filled` in the state's colour, blinking while triggered, arming or pending. */
+/**
+ * `ha-assist-chip filled` in the state's colour, blinking while triggered, arming or pending.
+ *
+ * Upstream: part of `hui-alarm-panel-card`, with `ha-assist-chip` (src/panels/lovelace/cards/hui-alarm-panel-card.ts;
+ * src/components/chips/ha-assist-chip.ts)
+ */
 @Composable
 private fun StateChip(model: AlarmPanelCardModel.Shown, onClick: () -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -150,6 +161,11 @@ private fun StateChip(model: AlarmPanelCardModel.Shown, onClick: () -> Unit) {
     }
 }
 
+/**
+ * The arm buttons (or the disarm one), in a centred wrapping row.
+ *
+ * Upstream: part of `hui-alarm-panel-card` (src/panels/lovelace/cards/hui-alarm-panel-card.ts)
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun AlarmActions(model: AlarmPanelCardModel.Shown, onClick: (AlarmAction) -> Unit) {
@@ -169,7 +185,11 @@ private fun AlarmActions(model: AlarmPanelCardModel.Shown, onClick: (AlarmAction
     }
 }
 
-/** The code field, and for a number code the keypad typing into it. */
+/**
+ * The code field, and for a number code the keypad typing into it.
+ *
+ * Upstream: part of `hui-alarm-panel-card` (src/panels/lovelace/cards/hui-alarm-panel-card.ts)
+ */
 @Composable
 private fun AlarmCode(entry: AlarmCodeEntry, code: String, onChange: (String) -> Unit) {
     HATextField(
@@ -186,7 +206,11 @@ private fun AlarmCode(entry: AlarmCodeEntry, code: String, onChange: (String) ->
     if (entry.keypad) Keypad(entry.clearLabel, clearEnabled = code.isNotEmpty()) { key -> onChange(key(code)) }
 }
 
-/** The 3 × 4 keypad: digits, and a red key clearing the code. */
+/**
+ * The 3 × 4 keypad: digits, and a red key clearing the code.
+ *
+ * Upstream: part of `hui-alarm-panel-card` (src/panels/lovelace/cards/hui-alarm-panel-card.ts)
+ */
 @Composable
 private fun Keypad(clearLabel: String, clearEnabled: Boolean, onKey: ((String) -> String) -> Unit) {
     Column(Modifier.padding(HADimens.SPACE3), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
@@ -204,7 +228,11 @@ private fun Keypad(clearLabel: String, clearEnabled: Boolean, onKey: ((String) -
     }
 }
 
-/** `ha-control-button`: a rounded key with a digit, or the clear icon on red. */
+/**
+ * `ha-control-button`: a rounded key with a digit, or the clear icon on red.
+ *
+ * Upstream: `ha-control-button` (src/components/ha-control-button.ts)
+ */
 @Composable
 private fun KeypadKey(label: String, clear: Boolean, enabled: Boolean, onClick: () -> Unit) {
     val colors = LocalHAColorScheme.current

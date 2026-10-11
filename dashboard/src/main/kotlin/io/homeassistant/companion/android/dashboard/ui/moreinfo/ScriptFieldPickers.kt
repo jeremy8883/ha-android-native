@@ -29,7 +29,11 @@ import kotlinx.serialization.json.JsonPrimitive
 // The date and time editors of a script's fields, through the platform's pickers.
 // UPSTREAM-DIFF: Android's own picker; upstream opens its own calendar (the user chose native pickers for fields)
 
-/** `ha-selector-datetime`: the date and the time, "yyyy-MM-dd HH:mm:ss" (a time picked first is on [today]). */
+/**
+ * `ha-selector-datetime`: the date and the time, "yyyy-MM-dd HH:mm:ss" (a time picked first is on [today]).
+ *
+ * Upstream: `ha-selector-datetime` (src/components/ha-selector/ha-selector-datetime.ts)
+ */
 @Composable
 internal fun DateTimeEditor(text: String?, enabled: Boolean, today: LocalDate, onChange: (JsonElement?) -> Unit) {
     Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
@@ -39,6 +43,11 @@ internal fun DateTimeEditor(text: String?, enabled: Boolean, today: LocalDate, o
     }
 }
 
+/**
+ * `ha-selector-date`: the date as a button opening the date picker.
+ *
+ * Upstream: `ha-selector-date` (src/components/ha-selector/ha-selector-date.ts)
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun DateEditor(date: String?, enabled: Boolean, onPick: (String) -> Unit) {
@@ -63,6 +72,11 @@ internal fun DateEditor(date: String?, enabled: Boolean, onPick: (String) -> Uni
     ) { DatePicker(state = picker) }
 }
 
+/**
+ * `ha-selector-time`: the time as a button opening the time picker.
+ *
+ * Upstream: `ha-selector-time` (src/components/ha-selector/ha-selector-time.ts)
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun TimeEditor(time: String?, enabled: Boolean, onPick: (String) -> Unit) {

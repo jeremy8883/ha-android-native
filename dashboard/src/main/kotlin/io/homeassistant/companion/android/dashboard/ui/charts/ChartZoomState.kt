@@ -100,7 +100,11 @@ internal fun Modifier.chartTaps(state: ChartZoomState, key: Any?, onTap: (Offset
     }
 }
 
-/** A chart's own "Reset zoom" button, top right while zoomed in (`.zoom-reset` of `ha-chart-base`). */
+/**
+ * A chart's own "Reset zoom" button, top right while zoomed in (`.zoom-reset` of `ha-chart-base`).
+ *
+ * Upstream: part of `ha-chart-base` (src/components/chart/ha-chart-base.ts)
+ */
 @Composable
 internal fun ChartZoomReset(state: ChartZoomState, label: String, modifier: Modifier = Modifier) {
     if (!state.zoom.isZoomed) return

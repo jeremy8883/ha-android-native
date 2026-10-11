@@ -65,6 +65,9 @@ import timber.log.Timber
 /**
  * Port of `more-info-conversation`: a text chat with the agent through its pipeline (`ha-assist-chat` without
  * speech), a warning when the agent can't control Home Assistant, or why the pipeline couldn't be loaded.
+ *
+ * Upstream: `more-info-conversation`, `ha-assist-chat` (src/dialogs/more-info/controls/more-info-conversation.ts;
+ * src/components/ha-assist-chat.ts)
  */
 @Composable
 internal fun MoreInfoConversation(agentId: String, hass: HassSnapshot, modifier: Modifier = Modifier) {
@@ -105,6 +108,11 @@ internal fun MoreInfoConversation(agentId: String, hass: HassSnapshot, modifier:
     }
 }
 
+/**
+ * A message: the user's on the right, the agent's on the left, an error in red.
+ *
+ * Upstream: part of `ha-assist-chat` (src/components/ha-assist-chat.ts)
+ */
 @Composable
 private fun MessageBubble(message: ChatMessage) {
     val colors = LocalHAColorScheme.current
@@ -129,7 +137,11 @@ private fun MessageBubble(message: ChatMessage) {
     }
 }
 
-/** The message field ("Enter a request") with its send button, sending on enter too. */
+/**
+ * The message field ("Enter a request") with its send button, sending on enter too.
+ *
+ * Upstream: part of `ha-assist-chat` (src/components/ha-assist-chat.ts)
+ */
 @Composable
 private fun ChatInput(hass: HassSnapshot, processing: Boolean, onSend: (String) -> Unit) {
     var text by remember { mutableStateOf("") }

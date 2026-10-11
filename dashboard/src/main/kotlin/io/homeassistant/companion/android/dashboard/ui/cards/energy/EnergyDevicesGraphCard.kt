@@ -65,6 +65,8 @@ import kotlin.math.max
 /**
  * The devices' consumption over the period, largest first, as bars or as a donut (the button in the header
  * switches). Port of the rendering of `hui-energy-devices-graph-card` (frontend@20260624.6).
+ *
+ * Upstream: `hui-energy-devices-graph-card` (src/panels/lovelace/cards/energy/hui-energy-devices-graph-card.ts)
  */
 @Composable
 internal fun EnergyDevicesGraphCard(
@@ -131,7 +133,11 @@ private fun allowedModes(card: CardConfig): List<DevicesChartType> = card.json.a
 }
     ?.ifEmpty { null } ?: DevicesChartType.entries
 
-/** A row per device: its name, and its bar (and the compared period's below it) against the largest. */
+/**
+ * A row per device: its name, and its bar (and the compared period's below it) against the largest.
+ *
+ * Upstream: part of `hui-energy-devices-graph-card` (src/panels/lovelace/cards/energy/hui-energy-devices-graph-card.ts)
+ */
 @Composable
 private fun DeviceBars(model: EnergyDevicesGraphModel, onOpen: (DeviceSlice) -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -170,6 +176,11 @@ private fun DeviceBars(model: EnergyDevicesGraphModel, onOpen: (DeviceSlice) -> 
     }
 }
 
+/**
+ * A device's bar: [share] of [width], in its colour, thinner for the compared period.
+ *
+ * Upstream: part of `hui-energy-devices-graph-card` (src/panels/lovelace/cards/energy/hui-energy-devices-graph-card.ts)
+ */
 @Composable
 private fun Bar(slice: DeviceSlice, dark: Boolean, share: Double, width: Dp, compare: Boolean, thick: Boolean) {
     val shape = RoundedCornerShape(topEnd = HARadius.S, bottomEnd = HARadius.S)
@@ -182,7 +193,11 @@ private fun Bar(slice: DeviceSlice, dark: Boolean, share: Double, width: Dp, com
     )
 }
 
-/** The donut: the devices' shares around the total, the compared period's inside; and a legend with their amounts. */
+/**
+ * The donut: the devices' shares around the total, the compared period's inside; and a legend with their amounts.
+ *
+ * Upstream: part of `hui-energy-devices-graph-card` (src/panels/lovelace/cards/energy/hui-energy-devices-graph-card.ts)
+ */
 @Composable
 private fun DeviceDonut(model: EnergyDevicesGraphModel, totalLabel: String, hass: HassSnapshot) {
     val colors = LocalHAColorScheme.current

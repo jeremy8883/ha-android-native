@@ -43,6 +43,8 @@ internal data class LogbookListActions(
 /**
  * A row of the Logbook panel (`ha-logbook-entry`'s "list" layout with `show-cause`): its dot on the day's rail; what
  * it is about and what happened; where that is and when; then what caused it, with its trace.
+ *
+ * Upstream: `ha-logbook-entry` (src/panels/logbook/ha-logbook-entry.ts)
  */
 @Composable
 internal fun LogbookListRow(row: LogbookRow, texts: LogbookListTexts, actions: LogbookListActions) {
@@ -68,7 +70,11 @@ internal fun LogbookListRow(row: LogbookRow, texts: LogbookListTexts, actions: L
     }
 }
 
-/** What the row is about (opening its details while it exists) and what happened, which is never cut. */
+/**
+ * What the row is about (opening its details while it exists) and what happened, which is never cut.
+ *
+ * Upstream: part of `ha-logbook-entry` (src/panels/logbook/ha-logbook-entry.ts)
+ */
 @Composable
 private fun PrimaryLine(row: LogbookRow, onOpenEntity: (String) -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -95,7 +101,11 @@ private fun PrimaryLine(row: LogbookRow, onOpenEntity: (String) -> Unit) {
     }
 }
 
-/** Where the entity is, and when it happened (a tap shows every time as how long ago it was, or back). */
+/**
+ * Where the entity is, and when it happened (a tap shows every time as how long ago it was, or back).
+ *
+ * Upstream: part of `ha-logbook-entry` (src/panels/logbook/ha-logbook-entry.ts)
+ */
 @Composable
 private fun SecondaryLine(context: String?, time: String, onToggleTime: () -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -118,7 +128,11 @@ private fun SecondaryLine(context: String?, time: String, onToggleTime: () -> Un
     }
 }
 
-/** What caused it ("By automation: " and the automation, opening its details), then the run's trace. */
+/**
+ * What caused it ("By automation: " and the automation, opening its details), then the run's trace.
+ *
+ * Upstream: part of `ha-logbook-entry` (src/panels/logbook/ha-logbook-entry.ts)
+ */
 @Composable
 private fun CauseLine(cause: CausePhrase?, traceLink: String?, traceLabel: String, actions: LogbookListActions) {
     val colors = LocalHAColorScheme.current

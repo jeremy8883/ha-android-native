@@ -44,6 +44,8 @@ import java.time.ZonedDateTime
  * A weather forecast card, port of `hui-weather-forecast-card` (frontend@20260624.6
  * src/panels/lovelace/cards/hui-weather-forecast-card.ts): the current weather with its drawn condition, then the
  * forecast's entries side by side, scrolling sideways when they don't fit.
+ *
+ * Upstream: `hui-weather-forecast-card` (src/panels/lovelace/cards/hui-weather-forecast-card.ts)
  */
 @Composable
 internal fun WeatherForecastCard(
@@ -103,6 +105,11 @@ private enum class WeatherSize(val icon: Dp, val big: TextUnit, val unit: TextUn
     }
 }
 
+/**
+ * The current weather: its condition drawn, its state and name, then the temperature and a chosen attribute.
+ *
+ * Upstream: part of `hui-weather-forecast-card` (src/panels/lovelace/cards/hui-weather-forecast-card.ts)
+ */
 @Composable
 private fun CurrentWeatherRow(current: CurrentWeather, size: WeatherSize) {
     val colors = LocalHAColorScheme.current
@@ -163,7 +170,11 @@ private fun CurrentWeatherRow(current: CurrentWeather, size: WeatherSize) {
     }
 }
 
-/** The entries spread across the card, scrolling sideways when they don't fit. */
+/**
+ * The entries spread across the card, scrolling sideways when they don't fit.
+ *
+ * Upstream: part of `hui-weather-forecast-card` (src/panels/lovelace/cards/hui-weather-forecast-card.ts)
+ */
 @Composable
 internal fun ForecastRow(forecast: ForecastColumns, width: Dp, modifier: Modifier) {
     Row(
@@ -181,6 +192,11 @@ internal fun ForecastRow(forecast: ForecastColumns, width: Dp, modifier: Modifie
     }
 }
 
+/**
+ * One forecast entry: its day or hour, its condition, and its high and low.
+ *
+ * Upstream: part of `hui-weather-forecast-card` (src/panels/lovelace/cards/hui-weather-forecast-card.ts)
+ */
 @Composable
 private fun ForecastEntry(item: ForecastItem, dayHeaders: Boolean) {
     val colors = LocalHAColorScheme.current

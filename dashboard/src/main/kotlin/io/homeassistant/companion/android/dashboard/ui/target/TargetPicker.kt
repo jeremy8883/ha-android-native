@@ -55,6 +55,8 @@ import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
  * "Add target", opening the sheet of entities, devices, areas (with floors) and labels to pick from, above a chip
  * for each picked item, which removes it or, but for entities, expands it into its parts. Only what holds an
  * entity passing [entityFilter] is offered.
+ *
+ * Upstream: `ha-target-picker` (src/components/ha-target-picker.ts)
  */
 @Composable
 internal fun TargetPicker(
@@ -103,6 +105,8 @@ internal fun TargetPicker(
 /**
  * Port of `ha-target-picker-value-chip`: a pill bordered in its type's colour (a label's own), its icon on that
  * colour, its name, the expand button but for entities, and the remove button.
+ *
+ * Upstream: `ha-target-picker-value-chip` (src/components/target-picker/ha-target-picker-value-chip.ts)
  */
 @Composable
 private fun TargetChipView(chip: TargetChip, hass: HassSnapshot, onRemove: () -> Unit, onExpand: () -> Unit) {

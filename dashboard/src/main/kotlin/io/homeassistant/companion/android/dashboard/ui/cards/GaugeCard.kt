@@ -37,6 +37,8 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
  * A gauge card, port of `hui-gauge-card` with `ha-gauge` (frontend@20260624.6 src/panels/lovelace/cards/,
  * src/components/ha-gauge.ts): a half circle filled to the value in its severity's colour, or a needle over the
  * coloured levels, the value under it and the name below.
+ *
+ * Upstream: `hui-gauge-card` (src/panels/lovelace/cards/hui-gauge-card.ts)
  */
 @Composable
 internal fun GaugeCard(
@@ -69,7 +71,11 @@ internal fun GaugeCard(
     }
 }
 
-/** `ha-gauge`'s half circle in its 100 × 55 box: the base, the levels, then the value's fill or the needle. */
+/**
+ * `ha-gauge`'s half circle in its 100 × 55 box: the base, the levels, then the value's fill or the needle.
+ *
+ * Upstream: `ha-gauge` (src/components/ha-gauge.ts)
+ */
 @Composable
 private fun GaugeArc(model: GaugeCardModel, modifier: Modifier) {
     val colors = LocalHAColorScheme.current

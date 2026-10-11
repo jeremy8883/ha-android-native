@@ -33,6 +33,9 @@ internal typealias FavoritesMenuItems = @Composable (close: () -> Unit) -> Unit
  * The favourites part of the dialog's menu, for admins: start or stop editing the favourites of a light, cover or
  * valve, reset them to the defaults (when some were saved) and copy them to others. [content] gets the items, or
  * `null` until the entity's registry entry is loaded and when it has none; their dialogs show from here.
+ *
+ * Upstream: part of `ha-more-info-dialog` (its favourites menu items), with `getFavoritesDialogHandler`
+ * (src/dialogs/more-info/ha-more-info-dialog.ts; src/dialogs/more-info/favorites.ts)
  */
 @Composable
 internal fun FavoritesMenuHost(
@@ -75,7 +78,12 @@ internal fun FavoritesMenuHost(
     }
 }
 
-/** The menu's reset confirmation and copy dialog, when open. */
+/**
+ * The menu's reset confirmation and copy dialog, when open.
+ *
+ * Upstream: part of `ha-more-info-dialog` (`_resetFavorites`, `_copyFavorites`)
+ * (src/dialogs/more-info/ha-more-info-dialog.ts; src/dialogs/more-info/favorites.ts)
+ */
 @Composable
 private fun FavoritesMenuDialogs(
     hass: HassSnapshot,
@@ -112,6 +120,11 @@ private fun FavoritesMenuDialogs(
     }
 }
 
+/**
+ * An item of the dialog's menu: its icon and label, greyed while disabled.
+ *
+ * Upstream: `ha-dropdown-item` (src/components/ha-dropdown-item.ts)
+ */
 @Composable
 private fun MenuItem(icon: String, label: String, enabled: Boolean = true, onClick: () -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -135,7 +148,11 @@ private fun MenuItem(icon: String, label: String, enabled: Boolean = true, onCli
     )
 }
 
-/** Why the last change of the favourites failed, under them. */
+/**
+ * Why the last change of the favourites failed, under them.
+ *
+ * Upstream: none (native: the error of a failed favourites save or copy)
+ */
 @Composable
 internal fun FavoritesErrorText(error: FavoritesError) {
     val reason = LocalContext.current.loadErrorText(error.error)
@@ -153,7 +170,11 @@ internal fun FavoritesErrorText(error: FavoritesError) {
     )
 }
 
-/** The entity's favourites view model, shared by its favourites and the header's menu. */
+/**
+ * The entity's favourites view model, shared by its favourites and the header's menu.
+ *
+ * Upstream: none (native: view model lookup)
+ */
 @Composable
 internal fun favoritesViewModel(entityId: String): MoreInfoFavoritesViewModel {
     val viewModel = hiltViewModel<MoreInfoFavoritesViewModel>(key = "favorites-$entityId")

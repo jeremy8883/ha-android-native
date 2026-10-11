@@ -45,6 +45,8 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 /**
  * The row's dot, with the day's rail through it (from the day's first dot to its last): in the middle of the row,
  * or [dotCentre] from its top (beside a named row's first line).
+ *
+ * Upstream: part of `ha-logbook-entry` (src/panels/logbook/ha-logbook-entry.ts)
  */
 @Composable
 internal fun LogbookNode(row: LogbookRow, modifier: Modifier, dotCentre: Dp? = null) {
@@ -76,7 +78,12 @@ internal fun LogbookNode(row: LogbookRow, modifier: Modifier, dotCentre: Dp? = n
     }
 }
 
-/** Who or what caused the row: a user's picture or initials, or an icon, named for accessibility. */
+/**
+ * Who or what caused the row: a user's picture or initials, or an icon, named for accessibility.
+ *
+ * Upstream: part of `ha-logbook-entry`, `ha-user-badge` (src/panels/logbook/ha-logbook-entry.ts;
+ * src/components/user/ha-user-badge.ts)
+ */
 @Composable
 internal fun CauseBadgeView(cause: LogbookCause, badge: CauseBadge) {
     val colors = LocalHAColorScheme.current
@@ -108,7 +115,11 @@ internal fun CauseBadgeView(cause: LogbookCause, badge: CauseBadge) {
     }
 }
 
-/** The day above its first row: "Today · October 11, 2026". */
+/**
+ * The day above its first row: "Today · October 11, 2026".
+ *
+ * Upstream: part of `ha-logbook-renderer` (src/panels/logbook/ha-logbook-renderer.ts)
+ */
 @Composable
 internal fun LogbookDayHeader(text: String, modifier: Modifier = Modifier) {
     Text(
@@ -119,7 +130,11 @@ internal fun LogbookDayHeader(text: String, modifier: Modifier = Modifier) {
     )
 }
 
-/** A message in place of the rows: that there are none, or why they couldn't load. */
+/**
+ * A message in place of the rows: that there are none, or why they couldn't load.
+ *
+ * Upstream: part of `ha-logbook` (src/panels/logbook/ha-logbook.ts)
+ */
 @Composable
 internal fun LogbookMessage(text: String, color: Color) {
     Text(

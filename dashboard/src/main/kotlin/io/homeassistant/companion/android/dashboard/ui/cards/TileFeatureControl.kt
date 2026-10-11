@@ -48,6 +48,9 @@ import kotlinx.coroutines.delay
 /**
  * One control under a tile, in the tile's [color] (`--feature-color`) unless it has its own. Values change locally
  * while the user interacts, and are sent once they settle.
+ *
+ * Upstream: `hui-card-features`, `hui-card-feature` (src/panels/lovelace/card-features/hui-card-features.ts;
+ * src/panels/lovelace/card-features/hui-card-feature.ts)
  */
 @Composable
 internal fun TileFeatureControl(
@@ -66,7 +69,11 @@ internal fun TileFeatureControl(
     }
 }
 
-/** Port of the tile's `ha-control-slider`: a bar the height of the other features, which keeps its track when off. */
+/**
+ * Port of the tile's `ha-control-slider`: a bar the height of the other features, which keeps its track when off.
+ *
+ * Upstream: `ha-control-slider` (src/components/ha-control-slider.ts)
+ */
 @Composable
 private fun FeatureSlider(slider: TileFeature.Slider, color: Color, onAction: (CardAction) -> Unit) {
     ControlSlider(
@@ -90,6 +97,12 @@ private fun FeatureSlider(slider: TileFeature.Slider, color: Color, onAction: (C
     )
 }
 
+/**
+ * A feature's row of icon buttons, sharing the width.
+ *
+ * Upstream: `ha-control-button-group`, `ha-control-button` (src/components/ha-control-button-group.ts;
+ * src/components/ha-control-button.ts)
+ */
 @Composable
 private fun FeatureButtons(buttons: TileFeature.Buttons, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -117,7 +130,11 @@ private fun FeatureButtons(buttons: TileFeature.Buttons, onAction: (CardAction) 
     }
 }
 
-/** Icon segments in one pill, the selected one tinted, like `ha-control-select` with hidden labels. */
+/**
+ * Icon segments in one pill, the selected one tinted, like `ha-control-select` with hidden labels.
+ *
+ * Upstream: `ha-control-select` (src/components/ha-control-select.ts)
+ */
 @Composable
 private fun FeatureSelect(select: TileFeature.Select, featureColor: Color, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -158,7 +175,11 @@ private fun FeatureSelect(select: TileFeature.Select, featureColor: Color, onAct
     }
 }
 
-/** Minus/plus around the value; presses are collected for a second before one call, like upstream's debounce. */
+/**
+ * Minus/plus around the value; presses are collected for a second before one call, like upstream's debounce.
+ *
+ * Upstream: `ha-control-number-buttons` (src/components/ha-control-number-buttons.ts)
+ */
 @Composable
 private fun FeatureNumber(
     item: TileFeature.NumberItem,

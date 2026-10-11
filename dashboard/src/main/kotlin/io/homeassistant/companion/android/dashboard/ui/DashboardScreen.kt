@@ -45,6 +45,13 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
+/**
+ * The dashboards' screen: the dashboard or native panel shown, the navigation drawer, the messages and an entity's
+ * details.
+ *
+ * Upstream: `home-assistant-main`, `ha-panel-lovelace` (src/layouts/home-assistant-main.ts;
+ * src/panels/lovelace/ha-panel-lovelace.ts)
+ */
 @Composable
 internal fun DashboardScreen(
     viewModel: DashboardViewModel,
@@ -114,7 +121,11 @@ internal fun DashboardScreen(
     }
 }
 
-/** Shows the screen's one-off events and the failures of refreshing its data, which can be retried. */
+/**
+ * Shows the screen's one-off events and the failures of refreshing its data, which can be retried.
+ *
+ * Upstream: `notification-manager` (src/managers/notification-manager.ts)
+ */
 @Composable
 private fun DashboardMessages(
     viewModel: DashboardViewModel,
@@ -139,7 +150,11 @@ private fun DashboardMessages(
     )
 }
 
-/** The native dashboards ([native]) under the navigation drawer; back presses go to the drawer while it is open. */
+/**
+ * The native dashboards ([native]) under the navigation drawer; back presses go to the drawer while it is open.
+ *
+ * Upstream: part of `home-assistant-main` (src/layouts/home-assistant-main.ts)
+ */
 @Composable
 private fun DashboardLayers(
     drawerState: DrawerState,
@@ -155,6 +170,8 @@ private fun DashboardLayers(
 /**
  * The navigation drawer's content, closing as an entry is chosen. [selected] is the dashboard shown, `null` for the
  * default one.
+ *
+ * Upstream: `ha-sidebar` (src/components/ha-sidebar.ts)
  */
 @Composable
 private fun DashboardDrawer(
@@ -182,6 +199,8 @@ private fun DashboardDrawer(
 /**
  * Back closes a subview or returns to the page that opened the dashboard with a `historyBack` link, and from another
  * dashboard returns to the default one before leaving, like other top-level destinations.
+ *
+ * Upstream: none (native: Android's back navigation)
  */
 @Composable
 private fun DashboardBackHandlers(showsBack: Boolean, isDefaultDashboard: Boolean, viewModel: DashboardViewModel) {
@@ -189,7 +208,11 @@ private fun DashboardBackHandlers(showsBack: Boolean, isDefaultDashboard: Boolea
     BackHandler(enabled = !showsBack && !isDefaultDashboard) { viewModel.onSelectDashboard(null) }
 }
 
-/** Apply [request] once: open its path, more-info or the drawer. Saved, so it isn't applied again when recreated. */
+/**
+ * Apply [request] once: open its path, more-info or the drawer. Saved, so it isn't applied again when recreated.
+ *
+ * Upstream: none (native: what the app asked to open, such as from a shortcut)
+ */
 @Composable
 private fun ApplyRequest(
     request: NativeDashboardRequest,
@@ -218,6 +241,13 @@ private fun <T> closingDrawer(drawerState: DrawerState, scope: CoroutineScope, a
     action(it)
 }
 
+/**
+ * The screen under the drawer: the toolbar, then the dashboard, native panel or why there is none, with the messages at
+ * the bottom.
+ *
+ * Upstream: `ha-panel-lovelace`, `partial-panel-resolver` (src/panels/lovelace/ha-panel-lovelace.ts;
+ * src/layouts/partial-panel-resolver.ts)
+ */
 @Composable
 internal fun DashboardScreenContent(
     uiState: DashboardUiState,
@@ -269,6 +299,11 @@ internal fun DashboardScreenContent(
     }
 }
 
+/**
+ * A short message in place of the content.
+ *
+ * Upstream: none (native: what the native dashboards can't show)
+ */
 @Composable
 internal fun Message(text: String) {
     Text(text, style = HATextStyle.Body, modifier = Modifier.padding(HADimens.SPACE4))
@@ -289,7 +324,11 @@ private fun DashboardScreenNotFoundPreview() {
     }
 }
 
-/** What the cards report, to [viewModel]. */
+/**
+ * What the cards report, to [viewModel].
+ *
+ * Upstream: none (native: connects the cards to the view model)
+ */
 @Composable
 private fun rememberCardInteractions(viewModel: DashboardViewModel) = remember(viewModel) {
     CardInteractions(viewModel::onGesture, viewModel::onAction, viewModel::onEnergyChange)

@@ -18,6 +18,9 @@ import io.homeassistant.companion.android.dashboard.ui.panels.PanelToolbarAction
 /**
  * The toolbar: the dashboard's or panel's title, back to the page that opened it (else the menu), and the buttons a
  * native panel put in it ([panelActions]).
+ *
+ * Upstream: part of `hui-root`, `ha-top-app-bar-fixed` (src/panels/lovelace/hui-root.ts;
+ * src/components/ha-top-app-bar-fixed.ts)
  */
 @Composable
 internal fun DashboardTopBar(
@@ -44,6 +47,12 @@ internal fun DashboardTopBar(
     )
 }
 
+/**
+ * The toolbar's menu or back button, labelled for accessibility.
+ *
+ * Upstream: `ha-menu-button`, `ha-icon-button-arrow-prev` (src/components/ha-menu-button.ts;
+ * src/components/ha-icon-button-arrow-prev.ts)
+ */
 @Composable
 private fun ToolbarIconButton(icon: String, label: String, onClick: () -> Unit) {
     IconButton(onClick = onClick, modifier = Modifier.semantics { contentDescription = label }) {

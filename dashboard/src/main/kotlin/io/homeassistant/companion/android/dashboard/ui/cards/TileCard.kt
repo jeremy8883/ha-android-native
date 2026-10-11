@@ -39,6 +39,11 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import java.time.Instant
 import java.time.ZonedDateTime
 
+/**
+ * A tile card for an entity, or a placeholder when the entity doesn't exist.
+ *
+ * Upstream: `hui-tile-card` (src/panels/lovelace/cards/hui-tile-card.ts)
+ */
 @Composable
 internal fun TileCard(
     card: CardConfig,
@@ -59,6 +64,12 @@ internal fun TileCard(
     }
 }
 
+/**
+ * A tile: its icon, name and state, then its features.
+ *
+ * Upstream: part of `hui-tile-card`, with `ha-tile-container` (src/panels/lovelace/cards/hui-tile-card.ts;
+ * src/components/tile/ha-tile-container.ts)
+ */
 @Composable
 internal fun TileCardContent(
     tile: TileModel,
@@ -86,6 +97,11 @@ internal fun TileCardContent(
     }
 }
 
+/**
+ * The tile's icon and text, side by side or (vertical) one above the other.
+ *
+ * Upstream: part of `ha-tile-container` (src/components/tile/ha-tile-container.ts)
+ */
 @Composable
 private fun TileInfo(tile: TileModel, iconModifier: Modifier) {
     if (tile.vertical) {
@@ -95,6 +111,11 @@ private fun TileInfo(tile: TileModel, iconModifier: Modifier) {
     }
 }
 
+/**
+ * The icon on the left of the name and state.
+ *
+ * Upstream: part of `ha-tile-container` (src/components/tile/ha-tile-container.ts)
+ */
 @Composable
 private fun HorizontalTileInfo(tile: TileModel, iconModifier: Modifier) {
     Row(
@@ -107,6 +128,11 @@ private fun HorizontalTileInfo(tile: TileModel, iconModifier: Modifier) {
     }
 }
 
+/**
+ * The icon above the name and state, centred.
+ *
+ * Upstream: part of `ha-tile-container` (src/components/tile/ha-tile-container.ts)
+ */
 @Composable
 private fun VerticalTileInfo(tile: TileModel, iconModifier: Modifier) {
     Column(
@@ -119,7 +145,11 @@ private fun VerticalTileInfo(tile: TileModel, iconModifier: Modifier) {
     }
 }
 
-/** Port of `ha-tile-icon`: the icon in the tile's colour on a circle of it at a fifth of its strength. */
+/**
+ * Port of `ha-tile-icon`: the icon in the tile's colour on a circle of it at a fifth of its strength.
+ *
+ * Upstream: `ha-tile-icon` (src/components/tile/ha-tile-icon.ts)
+ */
 @Composable
 private fun TileIcon(tile: TileModel, modifier: Modifier) {
     val color = tile.color.toColor() ?: LocalHAColorScheme.current.colorTextSecondary
@@ -135,6 +165,11 @@ private fun TileIcon(tile: TileModel, modifier: Modifier) {
     }
 }
 
+/**
+ * The tile's name, with its state under it.
+ *
+ * Upstream: `ha-tile-info` (src/components/tile/ha-tile-info.ts)
+ */
 @Composable
 private fun TileText(tile: TileModel, textAlign: TextAlign, modifier: Modifier) {
     val colors = LocalHAColorScheme.current

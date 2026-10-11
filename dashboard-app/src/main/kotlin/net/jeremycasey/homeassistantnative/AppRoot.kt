@@ -41,7 +41,11 @@ private data object SettingsRoute
 @Serializable
 private data object AddServerRoute
 
-/** The app: the login until a server is logged in to, then the dashboards with the app's settings. */
+/**
+ * The app: the login until a server is logged in to, then the dashboards with the app's settings.
+ *
+ * Upstream: none (native: the app's root)
+ */
 @Composable
 internal fun AppRoot() {
     val viewModel: AppViewModel = hiltViewModel()
@@ -59,6 +63,11 @@ internal fun AppRoot() {
     }
 }
 
+/**
+ * The screens once logged in: the dashboards, the settings and adding a server.
+ *
+ * Upstream: none (native: the app's navigation)
+ */
 @Composable
 private fun LoggedIn(viewModel: AppViewModel) {
     val navController = rememberNavController()
@@ -81,6 +90,11 @@ private fun LoggedIn(viewModel: AppViewModel) {
     }
 }
 
+/**
+ * The native dashboard, with the server switcher and web pages it opens.
+ *
+ * Upstream: none (native: hosts the native dashboard and the server switcher)
+ */
 @Composable
 private fun Dashboard(viewModel: AppViewModel, onOpenSettings: () -> Unit) {
     val context = LocalContext.current

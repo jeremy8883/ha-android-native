@@ -17,6 +17,9 @@ import io.homeassistant.companion.android.dashboard.ui.controls.ControlSelectMen
 /**
  * The controls of a single-target dial domain (`more-info-water_heater`, `more-info-humidifier`): the current
  * readings, the dial set to [target] (each new target sent through [onSet]), and the menus.
+ *
+ * Upstream: `more-info-water_heater`, `more-info-humidifier` (src/dialogs/more-info/controls/more-info-water_heater.ts;
+ * src/dialogs/more-info/controls/more-info-humidifier.ts)
  */
 @Composable
 internal fun SingleDialControls(

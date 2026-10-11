@@ -23,6 +23,11 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
+/**
+ * An area card: the area's icon in its colour, with its name under it.
+ *
+ * Upstream: `hui-area-card` (src/panels/lovelace/cards/hui-area-card.ts)
+ */
 @Composable
 internal fun AreaCard(card: CardConfig, hass: State<HassSnapshot?>, modifier: Modifier = Modifier) {
     val area by remember(card) { derivedStateOf { hass.value?.areaCardModel(card) } }

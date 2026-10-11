@@ -49,6 +49,9 @@ import kotlin.math.min
  * An energy bar chart drawn like the frontend's ECharts bars: stacked series above and below zero, the compared
  * period's stack beside the shown one's, a value axis with round ticks and a time axis. A tap on a period shows its
  * [tooltip]; [hidden] series (by id, without the compare prefix) are left out.
+ *
+ * Upstream: `ha-chart-base` as the energy graph cards configure it (src/components/chart/ha-chart-base.ts;
+ * src/panels/lovelace/cards/energy/common/energy-chart-options.ts)
  */
 @Composable
 internal fun EnergyBarChartView(

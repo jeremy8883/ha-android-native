@@ -40,6 +40,8 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
  * The controls of a vacuum's details, port of `more-info-vacuum` (frontend@20260624.6
  * src/dialogs/more-info/controls/more-info-vacuum.ts): the robot drawn as it is, the command buttons and the fan
  * speed menu, and cleaning by area. The battery shows beside the header's time.
+ *
+ * Upstream: `more-info-vacuum` (src/dialogs/more-info/controls/more-info-vacuum.ts)
  */
 @Composable
 internal fun MoreInfoVacuum(
@@ -61,7 +63,11 @@ internal fun MoreInfoVacuum(
     }
 }
 
-/** Port of `ha-control-button-group`: the command buttons side by side. */
+/**
+ * Port of `ha-control-button-group`: the command buttons side by side.
+ *
+ * Upstream: `ha-control-button-group` (src/components/ha-control-button-group.ts)
+ */
 @Composable
 internal fun CommandButtonRow(buttons: List<CommandButton>, onAction: (CardAction) -> Unit) {
     if (buttons.isEmpty()) return
@@ -73,7 +79,11 @@ internal fun CommandButtonRow(buttons: List<CommandButton>, onAction: (CardActio
     }
 }
 
-/** Port of the `ha-control-button`s in their group: an icon on a quiet tint, greyed while it can't be used. */
+/**
+ * Port of the `ha-control-button`s in their group: an icon on a quiet tint, greyed while it can't be used.
+ *
+ * Upstream: `ha-control-button` (src/components/ha-control-button.ts)
+ */
 @Composable
 private fun VacuumCommand(button: CommandButton, onAction: (CardAction) -> Unit, modifier: Modifier) {
     val colors = LocalHAColorScheme.current

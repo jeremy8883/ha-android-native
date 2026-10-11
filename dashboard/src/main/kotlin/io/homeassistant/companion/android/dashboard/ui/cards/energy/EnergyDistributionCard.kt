@@ -33,6 +33,8 @@ import java.time.ZonedDateTime
 /**
  * The energy distribution card: the grid, solar, battery, gas and water around the home, with the energy that
  * flowed between them. Layout of `hui-energy-distribution-card` (frontend@20260624.6).
+ *
+ * Upstream: `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
  */
 @Composable
 internal fun EnergyDistributionCard(
@@ -50,6 +52,11 @@ internal fun EnergyDistributionCard(
     }
 }
 
+/**
+ * The distribution: its rows of nodes, over the lines between them.
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 private fun Distribution(model: EnergyDistributionModel, label: (String) -> String) {
     val colors = rememberDistributionColors()
@@ -80,6 +87,11 @@ private fun Distribution(model: EnergyDistributionModel, label: (String) -> Stri
     }
 }
 
+/**
+ * The top row: the low-carbon energy, solar, and gas or water.
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 private fun TopRow(model: EnergyDistributionModel, colors: DistributionColors, label: (String) -> String) {
     val solar = model.solar
@@ -121,7 +133,11 @@ private fun TopRow(model: EnergyDistributionModel, colors: DistributionColors, l
     }
 }
 
-/** Gas or water above the home, with the line down to it. */
+/**
+ * Gas or water above the home, with the line down to it.
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 private fun UtilityNode(name: String, icon: String, value: String, color: Color, flows: Boolean) {
     Column(
@@ -137,6 +153,11 @@ private fun UtilityNode(name: String, icon: String, value: String, color: Color,
     }
 }
 
+/**
+ * The middle row: the grid, with what it gave and got back, and the home.
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 private fun MiddleRow(model: EnergyDistributionModel, colors: DistributionColors, label: (String) -> String) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -157,6 +178,11 @@ private fun MiddleRow(model: EnergyDistributionModel, colors: DistributionColors
     }
 }
 
+/**
+ * The home's node: its consumption, ringed with the share of each source.
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 private fun HomeNode(model: EnergyDistributionModel, colors: DistributionColors) {
     val ring = model.homeRing
@@ -176,6 +202,11 @@ private fun HomeNode(model: EnergyDistributionModel, colors: DistributionColors)
     }
 }
 
+/**
+ * The bottom row: the battery, and the water when it goes below the home.
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 private fun BottomRow(model: EnergyDistributionModel, colors: DistributionColors, label: (String) -> String) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
@@ -234,6 +265,11 @@ internal class DistributionColors(private val dark: Boolean, private val fallbac
     private fun color(name: String) = resolveVariable(name, dark) ?: fallback
 }
 
+/**
+ * The distribution's colours for the current theme.
+ *
+ * Upstream: part of `hui-energy-distribution-card` (src/panels/lovelace/cards/energy/hui-energy-distribution-card.ts)
+ */
 @Composable
 private fun rememberDistributionColors(): DistributionColors {
     val dark = isSystemInDarkTheme()

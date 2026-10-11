@@ -26,7 +26,11 @@ import io.homeassistant.companion.android.dashboard.derive.pictureEntityModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 
-/** A picture of an entity (a camera snapshot, an image entity, a person) with its name and state over it. */
+/**
+ * A picture of an entity (a camera snapshot, an image entity, a person) with its name and state over it.
+ *
+ * Upstream: `hui-picture-entity-card` (src/panels/lovelace/cards/hui-picture-entity-card.ts)
+ */
 @Composable
 internal fun PictureEntityCard(
     card: CardConfig,

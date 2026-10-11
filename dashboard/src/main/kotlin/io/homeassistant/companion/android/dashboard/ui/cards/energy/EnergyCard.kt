@@ -10,7 +10,11 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import java.time.ZonedDateTime
 
-/** Renders the energy card [card] (one of [ENERGY_CARD_TYPES]). */
+/**
+ * Renders the energy card [card] (one of [ENERGY_CARD_TYPES]).
+ *
+ * Upstream: part of `createCardElement` (src/panels/lovelace/create-element/create-card-element.ts)
+ */
 @Composable
 internal fun EnergyCard(
     card: CardConfig,

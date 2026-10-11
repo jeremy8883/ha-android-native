@@ -16,6 +16,10 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 /**
  * The tile-style info cards (home summary, repairs, updates, discovered devices), drawn like a tile as upstream
  * does (`ha-tile-container`).
+ *
+ * Upstream: `hui-home-summary-card`, `hui-repairs-card`, `hui-updates-card`, `hui-discovered-devices-card`
+ * (src/panels/lovelace/cards/hui-home-summary-card.ts; src/panels/lovelace/cards/hui-repairs-card.ts;
+ * src/panels/lovelace/cards/hui-updates-card.ts; src/panels/lovelace/cards/hui-discovered-devices-card.ts)
  */
 @Composable
 internal fun InfoTileCard(

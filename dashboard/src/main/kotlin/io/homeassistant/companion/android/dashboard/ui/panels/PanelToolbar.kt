@@ -44,7 +44,11 @@ internal class PanelToolbar {
     var actions: PanelActions by mutableStateOf(PanelActions())
         private set
 
-    /** Shows [actions] in the toolbar while the calling panel is shown. */
+    /**
+     * Shows [actions] in the toolbar while the calling panel is shown.
+     *
+     * Upstream: none (native: hands a panel's buttons to the shared toolbar)
+     */
     @Composable
     fun Actions(actions: PanelActions) {
         SideEffect { this.actions = actions }
@@ -52,7 +56,12 @@ internal class PanelToolbar {
     }
 }
 
-/** The toolbar's panel buttons, then the menu button opening the panel's menu. */
+/**
+ * The toolbar's panel buttons, then the menu button opening the panel's menu.
+ *
+ * Upstream: the `actionItems` of `ha-top-app-bar-fixed`, `ha-dropdown` (src/components/ha-top-app-bar-fixed.ts;
+ * src/components/ha-dropdown.ts)
+ */
 @Composable
 internal fun PanelToolbarActions(actions: PanelActions) {
     actions.buttons.forEach { ToolbarIconButton(it.icon, it.label, it.enabled, it.onClick) }
@@ -76,7 +85,11 @@ internal fun PanelToolbarActions(actions: PanelActions) {
     }
 }
 
-/** A toolbar icon button, labelled for accessibility. */
+/**
+ * A toolbar icon button, labelled for accessibility.
+ *
+ * Upstream: `ha-icon-button` (src/components/ha-icon-button.ts)
+ */
 @Composable
 internal fun ToolbarIconButton(icon: String, label: String, enabled: Boolean = true, onClick: () -> Unit) {
     val colors = LocalHAColorScheme.current

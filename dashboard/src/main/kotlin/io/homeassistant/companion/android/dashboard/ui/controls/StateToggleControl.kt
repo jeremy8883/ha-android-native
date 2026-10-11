@@ -36,6 +36,9 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 /**
  * Port of `ha-state-control-toggle` (frontend@20260624.6 src/state-control/ha-state-control-toggle.ts): a tall
  * switch with the on side at the top, or separate on and off buttons when the state is only assumed.
+ *
+ * Upstream: `ha-state-control-toggle` (src/state-control/ha-state-control-toggle.ts;
+ * src/resources/state-control-styles.ts)
  */
 @Composable
 internal fun StateToggleControl(toggle: StateToggle, onAction: (CardAction) -> Unit, modifier: Modifier = Modifier) {
@@ -49,7 +52,11 @@ internal fun StateToggleControl(toggle: StateToggle, onAction: (CardAction) -> U
     }
 }
 
-/** Port of `ha-control-switch`, vertical and reversed: the knob slides up when on. */
+/**
+ * Port of `ha-control-switch`, vertical and reversed: the knob slides up when on.
+ *
+ * Upstream: `ha-control-switch` (src/components/ha-control-switch.ts)
+ */
 @Composable
 private fun ToggleSwitch(
     toggle: StateToggle,
@@ -92,7 +99,11 @@ private fun ToggleSwitch(
     }
 }
 
-/** Two tall buttons, on above off, the one matching the state filled with its colour. */
+/**
+ * Two tall buttons, on above off, the one matching the state filled with its colour.
+ *
+ * Upstream: part of `ha-state-control-toggle` (src/state-control/ha-state-control-toggle.ts)
+ */
 @Composable
 private fun ToggleButtons(
     toggle: StateToggle,
@@ -119,6 +130,12 @@ private fun ToggleButtons(
     }
 }
 
+/**
+ * A tall button of [ToggleButtons], filled with [color] while [active].
+ *
+ * Upstream: `ha-control-button` as `ha-state-control-toggle` styles it (src/components/ha-control-button.ts;
+ * src/resources/state-control-styles.ts)
+ */
 @Composable
 private fun ToggleButton(
     label: String,

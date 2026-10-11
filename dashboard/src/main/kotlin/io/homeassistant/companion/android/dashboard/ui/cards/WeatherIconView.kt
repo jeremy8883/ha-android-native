@@ -14,7 +14,11 @@ import androidx.compose.ui.graphics.vector.PathParser
 import io.homeassistant.companion.android.dashboard.weather.WeatherIcon
 import io.homeassistant.companion.android.dashboard.weather.WeatherPaint
 
-/** A weather condition, port of `getWeatherStateIcon`: its drawing scaled into the box, or its icon in [tint]. */
+/**
+ * A weather condition, port of `getWeatherStateIcon`: its drawing scaled into the box, or its icon in [tint].
+ *
+ * Upstream: `getWeatherStateIcon` (src/data/weather.ts)
+ */
 @Composable
 internal fun WeatherIconView(icon: WeatherIcon, tint: Color, modifier: Modifier = Modifier) {
     when (icon) {

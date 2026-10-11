@@ -35,6 +35,8 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 /**
  * Port of `ha-control-button` as the lock and alarm details style it: 60 high, rounded, with its [label] on a tint
  * of [color] (neutral when unspecified).
+ *
+ * Upstream: `ha-control-button` (src/components/ha-control-button.ts)
  */
 @Composable
 internal fun ControlButton(
@@ -59,7 +61,11 @@ internal fun ControlButton(
     }
 }
 
-/** Port of `ha-control-button` with an icon: a rounded square on a quiet tint. */
+/**
+ * Port of `ha-control-button` with an icon: a rounded square on a quiet tint.
+ *
+ * Upstream: `ha-control-button` (src/components/ha-control-button.ts)
+ */
 @Composable
 internal fun ControlButtonIcon(icon: String, label: String, modifier: Modifier = Modifier, onClick: () -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -75,7 +81,12 @@ internal fun ControlButtonIcon(icon: String, label: String, modifier: Modifier =
     }
 }
 
-/** The details' `.status`: the entity's icon in a tinted circle, pulsing while something is under way. */
+/**
+ * The details' `.status`: the entity's icon in a tinted circle, pulsing while something is under way.
+ *
+ * Upstream: part of `more-info-lock`, `more-info-alarm_control_panel`
+ * (src/dialogs/more-info/controls/more-info-lock.ts; src/dialogs/more-info/controls/more-info-alarm_control_panel.ts)
+ */
 @Composable
 internal fun PulsingStatusIcon(status: StatusIcon, modifier: Modifier = Modifier) {
     val color = status.color?.toColor() ?: LocalHAColorScheme.current.colorFillPrimaryLoudResting

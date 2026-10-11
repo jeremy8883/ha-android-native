@@ -32,7 +32,11 @@ import java.time.ZonedDateTime
 import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
 
-/** Shown in place of the dashboard when nothing could be loaded for it: why, and a way to try again. */
+/**
+ * Shown in place of the dashboard when nothing could be loaded for it: why, and a way to try again.
+ *
+ * Upstream: `hass-error-screen` (src/layouts/hass-error-screen.ts)
+ */
 @Composable
 internal fun LoadErrorScreen(error: LoadError, onRetry: () -> Unit) {
     Column(
@@ -49,7 +53,11 @@ internal fun LoadErrorScreen(error: LoadError, onRetry: () -> Unit) {
     }
 }
 
-/** A thin bar at the top of the content while shown data is loaded again, drawn over it so nothing moves. */
+/**
+ * A thin bar at the top of the content while shown data is loaded again, drawn over it so nothing moves.
+ *
+ * Upstream: none (native: cached data shown while it loads again)
+ */
 @Composable
 internal fun RefreshIndicator(visible: Boolean, modifier: Modifier = Modifier) {
     if (visible) {
@@ -64,6 +72,9 @@ internal fun RefreshIndicator(visible: Boolean, modifier: Modifier = Modifier) {
 /**
  * The bottom of the screen, over the content: messages for the user, and below them while [offline], a bar saying
  * so and, when known, when the data shown was last current ([updatedAt]).
+ *
+ * Upstream: part of `notification-manager`, the disconnect toast mixin (src/managers/notification-manager.ts;
+ * src/state/disconnect-toast-mixin.ts)
  */
 @Composable
 internal fun DashboardBottomBars(
@@ -85,6 +96,8 @@ internal fun DashboardBottomBars(
 
 /**
  * Show [refreshErrors] as a message each time a new one comes, with a way to try again; the data shown stays.
+ *
+ * Upstream: none (native: refreshing cached data that failed)
  */
 @Composable
 internal fun RefreshErrorMessages(refreshErrors: Flow<LoadError?>, snackbar: SnackbarHostState, onRetry: () -> Unit) {
@@ -102,7 +115,11 @@ internal fun RefreshErrorMessages(refreshErrors: Flow<LoadError?>, snackbar: Sna
     }
 }
 
-/** When the data shown was last current, such as "Updated 5 minutes ago". */
+/**
+ * When the data shown was last current, such as "Updated 5 minutes ago".
+ *
+ * Upstream: none (native: the age of cached data)
+ */
 @Composable
 private fun updatedText(time: Instant, now: ZonedDateTime?): String {
     val timeMillis = time.toEpochMilliseconds()

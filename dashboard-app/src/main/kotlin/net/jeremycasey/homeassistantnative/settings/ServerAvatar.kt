@@ -29,6 +29,8 @@ import net.jeremycasey.homeassistantnative.R
  * The server's user, as their profile picture or initials, with a check badge when it's the current server. Copied
  * from the companion app's server chooser (app/src/main/kotlin/io/homeassistant/companion/android/settings/server/
  * ServerChooser.kt, `ServerUserAvatar` and `ActiveBadge`).
+ *
+ * Upstream: none (native: the app's server settings)
  */
 @Composable
 internal fun ServerAvatar(server: ServerItem, modifier: Modifier = Modifier) {
@@ -57,7 +59,11 @@ internal fun ServerAvatar(server: ServerItem, modifier: Modifier = Modifier) {
     }
 }
 
-/** A check badge on the bottom-end of the avatar, ringed in the surface color to stand off its edge. */
+/**
+ * A check badge on the bottom-end of the avatar, ringed in the surface color to stand off its edge.
+ *
+ * Upstream: none (native: the app's server settings)
+ */
 @Composable
 private fun ActiveBadge(modifier: Modifier = Modifier) {
     val colors = LocalHAColorScheme.current

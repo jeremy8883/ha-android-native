@@ -60,6 +60,8 @@ import net.jeremycasey.homeassistantnative.R
  *
  * @param onLoggedIn called with the added server once logged in
  * @param onClose leaves without logging in, when there is somewhere to go back to (another server)
+ *
+ * Upstream: none (native: the companion app's onboarding, hosting the login steps)
  */
 @Composable
 internal fun LoginScreen(onLoggedIn: (Int) -> Unit, onClose: (() -> Unit)? = null) {
@@ -122,7 +124,11 @@ internal fun LoginScreen(onLoggedIn: (Int) -> Unit, onClose: (() -> Unit)? = nul
     }
 }
 
-/** The server's own sign-in page, full screen, out of the scrolling column. */
+/**
+ * The server's own sign-in page, full screen, out of the scrolling column.
+ *
+ * Upstream: none (native: the server's sign-in page in a web view)
+ */
 @Composable
 private fun WebSignIn(state: LoginUiState.WebSignIn, viewModel: LoginViewModel, modifier: Modifier) {
     val session = viewModel.session
@@ -138,7 +144,12 @@ private fun WebSignIn(state: LoginUiState.WebSignIn, viewModel: LoginViewModel, 
     )
 }
 
-/** The Home Assistant logo and a title, as the top of the frontend's login page. */
+/**
+ * The Home Assistant logo and a title, as the top of the frontend's login page.
+ *
+ * Upstream: part of the authorize page's header and `ha-auth-flow` (src/html/authorize.html.template;
+ * src/auth/ha-auth-flow.ts)
+ */
 @Composable
 private fun ColumnScope.LoginHeader(title: String, description: String? = null) {
     Spacer(modifier = Modifier.weight(HEADER_POSITION))
@@ -151,6 +162,11 @@ private fun ColumnScope.LoginHeader(title: String, description: String? = null) 
     description?.let { Text(it, style = HATextStyle.Body, modifier = Modifier.widthIn(max = MaxButtonWidth)) }
 }
 
+/**
+ * The server's login providers to choose from.
+ *
+ * Upstream: `ha-pick-auth-provider` (src/auth/ha-pick-auth-provider.ts)
+ */
 @Composable
 private fun ColumnScope.ChooseProvider(state: LoginUiState.ChooseProvider, onPick: (AuthProvider) -> Unit) {
     LoginHeader(state.title)
@@ -160,6 +176,11 @@ private fun ColumnScope.ChooseProvider(state: LoginUiState.ChooseProvider, onPic
     Spacer(modifier = Modifier.weight(1f - HEADER_POSITION))
 }
 
+/**
+ * A login step's form: its title and description, its fields, its errors and its submit button.
+ *
+ * Upstream: part of `ha-auth-flow` (src/auth/ha-auth-flow.ts)
+ */
 @Composable
 private fun ColumnScope.LoginForm(state: LoginUiState.Form, viewModel: LoginViewModel) {
     val texts = state.texts
@@ -195,6 +216,11 @@ private fun ColumnScope.LoginForm(state: LoginUiState.Form, viewModel: LoginView
     }
 }
 
+/**
+ * Why the login ended, with a button to start over.
+ *
+ * Upstream: part of `ha-auth-flow` (src/auth/ha-auth-flow.ts)
+ */
 @Composable
 private fun ColumnScope.Aborted(state: LoginUiState.Aborted, onStartOver: () -> Unit) {
     LoginHeader(state.message)
@@ -206,7 +232,11 @@ private fun ColumnScope.Aborted(state: LoginUiState.Aborted, onStartOver: () -> 
     )
 }
 
-/** Logged in, while the server is added: a loader in the middle of the screen. */
+/**
+ * Logged in, while the server is added: a loader in the middle of the screen.
+ *
+ * Upstream: none (native: adding the server once logged in)
+ */
 @Composable
 private fun ColumnScope.SigningIn() {
     Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
@@ -220,6 +250,11 @@ private fun ColumnScope.SigningIn() {
     }
 }
 
+/**
+ * A login field as its type is filled in, with its error.
+ *
+ * Upstream: `ha-auth-form`, `ha-auth-form-string` (src/auth/ha-auth-form.ts; src/auth/ha-auth-form-string.ts)
+ */
 @Composable
 private fun LoginFieldInput(
     field: LoginField,
@@ -269,6 +304,11 @@ private fun LoginFieldInput(
     }
 }
 
+/**
+ * Why logging in failed, as text.
+ *
+ * Upstream: none (native: why the app couldn't reach the server)
+ */
 @Composable
 internal fun problemText(problem: LoadError): String = when (problem) {
     LoadError.NoResponse, LoadError.NoServer -> stringResource(R.string.login_error_unreachable)
@@ -284,7 +324,11 @@ internal fun problemText(problem: LoadError): String = when (problem) {
     }
 }
 
-/** Signing in on the server's own sign-in page instead: for two-step sign-ins, or a sign-in page in front of it. */
+/**
+ * Signing in on the server's own sign-in page instead: for two-step sign-ins, or a sign-in page in front of it.
+ *
+ * Upstream: none (native: falls back to the server's own sign-in page)
+ */
 @Composable
 internal fun SignInWithBrowserButton(onClick: () -> Unit, enabled: Boolean = true) {
     HAPlainButton(

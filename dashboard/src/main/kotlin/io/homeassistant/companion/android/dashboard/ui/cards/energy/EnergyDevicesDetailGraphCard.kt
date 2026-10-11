@@ -21,6 +21,10 @@ import java.math.BigDecimal
 /**
  * The devices' consumption by period, stacked, with what no device accounts for. Port of the rendering of
  * `hui-energy-devices-detail-graph-card` (frontend@20260624.6).
+ *
+ * Upstream: `hui-energy-devices-detail-graph-card`
+ * (src/panels/lovelace/cards/energy/hui-energy-devices-detail-graph-card.ts;
+ * src/panels/lovelace/cards/energy/energy-devices-detail-graph-data.ts)
  */
 @Composable
 internal fun EnergyDevicesDetailGraphCard(card: CardConfig, hass: State<HassSnapshot?>, modifier: Modifier = Modifier) {

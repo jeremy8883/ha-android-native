@@ -24,7 +24,12 @@ import io.homeassistant.companion.android.dashboard.ui.cards.web.WebCard
 import io.homeassistant.companion.android.dashboard.ui.todo.TodoListCard
 import java.time.ZonedDateTime
 
-/** Renders [card] with its native renderer, or a placeholder when the type is not supported yet. */
+/**
+ * Renders [card] with its native renderer, or a placeholder when the type is not supported yet.
+ *
+ * Upstream: `hui-card`, `createCardElement` (src/panels/lovelace/cards/hui-card.ts;
+ * src/panels/lovelace/create-element/create-card-element.ts)
+ */
 @Composable
 internal fun DashboardCard(
     card: CardConfig,
@@ -59,7 +64,11 @@ internal fun DashboardCard(
     }
 }
 
-/** The cards of one entity (or a few) that handle their own gestures, in rounded corners. */
+/**
+ * The cards of one entity (or a few) that handle their own gestures, in rounded corners.
+ *
+ * Upstream: part of `createCardElement` (src/panels/lovelace/create-element/create-card-element.ts)
+ */
 @Composable
 private fun EntityCards(
     card: CardConfig,
@@ -81,7 +90,11 @@ private fun EntityCards(
     }
 }
 
-/** The card types that don't need the current time; [cardModifier] carries the card's own gestures. */
+/**
+ * The card types that don't need the current time; [cardModifier] carries the card's own gestures.
+ *
+ * Upstream: part of `createCardElement` (src/panels/lovelace/create-element/create-card-element.ts)
+ */
 @Composable
 private fun OtherCard(
     card: CardConfig,

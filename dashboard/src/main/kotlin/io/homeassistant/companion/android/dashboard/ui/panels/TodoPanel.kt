@@ -49,6 +49,8 @@ import kotlinx.serialization.json.JsonPrimitive
 /**
  * Port of `ha-panel-todo` on a phone: the list picker (each list with its icon), the list's menu (its details), the
  * list as its to-do list card, and "Add item" for lists that can add.
+ *
+ * Upstream: `ha-panel-todo` (src/panels/todo/ha-panel-todo.ts)
  */
 @Composable
 internal fun TodoPanel(hass: State<HassSnapshot?>, now: State<ZonedDateTime?>, interactions: CardInteractions) {
@@ -102,7 +104,11 @@ internal fun TodoPanel(hass: State<HassSnapshot?>, now: State<ZonedDateTime?>, i
     }
 }
 
-/** The list picker: the chosen list's name with a chevron, opening the lists. */
+/**
+ * The list picker: the chosen list's name with a chevron, opening the lists.
+ *
+ * Upstream: part of `ha-panel-todo` (src/panels/todo/ha-panel-todo.ts)
+ */
 @Composable
 private fun ListPicker(
     lists: List<Pair<String, String>>,
@@ -160,6 +166,8 @@ private fun ListPicker(
  * The list's menu: its details (`more-info`), and "Delete list" for a local list ([onDelete]).
  *
  * UPSTREAM-DIFF: no "Assist" (the app has no Assist).
+ *
+ * Upstream: part of `ha-panel-todo` (src/panels/todo/ha-panel-todo.ts)
  */
 @Composable
 private fun ListMenu(entityId: String, hass: HassSnapshot, onAction: (CardAction) -> Unit, onDelete: (() -> Unit)?) {

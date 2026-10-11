@@ -30,7 +30,13 @@ import io.homeassistant.companion.android.dashboard.moreinfo.TimerDuration
 import io.homeassistant.companion.android.dashboard.moreinfo.TimerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.timerStartCall
 
-/** Port of the dialogs' `.actions`: plain text buttons in a row. */
+/**
+ * Port of the dialogs' `.actions`: plain text buttons in a row.
+ *
+ * Upstream: the `.actions` of `more-info-counter`, `more-info-timer`, `more-info-automation`
+ * (src/dialogs/more-info/controls/more-info-counter.ts; src/dialogs/more-info/controls/more-info-timer.ts;
+ * src/dialogs/more-info/controls/more-info-automation.ts)
+ */
 @Composable
 internal fun MoreInfoActionRow(actions: List<MoreInfoAction>, onAction: (CardAction) -> Unit) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.End)) {
@@ -38,7 +44,11 @@ internal fun MoreInfoActionRow(actions: List<MoreInfoAction>, onAction: (CardAct
     }
 }
 
-/** Port of `more-info-automation`: when it last ran, and the button running its actions. */
+/**
+ * Port of `more-info-automation`: when it last ran, and the button running its actions.
+ *
+ * Upstream: `more-info-automation` (src/dialogs/more-info/controls/more-info-automation.ts)
+ */
 @Composable
 internal fun MoreInfoAutomation(info: AutomationMoreInfo, onAction: (CardAction) -> Unit) {
     Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
@@ -50,6 +60,8 @@ internal fun MoreInfoAutomation(info: AutomationMoreInfo, onAction: (CardAction)
 /**
  * Port of `more-info-timer`: the duration (hours, minutes and seconds, seeded once from the configured one) and
  * the buttons for the timer's state, start and set using the entered duration.
+ *
+ * Upstream: `more-info-timer` (src/dialogs/more-info/controls/more-info-timer.ts)
  */
 @Composable
 internal fun MoreInfoTimer(info: TimerMoreInfo, state: EntityState, onAction: (CardAction) -> Unit) {
@@ -72,7 +84,11 @@ internal fun MoreInfoTimer(info: TimerMoreInfo, state: EntityState, onAction: (C
     }
 }
 
-/** Port of `ha-duration-input`: hours, minutes and seconds fields. */
+/**
+ * Port of `ha-duration-input`: hours, minutes and seconds fields.
+ *
+ * Upstream: `ha-duration-input` (src/components/ha-duration-input.ts)
+ */
 @Composable
 private fun DurationInput(duration: TimerDuration, onChange: (TimerDuration) -> Unit) {
     Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2), verticalAlignment = Alignment.CenterVertically) {
@@ -84,6 +100,11 @@ private fun DurationInput(duration: TimerDuration, onChange: (TimerDuration) -> 
     }
 }
 
+/**
+ * One number of the duration, zero-padded to two digits when [padded].
+ *
+ * Upstream: part of `ha-duration-input` (src/components/ha-duration-input.ts)
+ */
 @Composable
 private fun DurationField(value: Int, padded: Boolean = false, onChange: (Int) -> Unit) {
     var text by remember(value) { mutableStateOf(if (padded) value.toString().padStart(2, '0') else value.toString()) }

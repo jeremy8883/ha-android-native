@@ -45,6 +45,8 @@ import kotlin.math.tan
 /**
  * Port of `more-info-person`: the person on `ha-map` (300 high, zoomed to 14 on them, their accuracy circle around
  * them), then "Create zone from current location" for admins.
+ *
+ * Upstream: `more-info-person` (src/dialogs/more-info/controls/more-info-person.ts)
  */
 @Composable
 internal fun MoreInfoPerson(person: MoreInfoExtra.Person, onAction: (CardAction) -> Unit) {
@@ -65,6 +67,8 @@ internal fun MoreInfoPerson(person: MoreInfoExtra.Person, onAction: (CardAction)
 /**
  * The map's CARTO Voyager tiles (`createTileLayer`) around [location] at [ZOOM], the accuracy circle in the dark
  * primary colour, the marker in the middle, and the tiles' attribution.
+ *
+ * Upstream: `ha-map` (src/components/map/ha-map.ts)
  */
 @Composable
 private fun PersonMap(location: MapLocation, person: MoreInfoExtra.Person, modifier: Modifier) {
@@ -117,7 +121,11 @@ private fun PersonMap(location: MapLocation, person: MoreInfoExtra.Person, modif
     }
 }
 
-/** `ha-entity-marker`: a 48 circle with a primary border, the picture filling it, else the initials. */
+/**
+ * `ha-entity-marker`: a 48 circle with a primary border, the picture filling it, else the initials.
+ *
+ * Upstream: `ha-entity-marker` (src/components/map/ha-entity-marker.ts)
+ */
 @Composable
 private fun Marker(person: MoreInfoExtra.Person, modifier: Modifier) {
     val colors = LocalHAColorScheme.current

@@ -31,6 +31,8 @@ import net.jeremycasey.homeassistantnative.R
  * The app's settings: the servers it's logged in to (to switch to, log out of, or add another).
  *
  * @param onAddServer opens the login for another server
+ *
+ * Upstream: none (native: the app's server settings)
  */
 @Composable
 internal fun SettingsScreen(onBack: () -> Unit, onAddServer: () -> Unit) {
@@ -72,6 +74,11 @@ internal fun SettingsScreen(onBack: () -> Unit, onAddServer: () -> Unit) {
     }
 }
 
+/**
+ * A section's title.
+ *
+ * Upstream: none (native: the app's server settings)
+ */
 @Composable
 private fun SectionTitle(text: String) {
     Text(
@@ -81,6 +88,11 @@ private fun SectionTitle(text: String) {
     )
 }
 
+/**
+ * Confirms logging out of a server.
+ *
+ * Upstream: none (native: the app's server settings)
+ */
 @Composable
 private fun LogOutDialog(serverName: String, onConfirm: () -> Unit, onDismiss: () -> Unit) {
     AlertDialog(

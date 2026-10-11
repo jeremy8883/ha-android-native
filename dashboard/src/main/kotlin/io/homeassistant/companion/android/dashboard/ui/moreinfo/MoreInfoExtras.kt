@@ -34,7 +34,12 @@ import io.homeassistant.companion.android.dashboard.ui.cards.RowDateTimeControl
 import io.homeassistant.companion.android.dashboard.ui.cards.ServerImage
 import java.time.Instant
 
-/** The details of the domains with controls of their own beyond the shared ones. */
+/**
+ * The details of the domains with controls of their own beyond the shared ones.
+ *
+ * Upstream: part of `more-info-content` (src/dialogs/more-info/more-info-content.ts;
+ * src/dialogs/more-info/state_more_info_control.ts)
+ */
 @Composable
 internal fun MoreInfoExtraView(
     extra: MoreInfoExtra,
@@ -63,7 +68,11 @@ internal fun MoreInfoExtraView(
     }
 }
 
-/** Port of `more-info-sun`: a rule, then each row's name (with when, for the rising and setting) and value. */
+/**
+ * Port of `more-info-sun`: a rule, then each row's name (with when, for the rising and setting) and value.
+ *
+ * Upstream: `more-info-sun` (src/dialogs/more-info/controls/more-info-sun.ts)
+ */
 @Composable
 private fun MoreInfoSun(rows: List<SunRow>) {
     val colors = LocalHAColorScheme.current
@@ -84,7 +93,11 @@ private fun MoreInfoSun(rows: List<SunRow>) {
     }
 }
 
-/** Port of `more-info-configurator`: the description, errors, fields and the submit button. */
+/**
+ * Port of `more-info-configurator`: the description, errors, fields and the submit button.
+ *
+ * Upstream: `more-info-configurator` (src/dialogs/more-info/controls/more-info-configurator.ts)
+ */
 @Composable
 private fun MoreInfoConfigurator(configurator: ConfiguratorMoreInfo, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current

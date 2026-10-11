@@ -26,6 +26,8 @@ import kotlin.math.sin
  * arc, coloured from the start (or to the end) up to the value, or between a low and a high value; a dot shows the
  * current reading. Shows [targets] (the user's, while set); a drag or tap on the arc reports the target it moves
  * to [onChanging] (with `null` when it ends) and [onChanged].
+ *
+ * Upstream: `ha-control-circular-slider` (src/components/ha-control-circular-slider.ts)
  */
 @Composable
 internal fun CircularSliderView(

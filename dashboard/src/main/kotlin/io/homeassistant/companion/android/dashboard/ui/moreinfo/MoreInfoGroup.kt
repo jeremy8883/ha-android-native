@@ -15,6 +15,8 @@ import java.time.Instant
 /**
  * Port of `more-info-group`: the members' shared domain's details for the group (its header and controls, whose
  * calls go to the group), then each member's state card.
+ *
+ * Upstream: `more-info-group` (src/dialogs/more-info/controls/more-info-group.ts)
  */
 @Composable
 internal fun MoreInfoGroup(

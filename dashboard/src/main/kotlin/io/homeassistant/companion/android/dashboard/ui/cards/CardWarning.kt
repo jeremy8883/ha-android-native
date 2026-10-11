@@ -8,7 +8,11 @@ import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 
-/** Port of `hui-warning`: why a card can't show, in its place. */
+/**
+ * Port of `hui-warning`: why a card can't show, in its place.
+ *
+ * Upstream: `hui-warning` (src/panels/lovelace/components/hui-warning.ts)
+ */
 @Composable
 internal fun CardWarning(text: String, modifier: Modifier = Modifier) {
     DashboardCardSurface(modifier = modifier) {

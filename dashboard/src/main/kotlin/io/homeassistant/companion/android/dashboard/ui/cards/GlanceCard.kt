@@ -35,6 +35,8 @@ import java.time.ZonedDateTime
 /**
  * A glance card, port of `hui-glance-card` (frontend@20260624.6 src/panels/lovelace/cards/hui-glance-card.ts): an
  * optional title, then the entities in columns, each its name, icon (or picture) and state, opening its details.
+ *
+ * Upstream: `hui-glance-card` (src/panels/lovelace/cards/hui-glance-card.ts)
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -80,6 +82,11 @@ internal fun GlanceCard(
     }
 }
 
+/**
+ * One entity of a glance card: its name, its picture or icon, and its state, in a column.
+ *
+ * Upstream: part of `hui-glance-card` (src/panels/lovelace/cards/hui-glance-card.ts)
+ */
 @Composable
 private fun GlanceEntityView(entity: GlanceEntity, modifier: Modifier) {
     val colors = LocalHAColorScheme.current

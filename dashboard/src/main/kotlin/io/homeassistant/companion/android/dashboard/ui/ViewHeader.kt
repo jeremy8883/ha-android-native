@@ -38,7 +38,11 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import java.time.Instant
 import java.time.ZonedDateTime
 
-/** The header of a sections view: its card, then (or before, with `badges_position: top`) its badges. */
+/**
+ * The header of a sections view: its card, then (or before, with `badges_position: top`) its badges.
+ *
+ * Upstream: `hui-view-header` (src/panels/lovelace/views/hui-view-header.ts)
+ */
 @Composable
 internal fun ViewHeader(
     view: ViewConfig,
@@ -61,6 +65,11 @@ internal fun ViewHeader(
     }
 }
 
+/**
+ * The view's badges, wrapped and centred.
+ *
+ * Upstream: `hui-view-badges` (src/panels/lovelace/badges/hui-view-badges.ts)
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ViewBadges(badges: List<ViewBadgeModel>, interactions: CardInteractions) {
@@ -73,6 +82,11 @@ private fun ViewBadges(badges: List<ViewBadgeModel>, interactions: CardInteracti
     }
 }
 
+/**
+ * A badge: its icon, then its name over its state, on a pill.
+ *
+ * Upstream: `hui-entity-badge`, `ha-badge` (src/panels/lovelace/badges/hui-entity-badge.ts; src/components/ha-badge.ts)
+ */
 @Composable
 private fun ViewBadge(badge: ViewBadgeModel, interactions: CardInteractions) {
     val colors = LocalHAColorScheme.current

@@ -34,6 +34,9 @@ import java.time.ZonedDateTime
  * An entity or sensor card, ports of `hui-entity-card` and `hui-sensor-card` (frontend@20260624.6
  * src/panels/lovelace/cards/): the entity's name with its icon on the right, its value large with the unit small
  * beside it, and for a sensor card with a graph, its history under them.
+ *
+ * Upstream: `hui-entity-card`, `hui-sensor-card` (src/panels/lovelace/cards/hui-entity-card.ts;
+ * src/panels/lovelace/cards/hui-sensor-card.ts)
  */
 @Composable
 internal fun EntityCard(
@@ -84,7 +87,11 @@ internal fun EntityCard(
     }
 }
 
-/** The value large, its unit small beside it, in the locale's order. */
+/**
+ * The value large, its unit small beside it, in the locale's order.
+ *
+ * Upstream: part of `hui-entity-card` (src/panels/lovelace/cards/hui-entity-card.ts)
+ */
 @Composable
 private fun EntityValue(value: ValueParts, modifier: Modifier) {
     val colors = LocalHAColorScheme.current

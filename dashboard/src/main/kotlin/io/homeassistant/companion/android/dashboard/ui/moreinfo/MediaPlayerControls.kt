@@ -43,7 +43,11 @@ import io.homeassistant.companion.android.dashboard.ui.controls.haSliderColors
 import java.time.Instant
 import kotlinx.coroutines.delay
 
-/** The position slider with the elapsed and total times; it counts up each second while the track plays. */
+/**
+ * The position slider with the elapsed and total times; it counts up each second while the track plays.
+ *
+ * Upstream: part of `more-info-media_player` (src/dialogs/more-info/controls/more-info-media_player.ts)
+ */
 @Composable
 internal fun MediaPositionBar(position: MediaPosition, now: Instant, onAction: (CardAction) -> Unit) {
     // The dashboard's clock ticks slowly, so the seconds since it last did are counted here
@@ -80,12 +84,21 @@ internal fun MediaPositionBar(position: MediaPosition, now: Instant, onAction: (
     }
 }
 
+/**
+ * A time under the position slider.
+ *
+ * Upstream: part of `more-info-media_player` (src/dialogs/more-info/controls/more-info-media_player.ts)
+ */
 @Composable
 private fun TimeText(text: String) {
     Text(text, style = HATextStyle.BodyMedium, color = LocalHAColorScheme.current.colorTextSecondary)
 }
 
-/** Repeat and previous, the filled play button(s), next and shuffle; a missing side button keeps its space. */
+/**
+ * Repeat and previous, the filled play button(s), next and shuffle; a missing side button keeps its space.
+ *
+ * Upstream: part of `more-info-media_player` (src/dialogs/more-info/controls/more-info-media_player.ts)
+ */
 @Composable
 internal fun MediaMainButtons(controls: MediaMainControls, onAction: (CardAction) -> Unit) {
     Row(
@@ -110,6 +123,11 @@ internal fun MediaMainButtons(controls: MediaMainControls, onAction: (CardAction
     }
 }
 
+/**
+ * A plain icon button of the player, or its space when there is none.
+ *
+ * Upstream: part of `more-info-media_player` (src/dialogs/more-info/controls/more-info-media_player.ts)
+ */
 @Composable
 private fun SideButton(control: MediaControl?, onAction: (CardAction) -> Unit) {
     if (control == null) {
@@ -121,12 +139,22 @@ private fun SideButton(control: MediaControl?, onAction: (CardAction) -> Unit) {
     }
 }
 
+/**
+ * A control's icon, labelled with what it does.
+ *
+ * Upstream: part of `more-info-media_player` (src/dialogs/more-info/controls/more-info-media_player.ts)
+ */
 @Composable
 private fun ControlIcon(control: MediaControl, tint: androidx.compose.ui.graphics.Color, modifier: Modifier) {
     DashboardIcon(control.icon, tint, modifier.semantics { contentDescription = control.label })
 }
 
-/** The mute button, the step buttons or the volume slider (sent when released). */
+/**
+ * The mute button, the step buttons or the volume slider (sent when released).
+ *
+ * Upstream: part of `more-info-media_player` (`_renderVolumeControl`)
+ * (src/dialogs/more-info/controls/more-info-media_player.ts)
+ */
 @Composable
 internal fun MediaVolumeRow(volume: MediaVolume, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current
@@ -156,7 +184,11 @@ internal fun MediaVolumeRow(volume: MediaVolume, onAction: (CardAction) -> Unit)
     }
 }
 
-/** Browse, grouping, source, sound mode, turn on and turn off, as icon buttons; the menus open from theirs. */
+/**
+ * Browse, grouping, source, sound mode, turn on and turn off, as icon buttons; the menus open from theirs.
+ *
+ * Upstream: part of `more-info-media_player` (src/dialogs/more-info/controls/more-info-media_player.ts)
+ */
 @Composable
 internal fun MediaControlsRow(
     info: MediaPlayerMoreInfo,
@@ -181,7 +213,11 @@ internal fun MediaControlsRow(
     }
 }
 
-/** The media browser's button, opening it. */
+/**
+ * The media browser's button, opening it.
+ *
+ * Upstream: part of `more-info-media_player` (src/dialogs/more-info/controls/more-info-media_player.ts)
+ */
 @Composable
 private fun BrowseButton(label: String, entityId: String, hass: HassSnapshot, onAction: (CardAction) -> Unit) {
     var open by remember { mutableStateOf(false) }
@@ -195,6 +231,12 @@ private fun BrowseButton(label: String, entityId: String, hass: HassSnapshot, on
     if (open) MediaBrowserDialog(entityId, label, hass, onAction) { open = false }
 }
 
+/**
+ * The source or sound mode button, opening its menu.
+ *
+ * Upstream: part of `more-info-media_player` (`_renderSourceControl`, `_renderSoundMode`)
+ * (src/dialogs/more-info/controls/more-info-media_player.ts)
+ */
 @Composable
 private fun MenuButton(menu: SelectMenu, onAction: (CardAction) -> Unit) {
     var expanded by remember { mutableStateOf(false) }

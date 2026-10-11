@@ -67,6 +67,8 @@ import java.time.ZonedDateTime
 /**
  * Port of `hui-todo-list-card`: the add field, then the items to do, those without a status and the completed ones,
  * each section under its header; a tap on an item opens it. The items follow the list live.
+ *
+ * Upstream: `hui-todo-list-card` (src/panels/lovelace/cards/hui-todo-list-card.ts)
  */
 @Composable
 internal fun TodoListCard(
@@ -134,7 +136,11 @@ internal sealed interface TodoEdit {
     data class Change(val item: TodoItem) : TodoEdit
 }
 
-/** The add field ("Add item") with its plus button; with a due date filter, the item opens in the dialog first. */
+/**
+ * The add field ("Add item") with its plus button; with a due date filter, the item opens in the dialog first.
+ *
+ * Upstream: part of `hui-todo-list-card` (src/panels/lovelace/cards/hui-todo-list-card.ts)
+ */
 @Composable
 private fun AddRow(
     model: TodoListModel,
@@ -176,7 +182,11 @@ private fun AddRow(
     )
 }
 
-/** The sections, or the reorder list while reordering. */
+/**
+ * The sections, or the reorder list while reordering.
+ *
+ * Upstream: part of `hui-todo-list-card` (src/panels/lovelace/cards/hui-todo-list-card.ts)
+ */
 @Composable
 private fun TodoSections(
     model: TodoListModel,
@@ -218,7 +228,11 @@ private fun TodoSections(
     }
 }
 
-/** The section menu starting or ending reordering, for lists in their own order that can move items. */
+/**
+ * The section menu starting or ending reordering, for lists in their own order that can move items.
+ *
+ * Upstream: part of `hui-todo-list-card` (src/panels/lovelace/cards/hui-todo-list-card.ts)
+ */
 @Composable
 private fun ReorderMenu(model: TodoListModel, reordering: Boolean, localize: Localize, onToggle: () -> Unit) {
     if (!model.reorderable) return
@@ -230,6 +244,11 @@ private fun ReorderMenu(model: TodoListModel, reordering: Boolean, localize: Loc
     )
 }
 
+/**
+ * That there are no items to do.
+ *
+ * Upstream: part of `hui-todo-list-card` (src/panels/lovelace/cards/hui-todo-list-card.ts)
+ */
 @Composable
 private fun NoItems(localize: Localize) {
     Text(
@@ -240,7 +259,11 @@ private fun NoItems(localize: Localize) {
     )
 }
 
-/** The completed items under their header, whose menu removes them (after confirming). */
+/**
+ * The completed items under their header, whose menu removes them (after confirming).
+ *
+ * Upstream: part of `hui-todo-list-card` (src/panels/lovelace/cards/hui-todo-list-card.ts)
+ */
 @Composable
 private fun CompletedSection(
     model: TodoListModel,
@@ -266,7 +289,11 @@ private fun CompletedSection(
     model.checked.forEach { TodoItemRow(it, model, localize, onAction, onOpen) }
 }
 
-/** The items to do, each with up and down buttons, while reordering. */
+/**
+ * The items to do, each with up and down buttons, while reordering.
+ *
+ * Upstream: part of `hui-todo-list-card` (src/panels/lovelace/cards/hui-todo-list-card.ts)
+ */
 @Composable
 private fun ReorderList(
     model: TodoListModel,
@@ -285,6 +312,11 @@ private fun ReorderList(
     }
 }
 
+/**
+ * A section's header: its title and its menu.
+ *
+ * Upstream: part of `hui-todo-list-card` (src/panels/lovelace/cards/hui-todo-list-card.ts)
+ */
 @Composable
 private fun SectionHeader(title: String, menu: @Composable () -> Unit) {
     Row(
@@ -301,7 +333,11 @@ private fun SectionHeader(title: String, menu: @Composable () -> Unit) {
     }
 }
 
-/** A section's ⋮ menu with one item. */
+/**
+ * A section's ⋮ menu with one item.
+ *
+ * Upstream: part of `hui-todo-list-card` (src/panels/lovelace/cards/hui-todo-list-card.ts)
+ */
 @Composable
 private fun SectionMenu(label: String, icon: String, danger: Boolean = false, onClick: () -> Unit) {
     var open by remember { mutableStateOf(false) }
@@ -332,6 +368,8 @@ private fun SectionMenu(label: String, icon: String, danger: Boolean = false, on
 /**
  * An item: its box (a dash without a status), its summary (struck through once completed), description and due
  * time (in the danger colour once overdue), and a delete button for lists that can't edit items.
+ *
+ * Upstream: part of `hui-todo-list-card` (src/panels/lovelace/cards/hui-todo-list-card.ts)
  */
 @Composable
 private fun TodoItemRow(
@@ -396,6 +434,11 @@ private fun TodoItemRow(
     }
 }
 
+/**
+ * An item to do while reordering, with its up and down buttons.
+ *
+ * Upstream: part of `hui-todo-list-card` (src/panels/lovelace/cards/hui-todo-list-card.ts)
+ */
 // UPSTREAM-DIFF: items move with up and down buttons; upstream drags them by a handle
 @Composable
 private fun ReorderRow(

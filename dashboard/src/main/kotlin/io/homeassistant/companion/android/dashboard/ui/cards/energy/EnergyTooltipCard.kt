@@ -26,7 +26,11 @@ import io.homeassistant.companion.android.common.compose.theme.LocalHAColorSchem
 import io.homeassistant.companion.android.dashboard.energy.EnergyTooltip
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
-/** A tapped period's values, over the top of the chart, like the frontend's chart tooltip. */
+/**
+ * A tapped period's values, over the top of the chart, like the frontend's chart tooltip.
+ *
+ * Upstream: part of `getCommonOptions` (src/panels/lovelace/cards/energy/common/energy-chart-options.ts)
+ */
 @Composable
 internal fun EnergyTooltipCard(tooltip: EnergyTooltip, dark: Boolean, formatTotal: (Double) -> String) {
     val fallback = LocalHAColorScheme.current.colorTextSecondary
@@ -47,7 +51,12 @@ internal fun EnergyTooltipCard(tooltip: EnergyTooltip, dark: Boolean, formatTota
 /** A line of a chart tooltip: a series' [color] marker and its [text]. */
 internal class TooltipLine(val color: Color, val text: String)
 
-/** A chart tooltip: its [title], a line per series and the [total], if any, in bold. */
+/**
+ * A chart tooltip: its [title], a line per series and the [total], if any, in bold.
+ *
+ * Upstream: part of `ha-chart-base`, with `ha-chart-tooltip-marker` (src/components/chart/ha-chart-base.ts;
+ * src/components/chart/ha-chart-tooltip-marker.ts)
+ */
 @Composable
 internal fun ChartTooltipCard(title: String, rows: List<TooltipLine>, total: String?) {
     val colors = LocalHAColorScheme.current

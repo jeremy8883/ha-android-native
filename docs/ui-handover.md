@@ -84,6 +84,12 @@ Compose
 - Don't commit anything from a real Home Assistant instance.
 - Don't differ from upstream's look or behaviour silently: mark each deliberate difference with a
   `// UPSTREAM-DIFF:` comment saying what upstream does instead (see `progress.md`, Context).
+- Don't add a composable without its `Upstream:` line: every `@Composable` function's KDoc names the frontend
+  component it ports and its file (``Upstream: `hui-tile-card` (src/panels/lovelace/cards/hui-tile-card.ts)``), or
+  `Upstream: part of …` for a piece of one, or `Upstream: none (native: why)`. The link only goes from here to the
+  frontend, which is never changed. `tools/upstream-map.py check` lists what is missing or points nowhere; `map`
+  lists each frontend file's composables; `changed`, given the frontend files changed between two versions, lists
+  the composables to review.
 - Don't port the frontend's date or time pickers for fields: use Android's own (Material 3 `DatePicker`,
   `DateRangePicker`, `TimePicker`). Only calendars drawn in a page (the Calendar panel, the calendar card) are
   ported (see `progress.md`, Context).

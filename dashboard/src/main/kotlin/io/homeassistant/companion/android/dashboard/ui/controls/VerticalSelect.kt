@@ -38,6 +38,8 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
  * Port of `ha-control-select` vertical, as the state controls size it: [select]'s options top to bottom, on a tint
  * of its background, the chosen one filled with its colour. An option shows its icon, else its label; choosing the
  * one already chosen does nothing.
+ *
+ * Upstream: `ha-control-select` (src/components/ha-control-select.ts)
  */
 @Composable
 internal fun VerticalSelect(
@@ -69,6 +71,11 @@ internal fun VerticalSelect(
     }
 }
 
+/**
+ * An option of the select: its icon, else its label, filled with its colour when chosen.
+ *
+ * Upstream: part of `ha-control-select` (src/components/ha-control-select.ts)
+ */
 @Composable
 private fun SelectOption(
     option: MenuOption,

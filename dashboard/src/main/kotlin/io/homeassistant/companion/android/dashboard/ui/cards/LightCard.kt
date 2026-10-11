@@ -48,6 +48,8 @@ import kotlinx.coroutines.delay
  * A light card, port of `hui-light-card` (frontend@20260624.6 src/panels/lovelace/cards/hui-light-card.ts): a round
  * brightness slider around the light's large icon, which toggles it, its name under them (with the brightness while
  * it's dragged), and a button opening its details.
+ *
+ * Upstream: `hui-light-card` (src/panels/lovelace/cards/hui-light-card.ts)
  */
 @Composable
 internal fun LightCard(
@@ -91,7 +93,11 @@ internal fun LightCard(
     }
 }
 
-/** The slider (hidden when the light has no brightness) with the light's icon in its middle. */
+/**
+ * The slider (hidden when the light has no brightness) with the light's icon in its middle.
+ *
+ * Upstream: part of `hui-light-card` (src/panels/lovelace/cards/hui-light-card.ts)
+ */
 @Composable
 private fun BrightnessControl(
     model: LightCardModel.Shown,
@@ -129,7 +135,11 @@ private fun BrightnessControl(
     }
 }
 
-/** The name, with the state above it while unavailable, or the brightness fading in while dragged. */
+/**
+ * The name, with the state above it while unavailable, or the brightness fading in while dragged.
+ *
+ * Upstream: part of `hui-light-card` (src/panels/lovelace/cards/hui-light-card.ts)
+ */
 @Composable
 private fun LightInfo(model: LightCardModel.Shown, brightness: Int, showBrightness: Boolean) {
     val colors = LocalHAColorScheme.current

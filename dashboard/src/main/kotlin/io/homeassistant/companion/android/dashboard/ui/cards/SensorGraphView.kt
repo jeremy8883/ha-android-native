@@ -51,6 +51,9 @@ private sealed interface GraphContent {
  * A sensor card's graph, port of `hui-graph-header-footer` and `hui-graph-base` (frontend@20260624.6
  * src/panels/lovelace/header-footer/, src/panels/lovelace/components/): the entity's recent states as a smooth line
  * in the accent colour over a faint fill, a fifth as tall as wide.
+ *
+ * Upstream: `hui-graph-header-footer`, `hui-graph-base` (src/panels/lovelace/header-footer/hui-graph-header-footer.ts;
+ * src/panels/lovelace/components/hui-graph-base.ts)
  */
 @Composable
 internal fun SensorGraphView(

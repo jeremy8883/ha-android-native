@@ -32,6 +32,8 @@ import kotlin.math.roundToInt
  * The controls of a fan's details, port of `more-info-fan` (frontend@20260624.6
  * src/dialogs/more-info/controls/more-info-fan.ts): the speed buttons, or the speed slider with a power button
  * under it, or a switch for a fan without speeds, then the preset, direction and oscillation menus.
+ *
+ * Upstream: `more-info-fan` (src/dialogs/more-info/controls/more-info-fan.ts)
  */
 @Composable
 internal fun MoreInfoFan(info: FanMoreInfo, onAction: (CardAction) -> Unit) {
@@ -51,7 +53,11 @@ internal fun MoreInfoFan(info: FanMoreInfo, onAction: (CardAction) -> Unit) {
     }
 }
 
-/** Port of the `ha-outlined-icon-button` under the slider, turning the fan on or off. */
+/**
+ * Port of the `ha-outlined-icon-button` under the slider, turning the fan on or off.
+ *
+ * Upstream: part of `more-info-fan` (src/dialogs/more-info/controls/more-info-fan.ts)
+ */
 @Composable
 private fun PowerButton(call: CardAction.CallService, enabled: Boolean, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current

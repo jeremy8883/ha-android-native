@@ -17,7 +17,11 @@ import io.homeassistant.companion.android.common.compose.composable.HATextField
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.dashboard.action.CodeRequest
 
-/** Asks for the code of a protected lock or alarm, like upstream's enter-code dialog. */
+/**
+ * Asks for the code of a protected lock or alarm, like upstream's enter-code dialog.
+ *
+ * Upstream: `dialog-enter-code` (src/dialogs/enter-code/dialog-enter-code.ts)
+ */
 @Composable
 internal fun CodeDialog(request: CodeRequest, onSubmit: (String) -> Unit, onDismiss: () -> Unit) {
     var code by remember { mutableStateOf("") }

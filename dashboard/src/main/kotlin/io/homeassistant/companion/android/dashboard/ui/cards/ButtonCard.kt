@@ -26,6 +26,8 @@ import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 /**
  * A button card, port of `hui-button-card` (frontend@20260624.6 src/panels/lovelace/cards/hui-button-card.ts): a
  * large icon in the entity's colour, its name and state under it; a tap toggles what toggles, else opens its details.
+ *
+ * Upstream: `hui-button-card` (src/panels/lovelace/cards/hui-button-card.ts)
  */
 @Composable
 internal fun ButtonCard(

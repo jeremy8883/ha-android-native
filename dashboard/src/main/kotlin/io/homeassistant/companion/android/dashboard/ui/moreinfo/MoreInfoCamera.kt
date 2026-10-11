@@ -62,6 +62,9 @@ import timber.log.Timber
  * Port of `more-info-camera`: the live stream (`ha-camera-stream`: HLS when the camera offers it, else its MJPEG
  * stream), then the snapshot download, saved where the user picks (the system's file picker, which every Android
  * version has without a permission) as `snapshot_<camera>.jpg`.
+ *
+ * Upstream: `more-info-camera`, `ha-camera-stream` (src/dialogs/more-info/controls/more-info-camera.ts;
+ * src/components/ha-camera-stream.ts)
  */
 @Composable
 internal fun MoreInfoCamera(camera: MoreInfoExtra.Camera, state: EntityState) {
@@ -115,6 +118,11 @@ internal fun MoreInfoCamera(camera: MoreInfoExtra.Camera, state: EntityState) {
     }
 }
 
+/**
+ * The camera's HLS stream, played while shown.
+ *
+ * Upstream: `ha-hls-player` (src/components/ha-hls-player.ts)
+ */
 @OptIn(UnstableApi::class)
 @Composable
 private fun HlsPlayer(url: String, viewModel: CameraViewModel) {

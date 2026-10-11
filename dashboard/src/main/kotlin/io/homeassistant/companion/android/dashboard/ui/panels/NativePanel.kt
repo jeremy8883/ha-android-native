@@ -7,7 +7,11 @@ import io.homeassistant.companion.android.dashboard.ui.DashboardUiState
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import java.time.ZonedDateTime
 
-/** A panel drawn natively that isn't a dashboard (one of `NATIVE_PANELS`), with its buttons in the [toolbar]. */
+/**
+ * A panel drawn natively that isn't a dashboard (one of `NATIVE_PANELS`), with its buttons in the [toolbar].
+ *
+ * Upstream: `partial-panel-resolver` (src/layouts/partial-panel-resolver.ts)
+ */
 @Composable
 internal fun NativePanel(
     panel: DashboardUiState.Panel,

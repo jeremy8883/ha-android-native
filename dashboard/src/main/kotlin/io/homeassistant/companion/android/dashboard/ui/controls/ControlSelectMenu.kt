@@ -41,6 +41,9 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 /**
  * The details' menus in a row, scrolling sideways when they don't fit (`ha-more-info-control-select-container`,
  * frontend@20260624.6 src/dialogs/more-info/components/).
+ *
+ * Upstream: `ha-more-info-control-select-container`
+ * (src/dialogs/more-info/components/ha-more-info-control-select-container.ts)
  */
 @Composable
 internal fun ControlSelectMenus(
@@ -61,6 +64,8 @@ internal fun ControlSelectMenus(
  * Port of `ha-control-select-menu` (src/components/ha-control-select-menu.ts): a filled box with the selected
  * option's icon (or the menu's own when nothing is selected), the menu's label and the selected option, opening
  * the options with their icons. Choosing the selected option does nothing.
+ *
+ * Upstream: `ha-control-select-menu` (src/components/ha-control-select-menu.ts)
  */
 @Composable
 internal fun ControlSelectMenu(menu: SelectMenu, onAction: (CardAction) -> Unit, modifier: Modifier = Modifier) {
@@ -114,7 +119,11 @@ internal fun ControlSelectMenu(menu: SelectMenu, onAction: (CardAction) -> Unit,
     }
 }
 
-/** The options of [menu] with their icons, the selected one highlighted. */
+/**
+ * The options of [menu] with their icons, the selected one highlighted.
+ *
+ * Upstream: part of `ha-control-select-menu` (src/components/ha-control-select-menu.ts)
+ */
 @Composable
 internal fun SelectMenuOptions(
     menu: SelectMenu,

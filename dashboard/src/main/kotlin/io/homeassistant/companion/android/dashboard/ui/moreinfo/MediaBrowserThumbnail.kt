@@ -18,6 +18,8 @@ import io.homeassistant.companion.android.dashboard.ui.cards.LocalServerUrl
  * Port of `ha-media-browser-thumbnail`: an integration's logo from the server's brands API (signed with its token,
  * dark for a dark theme), the server's own images with the user's credentials, others as they are. Nothing shows
  * while what it needs is missing, so the item's icon stays.
+ *
+ * Upstream: `ha-media-browser-thumbnail` (src/components/media-player/ha-media-browser-thumbnail.ts)
  */
 @Composable
 internal fun MediaBrowserThumbnail(url: String, auth: ThumbnailAuth, modifier: Modifier, contentScale: ContentScale) {

@@ -23,6 +23,8 @@ import io.homeassistant.companion.android.dashboard.moreinfo.MowerVisual
  * above in [color], wandering with its blades spinning, wheels turning and grass flicked out while mowing, turned
  * for home with a bobbing arrow while returning, on its dock with a pulsing glow when docked, faded while paused or
  * idle, and glowing a warning on error. Drawn by [MowerDrawing] from one clock in seconds.
+ *
+ * Upstream: `ha-state-control-lawn_mower-status` (src/state-control/lawn_mower/ha-state-control-lawn_mower-status.ts)
  */
 @Composable
 internal fun MowerStatus(visual: MowerVisual, color: Color, modifier: Modifier = Modifier) {

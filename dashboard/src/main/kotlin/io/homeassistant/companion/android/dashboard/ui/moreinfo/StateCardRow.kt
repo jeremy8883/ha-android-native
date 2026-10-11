@@ -32,6 +32,8 @@ import java.time.Instant
  * Port of `state-card-content` in the dialog: the badge, the name over when it changed, then what the card shows on
  * the right (a switch, buttons or an input, else the state, with a second line under it). Dropdowns and text
  * fields carry the name as their label, in its place.
+ *
+ * Upstream: `state-card-content` (src/state-summary/state-card-content.ts)
  */
 @Composable
 internal fun StateCardRow(
@@ -87,6 +89,11 @@ internal fun StateCardRow(
     }
 }
 
+/**
+ * The row's badge: the entity's picture, else its icon in its state's colour.
+ *
+ * Upstream: `state-badge` (src/components/entity/state-badge.ts)
+ */
 @Composable
 private fun StateCardBadge(card: StateCard) {
     val picture = card.badge.picture

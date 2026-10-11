@@ -87,6 +87,9 @@ import java.time.ZonedDateTime
  * The native quick view of an entity: its state, main control, recent history and attributes, with a link to upstream's full
  * more-info dialog. Live: it follows the entity while open. The sheet covers the screen, so [snackbar]'s messages
  * (such as a failed action) show over it too.
+ *
+ * Upstream: `ha-more-info-dialog`, `ha-bottom-sheet` (src/dialogs/more-info/ha-more-info-dialog.ts;
+ * src/components/ha-bottom-sheet.ts)
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -143,6 +146,8 @@ internal fun MoreInfoSheet(
  * details of their own the history, activity and attributes after them. One lazy list, the logbook one item per
  * row, so only what's on screen is built however long the day's logbook is. An update's buttons are pinned under
  * it.
+ *
+ * Upstream: `ha-more-info-info` (src/dialogs/more-info/ha-more-info-info.ts)
  */
 @Composable
 private fun ColumnScope.MoreInfoMain(
@@ -225,7 +230,11 @@ private fun LazyListScope.mainItems(list: MainList) {
     }
 }
 
-/** Port of `ha-more-info-history-and-logbook`: the history, then the activity. */
+/**
+ * Port of `ha-more-info-history-and-logbook`: the history, then the activity.
+ *
+ * Upstream: `ha-more-info-history-and-logbook` (src/dialogs/more-info/ha-more-info-history-and-logbook.ts)
+ */
 @Composable
 private fun ColumnScope.MoreInfoHistoryView(
     entityId: String,
@@ -244,7 +253,11 @@ private fun ColumnScope.MoreInfoHistoryView(
     }
 }
 
-/** Port of `ha-more-info-details`: the state's entries, then the attributes. */
+/**
+ * Port of `ha-more-info-details`: the state's entries, then the attributes.
+ *
+ * Upstream: `ha-more-info-details` (src/dialogs/more-info/ha-more-info-details.ts)
+ */
 @Composable
 private fun ColumnScope.MoreInfoDetailsView(model: MoreInfoModel, localize: Localize) {
     LazyColumn(
@@ -263,7 +276,11 @@ private fun ColumnScope.MoreInfoDetailsView(model: MoreInfoModel, localize: Loca
     }
 }
 
-/** The controls of the entity's domain, as its `more-info-<domain>` leads with them. */
+/**
+ * The controls of the entity's domain, as its `more-info-<domain>` leads with them.
+ *
+ * Upstream: `more-info-content` (src/dialogs/more-info/more-info-content.ts)
+ */
 @Composable
 internal fun DomainControls(
     model: MoreInfoModel,
@@ -308,7 +325,12 @@ internal fun DomainControls(
     model.extra?.let { MoreInfoExtraView(it, state, hass, now, onAction) }
 }
 
-/** [content] with the favourites' menu items of [state], for the domains with favourites. */
+/**
+ * [content] with the favourites' menu items of [state], for the domains with favourites.
+ *
+ * Upstream: part of `ha-more-info-dialog` (src/dialogs/more-info/ha-more-info-dialog.ts;
+ * src/dialogs/more-info/favorites.ts)
+ */
 @Composable
 private fun WithFavoritesMenu(
     state: EntityState?,
@@ -318,7 +340,11 @@ private fun WithFavoritesMenu(
     if (state != null && state.domain in FAVORITES_DOMAINS) FavoritesMenuHost(state, hass, content) else content(null)
 }
 
-/** Port of `ha-more-info-state-header`: the state, and when it last changed, centred. */
+/**
+ * Port of `ha-more-info-state-header`: the state, and when it last changed, centred.
+ *
+ * Upstream: `ha-more-info-state-header` (src/dialogs/more-info/components/ha-more-info-state-header.ts)
+ */
 @Composable
 internal fun MoreInfoStateText(model: MoreInfoModel) {
     val colors = LocalHAColorScheme.current
@@ -346,7 +372,12 @@ internal fun MoreInfoStateText(model: MoreInfoModel) {
     }
 }
 
-/** A titled list of names and values: the attributes, or the details' state entries. */
+/**
+ * A titled list of names and values: the attributes, or the details' state entries.
+ *
+ * Upstream: part of `ha-more-info-details`, `ha-attributes` (src/dialogs/more-info/ha-more-info-details.ts;
+ * src/components/ha-attributes.ts)
+ */
 @Composable
 private fun MoreInfoAttributes(attributes: List<Pair<String, String>>, title: String) {
     val colors = LocalHAColorScheme.current

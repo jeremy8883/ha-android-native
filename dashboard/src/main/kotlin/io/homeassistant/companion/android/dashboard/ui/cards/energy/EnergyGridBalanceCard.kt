@@ -51,6 +51,8 @@ import kotlinx.serialization.json.JsonObject
  * The grid balance: imported − exported = net, and a bar with the export left of the centre line and the import
  * right of it. A tap shows what each amount means, which the frontend shows in tooltips. Port of the rendering of
  * `hui-energy-grid-balance-card` (frontend@20260624.6).
+ *
+ * Upstream: `hui-energy-grid-balance-card` (src/panels/lovelace/cards/energy/hui-energy-grid-balance-card.ts)
  */
 @Composable
 internal fun EnergyGridBalanceCard(card: CardConfig, hass: State<HassSnapshot?>, modifier: Modifier = Modifier) {
@@ -63,6 +65,12 @@ internal fun EnergyGridBalanceCard(card: CardConfig, hass: State<HassSnapshot?>,
     }
 }
 
+/**
+ * The grid's icon and title, the imported, exported and net amounts, and the balance bar; a tap shows or hides
+ * what each amount means.
+ *
+ * Upstream: part of `hui-energy-grid-balance-card` (src/panels/lovelace/cards/energy/hui-energy-grid-balance-card.ts)
+ */
 @Composable
 private fun GridBalance(model: EnergyGridBalanceModel) {
     val colors = LocalHAColorScheme.current
@@ -118,7 +126,11 @@ private fun GridBalance(model: EnergyGridBalanceModel) {
     }
 }
 
-/** The two halves: the export grows left from the centre, the import right; the net is solid over the larger. */
+/**
+ * The two halves: the export grows left from the centre, the import right; the net is solid over the larger.
+ *
+ * Upstream: part of `hui-energy-grid-balance-card` (src/panels/lovelace/cards/energy/hui-energy-grid-balance-card.ts)
+ */
 @Composable
 private fun BalanceBar(model: EnergyGridBalanceModel, import: Color, export: Color) {
     val line = LocalHAColorScheme.current.colorTextPrimary
@@ -143,6 +155,11 @@ private fun BalanceBar(model: EnergyGridBalanceModel, import: Color, export: Col
     }
 }
 
+/**
+ * One side of the balance bar, filled to [share] in [color].
+ *
+ * Upstream: part of `hui-energy-grid-balance-card` (src/panels/lovelace/cards/energy/hui-energy-grid-balance-card.ts)
+ */
 @Composable
 private fun Half(width: Dp, color: Color, share: Double, net: Double?, left: Boolean) {
     val radius = HARadius.L
