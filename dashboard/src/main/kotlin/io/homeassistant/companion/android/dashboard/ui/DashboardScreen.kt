@@ -117,7 +117,7 @@ internal fun DashboardScreen(
                 onRetry = viewModel::onRetry,
                 onOpenElsewhere = onOpenWeb?.let { { viewModel.onOpenShownInWeb() } },
                 onMenuAction = onOpenWeb?.let { { action -> viewModel.onOpenShownInWeb(flag = action.webParam) } },
-                hasNotifications = hiltViewModel<NotificationsViewModel>().hasNotifications.collectAsStateWithLifecycle().value,
+                hasNotifications = hasNotifications(),
             )
         }
         NotificationDrawerHost(hass, now)

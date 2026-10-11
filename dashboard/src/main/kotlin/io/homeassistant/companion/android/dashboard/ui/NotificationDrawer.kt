@@ -295,3 +295,12 @@ private val TITLE_LINE_HEIGHT = HAFontSize.X3L
 
 /** The time's `margin-top`. */
 private val TIME_MARGIN = 6.dp
+
+/**
+ * Whether there are notifications, for the dot on the menu button.
+ *
+ * Upstream: part of `ha-menu-button` (src/components/ha-menu-button.ts)
+ */
+@Composable
+internal fun hasNotifications(): Boolean =
+    hiltViewModel<NotificationsViewModel>().hasNotifications.collectAsStateWithLifecycle().value
