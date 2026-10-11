@@ -48,17 +48,17 @@ internal fun EnergyTooltipCard(tooltip: EnergyTooltip, dark: Boolean, formatTota
     )
 }
 
-/** A line of a chart tooltip: a series' [color] marker and its [text]. */
-internal class TooltipLine(val color: Color, val text: String)
+/** A line of a chart tooltip: a series' [color] marker (none without one) and its [text]. */
+internal class TooltipLine(val color: Color?, val text: String)
 
 /**
- * A chart tooltip: its [title], a line per series and the [total], if any, in bold.
+ * A chart tooltip: its [title], if any, a line per series and the [total], if any, in bold.
  *
  * Upstream: part of `ha-chart-base`, with `ha-chart-tooltip-marker` (src/components/chart/ha-chart-base.ts;
  * src/components/chart/ha-chart-tooltip-marker.ts)
  */
 @Composable
-internal fun ChartTooltipCard(title: String, rows: List<TooltipLine>, total: String?) {
+internal fun ChartTooltipCard(title: String?, rows: List<TooltipLine>, total: String?) {
     val colors = LocalHAColorScheme.current
     Card(
         colors = CardDefaults.cardColors(containerColor = colors.colorSurfaceDefault),
@@ -67,19 +67,21 @@ internal fun ChartTooltipCard(title: String, rows: List<TooltipLine>, total: Str
         modifier = Modifier.padding(start = HADimens.SPACE8, top = HADimens.SPACE2),
     ) {
         Column(Modifier.padding(HADimens.SPACE2), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE1)) {
-            Text(
-                title,
-                style = HATextStyle.BodyMedium,
-                fontWeight = FontWeight.Bold,
-                color = colors.colorTextPrimary,
-                textAlign = TextAlign.Center,
-            )
+            title?.let {
+                Text(
+                    it,
+                    style = HATextStyle.BodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = colors.colorTextPrimary,
+                    textAlign = TextAlign.Center,
+                )
+            }
             rows.forEach { row ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
                 ) {
-                    Box(Modifier.size(MARKER).background(row.color, CircleShape))
+                    row.color?.let { Box(Modifier.size(MARKER).background(it, CircleShape)) }
                     Text(row.text, style = HATextStyle.Body, color = colors.colorTextPrimary)
                 }
             }

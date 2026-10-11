@@ -31,7 +31,7 @@ internal fun EnergyCard(
         DISTRIBUTION -> EnergyDistributionCard(card, hass, now, modifier)
         USAGE_GRAPH -> EnergyUsageGraphCard(card, hass, now, modifier)
         SOURCES_TABLE -> EnergySourcesTableCard(card, hass, interactions, modifier)
-        DEVICES_DETAIL_GRAPH -> EnergyDevicesDetailGraphCard(card, hass, modifier)
+        DEVICES_DETAIL_GRAPH -> EnergyDevicesDetailGraphCard(card, hass, interactions, modifier)
         DEVICES_GRAPH -> EnergyDevicesGraphCard(card, hass, interactions, modifier)
         POWER_SOURCES_GRAPH -> PowerSourcesGraphCard(card, hass, now, modifier)
         in SANKEY_CARD_TYPES -> AnySankeyCard(card, hass, interactions, modifier)

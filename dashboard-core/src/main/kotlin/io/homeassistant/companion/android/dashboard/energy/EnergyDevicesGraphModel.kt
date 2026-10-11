@@ -9,9 +9,16 @@ import kotlin.math.min
  * and the total in the middle. Port of `HuiEnergyDevicesGraphCard._getStatistics` (frontend@20260624.6
  * src/panels/lovelace/cards/energy/hui-energy-devices-graph-card.ts).
  *
- * @property total the donut's total, `null` for bars
+ * @property slices the devices drawn: the [legend]'s but the hidden ones
+ * @property total the donut's total, without the hidden devices, `null` for bars
+ * @property legend the donut's legend: every device, hidden or not, at most `max_devices`
  */
-data class EnergyDevicesGraphModel(val slices: List<DeviceSlice>, val compare: Boolean, val total: Double?)
+data class EnergyDevicesGraphModel(
+    val slices: List<DeviceSlice>,
+    val compare: Boolean,
+    val total: Double?,
+    val legend: List<DeviceSlice> = slices,
+)
 
 /**
  * A device's consumption (without the devices included in it), and the compared period's.
@@ -33,11 +40,15 @@ enum class DevicesChartType(val value: String) {
     PIE("pie"),
 }
 
-/** The devices of [data] drawn as [type], at most [maxDevices], without compound devices when [hideCompound]. */
+/**
+ * The devices of [data] drawn as [type], at most [DevicesGraphOptions.maxDevices], without compound devices when
+ * [DevicesGraphOptions.hideCompound], without the [hidden] ones (`_hiddenStats`, by statistic id).
+ */
 fun HassSnapshot.energyDevicesGraph(
     data: EnergyData,
     type: DevicesChartType,
     options: DevicesGraphOptions = DevicesGraphOptions(),
+    hidden: Set<String> = emptySet(),
 ): EnergyDevicesGraphModel {
     val devices = data.prefs.deviceConsumption
     val compound = devices.mapNotNull { it.includedInStat }.toSet()
@@ -65,17 +76,27 @@ fun HassSnapshot.energyDevicesGraph(
             colorIndex = index,
         )
     }.toMutableList()
-    val total = if (type == DevicesChartType.PIE) addUntracked(data, slices) else null
+    val total = if (type == DevicesChartType.PIE) {
+        addUntracked(data, slices)
+        slices.filter { it.id !in hidden }.sumOf { it.value }
+    } else {
+        null
+    }
     slices.sortByDescending { it.value }
-    val shown = options.maxDevices?.takeIf { it > 0 }?.let { slices.take(it) } ?: slices
-    return EnergyDevicesGraphModel(shown, compare = compareTotals != null, total = total)
+    val legend = options.maxDevices?.takeIf { it > 0 }?.let { slices.take(it) } ?: slices
+    return EnergyDevicesGraphModel(
+        slices = legend.filter { it.id !in hidden },
+        compare = compareTotals != null,
+        total = total,
+        legend = legend,
+    )
 }
 
 /** The devices graph card's options. */
 data class DevicesGraphOptions(val maxDevices: Int? = null, val hideCompound: Boolean = false)
 
-/** Adds what no device accounts for to the donut, returning the donut's total. */
-private fun HassSnapshot.addUntracked(data: EnergyData, slices: MutableList<DeviceSlice>): Double {
+/** Adds what no device accounts for to the donut. */
+private fun HassSnapshot.addUntracked(data: EnergyData, slices: MutableList<DeviceSlice>) {
     val sums = data.summed()
     val showUntracked = listOf(EnergyFlow.FROM_GRID, EnergyFlow.SOLAR, EnergyFlow.FROM_BATTERY).any {
         it in sums.byStart
@@ -94,7 +115,6 @@ private fun HassSnapshot.addUntracked(data: EnergyData, slices: MutableList<Devi
             colorIndex = null,
         )
     }
-    return slices.sumOf { it.value }
 }
 
 private fun HassSnapshot.deviceName(device: DeviceConsumption, data: EnergyData, compound: Boolean): String {

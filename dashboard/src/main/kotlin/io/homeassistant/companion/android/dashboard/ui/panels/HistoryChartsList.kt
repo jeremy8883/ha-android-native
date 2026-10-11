@@ -31,14 +31,16 @@ import io.homeassistant.companion.android.dashboard.history.timelineChart
 import io.homeassistant.companion.android.dashboard.panels.DateRange
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.energy.graphColorVariable
+import io.homeassistant.companion.android.dashboard.ui.charts.ChartLegend
+import io.homeassistant.companion.android.dashboard.ui.charts.ChartLegendItem
 import io.homeassistant.companion.android.dashboard.ui.charts.ChartText
 import io.homeassistant.companion.android.dashboard.ui.charts.ChartZoomState
-import io.homeassistant.companion.android.dashboard.ui.charts.HistoryLegend
 import io.homeassistant.companion.android.dashboard.ui.charts.HistoryLegendTexts
 import io.homeassistant.companion.android.dashboard.ui.charts.HistoryLineChartView
 import io.homeassistant.companion.android.dashboard.ui.charts.LABEL_GAP
 import io.homeassistant.companion.android.dashboard.ui.charts.TimeSpan
 import io.homeassistant.companion.android.dashboard.ui.charts.TimelineChartView
+import io.homeassistant.companion.android.dashboard.ui.charts.legendTexts
 import io.homeassistant.companion.android.dashboard.ui.charts.timelineNamesWidth
 import io.homeassistant.companion.android.dashboard.ui.charts.valueAxisWidth
 import io.homeassistant.companion.android.dashboard.ui.charts.valueTicks
@@ -78,14 +80,19 @@ internal fun HistoryChartsList(
         LocalDensity.current.density,
     )
     val inset = chartsInset(timelines, lines, text, time.zoomed(zoom.zoom).shown)
-    val legendTexts = HistoryLegendTexts(
-        toggle = hass.localize("$CHARTS.toggle_visibility"),
-        more = hass.localize("$CHARTS.expand_legend"),
-        less = hass.localize("$CHARTS.collapse_legend"),
-    )
+    val legendTexts = hass.legendTexts()
     Column {
         if (timelines.isNotEmpty()) {
-            TimelineChartView(timelines, time, hass.formats, dark, showNames = true, minLeft = inset, zoom = zoom)
+            TimelineChartView(
+                timelines,
+                time,
+                hass.formats,
+                dark,
+                durationLabel = hass.localize("$CHARTS.duration"),
+                showNames = true,
+                minLeft = inset,
+                zoom = zoom,
+            )
         }
         history.line.forEachIndexed { index, unit ->
             if (index > 0 || timelines.isNotEmpty()) {
@@ -108,17 +115,38 @@ internal fun HistoryChartsList(
                     minLeft = inset,
                     zoom = zoom,
                 )
-                HistoryLegend(
-                    items = remember(chart, hass) { hass.historyLegend(chart) },
-                    colors = remember(chart, dark) { legendColors(chart, dark) },
-                    hidden = hidden,
-                    texts = legendTexts,
-                    onToggle = { id -> hidden = if (id in hidden) hidden - id else hidden + id },
-                    onOpenEntity = { interactions.onAction(CardAction.MoreInfo(it)) },
-                )
+                LineLegend(chart, hass, dark, hidden, legendTexts, interactions) { hidden = it }
             }
         }
     }
+}
+
+/**
+ * A line chart's legend: its lines, a tap on a name opening its entity.
+ *
+ * Upstream: part of `state-history-chart-line` (src/components/chart/state-history-chart-line.ts)
+ */
+@Composable
+private fun LineLegend(
+    chart: HistoryLineChart,
+    hass: HassSnapshot,
+    dark: Boolean,
+    hidden: Set<String>,
+    texts: HistoryLegendTexts,
+    interactions: CardInteractions,
+    onHiddenChange: (Set<String>) -> Unit,
+) {
+    val legend = remember(chart, hass) { hass.historyLegend(chart) }
+    val colors = remember(chart, dark) { legendColors(chart, dark) }
+    ChartLegend(
+        items = legend.map { ChartLegendItem(it.id, it.name, colors[it.id], it.value, opensLabel = true) },
+        hidden = hidden,
+        texts = texts,
+        onHiddenChange = onHiddenChange,
+        onOpen = { id ->
+            legend.firstOrNull { it.id == id }?.let { interactions.onAction(CardAction.MoreInfo(it.entityId)) }
+        },
+    )
 }
 
 /**

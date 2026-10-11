@@ -54,7 +54,9 @@ internal fun EnergySourceGraphCard(
         modifier = modifier,
         headerEnd = { data ->
             val model = remember(data, snapshot.formats) { snapshot.energySourceGraph(data, kind) }
-            if (model.total != 0.0) TotalChip("${number(model.total)} ${model.chart.unit}")
+            if (model.total != 0.0) {
+                TotalChip("${number(model.total)} ${model.chart.unit}", formatTotal(model.total, model.chart.unit))
+            }
         },
     ) { data ->
         val model = remember(data, snapshot.formats) { snapshot.energySourceGraph(data, kind) }

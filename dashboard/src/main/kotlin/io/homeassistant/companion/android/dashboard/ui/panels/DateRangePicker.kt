@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -58,7 +59,7 @@ import java.time.ZonedDateTime
 
 /**
  * Port of `ha-date-range-picker` with `time-picker`: the period's ends in a field that opens the picker, with arrows
- * to the period before and after, as long as it.
+ * to the period before and after, as long as it. Unless [enabled] (`disabled`), none of it can be used.
  *
  * Upstream: `ha-date-range-picker` (src/components/date-picker/ha-date-range-picker.ts)
  */
@@ -70,11 +71,12 @@ internal fun DateRangeField(
     presets: List<RangePreset>,
     onChange: (DateRange) -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     var open by remember { mutableStateOf(false) }
     Column(modifier, verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3)) {
-        PresetChips(range, hass, now, presets, onChange)
-        RangeRow(range, hass, now, onOpen = { open = true }, onChange)
+        PresetChips(range, hass, now, presets, enabled, onChange)
+        RangeRow(range, hass, now, enabled, onOpen = { open = true }, onChange)
     }
     if (open) {
         DateRangeDialog(range, hass, onDismiss = { open = false }) {
@@ -98,6 +100,7 @@ private fun PresetChips(
     hass: HassSnapshot,
     now: ZonedDateTime,
     presets: List<RangePreset>,
+    enabled: Boolean,
     onChange: (DateRange) -> Unit,
 ) {
     val firstDayOfWeek = DayOfWeek.of(hass.formats.firstWeekday)
@@ -111,6 +114,7 @@ private fun PresetChips(
                 text = hass.localize("$PICKER.ranges.${preset.key}"),
                 onClick = { onChange(preset.range(now, firstDayOfWeek)) },
                 selected = preset == selected,
+                enabled = enabled,
             )
         }
     }
@@ -126,6 +130,7 @@ private fun RangeRow(
     range: DateRange,
     hass: HassSnapshot,
     now: ZonedDateTime,
+    enabled: Boolean,
     onOpen: () -> Unit,
     onChange: (DateRange) -> Unit,
 ) {
@@ -133,12 +138,14 @@ private fun RangeRow(
         FilledField(
             label = "${hass.localize("$PICKER.start_date")} - ${hass.localize("$PICKER.end_date")}",
             value = hass.formats.dateRangeText(range, now.toLocalDate()),
-            modifier = Modifier.weight(1f).clickable(role = Role.Button, onClick = onOpen),
+            modifier = Modifier.weight(1f)
+                .alpha(if (enabled) 1f else DISABLED_ALPHA)
+                .clickable(enabled = enabled, role = Role.Button, onClick = onOpen),
         )
-        ArrowButton("mdi:chevron-left", hass.localize("ui.common.previous")) {
+        ArrowButton("mdi:chevron-left", hass.localize("ui.common.previous"), enabled) {
             onChange(range.shift(forward = false, hass.formats.zone))
         }
-        ArrowButton("mdi:chevron-right", hass.localize("ui.common.next")) {
+        ArrowButton("mdi:chevron-right", hass.localize("ui.common.next"), enabled) {
             onChange(range.shift(forward = true, hass.formats.zone))
         }
     }
@@ -188,9 +195,14 @@ private fun FilledField(label: String, value: String, modifier: Modifier) {
  * src/components/ha-icon-button-next.ts)
  */
 @Composable
-private fun ArrowButton(icon: String, label: String, onClick: () -> Unit) {
-    IconButton(onClick = onClick, modifier = Modifier.semantics { contentDescription = label }) {
-        DashboardIcon(icon, LocalHAColorScheme.current.colorTextPrimary, Modifier.size(HASize.X2L))
+private fun ArrowButton(icon: String, label: String, enabled: Boolean, onClick: () -> Unit) {
+    IconButton(onClick = onClick, enabled = enabled, modifier = Modifier.semantics { contentDescription = label }) {
+        val colors = LocalHAColorScheme.current
+        DashboardIcon(
+            icon,
+            if (enabled) colors.colorTextPrimary else colors.colorTextDisabled,
+            Modifier.size(HASize.X2L),
+        )
     }
 }
 
@@ -302,3 +314,6 @@ private fun Long.utcDate(): LocalDate = Instant.ofEpochMilli(this).atZone(ZoneOf
 
 private val LABEL_SIZE = 12.sp
 private const val PICKER = "ui.components.date-range-picker"
+
+/** How faint a disabled field is, as Material's disabled content. */
+private const val DISABLED_ALPHA = 0.38f

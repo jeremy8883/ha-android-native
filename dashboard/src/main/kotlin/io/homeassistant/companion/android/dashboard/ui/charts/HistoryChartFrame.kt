@@ -47,9 +47,6 @@ internal class ChartText(
     }
 }
 
-/** What the legend says: its toggle's label and its overflow chip's ("More", "Less"). */
-internal data class HistoryLegendTexts(val toggle: String, val more: String, val less: String)
-
 /** The span of a chart's time axis, epoch ms. */
 internal class TimeSpan(val start: Double, val end: Double)
 

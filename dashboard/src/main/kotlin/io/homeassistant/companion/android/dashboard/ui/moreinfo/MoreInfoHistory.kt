@@ -140,7 +140,14 @@ private fun HistoryCharts(entityId: String, history: EntityHistory, hass: HassSn
             val time = TimeSpan(start, end)
             if (result.timeline.isNotEmpty()) {
                 val timelines = remember(result, end) { result.timeline.map { hass.timelineChart(it, end) } }
-                TimelineChartView(timelines, time, hass.formats, dark, zoomResetLabel = hass.localize(ZOOM_RESET))
+                TimelineChartView(
+                    timelines,
+                    time,
+                    hass.formats,
+                    dark,
+                    durationLabel = hass.localize("ui.components.history_charts.duration"),
+                    zoomResetLabel = hass.localize(ZOOM_RESET),
+                )
             }
             result.line.forEach { unit ->
                 val chart = remember(unit, end) { hass.historyLineChart(unit.data, end, end) }

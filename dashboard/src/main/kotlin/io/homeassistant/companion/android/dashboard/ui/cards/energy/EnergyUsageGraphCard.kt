@@ -1,16 +1,18 @@
 package io.homeassistant.companion.android.dashboard.ui.cards.energy
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.PlainTooltip
 import androidx.compose.material3.Text
+import androidx.compose.material3.TooltipAnchorPosition
+import androidx.compose.material3.TooltipBox
+import androidx.compose.material3.TooltipDefaults
+import androidx.compose.material3.rememberTooltipState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -20,9 +22,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HARadius
@@ -34,6 +33,10 @@ import io.homeassistant.companion.android.dashboard.energy.energyUsageGraph
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.boolean
+import io.homeassistant.companion.android.dashboard.ui.charts.ChartLegend
+import io.homeassistant.companion.android.dashboard.ui.charts.ChartLegendItem
+import io.homeassistant.companion.android.dashboard.ui.charts.legendTexts
+import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 
@@ -59,7 +62,12 @@ internal fun EnergyUsageGraphCard(
         modifier = modifier,
         headerEnd = { data ->
             val total = remember(data) { snapshot.energyUsageGraph(data).total }
-            total?.let { TotalChip(localize("$GRAPH.total_usage", mapOf("num" to number(it)))) }
+            total?.let {
+                TotalChip(
+                    localize("$GRAPH.total_usage", mapOf("num" to number(it))),
+                    tooltip = localize("$GRAPH.total_consumed", mapOf("num" to number(it))),
+                )
+            }
         },
     ) { data ->
         val model = remember(data, snapshot.formats) { snapshot.energyUsageGraph(data) }
@@ -84,81 +92,99 @@ internal fun EnergyUsageGraphCard(
             }
         }
         if (card.json.boolean("show_legend") != false) {
-            Legend(model.chart, hidden) { id -> hidden = if (id in hidden) hidden - id else hidden + id }
+            Legend(model.chart, hidden, snapshot, onHiddenChange = { hidden = it })
         }
     }
 }
 
 /**
- * The chip next to the title (`hui-energy-graph-chip`).
+ * The chip next to the title (`hui-energy-graph-chip`): [text] in an outlined box, showing [tooltip] on a long press
+ * (`ha-tooltip`, which shows on hover upstream).
  *
- * Upstream: `hui-energy-graph-chip` (src/panels/lovelace/cards/energy/common/hui-energy-graph-chip.ts)
+ * Upstream: `hui-energy-graph-chip`, with `ha-tooltip` (src/panels/lovelace/cards/energy/common/hui-energy-graph-chip.ts;
+ * src/components/ha-tooltip.ts)
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun TotalChip(text: String) {
+internal fun TotalChip(text: String, tooltip: String) {
     val colors = LocalHAColorScheme.current
-    Text(
-        text,
-        style = HATextStyle.Body,
-        color = colors.colorTextSecondary,
-        modifier = Modifier
-            .background(colors.colorFillNeutralQuietResting, RoundedCornerShape(HARadius.Pill))
-            .padding(horizontal = HADimens.SPACE2, vertical = HADimens.SPACE1),
-    )
+    val dark = isSystemInDarkTheme()
+    val shape = RoundedCornerShape(HARadius.M)
+    TooltipBox(
+        positionProvider = TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
+        tooltip = {
+            PlainTooltip(
+                shape = shape,
+                containerColor = colors.colorSurfaceDefault,
+                contentColor = colors.colorTextPrimary,
+                shadowElevation = TOOLTIP_ELEVATION,
+            ) {
+                Text(tooltip, style = HATextStyle.BodyMedium, modifier = Modifier.padding(HADimens.SPACE1))
+            }
+        },
+        state = rememberTooltipState(),
+    ) {
+        Text(
+            text,
+            style = HATextStyle.BodyMedium,
+            color = colors.colorTextPrimary,
+            modifier = Modifier
+                .border(1.dp, resolveVariable("divider-color", dark) ?: colors.colorBorderNeutralQuiet, shape)
+                .padding(horizontal = HADimens.SPACE2, vertical = HADimens.SPACE1),
+        )
+    }
 }
 
 /**
- * An item per shown series; a tap hides or shows it and its compared series. Port of the custom legend.
+ * An item per shown series; a tap hides or shows it and its compared series, a long press shows only it. A tap on a
+ * name for which [opensLabel] is true calls [onOpen] instead. Port of the custom legend.
  *
  * Upstream: part of `ha-chart-base` (src/components/chart/ha-chart-base.ts)
  */
 @Composable
-internal fun Legend(chart: EnergyBarChart, hidden: Set<String>, onToggle: (String) -> Unit) {
+internal fun Legend(
+    chart: EnergyBarChart,
+    hidden: Set<String>,
+    hass: HassSnapshot,
+    onHiddenChange: (Set<String>) -> Unit,
+    opensLabel: (String) -> Boolean = { false },
+    onOpen: (String) -> Unit = {},
+) {
     val fallback = LocalHAColorScheme.current.colorTextSecondary
     val dark = isSystemInDarkTheme()
     val entries = chart.series.filterNot { it.compare }.map { series ->
-        LegendEntry(series.id, series.name, seriesColor(series, dark, background = false) ?: fallback)
+        ChartLegendItem(
+            series.id,
+            series.name,
+            seriesColor(series, dark, background = false) ?: fallback,
+            opensLabel = opensLabel(series.id),
+        )
     }
-    LegendItems(entries, hidden, onToggle)
+    LegendItems(entries, hidden, hass, onHiddenChange, onOpen)
 }
 
-/** A legend item: what a tap toggles ([id]), its [name] and [color]. */
-internal class LegendEntry(val id: String, val name: String, val color: Color)
-
 /**
- * The custom legend of the frontend's charts: an item per entry, crossed out while [hidden].
+ * The custom legend of the frontend's energy charts ([ChartLegend]) under a chart.
  *
  * Upstream: part of `ha-chart-base` (src/components/chart/ha-chart-base.ts)
  */
 @Composable
-internal fun LegendItems(entries: List<LegendEntry>, hidden: Set<String>, onToggle: (String) -> Unit) {
-    val colors = LocalHAColorScheme.current
-    FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
+internal fun LegendItems(
+    entries: List<ChartLegendItem>,
+    hidden: Set<String>,
+    hass: HassSnapshot,
+    onHiddenChange: (Set<String>) -> Unit,
+    onOpen: (String) -> Unit = {},
+) {
+    ChartLegend(
+        items = entries,
+        hidden = hidden,
+        texts = hass.legendTexts(),
+        onHiddenChange = onHiddenChange,
         modifier = Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, bottom = HADimens.SPACE4),
-    ) {
-        entries.forEach { entry ->
-            val off = entry.id in hidden
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
-                modifier = Modifier.clickable(role = Role.Checkbox) { onToggle(entry.id) },
-            ) {
-                Box(
-                    Modifier.size(LEGEND_MARKER)
-                        .background(if (off) colors.colorTextDisabled else entry.color, RoundedCornerShape(HARadius.S)),
-                )
-                Text(
-                    entry.name,
-                    style = HATextStyle.Body,
-                    color = if (off) colors.colorTextDisabled else colors.colorTextSecondary,
-                    textDecoration = if (off) TextDecoration.LineThrough else null,
-                )
-            }
-        }
-    }
+        onOpen = onOpen,
+    )
 }
 
 private const val GRAPH = "ui.panel.lovelace.cards.energy.energy_usage_graph"
-private val LEGEND_MARKER = 12.dp
+private val TOOLTIP_ELEVATION = 4.dp

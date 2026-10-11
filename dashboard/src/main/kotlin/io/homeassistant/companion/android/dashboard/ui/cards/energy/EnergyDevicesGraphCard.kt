@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,14 +16,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +33,7 @@ import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -59,7 +62,9 @@ import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DEVICES_CHART_TYPE_KEY
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.LocalCardPreferences
+import io.homeassistant.companion.android.dashboard.ui.charts.ChartLegendItem
 import java.math.BigDecimal
+import kotlin.math.atan2
 import kotlin.math.max
 
 /**
@@ -84,6 +89,8 @@ internal fun EnergyDevicesGraphCard(
         DevicesGraphOptions(card.json.number("max_devices")?.toInt(), card.json.boolean("hide_compound_stats") == true)
     }
     val colors = LocalHAColorScheme.current
+    // The devices hidden from the legend (`_hiddenStats`), kept when the chart type changes
+    var hidden by rememberSaveable { mutableStateOf(emptySet<String>()) }
     EnergyCardFrame(
         card = card,
         hass = hass,
@@ -114,15 +121,19 @@ internal fun EnergyDevicesGraphCard(
             }
         },
     ) { data ->
-        val model = remember(data, snapshot.formats, type, options) { snapshot.energyDevicesGraph(data, type, options) }
-        val onOpen = { slice: DeviceSlice ->
-            if (slice.colorIndex != null && !isExternalStatistic(slice.id) && slice.id in snapshot.states) {
-                interactions.openMoreInfo(slice.id)
-            }
+        val model = remember(data, snapshot.formats, type, options, hidden) {
+            snapshot.energyDevicesGraph(data, type, options, hidden)
         }
+        val opens = { slice: DeviceSlice ->
+            slice.colorIndex != null && !isExternalStatistic(slice.id) && slice.id in snapshot.states
+        }
+        val onOpen = { slice: DeviceSlice -> if (opens(slice)) interactions.openMoreInfo(slice.id) }
         when (type) {
             DevicesChartType.BAR -> DeviceBars(model, onOpen)
-            DevicesChartType.PIE -> DeviceDonut(model, snapshot.localize("$DEVICES.total_energy_usage"), snapshot)
+            DevicesChartType.PIE -> {
+                DeviceDonut(model, snapshot.localize("$DEVICES.total_energy_usage"), snapshot, onOpen)
+                DonutLegend(model, hidden, snapshot, opens, onHiddenChange = { hidden = it }, onOpen = onOpen)
+            }
         }
     }
 }
@@ -194,77 +205,120 @@ private fun Bar(slice: DeviceSlice, dark: Boolean, share: Double, width: Dp, com
 }
 
 /**
- * The donut: the devices' shares around the total, the compared period's inside; and a legend with their amounts.
+ * The donut: the devices' shares around the total, the compared period's inside. A tap on a device's slice opens it
+ * ([onOpen]), as a tap on its label does upstream.
  *
  * Upstream: part of `hui-energy-devices-graph-card` (src/panels/lovelace/cards/energy/hui-energy-devices-graph-card.ts)
  */
 @Composable
-private fun DeviceDonut(model: EnergyDevicesGraphModel, totalLabel: String, hass: HassSnapshot) {
+private fun DeviceDonut(
+    model: EnergyDevicesGraphModel,
+    totalLabel: String,
+    hass: HassSnapshot,
+    onOpen: (DeviceSlice) -> Unit,
+) {
     val colors = LocalHAColorScheme.current
     val dark = isSystemInDarkTheme()
-    Column(Modifier.fillMaxWidth().padding(HADimens.SPACE4), horizontalAlignment = Alignment.CenterHorizontally) {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.widthIn(max = DONUT).fillMaxWidth().height(DONUT),
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, top = HADimens.SPACE4)
+            .fillMaxWidth().height(DONUT),
+    ) {
+        val slices = model.slices.map {
+            Triple(it.value, sliceColor(it, dark, true, false), sliceColor(it, dark, false, false))
+        }
+        val previous = model.slices.map {
+            Triple(it.compareValue ?: 0.0, sliceColor(it, dark, true, true), sliceColor(it, dark, false, true))
+        }
+        val rings = if (model.compare) {
+            listOf(Ring(slices, COMPARED_OUTER, OUTER), Ring(previous, INNER_COMPARED, COMPARED_OUTER))
+        } else {
+            listOf(Ring(slices, INNER, OUTER))
+        }
+        Canvas(
+            Modifier.size(DONUT).pointerInput(model) {
+                detectTapGestures { tap ->
+                    sliceAt(tap, Offset(size.width / 2f, size.height / 2f), size.width / 2f, rings)
+                        ?.let { model.slices.getOrNull(it) }
+                        ?.let(onOpen)
+                }
+            },
         ) {
-            val slices = model.slices.map {
-                Triple(it.value, sliceColor(it, dark, true, false), sliceColor(it, dark, false, false))
-            }
-            val previous = model.slices.map {
-                Triple(it.compareValue ?: 0.0, sliceColor(it, dark, true, true), sliceColor(it, dark, false, true))
-            }
-            Canvas(Modifier.size(DONUT)) {
-                val radius = size.minDimension / 2
-                fun ring(values: List<Triple<Double, Color, Color>>, inner: Float, outer: Float) {
-                    val total = values.sumOf { it.first }.takeIf { it > 0 } ?: return
-                    var angle = START_ANGLE
-                    values.forEach { (value, fill, border) ->
-                        val sweep = (value / total * FULL_TURN).toFloat()
-                        val sector = sector(center, inner * radius, outer * radius, angle, sweep)
-                        drawPath(sector, fill)
-                        drawPath(sector, border, style = Stroke(1.dp.toPx()))
-                        angle += sweep
-                    }
+            val radius = size.minDimension / 2
+            rings.forEach { ring ->
+                ring.sectors().forEach { (index, angle, sweep) ->
+                    val (_, fill, border) = ring.values[index]
+                    val sector = sector(center, ring.inner * radius, ring.outer * radius, angle, sweep)
+                    drawPath(sector, fill)
+                    drawPath(sector, border, style = Stroke(1.dp.toPx()))
                 }
-                if (model.compare) {
-                    ring(slices, COMPARED_OUTER, OUTER)
-                    ring(previous, INNER_COMPARED, COMPARED_OUTER)
-                } else {
-                    ring(slices, INNER, OUTER)
-                }
-            }
-            model.total?.let {
-                Text(
-                    "$totalLabel\n${hass.formats.number(BigDecimal.valueOf(it), 0, 2)} kWh",
-                    style = HATextStyle.Body,
-                    fontWeight = FontWeight.Bold,
-                    color = colors.colorTextSecondary,
-                    textAlign = TextAlign.Center,
-                )
             }
         }
-        model.slices.forEach { slice ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
-                modifier = Modifier.fillMaxWidth().padding(top = HADimens.SPACE1),
-            ) {
-                Box(
-                    Modifier.size(
-                        MARKER,
-                    ).background(sliceColor(slice, dark, false, false), RoundedCornerShape(HARadius.S)),
-                )
-                Text(
-                    slice.name,
-                    style = HATextStyle.Body,
-                    color = colors.colorTextPrimary,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier.weight(1f),
-                )
-                Text(slice.valueText, style = HATextStyle.Body, color = colors.colorTextSecondary)
-            }
+        model.total?.let {
+            Text(
+                "$totalLabel\n${hass.formats.number(BigDecimal.valueOf(it), 0, 2)} kWh",
+                style = HATextStyle.Body,
+                fontWeight = FontWeight.Bold,
+                color = colors.colorTextSecondary,
+                textAlign = TextAlign.Center,
+            )
         }
     }
+}
+
+/**
+ * The donut's legend (`ha-chart-base`'s, with `click-label-for-more-info`): every device with its amount, hidden or
+ * not; a device's name opens it when it's an entity ([opens]), else hides or shows it.
+ *
+ * Upstream: part of `hui-energy-devices-graph-card` (src/panels/lovelace/cards/energy/hui-energy-devices-graph-card.ts)
+ */
+@Composable
+private fun DonutLegend(
+    model: EnergyDevicesGraphModel,
+    hidden: Set<String>,
+    hass: HassSnapshot,
+    opens: (DeviceSlice) -> Boolean,
+    onHiddenChange: (Set<String>) -> Unit,
+    onOpen: (DeviceSlice) -> Unit,
+) {
+    val dark = isSystemInDarkTheme()
+    val items = model.legend.map { slice ->
+        ChartLegendItem(
+            slice.id,
+            slice.name,
+            sliceColor(slice, dark, background = true, compare = false),
+            value = slice.valueText,
+            opensLabel = opens(slice),
+        )
+    }
+    LegendItems(items, hidden, hass, onHiddenChange) { id -> model.legend.firstOrNull { it.id == id }?.let(onOpen) }
+}
+
+/** A ring of the donut: its slices' values and colours (fill, border), between [inner] and [outer] radius shares. */
+private class Ring(val values: List<Triple<Double, Color, Color>>, val inner: Float, val outer: Float) {
+    /** Each slice's index, start angle and sweep, degrees clockwise from the right; none when it totals nothing. */
+    fun sectors(): List<Triple<Int, Float, Float>> {
+        val total = values.sumOf { it.first }.takeIf { it > 0 } ?: return emptyList()
+        var angle = START_ANGLE
+        return values.mapIndexed { index, (value) ->
+            val sweep = (value / total * FULL_TURN).toFloat()
+            Triple(index, angle, sweep).also { angle += sweep }
+        }
+    }
+}
+
+/** The index of the slice of [rings] at [tap], on a donut at [center] of [radius] px, if any. */
+private fun sliceAt(tap: Offset, center: Offset, radius: Float, rings: List<Ring>): Int? {
+    val delta = tap - center
+    val distance = delta.getDistance() / radius
+    val ring = rings.firstOrNull { distance >= it.inner && distance <= it.outer } ?: return null
+    // Degrees clockwise from the right, from the donut's start
+    val degrees = Math.toDegrees(atan2(delta.y, delta.x).toDouble()).toFloat()
+    val fromStart = ((degrees - START_ANGLE) % FULL_TURN + FULL_TURN) % FULL_TURN
+    return ring.sectors().firstOrNull { (_, start, sweep) ->
+        val offset = ((start - START_ANGLE) % FULL_TURN + FULL_TURN) % FULL_TURN
+        fromStart >= offset && fromStart < offset + sweep
+    }?.first
 }
 
 /** A slice of a ring: between [inner] and [outer], from [start] degrees for [sweep] degrees, clockwise from the right. */
@@ -284,7 +338,6 @@ private val THICK = 20.dp
 private val THIN = 10.dp
 private val BAR_GAP = 2.dp
 private val DONUT = 260.dp
-private val MARKER = 12.dp
 private const val START_ANGLE = -90f
 private const val FULL_TURN = 360
 

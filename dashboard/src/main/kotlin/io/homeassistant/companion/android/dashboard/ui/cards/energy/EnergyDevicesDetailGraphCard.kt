@@ -11,11 +11,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import io.homeassistant.companion.android.common.compose.theme.HADimens
+import io.homeassistant.companion.android.dashboard.energy.COMPARE_PREFIX
 import io.homeassistant.companion.android.dashboard.energy.energyDevicesDetailGraph
 import io.homeassistant.companion.android.dashboard.energy.energyTooltip
+import io.homeassistant.companion.android.dashboard.energy.isExternalStatistic
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.number
+import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import java.math.BigDecimal
 
 /**
@@ -27,7 +30,12 @@ import java.math.BigDecimal
  * src/panels/lovelace/cards/energy/energy-devices-detail-graph-data.ts)
  */
 @Composable
-internal fun EnergyDevicesDetailGraphCard(card: CardConfig, hass: State<HassSnapshot?>, modifier: Modifier = Modifier) {
+internal fun EnergyDevicesDetailGraphCard(
+    card: CardConfig,
+    hass: State<HassSnapshot?>,
+    interactions: CardInteractions,
+    modifier: Modifier = Modifier,
+) {
     val snapshot = hass.value ?: return
     val maxDevices = card.json.number("max_devices")?.toInt()
     EnergyCardFrame(card, hass, modifier) { data ->
@@ -47,6 +55,19 @@ internal fun EnergyDevicesDetailGraphCard(card: CardConfig, hass: State<HassSnap
                 },
             )
         }
-        Legend(chart, hidden) { id -> hidden = if (id in hidden) hidden - id else hidden + id }
+        Legend(
+            chart,
+            hidden,
+            snapshot,
+            onHiddenChange = { hidden = it },
+            // A device's name opens its details (`click-label-for-more-info`), when it's an entity
+            opensLabel = { id -> statIdOf(id).let { !isExternalStatistic(it) && it in snapshot.states } },
+            onOpen = { id -> interactions.openMoreInfo(statIdOf(id)) },
+        )
     }
 }
+
+/** The statistic of a series [id]: without its order suffix (`getStatIdFromId`). */
+private fun statIdOf(id: String): String = id.removePrefix(COMPARE_PREFIX).replace(ORDER_SUFFIX, "")
+
+private val ORDER_SUFFIX = Regex("-\\d+$")

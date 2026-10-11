@@ -22,6 +22,7 @@ import io.homeassistant.companion.android.dashboard.energy.powerTooltip
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.boolean
+import io.homeassistant.companion.android.dashboard.ui.charts.ChartLegendItem
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -66,18 +67,15 @@ internal fun PowerSourcesGraphCard(
             )
         }
         if (card.json.boolean("show_legend") != false) {
-            LegendItems(legendEntries(graph, dark), hidden) { id ->
-                hidden =
-                    if (id in hidden) hidden - id else hidden + id
-            }
+            LegendItems(legendEntries(graph, dark), hidden, snapshot, onHiddenChange = { hidden = it })
         }
     }
 }
 
 /** A legend item per source and the use, in the series' colours. */
-private fun legendEntries(graph: PowerSourcesGraphModel, dark: Boolean): List<LegendEntry> =
+private fun legendEntries(graph: PowerSourcesGraphModel, dark: Boolean): List<ChartLegendItem> =
     graph.series.filter { it.stack != PowerStack.NEGATIVE }.mapNotNull { series ->
-        resolveVariable(series.color, dark)?.let { LegendEntry(series.id, series.name, it) }
+        resolveVariable(series.color, dark)?.let { ChartLegendItem(series.id, series.name, it) }
     }
 
 private const val NO_DATA = "ui.panel.lovelace.cards.energy.no_data"

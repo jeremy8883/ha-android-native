@@ -28,13 +28,15 @@ import io.homeassistant.companion.android.common.compose.theme.LocalHAColorSchem
 import io.homeassistant.companion.android.dashboard.display.DisplayFormats
 import io.homeassistant.companion.android.dashboard.history.TimelineBand
 import io.homeassistant.companion.android.dashboard.history.TimelineChart
+import io.homeassistant.companion.android.dashboard.history.TimelineTooltip
+import io.homeassistant.companion.android.dashboard.history.timelineTooltip
 import io.homeassistant.companion.android.dashboard.ui.cards.energy.ChartTooltipCard
 import io.homeassistant.companion.android.dashboard.ui.cards.energy.TooltipLine
-import java.time.Instant
 
 /**
  * The timelines of entities' states, drawn like the frontend's (state-history-chart-timeline): a row per entity,
- * a band per state in its colour, labelled when it fits, over [time]. A tap on a band shows its state and times.
+ * a band per state in its colour, labelled when it fits, over [time]. A tap on a band shows its tooltip: its entity
+ * (with [showNames]), state, start, end and duration (led by [durationLabel]).
  * With [showNames], each row's entity is named on its left, in a column at least [minLeft] wide. Pinching zooms
  * ([zoom], shared by the History panel's charts), and with a [zoomResetLabel] the chart has its own reset button.
  *
@@ -46,6 +48,7 @@ internal fun TimelineChartView(
     time: TimeSpan,
     formats: DisplayFormats,
     dark: Boolean,
+    durationLabel: String,
     modifier: Modifier = Modifier,
     showNames: Boolean = false,
     minLeft: Dp = 0.dp,
@@ -99,32 +102,39 @@ internal fun TimelineChartView(
             val axisTop = ROW_HEIGHT.toPx() * timelines.size + LABEL_GAP.toPx()
             drawTimeAxis(TimeAxisPlace(left, size.width, axisTop), axis, text, colors.colorBorderNeutralQuiet)
         }
-        selected?.let { (row, index) -> BandTooltip(timelines, row, index, bandColors, formats) }
+        selected?.let { (row, index) ->
+            BandTooltip(timelines, row to index, bandColors) {
+                formats.timelineTooltip(it.first, it.second, showNames, durationLabel)
+            }
+        }
         zoomResetLabel?.let { ChartZoomReset(zoom, it, Modifier.align(Alignment.TopEnd).padding(RESET_PADDING)) }
     }
 }
 
 /**
- * The state of [timelines]' band [index] in [row], and when it started and ended.
+ * The tooltip of [timelines]' band at [at] (row, index), as [tooltip] words it: the entity, then the state by its
+ * colour, its start, end and duration on their own lines.
  *
  * Upstream: part of `state-history-chart-timeline` (src/components/chart/state-history-chart-timeline.ts)
  */
 @Composable
 private fun BandTooltip(
     timelines: List<TimelineChart>,
-    row: Int,
-    index: Int,
+    at: Pair<Int, Int>,
     bandColors: List<List<Color>>,
-    formats: DisplayFormats,
+    tooltip: (Pair<TimelineChart, TimelineBand>) -> TimelineTooltip,
 ) {
-    val band = timelines.getOrNull(row)?.bands?.getOrNull(index) ?: return
+    val (row, index) = at
+    val timeline = timelines.getOrNull(row) ?: return
+    val band = timeline.bands.getOrNull(index) ?: return
+    val words = tooltip(timeline to band)
     ChartTooltipCard(
-        title = band.label,
+        title = words.title,
         rows = listOf(
-            TooltipLine(
-                bandColors[row][index],
-                "${formats.dateTime(band.start.toInstant())} – ${formats.dateTime(band.end.toInstant())}",
-            ),
+            TooltipLine(bandColors[row][index], words.state),
+            TooltipLine(null, words.start),
+            TooltipLine(null, words.end),
+            TooltipLine(null, words.duration),
         ),
         total = null,
     )
@@ -185,8 +195,6 @@ private fun bandAt(
     val index = timelines[row].bands.indexOfFirst { at >= it.start && at < it.end }
     return if (index < 0) null else row to index
 }
-
-private fun Double.toInstant() = Instant.ofEpochMilli(toLong())
 
 private val ROW_HEIGHT: Dp = 30.dp
 private val NAME_MARGIN: Dp = 5.dp

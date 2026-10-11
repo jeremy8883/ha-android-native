@@ -54,7 +54,7 @@ import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
  * Port of a compact `ha-target-picker` with `add-on-top` (frontend@20260624.6 src/components/ha-target-picker.ts):
  * "Add target", opening the sheet of entities, devices, areas (with floors) and labels to pick from, above a chip
  * for each picked item, which removes it or, but for entities, expands it into its parts. Only what holds an
- * entity passing [entityFilter] is offered.
+ * entity passing [entityFilter] is offered. Unless [enabled] (`disabled`), nothing can be added or removed.
  *
  * Upstream: `ha-target-picker` (src/components/ha-target-picker.ts)
  */
@@ -65,6 +65,7 @@ internal fun TargetPicker(
     entityFilter: (String) -> Boolean,
     onChange: (Target) -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     val viewModel = hiltViewModel<TargetPickerViewModel>()
     val configEntryDomains by viewModel.configEntryDomains.collectAsStateWithLifecycle()
@@ -76,6 +77,7 @@ internal fun TargetPicker(
         HAFilledButton(
             hass.localize("$TARGET.add_target"),
             { open = true },
+            enabled = enabled,
             prefix = { DashboardIcon("mdi:playlist-plus", colors.colorOnPrimaryNormal, Modifier.size(HASize.X2L)) },
         )
         if (chips.isNotEmpty()) {
@@ -87,6 +89,7 @@ internal fun TargetPicker(
                     TargetChipView(
                         chip = chip,
                         hass = hass,
+                        enabled = enabled,
                         onRemove = { onChange(target - chip.ref) },
                         onExpand = { onChange(source.expand(target, chip.ref)) },
                     )
@@ -109,7 +112,13 @@ internal fun TargetPicker(
  * Upstream: `ha-target-picker-value-chip` (src/components/target-picker/ha-target-picker-value-chip.ts)
  */
 @Composable
-private fun TargetChipView(chip: TargetChip, hass: HassSnapshot, onRemove: () -> Unit, onExpand: () -> Unit) {
+private fun TargetChipView(
+    chip: TargetChip,
+    hass: HassSnapshot,
+    enabled: Boolean,
+    onRemove: () -> Unit,
+    onExpand: () -> Unit,
+) {
     val colors = LocalHAColorScheme.current
     val dark = isSystemInDarkTheme()
     val accent = chipAccent(chip, dark)
@@ -143,6 +152,7 @@ private fun TargetChipView(chip: TargetChip, hass: HassSnapshot, onRemove: () ->
             val label = hass.localize("$TARGET.expand_${chip.ref.type.key}_id")
             IconButton(
                 onClick = onExpand,
+                enabled = enabled,
                 modifier = Modifier.size(EXPAND_SIZE).semantics {
                     contentDescription = label
                 },
@@ -153,6 +163,7 @@ private fun TargetChipView(chip: TargetChip, hass: HassSnapshot, onRemove: () ->
         val removeLabel = hass.localize("$TARGET.remove_${chip.ref.type.key}_id")
         IconButton(
             onClick = onRemove,
+            enabled = enabled,
             modifier = Modifier.size(REMOVE_SIZE).semantics {
                 contentDescription =
                     removeLabel

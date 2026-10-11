@@ -36,13 +36,6 @@ on the right are the frontend's (20260624.6).
     (`ui/cards/HeadingCard.kt:123,147`; src/components/ha-heading-badge.ts:36)
 15. Details: Attributes hidden when there are none, and no card around state and attributes
     (`ui/MoreInfoSheet.kt:271`; src/dialogs/more-info/ha-more-info-details.ts:70-103)
-21. History timeline tooltip: no entity name, no duration, start and end on one line without seconds
-    (`ui/charts/TimelineChartView.kt:113`; src/components/chart/state-history-chart-timeline.ts:135-162)
-22. Energy graph legends: hidden items crossed out (upstream: empty circle); no collapsing to 6 on phones with
-    "show more" (`ui/cards/energy/EnergyUsageGraphCard.kt:134`; src/components/chart/ha-chart-base.ts:410-500)
-23. Energy total chip: filled, no tooltip; upstream is outlined with a tooltip
-    (`ui/cards/energy/EnergyUsageGraphCard.kt:98`; cards/energy/common/hui-energy-graph-chip.ts:21-27)
-24. History panel: pickers stay enabled while loading (`ui/panels/HistoryPanel.kt:215`; ha-panel-history.ts:163,174)
 
 ## Missing features
 
@@ -53,12 +46,6 @@ on the right are the frontend's (20260624.6).
 27. Thermostat card: `features` and `show_current_as_primary` not drawn (`ui/cards/ThermostatCard.kt:46`,
     `ui/controls/CircularStateControl.kt:143`; hui-thermostat-card.ts:160,175)
 28. Entities card: `header` and `footer` elements not drawn (`ui/cards/EntitiesCard.kt:60`; hui-entities-card.ts:190-202)
-30. Chart legends: no long-press "show only this one" (`ui/charts/HistoryLegend.kt:87`,
-    `ui/cards/energy/EnergyUsageGraphCard.kt:134`; ha-chart-base.ts:1212-1261)
-31. Energy devices donut: slices and legend don't open the device's details; the legend can't hide devices
-    (`ui/cards/energy/EnergyDevicesGraphCard.kt:202`; hui-energy-devices-graph-card.ts:273-284,595-617)
-32. Energy date selection: no "Download data"; `disable_compare` ignored
-    (`ui/cards/energy/EnergyDateSelectionCard.kt:145,89`; hui-energy-period-selector.ts:254,261-267)
 35. Assist chat: no "thinking" section or tool calls (`ui/moreinfo/MoreInfoConversation.kt:135`;
     ha-assist-chat.ts:187-260) — in the README already
 36. Details: no YAML view of the attributes (`ui/MoreInfoView.kt:103`; ha-more-info-dialog.ts:819-829)

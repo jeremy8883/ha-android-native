@@ -102,13 +102,23 @@ internal fun HistoryPanel(
         LazyColumn(Modifier.fillMaxSize()) {
             item(key = "filters") {
                 Column(Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, top = HADimens.SPACE4)) {
-                    DateRangeField(range, snapshot, current, RangePreset.EXTENDED, onChange = { range = it })
+                    // Neither can be changed while the history loads
+                    val enabled = state != HistoryPanelState.Loading
+                    DateRangeField(
+                        range,
+                        snapshot,
+                        current,
+                        RangePreset.EXTENDED,
+                        onChange = { range = it },
+                        enabled = enabled,
+                    )
                     TargetPicker(
                         target,
                         snapshot,
                         entityFilter = { true },
                         onChange = pick,
                         modifier = Modifier.padding(top = HADimens.SPACE2),
+                        enabled = enabled,
                     )
                 }
             }
