@@ -24,6 +24,10 @@ android {
         // straight from Gradle (`:dashboard-app:installRelease`) until there is a key of its own to publish with.
         named("release") {
             signingConfig = signingConfigs.getByName("debug")
+            // Shrunk and optimized by R8: less code to load and compile makes it start faster
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
 }

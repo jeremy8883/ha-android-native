@@ -176,8 +176,9 @@ private fun PanelEntries(
 }
 
 /**
- * The sidebar's header on a phone (`ha-sidebar`'s `menu`): "Home Assistant" on a toolbar-high row, over a divider.
+ * The sidebar's header on a phone (`ha-sidebar`'s `menu`): the app's name on a toolbar-high row, over a divider.
  */
+// UPSTREAM-DIFF: the header names this app (HADash), where upstream's says "Home Assistant".
 @Composable
 private fun SidebarHeader() {
     Box(Modifier.fillMaxWidth().height(HEADER_HEIGHT), contentAlignment = Alignment.CenterStart) {

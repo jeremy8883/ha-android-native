@@ -35,6 +35,6 @@
     <string name="native_dashboard_favorites_copy_failed">Couldn\'t copy the favorite colors to %1$d lights: %2$s</string>
     <string name="native_dashboard_open_elsewhere">Open in the Home Assistant app</string>
     <string name="native_dashboard_elsewhere_heading">In the Home Assistant app</string>
-    <!-- The frontend's sidebar title, not translated upstream either -->
-    <string name="native_dashboard_sidebar_title" translatable="false">Home Assistant</string>
+    <!-- The sidebar header: this app's name, where the frontend's says "Home Assistant" -->
+    <string name="native_dashboard_sidebar_title" translatable="false">HADash</string>
 </resources>

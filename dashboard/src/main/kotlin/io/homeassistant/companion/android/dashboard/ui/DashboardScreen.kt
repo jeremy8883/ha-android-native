@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.ReportDrawnWhen
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -61,6 +62,9 @@ internal fun DashboardScreen(
     val now = viewModel.now.collectAsStateWithLifecycle()
     val status by viewModel.status.collectAsStateWithLifecycle()
     val content = uiState as? DashboardUiState.Content
+    // Startup ends when the page shows with its entities (from the cache when there is one), for Android's
+    // startup measurements and the baseline profile
+    ReportDrawnWhen { uiState !is DashboardUiState.Loading && hass.value != null }
     DashboardBackHandlers(
         showsBack = content?.showsBack == true,
         isDefaultDashboard = selectedDashboard == null,

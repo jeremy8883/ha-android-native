@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.ReportDrawn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,7 +50,10 @@ internal fun AppRoot() {
         when (hasServer) {
             // The servers are read from the database, which is quick
             null -> Unit
-            false -> LoginScreen(onLoggedIn = {})
+            false -> {
+                ReportDrawn()
+                LoginScreen(onLoggedIn = {})
+            }
             true -> LoggedIn(viewModel)
         }
     }

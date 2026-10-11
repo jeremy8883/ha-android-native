@@ -225,9 +225,10 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - [x] Home dashboard "Today's energy" summary: its own `energy_home_dashboard` collection, always today, golden-tested against the frontend's tile; says it couldn't load rather than showing nothing
 
 ### Later — Startup time
-- [ ] Cold launch straight to the dashboard: the dashboard app has no splash wait (it starts from the cache); measure it on a release-like build on a real device
+- [ ] Cold launch straight to the dashboard: the dashboard app has no splash wait (it starts from the cache); measure it on a release-like build on a real device. The dashboard reports itself drawn (`ReportDrawnWhen`) once the page shows with its entities, so logcat's "Fully drawn" line is the time to the dashboard. Emulator, release build, median of 8 cold starts with the cache: first frame 0.19s, dashboard 0.32s before R8, 0.27s with it (a fresh install's first start: 0.52s, then 0.34s)
 - [x] Don't start Chromium at launch (dashboard app: no WebView cookies)
-- [ ] Baseline profile (none in the project yet)
+- [x] R8 on the release build (shrunk, optimized, resources shrunk): the APK went from 22 MB to 7.3 MB. Checked: login, dashboards, details, History, Energy, To-do, the web-drawn cards. Keep `dashboard-app/proguard-rules.pro` for what a crash shows R8 removed
+- [ ] Baseline profile (none in the project yet): a fully compiled build started no faster on the emulator, so it mostly helps a fresh install's first starts; measure on a real phone first
 
 ### Step 7 — Tests
 - [ ] JSON fixtures (real dashboards) and deserialization
