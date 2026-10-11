@@ -14,8 +14,11 @@ import androidx.compose.ui.unit.sp
 import io.homeassistant.companion.android.dashboard.display.DisplayFormats
 import io.homeassistant.companion.android.dashboard.energy.niceTicks
 import io.homeassistant.companion.android.dashboard.energy.valueLabel
+import io.homeassistant.companion.android.dashboard.history.ChartZoom
+import io.homeassistant.companion.android.dashboard.history.TimeAxisLabelBox
 import io.homeassistant.companion.android.dashboard.history.historyTimeLabel
-import io.homeassistant.companion.android.dashboard.history.historyTimeTicks
+import io.homeassistant.companion.android.dashboard.history.timeAxisTicks
+import io.homeassistant.companion.android.dashboard.history.visibleTimeLabels
 import kotlin.math.abs
 
 /** How a chart's axis labels are formatted ([formats]), measured and drawn. */
@@ -131,24 +134,70 @@ internal fun DrawScope.drawValueAxis(
     }
 }
 
-/** The time axis's labels below the plot from [left] to [right] over [time], at hours (minutes over a short span). */
-internal fun DrawScope.drawTimeAxis(left: Float, right: Float, top: Float, time: TimeSpan, text: ChartText) {
+/**
+ * A chart's time axis: [shown] of it (all of it unless zoomed in), [full] being the whole axis, and the share
+ * [ratio] shown, which picks the labels' format.
+ */
+internal class TimeAxis(val shown: TimeSpan, val full: TimeSpan, val ratio: Double = 1.0) {
+    val fullSpanMillis: Long get() = (full.end - full.start).toLong()
+}
+
+/** [axis] of [this] span zoomed to [zoom]. */
+internal fun TimeSpan.zoomed(zoom: ChartZoom): TimeAxis {
+    val (from, to) = zoom.window(start, end)
+    return TimeAxis(TimeSpan(from, to), this, zoom.ratio)
+}
+
+/** Where a time axis is: below a plot from [left] to [right], its labels from [top]; [grid] from the plot's top to its bottom. */
+internal class TimeAxisPlace(
+    val left: Float,
+    val right: Float,
+    val top: Float,
+    val grid: ClosedFloatingPointRange<Float>? = null,
+)
+
+/**
+ * The time axis at [place]: ECharts' ticks for the shown span, a short tick and a label at each nice one whose
+ * label fits, and with a grid a vertical grid line at every tick, the axis's ends included.
+ */
+internal fun DrawScope.drawTimeAxis(place: TimeAxisPlace, axis: TimeAxis, text: ChartText, lineColor: Color) {
+    val left = place.left
+    val right = place.right
+    val top = place.top
+    val grid = place.grid
     val formats = text.formats
-    val span = (time.end - time.start).coerceAtLeast(1.0)
-    val maxLabels = ((right - left) / MIN_TICK_SPACING.toPx()).toInt().coerceAtLeast(1)
-    val spanMillis = (time.end - time.start).toLong()
-    formats.historyTimeTicks(time.start.toLong(), time.end.toLong(), maxLabels).forEach { tick ->
-        val axisLabel = formats.historyTimeLabel(tick, spanMillis)
-        val label = text.measure(axisLabel.text, bold = axisLabel.bold)
-        val x = (left + (tick - time.start) / span * (right - left)).toFloat()
-        drawText(label, topLeft = Offset((x - label.size.width / 2).coerceIn(0f, size.width - label.size.width), top))
+    val shown = axis.shown
+    val span = (shown.end - shown.start).coerceAtLeast(1.0)
+    fun x(time: Long) = (left + (time - shown.start) / span * (right - left)).toFloat()
+    val ticks = timeAxisTicks(shown.start.toLong(), shown.end.toLong(), formats.zone, axis.fullSpanMillis)
+    val labelSpan = (axis.fullSpanMillis * axis.ratio).toLong()
+    val labels = ticks.map { tick ->
+        val label = formats.historyTimeLabel(tick.time, labelSpan)
+        text.measure(label.text, bold = label.bold)
+    }
+    val boxes = ticks.mapIndexed { i, tick -> TimeAxisLabelBox(tick, x(tick.time), labels[i].size.width.toFloat()) }
+    val visible = visibleTimeLabels(boxes, LABEL_TEXT_MARGIN.toPx())
+    val stroke = 1.dp.toPx()
+    val axisY = top - LABEL_GAP.toPx()
+    ticks.forEachIndexed { i, tick ->
+        val at = x(tick.time)
+        grid?.let { drawLine(lineColor, Offset(at, it.start), Offset(at, it.endInclusive), strokeWidth = stroke) }
+        if (!visible[i]) return@forEachIndexed
+        drawLine(lineColor, Offset(at, axisY), Offset(at, axisY + TICK_LENGTH.toPx()), strokeWidth = stroke)
+        val label = labels[i]
+        drawText(label, topLeft = Offset((at - label.size.width / 2).coerceIn(0f, size.width - label.size.width), top))
     }
 }
 
 /** The gap between labels and the plot. */
 internal val LABEL_GAP = 8.dp
 private val EDGE = 1.dp
-private val MIN_TICK_SPACING = 64.dp
+
+/** The room the time labels keep on either side (`axisLabel.textMargin`). */
+private val LABEL_TEXT_MARGIN = 3.dp
+
+/** The time axis's ticks' length (`axisTick.length`). */
+private val TICK_LENGTH = 5.dp
 
 /** The runs of [points] between gaps ([isGap]). */
 internal fun <T> runsBetweenGaps(points: List<T>, isGap: (T) -> Boolean): List<List<T>> {

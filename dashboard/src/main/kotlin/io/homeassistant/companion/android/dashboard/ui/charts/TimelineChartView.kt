@@ -1,15 +1,16 @@
 package io.homeassistant.companion.android.dashboard.ui.charts
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
@@ -17,7 +18,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.luminance
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
@@ -35,7 +35,8 @@ import java.time.Instant
 /**
  * The timelines of entities' states, drawn like the frontend's (state-history-chart-timeline): a row per entity,
  * a band per state in its colour, labelled when it fits, over [time]. A tap on a band shows its state and times.
- * With [showNames], each row's entity is named on its left, in a column at least [minLeft] wide.
+ * With [showNames], each row's entity is named on its left, in a column at least [minLeft] wide. Pinching zooms
+ * ([zoom], shared by the History panel's charts), and with a [zoomResetLabel] the chart has its own reset button.
  */
 @Composable
 internal fun TimelineChartView(
@@ -46,13 +47,15 @@ internal fun TimelineChartView(
     modifier: Modifier = Modifier,
     showNames: Boolean = false,
     minLeft: Dp = 0.dp,
+    zoom: ChartZoomState = remember { ChartZoomState() },
+    zoomResetLabel: String? = null,
 ) {
     val measurer = rememberTextMeasurer()
     val colors = LocalHAColorScheme.current
     val text =
         ChartText(
             measurer,
-            TextStyle(color = colors.colorTextSecondary, fontSize = ChartText.FONT_SIZE),
+            TextStyle(color = colors.colorTextPrimary, fontSize = ChartText.FONT_SIZE),
             formats,
             LocalDensity.current.density,
         )
@@ -60,45 +63,65 @@ internal fun TimelineChartView(
     val bandColors = remember(timelines, dark) {
         timelines.map { timeline -> timeline.bands.map { TimelineColors.resolve(it.color, dark) } }
     }
-    var selected by remember(timelines) { mutableStateOf<Pair<Int, Int>?>(null) }
+    // Zooming hides the tooltip, as the frontend does on touch
+    var selected by remember(timelines, zoom.zoom) { mutableStateOf<Pair<Int, Int>?>(null) }
     val height = ROW_HEIGHT * timelines.size + AXIS_HEIGHT
+    val axis = time.zoomed(zoom.zoom)
+    // Where the plot is (left, width) and a row's height, px, as last drawn
+    val layout = remember { FloatArray(LAYOUT_SIZE) }
     Box(modifier.fillMaxWidth().height(height)) {
         Canvas(
-            Modifier.fillMaxWidth().height(height).pointerInput(timelines) {
-                detectTapGestures { offset ->
-                    val left = plotLeft(timelines, showNames, minLeft.toPx(), text)
+            Modifier.fillMaxWidth().height(height)
+                .chartZoomGestures(zoom) { layout[0]..layout[1] }
+                .chartTaps(zoom, timelines) { offset ->
+                    val left = layout[0]
                     val hit =
-                        bandAt(offset.copy(x = offset.x - left), timelines, time, size.width - left, ROW_HEIGHT.toPx())
+                        bandAt(offset.copy(x = offset.x - left), timelines, axis.shown, layout[1] - left, layout[2])
                     selected = if (hit == selected) null else hit
-                }
-            },
+                },
         ) {
             val left = plotLeft(timelines, showNames, minLeft.toPx(), text)
+            layout[0] = left
+            layout[1] = size.width
+            layout[2] = ROW_HEIGHT.toPx()
+            val shown = axis.shown
             timelines.forEachIndexed { row, timeline ->
                 if (showNames) drawName(timeline.name, row, left, text, nameColor)
-                val span = (time.end - time.start).coerceAtLeast(1.0)
-                // Bands start no further left than the plot
+                val span = (shown.end - shown.start).coerceAtLeast(1.0)
+                // Bands start no further left than the plot, nor end past it
                 val x = { at: Double ->
-                    (left + (at - time.start) / span * (size.width - left)).toFloat().coerceIn(left, size.width)
+                    (left + (at - shown.start) / span * (size.width - left)).toFloat().coerceIn(left, size.width)
                 }
                 timeline.bands.forEachIndexed { index, band -> drawBand(band, bandColors[row][index], row, x, text) }
             }
-            drawTimeAxis(left, size.width, ROW_HEIGHT.toPx() * timelines.size + LABEL_GAP.toPx(), time, text)
+            val axisTop = ROW_HEIGHT.toPx() * timelines.size + LABEL_GAP.toPx()
+            drawTimeAxis(TimeAxisPlace(left, size.width, axisTop), axis, text, colors.colorBorderNeutralQuiet)
         }
-        selected?.let { (row, index) ->
-            val band = timelines.getOrNull(row)?.bands?.getOrNull(index) ?: return@let
-            ChartTooltipCard(
-                title = band.label,
-                rows = listOf(
-                    TooltipLine(
-                        bandColors[row][index],
-                        "${formats.dateTime(band.start.toInstant())} – ${formats.dateTime(band.end.toInstant())}",
-                    ),
-                ),
-                total = null,
-            )
-        }
+        selected?.let { (row, index) -> BandTooltip(timelines, row, index, bandColors, formats) }
+        zoomResetLabel?.let { ChartZoomReset(zoom, it, Modifier.align(Alignment.TopEnd).padding(RESET_PADDING)) }
     }
+}
+
+/** The state of [timelines]' band [index] in [row], and when it started and ended. */
+@Composable
+private fun BandTooltip(
+    timelines: List<TimelineChart>,
+    row: Int,
+    index: Int,
+    bandColors: List<List<Color>>,
+    formats: DisplayFormats,
+) {
+    val band = timelines.getOrNull(row)?.bands?.getOrNull(index) ?: return
+    ChartTooltipCard(
+        title = band.label,
+        rows = listOf(
+            TooltipLine(
+                bandColors[row][index],
+                "${formats.dateTime(band.start.toInstant())} – ${formats.dateTime(band.end.toInstant())}",
+            ),
+        ),
+        total = null,
+    )
 }
 
 /** Where the bands start: after the names' column when they're shown, at least [minLeft]. */
@@ -166,6 +189,7 @@ private val BAR_HEIGHT: Dp = 20.dp
 private val AXIS_HEIGHT: Dp = 30.dp
 private val LABEL_PADDING: Dp = 4.dp
 private const val HALF = 0.5f
+private const val LAYOUT_SIZE = 3
 
 /** A label is shown when the band fits at least this share of it (the rest is cut off). */
 private const val LABEL_MIN_SHARE = 3f

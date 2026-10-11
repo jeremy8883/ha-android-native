@@ -43,6 +43,7 @@ function parseArgs(argv) {
     else if (a === "--domains") args.domains = argv[++i].split(",");
     else if (a === "--logbook-panel") args.logbookPanel = true;
     else if (a === "--history-panel") args.historyPanel = true;
+    else if (a === "--history-axes") args.historyAxes = true;
     else if (a === "--target-picker") args.targetPicker = true;
     else if (a === "-h" || a === "--help") {
       console.log("node capture.mjs [--variant admin|nonadmin|all] [--out <fixtures/home dir>] [--controls-only [--domains a,b]]");
@@ -1011,6 +1012,9 @@ async function capturePanelTargetPicker({ searches, targets }) {
 }
 
 /** The entities the History panel capture shows: lines (with statistics), climate, humidifier and timelines. */
+/** The entities whose History charts' axes are recorded: a timeline and two line charts. */
+const HISTORY_AXES_ENTITIES = ["sensor.living_room_temperature", "sensor.living_room_humidity", "lock.back_door_lock", "light.bed_light"];
+
 const HISTORY_PANEL_ENTITIES = [
   "sensor.living_room_temperature",
   "sensor.living_room_humidity",
@@ -1033,6 +1037,57 @@ const HISTORY_PANEL_ENTITIES = [
  * messages, the statistics), the history it merged, and what each chart drew: the timelines' rows and the line
  * charts' series and legends. Runs in the page.
  */
+/**
+ * The time axes the History panel draws for [path]'s period: each chart's axis extent, ECharts' ticks (time,
+ * level, whether nice), its labels (text, centre, width, whether hidden by the overlap rules) and its value
+ * axis's ticks; then the same with the charts zoomed to 40-60%. Runs in the page.
+ */
+async function captureHistoryAxes(path) {
+  const g = window.__golden;
+  const ha = document.querySelector("home-assistant");
+  g.navigate(path);
+  const panel = () => ha.shadowRoot.querySelector("home-assistant-main")?.shadowRoot?.querySelector("ha-panel-history");
+  for (let i = 0; i < 150 && !(panel()?._mungedStateHistory && !panel()._isLoading); i++) await new Promise((r) => setTimeout(r, 100));
+  await new Promise((r) => setTimeout(r, 2500));
+  const charts = () => {
+    const root = panel()?.shadowRoot?.querySelector("state-history-charts")?.shadowRoot;
+    return [...(root?.querySelectorAll("state-history-chart-line, state-history-chart-timeline") ?? [])];
+  };
+  const axes = () => charts().map((el) => {
+    const base = el.shadowRoot.querySelector("ha-chart-base");
+    const chart = base.chart;
+    const xAxis = chart.getModel().getComponent("xAxis", 0).axis;
+    const yModel = chart.getModel().getComponent("yAxis", 0);
+    const labels = [];
+    chart.getZr().storage.traverse((node) => {
+      if (node.type !== "text" || !node.anid?.startsWith("label_")) return;
+      const value = Number(node.anid.slice("label_".length));
+      if (!(value > 1e11)) return;
+      const rect = node.getBoundingRect();
+      labels.push({ value, text: String(node.style.text ?? ""), x: node.x, width: rect.width, ignore: !!node.ignore });
+    });
+    labels.sort((a, b) => a.value - b.value);
+    const option = chart.getOption();
+    const xOption = Array.isArray(option.xAxis) ? option.xAxis[0] : option.xAxis;
+    return {
+      kind: el.localName === "state-history-chart-line" ? "line" : "timeline",
+      axisMin: new Date(xOption.min).getTime(),
+      axisMax: new Date(xOption.max).getTime(),
+      extent: xAxis.scale.getExtent(),
+      zoomRatio: base._zoomRatio,
+      ticks: xAxis.scale.getTicks().map((t) => ({ value: t.value, level: t.time?.level ?? 0, notNice: !!t.notNice })),
+      labels,
+      yTicks: yModel?.axis?.type === "value" ? yModel.axis.scale.getTicks().map((t) => t.value) : null,
+      series: (base.data ?? []).filter((d) => d.type === "line").map((d) => ({ id: d.id, data: (d.data ?? []).map((p) => (Array.isArray(p) ? p : p.value)) })),
+    };
+  });
+  const full = axes();
+  charts().forEach((el) => el.shadowRoot.querySelector("ha-chart-base").zoom(40, 60));
+  await new Promise((r) => setTimeout(r, 1500));
+  const zoomed = axes();
+  return { path, full, zoomed };
+}
+
 async function captureHistoryPanel(path) {
   const g = window.__golden;
   const ha = document.querySelector("home-assistant");
@@ -3524,7 +3579,7 @@ function sanitizeFile(name) {
 // --------------------------------------------------------------------------------------------
 // One variant
 
-async function captureVariant(browser, { baseUrl, variant, tokens, outDir, controlsOnly, logbookPanel, historyPanel, targetPicker, domains: CONTROL_DOMAINS }) {
+async function captureVariant(browser, { baseUrl, variant, tokens, outDir, controlsOnly, logbookPanel, historyPanel, historyAxes, targetPicker, domains: CONTROL_DOMAINS }) {
   console.log(`\n== variant ${variant} -> ${relative(REPO, outDir)}`);
   const context = await browser.newContext({
     locale: "en-US",
@@ -3572,6 +3627,27 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir, contr
     mkdirSync(join(outDir, "target-picker"), { recursive: true });
     writeFileSync(join(outDir, "target-picker", "logbook.json"), stableStringify(data));
     console.log(`  recorded the target picker: ${Object.keys(data.items).length} searches, ${data.expansions.length} expansions`);
+    await context.close();
+    return { checks: [], problems: [] };
+  }
+  if (historyAxes) {
+    // Only the History panel's time axes over a few periods, written over the existing fixtures
+    await page.setViewportSize({ width: 412, height: 3000 });
+    await page.waitForTimeout(500);
+    const end = new Date();
+    const periods = { "3h": 3 * 3600e3, "26h": 26 * 3600e3, "7d": 7 * 86400e3, "30d": 30 * 86400e3 };
+    const out = {};
+    for (const [name, span] of Object.entries(periods)) {
+      const start = new Date(end.getTime() - span);
+      const path = `/history?entity_id=${HISTORY_AXES_ENTITIES.join(",")}&start_date=${start.toISOString()}&end_date=${end.toISOString()}`;
+      // A fresh page for each period, so no chart keeps the last one's zoom or layout
+      await page.goto(`${baseUrl}/home`, { waitUntil: "domcontentloaded" });
+      await waitForHomePanel(page);
+      out[name] = await page.evaluate(captureHistoryAxes, path);
+      console.log(`  recorded the ${name} axes: ${out[name].full.length} charts`);
+    }
+    mkdirSync(join(outDir, "history"), { recursive: true });
+    writeFileSync(join(outDir, "history", "axes.json"), stableStringify({ capturedAt: end.toISOString(), periods: out }));
     await context.close();
     return { checks: [], problems: [] };
   }
@@ -3851,7 +3927,7 @@ async function main() {
         tokens = { ...t, expires: Date.now() + t.expires_in * 1000 };
       }
       const dir = join(outRoot, variant === "admin" ? "test-instance" : "test-instance-nonadmin");
-      const { checks, problems } = await captureVariant(browser, { baseUrl, variant, tokens, outDir: dir, controlsOnly: args.controlsOnly, logbookPanel: args.logbookPanel, historyPanel: args.historyPanel, targetPicker: args.targetPicker, domains: args.domains });
+      const { checks, problems } = await captureVariant(browser, { baseUrl, variant, tokens, outDir: dir, controlsOnly: args.controlsOnly, logbookPanel: args.logbookPanel, historyPanel: args.historyPanel, historyAxes: args.historyAxes, targetPicker: args.targetPicker, domains: args.domains });
       if (problems.length || checks.some((c) => !c.ok)) failed = true;
     }
   } finally {

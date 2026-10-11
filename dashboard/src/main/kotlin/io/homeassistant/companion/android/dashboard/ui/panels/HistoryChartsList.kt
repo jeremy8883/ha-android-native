@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
@@ -22,6 +23,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.history.HistoryLineChart
 import io.homeassistant.companion.android.dashboard.history.HistoryResult
 import io.homeassistant.companion.android.dashboard.history.SeriesColor
+import io.homeassistant.companion.android.dashboard.history.TimelineChart
 import io.homeassistant.companion.android.dashboard.history.historyLegend
 import io.homeassistant.companion.android.dashboard.history.historyLineChart
 import io.homeassistant.companion.android.dashboard.history.timelineChart
@@ -29,6 +31,7 @@ import io.homeassistant.companion.android.dashboard.panels.DateRange
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.energy.graphColorVariable
 import io.homeassistant.companion.android.dashboard.ui.charts.ChartText
+import io.homeassistant.companion.android.dashboard.ui.charts.ChartZoomState
 import io.homeassistant.companion.android.dashboard.ui.charts.HistoryLegend
 import io.homeassistant.companion.android.dashboard.ui.charts.HistoryLegendTexts
 import io.homeassistant.companion.android.dashboard.ui.charts.HistoryLineChartView
@@ -43,7 +46,7 @@ import java.time.Instant
 
 /**
  * The charts of `state-history-charts` with `sync-charts`: the timelines with the entities' names, then each line
- * chart with its legend, divided, all plots starting at the same distance from the left (`paddingYAxis`), from the
+ * chart with its legend, divided, all zoomed together ([zoom]), all plots starting at the same distance from the left (`paddingYAxis`), from the
  * period's start to its end (now, when the end is ahead).
  */
 @Composable
@@ -53,6 +56,7 @@ internal fun HistoryChartsList(
     range: DateRange,
     now: Instant,
     interactions: CardInteractions,
+    zoom: ChartZoomState,
 ) {
     val dark = isSystemInDarkTheme()
     val nowMillis = now.toEpochMilli().toDouble()
@@ -69,14 +73,7 @@ internal fun HistoryChartsList(
         hass.formats,
         LocalDensity.current.density,
     )
-    val inset = with(LocalDensity.current) {
-        val names = if (timelines.isEmpty()) 0f else text.timelineNamesWidth(timelines.map { it.name })
-        val axes = lines.maxOfOrNull { chart ->
-            val values = chart.series.flatMap { s -> s.points.mapNotNull { it.y } }
-            valueAxisWidth(valueTicks(values), chart.yFractionDigits, text) + LABEL_GAP.toPx()
-        } ?: 0f
-        maxOf(names, axes).toDp()
-    }
+    val inset = chartsInset(timelines, lines, text)
     val legendTexts = HistoryLegendTexts(
         toggle = hass.localize("$CHARTS.toggle_visibility"),
         more = hass.localize("$CHARTS.expand_legend"),
@@ -84,7 +81,7 @@ internal fun HistoryChartsList(
     )
     Column {
         if (timelines.isNotEmpty()) {
-            TimelineChartView(timelines, time, hass.formats, dark, showNames = true, minLeft = inset)
+            TimelineChartView(timelines, time, hass.formats, dark, showNames = true, minLeft = inset, zoom = zoom)
         }
         history.line.forEachIndexed { index, unit ->
             if (index > 0 || timelines.isNotEmpty()) {
@@ -97,7 +94,16 @@ internal fun HistoryChartsList(
             var hidden by rememberSaveable(unit.identifier) { mutableStateOf(emptySet<String>()) }
             val chart = lines[index]
             Column(Modifier.padding(top = HADimens.SPACE2)) {
-                HistoryLineChartView(chart, unit.unit, time, hass.formats, dark, hidden = hidden, minLeft = inset)
+                HistoryLineChartView(
+                    chart,
+                    unit.unit,
+                    time,
+                    hass.formats,
+                    dark,
+                    hidden = hidden,
+                    minLeft = inset,
+                    zoom = zoom,
+                )
                 HistoryLegend(
                     items = remember(chart, hass) { hass.historyLegend(chart) },
                     colors = remember(chart, dark) { legendColors(chart, dark) },
@@ -110,6 +116,20 @@ internal fun HistoryChartsList(
         }
     }
 }
+
+/**
+ * How far from the left every plot starts (`paddingYAxis`): past the timelines' names and the widest value axis.
+ */
+@Composable
+private fun chartsInset(timelines: List<TimelineChart>, lines: List<HistoryLineChart>, text: ChartText): Dp =
+    with(LocalDensity.current) {
+        val names = if (timelines.isEmpty()) 0f else text.timelineNamesWidth(timelines.map { it.name })
+        val axes = lines.maxOfOrNull { chart ->
+            val values = chart.series.flatMap { s -> s.points.mapNotNull { it.y } }
+            valueAxisWidth(valueTicks(values), chart.yFractionDigits, text) + LABEL_GAP.toPx()
+        } ?: 0f
+        maxOf(names, axes).toDp()
+    }
 
 /** Each series' colour, by its id. */
 private fun legendColors(chart: HistoryLineChart, dark: Boolean) = chart.series.mapNotNull { series ->

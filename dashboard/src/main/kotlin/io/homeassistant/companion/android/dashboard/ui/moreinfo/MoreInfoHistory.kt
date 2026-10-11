@@ -110,7 +110,7 @@ private fun HistoryCharts(entityId: String, history: EntityHistory, hass: HassSn
                 val unit = hass.displayUnit(entityId, history.statistics.metadata)
                 hass.statisticsChart(entityId, history.statistics.stats, unit, end)
             }
-            StatisticsChartView(chart, hass.formats, dark)
+            StatisticsChartView(chart, hass.formats, dark, zoomResetLabel = hass.localize(ZOOM_RESET))
         }
         is EntityHistory.States -> {
             val result = remember(history, hass) { hass.computeHistory(history.history, listOf(entityId)) }
@@ -123,14 +123,24 @@ private fun HistoryCharts(entityId: String, history: EntityHistory, hass: HassSn
             val time = TimeSpan(start, end)
             if (result.timeline.isNotEmpty()) {
                 val timelines = remember(result, end) { result.timeline.map { hass.timelineChart(it, end) } }
-                TimelineChartView(timelines, time, hass.formats, dark)
+                TimelineChartView(timelines, time, hass.formats, dark, zoomResetLabel = hass.localize(ZOOM_RESET))
             }
             result.line.forEach { unit ->
                 val chart = remember(unit, end) { hass.historyLineChart(unit.data, end, end) }
-                HistoryLineChartView(chart, unit.unit, time, hass.formats, dark)
+                HistoryLineChartView(
+                    chart,
+                    unit.unit,
+                    time,
+                    hass.formats,
+                    dark,
+                    zoomResetLabel = hass.localize(ZOOM_RESET),
+                )
             }
         }
     }
 }
 
 internal const val MORE_INFO = "ui.dialogs.more_info_control"
+
+/** Each chart zooms on its own in the details, with its own reset button. */
+private const val ZOOM_RESET = "ui.components.history_charts.zoom_reset"

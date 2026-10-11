@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,16 +22,22 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.homeassistant.companion.android.common.compose.composable.ButtonSize
+import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
 import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.theme.HADimens
+import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
+import io.homeassistant.companion.android.dashboard.history.ChartZoom
 import io.homeassistant.companion.android.dashboard.history.HistoryResult
 import io.homeassistant.companion.android.dashboard.panels.DateRange
 import io.homeassistant.companion.android.dashboard.panels.RangePreset
@@ -37,6 +45,8 @@ import io.homeassistant.companion.android.dashboard.panels.historyLogbookQuery
 import io.homeassistant.companion.android.dashboard.target.Target
 import io.homeassistant.companion.android.dashboard.target.resolveEntityIds
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.charts.ChartZoomState
 import io.homeassistant.companion.android.dashboard.ui.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.target.TargetPicker
 import java.time.Instant
@@ -84,25 +94,45 @@ internal fun HistoryPanel(
     HistoryToolbar(toolbar, snapshot, state, hasTarget = entityIds.isNotEmpty(), onRemoveAll = {
         pick(Target())
     }, viewModel)
-    LazyColumn(Modifier.fillMaxSize()) {
-        item(key = "filters") {
-            Column(Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, top = HADimens.SPACE4)) {
-                DateRangeField(range, snapshot, current, RangePreset.EXTENDED, onChange = { range = it })
-                TargetPicker(
-                    target,
-                    snapshot,
-                    entityFilter = { true },
-                    onChange = pick,
-                    modifier = Modifier.padding(top = HADimens.SPACE2),
-                )
+    // All the charts zoom together (`sync-charts`); a new period shows all of it
+    val zoom = remember(range) { ChartZoomState() }
+    Box(Modifier.fillMaxSize()) {
+        LazyColumn(Modifier.fillMaxSize()) {
+            item(key = "filters") {
+                Column(Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, top = HADimens.SPACE4)) {
+                    DateRangeField(range, snapshot, current, RangePreset.EXTENDED, onChange = { range = it })
+                    TargetPicker(
+                        target,
+                        snapshot,
+                        entityFilter = { true },
+                        onChange = pick,
+                        modifier = Modifier.padding(top = HADimens.SPACE2),
+                    )
+                }
+            }
+            item(key = "charts") {
+                Box(Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, bottom = HADimens.SPACE4)) {
+                    HistoryContent(state, snapshot, range, current.toInstant(), interactions, zoom)
+                }
             }
         }
-        item(key = "charts") {
-            Box(Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, bottom = HADimens.SPACE4)) {
-                HistoryContent(state, snapshot, range, current.toInstant(), interactions)
-            }
-        }
+        HistoryZoomReset(zoom, snapshot.localize("$CHARTS.zoom_reset"), Modifier.align(Alignment.BottomEnd))
     }
+}
+
+/** The charts' one "Reset zoom" button while they're zoomed in, floating at the bottom right (`.reset-button`). */
+@Composable
+private fun HistoryZoomReset(zoom: ChartZoomState, label: String, modifier: Modifier) {
+    if (!zoom.zoom.isZoomed) return
+    HAAccentButton(
+        label,
+        { zoom.zoom = ChartZoom() },
+        modifier = modifier.padding(RESET_MARGIN).shadow(RESET_ELEVATION, CircleShape),
+        size = ButtonSize.LARGE,
+        prefix = {
+            DashboardIcon("mdi:restart", LocalHAColorScheme.current.colorOnPrimaryLoud, Modifier.size(HASize.X2L))
+        },
+    )
 }
 
 /** Below the filters: a spinner while it loads, a prompt to pick something, the error, or the charts. */
@@ -113,6 +143,7 @@ private fun HistoryContent(
     range: DateRange,
     now: Instant,
     interactions: CardInteractions,
+    zoom: ChartZoomState,
 ) {
     when (state) {
         HistoryPanelState.Loading -> Box(Modifier.fillMaxWidth().padding(HADimens.SPACE4), Alignment.Center) {
@@ -123,7 +154,7 @@ private fun HistoryContent(
             "${hass.localize("$CHARTS.error")}: ${LocalContext.current.loadErrorText(state.error)}",
             error = true,
         )
-        is HistoryPanelState.Ready -> HistoryCharts(state.history, hass, range, now, interactions)
+        is HistoryPanelState.Ready -> HistoryCharts(state.history, hass, range, now, interactions, zoom)
     }
 }
 
@@ -208,15 +239,18 @@ private fun HistoryCharts(
     range: DateRange,
     now: Instant,
     interactions: CardInteractions,
+    zoom: ChartZoomState,
 ) {
     if (history.line.isEmpty() && history.timeline.isEmpty()) {
         PanelMessage(hass.localize("$CHARTS.no_history_found"))
         return
     }
-    HistoryChartsList(history, hass, range, now, interactions)
+    HistoryChartsList(history, hass, range, now, interactions, zoom)
 }
 
 private const val HISTORY = "ui.panel.history"
 private const val CHARTS = "ui.components.history_charts"
 private const val CSV = "text/csv"
 private const val CSV_FILE = "history.csv"
+private val RESET_MARGIN = 24.dp
+private val RESET_ELEVATION = 6.dp
