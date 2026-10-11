@@ -142,6 +142,8 @@ private fun ArrowButton(icon: String, label: String, onClick: () -> Unit) {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+// UPSTREAM-DIFF: Android's own date range and time pickers; upstream draws its own calendar sheet with typed times
+// (the user chose native pickers for fields)
 private fun DateRangeDialog(
     range: DateRange,
     hass: HassSnapshot,

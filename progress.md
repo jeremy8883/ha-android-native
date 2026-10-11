@@ -15,6 +15,7 @@ Update it in the same commit as the work it describes.
 - **Probe:** `tools/ha-probe/ha_ro.py` targets the test server by default; pass `--allow-write` to send writes. `--live` targets a real server and is strictly read-only. Output goes to `tools/ha-probe/out/` (gitignored). Never commit dumps from a real server; anonymize them first.
 - **Investigation docs:** `docs/investigation/`.
 - **Differences from upstream:** the dashboard copies upstream's behaviour and looks unless there's a reason not to. Every deliberate difference gets a `// UPSTREAM-DIFF:` comment where it happens, saying what upstream does instead and why ours differs, so `grep -rn UPSTREAM-DIFF` lists them all. Ask the user before adding one, and add the marker in the same change.
+- **Date and time pickers:** a date or time that fills in a field (date range fields, due dates, script fields, date/time helpers, event start and end) uses Android's own pickers (Material 3 `DatePicker`, `DateRangePicker`, `TimePicker`), not a port of the frontend's. Only calendars drawn in a page (the Calendar panel and the calendar card) are ported. The user decided this (2026-10-11); each site is marked `UPSTREAM-DIFF`.
 - **UI-heavy work** (visual design, card polish) is delegated to **Astra**; see **`docs/ui-handover.md`** for ownership, the card-model contract and how to run it. Logic stays in pure, testable Kotlin in `:dashboard-core`.
 
 ## Upstream versions tracked

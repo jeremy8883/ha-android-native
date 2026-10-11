@@ -32,6 +32,7 @@ internal fun RowDateTimeControl(control: RowDateTime, onAction: (CardAction) -> 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+// UPSTREAM-DIFF: Android's own picker; upstream opens its own calendar (the user chose native pickers for fields)
 private fun DateButton(control: RowDateTime, onAction: (CardAction) -> Unit) {
     var open by remember { mutableStateOf(false) }
     HAPlainButton(control.dateText ?: control.label ?: "—", { open = true }, enabled = control.enabled)

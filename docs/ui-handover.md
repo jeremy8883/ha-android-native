@@ -84,3 +84,6 @@ Compose
 - Don't commit anything from a real Home Assistant instance.
 - Don't differ from upstream's look or behaviour silently: mark each deliberate difference with a
   `// UPSTREAM-DIFF:` comment saying what upstream does instead (see `progress.md`, Context).
+- Don't port the frontend's date or time pickers for fields: use Android's own (Material 3 `DatePicker`,
+  `DateRangePicker`, `TimePicker`). Only calendars drawn in a page (the Calendar panel, the calendar card) are
+  ported (see `progress.md`, Context).

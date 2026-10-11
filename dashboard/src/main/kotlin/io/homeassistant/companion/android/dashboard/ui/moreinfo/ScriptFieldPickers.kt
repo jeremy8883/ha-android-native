@@ -27,6 +27,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonPrimitive
 
 // The date and time editors of a script's fields, through the platform's pickers.
+// UPSTREAM-DIFF: Android's own picker; upstream opens its own calendar (the user chose native pickers for fields)
 
 /** `ha-selector-datetime`: the date and the time, "yyyy-MM-dd HH:mm:ss" (a time picked first is on [today]). */
 @Composable
