@@ -6,6 +6,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import io.homeassistant.companion.android.dashboard.derive.DisplayColor
 import io.homeassistant.companion.android.dashboard.derive.TileModel
 import io.homeassistant.companion.android.dashboard.derive.shortcutModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -28,7 +29,12 @@ internal fun ShortcutCard(card: CardConfig, hass: State<HassSnapshot?>, modifier
             icon = model.icon,
             active = false,
             available = true,
+            // `--tile-color` defaults to `--primary-color`
+            color = model.color ?: DisplayColor.Theme(PRIMARY_COLOR),
+            vertical = model.vertical,
         ),
         modifier = modifier,
     )
 }
+
+private const val PRIMARY_COLOR = "primary"

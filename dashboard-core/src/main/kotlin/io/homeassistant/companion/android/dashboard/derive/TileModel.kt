@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.derive
 
+import io.homeassistant.companion.android.dashboard.action.defaultTileIconAction
 import io.homeassistant.companion.android.dashboard.display.StateDisplayOptions
 import io.homeassistant.companion.android.dashboard.display.stateDisplay
 import io.homeassistant.companion.android.dashboard.entity.EntityState
@@ -8,6 +9,7 @@ import io.homeassistant.companion.android.dashboard.feature.TileFeature
 import io.homeassistant.companion.android.dashboard.feature.tileFeatures
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.boolean
+import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.string
 import java.time.Instant
 
@@ -23,6 +25,8 @@ data class TileModel(
     val available: Boolean,
     /** The icon's colour (`--tile-color`), which also tints the circle behind it. */
     val color: DisplayColor = DisplayColor.State(listOf(INACTIVE_COLOR)),
+    /** Whether the icon has its own tap action, which upstream marks with a circle behind it (`interactive`). */
+    val iconInteractive: Boolean = false,
     /** Whether the icon and text are stacked, following the tile card's `vertical` option. */
     val vertical: Boolean = false,
     /** The controls under the tile, see [tileFeatures]. */
@@ -59,6 +63,9 @@ fun HassSnapshot.tileModel(card: CardConfig, now: Instant): TileModel? {
         available = entity.state != STATE_UNAVAILABLE,
         color = tileColor(entity, card.json.string("color")?.ifEmpty { null })
             ?: DisplayColor.State(listOf(if (entity.isActive()) ACTIVE_COLOR else INACTIVE_COLOR)),
+        // `_hasIconAction`, on the config with its default icon tap action (toggle, or none when not toggleable)
+        iconInteractive = (card.json.obj(ICON_TAP_ACTION)?.string("action") ?: defaultTileIconAction(entityId)) !=
+            ACTION_NONE,
         vertical = card.json.boolean("vertical") == true,
         features = tileFeatures(card),
     )
@@ -75,5 +82,7 @@ internal fun tileColor(state: EntityState, color: String?): DisplayColor? = when
     else -> lightColor(state) ?: stateColor(state)
 }
 
+private const val ICON_TAP_ACTION = "icon_tap_action"
+private const val ACTION_NONE = "none"
 private const val ACTIVE_COLOR = "state-icon-color"
 private const val INACTIVE_COLOR = "state-inactive-color"

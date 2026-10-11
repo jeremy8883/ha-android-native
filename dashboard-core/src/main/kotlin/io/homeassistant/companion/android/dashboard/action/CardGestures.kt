@@ -76,7 +76,7 @@ fun elementActions(config: JsonObject, tapWhenUnset: Boolean): ElementActions = 
 )
 
 /** Port of `getEntityDefaultTileIconAction`. */
-private fun defaultTileIconAction(entityId: String): String {
+internal fun defaultTileIconAction(entityId: String): String {
     val domain = entityId.substringBefore('.')
     return if (domain in DOMAINS_TOGGLE || domain in setOf("button", "input_button", "scene")) "toggle" else "none"
 }

@@ -20,13 +20,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
+import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.HAThemeForPreview
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
@@ -149,7 +153,8 @@ private fun VerticalTileInfo(tile: TileModel, iconModifier: Modifier) {
 }
 
 /**
- * Port of `ha-tile-icon`: the icon in the tile's colour on a circle of it at a fifth of its strength.
+ * Port of `ha-tile-icon`: the icon in the tile's colour, on a circle of it at a fifth of its strength when the icon
+ * has its own action (`interactive`).
  *
  * Upstream: `ha-tile-icon` (src/components/tile/ha-tile-icon.ts)
  */
@@ -157,10 +162,13 @@ private fun VerticalTileInfo(tile: TileModel, iconModifier: Modifier) {
 private fun TileIcon(tile: TileModel, modifier: Modifier) {
     val color = tile.color.toColor() ?: LocalHAColorScheme.current.colorTextSecondary
     tile.icon?.let { icon ->
+        val background = if (tile.iconInteractive) {
+            Modifier.clip(CircleShape).background(color.copy(alpha = ICON_BACKGROUND_ALPHA))
+        } else {
+            Modifier
+        }
         Box(
-            modifier = Modifier.size(
-                HASize.X5L,
-            ).clip(CircleShape).background(color.copy(alpha = ICON_BACKGROUND_ALPHA)).then(modifier),
+            modifier = Modifier.size(HASize.X5L).then(background).then(modifier),
             contentAlignment = Alignment.Center,
         ) {
             DashboardIcon(name = icon, tint = color, modifier = Modifier.size(HASize.X2L))
@@ -183,18 +191,18 @@ private fun TileText(tile: TileModel, textAlign: TextAlign, modifier: Modifier) 
     ) {
         Text(
             text = tile.name,
-            style = HATextStyle.Body.copy(textAlign = textAlign),
+            style = PRIMARY_STYLE.copy(textAlign = textAlign),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            color = if (tile.available) colors.colorTextPrimary else colors.colorTextDisabled,
+            color = colors.colorTextPrimary,
         )
         tile.state?.let { state ->
             Text(
                 text = state,
-                style = HATextStyle.BodyMedium.copy(textAlign = textAlign),
+                style = SECONDARY_STYLE.copy(textAlign = textAlign),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
-                color = if (tile.available) colors.colorTextSecondary else colors.colorTextDisabled,
+                color = colors.colorTextPrimary,
             )
         }
     }
@@ -212,6 +220,7 @@ private fun TileCardContentPreview() {
                 icon = "mdi:lightbulb-group",
                 active = true,
                 available = true,
+                iconInteractive = true,
             ),
         )
     }
@@ -239,3 +248,19 @@ private val VERTICAL_TILE_MIN_HEIGHT = 112.dp
 
 /** `--tile-icon-opacity`. */
 private const val ICON_BACKGROUND_ALPHA = 0.2f
+
+/** `ha-tile-info`'s `.primary`: `--ha-font-size-m`, medium, `--ha-line-height-normal`, 0.1px apart. */
+private val PRIMARY_STYLE = TextStyle(
+    fontSize = HAFontSize.M,
+    fontWeight = FontWeight.Medium,
+    lineHeight = 1.6.em,
+    letterSpacing = 0.1.sp,
+)
+
+/** `ha-tile-info`'s `.secondary`: `--ha-font-size-s`, normal, `--ha-line-height-condensed`, 0.4px apart. */
+private val SECONDARY_STYLE = TextStyle(
+    fontSize = HAFontSize.S,
+    fontWeight = FontWeight.Normal,
+    lineHeight = 1.2.em,
+    letterSpacing = 0.4.sp,
+)

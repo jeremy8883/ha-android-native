@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import io.homeassistant.companion.android.dashboard.R
+import io.homeassistant.companion.android.dashboard.derive.DisplayColor
 import io.homeassistant.companion.android.dashboard.derive.InfoTileModel
 import io.homeassistant.companion.android.dashboard.derive.TileModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -46,6 +47,8 @@ internal fun InfoTileCard(
             icon = model.icon,
             active = false,
             available = true,
+            color = DisplayColor.Theme(model.color),
+            vertical = model.vertical,
         ),
         modifier = modifier,
     )

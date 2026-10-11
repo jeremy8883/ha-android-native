@@ -66,6 +66,26 @@ class TileModelTest {
     }
 
     @Test
+    fun `Given no icon tap action when derived then only a toggleable entity's icon is interactive`() {
+        assertEquals(false, tile("""{"type": "tile", "entity": "sensor.temp"}""")?.iconInteractive)
+        assertEquals(true, tile("""{"type": "tile", "entity": "light.desk"}""")?.iconInteractive)
+    }
+
+    @Test
+    fun `Given icon tap action when derived then the icon is interactive unless the action is none`() {
+        assertEquals(
+            true,
+            tile("""{"type": "tile", "entity": "sensor.temp", "icon_tap_action": {"action": "toggle"}}""")
+                ?.iconInteractive,
+        )
+        assertEquals(
+            false,
+            tile("""{"type": "tile", "entity": "light.desk", "icon_tap_action": {"action": "none"}}""")
+                ?.iconInteractive,
+        )
+    }
+
+    @Test
     fun `Given tile for missing entity when derived then it is null`() {
         assertNull(tile("""{"type": "tile", "entity": "light.gone"}"""))
         assertNull(tile("""{"type": "tile"}"""))
