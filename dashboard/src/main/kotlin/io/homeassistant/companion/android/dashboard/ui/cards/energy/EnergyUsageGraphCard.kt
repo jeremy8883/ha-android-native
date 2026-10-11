@@ -156,7 +156,8 @@ internal fun Legend(
         ChartLegendItem(
             series.id,
             series.name,
-            seriesColor(series, dark, background = false) ?: fallback,
+            // The bars' fill, as the legend takes the series' itemStyle colour
+            seriesColor(series, dark, background = true) ?: fallback,
             opensLabel = opensLabel(series.id),
         )
     }
