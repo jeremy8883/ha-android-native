@@ -48,15 +48,15 @@ import io.homeassistant.companion.android.dashboard.logbook.causeBadge
 import io.homeassistant.companion.android.dashboard.logbook.logbookRows
 import io.homeassistant.companion.android.dashboard.logbook.logbookUsers
 import io.homeassistant.companion.android.dashboard.logbook.moreInfoPanelPath
-import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
-import io.homeassistant.companion.android.dashboard.ui.loadErrorText
-import io.homeassistant.companion.android.dashboard.ui.logbook.CauseBadgeView
-import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookDayHeader
-import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookMessage
-import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookNode
-import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookRequest
-import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookSource
-import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookViewModel
+import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
+import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.panels.logbook.CauseBadgeView
+import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookDayHeader
+import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookMessage
+import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookNode
+import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookRequest
+import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookSource
+import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookViewModel
 import java.time.Instant
 import java.time.LocalDate
 

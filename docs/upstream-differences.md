@@ -10,15 +10,15 @@ on the right are the frontend's (20260624.6).
 ## Possibly deliberate (decided in earlier sessions, or a native choice)
 
 1. Drawer: pages opening in the companion app are grouped under their own heading; upstream keeps one list in the
-   user's order (`ui/NavigationDrawer.kt:176`; src/components/ha-sidebar.ts:392-418)
+   user's order (`ui/components/NavigationDrawer.kt:176`; src/components/ha-sidebar.ts:392-418)
 2. Alarm and lock codes use the system number keyboard; upstream draws its own keypad with clear and submit, a
-   "Code" label, a show toggle, and checks the lock's code pattern (`ui/CodeDialog.kt:35`;
+   "Code" label, a show toggle, and checks the lock's code pattern (`ui/dialogs/entercode/CodeDialog.kt:35`;
    src/dialogs/enter-code/dialog-enter-code.ts:115-200)
 3. Sections view on a phone: the content/sidebar switch is two chips; upstream uses a segmented control
-   (`ui/DashboardView.kt:227`; src/panels/lovelace/views/hui-sections-view.ts:606-618)
+   (`ui/lovelace/views/DashboardView.kt:227`; src/panels/lovelace/views/hui-sections-view.ts:606-618)
 4. Copy light favourites: a list of checkboxes; upstream uses a required multi-entity picker
-   (`ui/moreinfo/LightFavoriteDialogs.kt:160`; src/dialogs/more-info/favorites.ts:96-120)
-5. Details: the History view is titled "History"; upstream keeps the entity's name (`ui/MoreInfoView.kt:167`;
+   (`ui/moreinfo/components/LightFavoriteDialogs.kt:160`; src/dialogs/more-info/favorites.ts:96-120)
+5. Details: the History view is titled "History"; upstream keeps the entity's name (`ui/moreinfo/MoreInfoView.kt:167`;
    src/dialogs/more-info/ha-more-info-dialog.ts:575-580)
 
 ## Looks and small behaviour
@@ -26,4 +26,4 @@ on the right are the frontend's (20260624.6).
 
 ## Missing features
 
-38. History: no "Add to dashboard" (`ui/panels/HistoryPanel.kt:215`) — needs dashboard editing, in the README
+38. History: no "Add to dashboard" (`ui/panels/history/HistoryPanel.kt:215`) — needs dashboard editing, in the README

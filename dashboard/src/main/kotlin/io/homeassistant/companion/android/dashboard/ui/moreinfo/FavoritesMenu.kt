@@ -23,8 +23,10 @@ import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.moreinfo.FavoritesActions
 import io.homeassistant.companion.android.dashboard.moreinfo.favoritesActions
-import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
-import io.homeassistant.companion.android.dashboard.ui.loadErrorText
+import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.components.ConfirmDialog
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.components.CopyFavoritesDialog
 
 /** The favourites' items of the dialog's menu, each closing the menu with the given function first. */
 internal typealias FavoritesMenuItems = @Composable (close: () -> Unit) -> Unit

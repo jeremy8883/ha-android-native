@@ -4,7 +4,7 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import io.homeassistant.companion.android.dashboard.panels.DateRange
 import io.homeassistant.companion.android.dashboard.target.Target
-import io.homeassistant.companion.android.dashboard.ui.logbook.parsePickedTarget
+import io.homeassistant.companion.android.dashboard.ui.panels.logbook.parsePickedTarget
 import java.time.Instant
 
 // How the History and Logbook panels keep their filters across configuration changes.

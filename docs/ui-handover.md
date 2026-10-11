@@ -8,7 +8,7 @@ to show, derived from Home Assistant's config and state) lives elsewhere and is 
 
 | Area | Owner | Files |
 |---|---|---|
-| Card composables, view/section layout, theming, icons, animation | **Astra** | `dashboard/src/main/kotlin/.../dashboard/ui/cards/*`, layout parts of `ui/DashboardScreen.kt`, `dashboard/src/main/res/*` |
+| Card composables, view/section layout, theming, icons, animation | **Astra** | `dashboard/src/main/kotlin/.../dashboard/ui/lovelace/*`, layout parts of `ui/DashboardScreen.kt`, `dashboard/src/main/res/*` |
 | Config/state models, strategies, derivations, conditions, actions, data and ViewModel | Logic track | `dashboard-core/**`, `dashboard/.../data/**`, `ui/DashboardViewModel.kt` |
 
 If you need data that a model doesn't expose, add a field to the pure `derive/*Model` function in `:dashboard-core`
@@ -26,7 +26,7 @@ display model (immutable data class: TileModel, HeadingModel, AreaCardModel)
 Compose
 ```
 
-- `ui/cards/DashboardCard.kt` dispatches on `card.type`. Every type without a native renderer shows `UnsupportedCard`.
+- `ui/lovelace/common/DashboardCard.kt` dispatches on `card.type`. Every type without a native renderer shows `UnsupportedCard`.
 - A card receives `State<HassSnapshot?>` and must read it **inside `derivedStateOf`**. That's what keeps one entity
   update from recomposing the whole dashboard.
 - Models are deliberately basic. For example, `TileModel.state` is the raw state (`"on"`); translated display
@@ -90,6 +90,12 @@ Compose
   frontend, which is never changed. `tools/upstream-map.py check` lists what is missing or points nowhere; `map`
   lists each frontend file's composables; `changed`, given the frontend files changed between two versions, lists
   the composables to review.
+- Put a file in the `dashboard/ui` package that mirrors the frontend folder of what it ports: `lovelace/` (hui-root),
+  `lovelace/{cards,cards/energy,entityrows,cardfeatures,headerfooter,views,components,common}` (the same folders of
+  `src/panels/lovelace`), `moreinfo/`, `moreinfo/{controls,components}` (`src/dialogs/more-info`), `dialogs/<name>`
+  (`src/dialogs`), `panels/<panel>` (`src/panels`), `components/` and its `chart`, `targetpicker`, `mediaplayer`,
+  `selector` (`src/components`), `statecontrol/` (`src/state-control`), `statesummary/` (`src/state-summary`). The
+  app's own shell (screen, view model, navigation) stays at the top of `ui`.
 - Don't port the frontend's date or time pickers for fields: use Android's own (Material 3 `DatePicker`,
   `DateRangePicker`, `TimePicker`). Only calendars drawn in a page (the Calendar panel, the calendar card) are
   ported (see `progress.md`, Context).

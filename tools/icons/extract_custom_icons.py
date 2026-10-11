@@ -3,7 +3,7 @@
 
 Usage: extract_custom_icons.py <frontend checkout>
 Reads CUSTOM_ICONS in src/components/ha-icon.ts and the path of each icon from its src/resources module, and writes
-dashboard/src/main/kotlin/.../ui/cards/FrontendCustomIcons.kt.
+dashboard/src/main/kotlin/.../ui/components/FrontendCustomIcons.kt.
 """
 
 import re
@@ -12,7 +12,7 @@ from pathlib import Path
 
 OUT = (
     Path(__file__).resolve().parents[2]
-    / "dashboard/src/main/kotlin/io/homeassistant/companion/android/dashboard/ui/cards/FrontendCustomIcons.kt"
+    / "dashboard/src/main/kotlin/io/homeassistant/companion/android/dashboard/ui/components/FrontendCustomIcons.kt"
 )
 # "music-assistant": () => import("../resources/music-assistant-logo-svg").then((mod) => mod.mdiMusicAssistant),
 ENTRY = re.compile(

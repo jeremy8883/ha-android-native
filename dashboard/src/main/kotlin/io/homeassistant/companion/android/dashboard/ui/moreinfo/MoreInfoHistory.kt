@@ -32,12 +32,12 @@ import io.homeassistant.companion.android.dashboard.history.historyWithoutAttrib
 import io.homeassistant.companion.android.dashboard.history.statisticsChart
 import io.homeassistant.companion.android.dashboard.history.timelineChart
 import io.homeassistant.companion.android.dashboard.logbook.moreInfoPanelPath
-import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
-import io.homeassistant.companion.android.dashboard.ui.charts.HistoryLineChartView
-import io.homeassistant.companion.android.dashboard.ui.charts.StatisticsChartView
-import io.homeassistant.companion.android.dashboard.ui.charts.TimeSpan
-import io.homeassistant.companion.android.dashboard.ui.charts.TimelineChartView
-import io.homeassistant.companion.android.dashboard.ui.loadErrorText
+import io.homeassistant.companion.android.dashboard.ui.components.chart.HistoryLineChartView
+import io.homeassistant.companion.android.dashboard.ui.components.chart.StatisticsChartView
+import io.homeassistant.companion.android.dashboard.ui.components.chart.TimeSpan
+import io.homeassistant.companion.android.dashboard.ui.components.chart.TimelineChartView
+import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
+import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import java.time.Instant
 
 /**

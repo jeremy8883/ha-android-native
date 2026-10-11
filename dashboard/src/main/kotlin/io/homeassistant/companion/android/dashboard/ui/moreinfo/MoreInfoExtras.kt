@@ -29,9 +29,14 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.moreinfo.ConfiguratorMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.MoreInfoExtra
 import io.homeassistant.companion.android.dashboard.moreinfo.SunRow
-import io.homeassistant.companion.android.dashboard.ui.cards.MarkdownText
-import io.homeassistant.companion.android.dashboard.ui.cards.RowDateTimeControl
-import io.homeassistant.companion.android.dashboard.ui.cards.ServerImage
+import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
+import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.MarkdownText
+import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowDateTimeControl
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoCamera
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoGroup
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoPerson
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoScript
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoWeather
 import java.time.Instant
 
 /**

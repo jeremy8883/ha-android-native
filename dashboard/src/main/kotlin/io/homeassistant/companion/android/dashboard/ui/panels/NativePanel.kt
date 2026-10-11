@@ -4,7 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.ui.DashboardUiState
-import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.panels.history.HistoryPanel
+import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookPanel
+import io.homeassistant.companion.android.dashboard.ui.panels.todo.TodoPanel
 import java.time.ZonedDateTime
 
 /**

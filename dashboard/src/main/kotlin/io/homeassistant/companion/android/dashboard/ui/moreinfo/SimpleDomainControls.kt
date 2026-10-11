@@ -4,7 +4,13 @@ import androidx.compose.runtime.Composable
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.MoreInfoModel
 import io.homeassistant.companion.android.dashboard.entity.EntityState
-import io.homeassistant.companion.android.dashboard.ui.controls.ControlSelectMenus
+import io.homeassistant.companion.android.dashboard.ui.components.ControlSelectMenus
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoActionRow
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoAutomation
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoLawnMower
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoSiren
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoTimer
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoUpdate
 
 /**
  * The smaller domains' controls: a siren's, a counter's, an automation's, a timer's, a remote's, the inputs and an

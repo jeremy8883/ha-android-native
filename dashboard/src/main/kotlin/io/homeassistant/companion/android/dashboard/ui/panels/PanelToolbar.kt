@@ -20,7 +20,7 @@ import androidx.compose.ui.semantics.semantics
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
-import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 
 /** A toolbar button of a native panel: its [icon], [label] and what it does, greyed out unless [enabled]. */
 internal data class PanelAction(

@@ -28,6 +28,7 @@ import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.data.LoadError
+import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import java.time.ZonedDateTime
 import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
