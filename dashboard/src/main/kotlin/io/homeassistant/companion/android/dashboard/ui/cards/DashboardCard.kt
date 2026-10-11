@@ -21,6 +21,7 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.cards.energy.ENERGY_CARD_TYPES
 import io.homeassistant.companion.android.dashboard.ui.cards.energy.EnergyCard
 import io.homeassistant.companion.android.dashboard.ui.cards.web.WebCard
+import io.homeassistant.companion.android.dashboard.ui.todo.TodoListCard
 import java.time.ZonedDateTime
 
 /** Renders [card] with its native renderer, or a placeholder when the type is not supported yet. */
@@ -53,6 +54,7 @@ internal fun DashboardCard(
         CARD_ENTITIES -> EntitiesCard(card, hass, now, interactions, modifier)
         in ENTITY_CARD_TYPES -> EntityCards(card, hass, now, interactions, modifier)
         in ENERGY_CARD_TYPES -> EnergyCard(card, hass, now, interactions, modifier)
+        CARD_TODO_LIST -> TodoListCard(card, hass, now, interactions.onAction, modifier)
         else -> OtherCard(card, hass, interactions, modifier, cardModifier)
     }
 }
@@ -141,6 +143,7 @@ private const val CARD_MEDIA_CONTROL = "media-control"
 private const val CARD_EMPTY_STATE = "empty-state"
 private const val CARD_SHORTCUT = "shortcut"
 private const val CARD_PICTURE_ENTITY = "picture-entity"
+private const val CARD_TODO_LIST = "todo-list"
 private const val CARD_REPAIRS = "repairs"
 private const val CARD_UPDATES = "updates"
 private const val CARD_DISCOVERED_DEVICES = "discovered-devices"

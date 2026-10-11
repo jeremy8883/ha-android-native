@@ -42,6 +42,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.ProvideCardLocals
+import io.homeassistant.companion.android.dashboard.ui.panels.NativePanel
 import java.time.ZonedDateTime
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -246,7 +247,7 @@ internal fun DashboardScreenContent(
         bottomBar = { content?.view?.let { ViewFooter(it, hass, now, interactions) } },
         topBar = {
             val title = @Composable {
-                Text(content?.title.orEmpty())
+                Text(content?.title ?: (uiState as? DashboardUiState.Panel)?.title.orEmpty())
             }
             if (content?.showsBack == true) {
                 HATopBar(title = title, onBackClick = onBack)
@@ -279,6 +280,7 @@ internal fun DashboardScreenContent(
                     stringResource(R.string.native_dashboard_unsupported_strategy, uiState.type.orEmpty()),
                 )
                 is DashboardUiState.Content -> DashboardView(uiState, hass, now, onSelectTab, interactions)
+                is DashboardUiState.Panel -> NativePanel(uiState.name, hass, now, interactions)
             }
             // Offline, the offline bar says it; retries would flicker the bar
             RefreshIndicator(

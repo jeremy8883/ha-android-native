@@ -14,6 +14,12 @@ from pathlib import Path
 
 # Dotted paths of the subtrees to keep. Extend when ported code needs more keys.
 SUBTREES = [
+    "ui.common.error_required",
+    "ui.common.save",
+    "ui.common.delete",
+    "ui.panel.todo",
+    "ui.components.todo",
+    "ui.panel.lovelace.cards.todo-list",
     "panel",
     "state",
     "ui.notification_toast",

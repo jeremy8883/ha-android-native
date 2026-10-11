@@ -261,6 +261,10 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 
 ## Handover notes
 
+### 2026-10-11: drawer pages (Opus)
+- Panels drawn natively that aren't dashboards: `NATIVE_PANELS` (`panels/NativePanels.kt`), shown in the drawer and routed to `DashboardUiState.Panel` (`ui/panels/NativePanel.kt`).
+- To-do lists (`todo` panel, `ui/panels/TodoPanel.kt`): the list picker, the list's details, "Add item", and the list as the to-do list card, which dashboards now draw natively too (`todo/`, `ui/todo/`): the add field, active / no status / completed sections, ticking, the item dialog (summary, description, due date and time, delete after confirming), removing completed items, sorting and the due date filter, reordering (with up and down buttons, `UPSTREAM-DIFF`), live from `todo/item/subscribe`. Creating and deleting lists, and Assist, stay in the frontend.
+
 ### 2026-10-11: web fallback for cards (Opus)
 - A card the app doesn't draw (custom, or built-in and not ported) is drawn by the frontend in its own web view (`ui/cards/web/WebCard.kt`, `assets/native_web_card.js`): signed in as the companion app's web view is (`externalApp.getExternalAuth`, `externalAuthSetToken`, and a `config/get` answer with none of its extras), it loads `/lovelace/0` so the frontend has `hui-card`, loads the dashboard resources (custom cards' scripts, as `loadLovelaceResources`), mounts the card alone over the hidden app and reports its height. Its details open natively (`hass-more-info`); pages it opens on a tap go to the app (other routing of the hidden app is left alone). While it loads, a progress bar; if it can't, the placeholder.
 - Each web card loads the frontend on its own (a few seconds each, the first slowest); sharing one web view between a view's web cards would save that.
