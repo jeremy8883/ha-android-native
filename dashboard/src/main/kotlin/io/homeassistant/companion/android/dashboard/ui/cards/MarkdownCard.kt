@@ -79,7 +79,8 @@ private fun MarkdownCardContent(model: MarkdownModel, modifier: Modifier = Modif
 @Composable
 internal fun MarkdownText(text: String, modifier: Modifier = Modifier) {
     val colors = LocalHAColorScheme.current
-    val body = HATextStyle.Body.copy(textAlign = TextAlign.Start, color = colors.colorTextPrimary)
+    val align = LocalCardTextAlign.current
+    val body = HATextStyle.Body.copy(textAlign = align, color = colors.colorTextPrimary)
     val heading = body.copy(fontWeight = FontWeight.Bold)
     Markdown(
         content = text,
@@ -100,6 +101,7 @@ internal fun MarkdownText(text: String, modifier: Modifier = Modifier) {
             h6 = heading.copy(fontSize = HAFontSize.M, lineHeight = HAFontSize.XL),
             textLink = HATextStyle.Link,
         ),
+        components = remember(align) { alignedMarkdownComponents(align) },
         modifier = modifier,
     )
 }

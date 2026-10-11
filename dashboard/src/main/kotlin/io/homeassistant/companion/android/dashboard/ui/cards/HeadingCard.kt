@@ -4,11 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -20,8 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
+import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
@@ -105,48 +111,88 @@ internal fun HeadingCard(
 /**
  * A heading's badge: an entity's icon and state, or a button's icon and text.
  *
- * Upstream: `hui-entity-heading-badge`, `hui-button-heading-badge`, `ha-heading-badge`
+ * Upstream: `hui-entity-heading-badge`, `hui-button-heading-badge`
  * (src/panels/lovelace/heading-badges/hui-entity-heading-badge.ts;
- * src/panels/lovelace/heading-badges/hui-button-heading-badge.ts; src/components/ha-heading-badge.ts)
+ * src/panels/lovelace/heading-badges/hui-button-heading-badge.ts)
  */
 @Composable
 private fun HeadingBadge(badge: HeadingBadgeModel, interactions: CardInteractions) {
-    val colors = LocalHAColorScheme.current
-    val tint = when (badge) {
-        is HeadingBadgeModel.Entity -> badge.color?.toColor()
-        is HeadingBadgeModel.Button -> badge.color?.toColor()
+    when (badge) {
+        is HeadingBadgeModel.Entity -> EntityHeadingBadge(badge, interactions)
+        is HeadingBadgeModel.Button -> ButtonHeadingBadge(badge, interactions)
     }
-    val background = when (badge) {
-        // Coloured buttons get a tinted background, like upstream's 0.2 background opacity
-        is HeadingBadgeModel.Button -> tint?.copy(alpha = BUTTON_BACKGROUND_ALPHA)
-            ?: colors.colorFillNeutralQuietResting
-        is HeadingBadgeModel.Entity -> colors.colorSurfaceLow
-    }
+}
+
+/**
+ * An entity's badge: its icon and state in the secondary text colour, without a background.
+ *
+ * Upstream: `hui-entity-heading-badge`, `ha-heading-badge`
+ * (src/panels/lovelace/heading-badges/hui-entity-heading-badge.ts; src/components/ha-heading-badge.ts)
+ */
+@Composable
+private fun EntityHeadingBadge(badge: HeadingBadgeModel.Entity, interactions: CardInteractions) {
+    // `--secondary-text-color`, which an icon without a colour inherits
+    val secondary =
+        DisplayColor.State(listOf(SECONDARY_TEXT)).toColor() ?: LocalHAColorScheme.current.colorTextSecondary
     Row(
         modifier = Modifier
-            .heightIn(min = HASize.X2L)
-            .clip(CircleShape)
-            .background(background)
+            .clip(RoundedCornerShape(HADimens.SPACE1))
             .elementGestures(badge.actions, interactions)
-            .semantics { if (badge is HeadingBadgeModel.Entity) contentDescription = badge.name }
-            .padding(horizontal = HADimens.SPACE2, vertical = HADimens.SPACE1),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
+            .semantics { contentDescription = badge.name },
+        horizontalArrangement = Arrangement.spacedBy(ENTITY_BADGE_GAP),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        val icon = when (badge) {
-            is HeadingBadgeModel.Entity -> badge.icon
-            is HeadingBadgeModel.Button -> badge.icon
+        DashboardIcon(name = badge.icon, tint = badge.color?.toColor() ?: secondary, modifier = Modifier.size(HASize.L))
+        badge.state?.let {
+            Text(it, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start), color = secondary, maxLines = 1)
         }
-        // Without a colour, the icon inherits the badge's text colour (`--secondary-text-color`)
-        val inherited = DisplayColor.State(listOf("secondary-text-color")).toColor() ?: colors.colorTextSecondary
-        DashboardIcon(name = icon, tint = tint ?: inherited, modifier = Modifier.size(HASize.L))
-        val text = when (badge) {
-            is HeadingBadgeModel.Entity -> badge.state
-            is HeadingBadgeModel.Button -> badge.text
+    }
+}
+
+/**
+ * A button badge: a pill of its colour (or the disabled colour) at 0.2 opacity, with its icon and text.
+ *
+ * Upstream: `hui-button-heading-badge`, `ha-control-button`
+ * (src/panels/lovelace/heading-badges/hui-button-heading-badge.ts; src/components/ha-control-button.ts)
+ */
+@Composable
+private fun ButtonHeadingBadge(badge: HeadingBadgeModel.Button, interactions: CardInteractions) {
+    val colors = LocalHAColorScheme.current
+    val color = badge.color?.toColor()
+    val background = color ?: DisplayColor.State(listOf(DISABLED)).toColor() ?: colors.colorFillNeutralQuietResting
+    Row(
+        modifier = Modifier
+            .height(BUTTON_BADGE_SIZE)
+            .widthIn(min = BUTTON_BADGE_SIZE)
+            .clip(CircleShape)
+            .background(background.copy(alpha = BUTTON_BACKGROUND_ALPHA))
+            .elementGestures(badge.actions, interactions)
+            .padding(horizontal = if (badge.text != null) HADimens.SPACE2 else HADimens.SPACE0),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        badge.icon?.let {
+            DashboardIcon(name = it, tint = color ?: colors.colorTextPrimary, modifier = Modifier.size(HASize.L))
         }
-        text?.let { Text(it, style = HATextStyle.BodyMedium, color = colors.colorTextPrimary, maxLines = 1) }
+        badge.text?.let {
+            Text(
+                it,
+                style = HATextStyle.BodyMedium.copy(fontSize = HAFontSize.S, fontWeight = FontWeight.Medium),
+                color = colors.colorTextPrimary,
+                maxLines = 1,
+                modifier = Modifier.padding(horizontal = HADimens.SPACE1),
+            )
+        }
     }
 }
 
 private const val CHEVRON = "mdi:chevron-right"
 private const val BUTTON_BACKGROUND_ALPHA = 0.2f
+private const val SECONDARY_TEXT = "secondary-text-color"
+private const val DISABLED = "disabled-color"
+
+/** `ha-heading-badge`'s 3px gap between the icon and the state. */
+private val ENTITY_BADGE_GAP = 3.dp
+
+/** `--ha-heading-badge-size`. */
+private val BUTTON_BADGE_SIZE = 26.dp

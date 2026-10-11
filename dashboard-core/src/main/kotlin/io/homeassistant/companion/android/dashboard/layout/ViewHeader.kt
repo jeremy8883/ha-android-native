@@ -29,13 +29,11 @@ import kotlinx.serialization.json.JsonPrimitive
 /**
  * The header of a sections view: an optional card (often a markdown welcome) and the view's badges.
  *
- * @property layout `center`, `start` or `responsive`
- * @property badgesPosition `bottom` or `top` of the card
+ * @property arrangement how the card and badges are placed, for the screen's width
  */
 data class ViewHeaderModel(
     val card: CardConfig?,
-    val layout: String,
-    val badgesPosition: String,
+    val arrangement: ViewHeaderArrangement,
     val badges: List<ViewBadgeModel>,
 )
 
@@ -86,8 +84,13 @@ fun HassSnapshot.viewHeader(view: ViewConfig, context: ConditionContext, now: In
     if (card == null && badges.isEmpty()) return null
     return ViewHeaderModel(
         card = card,
-        layout = header?.string("layout") ?: DEFAULT_LAYOUT,
-        badgesPosition = header?.string("badges_position") ?: DEFAULT_BADGES_POSITION,
+        arrangement = viewHeaderArrangement(
+            layout = header?.string("layout") ?: DEFAULT_LAYOUT,
+            badgesPosition = header?.string("badges_position") ?: DEFAULT_BADGES_POSITION,
+            badgesWrap = header?.string("badges_wrap") ?: DEFAULT_BADGES_WRAP,
+            hasCard = card != null,
+            widthDp = context.screen?.widthDp,
+        ),
         badges = badges,
     )
 }
@@ -149,3 +152,4 @@ private fun HassSnapshot.entityBadge(
 private const val ENTITY = "entity"
 private const val DEFAULT_LAYOUT = "center"
 private const val DEFAULT_BADGES_POSITION = "bottom"
+private const val DEFAULT_BADGES_WRAP = "wrap"

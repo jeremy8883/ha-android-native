@@ -27,12 +27,6 @@ on the right are the frontend's (20260624.6).
    (`ui/DashboardView.kt:83`; src/panels/lovelace/hui-root.ts:470-490)
 8. Toolbar: title always, tabs on a row below; upstream puts the tabs in the toolbar when there are several views,
    with Search, Assist and the menu (`ui/DashboardTopBar.kt:36`; hui-root.ts:586-597)
-9. View header: always card over badges, centred and wrapped; `layout` and `badges_wrap: scroll` ignored
-   (`ui/ViewHeader.kt:46-75`; src/panels/lovelace/views/hui-view-header.ts:200-205, 377-439)
-10. Badges: no 1px border, `colorSurfaceLow` background, label as big as the state (`ui/ViewHeader.kt:97,113`;
-    src/components/ha-badge.ts:67-110)
-11. Heading badges: a pill background and primary text; upstream has no background and secondary text
-    (`ui/cards/HeadingCard.kt:123,147`; src/components/ha-heading-badge.ts:36)
 15. Details: Attributes hidden when there are none, and no card around state and attributes
     (`ui/MoreInfoSheet.kt:271`; src/dialogs/more-info/ha-more-info-details.ts:70-103)
 
