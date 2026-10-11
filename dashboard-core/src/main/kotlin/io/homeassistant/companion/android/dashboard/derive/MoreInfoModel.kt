@@ -9,6 +9,7 @@ import io.homeassistant.companion.android.dashboard.entity.entityContext
 import io.homeassistant.companion.android.dashboard.feature.attributeName
 import io.homeassistant.companion.android.dashboard.history.showsHistory
 import io.homeassistant.companion.android.dashboard.logbook.showsLogbook
+import io.homeassistant.companion.android.dashboard.model.jsKeys
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.moreinfo.AlarmMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.AutomationMoreInfo
@@ -94,6 +95,8 @@ import kotlinx.serialization.json.JsonPrimitive
  * @property extra the details of the domains with controls of their own beyond the shared ones (sun, script,
  * weather, group...)
  * @property details the details view's state entries (`ha-more-info-details`), as (label, value)
+ * @property detailAttributes the details view's attributes: those shown elsewhere too, then the built-in ones, the
+ * supported features by name
  */
 data class MoreInfoModel(
     val entityId: String,
@@ -131,6 +134,7 @@ data class MoreInfoModel(
     val historyButton: Boolean = false,
     val extra: MoreInfoExtra? = null,
     val details: List<Pair<String, String>> = emptyList(),
+    val detailAttributes: List<Pair<String, String>> = emptyList(),
 )
 
 /**
@@ -205,6 +209,7 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
             (showsHistory(entityId) || showsLogbook(entityId)),
         extra = extra,
         details = detailEntries(state),
+        detailAttributes = detailAttributes(state),
     )
 }
 
@@ -272,14 +277,14 @@ private fun HassSnapshot.entityNameParts(state: EntityState): Pair<String, List<
         listOfNotNull(context.area?.name?.trim()?.ifEmpty { null }, deviceName.takeIf { entityName != null })
 }
 
-/** Port of `ha-attributes`' filter: attributes that are not internal, nor shown elsewhere. */
-private fun displayAttributes(state: EntityState): List<String> {
+/** Port of `ha-attributes`' filter (`computeShownAttributes`): attributes that are not internal, nor shown elsewhere. */
+internal fun displayAttributes(state: EntityState): List<String> {
     val domainFilters = if (state.domain == "sensor" && state.attributes.string("device_class") == "enum") {
         listOf("options")
     } else {
         emptyList()
     }
-    return state.attributes.keys.filter { it !in STATE_ATTRIBUTES && it !in domainFilters }
+    return state.attributes.jsKeys().filter { it !in STATE_ATTRIBUTES && it !in domainFilters }
 }
 
 private const val MILLIS = 1000.0

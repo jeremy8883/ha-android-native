@@ -49,7 +49,6 @@ import io.homeassistant.companion.android.dashboard.derive.MoreInfoModel
 import io.homeassistant.companion.android.dashboard.derive.moreInfoModel
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
-import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.history.showsHistory
 import io.homeassistant.companion.android.dashboard.logbook.showsLogbook
 import io.homeassistant.companion.android.dashboard.moreinfo.MoreInfoExtra
@@ -107,19 +106,26 @@ internal fun MoreInfoSheet(
     }
     val model = info ?: return
     var view by remember(entityId) { mutableStateOf<MoreInfoView>(MoreInfoView.Main) }
+    // The details' YAML mode, left with the view
+    var yamlMode by remember(entityId) { mutableStateOf(false) }
+    val showView = { next: MoreInfoView ->
+        view = next
+        yamlMode = false
+    }
     // Upstream's sheet is the screen's height less the larger of the status bar and 48px, whatever it shows
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     HAModalBottomSheet(bottomSheetState = sheetState, onDismissRequest = onDismiss, dragHandle = null) {
         val snapshot = hass.value ?: return@HAModalBottomSheet
         val instant = now.value?.toInstant() ?: Instant.EPOCH
         // Back returns to the main view first, as the dialog's back button does
-        BackHandler(enabled = view != MoreInfoView.Main) { view = MoreInfoView.Main }
+        BackHandler(enabled = view != MoreInfoView.Main) { showView(MoreInfoView.Main) }
         Column(Modifier.fillMaxWidth().height(sheetHeight()).navigationBarsPadding()) {
             WithFavoritesMenu(snapshot.states[entityId], snapshot) { favorites ->
                 MoreInfoToolbar(
                     model = model,
                     view = view,
-                    onView = { view = it },
+                    onView = showView,
+                    onToggleYaml = { yamlMode = !yamlMode },
                     onClose = onDismiss,
                     onShowFull = onShowFull,
                     localize = snapshot.localize,
@@ -129,7 +135,11 @@ internal fun MoreInfoSheet(
             when (view) {
                 MoreInfoView.Main -> MoreInfoMain(model, snapshot, instant, interactions, onShowFull)
                 MoreInfoView.History -> MoreInfoHistoryView(model.entityId, snapshot, instant, interactions)
-                MoreInfoView.Details -> MoreInfoDetailsView(model, snapshot.localize)
+                MoreInfoView.Details -> if (yamlMode) {
+                    MoreInfoDetailsYamlView(model.entityId, snapshot)
+                } else {
+                    MoreInfoDetailsView(model, snapshot.localize)
+                }
             }
         }
         // The sheet's content may extend below the screen, so messages go at the bottom of the window instead
@@ -256,29 +266,6 @@ private fun ColumnScope.MoreInfoHistoryView(
 }
 
 /**
- * Port of `ha-more-info-details`: the state's entries, then the attributes.
- *
- * Upstream: `ha-more-info-details` (src/dialogs/more-info/ha-more-info-details.ts)
- */
-@Composable
-private fun ColumnScope.MoreInfoDetailsView(model: MoreInfoModel, localize: Localize) {
-    LazyColumn(
-        Modifier.fillMaxWidth().weight(1f),
-        contentPadding = PaddingValues(horizontal = HADimens.SPACE6, vertical = HADimens.SPACE4),
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
-    ) {
-        item(key = "state") {
-            MoreInfoAttributes(model.details, localize("ui.components.entity.entity-state-picker.state"))
-        }
-        if (model.attributes.isNotEmpty()) {
-            item(key = "attributes") {
-                MoreInfoAttributes(model.attributes, localize("ui.dialogs.more_info_control.attributes"))
-            }
-        }
-    }
-}
-
-/**
  * The controls of the entity's domain, as its `more-info-<domain>` leads with them; [onShowFull] opens the full
  * dialog for what they leave to it.
  *
@@ -377,10 +364,9 @@ internal fun MoreInfoStateText(model: MoreInfoModel) {
 }
 
 /**
- * A titled list of names and values: the attributes, or the details' state entries.
+ * The attributes under their title, after the controls of the domains without details of their own.
  *
- * Upstream: part of `ha-more-info-details`, `ha-attributes` (src/dialogs/more-info/ha-more-info-details.ts;
- * src/components/ha-attributes.ts)
+ * Upstream: `ha-attributes` (src/components/ha-attributes.ts)
  */
 @Composable
 private fun MoreInfoAttributes(attributes: List<Pair<String, String>>, title: String) {

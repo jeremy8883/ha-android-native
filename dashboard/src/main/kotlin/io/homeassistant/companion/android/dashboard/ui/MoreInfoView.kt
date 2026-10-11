@@ -74,7 +74,7 @@ internal fun sheetHeight(): Dp {
 /**
  * Port of the dialog's toolbar: close (or back from another view), the entity's name under its area and device,
  * then on the main view the history button and a menu with [favorites]' items, the details view and the frontend's
- * full dialog.
+ * full dialog; on the details view the button toggling its YAML mode ([onToggleYaml]).
  *
  * Upstream: part of `ha-more-info-dialog` (src/dialogs/more-info/ha-more-info-dialog.ts)
  */
@@ -83,6 +83,7 @@ internal fun MoreInfoToolbar(
     model: MoreInfoModel,
     view: MoreInfoView,
     onView: (MoreInfoView) -> Unit,
+    onToggleYaml: () -> Unit,
     onClose: () -> Unit,
     onShowFull: (() -> Unit)?,
     localize: Localize,
@@ -100,6 +101,9 @@ internal fun MoreInfoToolbar(
             localize(if (main) "ui.common.close" else "ui.common.back"),
         ) { if (main) onClose() else onView(MoreInfoView.Main) }
         ToolbarTitle(model, view, localize, Modifier.weight(1f).padding(horizontal = HADimens.SPACE2))
+        if (view == MoreInfoView.Details) {
+            ToolbarButton(YAML_ICON, localize("ui.dialogs.more_info_control.toggle_yaml_mode"), onToggleYaml)
+        }
         if (main) {
             if (model.historyButton) {
                 ToolbarButton(HISTORY_ICON, localize("ui.dialogs.more_info_control.history")) {
@@ -193,6 +197,7 @@ private const val HISTORY_ICON = "mdi:chart-box-outline"
 private const val MENU_ICON = "mdi:dots-vertical"
 private const val DETAILS_ICON = "mdi:format-list-bulleted-square"
 private const val FULL_ICON = "mdi:open-in-new"
+private const val YAML_ICON = "mdi:code-braces"
 private val MIN_TOP_GAP = 48.dp
 
 /** The breadcrumb's 16px line. */

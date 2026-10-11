@@ -27,8 +27,6 @@ on the right are the frontend's (20260624.6).
    (`ui/DashboardView.kt:83`; src/panels/lovelace/hui-root.ts:470-490)
 8. Toolbar: title always, tabs on a row below; upstream puts the tabs in the toolbar when there are several views,
    with Search, Assist and the menu (`ui/DashboardTopBar.kt:36`; hui-root.ts:586-597)
-15. Details: Attributes hidden when there are none, and no card around state and attributes
-    (`ui/MoreInfoSheet.kt:271`; src/dialogs/more-info/ha-more-info-details.ts:70-103)
 
 ## Missing features
 
@@ -39,9 +37,6 @@ on the right are the frontend's (20260624.6).
 27. Thermostat card: `features` and `show_current_as_primary` not drawn (`ui/cards/ThermostatCard.kt:46`,
     `ui/controls/CircularStateControl.kt:143`; hui-thermostat-card.ts:160,175)
 28. Entities card: `header` and `footer` elements not drawn (`ui/cards/EntitiesCard.kt:60`; hui-entities-card.ts:190-202)
-35. Assist chat: no "thinking" section or tool calls (`ui/moreinfo/MoreInfoConversation.kt:135`;
-    ha-assist-chat.ts:187-260) — in the README already
-36. Details: no YAML view of the attributes (`ui/MoreInfoView.kt:103`; ha-more-info-dialog.ts:819-829)
 37. Drawer: no Notifications entry or badge, no notification dot on the menu button; the profile entry says
     "Profile" instead of the user's name and badge (`ui/NavigationDrawer.kt:125-131`; ha-sidebar.ts:424-563)
 38. History: no "Add to dashboard" (`ui/panels/HistoryPanel.kt:215`) — needs dashboard editing, in the README

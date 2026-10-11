@@ -388,13 +388,7 @@ private fun TodoItemRow(
     val completed = item.status == TodoStatus.Completed
     Row(
         Modifier.fillMaxWidth()
-            .clickable(enabled = !model.unavailable) {
-                when (model.itemTap) {
-                    TodoItemTap.Edit -> onOpen(item)
-                    TodoItemTap.Toggle -> if (model.canToggle) onAction(toggleTodoItem(model.entityId, item))
-                    TodoItemTap.None -> Unit
-                }
-            }
+            .clickable(enabled = !model.unavailable) { onTap(model, item, onAction, onOpen) }
             .padding(end = HADimens.SPACE4, top = HADimens.SPACE1, bottom = HADimens.SPACE1),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -417,18 +411,7 @@ private fun TodoItemRow(
                 color = if (completed) colors.colorTextSecondary else colors.colorTextPrimary,
             )
             item.description?.let { MarkdownText(it, Modifier.fillMaxWidth()) }
-            row.due?.let { due ->
-                val overdue = row.overdue && !completed
-                val warning = resolveVariable(WARNING_COLOR, isSystemInDarkTheme()) ?: colors.colorOnWarningNormal
-                val color = if (overdue) warning else colors.colorTextSecondary
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
-                ) {
-                    DashboardIcon("mdi:clock", color, Modifier.size(HASize.M))
-                    Text(due, style = HATextStyle.BodyMedium, color = color)
-                }
-            }
+            row.due?.let { DueText(it, overdue = row.overdue && !completed) }
         }
         if (model.showDelete) {
             val label = localize("ui.panel.lovelace.cards.todo-list.delete_item")
@@ -444,6 +427,34 @@ private fun TodoItemRow(
                 DashboardIcon("mdi:delete", colors.colorTextSecondary, Modifier.size(HASize.X2L))
             }
         }
+    }
+}
+
+/** Port of `_itemTap`: open the item, toggle it, or nothing, as the card's `item_tap_action` says. */
+private fun onTap(model: TodoListModel, item: TodoItem, onAction: (CardAction) -> Unit, onOpen: (TodoItem) -> Unit) {
+    when (model.itemTap) {
+        TodoItemTap.Edit -> onOpen(item)
+        TodoItemTap.Toggle -> if (model.canToggle) onAction(toggleTodoItem(model.entityId, item))
+        TodoItemTap.None -> Unit
+    }
+}
+
+/**
+ * An item's due time after a clock, in the warning colour once [overdue].
+ *
+ * Upstream: part of `hui-todo-list-card` (src/panels/lovelace/cards/hui-todo-list-card.ts)
+ */
+@Composable
+private fun DueText(due: String, overdue: Boolean) {
+    val colors = LocalHAColorScheme.current
+    val warning = resolveVariable(WARNING_COLOR, isSystemInDarkTheme()) ?: colors.colorOnWarningNormal
+    val color = if (overdue) warning else colors.colorTextSecondary
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
+    ) {
+        DashboardIcon("mdi:clock", color, Modifier.size(HASize.M))
+        Text(due, style = HATextStyle.BodyMedium, color = color)
     }
 }
 

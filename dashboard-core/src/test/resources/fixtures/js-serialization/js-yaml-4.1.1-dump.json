@@ -1,0 +1,32 @@
+[
+    {
+        "input": "{\"state\":{\"translated\":\"On\",\"raw\":\"on\",\"last_changed\":\"2026-10-11T10:00:00.123Z\",\"last_updated\":\"2026-10-11T10:00:00.123Z\"},\"attributes\":{\"2\":\"two\",\"10\":\"ten\",\"friendly_name\":\"Kitchen light\",\"brightness\":255,\"rgb_color\":[255,128,0],\"supported_color_modes\":[\"hs\",\"color_temp\"],\"effect_list\":[],\"hs_color\":[30.118,100],\"color_temp_kelvin\":null,\"off_with_transition\":false,\"nested\":{\"a\":{\"b\":[]},\"c\":{}},\"items\":[{\"a\":1,\"b\":\"x\"},[1,2]]}}",
+        "yaml": "state:\n  translated: \"On\"\n  raw: \"on\"\n  last_changed: \"2026-10-11T10:00:00.123Z\"\n  last_updated: \"2026-10-11T10:00:00.123Z\"\nattributes:\n  \"2\": two\n  \"10\": ten\n  friendly_name: Kitchen light\n  brightness: 255\n  rgb_color:\n    - 255\n    - 128\n    - 0\n  supported_color_modes:\n    - hs\n    - color_temp\n  effect_list: []\n  hs_color:\n    - 30.118\n    - 100\n  color_temp_kelvin: null\n  off_with_transition: false\n  nested:\n    a:\n      b: []\n    c: {}\n  items:\n    - a: 1\n      b: x\n    - - 1\n      - 2\n",
+        "json": "{\n  \"state\": {\n    \"translated\": \"On\",\n    \"raw\": \"on\",\n    \"last_changed\": \"2026-10-11T10:00:00.123Z\",\n    \"last_updated\": \"2026-10-11T10:00:00.123Z\"\n  },\n  \"attributes\": {\n    \"2\": \"two\",\n    \"10\": \"ten\",\n    \"friendly_name\": \"Kitchen light\",\n    \"brightness\": 255,\n    \"rgb_color\": [\n      255,\n      128,\n      0\n    ],\n    \"supported_color_modes\": [\n      \"hs\",\n      \"color_temp\"\n    ],\n    \"effect_list\": [],\n    \"hs_color\": [\n      30.118,\n      100\n    ],\n    \"color_temp_kelvin\": null,\n    \"off_with_transition\": false,\n    \"nested\": {\n      \"a\": {\n        \"b\": []\n      },\n      \"c\": {}\n    },\n    \"items\": [\n      {\n        \"a\": 1,\n        \"b\": \"x\"\n      },\n      [\n        1,\n        2\n      ]\n    ]\n  }\n}"
+    },
+    {
+        "input": "{\"s\":[\"yes\",\"No\",\"123\",\"1_000\",\"0x1F\",\"0_1\",\"0b\",\"1.5\",\".5\",\"1e3\",\"2024-01-01\",\"2024-01-01 10:00:00\",\"~\",\"null\",\"true\",\"<<\",\"12:30:00\",\"a: b\",\"a:b\",\"#x\",\"a #b\",\"a#b\",\"-x\",\"- x\",\"x:\",\" lead\",\"trail \",\"multi\\nline\",\"multi\\nline\\n\",\"end\\n\\n\",\"\\n start\",\"tab\\there\",\"quote\\\"s\",\"back\\\\slash\",\"caf\u00e9\",\"\\u0001ctl\",\"\u2028sep\",\"emoji \ud83d\ude00\",\"[a]\",\"a, b\",\"{x}\",\"@at\",\"%p\",\"`g\",\"!bang\",\"&amp\",\"*star\",\"|pipe\",\">gt\",\"'sq\",\"=eq\",\"?q\",\"?\",\":\"]}",
+        "yaml": "s:\n  - \"yes\"\n  - \"No\"\n  - \"123\"\n  - \"1_000\"\n  - \"0x1F\"\n  - \"0_1\"\n  - 0b\n  - \"1.5\"\n  - \".5\"\n  - \"1e3\"\n  - \"2024-01-01\"\n  - \"2024-01-01 10:00:00\"\n  - \"~\"\n  - \"null\"\n  - \"true\"\n  - \"<<\"\n  - \"12:30:00\"\n  - \"a: b\"\n  - a:b\n  - \"#x\"\n  - \"a #b\"\n  - a#b\n  - \"-x\"\n  - \"- x\"\n  - \"x:\"\n  - \" lead\"\n  - \"trail \"\n  - |-\n    multi\n    line\n  - |\n    multi\n    line\n  - |+\n    end\n\n  - |2-\n\n     start\n  - \"tab\\there\"\n  - quote\"s\n  - back\\slash\n  - caf\u00e9\n  - \"\\x01ctl\"\n  - \"\\Lsep\"\n  - emoji \ud83d\ude00\n  - \"[a]\"\n  - a, b\n  - \"{x}\"\n  - \"@at\"\n  - \"%p\"\n  - \"`g\"\n  - \"!bang\"\n  - \"&amp\"\n  - \"*star\"\n  - \"|pipe\"\n  - \">gt\"\n  - \"'sq\"\n  - \"=eq\"\n  - \"?q\"\n  - \"?\"\n  - \":\"\n",
+        "json": "{\n  \"s\": [\n    \"yes\",\n    \"No\",\n    \"123\",\n    \"1_000\",\n    \"0x1F\",\n    \"0_1\",\n    \"0b\",\n    \"1.5\",\n    \".5\",\n    \"1e3\",\n    \"2024-01-01\",\n    \"2024-01-01 10:00:00\",\n    \"~\",\n    \"null\",\n    \"true\",\n    \"<<\",\n    \"12:30:00\",\n    \"a: b\",\n    \"a:b\",\n    \"#x\",\n    \"a #b\",\n    \"a#b\",\n    \"-x\",\n    \"- x\",\n    \"x:\",\n    \" lead\",\n    \"trail \",\n    \"multi\\nline\",\n    \"multi\\nline\\n\",\n    \"end\\n\\n\",\n    \"\\n start\",\n    \"tab\\there\",\n    \"quote\\\"s\",\n    \"back\\\\slash\",\n    \"caf\u00e9\",\n    \"\\u0001ctl\",\n    \"\u2028sep\",\n    \"emoji \ud83d\ude00\",\n    \"[a]\",\n    \"a, b\",\n    \"{x}\",\n    \"@at\",\n    \"%p\",\n    \"`g\",\n    \"!bang\",\n    \"&amp\",\n    \"*star\",\n    \"|pipe\",\n    \">gt\",\n    \"'sq\",\n    \"=eq\",\n    \"?q\",\n    \"?\",\n    \":\"\n  ]\n}"
+    },
+    {
+        "input": "{\"long\":\"The quick brown fox jumps over the lazy dog and keeps running far beyond the fence line, past the barn and into the woods where nobody can find it anymore.\",\"longlines\":\"first line that is fine\\nsecond line which is very long and goes on and on and on until it is well beyond the eighty column limit of js-yaml\\n  indented line\\nlast\"}",
+        "yaml": "long: >-\n  The quick brown fox jumps over the lazy dog and keeps running far beyond the\n  fence line, past the barn and into the woods where nobody can find it anymore.\nlonglines: >-\n  first line that is fine\n\n  second line which is very long and goes on and on and on until it is well\n  beyond the eighty column limit of js-yaml\n    indented line\n  last\n",
+        "json": "{\n  \"long\": \"The quick brown fox jumps over the lazy dog and keeps running far beyond the fence line, past the barn and into the woods where nobody can find it anymore.\",\n  \"longlines\": \"first line that is fine\\nsecond line which is very long and goes on and on and on until it is well beyond the eighty column limit of js-yaml\\n  indented line\\nlast\"\n}"
+    },
+    {
+        "input": "{\"nums\":[0,0,1,-1,1.5,0.1,1e+21,1e-7,123456789012,0.000001,1.23e-10,2.5e+25,100]}",
+        "yaml": "nums:\n  - 0\n  - 0\n  - 1\n  - -1\n  - 1.5\n  - 0.1\n  - 1e+21\n  - 1.e-7\n  - 123456789012\n  - 0.000001\n  - 1.23e-10\n  - 2.5e+25\n  - 100\n",
+        "json": "{\n  \"nums\": [\n    0,\n    0,\n    1,\n    -1,\n    1.5,\n    0.1,\n    1e+21,\n    1e-7,\n    123456789012,\n    0.000001,\n    1.23e-10,\n    2.5e+25,\n    100\n  ]\n}"
+    },
+    {
+        "input": "[]",
+        "yaml": "[]\n",
+        "json": "[]"
+    },
+    {
+        "input": "{}",
+        "yaml": "{}\n",
+        "json": "{}"
+    }
+]

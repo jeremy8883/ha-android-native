@@ -23,14 +23,6 @@ import io.homeassistant.companion.android.common.compose.theme.LocalHAColorSchem
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
-/** The kinds of `ha-alert`, each with its icon and the frontend colour variable tinting it. */
-internal enum class HaAlertType(val icon: String, val colorVariable: String) {
-    INFO("mdi:information-outline", "info-color"),
-    WARNING("mdi:alert-outline", "warning-color"),
-    ERROR("mdi:alert-circle-outline", "error-color"),
-    SUCCESS("mdi:checkbox-marked-circle-outline", "success-color"),
-}
-
 /**
  * Port of `ha-alert`: the type's icon and [text] (under a bold [title] when given) on the type's colour at 12%.
  *
@@ -66,6 +58,14 @@ internal fun HaAlert(
             Text(text, style = HATextStyle.Body, color = textColor)
         }
     }
+}
+
+/** The kinds of `ha-alert`, each with its icon and the frontend colour variable tinting it. */
+internal enum class HaAlertType(val icon: String, val colorVariable: String) {
+    INFO("mdi:information-outline", "info-color"),
+    WARNING("mdi:alert-outline", "warning-color"),
+    ERROR("mdi:alert-circle-outline", "error-color"),
+    SUCCESS("mdi:checkbox-marked-circle-outline", "success-color"),
 }
 
 private const val BACKGROUND_ALPHA = 0.12f

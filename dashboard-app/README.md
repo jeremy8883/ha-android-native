@@ -51,7 +51,6 @@ custom card.
   with the person's location filled in.
 - **Cameras that only offer WebRTC** show their slower MJPEG stream instead.
 - **Script fields** of the rarer kinds (areas, devices, colours, locations and others) are edited as text.
-- **Assist chat** shows the answer's text only, not the agent's thinking and tool calls.
 - **Light colours**: the colour picker has no eyedropper.
 
 ### Dashboards
