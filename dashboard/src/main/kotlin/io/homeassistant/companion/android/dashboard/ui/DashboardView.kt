@@ -13,8 +13,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
-import androidx.compose.material3.PrimaryScrollableTabRow
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -54,7 +52,7 @@ import java.time.ZonedDateTime
 import kotlinx.coroutines.flow.map
 
 /**
- * A dashboard's view: the tabs of the top-level views when there are several, then the shown view.
+ * A dashboard's view: the shown view (its tabs are in the toolbar).
  *
  * Upstream: part of `hui-root`, `hui-view` (src/panels/lovelace/hui-root.ts; src/panels/lovelace/views/hui-view.ts)
  */
@@ -63,41 +61,18 @@ internal fun DashboardView(
     content: DashboardUiState.Content,
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
-    onSelectTab: (String) -> Unit,
     interactions: CardInteractions,
 ) {
-    val colors = LocalHAColorScheme.current
-    Column {
-        // As upstream, the tab bar only appears with several top-level views
-        if (!content.isSubview && content.tabs.size > 1) {
-            PrimaryScrollableTabRow(
-                selectedTabIndex = content.selectedTab,
-                containerColor = colors.colorSurfaceDefault,
-                contentColor = colors.colorOnPrimaryNormal,
-                divider = {},
-            ) {
-                content.tabs.forEachIndexed { index, tab ->
-                    Tab(
-                        selected = index == content.selectedTab,
-                        onClick = { onSelectTab(tab.path) },
-                        text = { Text(tab.title ?: tab.path) },
-                        selectedContentColor = colors.colorOnPrimaryNormal,
-                        unselectedContentColor = colors.colorTextSecondary,
-                    )
-                }
-            }
-        }
-        if (content.groups == null) {
-            Message(stringResource(R.string.native_dashboard_unsupported_view))
-        } else {
-            // A fresh list per view, so each view starts scrolled to the top
-            val configuration = LocalConfiguration.current
-            val screen = ScreenInfo(configuration.screenWidthDp, configuration.screenHeightDp)
-            val maxColumns = sectionsViewColumns(configuration.screenWidthDp, content.maxColumns)
-            key(content.viewPath) {
-                CardGroups(content.groups, content.view, hass, now, screen, maxColumns, interactions)
-            }
-        }
+    if (content.groups == null) {
+        Message(stringResource(R.string.native_dashboard_unsupported_view))
+        return
+    }
+    // A fresh list per view, so each view starts scrolled to the top
+    val configuration = LocalConfiguration.current
+    val screen = ScreenInfo(configuration.screenWidthDp, configuration.screenHeightDp)
+    val maxColumns = sectionsViewColumns(configuration.screenWidthDp, content.maxColumns)
+    key(content.viewPath) {
+        CardGroups(content.groups, content.view, hass, now, screen, maxColumns, interactions)
     }
 }
 

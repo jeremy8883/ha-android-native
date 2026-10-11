@@ -59,6 +59,12 @@ SUBTREES = [
     "ui.common.menu",
     "ui.common.back",
     "ui.errors.config.configuration_error",
+    "ui.panel.lovelace.views.unnamed_view",
+    "ui.panel.lovelace.menu.search_home_assistant",
+    "ui.panel.lovelace.menu.assist_tooltip",
+    "ui.panel.lovelace.menu.configure_ui",
+    "ui.panel.lovelace.editor.menu.open",
+    "ui.notification_drawer",
 ]
 
 OUT_DIR = Path(__file__).resolve().parents[2] / "dashboard-core/src/main/resources/translations"

@@ -23,10 +23,6 @@ on the right are the frontend's (20260624.6).
 
 ## Looks and small behaviour
 
-7. Dashboard tabs show the title only (path when untitled); upstream shows the view's icon, and "Unnamed view"
-   (`ui/DashboardView.kt:83`; src/panels/lovelace/hui-root.ts:470-490)
-8. Toolbar: title always, tabs on a row below; upstream puts the tabs in the toolbar when there are several views,
-   with Search, Assist and the menu (`ui/DashboardTopBar.kt:36`; hui-root.ts:586-597)
 
 ## Missing features
 
@@ -37,6 +33,4 @@ on the right are the frontend's (20260624.6).
 27. Thermostat card: `features` and `show_current_as_primary` not drawn (`ui/cards/ThermostatCard.kt:46`,
     `ui/controls/CircularStateControl.kt:143`; hui-thermostat-card.ts:160,175)
 28. Entities card: `header` and `footer` elements not drawn (`ui/cards/EntitiesCard.kt:60`; hui-entities-card.ts:190-202)
-37. Drawer: no Notifications entry or badge, no notification dot on the menu button; the profile entry says
-    "Profile" instead of the user's name and badge (`ui/NavigationDrawer.kt:125-131`; ha-sidebar.ts:424-563)
 38. History: no "Add to dashboard" (`ui/panels/HistoryPanel.kt:215`) — needs dashboard editing, in the README

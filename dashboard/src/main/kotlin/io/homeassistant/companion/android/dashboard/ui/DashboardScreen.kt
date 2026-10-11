@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.theme.HADimens
@@ -35,6 +37,8 @@ import io.homeassistant.companion.android.dashboard.NativeDashboardRequest
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.data.valueOrNull
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
+import io.homeassistant.companion.android.dashboard.layout.DashboardMenuAction
+import io.homeassistant.companion.android.dashboard.navigation.userBadge
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.cards.ProvideCardLocals
 import io.homeassistant.companion.android.dashboard.ui.panels.NativePanel
@@ -112,8 +116,11 @@ internal fun DashboardScreen(
                 status = status,
                 onRetry = viewModel::onRetry,
                 onOpenElsewhere = onOpenWeb?.let { { viewModel.onOpenShownInWeb() } },
+                onMenuAction = onOpenWeb?.let { { action -> viewModel.onOpenShownInWeb(flag = action.webParam) } },
+                hasNotifications = hiltViewModel<NotificationsViewModel>().hasNotifications.collectAsStateWithLifecycle().value,
             )
         }
+        NotificationDrawerHost(hass, now)
         moreInfo?.let { entityId ->
             val onShowFull = onOpenWeb?.let { { viewModel.onOpenShownInWeb(entityId).also { moreInfo = null } } }
             MoreInfoSheet(entityId, hass, now, interactions, onShowFull, onDismiss = { moreInfo = null }, snackbar)
@@ -183,6 +190,11 @@ private fun DashboardDrawer(
     onOpenSettings: (() -> Unit)?,
 ) {
     val sidebar by viewModel.sidebar.collectAsStateWithLifecycle()
+    // The screen's instance, which also shows the drawer
+    val notifications: NotificationsViewModel = hiltViewModel()
+    val notificationList by notifications.notifications.collectAsStateWithLifecycle()
+    val hass = viewModel.hass.collectAsStateWithLifecycle()
+    val user by remember(hass) { derivedStateOf { hass.value?.userBadge() } }
     val scope = rememberCoroutineScope()
     NavigationDrawerContent(
         drawerState = drawerState,
@@ -192,6 +204,9 @@ private fun DashboardDrawer(
         onlyDashboards = onlyDashboards,
         onSwitchServer = onSwitchServer?.let { switch -> closingDrawer(drawerState, scope, switch) },
         onOpenSettings = onOpenSettings?.let { open -> closingDrawer(drawerState, scope, open) },
+        notificationCount = notificationList.valueOrNull?.size,
+        onOpenNotifications = closingDrawer(drawerState, scope, notifications::openDrawer),
+        user = user,
         onOpen = closingDrawer(drawerState, scope, viewModel::onOpenPath),
     )
 }
@@ -261,6 +276,8 @@ internal fun DashboardScreenContent(
     status: DashboardStatus = DashboardStatus.CURRENT,
     onRetry: () -> Unit = {},
     onOpenElsewhere: (() -> Unit)? = null,
+    onMenuAction: ((DashboardMenuAction) -> Unit)? = null,
+    hasNotifications: Boolean = false,
 ) {
     val content = uiState as? DashboardUiState.Content
     val panel = uiState as? DashboardUiState.Panel
@@ -273,7 +290,18 @@ internal fun DashboardScreenContent(
         },
         // A view's footer (the energy date selection) stays at the bottom, below the messages
         bottomBar = { content?.view?.let { ViewFooter(it, hass, now, interactions) } },
-        topBar = { DashboardTopBar(uiState, onBack, onOpenMenu, panelToolbar.actions) },
+        topBar = {
+            DashboardTopBar(
+                uiState,
+                onBack,
+                onOpenMenu,
+                panelToolbar.actions,
+                hass,
+                onSelectTab,
+                onMenuAction,
+                hasNotifications,
+            )
+        },
     ) { padding ->
         Box(Modifier.padding(padding).fillMaxSize()) {
             when (uiState) {
@@ -287,7 +315,7 @@ internal fun DashboardScreenContent(
                         ?: stringResource(R.string.native_dashboard_unsupported_untitled),
                     onOpenElsewhere,
                 )
-                is DashboardUiState.Content -> DashboardView(uiState, hass, now, onSelectTab, interactions)
+                is DashboardUiState.Content -> DashboardView(uiState, hass, now, interactions)
                 is DashboardUiState.Panel -> NativePanel(uiState, panelToolbar, hass, now, interactions)
             }
             // Offline, the offline bar says it; retries would flicker the bar

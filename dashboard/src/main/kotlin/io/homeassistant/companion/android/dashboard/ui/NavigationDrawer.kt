@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.HorizontalDivider
@@ -20,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -31,19 +35,24 @@ import io.homeassistant.companion.android.common.compose.composable.HAAccentButt
 import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HAFontSize
+import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.data.Loadable
 import io.homeassistant.companion.android.dashboard.data.valueOrNull
+import io.homeassistant.companion.android.dashboard.derive.DisplayColor
 import io.homeassistant.companion.android.dashboard.navigation.SidebarItem
+import io.homeassistant.companion.android.dashboard.navigation.UserBadgeModel
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.cards.ServerImage
+import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
  * The app's navigation drawer, in place of the frontend's sidebar: the panels shown natively in the user's order,
- * then under their own heading those that open in the companion app, then Settings (for admins) and the profile,
- * like `ha-sidebar`'s fixed entries.
+ * then under their own heading those that open in the companion app, then Settings (for admins), the notifications
+ * and the profile (the user's name and badge), like `ha-sidebar`'s fixed entries.
  *
  * @param selected the url path of the panel shown now
  * @param drawerState the drawer's state, which back closes (with Material's predictive back animation)
@@ -52,6 +61,9 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
  * @param onlyDashboards lists only the dashboards, when other pages can't be opened
  * @param onOpenSettings opens the app's own settings, in place of the frontend's Settings and profile; `null` keeps
  *   those
+ * @param notificationCount how many persistent notifications there are, shown on their entry; `null` while unknown
+ * @param onOpenNotifications opens the notification drawer
+ * @param user the current user's name and badge for the profile entry, `null` while unknown
  * @param onOpen called with the path of the chosen entry
  *
  * Upstream: `ha-sidebar` (src/components/ha-sidebar.ts)
@@ -65,6 +77,9 @@ internal fun NavigationDrawerContent(
     onOpenSettings: (() -> Unit)? = null,
     onlyDashboards: Boolean = false,
     onRetry: () -> Unit = {},
+    notificationCount: Int? = null,
+    onOpenNotifications: () -> Unit = {},
+    user: UserBadgeModel? = null,
     onOpen: (String) -> Unit,
 ) {
     val colors = LocalHAColorScheme.current
@@ -124,11 +139,33 @@ internal fun NavigationDrawerContent(
             )
             if (onOpenSettings != null) {
                 Action(stringResource(R.string.native_dashboard_settings), SETTINGS_ICON, onOpenSettings)
-            } else {
-                if (sidebar.valueOrNull?.isAdmin == true) {
-                    Entry(CONFIG_PANEL, stringResource(R.string.native_dashboard_settings), SETTINGS_ICON)
-                }
-                Entry(PROFILE_PANEL, stringResource(R.string.native_dashboard_profile), PROFILE_ICON)
+            } else if (sidebar.valueOrNull?.isAdmin == true) {
+                Entry(CONFIG_PANEL, stringResource(R.string.native_dashboard_settings), SETTINGS_ICON)
+            }
+            NavigationDrawerItem(
+                label = { Text(stringResource(R.string.native_dashboard_notifications), style = HATextStyle.Body) },
+                icon = { DashboardIcon(NOTIFICATIONS_ICON, colors.colorTextSecondary, Modifier.size(HASize.X2L)) },
+                badge = notificationCount?.takeIf { it > 0 }?.let { count -> { CountBadge(count) } },
+                selected = false,
+                onClick = onOpenNotifications,
+                colors = itemColors,
+                modifier = Modifier.padding(horizontal = HADimens.SPACE2),
+            )
+            // The profile opens elsewhere, so it needs other pages
+            if (onOpenSettings == null || !onlyDashboards) {
+                NavigationDrawerItem(
+                    label = {
+                        Text(
+                            user?.name ?: stringResource(R.string.native_dashboard_profile),
+                            style = HATextStyle.Body,
+                        )
+                    },
+                    icon = { user?.let { UserBadge(it) } ?: DashboardIcon(PROFILE_ICON, colors.colorTextSecondary) },
+                    selected = selected == PROFILE_PANEL,
+                    onClick = { onOpen("/$PROFILE_PANEL") },
+                    colors = itemColors,
+                    modifier = Modifier.padding(horizontal = HADimens.SPACE2),
+                )
             }
             onSwitchServer?.let { Action(stringResource(R.string.native_dashboard_switch_server), SERVER_ICON, it) }
         }
@@ -209,11 +246,75 @@ private fun SidebarHeader() {
     HorizontalDivider()
 }
 
+/**
+ * The count on the notifications entry, a pill in the accent colour.
+ *
+ * Upstream: part of `ha-sidebar` (src/components/ha-sidebar.ts)
+ */
+@Composable
+private fun CountBadge(count: Int) {
+    Text(
+        count.toString(),
+        style = HATextStyle.BodyMedium,
+        color = DisplayColor.State(listOf(TEXT_ACCENT)).toColor() ?: LocalHAColorScheme.current.colorOnPrimaryLoud,
+        modifier = Modifier
+            .clip(RoundedCornerShape(HARadius.XL))
+            .background(
+                DisplayColor.State(listOf(ACCENT)).toColor() ?: LocalHAColorScheme.current.colorFillPrimaryLoudResting,
+            )
+            .padding(horizontal = BADGE_PADDING_H, vertical = BADGE_PADDING_V),
+    )
+}
+
+/**
+ * The user's badge: their person's picture, else their initials on the light primary colour, in a 40dp circle.
+ *
+ * Upstream: `ha-user-badge` (src/components/user/ha-user-badge.ts)
+ */
+@Composable
+private fun UserBadge(user: UserBadgeModel) {
+    Box(
+        modifier = Modifier
+            .size(USER_BADGE_SIZE)
+            .clip(CircleShape)
+            .background(
+                DisplayColor.State(listOf(LIGHT_PRIMARY)).toColor()
+                    ?: LocalHAColorScheme.current.colorFillPrimaryQuietResting,
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        if (user.picture != null) {
+            ServerImage(user.picture, contentDescription = null, modifier = Modifier.size(USER_BADGE_SIZE))
+        } else {
+            Text(
+                user.initials,
+                style = HATextStyle.Body.copy(fontSize = if (user.initials.length > 2) HAFontSize.S else HAFontSize.L),
+                color =
+                DisplayColor.State(listOf(TEXT_LIGHT_PRIMARY)).toColor()
+                    ?: LocalHAColorScheme.current.colorTextPrimary,
+                maxLines = 1,
+            )
+        }
+    }
+}
+
 private const val CONFIG_PANEL = "config"
 private const val PROFILE_PANEL = "profile"
 private const val SETTINGS_ICON = "mdi:cog"
 private const val PROFILE_ICON = "mdi:account"
 private const val SERVER_ICON = "mdi:home-switch"
+private const val NOTIFICATIONS_ICON = "mdi:bell"
+private const val ACCENT = "accent-color"
+private const val TEXT_ACCENT = "text-primary-color"
+private const val LIGHT_PRIMARY = "light-primary-color"
+private const val TEXT_LIGHT_PRIMARY = "text-light-primary-color"
+
+/** `ha-user-badge`'s size in the sidebar. */
+private val USER_BADGE_SIZE = 40.dp
+
+/** The count's `padding: 2px 6px`. */
+private val BADGE_PADDING_H = 6.dp
+private val BADGE_PADDING_V = 2.dp
 
 /** `--header-height`. */
 private val HEADER_HEIGHT = 56.dp

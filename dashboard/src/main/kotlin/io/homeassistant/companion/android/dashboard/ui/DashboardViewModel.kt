@@ -38,12 +38,15 @@ import io.homeassistant.companion.android.dashboard.entity.withFallback
 import io.homeassistant.companion.android.dashboard.history.GraphHistory
 import io.homeassistant.companion.android.dashboard.history.GraphHistoryKey
 import io.homeassistant.companion.android.dashboard.layout.CardGroup
+import io.homeassistant.companion.android.dashboard.layout.ViewTabLabel
 import io.homeassistant.companion.android.dashboard.layout.cardGroups
 import io.homeassistant.companion.android.dashboard.layout.viewHeaderCard
+import io.homeassistant.companion.android.dashboard.layout.viewTabLabel
 import io.homeassistant.companion.android.dashboard.layout.withNestedCards
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.DashboardConfig
 import io.homeassistant.companion.android.dashboard.model.ViewConfig
+import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.number
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.string
@@ -194,8 +197,13 @@ data class DashboardStatus(
     }
 }
 
-/** A top-level view, selected by [path] (or its index when it has none). */
-data class ViewTab(val title: String?, val icon: String?, val path: String)
+/** A top-level view, selected by [path] (or its index when it has none), its tab showing [label]. */
+data class ViewTab(
+    val title: String?,
+    val icon: String?,
+    val path: String,
+    val label: ViewTabLabel = viewTabLabel(title, icon, showIconAndTitle = false),
+)
 
 /**
  * Raw state: the selected dashboard, the stack of opened view paths, the stored config, the registries and server
@@ -601,15 +609,16 @@ class DashboardViewModel @VisibleForTesting internal constructor(
 
     /**
      * Open the dashboard shown (with its view) in the web frontend, as it can't be drawn natively; with [entityId],
-     * upstream's full more-info dialog for it over the dashboard shown, back to it natively once closed.
+     * upstream's full more-info dialog for it over the dashboard shown, back to it natively once closed; with [flag],
+     * asking the frontend for what it opens with `?<flag>=1` (such as `edit` or `conversation`).
      */
-    fun onOpenShownInWeb(entityId: String? = null) {
+    fun onOpenShownInWeb(entityId: String? = null, flag: String? = null) {
         viewModelScope.launch {
             val urlPath = selectedDashboard.value ?: sidebar.loaded(_events)?.defaultPanel ?: return@launch
             val path = if (entityId != null) {
                 "/$urlPath?$MORE_INFO_PARAM=${java.net.URLEncoder.encode(entityId, Charsets.UTF_8)}"
             } else {
-                (listOf(urlPath) + viewStack.value).joinToString("/", prefix = "/")
+                (listOf(urlPath) + viewStack.value).joinToString("/", prefix = "/") + flag?.let { "?$it=1" }.orEmpty()
             }
             _events.send(DashboardEvent.OpenWeb(path))
         }
@@ -832,7 +841,11 @@ private fun DashboardConfig.toContent(inputs: StructureInputs, stack: List<Strin
     val expanded = shown?.let { inputs.hass.expandView(it, inputs.strategyData) }
     return DashboardUiState.Content(
         title = title,
-        tabs = tabIndices.map { ViewTab(views[it].title, views[it].icon, pathOf(it)) },
+        tabs = tabIndices.map { index ->
+            val view = views[index]
+            val label = viewTabLabel(view.title, view.icon, view.json.boolean("show_icon_and_title") == true)
+            ViewTab(view.title, view.icon, pathOf(index), label)
+        },
         selectedTab = tabIndices.indexOf(tabIndex).coerceAtLeast(0),
         isSubview = shown?.subview == true,
         subviewTitle = shown?.title,

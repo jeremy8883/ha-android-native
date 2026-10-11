@@ -849,6 +849,13 @@
     "configuration_error": "Configuration error"
    }
   },
+  "notification_drawer": {
+   "click_to_configure": "Press button to configure {entity}",
+   "close": "Close",
+   "dismiss_all": "Dismiss all",
+   "empty": "No notifications",
+   "title": "Notifications"
+  },
   "notification_toast": {
    "action_failed": "Failed to perform the action {service}.",
    "connection_lost": "Connection lost. Reconnecting…",
@@ -1139,7 +1146,15 @@
        "toggle": "Toggle",
        "url": "URL"
       }
+     },
+     "menu": {
+      "open": "Open dashboard menu"
      }
+    },
+    "menu": {
+     "assist_tooltip": "Assist",
+     "configure_ui": "Edit dashboard",
+     "search_home_assistant": "Search Home Assistant"
     },
     "strategy": {
      "areas": {
@@ -1230,6 +1245,9 @@
       "devices": "Devices",
       "other_devices": "Other devices"
      }
+    },
+    "views": {
+     "unnamed_view": "Unnamed view"
     },
     "warning": {
      "attribute_not_found": "Attribute {attribute} not available in: {entity}",
