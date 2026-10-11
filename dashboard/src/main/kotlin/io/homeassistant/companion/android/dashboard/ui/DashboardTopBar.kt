@@ -30,7 +30,9 @@ internal fun DashboardTopBar(
     val panel = uiState as? DashboardUiState.Panel
     val goesBack = content?.showsBack == true || panel?.canGoBack == true
     HATopBar(
-        title = { Text(content?.title ?: panel?.title.orEmpty()) },
+        title = {
+            Text(content?.title ?: panel?.title ?: (uiState as? DashboardUiState.UnsupportedStrategy)?.title.orEmpty())
+        },
         navigationIcon = {
             if (goesBack) {
                 ToolbarIconButton(ToolbarIcons.BACK, stringResource(commonR.string.navigate_up), onBack)
