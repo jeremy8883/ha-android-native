@@ -107,7 +107,8 @@ private fun OtherCard(
     val infoTile = INFO_TILES[card.type]
     when {
         infoTile != null -> InfoTileCard(card, hass, cardModifier, infoTile)
-        card.type == CARD_AREA -> AreaCard(card, hass, cardModifier)
+        // The area card handles its tile's and picture's gestures itself
+        card.type == CARD_AREA -> AreaCard(card, hass, interactions, modifier.clip(RoundedCornerShape(HARadius.XL)))
         card.type == CARD_MARKDOWN -> MarkdownCard(card, hass, cardModifier)
         card.type == CARD_MEDIA_CONTROL -> MediaControlCard(card, hass, now, interactions, cardModifier)
         card.type == CARD_EMPTY_STATE -> EmptyStateCard(card, interactions, modifier)

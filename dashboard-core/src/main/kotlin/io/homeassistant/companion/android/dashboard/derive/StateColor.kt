@@ -50,6 +50,13 @@ fun domainStateColor(domain: String, state: EntityState, value: String): Display
     domainColorVariables(domain, state.attributes.string("device_class"), value, state.isActive(value)),
 )
 
+/**
+ * The active colour of [domain] entities of [deviceClass] in [state]: `computeCssVariable(domainColorProperties(
+ * domain, deviceClass, state, true))`, which the area controls use.
+ */
+fun domainActiveColor(domain: String, deviceClass: String?, state: String): DisplayColor =
+    DisplayColor.State(domainColorVariables(domain, deviceClass, state, active = true))
+
 /** The one domain of a group's entities, `null` when they are of several. */
 private fun groupDomain(state: EntityState): String? = state.attributes.array("entity_id")?.mapNotNull {
     it.stringOrNull?.substringBefore('.')

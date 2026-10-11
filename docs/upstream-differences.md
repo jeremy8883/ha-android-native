@@ -26,6 +26,4 @@ on the right are the frontend's (20260624.6).
 
 ## Missing features
 
-26. Area card: icon and name only; upstream is a tile with the area's picture, sensors, alerts and features
-    (`ui/cards/AreaCard.kt:32`; hui-area-card.ts:114,643,671-703)
 38. History: no "Add to dashboard" (`ui/panels/HistoryPanel.kt:215`) — needs dashboard editing, in the README

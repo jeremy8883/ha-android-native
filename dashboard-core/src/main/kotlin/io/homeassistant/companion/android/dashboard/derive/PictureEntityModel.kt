@@ -71,9 +71,10 @@ fun HassSnapshot.pictureEntityModel(card: CardConfig): PictureEntityModel? {
     )
 }
 
-/** The cameras whose snapshots the [cards] show, for the data layer to keep signed. */
+/** The cameras whose snapshots the [cards] show (picture entity and camera area cards), for the data layer to keep signed. */
 fun HassSnapshot.cameraSnapshotEntities(cards: List<CardConfig>): Set<String> =
-    cards.filter { it.type == PICTURE_ENTITY }.mapNotNull(::cameraOf).filter { it in states }.toSet()
+    cards.filter { it.type == PICTURE_ENTITY }.mapNotNull(::cameraOf).filter { it in states }.toSet() +
+        areaCameraEntities(cards)
 
 private fun cameraOf(card: CardConfig): String? {
     val entity = card.entity
