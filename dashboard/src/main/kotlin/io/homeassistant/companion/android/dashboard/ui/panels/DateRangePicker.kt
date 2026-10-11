@@ -2,15 +2,16 @@ package io.homeassistant.companion.android.dashboard.ui.panels
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePickerDialog
@@ -69,27 +70,68 @@ internal fun DateRangeField(
     modifier: Modifier = Modifier,
 ) {
     var open by remember { mutableStateOf(false) }
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3)) {
+        PresetChips(range, hass, now, presets, onChange)
+        RangeRow(range, hass, now, onOpen = { open = true }, onChange)
+    }
+    if (open) {
+        DateRangeDialog(range, hass, onDismiss = { open = false }) {
+            open = false
+            onChange(it)
+        }
+    }
+}
+
+/**
+ * The presets ("Today", "Yesterday", "This week"…) on a row that scrolls, the one the period is as of [now] selected;
+ * a tap picks its period.
+ */
+// UPSTREAM-DIFF: the presets sit on the page above the field, the period's one selected; upstream lists them inside
+// its picker (the user asked for them on the page)
+@Composable
+private fun PresetChips(
+    range: DateRange,
+    hass: HassSnapshot,
+    now: ZonedDateTime,
+    presets: List<RangePreset>,
+    onChange: (DateRange) -> Unit,
+) {
+    val firstDayOfWeek = DayOfWeek.of(hass.formats.firstWeekday)
+    val selected = RangePreset.matching(range, presets, now, firstDayOfWeek)
     Row(
-        modifier,
-        verticalAlignment = Alignment.CenterVertically,
+        Modifier.horizontalScroll(rememberScrollState()),
         horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
     ) {
+        presets.forEach { preset ->
+            HAInputChip(
+                text = hass.localize("$PICKER.ranges.${preset.key}"),
+                onClick = { onChange(preset.range(now, firstDayOfWeek)) },
+                selected = preset == selected,
+            )
+        }
+    }
+}
+
+/** The period's field, opening the picker, with the arrows to the period before and after. */
+@Composable
+private fun RangeRow(
+    range: DateRange,
+    hass: HassSnapshot,
+    now: ZonedDateTime,
+    onOpen: () -> Unit,
+    onChange: (DateRange) -> Unit,
+) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
         FilledField(
             label = "${hass.localize("$PICKER.start_date")} - ${hass.localize("$PICKER.end_date")}",
             value = hass.formats.dateRangeText(range, now.toLocalDate()),
-            modifier = Modifier.weight(1f).clickable(role = Role.Button) { open = true },
+            modifier = Modifier.weight(1f).clickable(role = Role.Button, onClick = onOpen),
         )
         ArrowButton("mdi:chevron-left", hass.localize("ui.common.previous")) {
             onChange(range.shift(forward = false, hass.formats.zone))
         }
         ArrowButton("mdi:chevron-right", hass.localize("ui.common.next")) {
             onChange(range.shift(forward = true, hass.formats.zone))
-        }
-    }
-    if (open) {
-        DateRangeDialog(range, hass, now, presets, onDismiss = { open = false }) {
-            open = false
-            onChange(it)
         }
     }
 }
@@ -142,13 +184,11 @@ private fun ArrowButton(icon: String, label: String, onClick: () -> Unit) {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-// UPSTREAM-DIFF: Android's own date range and time pickers; upstream draws its own calendar sheet with typed times
+// UPSTREAM-DIFF: Android's own date range and time pickers; upstream draws its own calendar sheet with the presets and typed times
 // (the user chose native pickers for fields)
 private fun DateRangeDialog(
     range: DateRange,
     hass: HassSnapshot,
-    now: ZonedDateTime,
-    presets: List<RangePreset>,
     onDismiss: () -> Unit,
     onSelect: (DateRange) -> Unit,
 ) {
@@ -162,7 +202,6 @@ private fun DateRangeDialog(
     )
     var startTime by remember { mutableStateOf(startAt.toLocalTime()) }
     var endTime by remember { mutableStateOf(endAt.toLocalTime()) }
-    val firstDayOfWeek = DayOfWeek.of(hass.formats.firstWeekday)
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
@@ -180,16 +219,6 @@ private fun DateRangeDialog(
         dismissButton = { HAPlainButton(hass.localize("ui.common.cancel"), onDismiss) },
     ) {
         Column {
-            FlowRow(
-                modifier = Modifier.padding(start = HADimens.SPACE4, top = HADimens.SPACE4, end = HADimens.SPACE4),
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
-            ) {
-                presets.forEach { preset ->
-                    HAInputChip(hass.localize("$PICKER.ranges.${preset.key}"), {
-                        onSelect(preset.range(now, firstDayOfWeek))
-                    })
-                }
-            }
             DateRangePicker(state = state, modifier = Modifier.weight(1f), title = null, showModeToggle = false)
             Row(Modifier.padding(HADimens.SPACE4), horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
                 val ok = hass.localize("ui.common.ok")

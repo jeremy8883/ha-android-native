@@ -99,6 +99,31 @@ enum class RangePreset(val key: String) {
         /** The picker's presets with `extended-presets`, as the History panel's (`EXTENDED_RANGE_KEYS` added). */
         val EXTENDED =
             BASIC + listOf(THIS_MONTH, THIS_YEAR, LAST_HOUR, LAST_12_HOURS, LAST_24_HOURS, LAST_7_DAYS, LAST_30_DAYS)
+
+        /** How far a period ending now may be from now and still be "Last hour" and the like. */
+        val NOW_TOLERANCE: Duration = Duration.ofMinutes(1)
+
+        /**
+         * The one of [presets] that [range] is as of [now], `null` when it is none of them. The periods that end now
+         * ("Last hour") match while their end is within [NOW_TOLERANCE] of [now], as the clock moves on after picking.
+         */
+        fun matching(
+            range: DateRange,
+            presets: List<RangePreset>,
+            now: ZonedDateTime,
+            firstDayOfWeek: DayOfWeek,
+        ): RangePreset? = presets.firstOrNull { preset ->
+            val expected = preset.range(now, firstDayOfWeek)
+            if (preset in ENDING_NOW) {
+                Duration.between(range.start, range.end) == Duration.between(expected.start, expected.end) &&
+                    Duration.between(range.end, expected.end).abs() <= NOW_TOLERANCE
+            } else {
+                range == expected
+            }
+        }
+
+        /** The presets whose period ends when it's picked. */
+        private val ENDING_NOW = setOf(LAST_HOUR, LAST_12_HOURS, LAST_24_HOURS, LAST_7_DAYS, LAST_30_DAYS)
     }
 }
 

@@ -69,4 +69,31 @@ class DateRangeTest {
         )
         assertEquals("Dec 31, 2025, 11:00 PM", formats.shortDateTime(at("2025-12-31T23:00"), today))
     }
+
+    @Test
+    fun `Given a preset's period when matching the presets then that preset is selected`() {
+        val today = RangePreset.TODAY.range(now, DayOfWeek.MONDAY)
+
+        assertEquals(RangePreset.TODAY, RangePreset.matching(today, RangePreset.BASIC, now, DayOfWeek.MONDAY))
+        assertEquals(
+            RangePreset.YESTERDAY,
+            RangePreset.matching(range("2026-10-10T00:00", "2026-10-10T23:59:59.999"), RangePreset.BASIC, now, DayOfWeek.MONDAY),
+        )
+    }
+
+    @Test
+    fun `Given a period changed off a preset when matching the presets then none is selected`() {
+        // Today, but from 1 AM
+        val changed = range("2026-10-11T01:00", "2026-10-11T23:59:59.999")
+
+        assertEquals(null, RangePreset.matching(changed, RangePreset.EXTENDED, now, DayOfWeek.MONDAY))
+    }
+
+    @Test
+    fun `Given the last hour picked a little while ago when matching the presets then it is still the last hour`() {
+        val picked = RangePreset.LAST_HOUR.range(now, DayOfWeek.MONDAY)
+
+        assertEquals(RangePreset.LAST_HOUR, RangePreset.matching(picked, RangePreset.EXTENDED, now.plusSeconds(30), DayOfWeek.MONDAY))
+        assertEquals(null, RangePreset.matching(picked, RangePreset.EXTENDED, now.plusMinutes(5), DayOfWeek.MONDAY))
+    }
 }
