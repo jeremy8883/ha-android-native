@@ -26,6 +26,7 @@ import io.homeassistant.companion.android.dashboard.history.SeriesColor
 import io.homeassistant.companion.android.dashboard.history.TimelineChart
 import io.homeassistant.companion.android.dashboard.history.historyLegend
 import io.homeassistant.companion.android.dashboard.history.historyLineChart
+import io.homeassistant.companion.android.dashboard.history.inZoomWindow
 import io.homeassistant.companion.android.dashboard.history.timelineChart
 import io.homeassistant.companion.android.dashboard.panels.DateRange
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
@@ -41,6 +42,7 @@ import io.homeassistant.companion.android.dashboard.ui.charts.TimelineChartView
 import io.homeassistant.companion.android.dashboard.ui.charts.timelineNamesWidth
 import io.homeassistant.companion.android.dashboard.ui.charts.valueAxisWidth
 import io.homeassistant.companion.android.dashboard.ui.charts.valueTicks
+import io.homeassistant.companion.android.dashboard.ui.charts.zoomed
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.time.Instant
 
@@ -73,7 +75,7 @@ internal fun HistoryChartsList(
         hass.formats,
         LocalDensity.current.density,
     )
-    val inset = chartsInset(timelines, lines, text)
+    val inset = chartsInset(timelines, lines, text, time.zoomed(zoom.zoom).shown)
     val legendTexts = HistoryLegendTexts(
         toggle = hass.localize("$CHARTS.toggle_visibility"),
         more = hass.localize("$CHARTS.expand_legend"),
@@ -118,18 +120,25 @@ internal fun HistoryChartsList(
 }
 
 /**
- * How far from the left every plot starts (`paddingYAxis`): past the timelines' names and the widest value axis.
+ * How far from the left every plot starts (`paddingYAxis`): past the timelines' names and the widest value axis of
+ * what [shown] of the time shows, so a zoom whose values need wider labels moves every plot along, as upstream's.
  */
 @Composable
-private fun chartsInset(timelines: List<TimelineChart>, lines: List<HistoryLineChart>, text: ChartText): Dp =
-    with(LocalDensity.current) {
-        val names = if (timelines.isEmpty()) 0f else text.timelineNamesWidth(timelines.map { it.name })
-        val axes = lines.maxOfOrNull { chart ->
-            val values = chart.series.flatMap { s -> s.points.mapNotNull { it.y } }
-            valueAxisWidth(valueTicks(values), chart.yFractionDigits, text) + LABEL_GAP.toPx()
-        } ?: 0f
-        maxOf(names, axes).toDp()
-    }
+private fun chartsInset(
+    timelines: List<TimelineChart>,
+    lines: List<HistoryLineChart>,
+    text: ChartText,
+    shown: TimeSpan,
+): Dp = with(LocalDensity.current) {
+    val names = if (timelines.isEmpty()) 0f else text.timelineNamesWidth(timelines.map { it.name })
+    val axes = lines.maxOfOrNull { chart ->
+        val values = chart.series.flatMap { s ->
+            s.points.inZoomWindow(shown.start, shown.end) { it.x }.mapNotNull { it.y }
+        }
+        valueAxisWidth(valueTicks(values), chart.yFractionDigits, text) + LABEL_GAP.toPx()
+    } ?: 0f
+    maxOf(names, axes).toDp()
+}
 
 /** Each series' colour, by its id. */
 private fun legendColors(chart: HistoryLineChart, dark: Boolean) = chart.series.mapNotNull { series ->

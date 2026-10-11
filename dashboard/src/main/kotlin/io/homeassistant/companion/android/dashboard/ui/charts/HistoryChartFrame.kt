@@ -170,6 +170,9 @@ internal fun DrawScope.drawTimeAxis(place: TimeAxisPlace, axis: TimeAxis, text: 
     val span = (shown.end - shown.start).coerceAtLeast(1.0)
     fun x(time: Long) = (left + (time - shown.start) / span * (right - left)).toFloat()
     val ticks = timeAxisTicks(shown.start.toLong(), shown.end.toLong(), formats.zone, axis.fullSpanMillis)
+    // UPSTREAM-DIFF: every chart picks its label style from the zoomed span; on the History panel upstream only
+    // updates the chart being zoomed (the others, and timelines always, keep their first style), which looks like a
+    // frontend bug
     val labelSpan = (axis.fullSpanMillis * axis.ratio).toLong()
     val labels = ticks.map { tick ->
         val label = formats.historyTimeLabel(tick.time, labelSpan)

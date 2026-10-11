@@ -249,7 +249,8 @@ internal fun DashboardScreenContent(
                 DashboardUiState.NotFound -> Message(stringResource(R.string.native_dashboard_not_found))
                 is DashboardUiState.Error -> LoadErrorScreen(uiState.error, onRetry)
                 is DashboardUiState.UnsupportedStrategy -> UnsupportedMessage(
-                    stringResource(R.string.native_dashboard_unsupported_strategy),
+                    uiState.title?.let { stringResource(R.string.native_dashboard_unsupported_strategy, it) }
+                        ?: stringResource(R.string.native_dashboard_unsupported_untitled),
                     onOpenElsewhere,
                 )
                 is DashboardUiState.Content -> DashboardView(uiState, hass, now, onSelectTab, interactions)
