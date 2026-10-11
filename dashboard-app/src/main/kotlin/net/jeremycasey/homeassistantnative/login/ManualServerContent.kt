@@ -39,6 +39,7 @@ internal fun ColumnScope.ManualServerContent(
     state: LoginUiState.ChooseServer,
     onAddressChange: (String) -> Unit,
     onConnect: () -> Unit,
+    onSignInWithBrowser: () -> Unit,
 ) {
     Image(
         painter = painterResource(R.drawable.ic_manual_server),
@@ -89,7 +90,8 @@ internal fun ColumnScope.ManualServerContent(
             text = stringResource(commonR.string.manual_server_connect),
             onClick = onConnect,
             enabled = state.address.isNotBlank(),
-            modifier = Modifier.widthIn(max = MaxButtonWidth).fillMaxWidth().padding(bottom = HADimens.SPACE6),
+            modifier = Modifier.widthIn(max = MaxButtonWidth).fillMaxWidth(),
         )
+        SignInWithBrowserButton(onSignInWithBrowser, enabled = state.address.isNotBlank())
     }
 }

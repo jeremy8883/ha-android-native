@@ -25,4 +25,10 @@
     <string name="unsupported_opening_browser">This isn\'t available here yet. Opening it in your browser.</string>
     <string name="unsupported_no_address">This isn\'t available here yet, and Home Assistant can\'t be reached to open it elsewhere.</string>
     <string name="unsupported_no_app">This isn\'t available here yet, and there\'s no app to open it in.</string>
+    <string name="login_web_sign_in">Sign in with the browser</string>
+    <string name="login_web_failed">Couldn\'t open the sign-in page.</string>
+    <string name="login_web_failed_reason">Couldn\'t open the sign-in page: %1$s</string>
+    <string name="login_web_untrusted">The server\'s certificate isn\'t trusted, so the sign-in page wasn\'t opened.</string>
+    <string name="login_web_not_finished">Signing in didn\'t finish.</string>
+    <string name="login_web_retry">Try again</string>
 </resources>

@@ -66,6 +66,29 @@ internal sealed interface LoginUiState {
 
     /** Logged in; the server is being added. */
     data class SigningIn(val server: HttpUrl) : LoginUiState
+
+    /**
+     * Signing in on the server's own sign-in page ([url]) in a web view, after a sign-in page in front of the server
+     * answered, or when asked; with why the page couldn't be used ([problem]). A new [attempt] loads it again.
+     */
+    data class WebSignIn(
+        val server: HttpUrl,
+        val url: String,
+        val problem: WebSignInProblem? = null,
+        val attempt: Int = 0,
+    ) : LoginUiState
+}
+
+/** Why the web sign-in couldn't go on. */
+internal sealed interface WebSignInProblem {
+    /** The page didn't load ([description], the web view's reason). */
+    data class PageFailed(val description: String?) : WebSignInProblem
+
+    /** The server's certificate isn't trusted, so the page wasn't opened. */
+    data object Untrusted : WebSignInProblem
+
+    /** The sign-in ended without a code. */
+    data object NotFinished : WebSignInProblem
 }
 
 /** A form's texts, ready to show. */
@@ -85,13 +108,18 @@ internal data class Discovery(val servers: List<HomeAssistantInstance>, val fail
 internal class LoginViewModel @VisibleForTesting constructor(
     searcher: HomeAssistantSearcher,
     private val api: LoginFlowApi,
-    private val addServer: AddServer,
+    addServer: AddServer,
+    signInPageCookies: SignInPageCookies,
     ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     @Inject
-    constructor(searcher: HomeAssistantSearcher, api: LoginFlowApi, addServer: AddServer) :
-        this(searcher, api, addServer, Dispatchers.IO)
+    constructor(
+        searcher: HomeAssistantSearcher,
+        api: LoginFlowApi,
+        addServer: AddServer,
+        signInPageCookies: SignInPageCookies,
+    ) : this(searcher, api, addServer, signInPageCookies, Dispatchers.IO)
 
     private val _state = MutableStateFlow<LoginUiState>(LoginUiState.ChooseServer())
     val state: StateFlow<LoginUiState> = _state.asStateFlow()
@@ -100,6 +128,9 @@ internal class LoginViewModel @VisibleForTesting constructor(
 
     /** The id of the server added once logged in. */
     val loggedIn: Flow<Int> = _loggedIn.receiveAsFlow()
+
+    /** Signing in on the server's own sign-in page, and adding the server once logged in. */
+    val session = LoginSession(_state, viewModelScope, addServer, signInPageCookies, _loggedIn)
 
     val discovery: StateFlow<Discovery> = searcher.discoveredInstanceFlow()
         .runningFold(emptyList<HomeAssistantInstance>()) { found, instance ->
@@ -176,6 +207,11 @@ internal class LoginViewModel @VisibleForTesting constructor(
         val back = when {
             state is LoginUiState.ChooseServer && state.manual -> state.copy(manual = false, problem = null)
             state is LoginUiState.ChooseServer -> null
+            // Back to the address that led to the sign-in page
+            state is LoginUiState.WebSignIn -> LoginUiState.ChooseServer(
+                address = state.server.baseUrl(),
+                manual = true,
+            )
             else -> LoginUiState.ChooseServer()
         }
         back?.let { _state.value = it }
@@ -188,15 +224,18 @@ internal class LoginViewModel @VisibleForTesting constructor(
         viewModelScope.launch {
             when (val providers = api.providers(server)) {
                 is Fetched.Failure -> _state.value = chooseServerAgain(server, providers.error)
-                is Fetched.Success -> when (providers.value.size) {
-                    0 -> _state.value = chooseServerAgain(server, LoadError.UnexpectedResponse(PROVIDERS))
-                    // As the frontend, the first provider unless the user picks another
-                    1 -> start(server, providers.value.single())
-                    else -> _state.value = LoginUiState.ChooseProvider(
-                        server = server,
-                        providers = providers.value,
-                        title = texts.value?.pickProvider().orEmpty(),
-                    )
+                is Fetched.Success -> when (val login = providers.value) {
+                    ServerLogin.BehindSignInPage -> session.startWebSignIn(server)
+                    is ServerLogin.Providers -> when (login.providers.size) {
+                        0 -> _state.value = chooseServerAgain(server, LoadError.UnexpectedResponse(PROVIDERS))
+                        // As the frontend, the first provider unless the user picks another
+                        1 -> start(server, login.providers.single())
+                        else -> _state.value = LoginUiState.ChooseProvider(
+                            server = server,
+                            providers = login.providers,
+                            title = texts.value?.pickProvider().orEmpty(),
+                        )
+                    }
                 }
             }
         }
@@ -223,22 +262,7 @@ internal class LoginViewModel @VisibleForTesting constructor(
                 values = previous?.values?.takeIf { previous.step.stepId == step.stepId } ?: initialValues(step),
             )
             is LoginStep.Aborted -> LoginUiState.Aborted(server, provider, texts.abort(step), texts.startOver())
-            is LoginStep.Done -> {
-                _state.value = LoginUiState.SigningIn(server)
-                when (val added = addServer(server, step.code)) {
-                    is Fetched.Success -> {
-                        // Ready for the next login, as this view model outlives the screen (the activity's)
-                        _state.value = LoginUiState.ChooseServer()
-                        _loggedIn.send(added.value)
-                        return
-                    }
-                    is Fetched.Failure -> LoginUiState.ChooseServer(
-                        server.baseUrl(),
-                        problem = added.error,
-                        manual = true,
-                    )
-                }
-            }
+            is LoginStep.Done -> return session.finish(server, step.code)
         }
     }
 

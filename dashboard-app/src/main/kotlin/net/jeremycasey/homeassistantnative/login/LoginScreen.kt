@@ -78,6 +78,10 @@ internal fun LoginScreen(onLoggedIn: (Int) -> Unit, onClose: (() -> Unit)? = nul
         contentWindowInsets = WindowInsets.safeDrawing,
         containerColor = LocalHAColorScheme.current.colorSurfaceDefault,
     ) { padding ->
+        if (current is LoginUiState.WebSignIn) {
+            WebSignIn(current, viewModel, Modifier.padding(padding))
+            return@Scaffold
+        }
         Column(
             modifier = Modifier
                 .padding(padding)
@@ -93,7 +97,12 @@ internal fun LoginScreen(onLoggedIn: (Int) -> Unit, onClose: (() -> Unit)? = nul
         ) {
             when (current) {
                 is LoginUiState.ChooseServer -> if (current.manual) {
-                    ManualServerContent(current, viewModel::onAddressChange) { viewModel.onConnect() }
+                    ManualServerContent(
+                        current,
+                        viewModel::onAddressChange,
+                        onConnect = { viewModel.onConnect() },
+                        onSignInWithBrowser = viewModel.session::signInWithBrowser,
+                    )
                 } else {
                     ServerDiscoveryContent(
                         discovery,
@@ -106,9 +115,27 @@ internal fun LoginScreen(onLoggedIn: (Int) -> Unit, onClose: (() -> Unit)? = nul
                 is LoginUiState.Form -> LoginForm(current, viewModel)
                 is LoginUiState.Aborted -> Aborted(current, viewModel::onStartOver)
                 is LoginUiState.SigningIn -> SigningIn()
+                // Drawn above, out of the scrolling column
+                is LoginUiState.WebSignIn -> Unit
             }
         }
     }
+}
+
+/** The server's own sign-in page, full screen, out of the scrolling column. */
+@Composable
+private fun WebSignIn(state: LoginUiState.WebSignIn, viewModel: LoginViewModel, modifier: Modifier) {
+    val session = viewModel.session
+    WebSignInContent(
+        state,
+        WebSignInEvents(
+            onEnded = session::onWebSignInEnded,
+            onProblem = session::onWebSignInProblem,
+            onRetry = session::onWebSignInRetry,
+            onBack = { viewModel.onBack() },
+        ),
+        modifier,
+    )
 }
 
 /** The Home Assistant logo and a title, as the top of the frontend's login page. */
@@ -162,8 +189,9 @@ private fun ColumnScope.LoginForm(state: LoginUiState.Form, viewModel: LoginView
         HAAccentButton(
             texts.submit,
             viewModel::onSubmit,
-            Modifier.widthIn(max = MaxButtonWidth).fillMaxWidth().padding(bottom = HADimens.SPACE6),
+            Modifier.widthIn(max = MaxButtonWidth).fillMaxWidth(),
         )
+        SignInWithBrowserButton(viewModel.session::signInWithBrowser)
     }
 }
 
@@ -254,6 +282,17 @@ internal fun problemText(problem: LoadError): String = when (problem) {
     } else {
         stringResource(R.string.login_error_unexpected)
     }
+}
+
+/** Signing in on the server's own sign-in page instead: for two-step sign-ins, or a sign-in page in front of it. */
+@Composable
+internal fun SignInWithBrowserButton(onClick: () -> Unit, enabled: Boolean = true) {
+    HAPlainButton(
+        stringResource(R.string.login_web_sign_in),
+        onClick,
+        Modifier.widthIn(max = MaxButtonWidth).fillMaxWidth().padding(bottom = HADimens.SPACE6),
+        enabled = enabled,
+    )
 }
 
 private const val PASSWORD = "password"

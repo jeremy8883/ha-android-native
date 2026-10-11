@@ -41,16 +41,31 @@ class LoginFlowApi @VisibleForTesting internal constructor(
     @Inject
     constructor(apis: HomeAssistantApis) : this(apis, Dispatchers.IO)
 
-    /** The ways of logging in [server] offers. */
-    suspend fun providers(server: HttpUrl): Fetched<List<AuthProvider>> =
-        call(Request.Builder().url(server.at(PROVIDERS_PATH)).get().build()).flatMap { result ->
-            val providers = (result as? JsonObject)?.array("providers")?.filterIsInstance<JsonObject>()
-                ?.mapNotNull { provider ->
-                    val type = provider.string("type") ?: return@mapNotNull null
-                    AuthProvider(name = provider.string("name") ?: type, id = provider.string("id"), type = type)
-                }
-            providers?.let { Fetched.Success(it) } ?: Fetched.Failure(LoadError.UnexpectedResponse(PROVIDERS_PATH))
+    /**
+     * The ways of logging in [server] offers, or that a sign-in page stands in front of it (a proxy's, which needs the
+     * web sign-in).
+     */
+    suspend fun providers(server: HttpUrl): Fetched<ServerLogin> {
+        val request = Request.Builder().url(server.at(PROVIDERS_PATH)).get().build()
+        return fetch(request).flatMap { answer ->
+            if (isSignInPage(request.url, answer.answeredBy, answer.status, isJson = answer.json != null)) {
+                Timber.i("A sign-in page answers for the server, signing in on it")
+                Fetched.Success(ServerLogin.BehindSignInPage)
+            } else {
+                answer.toJson(request).flatMap(::parseProviders)
+            }
         }
+    }
+
+    private fun parseProviders(result: JsonElement): Fetched<ServerLogin> {
+        val providers = (result as? JsonObject)?.array("providers")?.filterIsInstance<JsonObject>()
+            ?.mapNotNull { provider ->
+                val type = provider.string("type") ?: return@mapNotNull null
+                AuthProvider(name = provider.string("name") ?: type, id = provider.string("id"), type = type)
+            }
+        return providers?.let { Fetched.Success(ServerLogin.Providers(it)) }
+            ?: Fetched.Failure(LoadError.UnexpectedResponse(PROVIDERS_PATH))
+    }
 
     /** Start logging in to [server] with [provider]. */
     suspend fun start(server: HttpUrl, provider: AuthProvider): Fetched<LoginStep> {
@@ -74,24 +89,37 @@ class LoginFlowApi @VisibleForTesting internal constructor(
         .build()
 
     /** The JSON [request] answers with, or why it failed; a refusal carries the server's message. */
-    private suspend fun call(request: Request): Fetched<JsonElement> = withContext(ioDispatcher) {
+    private suspend fun call(request: Request): Fetched<JsonElement> = fetch(request).flatMap { it.toJson(request) }
+
+    /** What [request] was answered with, or that nothing answered. */
+    private suspend fun fetch(request: Request): Fetched<Answer> = withContext(ioDispatcher) {
         try {
             apis.getOkHttpClient().newCall(request).execute().use { response ->
-                val json = response.body?.string()?.let(::parseJson)
-                when {
-                    response.isSuccessful && json != null -> Fetched.Success(json)
-                    response.isSuccessful -> Fetched.Failure(LoadError.UnexpectedResponse(request.url.encodedPath))
-                    else -> Fetched.Failure(
-                        LoadError.Server(
-                            code = (json as? JsonObject)?.string("code") ?: response.code.toString(),
-                            message = (json as? JsonObject)?.string("message"),
-                        ),
-                    )
-                }
+                Fetched.Success(
+                    Answer(
+                        json = response.body?.string()?.let(::parseJson),
+                        status = response.code,
+                        answeredBy = response.request.url,
+                    ),
+                )
             }
         } catch (e: IOException) {
             Timber.w(e, "Failed to reach ${request.url.encodedPath}")
             Fetched.Failure(LoadError.NoResponse)
+        }
+    }
+
+    /** An answer: its [json] when it was JSON, its HTTP [status], and the address that gave it ([answeredBy]). */
+    private data class Answer(val json: JsonElement?, val status: Int, val answeredBy: HttpUrl) {
+        fun toJson(request: Request): Fetched<JsonElement> = when {
+            status in SUCCESS && json != null -> Fetched.Success(json)
+            status in SUCCESS -> Fetched.Failure(LoadError.UnexpectedResponse(request.url.encodedPath))
+            else -> Fetched.Failure(
+                LoadError.Server(
+                    code = (json as? JsonObject)?.string("code") ?: status.toString(),
+                    message = (json as? JsonObject)?.string("message"),
+                ),
+            )
         }
     }
 
@@ -102,11 +130,12 @@ class LoginFlowApi @VisibleForTesting internal constructor(
         null
     }
 
-    private companion object {
+    internal companion object {
         /** The companion app's client (`AuthenticationService.CLIENT_ID`), which the token exchange uses too. */
         const val CLIENT_ID = "https://home-assistant.io/android"
         const val REDIRECT_URI = "homeassistant://auth-callback"
         const val PROVIDERS_PATH = "auth/providers"
+        val SUCCESS = 200..299
         const val LOGIN_FLOW_PATH = "auth/login_flow"
         val JSON = "application/json".toMediaType()
     }
@@ -175,3 +204,11 @@ private fun JsonObject?.strings(): Map<String, String> =
     this?.mapNotNull { (key, value) -> value.stringOrNull?.let { key to it } }?.toMap().orEmpty()
 
 private fun unexpected(what: String) = Fetched.Failure(LoadError.UnexpectedResponse(what))
+
+/** How a server is logged in to: with one of its [Providers] natively, or on the sign-in page in front of it. */
+sealed interface ServerLogin {
+    data class Providers(val providers: List<AuthProvider>) : ServerLogin
+
+    /** A proxy's sign-in page answers in the server's place: the web sign-in goes through it. */
+    data object BehindSignInPage : ServerLogin
+}

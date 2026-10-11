@@ -78,6 +78,9 @@ controls, Wear OS, Android Auto, NFC tags, and voice Assist from the phone.
 
 ### Sign-in and servers
 
-- Servers behind a browser sign-in page (Cloudflare Access, Authelia and similar).
-- Client certificates (mTLS).
-- Editing a server's name and addresses after adding it.
+- Client certificates (mTLS) (planned).
+- Home and away addresses: a local address used on your home Wi-Fi and an outside one elsewhere, and editing a
+  server's name and addresses after adding it (planned). For now a server has one address.
+
+Servers behind a sign-in page of their own (Cloudflare Access, Authelia and similar) are supported: the app opens
+the server's sign-in page when it finds one, and "Sign in with the browser" opens it on any server.
