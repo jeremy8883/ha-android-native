@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.R as commonR
+import io.homeassistant.companion.android.common.compose.composable.ButtonSize
 import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.theme.HADimens
@@ -55,7 +57,8 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.loadErrorText
 
 /**
- * Upstream's "Cleaning · By area" button, opening the areas to clean.
+ * Upstream's "Cleaning · By area" button, opening the areas to clean; [onConfigure] opens the full dialog, where an
+ * admin maps the vacuum's segments to areas.
  *
  * Upstream: part of `more-info-vacuum` (src/dialogs/more-info/controls/more-info-vacuum.ts)
  */
@@ -65,6 +68,7 @@ internal fun CleanAreasButton(
     state: EntityState,
     hass: HassSnapshot,
     onAction: (CardAction) -> Unit,
+    onConfigure: (() -> Unit)?,
 ) {
     val colors = LocalHAColorScheme.current
     var open by remember { mutableStateOf(false) }
@@ -86,12 +90,13 @@ internal fun CleanAreasButton(
         }
         DashboardIcon("mdi:chevron-right", colors.colorTextSecondary, Modifier.size(HASize.XL))
     }
-    if (open) CleanAreasDialog(state, hass, onAction) { open = false }
+    if (open) CleanAreasDialog(state, hass, onAction, onConfigure) { open = false }
 }
 
 /**
  * Port of `ha-more-info-view-vacuum-clean-areas`: the areas mapped to the vacuum's map (from its registry entry,
- * loaded here), by floor; taps choose them in order (numbered), and start cleans them.
+ * loaded here), by floor; taps choose them in order (numbered), and start cleans them. Without mapped areas, an
+ * admin's "Configure" opens the full dialog ([onConfigure]), as the segment mapping isn't drawn natively.
  *
  * Upstream: `ha-more-info-view-vacuum-clean-areas`
  * (src/dialogs/more-info/components/vacuum/ha-more-info-view-vacuum-clean-areas.ts)
@@ -101,6 +106,7 @@ private fun CleanAreasDialog(
     state: EntityState,
     hass: HassSnapshot,
     onAction: (CardAction) -> Unit,
+    onConfigure: (() -> Unit)?,
     onDismiss: () -> Unit,
 ) {
     val entry by favoritesViewModel(state.entityId).entry.collectAsStateWithLifecycle()
@@ -118,7 +124,8 @@ private fun CleanAreasDialog(
                     color = LocalHAColorScheme.current.colorOnDangerNormal,
                 )
                 is Loadable.Ready -> view?.let {
-                    CleanAreasContent(it, chosen) { area ->
+                    val configure = onConfigure?.let { open -> { open().also { onDismiss() } } }
+                    CleanAreasContent(it, chosen, configure) { area ->
                         chosen =
                             if (area in chosen) chosen - area else chosen + area
                     }
@@ -139,14 +146,20 @@ private fun CleanAreasDialog(
 }
 
 /**
- * The areas by floor, then the hint on the order; or, without mapped areas, why there are none.
+ * The areas by floor, then the hint on the order; or, without mapped areas, why there are none and for an admin
+ * the button configuring them ([onConfigure]).
  *
  * Upstream: part of `ha-more-info-view-vacuum-clean-areas`
  * (src/dialogs/more-info/components/vacuum/ha-more-info-view-vacuum-clean-areas.ts)
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun CleanAreasContent(view: VacuumCleanAreas, chosen: List<String>, onToggle: (String) -> Unit) {
+private fun CleanAreasContent(
+    view: VacuumCleanAreas,
+    chosen: List<String>,
+    onConfigure: (() -> Unit)?,
+    onToggle: (String) -> Unit,
+) {
     val colors = LocalHAColorScheme.current
     view.empty?.let { empty ->
         Column(
@@ -160,6 +173,15 @@ private fun CleanAreasContent(view: VacuumCleanAreas, chosen: List<String>, onTo
                 style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Center),
                 color = colors.colorTextSecondary,
             )
+            val configureLabel = empty.configureLabel
+            if (configureLabel != null && onConfigure != null) {
+                HAPlainButton(
+                    configureLabel,
+                    onConfigure,
+                    size = ButtonSize.SMALL,
+                    prefix = { DashboardIcon(CONFIGURE_ICON, LocalContentColor.current, Modifier.size(HASize.XL)) },
+                )
+            }
         }
         return
     }
@@ -242,3 +264,5 @@ private val BUTTON_MAX_WIDTH = 400.dp
 private val CARD_WIDTH = 104.dp
 private val BADGE = 20.dp
 private val BORDER = 2.dp
+
+private const val CONFIGURE_ICON = "mdi:cog-outline"

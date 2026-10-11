@@ -18,8 +18,11 @@ import kotlinx.serialization.json.JsonPrimitive
 /** A plain text button under the details. */
 data class MoreInfoAction(val label: String, val enabled: Boolean, val action: CardAction.CallService)
 
-/** An automation's details: when it last ran, and the button running its actions. */
-data class AutomationMoreInfo(val lastTriggered: String, val run: MoreInfoAction)
+/**
+ * An automation's details: when it last ran, as the label ("Last triggered:") and the capitalised relative time
+ * shown at either end of a line, and the button running its actions.
+ */
+data class AutomationMoreInfo(val lastTriggeredLabel: String, val lastTriggered: String, val run: MoreInfoAction)
 
 /** A counter's increment, decrement and reset buttons, each disabled at its limit, or `null` for another entity. */
 fun HassSnapshot.counterActions(state: EntityState): List<MoreInfoAction>? {
@@ -35,7 +38,7 @@ fun HassSnapshot.counterActions(state: EntityState): List<MoreInfoAction>? {
 }
 
 /**
- * An automation's details at [now]: "Last triggered: 18 minutes ago" ("Never" without a run), and "Run actions",
+ * An automation's details at [now]: "Last triggered:" and "18 minutes ago" ("Never" without a run), and "Run actions",
  * which skips its conditions; `null` for another entity.
  */
 fun HassSnapshot.automationMoreInfo(state: EntityState, now: Instant): AutomationMoreInfo? {
@@ -43,9 +46,8 @@ fun HassSnapshot.automationMoreInfo(state: EntityState, now: Instant): Automatio
     val last = state.attributes.string("last_triggered")?.let { parseJsDate(it, ZoneOffset.UTC) }
     val time = last?.let { formats.relativeTime(minOf(it, now), now) } ?: localize("ui.components.relative_time.never")
     return AutomationMoreInfo(
-        lastTriggered = "${localize("ui.card.automation.last_triggered")}: ${time.replaceFirstChar {
-            it.uppercaseChar()
-        }}",
+        lastTriggeredLabel = "${localize("ui.card.automation.last_triggered")}:",
+        lastTriggered = time.replaceFirstChar { it.uppercaseChar() },
         run = MoreInfoAction(
             localize("ui.card.automation.trigger"),
             state.state != UNAVAILABLE,

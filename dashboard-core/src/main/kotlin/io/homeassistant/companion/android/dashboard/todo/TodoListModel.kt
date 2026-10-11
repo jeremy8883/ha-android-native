@@ -24,6 +24,7 @@ import kotlinx.serialization.json.JsonObject
  *
  * @property unavailable whether the list is unavailable or unknown, which disables the card
  * @property addInDialog whether a new item opens in the dialog first (lists filtered by due date)
+ * @property itemTap what a tap on an item does (`item_tap_action`)
  */
 data class TodoListModel(
     val entityId: String,
@@ -40,7 +41,29 @@ data class TodoListModel(
     val unavailable: Boolean,
     val features: TodoFeatures,
     val addInDialog: Boolean = false,
+    val itemTap: TodoItemTap = TodoItemTap.Edit,
 )
+
+/** What a tap on an item does, from the card's `item_tap_action` (port of `_itemTap`). */
+sealed interface TodoItemTap {
+    /** Open the item in the dialog: `edit`, or no action set. */
+    data object Edit : TodoItemTap
+
+    /** Complete the item, or make it to do again: `toggle`. */
+    data object Toggle : TodoItemTap
+
+    /** Nothing, for another action. */
+    data object None : TodoItemTap
+}
+
+private fun itemTap(action: String?): TodoItemTap = when (action) {
+    null, "", ITEM_TAP_EDIT -> TodoItemTap.Edit
+    ITEM_TAP_TOGGLE -> TodoItemTap.Toggle
+    else -> TodoItemTap.None
+}
+
+private const val ITEM_TAP_EDIT = "edit"
+private const val ITEM_TAP_TOGGLE = "toggle"
 
 /** An item as its row shows it: its due text ("Today", "In 2 days") and whether it's [overdue]. */
 data class TodoRow(val item: TodoItem, val due: String?, val overdue: Boolean)
@@ -78,6 +101,7 @@ fun HassSnapshot.todoListModel(card: CardConfig, items: List<TodoItem>?, now: In
         unavailable = state.state == UNAVAILABLE || state.state == UNKNOWN,
         features = features,
         addInDialog = json.obj("due_date_period") != null,
+        itemTap = itemTap(json.string("item_tap_action")),
     )
 }
 

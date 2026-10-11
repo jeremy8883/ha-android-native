@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard.ui.todo
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -49,6 +50,7 @@ import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.todo.TodoItem
+import io.homeassistant.companion.android.dashboard.todo.TodoItemTap
 import io.homeassistant.companion.android.dashboard.todo.TodoListModel
 import io.homeassistant.companion.android.dashboard.todo.TodoRow
 import io.homeassistant.companion.android.dashboard.todo.TodoStatus
@@ -61,6 +63,7 @@ import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.MarkdownText
 import io.homeassistant.companion.android.dashboard.ui.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.ConfirmDialog
+import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -279,7 +282,7 @@ private fun CompletedSection(
             if (model.canClear) {
                 SectionMenu(
                     localize("$strings.clear_items"),
-                    "mdi:delete",
+                    "mdi:delete-sweep",
                     danger = true,
                     onClick = onClear,
                 )
@@ -367,7 +370,8 @@ private fun SectionMenu(label: String, icon: String, danger: Boolean = false, on
 
 /**
  * An item: its box (a dash without a status), its summary (struck through once completed), description and due
- * time (in the danger colour once overdue), and a delete button for lists that can't edit items.
+ * time (in the warning colour once overdue), and a delete button for lists that can't edit items. A tap opens it,
+ * toggles it or does nothing, as the card's `item_tap_action` says.
  *
  * Upstream: part of `hui-todo-list-card` (src/panels/lovelace/cards/hui-todo-list-card.ts)
  */
@@ -383,7 +387,14 @@ private fun TodoItemRow(
     val item = row.item
     val completed = item.status == TodoStatus.Completed
     Row(
-        Modifier.fillMaxWidth().clickable(enabled = !model.unavailable) { onOpen(item) }
+        Modifier.fillMaxWidth()
+            .clickable(enabled = !model.unavailable) {
+                when (model.itemTap) {
+                    TodoItemTap.Edit -> onOpen(item)
+                    TodoItemTap.Toggle -> if (model.canToggle) onAction(toggleTodoItem(model.entityId, item))
+                    TodoItemTap.None -> Unit
+                }
+            }
             .padding(end = HADimens.SPACE4, top = HADimens.SPACE1, bottom = HADimens.SPACE1),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -407,7 +418,9 @@ private fun TodoItemRow(
             )
             item.description?.let { MarkdownText(it, Modifier.fillMaxWidth()) }
             row.due?.let { due ->
-                val color = if (row.overdue && !completed) colors.colorOnDangerNormal else colors.colorTextSecondary
+                val overdue = row.overdue && !completed
+                val warning = resolveVariable(WARNING_COLOR, isSystemInDarkTheme()) ?: colors.colorOnWarningNormal
+                val color = if (overdue) warning else colors.colorTextSecondary
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
@@ -487,3 +500,6 @@ private fun ReorderRow(
         }
     }
 }
+
+/** `--warning-color`, an overdue item's due time. */
+private const val WARNING_COLOR = "warning-color"

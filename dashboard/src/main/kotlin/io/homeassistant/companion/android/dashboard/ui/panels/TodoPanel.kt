@@ -163,7 +163,8 @@ private fun ListPicker(
 }
 
 /**
- * The list's menu: its details (`more-info`), and "Delete list" for a local list ([onDelete]).
+ * The list's menu: its details (`more-info`, only when Assist can use the list: the `conversation` integration is
+ * loaded), and "Delete list" for a local list ([onDelete]); no button when it has neither.
  *
  * UPSTREAM-DIFF: no "Assist" (the app has no Assist).
  *
@@ -174,23 +175,27 @@ private fun ListMenu(entityId: String, hass: HassSnapshot, onAction: (CardAction
     var open by remember { mutableStateOf(false) }
     val colors = LocalHAColorScheme.current
     val menu = hass.localize("ui.common.menu")
+    val information = CONVERSATION in hass.config.components
+    if (!information && onDelete == null) return
     Box {
         IconButton(onClick = { open = true }, modifier = Modifier.semantics { contentDescription = menu }) {
             DashboardIcon("mdi:dots-vertical", colors.colorTextPrimary, Modifier.size(HASize.X2L))
         }
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
-            DropdownMenuItem(
-                text = { Text(hass.localize("ui.panel.todo.information"), color = colors.colorTextPrimary) },
-                leadingIcon = {
-                    DashboardIcon("mdi:information-outline", colors.colorTextSecondary, Modifier.size(HASize.X2L))
-                },
-                onClick = {
-                    open = false
-                    onAction(CardAction.MoreInfo(entityId))
-                },
-            )
+            if (information) {
+                DropdownMenuItem(
+                    text = { Text(hass.localize("ui.panel.todo.information"), color = colors.colorTextPrimary) },
+                    leadingIcon = {
+                        DashboardIcon("mdi:information-outline", colors.colorTextSecondary, Modifier.size(HASize.X2L))
+                    },
+                    onClick = {
+                        open = false
+                        onAction(CardAction.MoreInfo(entityId))
+                    },
+                )
+            }
             onDelete?.let { delete ->
-                HorizontalDivider()
+                if (information) HorizontalDivider()
                 DropdownMenuItem(
                     text = { Text(hass.localize("ui.panel.todo.delete_list"), color = colors.colorOnDangerNormal) },
                     leadingIcon = {
@@ -205,3 +210,6 @@ private fun ListMenu(entityId: String, hass: HassSnapshot, onAction: (CardAction
         }
     }
 }
+
+/** The integration whose loading shows the list's "Information" (`_conversation`). */
+private const val CONVERSATION = "conversation"

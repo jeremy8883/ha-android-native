@@ -2,8 +2,10 @@ package io.homeassistant.companion.android.dashboard.ui.moreinfo
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
@@ -16,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HATextField
 import io.homeassistant.companion.android.common.compose.theme.HADimens
@@ -31,7 +34,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.TimerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.timerStartCall
 
 /**
- * Port of the dialogs' `.actions`: plain text buttons in a row.
+ * Port of the dialogs' `.actions`: plain text buttons, centred and wrapping.
  *
  * Upstream: the `.actions` of `more-info-counter`, `more-info-timer`, `more-info-automation`
  * (src/dialogs/more-info/controls/more-info-counter.ts; src/dialogs/more-info/controls/more-info-timer.ts;
@@ -39,20 +42,29 @@ import io.homeassistant.companion.android.dashboard.moreinfo.timerStartCall
  */
 @Composable
 internal fun MoreInfoActionRow(actions: List<MoreInfoAction>, onAction: (CardAction) -> Unit) {
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.End)) {
+    FlowRow(
+        Modifier.fillMaxWidth().padding(vertical = HADimens.SPACE2),
+        horizontalArrangement = Arrangement.Center,
+    ) {
         actions.forEach { HAPlainButton(it.label, { onAction(it.action) }, enabled = it.enabled) }
     }
 }
 
 /**
- * Port of `more-info-automation`: when it last ran, and the button running its actions.
+ * Port of `more-info-automation`: a divider, when it last ran (label and time at either end of the line), and the
+ * button running its actions.
  *
  * Upstream: `more-info-automation` (src/dialogs/more-info/controls/more-info-automation.ts)
  */
 @Composable
 internal fun MoreInfoAutomation(info: AutomationMoreInfo, onAction: (CardAction) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
-        Text(info.lastTriggered, style = HATextStyle.Body, color = LocalHAColorScheme.current.colorTextPrimary)
+    val color = LocalHAColorScheme.current.colorTextPrimary
+    Column {
+        HAHorizontalDivider(Modifier.padding(vertical = HADimens.SPACE4))
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(info.lastTriggeredLabel, style = HATextStyle.Body, color = color)
+            Text(info.lastTriggered, style = HATextStyle.Body, color = color)
+        }
         MoreInfoActionRow(listOf(info.run), onAction)
     }
 }

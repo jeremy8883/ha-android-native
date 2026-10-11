@@ -67,8 +67,8 @@ class ActionsMoreInfoGoldenTest {
     @TestFactory
     fun `Given captured automations when deriving the last run then the label matches`() = fixture.controlVariants("automation") { hass, state, captured ->
         val expected = captured.obj("main")!!.string("lastTriggered")!!
-        val actual = hass.automationMoreInfo(state, Instant.EPOCH)!!.lastTriggered
-        assertTrue(actual.startsWith(expected.substringBefore(':')), "$expected / $actual")
+        val actual = hass.automationMoreInfo(state, Instant.EPOCH)!!.lastTriggeredLabel
+        assertTrue(expected.startsWith(actual), "$expected / $actual")
     }
 
     @TestFactory

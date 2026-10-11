@@ -34,12 +34,6 @@ on the right are the frontend's (20260624.6).
     src/components/ha-badge.ts:67-110)
 11. Heading badges: a pill background and primary text; upstream has no background and secondary text
     (`ui/cards/HeadingCard.kt:123,147`; src/components/ha-heading-badge.ts:36)
-12. Counter, timer and automation details: buttons aligned right; upstream centres them
-    (`ui/moreinfo/MoreInfoActions.kt:42`; src/dialogs/more-info/controls/more-info-counter.ts:74-79)
-13. Automation details: "Last triggered" is one line without the divider; upstream splits label and time
-    (`ui/moreinfo/MoreInfoActions.kt:55`; more-info-automation.ts:32-39)
-14. Assist chat: "can't control Home Assistant" is grey text; upstream shows an alert box
-    (`ui/moreinfo/MoreInfoConversation.kt:93`; src/components/ha-assist-chat.ts:167-170)
 15. Details: Attributes hidden when there are none, and no card around state and attributes
     (`ui/MoreInfoSheet.kt:271`; src/dialogs/more-info/ha-more-info-details.ts:70-103)
 16. Empty state card: buttons are plain rows, `appearance`/`variant` ignored, different padding
@@ -48,10 +42,6 @@ on the right are the frontend's (20260624.6).
     (`ui/cards/EntityRowInputs.kt:56`; src/panels/lovelace/entity-rows/hui-input-number-entity-row.ts:80,137)
 18. Picture entity card: always 16:9 (`aspect_ratio`, `fit_mode` ignored); a lone name or state isn't centred
     (`ui/cards/PictureEntityCard.kt:48`; src/panels/lovelace/cards/hui-picture-entity-card.ts:144-152,218)
-19. To-do: overdue dates in the danger colour (upstream: warning); "Clear completed" uses `mdi:delete` (upstream:
-    delete-sweep) (`ui/todo/TodoListCard.kt:410,282`; hui-todo-list-card.ts:1038,549)
-20. To-do panel: "Information" always shown (upstream: only when Assist can use the list); the delete confirmation
-    isn't red (`ui/panels/TodoPanel.kt:183`, `TodoListManagement.kt:105`; src/panels/todo/ha-panel-todo.ts:236-241,319-329)
 21. History timeline tooltip: no entity name, no duration, start and end on one line without seconds
     (`ui/charts/TimelineChartView.kt:113`; src/components/chart/state-history-chart-timeline.ts:135-162)
 22. Energy graph legends: hidden items crossed out (upstream: empty circle); no collapsing to 6 on phones with
@@ -69,8 +59,6 @@ on the right are the frontend's (20260624.6).
 27. Thermostat card: `features` and `show_current_as_primary` not drawn (`ui/cards/ThermostatCard.kt:46`,
     `ui/controls/CircularStateControl.kt:143`; hui-thermostat-card.ts:160,175)
 28. Entities card: `header` and `footer` elements not drawn (`ui/cards/EntitiesCard.kt:60`; hui-entities-card.ts:190-202)
-29. To-do card: `item_tap_action` ignored, a tap always opens the item (`ui/todo/TodoListCard.kt:386`;
-    hui-todo-list-card.ts:736-745)
 30. Chart legends: no long-press "show only this one" (`ui/charts/HistoryLegend.kt:87`,
     `ui/cards/energy/EnergyUsageGraphCard.kt:134`; ha-chart-base.ts:1212-1261)
 31. Energy devices donut: slices and legend don't open the device's details; the legend can't hide devices
@@ -79,8 +67,6 @@ on the right are the frontend's (20260624.6).
     (`ui/cards/energy/EnergyDateSelectionCard.kt:145,89`; hui-energy-period-selector.ts:254,261-267)
 33. Toggle control: tap only; upstream also toggles on a swipe (`ui/controls/StateToggleControl.kt:61`;
     src/components/ha-control-switch.ts:96-120)
-34. Vacuum clean areas: no "Configure" button for admins when no areas are mapped
-    (`ui/moreinfo/VacuumCleanAreasDialog.kt:151`; ha-more-info-view-vacuum-clean-areas.ts:207-224)
 35. Assist chat: no "thinking" section or tool calls (`ui/moreinfo/MoreInfoConversation.kt:135`;
     ha-assist-chat.ts:187-260) — in the README already
 36. Details: no YAML view of the attributes (`ui/MoreInfoView.kt:103`; ha-more-info-dialog.ts:819-829)

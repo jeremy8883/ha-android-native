@@ -127,7 +127,7 @@ internal fun MoreInfoSheet(
                 )
             }
             when (view) {
-                MoreInfoView.Main -> MoreInfoMain(model, snapshot, instant, interactions)
+                MoreInfoView.Main -> MoreInfoMain(model, snapshot, instant, interactions, onShowFull)
                 MoreInfoView.History -> MoreInfoHistoryView(model.entityId, snapshot, instant, interactions)
                 MoreInfoView.Details -> MoreInfoDetailsView(model, snapshot.localize)
             }
@@ -155,6 +155,7 @@ private fun ColumnScope.MoreInfoMain(
     hass: HassSnapshot,
     now: Instant,
     interactions: CardInteractions,
+    onShowFull: (() -> Unit)?,
 ) {
     val logbook = if (model.inlineHistory && hass.showsLogbook(model.entityId)) {
         rememberLogbookSection(model.entityId, hass, now)
@@ -179,7 +180,7 @@ private fun ColumnScope.MoreInfoMain(
         state = listState,
         modifier = Modifier.fillMaxWidth().weight(1f),
         contentPadding = PaddingValues(horizontal = HADimens.SPACE6),
-    ) { mainItems(MainList(model, hass, now, interactions, logbook)) }
+    ) { mainItems(MainList(model, hass, now, interactions, logbook, onShowFull)) }
     if (update != null && state != null) {
         HAHorizontalDivider()
         Box(Modifier.padding(horizontal = HADimens.SPACE6, vertical = HADimens.SPACE4)) {
@@ -195,6 +196,7 @@ private class MainList(
     val now: Instant,
     val interactions: CardInteractions,
     val logbook: LogbookSection?,
+    val onShowFull: (() -> Unit)?,
 )
 
 private fun LazyListScope.mainItems(list: MainList) {
@@ -210,7 +212,7 @@ private fun LazyListScope.mainItems(list: MainList) {
     hass.states[model.entityId]?.let { state ->
         item(key = "controls") {
             Column(section, verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
-                DomainControls(model, state, hass, now, interactions.onAction)
+                DomainControls(model, state, hass, now, interactions.onAction, list.onShowFull)
             }
         }
     }
@@ -277,7 +279,8 @@ private fun ColumnScope.MoreInfoDetailsView(model: MoreInfoModel, localize: Loca
 }
 
 /**
- * The controls of the entity's domain, as its `more-info-<domain>` leads with them.
+ * The controls of the entity's domain, as its `more-info-<domain>` leads with them; [onShowFull] opens the full
+ * dialog for what they leave to it.
  *
  * Upstream: `more-info-content` (src/dialogs/more-info/more-info-content.ts)
  */
@@ -288,6 +291,7 @@ internal fun DomainControls(
     hass: HassSnapshot,
     now: Instant,
     onAction: (CardAction) -> Unit,
+    onShowFull: (() -> Unit)? = null,
 ) {
     model.light?.let { MoreInfoLight(it, state, hass, onAction) }
     model.climate?.let { MoreInfoClimate(it, state, onAction) }
@@ -296,7 +300,7 @@ internal fun DomainControls(
     model.lock?.let { MoreInfoLock(it, onAction) }
     model.alarm?.let { MoreInfoAlarm(it, onAction) }
     model.mediaPlayer?.let { MoreInfoMediaPlayer(it, state.entityId, hass, now, onAction) }
-    model.vacuum?.let { MoreInfoVacuum(it, state, hass, onAction) }
+    model.vacuum?.let { MoreInfoVacuum(it, state, hass, onAction, onShowFull) }
     SimpleDomainControls(model, state, onAction)
     model.waterHeater?.let { heater ->
         SingleDialControls(

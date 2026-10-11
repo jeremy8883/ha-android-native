@@ -39,7 +39,8 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 /**
  * The controls of a vacuum's details, port of `more-info-vacuum` (frontend@20260624.6
  * src/dialogs/more-info/controls/more-info-vacuum.ts): the robot drawn as it is, the command buttons and the fan
- * speed menu, and cleaning by area. The battery shows beside the header's time.
+ * speed menu, and cleaning by area ([onShowFull] opening the full dialog to map its areas). The battery shows beside
+ * the header's time.
  *
  * Upstream: `more-info-vacuum` (src/dialogs/more-info/controls/more-info-vacuum.ts)
  */
@@ -49,6 +50,7 @@ internal fun MoreInfoVacuum(
     state: EntityState,
     hass: HassSnapshot,
     onAction: (CardAction) -> Unit,
+    onShowFull: (() -> Unit)? = null,
 ) {
     val colors = LocalHAColorScheme.current
     Column(
@@ -59,7 +61,7 @@ internal fun MoreInfoVacuum(
         VacuumStatus(info.visual, info.color?.toColor() ?: colors.colorFillDisabledLoudResting)
         CommandButtonRow(info.buttons, onAction)
         ControlSelectMenus(listOfNotNull(info.fanSpeed), onAction)
-        info.cleanAreasLabel?.let { CleanAreasButton(it, state, hass, onAction) }
+        info.cleanAreasLabel?.let { CleanAreasButton(it, state, hass, onAction, onShowFull) }
     }
 }
 

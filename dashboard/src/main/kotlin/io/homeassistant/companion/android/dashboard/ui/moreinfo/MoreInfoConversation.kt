@@ -48,6 +48,7 @@ import io.homeassistant.companion.android.dashboard.data.AssistRepository
 import io.homeassistant.companion.android.dashboard.data.Fetched
 import io.homeassistant.companion.android.dashboard.data.LoadError
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
+import io.homeassistant.companion.android.dashboard.ui.HaAlert
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.MarkdownText
 import javax.inject.Inject
@@ -90,11 +91,7 @@ internal fun MoreInfoConversation(agentId: String, hass: HassSnapshot, modifier:
             verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
         ) {
             if (!hass.assistControlsHome(shown.pipeline)) {
-                Text(
-                    hass.localize("ui.dialogs.voice_command.conversation_no_control"),
-                    style = HATextStyle.BodyMedium,
-                    color = colors.colorTextSecondary,
-                )
+                HaAlert(hass.localize("ui.dialogs.voice_command.conversation_no_control"))
             }
             // Newest at the bottom, the list kept scrolled to it
             val messages = shown.chat.messages.asReversed()

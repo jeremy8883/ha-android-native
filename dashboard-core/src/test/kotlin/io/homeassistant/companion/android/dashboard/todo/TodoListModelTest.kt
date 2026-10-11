@@ -49,6 +49,14 @@ class TodoListModelTest {
     }
 
     @Test
+    fun `Given item_tap_action when deriving the card then a tap edits, toggles or does nothing as _itemTap`() {
+        assertEquals(TodoItemTap.Edit, hass.todoListModel(card(), items, now)!!.itemTap)
+        assertEquals(TodoItemTap.Edit, hass.todoListModel(card(""", "item_tap_action": "edit""""), items, now)!!.itemTap)
+        assertEquals(TodoItemTap.Toggle, hass.todoListModel(card(""", "item_tap_action": "toggle""""), items, now)!!.itemTap)
+        assertEquals(TodoItemTap.None, hass.todoListModel(card(""", "item_tap_action": "none""""), items, now)!!.itemTap)
+    }
+
+    @Test
     fun `Given an item when ticking, editing and deleting it then the calls are upstream's`() {
         val milk = items.first()
         val toggle = toggleTodoItem("todo.shopping_list", milk)
