@@ -32,6 +32,7 @@ import io.homeassistant.companion.android.dashboard.energy.EnergyRangePreset
 import io.homeassistant.companion.android.dashboard.energy.energyPeriodTitle
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
+import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.strategy.energy.DEFAULT_ENERGY_COLLECTION_KEY
 import io.homeassistant.companion.android.dashboard.ui.EnergyChange
@@ -69,6 +70,7 @@ internal fun EnergyDateSelectionCard(
     val title = remember(shown.period, today) { snapshot.formats.energyPeriodTitle(shown.period, today) }
     val localize = snapshot.localize
     fun choose(period: EnergyPeriod) = interactions.onEnergyChange(key, EnergyChange.Period(period))
+    val download = rememberEnergyCsvDownload(snapshot.config.currency, localize("ui.panel.history.download_data_error"))
     DashboardCardSurface(modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -87,14 +89,20 @@ internal fun EnergyDateSelectionCard(
             }
             SelectorButton(MDI_NEXT, localize(SELECTOR + "next")) { choose(shown.period.shift(forward = true)) }
             OverflowMenu(
-                nowLabel = localize(SELECTOR + "now"),
-                compareLabel = localize(SELECTOR + "compare"),
+                OverflowLabels(
+                    now = localize(SELECTOR + "now"),
+                    compare = localize(SELECTOR + "compare"),
+                    download = localize(SELECTOR + "download_data"),
+                ),
                 comparing = shown.compareMode != null,
+                allowCompare = card.json.boolean("disable_compare") != true,
                 onNow = { choose(shown.period.current(today, firstDay)) },
                 onCompare = {
                     val mode = if (shown.compareMode == null) CompareMode.PREVIOUS else null
                     interactions.onEnergyChange(key, EnergyChange.Compare(mode))
                 },
+                // Nothing to download until the data has loaded, as upstream
+                onDownload = { shown.data?.let(download) },
             )
         }
     }
@@ -136,18 +144,23 @@ private fun RangeMenu(localize: (String) -> String, onPick: (EnergyRangePreset) 
     }
 }
 
+/** The overflow menu's items' labels. */
+private class OverflowLabels(val now: String, val compare: String, val download: String)
+
 /**
- * Going to now and comparing, which the frontend collapses in a menu on narrow screens.
+ * Going to now, comparing (unless not [allowCompare], `disable_compare`) and downloading the data, which the
+ * frontend collapses in a menu on narrow screens.
  *
  * Upstream: part of `hui-energy-period-selector` (src/panels/lovelace/components/hui-energy-period-selector.ts)
  */
 @Composable
 private fun OverflowMenu(
-    nowLabel: String,
-    compareLabel: String,
+    labels: OverflowLabels,
     comparing: Boolean,
+    allowCompare: Boolean,
     onNow: () -> Unit,
     onCompare: () -> Unit,
+    onDownload: () -> Unit,
 ) {
     var open by remember { mutableStateOf(false) }
     val colors = LocalHAColorScheme.current
@@ -155,7 +168,7 @@ private fun OverflowMenu(
         SelectorButton(MDI_MORE, stringResource(R.string.native_dashboard_more_options)) { open = true }
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             DropdownMenuItem(
-                text = { Text(nowLabel, style = HATextStyle.Body) },
+                text = { Text(labels.now, style = HATextStyle.Body) },
                 leadingIcon = { DashboardIcon(MDI_NOW, tint = colors.colorTextPrimary) },
                 onClick = {
                     open = false
@@ -163,13 +176,25 @@ private fun OverflowMenu(
                 },
             )
             DropdownMenuItem(
-                text = { Text(compareLabel, style = HATextStyle.Body) },
+                text = { Text(labels.compare, style = HATextStyle.Body) },
                 leadingIcon = {
-                    DashboardIcon(if (comparing) MDI_CHECKED else MDI_UNCHECKED, tint = colors.colorTextPrimary)
+                    DashboardIcon(
+                        if (comparing) MDI_CHECKED else MDI_UNCHECKED,
+                        tint = if (allowCompare) colors.colorTextPrimary else colors.colorTextDisabled,
+                    )
                 },
+                enabled = allowCompare,
                 onClick = {
                     open = false
                     onCompare()
+                },
+            )
+            DropdownMenuItem(
+                text = { Text(labels.download, style = HATextStyle.Body) },
+                leadingIcon = { DashboardIcon(MDI_DOWNLOAD, tint = colors.colorTextPrimary) },
+                onClick = {
+                    open = false
+                    onDownload()
                 },
             )
         }
@@ -183,5 +208,6 @@ private const val MDI_NEXT = "mdi:chevron-right"
 private const val MDI_CALENDAR = "mdi:calendar"
 private const val MDI_MORE = "mdi:dots-vertical"
 private const val MDI_NOW = "mdi:home-clock"
+private const val MDI_DOWNLOAD = "mdi:download"
 private const val MDI_CHECKED = "mdi:checkbox-outline"
 private const val MDI_UNCHECKED = "mdi:checkbox-blank-outline"
