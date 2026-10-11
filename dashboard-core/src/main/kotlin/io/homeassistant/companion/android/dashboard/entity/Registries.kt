@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.entity
 
+import io.homeassistant.companion.android.dashboard.display.stringCompare
 import io.homeassistant.companion.android.dashboard.model.array
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.number
@@ -54,15 +55,25 @@ data class AreaEntry(
 /** Floor registry entry. */
 data class FloorEntry(val floorId: String, val name: String, val level: Int?, val icon: String?, val json: JsonObject)
 
+/** Label registry entry: its [name], [icon], [color] (a theme colour name or a hex colour) and [description]. */
+data class LabelEntry(
+    val labelId: String,
+    val name: String,
+    val icon: String?,
+    val color: String?,
+    val description: String?,
+)
+
 /**
  * The registries a dashboard depends on, keyed by id. Maps keep the server's order, which strategies
- * rely on just like the frontend's insertion-ordered objects.
+ * rely on just like the frontend's insertion-ordered objects; [labels] are by name, as the frontend sorts them.
  */
 data class Registries(
     val entities: Map<String, EntityEntry>,
     val devices: Map<String, DeviceEntry>,
     val areas: Map<String, AreaEntry>,
     val floors: Map<String, FloorEntry>,
+    val labels: Map<String, LabelEntry> = emptyMap(),
 ) {
     companion object {
         val EMPTY = Registries(emptyMap(), emptyMap(), emptyMap(), emptyMap())
@@ -121,3 +132,15 @@ fun parseFloorRegistry(result: JsonArray): Map<String, FloorEntry> = result.filt
     val id = it.string("floor_id") ?: return@mapNotNull null
     id to FloorEntry(id, it.string("name").orEmpty(), it.number("level")?.toInt(), it.string("icon"), it)
 }.toMap()
+
+/**
+ * Decode a `config/label_registry/list` result, sorted by name as `fetchLabelRegistry` sorts it
+ * (src/data/label/label_registry.ts).
+ */
+fun parseLabelRegistry(result: JsonArray): Map<String, LabelEntry> = result.filterIsInstance<JsonObject>()
+    .mapNotNull {
+        val id = it.string("label_id") ?: return@mapNotNull null
+        LabelEntry(id, it.string("name").orEmpty(), it.string("icon"), it.string("color"), it.string("description"))
+    }
+    .sortedWith { a, b -> stringCompare(a.name, b.name) }
+    .associateBy { it.labelId }

@@ -167,6 +167,26 @@ AREAS = [  # area_id (derived from name by HA), name, floor_id, icon
     ("hallway", "Hallway", None, "mdi:door"),
 ]
 
+# Labels (label_id derived from name by HA): name, icon, colour, description, and what carries them, so the
+# target picker's Labels tab and label targets have content
+LABELS = [
+    ("security", "Security", "mdi:shield-home", "red", "Doors and alarms"),
+    ("outdoor", "Outdoor", None, "green", None),
+    ("lighting", "Lighting", "mdi:lightbulb-group", None, None),
+]
+LABELLED_ENTITIES: dict[str, list[str]] = {
+    "lock.back_door_lock": ["security"],
+    "lock.front_door_deadbolt": ["security"],
+    "alarm_control_panel.security": ["security"],
+    "light.bed_light": ["lighting"],
+    "light.ceiling_lights": ["lighting"],
+}
+LABELLED_DEVICES: dict[str, list[str]] = {
+    "Garage Door": ["security", "outdoor"],
+    "Kitchen Lights": ["lighting"],
+}
+LABELLED_AREAS: dict[str, list[str]] = {"garden": ["outdoor"]}
+
 # Demo device name -> area. Devices not listed stay unassigned on purpose
 # (Sun, Date/Time/Text, numbers, updates, most vacuums...) so "other devices"
 # views have content too.
@@ -333,6 +353,30 @@ async def seed_structure(ws: Ws) -> None:
             log(f"area sensors set: {area_id}")
 
 
+async def seed_labels(ws: Ws) -> None:
+    labels = {label["label_id"] for label in await ws.call("config/label_registry/list")}
+    for label_id, name, icon, color, description in LABELS:
+        if label_id not in labels:
+            created = await ws.call("config/label_registry/create", name=name, icon=icon, color=color, description=description)
+            assert created["label_id"] == label_id, created
+            log(f"label created: {label_id}")
+    entities = {e["entity_id"]: e for e in await ws.call("config/entity_registry/list")}
+    for entity_id, wanted in LABELLED_ENTITIES.items():
+        entry = entities.get(entity_id)
+        if entry is None:
+            log(f"warning: {entity_id} not in entity registry, cannot label it")
+        elif sorted(entry.get("labels", [])) != sorted(wanted):
+            await ws.call("config/entity_registry/update", entity_id=entity_id, labels=wanted)
+    for dev in await ws.call("config/device_registry/list"):
+        wanted = LABELLED_DEVICES.get(dev.get("name_by_user") or dev.get("name"))
+        if wanted and sorted(dev.get("labels", [])) != sorted(wanted):
+            await ws.call("config/device_registry/update", device_id=dev["id"], labels=wanted)
+    for area in await ws.call("config/area_registry/list"):
+        wanted = LABELLED_AREAS.get(area["area_id"])
+        if wanted and sorted(area.get("labels", [])) != sorted(wanted):
+            await ws.call("config/area_registry/update", area_id=area["area_id"], labels=wanted)
+
+
 async def seed_dashboard(ws: Ws) -> None:
     config = json.loads(DASHBOARD_FILE.read_text())
     dashboards = {d["url_path"] for d in await ws.call("lovelace/dashboards/list")}
@@ -475,6 +519,7 @@ async def main(base: str, skip_usage: bool) -> None:
         # The remote and lawn mowers the demo lacks (config/custom_components/test_devices)
         await custom_entry(ws, session, base, token, "test_devices")
         await seed_structure(ws)
+        await seed_labels(ws)
         await seed_dashboard(ws)
         await seed_favorites(ws)
         await seed_vacuum_areas(ws)

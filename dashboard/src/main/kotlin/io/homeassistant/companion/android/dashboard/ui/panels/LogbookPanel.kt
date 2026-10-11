@@ -14,6 +14,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -38,6 +39,8 @@ import io.homeassistant.companion.android.dashboard.logbook.logbookUsers
 import io.homeassistant.companion.android.dashboard.panels.DateRange
 import io.homeassistant.companion.android.dashboard.panels.RangePreset
 import io.homeassistant.companion.android.dashboard.panels.historyLogbookQuery
+import io.homeassistant.companion.android.dashboard.target.Target
+import io.homeassistant.companion.android.dashboard.target.resolveEntityIds
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookDayHeader
@@ -48,6 +51,8 @@ import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookMessage
 import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookRequest
 import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookSource
 import io.homeassistant.companion.android.dashboard.ui.logbook.LogbookViewModel
+import io.homeassistant.companion.android.dashboard.ui.logbook.parsePickedTarget
+import io.homeassistant.companion.android.dashboard.ui.target.TargetPicker
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -67,19 +72,21 @@ internal fun LogbookPanel(
 ) {
     val snapshot = hass.value ?: return
     val current = now.value ?: return
-    val initial = remember(query) { snapshot.historyLogbookQuery(query) { snapshot.logbookCompatible(it) } }
+    val initial = remember(query) { historyLogbookQuery(query) }
     var range by rememberSaveable(query, stateSaver = DateRangeSaver) {
         val around = DateRange.aroundNow(current)
         mutableStateOf(DateRange(initial.start ?: around.start, initial.end ?: around.end))
     }
-    var entityIds by rememberSaveable(query) { mutableStateOf(initial.entityIds.orEmpty()) }
+    var target by rememberSaveable(query, stateSaver = TargetSaver) { mutableStateOf(initial.target ?: Target()) }
     val viewModel = hiltViewModel<LogbookViewModel>(key = "logbook-panel")
-    // Opened without entities in the address, it lists those picked last time, as the frontend does
-    var restored by rememberSaveable(query) { mutableStateOf(initial.entityIds != null) }
+    // Opened without a target in the address, it lists what was picked last time, as the frontend does
+    var restored by rememberSaveable(query) { mutableStateOf(initial.target != null) }
     LaunchedEffect(query) {
-        if (!restored) viewModel.pickedEntities()?.let { entityIds = it }
+        if (!restored) viewModel.pickedTarget()?.let { target = it }
         restored = true
     }
+    // Port of `_getEntityIds`: what the target stands for, every entity when that's nothing
+    val entityIds = remember(target, snapshot.registries, snapshot.states.keys) { snapshot.resolveEntityIds(target) }
     val source = LogbookSource.Range(range.start, range.end, entityIds.takeIf { it.isNotEmpty() })
     val request = LogbookRequest(source, snapshot.user?.isAdmin == true, refresh)
     // Not before the picked entities are known, so it doesn't load every entity's first
@@ -96,13 +103,13 @@ internal fun LogbookPanel(
         item(key = "filters") {
             Column(Modifier.padding(HADimens.SPACE4)) {
                 DateRangeField(range, snapshot, current, RangePreset.BASIC, onChange = { range = it })
-                EntityTargetPicker(
-                    entityIds,
+                TargetPicker(
+                    target,
                     snapshot,
-                    include = { snapshot.logbookCompatible(it) },
+                    entityFilter = { snapshot.logbookCompatible(it) },
                     onChange = {
-                        entityIds = it
-                        viewModel.savePickedEntities(it)
+                        target = it
+                        viewModel.savePickedTarget(it)
                     },
                     modifier = Modifier.padding(top = HADimens.SPACE4),
                 )
@@ -165,6 +172,12 @@ private fun LazyListScope.logbookContent(
         }
     }
 }
+
+/** Keeps the target across configuration changes, as its JSON. */
+private val TargetSaver = Saver<Target, String>(
+    save = { it.toJson().toString() },
+    restore = { parsePickedTarget(it) },
+)
 
 /** Keeps the period across configuration changes, as its ends' epoch milliseconds. */
 private val DateRangeSaver = listSaver<DateRange, Long>(

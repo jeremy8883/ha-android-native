@@ -37,7 +37,7 @@ class DashboardRepository @Inject constructor(private val sessions: ServerSessio
     /** Load again everything that failed or is collected, now rather than at the next retry. */
     fun retry() = sessions.retry()
 
-    /** The entity, device, area and floor registries, loaded again (debounced, like the frontend) on changes. */
+    /** The entity, device, area, floor and label registries, loaded again (debounced, like the frontend) on changes. */
     @OptIn(FlowPreview::class)
     fun registries(): Flow<Loadable<Registries>> = sessions.withServer { session ->
         session.parsed(
@@ -50,6 +50,7 @@ class DashboardRepository @Inject constructor(private val sessions: ServerSessio
                 DEVICES to session.request("config/device_registry/list"),
                 AREAS to session.request("config/area_registry/list"),
                 FLOORS to session.request("config/floor_registry/list"),
+                LABELS to session.request("config/label_registry/list"),
             )
         }
     }
@@ -172,6 +173,7 @@ private val REGISTRY_EVENTS = listOf(
     "device_registry_updated",
     "area_registry_updated",
     "floor_registry_updated",
+    "label_registry_updated",
 )
 private val REGISTRY_REFETCH_DEBOUNCE = 500.milliseconds
 private val SERVER_INFO_REFETCH_DEBOUNCE = 1.seconds

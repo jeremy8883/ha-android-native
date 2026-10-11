@@ -364,6 +364,9 @@
     "time_from": "Time from",
     "time_to": "Time to"
    },
+   "device-picker": {
+    "unnamed_device": "Unnamed device"
+   },
    "entity": {
     "entity-state-picker": {
      "state": "State"
@@ -862,6 +865,17 @@
    "wrapping_up_startup": "Wrapping up startup. Not everything will be available until it is finished."
   },
   "panel": {
+   "config": {
+    "devices": {
+     "type": {
+      "device": "device",
+      "device_heading": "Device",
+      "service": "service",
+      "service_heading": "Service"
+     },
+     "unnamed_device": "Unnamed {type}"
+    }
+   },
    "energy": {
     "cards": {
      "energy_carbon_consumed_gauge_title": "Carbon consumed gauge",

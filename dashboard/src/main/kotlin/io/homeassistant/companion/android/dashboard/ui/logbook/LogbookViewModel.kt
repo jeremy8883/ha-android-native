@@ -10,6 +10,7 @@ import io.homeassistant.companion.android.dashboard.data.map
 import io.homeassistant.companion.android.dashboard.data.valueOrNull
 import io.homeassistant.companion.android.dashboard.logbook.LogbookEntry
 import io.homeassistant.companion.android.dashboard.logbook.TraceContext
+import io.homeassistant.companion.android.dashboard.target.Target
 import java.time.Instant
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,8 +28,6 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.contentOrNull
 
 /**
  * A logbook: its [entries], newest first, with the [users] list (`null` when
@@ -76,15 +75,14 @@ internal class LogbookViewModel @Inject constructor(
     }
 
     /**
-     * The entities last picked on the Logbook panel, kept on the device as the frontend keeps them in the browser
-     * (`logbookPickedValue`); `null` when none were.
+     * The target last picked on the Logbook panel, kept on the device as the frontend keeps it in the browser
+     * (`logbookPickedValue`); `null` when none was.
      */
-    suspend fun pickedEntities(): List<String>? =
-        preferences.load(listOf(PICKED_KEY))[PICKED_KEY]?.let(::parsePickedEntities)
+    suspend fun pickedTarget(): Target? = preferences.load(listOf(PICKED_KEY))[PICKED_KEY]?.let(::parsePickedTarget)
 
-    /** Remembers [entityIds] as the Logbook panel's picked entities. */
-    fun savePickedEntities(entityIds: List<String>) {
-        viewModelScope.launch { preferences.save(PICKED_KEY, pickedEntitiesJson(entityIds)) }
+    /** Remembers [target] as the Logbook panel's picked target. */
+    fun savePickedTarget(target: Target) {
+        viewModelScope.launch { preferences.save(PICKED_KEY, target.toJson().toString()) }
     }
 
     private fun load(request: LogbookRequest): Flow<Loadable<LoadedLogbook>> = combine(
@@ -108,19 +106,6 @@ internal class LogbookViewModel @Inject constructor(
     }
 }
 
-/** The picked target as the frontend stores it (`{"entity_id": [...]}`), its entities; `null` when unreadable. */
-internal fun parsePickedEntities(json: String): List<String>? {
-    val target = runCatching { Json.parseToJsonElement(json) }.getOrNull() as? JsonObject ?: return null
-    return when (val ids = target[ENTITY_ID]) {
-        is JsonArray -> ids.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
-        is JsonPrimitive -> listOfNotNull(ids.contentOrNull)
-        else -> emptyList()
-    }
-}
-
-/** [entityIds] as the frontend stores a picked target. */
-internal fun pickedEntitiesJson(entityIds: List<String>): String = JsonObject(
-    if (entityIds.isEmpty()) emptyMap() else mapOf(ENTITY_ID to JsonArray(entityIds.map(::JsonPrimitive))),
-).toString()
-
-private const val ENTITY_ID = "entity_id"
+/** The picked target as the frontend stores it (`HassServiceTarget` JSON); `null` when unreadable. */
+internal fun parsePickedTarget(json: String): Target? =
+    (runCatching { Json.parseToJsonElement(json) }.getOrNull() as? JsonObject)?.let(Target::fromJson)

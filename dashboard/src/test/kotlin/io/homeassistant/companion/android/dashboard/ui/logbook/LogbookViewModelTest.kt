@@ -6,6 +6,8 @@ import io.homeassistant.companion.android.dashboard.data.Loadable
 import io.homeassistant.companion.android.dashboard.data.LogbookRepository
 import io.homeassistant.companion.android.dashboard.logbook.LogbookEntry
 import io.homeassistant.companion.android.dashboard.logbook.TraceContext
+import io.homeassistant.companion.android.dashboard.target.Target
+import io.homeassistant.companion.android.dashboard.target.TargetType
 import io.homeassistant.companion.android.testing.unit.MainDispatcherJUnit5Extension
 import io.mockk.every
 import io.mockk.mockk
@@ -88,13 +90,13 @@ class LogbookViewModelTest {
     }
 
     @Test
-    fun `Given picked entities when remembering them then they read back as the frontend stores them`() {
-        val json = pickedEntitiesJson(listOf("lock.door", "light.hall"))
+    fun `Given a picked target when remembering it then it reads back as the frontend stores it`() {
+        val target = Target(mapOf(TargetType.ENTITY to listOf("lock.door", "light.hall"), TargetType.AREA to listOf("kitchen")))
+        val json = target.toJson().toString()
 
-        assertEquals("""{"entity_id":["lock.door","light.hall"]}""", json)
-        assertEquals(listOf("lock.door", "light.hall"), parsePickedEntities(json))
-        assertEquals(listOf("lock.door"), parsePickedEntities("""{"entity_id":"lock.door"}"""))
-        assertEquals(emptyList<String>(), parsePickedEntities(pickedEntitiesJson(emptyList())))
-        assertEquals(null, parsePickedEntities("not json"))
+        assertEquals("""{"entity_id":["lock.door","light.hall"],"area_id":"kitchen"}""", json)
+        assertEquals(target, parsePickedTarget(json))
+        assertEquals(Target(mapOf(TargetType.ENTITY to listOf("lock.door"))), parsePickedTarget("""{"entity_id":"lock.door"}"""))
+        assertEquals(null, parsePickedTarget("not json"))
     }
 }

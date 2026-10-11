@@ -6,6 +6,7 @@ import io.homeassistant.companion.android.dashboard.entity.parseAreaRegistry
 import io.homeassistant.companion.android.dashboard.entity.parseDeviceRegistry
 import io.homeassistant.companion.android.dashboard.entity.parseEntityRegistryDisplay
 import io.homeassistant.companion.android.dashboard.entity.parseFloorRegistry
+import io.homeassistant.companion.android.dashboard.entity.parseLabelRegistry
 import io.homeassistant.companion.android.dashboard.model.DashboardConfig
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
@@ -38,6 +39,7 @@ internal const val ENTITIES = "entities"
 internal const val DEVICES = "devices"
 internal const val AREAS = "areas"
 internal const val FLOORS = "floors"
+internal const val LABELS = "labels"
 internal const val USER = "user"
 internal const val CONFIG = "config"
 internal const val PANELS = "panels"
@@ -66,13 +68,16 @@ internal fun parseRegistries(bundle: JsonObject): Fetched<Registries> =
     }.flatMap { entities ->
         bundle.part<JsonArray>(DEVICES).flatMap { devices ->
             bundle.part<JsonArray>(AREAS).flatMap { areas ->
-                bundle.part<JsonArray>(FLOORS).map { floors ->
-                    Registries(
-                        entities = parseEntityRegistryDisplay(entities),
-                        devices = parseDeviceRegistry(devices),
-                        areas = parseAreaRegistry(areas),
-                        floors = parseFloorRegistry(floors),
-                    )
+                bundle.part<JsonArray>(FLOORS).flatMap { floors ->
+                    bundle.part<JsonArray>(LABELS).map { labels ->
+                        Registries(
+                            entities = parseEntityRegistryDisplay(entities),
+                            devices = parseDeviceRegistry(devices),
+                            areas = parseAreaRegistry(areas),
+                            floors = parseFloorRegistry(floors),
+                            labels = parseLabelRegistry(labels),
+                        )
+                    }
                 }
             }
         }

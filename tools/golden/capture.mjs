@@ -42,6 +42,7 @@ function parseArgs(argv) {
     else if (a === "--controls-only") args.controlsOnly = true;
     else if (a === "--domains") args.domains = argv[++i].split(",");
     else if (a === "--logbook-panel") args.logbookPanel = true;
+    else if (a === "--target-picker") args.targetPicker = true;
     else if (a === "-h" || a === "--help") {
       console.log("node capture.mjs [--variant admin|nonadmin|all] [--out <fixtures/home dir>] [--controls-only [--domains a,b]]");
       process.exit(0);
@@ -885,6 +886,126 @@ async function capturePanelLogbook(path) {
     systemUserIds: lb ? [...lb._systemUserIds].sort() : null,
     traceContexts: lb ? g.clone(lb._traceContexts) : null,
     rows,
+  };
+}
+
+/** The searches the target picker capture runs, each in every section: none, words, fuzzy and several terms. */
+const PICKER_SEARCHES = ["", "kitchen", "light", "door lock", "bedrom", "secu", "garden", "ground", "living room light"];
+
+/** The targets whose expansion, resolved entities and chips the target picker capture records. */
+const PICKER_TARGETS = [
+  { floor_id: "ground_floor" },
+  { area_id: "kitchen" },
+  { area_id: "garden" },
+  { label_id: "security" },
+  { label_id: "outdoor" },
+  { entity_id: "lock.back_door_lock", area_id: "bedroom", floor_id: "outside", label_id: "lighting" },
+];
+
+/**
+ * Opens the Logbook panel and records its target picker (`ha-target-picker`, entities filtered as the panel does):
+ * the items of each section for each of [searches], what expanding each target's items gives, the entities each
+ * target resolves to, and the chips drawn for them; with the registries, states, config entries and integration
+ * names they come from. Runs in the page.
+ */
+async function capturePanelTargetPicker({ searches, targets }) {
+  const g = window.__golden;
+  const ha = document.querySelector("home-assistant");
+  const hass = ha.hass;
+  const conn = hass.connection;
+  g.navigate("/logbook");
+  const panel = () => ha.shadowRoot.querySelector("home-assistant-main")?.shadowRoot?.querySelector("ha-panel-logbook");
+  const picker = () => panel()?.shadowRoot?.querySelector("ha-target-picker");
+  for (let i = 0; i < 150 && !(picker()?._labelRegistry && Object.keys(picker()._configEntryLookup || {}).length); i++) {
+    await new Promise((r) => setTimeout(r, 100));
+  }
+  await new Promise((r) => setTimeout(r, 1500));
+  const p = picker();
+  const simplify = (item) =>
+    typeof item === "string"
+      ? { title: item }
+      : {
+          id: item.id,
+          primary: item.primary ?? null,
+          secondary: item.secondary || null,
+          domainName: item.domain_name ?? null,
+          domain: item.domain ?? null,
+          icon: item.icon ?? null,
+          iconPath: item.icon_path ? true : false,
+          type: item.type ?? null,
+          last: item.last ?? false,
+          color: item.color ?? null,
+        };
+  const sections = [undefined, "entity", "device", "area", "label"];
+  const items = {};
+  for (const search of searches) {
+    items[search] = {};
+    for (const section of sections) {
+      p._getItemsMemoized.clear?.();
+      items[search][section ?? "all"] = (p._getItems(search, section) || []).map(simplify);
+    }
+  }
+  const expand = async (value, type, id) =>
+    new Promise((resolve) => {
+      p.value = value;
+      const listener = (ev) => {
+        p.removeEventListener("value-changed", listener);
+        resolve(ev.detail.value);
+      };
+      p.addEventListener("value-changed", listener);
+      p._handleExpand({ detail: { type, id }, stopPropagation() {} });
+      setTimeout(() => resolve(null), 500);
+    });
+  const expansions = [];
+  for (const target of targets) {
+    for (const [key, ids] of Object.entries(target)) {
+      if (key === "entity_id") continue;
+      const id = Array.isArray(ids) ? ids[0] : ids;
+      expansions.push({ value: target, type: key.replace("_id", ""), id, expanded: await expand(target, key.replace("_id", ""), id) });
+    }
+  }
+  const resolved = [];
+  const chips = [];
+  for (const target of targets) {
+    const lp = panel();
+    lp._targetPickerValue = target;
+    await lp.updateComplete;
+    resolved.push({ target, entityIds: lp._getEntityIds() ?? null });
+    await new Promise((r) => setTimeout(r, 300));
+    const drawn = [...(picker()?.shadowRoot?.querySelectorAll("ha-target-picker-value-chip") ?? [])].map((chip) => ({
+      type: chip.type,
+      id: chip.itemId,
+      name: chip.shadowRoot?.querySelector(".name")?.textContent.trim() ?? null,
+      icon: chip.shadowRoot?.querySelector(".icon ha-icon")?.icon ?? null,
+      expand: !!chip.shadowRoot?.querySelector(".expand-btn"),
+    }));
+    chips.push({ target, chips: drawn });
+  }
+  const send = (type) => conn.sendMessagePromise({ type });
+  const configEntries = await send("config_entries/get");
+  // The panel loaded the integrations' names after it opened, into a newer hass
+  const latest = ha.hass;
+  const domains = new Set([...Object.keys(latest.states).map((id) => id.split(".")[0]), ...configEntries.map((e) => e.domain)]);
+  const titles = {};
+  domains.forEach((domain) => {
+    const title = latest.localize(`component.${domain}.title`);
+    if (title) titles[`component.${domain}.title`] = title;
+  });
+  return {
+    capturedAt: new Date().toISOString(),
+    language: latest.locale.language,
+    states: g.clone(Object.values(latest.states)),
+    entityRegistry: await send("config/entity_registry/list_for_display"),
+    devices: await send("config/device_registry/list"),
+    areas: await send("config/area_registry/list"),
+    floors: await send("config/floor_registry/list"),
+    labels: await send("config/label_registry/list"),
+    configEntries: configEntries.map((e) => ({ entry_id: e.entry_id, domain: e.domain })),
+    titles,
+    items,
+    expansions,
+    resolved,
+    chips,
   };
 }
 
@@ -3320,7 +3441,7 @@ function sanitizeFile(name) {
 // --------------------------------------------------------------------------------------------
 // One variant
 
-async function captureVariant(browser, { baseUrl, variant, tokens, outDir, controlsOnly, logbookPanel, domains: CONTROL_DOMAINS }) {
+async function captureVariant(browser, { baseUrl, variant, tokens, outDir, controlsOnly, logbookPanel, targetPicker, domains: CONTROL_DOMAINS }) {
   console.log(`\n== variant ${variant} -> ${relative(REPO, outDir)}`);
   const context = await browser.newContext({
     locale: "en-US",
@@ -3360,6 +3481,17 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir, contr
   await page.goto(`${baseUrl}/home`, { waitUntil: "domcontentloaded" });
   if (page.url().includes("/auth/authorize")) throw new Error("token injection failed: landed on the login page");
   await waitForHomePanel(page);
+  if (targetPicker) {
+    // Only the Logbook panel's target picker, written over the existing fixtures
+    await page.setViewportSize({ width: 412, height: 915 });
+    await page.waitForTimeout(500);
+    const data = await page.evaluate(capturePanelTargetPicker, { searches: PICKER_SEARCHES, targets: PICKER_TARGETS });
+    mkdirSync(join(outDir, "target-picker"), { recursive: true });
+    writeFileSync(join(outDir, "target-picker", "logbook.json"), stableStringify(data));
+    console.log(`  recorded the target picker: ${Object.keys(data.items).length} searches, ${data.expansions.length} expansions`);
+    await context.close();
+    return { checks: [], problems: [] };
+  }
   if (logbookPanel) {
     // Only the Logbook panel over the last two days of the logbook's entities, written over the existing fixtures
     const end = new Date();
@@ -3622,7 +3754,7 @@ async function main() {
         tokens = { ...t, expires: Date.now() + t.expires_in * 1000 };
       }
       const dir = join(outRoot, variant === "admin" ? "test-instance" : "test-instance-nonadmin");
-      const { checks, problems } = await captureVariant(browser, { baseUrl, variant, tokens, outDir: dir, controlsOnly: args.controlsOnly, logbookPanel: args.logbookPanel, domains: args.domains });
+      const { checks, problems } = await captureVariant(browser, { baseUrl, variant, tokens, outDir: dir, controlsOnly: args.controlsOnly, logbookPanel: args.logbookPanel, targetPicker: args.targetPicker, domains: args.domains });
       if (problems.length || checks.some((c) => !c.ok)) failed = true;
     }
   } finally {

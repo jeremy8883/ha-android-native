@@ -14,6 +14,9 @@ from pathlib import Path
 
 # Dotted paths of the subtrees to keep. Extend when ported code needs more keys.
 SUBTREES = [
+    "ui.components.device-picker.unnamed_device",
+    "ui.panel.config.devices.type",
+    "ui.panel.config.devices.unnamed_device",
     "ui.common.ok",
     "ui.common.refresh",
     "ui.common.next",
