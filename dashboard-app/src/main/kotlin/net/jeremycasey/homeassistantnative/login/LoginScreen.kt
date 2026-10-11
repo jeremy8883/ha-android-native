@@ -2,6 +2,7 @@ package net.jeremycasey.homeassistantnative.login
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -27,13 +29,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.R as commonR
@@ -202,6 +208,7 @@ private fun ColumnScope.LoginForm(state: LoginUiState.Form, viewModel: LoginView
         }
         val problem = texts.errors[BASE_ERROR] ?: state.problem?.let { problemText(it) }
         problem?.let { Text(it, style = HATextStyle.Body, color = LocalHAColorScheme.current.colorOnDangerNormal) }
+        ForgotPasswordLink(texts.forgotPassword)
     }
     Spacer(modifier = Modifier.weight(1f - HEADER_POSITION))
     if (state.submitting) {
@@ -214,6 +221,26 @@ private fun ColumnScope.LoginForm(state: LoginUiState.Form, viewModel: LoginView
         )
         SignInWithBrowserButton(viewModel.session::signInWithBrowser)
     }
+}
+
+/**
+ * The link to the documentation's help for a forgotten password, under the fields. Upstream puts it at the end of a
+ * row starting with "Keep me logged in", which it leaves out when, as here, the app keeps the login itself.
+ *
+ * Upstream: part of `ha-auth-flow` (src/auth/ha-auth-flow.ts)
+ */
+@Composable
+private fun ForgotPasswordLink(text: String) {
+    val uriHandler = LocalUriHandler.current
+    Text(
+        text,
+        style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+        color = LocalHAColorScheme.current.colorOnPrimaryNormal,
+        modifier = Modifier
+            .clip(RoundedCornerShape(HADimens.SPACE1))
+            .clickable(role = Role.Button) { uriHandler.openUri(FORGOT_PASSWORD_URL) }
+            .padding(vertical = HADimens.SPACE1),
+    )
 }
 
 /**
@@ -340,6 +367,7 @@ internal fun SignInWithBrowserButton(onClick: () -> Unit, enabled: Boolean = tru
 }
 
 private const val PASSWORD = "password"
+private const val FORGOT_PASSWORD_URL = "https://www.home-assistant.io/docs/locked_out/#forgot-password"
 private const val CODE = "code"
 private const val BASE_ERROR = "base"
 private const val ONBOARDING_REQUIRED = "onboarding_required"

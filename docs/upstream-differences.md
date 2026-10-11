@@ -20,7 +20,6 @@ on the right are the frontend's (20260624.6).
    (`ui/moreinfo/LightFavoriteDialogs.kt:160`; src/dialogs/more-info/favorites.ts:96-120)
 5. Details: the History view is titled "History"; upstream keeps the entity's name (`ui/MoreInfoView.kt:167`;
    src/dialogs/more-info/ha-more-info-dialog.ts:575-580)
-6. Login: no "Forgot password?" link (`dashboard-app/.../login/LoginScreen.kt:185`; src/auth/ha-auth-flow.ts:258-264)
 
 ## Looks and small behaviour
 

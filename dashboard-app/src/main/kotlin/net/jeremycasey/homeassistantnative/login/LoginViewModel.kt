@@ -98,6 +98,7 @@ internal data class FormTexts(
     val labels: Map<String, String>,
     val errors: Map<String, String>,
     val submit: String,
+    val forgotPassword: String,
 )
 
 /** The servers found on the local network so far, and whether searching failed. */
@@ -283,6 +284,7 @@ private fun formTexts(texts: LoginTexts, step: LoginStep.Form) = FormTexts(
     labels = step.fields.associate { it.name to texts.label(step, it) },
     errors = step.errors.mapValues { (_, error) -> texts.error(step.handlerType, error) },
     submit = texts.submit(),
+    forgotPassword = texts.forgotPassword(),
 )
 
 /** A form's first answers, as the frontend's `computeInitialHaFormData`: blank, off, or a required select's first option. */

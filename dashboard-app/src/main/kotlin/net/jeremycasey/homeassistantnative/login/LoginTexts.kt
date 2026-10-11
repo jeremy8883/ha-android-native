@@ -30,6 +30,9 @@ internal class LoginTexts(private val localize: Localize) {
 
     fun submit(): String = localize("$PAGE.form.next")
 
+    /** The link to the documentation's "Forgot password?" section. */
+    fun forgotPassword(): String = localize("$PAGE.forgot_password")
+
     fun startOver(): String = localize("$PAGE.form.start_over")
 
     fun pickProvider(): String = localize("$PAGE.pick_auth_provider")
