@@ -448,11 +448,14 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         .flatMapLatest(cardData::alarmDefaultCodes)
         .onStart { emit(emptyMap()) }
 
-    /** The forecasts the shown view's weather forecast cards subscribe to. */
-    private val forecasts: Flow<Map<ForecastKey, ForecastEvent>> = uiState
-        .combine(structureInputs.mapNotNull { it.valueOrNull }) { state, inputs ->
-            forecastRequests(shownCards(state, withHeader = false), inputs.hass.config.components)
-        }
+    /** The forecasts the shown view's weather forecast cards and weather rows subscribe to. */
+    private val forecasts: Flow<Map<ForecastKey, ForecastEvent>> = combine(
+        uiState,
+        structureInputs.mapNotNull { it.valueOrNull },
+        entityStates.mapNotNull { it.valueOrNull },
+    ) { state, inputs, states ->
+        forecastRequests(shownCards(state, withHeader = false), inputs.hass.config.components, states)
+    }
         .distinctUntilChanged()
         .flatMapLatest(cardData::forecasts)
         .onStart { emit(emptyMap()) }

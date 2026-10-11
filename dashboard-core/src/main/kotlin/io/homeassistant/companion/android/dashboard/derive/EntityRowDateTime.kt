@@ -20,7 +20,8 @@ import kotlinx.serialization.json.JsonPrimitive
 /**
  * A date and/or time row: [date] as "yyyy-MM-dd" and [time] as "HH:mm:ss" (each `null` when the entity has none
  * or doesn't know it, and absent from [hasDate]/[hasTime] rows), with the entity's name inside the date field when
- * both show ([label]). [dateText] and [timeText] are how they read in the user's language, in [zone].
+ * both show ([label]). [dateText] and [timeText] are how they read in the user's language, in [zone]; the time's
+ * hour is entered on a 12-hour clock with AM and PM when [amPm].
  */
 data class RowDateTime(
     val label: String?,
@@ -34,6 +35,7 @@ data class RowDateTime(
     val dateText: String? = null,
     val timeText: String? = null,
     private val zone: ZoneId = ZoneId.of("UTC"),
+    val amPm: Boolean = true,
 ) : RowControl {
     /** The call setting the date to [date] ("yyyy-MM-dd"), keeping the time; `null` when it can't. */
     fun setDate(date: String): CardAction.CallService? = when (kind) {
@@ -114,6 +116,7 @@ internal fun HassSnapshot.dateTimeRowControl(state: EntityState, name: String): 
         val zone = formats.zone
         row.copy(
             zone = zone,
+            amPm = formats.amPm,
             dateText = row.date?.let { runCatching { LocalDate.parse(it) }.getOrNull() }
                 ?.let { formats.date(it.atStartOfDay(zone).toInstant(), zone) },
             timeText = row.time?.let { runCatching { LocalTime.parse(it) }.getOrNull() }

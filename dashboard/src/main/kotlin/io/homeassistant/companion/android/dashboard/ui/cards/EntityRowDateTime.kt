@@ -1,12 +1,9 @@
 package io.homeassistant.companion.android.dashboard.ui.cards
 
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -19,18 +16,17 @@ import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.RowDateTime
 import java.time.Instant
 import java.time.LocalDate
-import java.time.LocalTime
 import java.time.ZoneOffset
 
 /**
- * A date and/or time row's pickers: each shows its value and opens the platform's picker (upstream's
- * `ha-date-input` and `ha-time-input` are the browser's own), setting the entity when confirmed.
+ * A date and/or time row's fields: the date shows its value and opens the platform's calendar (`ha-date-input`), the
+ * time is typed as hours and minutes with AM/PM on a 12-hour clock (`ha-time-input`), setting the entity when done.
  */
 @Composable
 internal fun RowDateTimeControl(control: RowDateTime, onAction: (CardAction) -> Unit) {
     PickerRow {
         if (control.hasDate) DateButton(control, onAction)
-        if (control.hasTime) TimeButton(control, onAction)
+        if (control.hasTime) TimeFields(control, onAction)
     }
 }
 
@@ -60,36 +56,3 @@ private fun DateButton(control: RowDateTime, onAction: (CardAction) -> Unit) {
         dismissButton = { HAPlainButton(stringResource(commonR.string.cancel), { open = false }) },
     ) { DatePicker(state = picker) }
 }
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TimeButton(control: RowDateTime, onAction: (CardAction) -> Unit) {
-    var open by remember { mutableStateOf(false) }
-    HAPlainButton(control.timeText ?: "—", { open = true }, enabled = control.enabled)
-    if (!open) return
-    val current = control.time?.let { runCatching { LocalTime.parse(it) }.getOrNull() }
-    val picker = rememberTimePickerState(initialHour = current?.hour ?: 0, initialMinute = current?.minute ?: 0)
-    AlertDialog(
-        onDismissRequest = { open = false },
-        text = { TimePicker(state = picker) },
-        confirmButton = {
-            HAPlainButton(stringResource(commonR.string.ok), {
-                open = false
-                // Upstream's time input keeps the seconds at zero when only hours and minutes show
-                val time = LocalTime.of(picker.hour, picker.minute).toString().let {
-                    if (it.length ==
-                        SHORT_TIME
-                    ) {
-                        "$it:00"
-                    } else {
-                        it
-                    }
-                }
-                control.setTime(time)?.let(onAction)
-            })
-        },
-        dismissButton = { HAPlainButton(stringResource(commonR.string.cancel), { open = false }) },
-    )
-}
-
-private const val SHORT_TIME = 5

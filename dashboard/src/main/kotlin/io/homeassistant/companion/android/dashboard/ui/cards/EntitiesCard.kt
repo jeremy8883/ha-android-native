@@ -25,8 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import io.homeassistant.companion.android.common.compose.composable.HASwitch
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
@@ -37,6 +37,7 @@ import io.homeassistant.companion.android.dashboard.derive.RowButton
 import io.homeassistant.companion.android.dashboard.derive.RowControl
 import io.homeassistant.companion.android.dashboard.derive.RowDateTime
 import io.homeassistant.companion.android.dashboard.derive.RowIconButton
+import io.homeassistant.companion.android.dashboard.derive.RowMedia
 import io.homeassistant.companion.android.dashboard.derive.RowNumberBox
 import io.homeassistant.companion.android.dashboard.derive.RowSelect
 import io.homeassistant.companion.android.dashboard.derive.RowSlider
@@ -65,14 +66,28 @@ internal fun EntitiesCard(
     val colors = LocalHAColorScheme.current
     DashboardCardSurface(modifier = modifier) {
         Column(modifier = Modifier.fillMaxWidth().padding(vertical = HADimens.SPACE2)) {
-            model.title?.let { title ->
+            if (model.title != null || model.headerToggle != null) {
                 Row(
-                    modifier = Modifier.padding(horizontal = HADimens.SPACE4, vertical = HADimens.SPACE2),
+                    modifier = Modifier.fillMaxWidth().padding(
+                        horizontal = HADimens.SPACE4,
+                        vertical = HADimens.SPACE2,
+                    ),
                     horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     DashboardIcon(model.icon, colors.colorTextSecondary, Modifier.size(HASize.XL))
-                    Text(title, style = HATextStyle.HeadlineMedium, color = colors.colorTextPrimary)
+                    Text(
+                        model.title.orEmpty(),
+                        style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start),
+                        color = colors.colorTextPrimary,
+                        modifier = Modifier.weight(1f),
+                    )
+                    // `hui-entities-toggle`
+                    model.headerToggle?.let { toggle ->
+                        HASwitch(checked = toggle.checked, onCheckedChange = { on ->
+                            toggle.calls(on).forEach(interactions.onAction)
+                        })
+                    }
                 }
             }
             model.rows.forEach { row -> EntityRow(row, now.value?.toInstant() ?: Instant.EPOCH, interactions) }
@@ -86,29 +101,41 @@ private fun EntityRow(row: EntityRowModel, now: Instant, interactions: CardInter
     val textColor = if (row.available) colors.colorTextPrimary else colors.colorTextDisabled
     // Dropdowns and text fields carry the name as their label, in its place
     val namedControl = row.control is RowSelect || row.control is RowTextInput
-    Row(
-        modifier = Modifier.fillMaxWidth().heightIn(min = HASize.X5L).padding(horizontal = HADimens.SPACE4),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        // The icon and name open more-info (or the row's tap action), like hui-generic-entity-row
+    val domain = row.domain
+    Column(Modifier.fillMaxWidth().padding(horizontal = HADimens.SPACE4)) {
         Row(
-            modifier = (if (namedControl) Modifier else Modifier.weight(1f)).elementGestures(row.actions, interactions),
-            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+            modifier = Modifier.fillMaxWidth().heightIn(min = HASize.X5L),
+            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            RowBadge(row)
-            if (!namedControl) {
-                Text(
-                    text = row.name,
-                    style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
-                    color = textColor,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+            // The icon and name open more-info (or the row's tap action), like hui-generic-entity-row
+            Row(
+                modifier = (
+                    if (namedControl) {
+                        Modifier
+                    } else {
+                        Modifier.weight(
+                            1f,
+                        )
+                    }
+                    ).elementGestures(row.actions, interactions),
+                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                domain?.condition?.let { WeatherIconView(it, colors.colorTextSecondary, Modifier.size(BADGE_SIZE)) }
+                    ?: RowBadge(row)
+                if (!namedControl) RowName(row.name, domain?.nameSecondary, textColor)
+            }
+            val twoLines = domain?.let { it.stateSecondary != null || it.weatherDetail != null } == true
+            if (row.control == null && domain != null && twoLines) {
+                DomainRowState(row.state, domain, textColor)
+            } else {
+                EntityRowControl(row, textColor, now, interactions)
             }
         }
-        EntityRowControl(row, textColor, now, interactions)
+        (row.control as? RowMedia)?.let { media ->
+            media.volume?.let { MediaVolumeLine(media, it, interactions.onAction) }
+        }
     }
 }
 
@@ -138,7 +165,7 @@ internal fun RowScope.RowControlContent(
             enabled = control.enabled,
         )
         is RowControl.Buttons -> control.buttons.forEach { button -> RowTextButton(button, onAction) }
-        is RowControl.IconButtons -> control.buttons.forEach { button -> RowIconButtonView(button, onAction) }
+        is RowControl.IconButtons, is RowMedia -> rowIconButtons(control).forEach { RowIconButtonView(it, onAction) }
         is RowSlider -> Row(
             modifier = Modifier.weight(1f),
             verticalAlignment = Alignment.CenterVertically,
@@ -150,6 +177,13 @@ internal fun RowScope.RowControlContent(
         is RowTimer -> RowTimerText(control, now)
         null -> state?.let { Text(it, style = HATextStyle.BodyMedium, color = textColor, maxLines = 1) }
     }
+}
+
+/** The icon buttons on a row: a cover's, or a media player's top ones (its volume line has the others). */
+private fun rowIconButtons(control: RowControl): List<RowIconButton> = when (control) {
+    is RowControl.IconButtons -> control.buttons
+    is RowMedia -> control.top
+    else -> emptyList()
 }
 
 /** A text button of a row, a cancelling one in the danger colour. */
@@ -167,7 +201,7 @@ private fun RowTextButton(button: RowButton, onAction: (CardAction) -> Unit) {
 
 /** An icon button of a row; an unsupported one keeps its place, invisible. The current state's is in the accent. */
 @Composable
-private fun RowIconButtonView(button: RowIconButton, onAction: (CardAction) -> Unit) {
+internal fun RowIconButtonView(button: RowIconButton, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current
     IconButton(
         onClick = { onAction(button.action) },

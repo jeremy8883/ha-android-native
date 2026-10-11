@@ -6,9 +6,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -65,7 +67,7 @@ import timber.log.Timber
  * speech), a warning when the agent can't control Home Assistant, or why the pipeline couldn't be loaded.
  */
 @Composable
-internal fun MoreInfoConversation(agentId: String, hass: HassSnapshot) {
+internal fun MoreInfoConversation(agentId: String, hass: HassSnapshot, modifier: Modifier = Modifier) {
     val chat = hiltViewModel<ConversationChatViewModel>(key = "chat-$agentId")
     val greeting = hass.localize("ui.dialogs.voice_command.how_can_i_help")
     LaunchedEffect(agentId) { chat.show(agentId, greeting, hass.localize("ui.dialogs.voice_command.error")) }
@@ -80,7 +82,10 @@ internal fun MoreInfoConversation(agentId: String, hass: HassSnapshot) {
             style = HATextStyle.Body,
             color = colors.colorOnDangerNormal,
         )
-        is ConversationState.Ready -> Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+        is ConversationState.Ready -> Column(
+            modifier.imePadding(),
+            verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+        ) {
             if (!hass.assistControlsHome(shown.pipeline)) {
                 Text(
                     hass.localize("ui.dialogs.voice_command.conversation_no_control"),
@@ -88,7 +93,13 @@ internal fun MoreInfoConversation(agentId: String, hass: HassSnapshot) {
                     color = colors.colorTextSecondary,
                 )
             }
-            shown.chat.messages.forEach { MessageBubble(it) }
+            // Newest at the bottom, the list kept scrolled to it
+            val messages = shown.chat.messages.asReversed()
+            LazyColumn(
+                Modifier.fillMaxWidth().weight(1f),
+                reverseLayout = true,
+                verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.Bottom),
+            ) { items(messages.size) { MessageBubble(messages[it]) } }
             ChatInput(hass, shown.chat.processing, chat::send)
         }
     }

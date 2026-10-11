@@ -52,6 +52,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.history.showsHistory
 import io.homeassistant.companion.android.dashboard.logbook.showsLogbook
+import io.homeassistant.companion.android.dashboard.moreinfo.MoreInfoExtra
 import io.homeassistant.companion.android.dashboard.moreinfo.humidifierHumidityCall
 import io.homeassistant.companion.android.dashboard.moreinfo.humidifierTarget
 import io.homeassistant.companion.android.dashboard.moreinfo.waterHeaterTarget
@@ -64,6 +65,7 @@ import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesMenuIte
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.LogbookSection
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoAlarm
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoClimate
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoConversation
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoExtraView
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoFan
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
@@ -158,6 +160,16 @@ private fun ColumnScope.MoreInfoMain(
     val update = model.update
     // Each opening starts at the top: a saved scroll position would carry over to the next details
     val listState = remember(model.entityId) { LazyListState() }
+    val conversation = model.extra as? MoreInfoExtra.Conversation
+    if (conversation != null) {
+        // The chat fills the sheet, its messages from the bottom over the field, as `ha-assist-chat`
+        MoreInfoConversation(
+            conversation.agentId,
+            hass,
+            Modifier.fillMaxWidth().weight(1f).padding(horizontal = HADimens.SPACE6),
+        )
+        return
+    }
     LazyColumn(
         state = listState,
         modifier = Modifier.fillMaxWidth().weight(1f),

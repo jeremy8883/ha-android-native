@@ -116,6 +116,29 @@ class PictureEntityModelTest {
     }
 }
 
+class EntitiesHeaderToggleTest {
+    private val hass = GoldenFixture("test-instance").hass
+
+    @Test
+    fun `Given a titled card with two lights when deriving it then its header switch turns the lights that need it`() {
+        val card = CardConfig(json("""{"type": "entities", "title": "Lights", "entities": ["light.bed_light", "light.kitchen_lights", "sensor.outside_temperature"]}"""))
+        val toggle = hass.entitiesModel(card, Instant.EPOCH).headerToggle!!
+        val lights = listOf("light.bed_light", "light.kitchen_lights").map { hass.states.getValue(it) }
+        assertEquals(lights.any { it.state == "on" }, toggle.checked)
+        val off = lights.filter { it.state == "off" }.map { it.entityId }
+        val calls = toggle.calls(turnOn = true)
+        assertEquals(if (off.isEmpty()) emptyList() else listOf("homeassistant" to "turn_on"), calls.map { it.domain to it.service })
+    }
+
+    @Test
+    fun `Given a card without a title or with one toggleable entity when deriving it then it has no header switch`() {
+        val untitled = CardConfig(json("""{"type": "entities", "entities": ["light.bed_light", "light.kitchen_lights"]}"""))
+        val single = CardConfig(json("""{"type": "entities", "title": "One", "entities": ["light.bed_light", "sensor.outside_temperature"]}"""))
+        assertNull(hass.entitiesModel(untitled, Instant.EPOCH).headerToggle)
+        assertNull(hass.entitiesModel(single, Instant.EPOCH).headerToggle)
+    }
+}
+
 class MoreInfoModelTest {
     private val hass = GoldenFixture("test-instance").hass
 

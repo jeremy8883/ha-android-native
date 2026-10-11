@@ -56,6 +56,10 @@ interface DisplayFormats {
     /** The first day of the week, 1 (Monday) to 7 (Sunday). */
     val firstWeekday: Int
 
+    /** Whether times show with AM and PM (`useAmPm`): an afternoon hour isn't written as 13. */
+    val amPm: Boolean
+        get() = !time(AFTERNOON, java.time.ZoneOffset.UTC).contains("13")
+
     /** `Intl.NumberFormat` with `minimumFractionDigits`/`maximumFractionDigits`, rounding half away from zero. */
     fun number(value: BigDecimal, minFractionDigits: Int, maxFractionDigits: Int): String
 
@@ -183,3 +187,6 @@ class JdkDisplayFormats(private val locale: Locale, override val zone: ZoneId) :
         )
     }
 }
+
+/** An afternoon time, to tell a 12-hour clock from a 24-hour one. */
+private val AFTERNOON: Instant = Instant.parse("2020-01-01T13:00:00Z")

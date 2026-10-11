@@ -57,7 +57,8 @@ internal fun MoreInfoExtraView(
         is MoreInfoExtra.Script -> MoreInfoScript(extra.script, state, hass, now, onAction)
         is MoreInfoExtra.Camera -> MoreInfoCamera(extra, state)
         is MoreInfoExtra.Weather -> MoreInfoWeather(extra.weather, state, hass, now)
-        is MoreInfoExtra.Conversation -> MoreInfoConversation(extra.agentId, hass)
+        // Drawn by the sheet, filling it
+        is MoreInfoExtra.Conversation -> Unit
         is MoreInfoExtra.Configurator -> MoreInfoConfigurator(extra.configurator, onAction)
     }
 }

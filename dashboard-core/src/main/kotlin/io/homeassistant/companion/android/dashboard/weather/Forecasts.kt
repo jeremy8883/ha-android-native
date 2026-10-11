@@ -1,13 +1,17 @@
 package io.homeassistant.companion.android.dashboard.weather
 
+import io.homeassistant.companion.android.dashboard.derive.supportsFeature
 import io.homeassistant.companion.android.dashboard.display.parseJsDate
 import io.homeassistant.companion.android.dashboard.energy.WsCommand
+import io.homeassistant.companion.android.dashboard.entity.EntityState
+import io.homeassistant.companion.android.dashboard.entity.EntityStates
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
 import java.time.ZoneOffset
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
@@ -82,17 +86,33 @@ private const val EIGHT_HOURS_MS = 28_800_000L
 private const val DAY_MS = 86_400_000L
 
 /**
- * The forecasts the weather forecast cards among [cards] subscribe to: those with a `forecast_type` (other than
- * `legacy`), when the server has weather (`isComponentLoaded(weather)`).
+ * The forecasts the shown [cards] subscribe to, when the server has weather (`isComponentLoaded(weather)`): weather
+ * forecast cards with a `forecast_type` (other than `legacy`), and the entities cards' weather rows, each its
+ * entity's default type (`hui-weather-entity-row`).
  */
-fun forecastRequests(cards: List<CardConfig>, components: Set<String>): Set<ForecastKey> {
+fun forecastRequests(cards: List<CardConfig>, components: Set<String>, states: EntityStates): Set<ForecastKey> {
     if (WEATHER !in components) return emptySet()
-    return cards.filter { it.type == WEATHER_FORECAST_CARD }.mapNotNull { card ->
+    val forecastCards = cards.filter { it.type == WEATHER_FORECAST_CARD }.mapNotNull { card ->
         val type = card.json.string("forecast_type")?.takeIf(::needsForecastSubscription)
         val entityId = card.json.string("entity")
         if (type != null && entityId != null) ForecastKey(entityId, type) else null
-    }.toSet()
+    }
+    val rows = cards.filter { it.type == ENTITIES_CARD }.flatMap { card ->
+        (card.json["entities"] as? JsonArray).orEmpty().mapNotNull { entry ->
+            val entityId = (entry as? JsonPrimitive)?.content ?: (entry as? JsonObject)?.string("entity")
+            entityId?.takeIf { it.startsWith("$WEATHER.") }?.let(states::get)
+                ?.let { state -> defaultForecastType(state)?.let { ForecastKey(state.entityId, it) } }
+        }
+    }
+    return (forecastCards + rows).toSet()
 }
+
+/** Port of `getDefaultForecastType`: daily, else twice daily, else hourly, as [state] supports them. */
+fun defaultForecastType(state: EntityState): String? =
+    FORECAST_FEATURES.firstOrNull { (feature, _) -> state.supportsFeature(feature) }?.second
+
+private val FORECAST_FEATURES = listOf(1 to "daily", 2 to "twice_daily", 4 to "hourly")
 
 private const val WEATHER = "weather"
 private const val WEATHER_FORECAST_CARD = "weather-forecast"
+private const val ENTITIES_CARD = "entities"

@@ -936,6 +936,22 @@ const ROW_ENTITIES = [
   "counter.coffee_cups",
   "button.push",
   "input_button.doorbell_test",
+  "group.downstairs_lights",
+  "group.doors",
+  "valve.front_garden",
+  "cover.garage_door",
+  "cover.living_room_window",
+  "climate.ecobee",
+  "climate.hvac",
+  "water_heater.demo_water_heater",
+  "humidifier.humidifier",
+  "event.push_button_press",
+  "update.demo_add_on",
+  "media_player.living_room_tv",
+  "media_player.kitchen_speaker",
+  "media_player.bedroom_speaker",
+  "weather.demo_weather_north",
+  "sensor.backup_last_successful_automatic_backup",
 ];
 
 /** The entities whose more-info controls are recorded, each as it is and turned off and unavailable. */
@@ -2160,7 +2176,30 @@ async function captureMoreInfoControls({ entityIds: requested, rowEntities: ROW_
       date: date && { value: date.value ?? null, disabled: date.disabled ?? false, label: date.label ?? null },
       time: time && { value: time.value ?? null, disabled: time.disabled ?? false, label: time.label ?? null },
       buttons: [...root.querySelectorAll("ha-button, mwc-button")].map((b) => ({ text: text(b), disabled: b.disabled ?? false })),
+      // The domain rows: icon buttons (cover, media), the switch, the texts beside and under, the volume
+      iconButtons: deepAll(root, "ha-icon-button").filter((b) => !b.closest?.(".hidden") && b.parentElement?.className !== "hidden")
+        .map((b) => ({ label: b.label ?? null, disabled: b.disabled ?? false, hidden: (b.className ?? "").includes("hidden") })),
+      toggle: (() => {
+        const t = deepAll(root, "ha-entity-toggle")[0];
+        const sw = t?.shadowRoot?.querySelector("ha-switch");
+        return t ? { checked: sw?.checked ?? null, buttons: [...(t.shadowRoot?.querySelectorAll("ha-icon-button") ?? [])].map((b) => b.label ?? null) } : null;
+      })(),
+      secondary: drawn(generic?.shadowRoot?.querySelector(".secondary")),
+      right: drawn(root.querySelector(".when, ha-climate-state, ha-humidifier-state, .attributes")) ?? null,
+      what: drawn(root.querySelector(".what")),
+      volume: (() => { const sl = root.querySelector("ha-slider"); return sl ? { value: sl.value ?? null } : null; })(),
+      weatherIcon: !!root.querySelector(".icon-image"),
     };
+  }
+
+  function deepAll(root, selector) {
+    const found = [];
+    const visit = (r) => r?.querySelectorAll("*").forEach((n) => {
+      if (n.matches(selector)) found.push(n);
+      visit(n.shadowRoot);
+    });
+    visit(root);
+    return found;
   }
 
   /** The calls of a row's control for a set value, each on a fresh card. */

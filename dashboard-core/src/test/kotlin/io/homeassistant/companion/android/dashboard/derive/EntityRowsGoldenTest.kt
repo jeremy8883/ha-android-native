@@ -93,9 +93,13 @@ class EntityRowsGoldenTest {
         captured.objects("calls").forEach { call ->
             val stateObj = captured.obj("stateObj")!!
             val actual = when (call.string("control")) {
-                "slider" -> (control as RowSlider).service.withValue(
-                    (stateObj.obj("attributes")!!.number("min") ?: 0.0) + (stateObj.obj("attributes")!!.number("step") ?: 1.0),
-                )
+                "slider" -> when (control) {
+                    // A media player's volume: the capture sets its slider to the lowest step
+                    is RowMedia -> control.volume!!.setCall(1.0)
+                    else -> (control as RowSlider).service.withValue(
+                        (stateObj.obj("attributes")!!.number("min") ?: 0.0) + (stateObj.obj("attributes")!!.number("step") ?: 1.0),
+                    )
+                }
                 "input" -> when (control) {
                     is RowNumberBox -> control.set("7")
                     else -> (control as RowTextInput).set("abc")

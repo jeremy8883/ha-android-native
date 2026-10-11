@@ -347,6 +347,25 @@
       "cards": [
         {
           "type": "entities",
+          "title": "Rows",
+          "entities": [
+            "group.downstairs_lights",
+            "group.doors",
+            "valve.front_garden",
+            "cover.garage_door",
+            "climate.ecobee",
+            "water_heater.demo_water_heater",
+            "humidifier.humidifier",
+            "event.push_button_press",
+            "update.demo_add_on",
+            "media_player.kitchen_speaker",
+            "media_player.living_room_tv",
+            "weather.demo_weather_north",
+            "input_datetime.wake_up"
+          ]
+        },
+        {
+          "type": "entities",
           "title": "Details",
           "entities": [
             "sun.sun",

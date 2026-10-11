@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-10-10T22:14:04.829Z",
+  "capturedAt": "2026-10-11T00:03:37.074Z",
   "entities": {
     "sun.sun": {
       "as_is": {
@@ -52346,12 +52346,12 @@
             "friendly_name": "Target humidity"
           },
           "context": {
-            "id": "01M4JDD7X7ZPT5WEZT7WCED57W",
+            "id": "01M4KXBTC1RT9H2P4H3C98ST0G",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:27.783Z",
-          "last_updated": "2026-10-10T08:03:27.783Z"
+          "last_changed": "2026-10-10T22:01:32.801Z",
+          "last_updated": "2026-10-10T22:01:32.801Z"
         },
         "row": {
           "tag": "hui-input-number-entity-row",
@@ -52370,9 +52370,18 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": {
+            "value": 30
+          },
+          "weatherIcon": false
         },
-        "capturedAt": 1791621904698,
+        "capturedAt": 1791677017480,
         "calls": [
           {
             "control": "slider",
@@ -52407,12 +52416,12 @@
             "friendly_name": "Target humidity"
           },
           "context": {
-            "id": "01M4JDD7X7ZPT5WEZT7WCED57W",
+            "id": "01M4KXBTC1RT9H2P4H3C98ST0G",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:27.783Z",
-          "last_updated": "2026-10-10T08:03:27.783Z"
+          "last_changed": "2026-10-10T22:01:32.801Z",
+          "last_updated": "2026-10-10T22:01:32.801Z"
         },
         "row": {
           "tag": "hui-input-number-entity-row",
@@ -52431,9 +52440,18 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": {
+            "value": null
+          },
+          "weatherIcon": false
         },
-        "capturedAt": 1791621909220
+        "capturedAt": 1791677022005
       }
     },
     "input_number.bedroom_brightness": {
@@ -52452,12 +52470,12 @@
             "friendly_name": "Bedroom brightness"
           },
           "context": {
-            "id": "01M4JDD7X7SQYVA7TDA6Z5GEDZ",
+            "id": "01M4KXBTC16ZJMJRWB4KX6T0D2",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:27.783Z",
-          "last_updated": "2026-10-10T08:03:27.783Z"
+          "last_changed": "2026-10-10T22:01:32.801Z",
+          "last_updated": "2026-10-10T22:01:32.801Z"
         },
         "row": {
           "tag": "hui-input-number-entity-row",
@@ -52483,9 +52501,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621909522,
+        "capturedAt": 1791677022309,
         "calls": [
           {
             "control": "input",
@@ -52519,12 +52555,12 @@
             "friendly_name": "Bedroom brightness"
           },
           "context": {
-            "id": "01M4JDD7X7SQYVA7TDA6Z5GEDZ",
+            "id": "01M4KXBTC16ZJMJRWB4KX6T0D2",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:27.783Z",
-          "last_updated": "2026-10-10T08:03:27.783Z"
+          "last_changed": "2026-10-10T22:01:32.801Z",
+          "last_updated": "2026-10-10T22:01:32.801Z"
         },
         "row": {
           "tag": "hui-input-number-entity-row",
@@ -52550,9 +52586,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621914034
+        "capturedAt": 1791677026826
       }
     },
     "number.volume": {
@@ -52568,12 +52622,12 @@
             "friendly_name": "volume"
           },
           "context": {
-            "id": "01M4JDD91PNXBERTHVN5HSJGMR",
+            "id": "01M4KXBVCV25GQ6AC9PAB1Z9Y9",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.950Z",
-          "last_updated": "2026-10-10T08:03:28.950Z"
+          "last_changed": "2026-10-10T22:01:33.851Z",
+          "last_updated": "2026-10-10T22:01:33.851Z"
         },
         "row": {
           "tag": "hui-number-entity-row",
@@ -52592,9 +52646,18 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": {
+            "value": 42
+          },
+          "weatherIcon": false
         },
-        "capturedAt": 1791621914335,
+        "capturedAt": 1791677027229,
         "calls": [
           {
             "control": "slider",
@@ -52625,12 +52688,12 @@
             "friendly_name": "volume"
           },
           "context": {
-            "id": "01M4JDD91PNXBERTHVN5HSJGMR",
+            "id": "01M4KXBVCV25GQ6AC9PAB1Z9Y9",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.950Z",
-          "last_updated": "2026-10-10T08:03:28.950Z"
+          "last_changed": "2026-10-10T22:01:33.851Z",
+          "last_updated": "2026-10-10T22:01:33.851Z"
         },
         "row": {
           "tag": "hui-number-entity-row",
@@ -52649,9 +52712,18 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": {
+            "value": null
+          },
+          "weatherIcon": false
         },
-        "capturedAt": 1791621918851
+        "capturedAt": 1791677031753
       }
     },
     "number.pwm_1": {
@@ -52667,12 +52739,12 @@
             "friendly_name": "PWM 1"
           },
           "context": {
-            "id": "01M4JDD91P6KE616F8AZWCA5AZ",
+            "id": "01M4KXBVCVSPM78Y1CFDMNS1N0",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.950Z",
-          "last_updated": "2026-10-10T08:03:28.950Z"
+          "last_changed": "2026-10-10T22:01:33.851Z",
+          "last_updated": "2026-10-10T22:01:33.851Z"
         },
         "row": {
           "tag": "hui-number-entity-row",
@@ -52698,9 +52770,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621919153,
+        "capturedAt": 1791677032056,
         "calls": [
           {
             "control": "input",
@@ -52731,12 +52821,12 @@
             "friendly_name": "PWM 1"
           },
           "context": {
-            "id": "01M4JDD91P6KE616F8AZWCA5AZ",
+            "id": "01M4KXBVCVSPM78Y1CFDMNS1N0",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.950Z",
-          "last_updated": "2026-10-10T08:03:28.950Z"
+          "last_changed": "2026-10-10T22:01:33.851Z",
+          "last_updated": "2026-10-10T22:01:33.851Z"
         },
         "row": {
           "tag": "hui-number-entity-row",
@@ -52762,9 +52852,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621923666
+        "capturedAt": 1791677036573
       }
     },
     "number.large_range": {
@@ -52780,12 +52888,12 @@
             "friendly_name": "Large Range"
           },
           "context": {
-            "id": "01M4JDD91PQQ7DV1VRJK450Z3B",
+            "id": "01M4KXBVCVJPZWNR28DBZWR88M",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.950Z",
-          "last_updated": "2026-10-10T08:03:28.950Z"
+          "last_changed": "2026-10-10T22:01:33.851Z",
+          "last_updated": "2026-10-10T22:01:33.851Z"
         },
         "row": {
           "tag": "hui-number-entity-row",
@@ -52811,9 +52919,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621923968,
+        "capturedAt": 1791677036875,
         "calls": [
           {
             "control": "input",
@@ -52844,12 +52970,12 @@
             "friendly_name": "Large Range"
           },
           "context": {
-            "id": "01M4JDD91PQQ7DV1VRJK450Z3B",
+            "id": "01M4KXBVCVJPZWNR28DBZWR88M",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.950Z",
-          "last_updated": "2026-10-10T08:03:28.950Z"
+          "last_changed": "2026-10-10T22:01:33.851Z",
+          "last_updated": "2026-10-10T22:01:33.851Z"
         },
         "row": {
           "tag": "hui-number-entity-row",
@@ -52875,9 +53001,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621928483
+        "capturedAt": 1791677041394
       }
     },
     "number.small_range": {
@@ -52893,12 +53037,12 @@
             "friendly_name": "Small Range"
           },
           "context": {
-            "id": "01M4JDD91PYEFSTHCHVDQMTXWB",
+            "id": "01M4KXBVCVMNFKGPHR389A96F0",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.950Z",
-          "last_updated": "2026-10-10T08:03:28.950Z"
+          "last_changed": "2026-10-10T22:01:33.851Z",
+          "last_updated": "2026-10-10T22:01:33.851Z"
         },
         "row": {
           "tag": "hui-number-entity-row",
@@ -52917,9 +53061,18 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": {
+            "value": 128
+          },
+          "weatherIcon": false
         },
-        "capturedAt": 1791621928784,
+        "capturedAt": 1791677041698,
         "calls": [
           {
             "control": "slider",
@@ -52950,12 +53103,12 @@
             "friendly_name": "Small Range"
           },
           "context": {
-            "id": "01M4JDD91PYEFSTHCHVDQMTXWB",
+            "id": "01M4KXBVCVMNFKGPHR389A96F0",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.950Z",
-          "last_updated": "2026-10-10T08:03:28.950Z"
+          "last_changed": "2026-10-10T22:01:33.851Z",
+          "last_updated": "2026-10-10T22:01:33.851Z"
         },
         "row": {
           "tag": "hui-number-entity-row",
@@ -52974,9 +53127,18 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": {
+            "value": null
+          },
+          "weatherIcon": false
         },
-        "capturedAt": 1791621933302
+        "capturedAt": 1791677046218
       }
     },
     "number.temperature_setting": {
@@ -52994,12 +53156,12 @@
             "friendly_name": "Temperature setting"
           },
           "context": {
-            "id": "01M4JDD91Q818CNFQFPXRHHGPQ",
+            "id": "01M4KXBVCV0VA4ED1CHJD251KH",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.951Z",
-          "last_updated": "2026-10-10T08:03:28.951Z"
+          "last_changed": "2026-10-10T22:01:33.851Z",
+          "last_updated": "2026-10-10T22:01:33.851Z"
         },
         "row": {
           "tag": "hui-number-entity-row",
@@ -53025,9 +53187,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621933605,
+        "capturedAt": 1791677046521,
         "calls": [
           {
             "control": "input",
@@ -53060,12 +53240,12 @@
             "friendly_name": "Temperature setting"
           },
           "context": {
-            "id": "01M4JDD91Q818CNFQFPXRHHGPQ",
+            "id": "01M4KXBVCV0VA4ED1CHJD251KH",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.951Z",
-          "last_updated": "2026-10-10T08:03:28.951Z"
+          "last_changed": "2026-10-10T22:01:33.851Z",
+          "last_updated": "2026-10-10T22:01:33.851Z"
         },
         "row": {
           "tag": "hui-number-entity-row",
@@ -53091,16 +53271,34 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621938122
+        "capturedAt": 1791677051045
       }
     },
     "input_select.house_mode": {
       "as_is": {
         "stateObj": {
           "entity_id": "input_select.house_mode",
-          "state": "Away",
+          "state": "Home",
           "attributes": {
             "options": [
               "Home",
@@ -53113,12 +53311,12 @@
             "friendly_name": "House mode"
           },
           "context": {
-            "id": "01M4JENRRYAFZ6E55GRPQJM3G5",
-            "parent_id": "01M4JENRRYKMYNCHEVR9B6F6HS",
+            "id": "01M4KXBTC04T3Y7EWQHDPAB3RS",
+            "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:25:37.783Z",
-          "last_updated": "2026-10-10T08:25:37.783Z"
+          "last_changed": "2026-10-10T22:01:32.800Z",
+          "last_updated": "2026-10-10T22:01:32.800Z"
         },
         "row": {
           "tag": "hui-input-select-entity-row",
@@ -53129,7 +53327,7 @@
           "slider": null,
           "input": null,
           "select": {
-            "value": "Away",
+            "value": "Home",
             "label": "House mode",
             "disabled": false,
             "options": [
@@ -53153,9 +53351,16 @@
           },
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621938524,
+        "capturedAt": 1791677051453,
         "calls": [
           {
             "control": "select",
@@ -53165,7 +53370,7 @@
                 "domain": "input_select",
                 "service": "select_option",
                 "data": {
-                  "option": "Home",
+                  "option": "Away",
                   "entity_id": "input_select.house_mode"
                 },
                 "target": null
@@ -53190,12 +53395,12 @@
             "friendly_name": "House mode"
           },
           "context": {
-            "id": "01M4JENRRYAFZ6E55GRPQJM3G5",
-            "parent_id": "01M4JENRRYKMYNCHEVR9B6F6HS",
+            "id": "01M4KXBTC04T3Y7EWQHDPAB3RS",
+            "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:25:37.783Z",
-          "last_updated": "2026-10-10T08:25:37.783Z"
+          "last_changed": "2026-10-10T22:01:32.800Z",
+          "last_updated": "2026-10-10T22:01:32.800Z"
         },
         "row": {
           "tag": "hui-input-select-entity-row",
@@ -53230,9 +53435,16 @@
           },
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621943037
+        "capturedAt": 1791677055972
       }
     },
     "select.speed": {
@@ -53249,12 +53461,12 @@
             "friendly_name": "Speed"
           },
           "context": {
-            "id": "01M4JDD91Q43VRACBT56Y14DVJ",
+            "id": "01M4KXBVCVPEFXWS35343MJEK5",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.951Z",
-          "last_updated": "2026-10-10T08:03:28.951Z"
+          "last_changed": "2026-10-10T22:01:33.851Z",
+          "last_updated": "2026-10-10T22:01:33.851Z"
         },
         "row": {
           "tag": "hui-select-entity-row",
@@ -53285,9 +53497,16 @@
           },
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621943341,
+        "capturedAt": 1791677056376,
         "calls": [
           {
             "control": "select",
@@ -53320,12 +53539,12 @@
             "friendly_name": "Speed"
           },
           "context": {
-            "id": "01M4JDD91Q43VRACBT56Y14DVJ",
+            "id": "01M4KXBVCVPEFXWS35343MJEK5",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.951Z",
-          "last_updated": "2026-10-10T08:03:28.951Z"
+          "last_changed": "2026-10-10T22:01:33.851Z",
+          "last_updated": "2026-10-10T22:01:33.851Z"
         },
         "row": {
           "tag": "hui-select-entity-row",
@@ -53356,9 +53575,16 @@
           },
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621947858
+        "capturedAt": 1791677060895
       }
     },
     "input_text.welcome_message": {
@@ -53375,12 +53601,12 @@
             "friendly_name": "Welcome message"
           },
           "context": {
-            "id": "01M4JDD8C4YZJ0G27TWWT3MBG1",
+            "id": "01M4KXBV5D8HV6322HKTVJQ4SW",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.260Z",
-          "last_updated": "2026-10-10T08:03:28.260Z"
+          "last_changed": "2026-10-10T22:01:33.613Z",
+          "last_updated": "2026-10-10T22:01:33.613Z"
         },
         "row": {
           "tag": "hui-input-text-entity-row",
@@ -53406,9 +53632,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621948261,
+        "capturedAt": 1791677061298,
         "calls": [
           {
             "control": "input",
@@ -53440,12 +53684,12 @@
             "friendly_name": "Welcome message"
           },
           "context": {
-            "id": "01M4JDD8C4YZJ0G27TWWT3MBG1",
+            "id": "01M4KXBV5D8HV6322HKTVJQ4SW",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.260Z",
-          "last_updated": "2026-10-10T08:03:28.260Z"
+          "last_changed": "2026-10-10T22:01:33.613Z",
+          "last_updated": "2026-10-10T22:01:33.613Z"
         },
         "row": {
           "tag": "hui-input-text-entity-row",
@@ -53471,9 +53715,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621952778
+        "capturedAt": 1791677065818
       }
     },
     "text.text": {
@@ -53489,12 +53751,12 @@
             "friendly_name": "Text"
           },
           "context": {
-            "id": "01M4JDD91T7Y010ZS98XJ9GV7N",
+            "id": "01M4KXBVCXTR81W5B71BH5XJ28",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.954Z",
-          "last_updated": "2026-10-10T08:03:28.954Z"
+          "last_changed": "2026-10-10T22:01:33.853Z",
+          "last_updated": "2026-10-10T22:01:33.853Z"
         },
         "row": {
           "tag": "hui-text-entity-row",
@@ -53520,9 +53782,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621953081,
+        "capturedAt": 1791677066221,
         "calls": [
           {
             "control": "input",
@@ -53554,12 +53834,12 @@
             "friendly_name": "Text"
           },
           "context": {
-            "id": "01M4JDD91T7Y010ZS98XJ9GV7N",
+            "id": "01M4KXBVCXTR81W5B71BH5XJ28",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.954Z",
-          "last_updated": "2026-10-10T08:03:28.954Z"
+          "last_changed": "2026-10-10T22:01:33.853Z",
+          "last_updated": "2026-10-10T22:01:33.853Z"
         },
         "row": {
           "tag": "hui-text-entity-row",
@@ -53585,9 +53865,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621957596
+        "capturedAt": 1791677070736
       }
     },
     "text.password": {
@@ -53603,12 +53901,12 @@
             "friendly_name": "Password"
           },
           "context": {
-            "id": "01M4JDD91TR1199F74QV1CHJMA",
+            "id": "01M4KXBVCXFFWF9BRJS9Q3ADEW",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.954Z",
-          "last_updated": "2026-10-10T08:03:28.954Z"
+          "last_changed": "2026-10-10T22:01:33.853Z",
+          "last_updated": "2026-10-10T22:01:33.853Z"
         },
         "row": {
           "tag": "hui-text-entity-row",
@@ -53634,9 +53932,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621957898,
+        "capturedAt": 1791677071037,
         "calls": [
           {
             "control": "input",
@@ -53668,12 +53984,12 @@
             "friendly_name": "Password"
           },
           "context": {
-            "id": "01M4JDD91TR1199F74QV1CHJMA",
+            "id": "01M4KXBVCXFFWF9BRJS9Q3ADEW",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.954Z",
-          "last_updated": "2026-10-10T08:03:28.954Z"
+          "last_changed": "2026-10-10T22:01:33.853Z",
+          "last_updated": "2026-10-10T22:01:33.853Z"
         },
         "row": {
           "tag": "hui-text-entity-row",
@@ -53699,9 +54015,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621962410
+        "capturedAt": 1791677075555
       }
     },
     "text.text_with_1_to_5_characters": {
@@ -53717,12 +54051,12 @@
             "friendly_name": "Text with 1 to 5 characters"
           },
           "context": {
-            "id": "01M4JDD91TAM09XBJYCKK00T1C",
+            "id": "01M4KXBVCXESYBNVFEJSJ2ZA9Z",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.954Z",
-          "last_updated": "2026-10-10T08:03:28.954Z"
+          "last_changed": "2026-10-10T22:01:33.853Z",
+          "last_updated": "2026-10-10T22:01:33.853Z"
         },
         "row": {
           "tag": "hui-text-entity-row",
@@ -53748,9 +54082,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621962712,
+        "capturedAt": 1791677075858,
         "calls": [
           {
             "control": "input",
@@ -53782,12 +54134,12 @@
             "friendly_name": "Text with 1 to 5 characters"
           },
           "context": {
-            "id": "01M4JDD91TAM09XBJYCKK00T1C",
+            "id": "01M4KXBVCXESYBNVFEJSJ2ZA9Z",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.954Z",
-          "last_updated": "2026-10-10T08:03:28.954Z"
+          "last_changed": "2026-10-10T22:01:33.853Z",
+          "last_updated": "2026-10-10T22:01:33.853Z"
         },
         "row": {
           "tag": "hui-text-entity-row",
@@ -53813,9 +54165,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621967228
+        "capturedAt": 1791677080376
       }
     },
     "text.text_with_only_lower_case_characters": {
@@ -53831,12 +54201,12 @@
             "friendly_name": "Text with only lower case characters"
           },
           "context": {
-            "id": "01M4JDD91TZT872T4RP26WEFA7",
+            "id": "01M4KXBVCXYZPF5BSRC28QSFFM",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.954Z",
-          "last_updated": "2026-10-10T08:03:28.954Z"
+          "last_changed": "2026-10-10T22:01:33.853Z",
+          "last_updated": "2026-10-10T22:01:33.853Z"
         },
         "row": {
           "tag": "hui-text-entity-row",
@@ -53862,9 +54232,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621967530,
+        "capturedAt": 1791677080677,
         "calls": [
           {
             "control": "input",
@@ -53896,12 +54284,12 @@
             "friendly_name": "Text with only lower case characters"
           },
           "context": {
-            "id": "01M4JDD91TZT872T4RP26WEFA7",
+            "id": "01M4KXBVCXYZPF5BSRC28QSFFM",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.954Z",
-          "last_updated": "2026-10-10T08:03:28.954Z"
+          "last_changed": "2026-10-10T22:01:33.853Z",
+          "last_updated": "2026-10-10T22:01:33.853Z"
         },
         "row": {
           "tag": "hui-text-entity-row",
@@ -53927,9 +54315,27 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621972043
+        "capturedAt": 1791677085195
       }
     },
     "timer.laundry": {
@@ -53944,12 +54350,12 @@
             "friendly_name": "Laundry"
           },
           "context": {
-            "id": "01M4JDD7X7DD1H3W8RB1TYNY8H",
+            "id": "01M4KXBTC134W0WZSDJBQ1Z1QC",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:27.783Z",
-          "last_updated": "2026-10-10T08:03:27.783Z"
+          "last_changed": "2026-10-10T22:01:32.801Z",
+          "last_updated": "2026-10-10T22:01:32.801Z"
         },
         "row": {
           "tag": "hui-timer-entity-row",
@@ -53962,9 +54368,16 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621972446,
+        "capturedAt": 1791677085598,
         "calls": []
       },
       "unavailable": {
@@ -53978,12 +54391,12 @@
             "friendly_name": "Laundry"
           },
           "context": {
-            "id": "01M4JDD7X7DD1H3W8RB1TYNY8H",
+            "id": "01M4KXBTC134W0WZSDJBQ1Z1QC",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:27.783Z",
-          "last_updated": "2026-10-10T08:03:27.783Z"
+          "last_changed": "2026-10-10T22:01:32.801Z",
+          "last_updated": "2026-10-10T22:01:32.801Z"
         },
         "row": {
           "tag": "hui-timer-entity-row",
@@ -53996,9 +54409,16 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621976956
+        "capturedAt": 1791677090115
       },
       "paused": {
         "stateObj": {
@@ -54012,12 +54432,12 @@
             "remaining": "0:42:13"
           },
           "context": {
-            "id": "01M4JDD7X7DD1H3W8RB1TYNY8H",
+            "id": "01M4KXBTC134W0WZSDJBQ1Z1QC",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:27.783Z",
-          "last_updated": "2026-10-10T08:03:27.783Z"
+          "last_changed": "2026-10-10T22:01:32.801Z",
+          "last_updated": "2026-10-10T22:01:32.801Z"
         },
         "row": {
           "tag": "hui-timer-entity-row",
@@ -54030,9 +54450,16 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621977258
+        "capturedAt": 1791677090417
       },
       "active": {
         "stateObj": {
@@ -54044,15 +54471,15 @@
             "last_transition": null,
             "friendly_name": "Laundry",
             "remaining": "1:00:00",
-            "finishes_at": "2026-10-10T08:58:46.043Z"
+            "finishes_at": "2026-10-11T00:17:19.196Z"
           },
           "context": {
-            "id": "01M4JDD7X7DD1H3W8RB1TYNY8H",
+            "id": "01M4KXBTC134W0WZSDJBQ1Z1QC",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:27.783Z",
-          "last_updated": "2026-10-10T08:03:27.783Z"
+          "last_changed": "2026-10-10T22:01:32.801Z",
+          "last_updated": "2026-10-10T22:01:32.801Z"
         },
         "row": {
           "tag": "hui-timer-entity-row",
@@ -54065,9 +54492,16 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621977559
+        "capturedAt": 1791677090718
       }
     },
     "input_datetime.wake_up": {
@@ -54086,12 +54520,12 @@
             "friendly_name": "Wake-up time"
           },
           "context": {
-            "id": "01M4JDD8VWZ3G5FR8X18EC04PT",
+            "id": "01M4KXBV5NZ7QNN4NB6TG38S4C",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.764Z",
-          "last_updated": "2026-10-10T08:03:28.764Z"
+          "last_changed": "2026-10-10T22:01:33.621Z",
+          "last_updated": "2026-10-10T22:01:33.621Z"
         },
         "row": {
           "tag": "hui-input-datetime-entity-row",
@@ -54108,9 +54542,37 @@
             "disabled": false,
             "label": null
           },
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621977962,
+        "capturedAt": 1791677091121,
         "calls": [
           {
             "control": "time",
@@ -54144,12 +54606,12 @@
             "friendly_name": "Wake-up time"
           },
           "context": {
-            "id": "01M4JDD8VWZ3G5FR8X18EC04PT",
+            "id": "01M4KXBV5NZ7QNN4NB6TG38S4C",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.764Z",
-          "last_updated": "2026-10-10T08:03:28.764Z"
+          "last_changed": "2026-10-10T22:01:33.621Z",
+          "last_updated": "2026-10-10T22:01:33.621Z"
         },
         "row": {
           "tag": "hui-input-datetime-entity-row",
@@ -54166,9 +54628,37 @@
             "disabled": true,
             "label": null
           },
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621982478
+        "capturedAt": 1791677095643
       }
     },
     "date.date": {
@@ -54181,12 +54671,12 @@
             "friendly_name": "Date"
           },
           "context": {
-            "id": "01M4JDD91HKCH5CHXP6DG31YPA",
+            "id": "01M4KXBVCQBGWB39V42W3XKPZM",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.945Z",
-          "last_updated": "2026-10-10T08:03:28.945Z"
+          "last_changed": "2026-10-10T22:01:33.847Z",
+          "last_updated": "2026-10-10T22:01:33.847Z"
         },
         "row": {
           "tag": "hui-date-entity-row",
@@ -54203,9 +54693,27 @@
             "label": null
           },
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621982781,
+        "capturedAt": 1791677096047,
         "calls": [
           {
             "control": "date",
@@ -54233,12 +54741,12 @@
             "friendly_name": "Date"
           },
           "context": {
-            "id": "01M4JDD91HKCH5CHXP6DG31YPA",
+            "id": "01M4KXBVCQBGWB39V42W3XKPZM",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.945Z",
-          "last_updated": "2026-10-10T08:03:28.945Z"
+          "last_changed": "2026-10-10T22:01:33.847Z",
+          "last_updated": "2026-10-10T22:01:33.847Z"
         },
         "row": {
           "tag": "hui-date-entity-row",
@@ -54255,9 +54763,27 @@
             "label": null
           },
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621987293
+        "capturedAt": 1791677100560
       }
     },
     "time.time": {
@@ -54269,12 +54795,12 @@
             "friendly_name": "Time"
           },
           "context": {
-            "id": "01M4JDD91TJ8NWHF0CTE5TCM10",
+            "id": "01M4KXBVCXHKPEK1R9JFN4VM0B",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.954Z",
-          "last_updated": "2026-10-10T08:03:28.954Z"
+          "last_changed": "2026-10-10T22:01:33.853Z",
+          "last_updated": "2026-10-10T22:01:33.853Z"
         },
         "row": {
           "tag": "hui-time-entity-row",
@@ -54291,9 +54817,37 @@
             "disabled": false,
             "label": null
           },
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621987595,
+        "capturedAt": 1791677100963,
         "calls": [
           {
             "control": "time",
@@ -54320,12 +54874,12 @@
             "friendly_name": "Time"
           },
           "context": {
-            "id": "01M4JDD91TJ8NWHF0CTE5TCM10",
+            "id": "01M4KXBVCXHKPEK1R9JFN4VM0B",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.954Z",
-          "last_updated": "2026-10-10T08:03:28.954Z"
+          "last_changed": "2026-10-10T22:01:33.853Z",
+          "last_updated": "2026-10-10T22:01:33.853Z"
         },
         "row": {
           "tag": "hui-time-entity-row",
@@ -54342,9 +54896,37 @@
             "disabled": true,
             "label": null
           },
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621992112
+        "capturedAt": 1791677105481
       }
     },
     "datetime.date_and_time": {
@@ -54357,12 +54939,12 @@
             "friendly_name": "Date and Time"
           },
           "context": {
-            "id": "01M4JDD91HHHP7SPNQGFWH27SG",
+            "id": "01M4KXBVCR0B5P7FNG13TPFYQX",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.945Z",
-          "last_updated": "2026-10-10T08:03:28.945Z"
+          "last_changed": "2026-10-10T22:01:33.848Z",
+          "last_updated": "2026-10-10T22:01:33.848Z"
         },
         "row": {
           "tag": "hui-datetime-entity-row",
@@ -54383,9 +54965,47 @@
             "disabled": false,
             "label": null
           },
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621992416,
+        "capturedAt": 1791677105886,
         "calls": [
           {
             "control": "date",
@@ -54428,12 +55048,12 @@
             "friendly_name": "Date and Time"
           },
           "context": {
-            "id": "01M4JDD91HHHP7SPNQGFWH27SG",
+            "id": "01M4KXBVCR0B5P7FNG13TPFYQX",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.945Z",
-          "last_updated": "2026-10-10T08:03:28.945Z"
+          "last_changed": "2026-10-10T22:01:33.848Z",
+          "last_updated": "2026-10-10T22:01:33.848Z"
         },
         "row": {
           "tag": "hui-datetime-entity-row",
@@ -54454,9 +55074,47 @@
             "disabled": true,
             "label": null
           },
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Clear",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Show password",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621996934
+        "capturedAt": 1791677110408
       }
     },
     "counter.coffee_cups": {
@@ -54472,12 +55130,12 @@
             "friendly_name": "Coffee cups"
           },
           "context": {
-            "id": "01M4JDD8VYK3ECK27BXJYCCQ0Y",
+            "id": "01M4KXBVB0Q630KKCNMPNSTCRR",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.766Z",
-          "last_updated": "2026-10-10T08:03:28.766Z"
+          "last_changed": "2026-10-10T22:01:33.792Z",
+          "last_updated": "2026-10-10T22:01:33.792Z"
         },
         "row": {
           "tag": "hui-simple-entity-row",
@@ -54490,9 +55148,16 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791621997236,
+        "capturedAt": 1791677110710,
         "calls": []
       },
       "unavailable": {
@@ -54507,12 +55172,12 @@
             "friendly_name": "Coffee cups"
           },
           "context": {
-            "id": "01M4JDD8VYK3ECK27BXJYCCQ0Y",
+            "id": "01M4KXBVB0Q630KKCNMPNSTCRR",
             "parent_id": null,
             "user_id": null
           },
-          "last_changed": "2026-10-10T08:03:28.766Z",
-          "last_updated": "2026-10-10T08:03:28.766Z"
+          "last_changed": "2026-10-10T22:01:33.792Z",
+          "last_updated": "2026-10-10T22:01:33.792Z"
         },
         "row": {
           "tag": "hui-simple-entity-row",
@@ -54525,26 +55190,33 @@
           "select": null,
           "date": null,
           "time": null,
-          "buttons": []
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791622001748
+        "capturedAt": 1791677115225
       }
     },
     "button.push": {
       "as_is": {
         "stateObj": {
           "entity_id": "button.push",
-          "state": "2026-10-10T08:25:38.812459+00:00",
+          "state": "2026-10-10T08:47:00.665008+00:00",
           "attributes": {
             "friendly_name": "Push"
           },
           "context": {
-            "id": "01M4JENVQW9YH4BZB5VW6J6DWV",
+            "id": "01M4KXBVCN7RTJ470E0RBBG0W2",
             "parent_id": null,
-            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+            "user_id": null
           },
-          "last_changed": "2026-10-10T08:25:38.812Z",
-          "last_updated": "2026-10-10T08:25:38.812Z"
+          "last_changed": "2026-10-10T22:01:33.845Z",
+          "last_updated": "2026-10-10T22:01:33.845Z"
         },
         "row": {
           "tag": "hui-button-entity-row",
@@ -54562,9 +55234,16 @@
               "text": "Press",
               "disabled": false
             }
-          ]
+          ],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791622002151,
+        "capturedAt": 1791677115629,
         "calls": [
           {
             "control": "button",
@@ -54590,12 +55269,12 @@
             "friendly_name": "Push"
           },
           "context": {
-            "id": "01M4JENVQW9YH4BZB5VW6J6DWV",
+            "id": "01M4KXBVCN7RTJ470E0RBBG0W2",
             "parent_id": null,
-            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+            "user_id": null
           },
-          "last_changed": "2026-10-10T08:25:38.812Z",
-          "last_updated": "2026-10-10T08:25:38.812Z"
+          "last_changed": "2026-10-10T22:01:33.845Z",
+          "last_updated": "2026-10-10T22:01:33.845Z"
         },
         "row": {
           "tag": "hui-button-entity-row",
@@ -54613,28 +55292,35 @@
               "text": "Press",
               "disabled": true
             }
-          ]
+          ],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791622006664
+        "capturedAt": 1791677120147
       }
     },
     "input_button.doorbell_test": {
       "as_is": {
         "stateObj": {
           "entity_id": "input_button.doorbell_test",
-          "state": "2026-10-10T08:25:38.822108+00:00",
+          "state": "2026-10-10T08:47:00.670361+00:00",
           "attributes": {
             "editable": false,
             "icon": "mdi:doorbell",
             "friendly_name": "Doorbell test"
           },
           "context": {
-            "id": "01M4JENVR52V47RQK3WMNEFQJ5",
+            "id": "01M4KXBTC0CAHSX9CHDXJ9CEJH",
             "parent_id": null,
-            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+            "user_id": null
           },
-          "last_changed": "2026-10-10T08:25:38.822Z",
-          "last_updated": "2026-10-10T08:25:38.822Z"
+          "last_changed": "2026-10-10T22:01:32.800Z",
+          "last_updated": "2026-10-10T22:01:32.800Z"
         },
         "row": {
           "tag": "hui-input-button-entity-row",
@@ -54652,9 +55338,16 @@
               "text": "Press",
               "disabled": false
             }
-          ]
+          ],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791622007066,
+        "capturedAt": 1791677120550,
         "calls": [
           {
             "control": "button",
@@ -54682,12 +55375,12 @@
             "friendly_name": "Doorbell test"
           },
           "context": {
-            "id": "01M4JENVR52V47RQK3WMNEFQJ5",
+            "id": "01M4KXBTC0CAHSX9CHDXJ9CEJH",
             "parent_id": null,
-            "user_id": "4dced85e68734d9b807a24fb2cccdc38"
+            "user_id": null
           },
-          "last_changed": "2026-10-10T08:25:38.822Z",
-          "last_updated": "2026-10-10T08:25:38.822Z"
+          "last_changed": "2026-10-10T22:01:32.800Z",
+          "last_updated": "2026-10-10T22:01:32.800Z"
         },
         "row": {
           "tag": "hui-input-button-entity-row",
@@ -54705,9 +55398,1878 @@
               "text": "Press",
               "disabled": true
             }
-          ]
+          ],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
         },
-        "capturedAt": 1791622011581
+        "capturedAt": 1791677125065
+      }
+    },
+    "group.downstairs_lights": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "group.downstairs_lights",
+          "state": "on",
+          "attributes": {
+            "entity_id": [
+              "light.kitchen_lights",
+              "light.living_room_rgbww_lights"
+            ],
+            "order": 0,
+            "friendly_name": "Downstairs lights"
+          },
+          "context": {
+            "id": "01M4KXBWAN1EZFFTTYQHAFA34H",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:34.805Z",
+          "last_updated": "2026-10-10T22:01:34.805Z"
+        },
+        "row": {
+          "tag": "hui-group-entity-row",
+          "name": "Downstairs lights",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": {
+            "checked": true,
+            "buttons": []
+          },
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677125469,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "group.downstairs_lights",
+          "state": "unavailable",
+          "attributes": {
+            "entity_id": [
+              "light.kitchen_lights",
+              "light.living_room_rgbww_lights"
+            ],
+            "order": 0,
+            "friendly_name": "Downstairs lights"
+          },
+          "context": {
+            "id": "01M4KXBWAN1EZFFTTYQHAFA34H",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:34.805Z",
+          "last_updated": "2026-10-10T22:01:34.805Z"
+        },
+        "row": {
+          "tag": "hui-group-entity-row",
+          "name": "Downstairs lights",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": {
+            "checked": false,
+            "buttons": []
+          },
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677129982
+      }
+    },
+    "group.doors": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "group.doors",
+          "state": "off",
+          "attributes": {
+            "entity_id": [
+              "lock.front_door",
+              "binary_sensor.front_door",
+              "cover.garage_door"
+            ],
+            "order": 1,
+            "friendly_name": "Doors"
+          },
+          "context": {
+            "id": "01M4KXBWANEYBBG4Y8HM5QNGSQ",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:34.805Z",
+          "last_updated": "2026-10-10T22:01:34.805Z"
+        },
+        "row": {
+          "tag": "hui-group-entity-row",
+          "name": "Doors",
+          "hideName": false,
+          "state": "Off",
+          "text": "Off",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677130285,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "group.doors",
+          "state": "unavailable",
+          "attributes": {
+            "entity_id": [
+              "lock.front_door",
+              "binary_sensor.front_door",
+              "cover.garage_door"
+            ],
+            "order": 1,
+            "friendly_name": "Doors"
+          },
+          "context": {
+            "id": "01M4KXBWANEYBBG4Y8HM5QNGSQ",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:34.805Z",
+          "last_updated": "2026-10-10T22:01:34.805Z"
+        },
+        "row": {
+          "tag": "hui-group-entity-row",
+          "name": "Doors",
+          "hideName": false,
+          "state": "Unavailable",
+          "text": "Unavailable",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677134798
+      }
+    },
+    "valve.front_garden": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "valve.front_garden",
+          "state": "open",
+          "attributes": {
+            "is_closed": false,
+            "friendly_name": "Front Garden",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4KXBVCY4726DG9GB79J06MY",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.854Z",
+          "last_updated": "2026-10-10T22:01:33.854Z"
+        },
+        "row": {
+          "tag": "hui-valve-entity-row",
+          "name": "Front Garden",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": {
+            "checked": true,
+            "buttons": []
+          },
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677135201,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "valve.front_garden",
+          "state": "unavailable",
+          "attributes": {
+            "is_closed": false,
+            "friendly_name": "Front Garden",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4KXBVCY4726DG9GB79J06MY",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.854Z",
+          "last_updated": "2026-10-10T22:01:33.854Z"
+        },
+        "row": {
+          "tag": "hui-valve-entity-row",
+          "name": "Front Garden",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": {
+            "checked": false,
+            "buttons": []
+          },
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677139715
+      }
+    },
+    "cover.garage_door": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "cover.garage_door",
+          "state": "closed",
+          "attributes": {
+            "is_closed": true,
+            "device_class": "garage",
+            "friendly_name": "Garage Door",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4KXBVCQK569JHMEGAFP0PS6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.847Z",
+          "last_updated": "2026-10-10T22:01:33.847Z"
+        },
+        "row": {
+          "tag": "hui-cover-entity-row",
+          "name": "Garage Door",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Open cover",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Close cover",
+              "disabled": true,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677140118,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "cover.garage_door",
+          "state": "unavailable",
+          "attributes": {
+            "is_closed": true,
+            "device_class": "garage",
+            "friendly_name": "Garage Door",
+            "supported_features": 3
+          },
+          "context": {
+            "id": "01M4KXBVCQK569JHMEGAFP0PS6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.847Z",
+          "last_updated": "2026-10-10T22:01:33.847Z"
+        },
+        "row": {
+          "tag": "hui-cover-entity-row",
+          "name": "Garage Door",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Open cover",
+              "disabled": true,
+              "hidden": false
+            },
+            {
+              "label": "Close cover",
+              "disabled": true,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677144629
+      }
+    },
+    "cover.living_room_window": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "cover.living_room_window",
+          "state": "open",
+          "attributes": {
+            "is_closed": false,
+            "current_position": 70,
+            "current_tilt_position": 50,
+            "friendly_name": "Living Room Window",
+            "supported_features": 255
+          },
+          "context": {
+            "id": "01M4KXBVCQJ4QCFBSFQB4JE9R9",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.847Z",
+          "last_updated": "2026-10-10T22:01:33.847Z"
+        },
+        "row": {
+          "tag": "hui-cover-entity-row",
+          "name": "Living Room Window",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Open cover",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Stop cover",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Close cover",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677144931,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "cover.living_room_window",
+          "state": "unavailable",
+          "attributes": {
+            "is_closed": false,
+            "current_position": 70,
+            "current_tilt_position": 50,
+            "friendly_name": "Living Room Window",
+            "supported_features": 255
+          },
+          "context": {
+            "id": "01M4KXBVCQJ4QCFBSFQB4JE9R9",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.847Z",
+          "last_updated": "2026-10-10T22:01:33.847Z"
+        },
+        "row": {
+          "tag": "hui-cover-entity-row",
+          "name": "Living Room Window",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Open cover",
+              "disabled": true,
+              "hidden": false
+            },
+            {
+              "label": "Stop cover",
+              "disabled": true,
+              "hidden": false
+            },
+            {
+              "label": "Close cover",
+              "disabled": true,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677149443
+      }
+    },
+    "climate.ecobee": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "climate.ecobee",
+          "state": "heat_cool",
+          "attributes": {
+            "hvac_modes": [
+              "off",
+              "cool",
+              "heat_cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "preset_modes": [
+              "home",
+              "eco",
+              "away"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ],
+            "current_temperature": 23,
+            "target_temp_high": 24,
+            "target_temp_low": 21,
+            "fan_mode": "auto_low",
+            "preset_mode": "home",
+            "swing_mode": "auto",
+            "friendly_name": "Ecobee",
+            "supported_features": 442
+          },
+          "context": {
+            "id": "01M4KXBVCQ0TQBMWPRPZ3TAN8Z",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.847Z",
+          "last_updated": "2026-10-10T22:01:33.847Z"
+        },
+        "row": {
+          "tag": "hui-climate-entity-row",
+          "name": "Ecobee",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": "Heat/Cool - Home 21 °C-24 °C Currently : 23 °C",
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677149846,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "climate.ecobee",
+          "state": "unavailable",
+          "attributes": {
+            "hvac_modes": [
+              "off",
+              "cool",
+              "heat_cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "preset_modes": [
+              "home",
+              "eco",
+              "away"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ],
+            "current_temperature": 23,
+            "target_temp_high": 24,
+            "target_temp_low": 21,
+            "fan_mode": "auto_low",
+            "preset_mode": "home",
+            "swing_mode": "auto",
+            "friendly_name": "Ecobee",
+            "supported_features": 442
+          },
+          "context": {
+            "id": "01M4KXBVCQ0TQBMWPRPZ3TAN8Z",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.847Z",
+          "last_updated": "2026-10-10T22:01:33.847Z"
+        },
+        "row": {
+          "tag": "hui-climate-entity-row",
+          "name": "Ecobee",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": "Unavailable",
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677154358
+      }
+    },
+    "climate.hvac": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "climate.hvac",
+          "state": "cool",
+          "attributes": {
+            "hvac_modes": [
+              "off",
+              "heat",
+              "cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "min_humidity": 30,
+            "max_humidity": 99,
+            "target_humidity_step": 5,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ],
+            "swing_horizontal_modes": [
+              "auto",
+              "rangefull",
+              "off"
+            ],
+            "current_temperature": 22,
+            "temperature": 21,
+            "target_temp_high": null,
+            "target_temp_low": null,
+            "current_humidity": 54.2,
+            "humidity": 67.4,
+            "fan_mode": "on_high",
+            "hvac_action": "cooling",
+            "swing_mode": "off",
+            "swing_horizontal_mode": "auto",
+            "friendly_name": "Hvac",
+            "supported_features": 943
+          },
+          "context": {
+            "id": "01M4KXBVCQE34T4PD5FZDP9JSE",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.847Z",
+          "last_updated": "2026-10-10T22:01:33.847Z"
+        },
+        "row": {
+          "tag": "hui-climate-entity-row",
+          "name": "Hvac",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": "Cooling (Cool) 21 °C Currently : 22 °C/ 54.2%",
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677154660,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "climate.hvac",
+          "state": "unavailable",
+          "attributes": {
+            "hvac_modes": [
+              "off",
+              "heat",
+              "cool",
+              "auto",
+              "dry",
+              "fan_only"
+            ],
+            "min_temp": 7,
+            "max_temp": 35,
+            "min_humidity": 30,
+            "max_humidity": 99,
+            "target_humidity_step": 5,
+            "fan_modes": [
+              "on_low",
+              "on_high",
+              "auto_low",
+              "auto_high",
+              "off"
+            ],
+            "swing_modes": [
+              "auto",
+              "1",
+              "2",
+              "3",
+              "off"
+            ],
+            "swing_horizontal_modes": [
+              "auto",
+              "rangefull",
+              "off"
+            ],
+            "current_temperature": 22,
+            "temperature": 21,
+            "target_temp_high": null,
+            "target_temp_low": null,
+            "current_humidity": 54.2,
+            "humidity": 67.4,
+            "fan_mode": "on_high",
+            "hvac_action": "cooling",
+            "swing_mode": "off",
+            "swing_horizontal_mode": "auto",
+            "friendly_name": "Hvac",
+            "supported_features": 943
+          },
+          "context": {
+            "id": "01M4KXBVCQE34T4PD5FZDP9JSE",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.847Z",
+          "last_updated": "2026-10-10T22:01:33.847Z"
+        },
+        "row": {
+          "tag": "hui-climate-entity-row",
+          "name": "Hvac",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": "Unavailable",
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677159174
+      }
+    },
+    "water_heater.demo_water_heater": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "water_heater.demo_water_heater",
+          "state": "eco",
+          "attributes": {
+            "min_temp": 43.3,
+            "max_temp": 60,
+            "target_temp_step": 1,
+            "operation_list": [
+              "eco",
+              "electric",
+              "performance",
+              "high_demand",
+              "heat_pump",
+              "gas",
+              "off"
+            ],
+            "current_temperature": null,
+            "temperature": 48.3,
+            "target_temp_high": null,
+            "target_temp_low": null,
+            "operation_mode": "eco",
+            "away_mode": "off",
+            "friendly_name": "Demo Water Heater",
+            "supported_features": 15
+          },
+          "context": {
+            "id": "01M4KXBVCY7KPJSZWSC6HNAD1K",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.854Z",
+          "last_updated": "2026-10-10T22:01:33.854Z"
+        },
+        "row": {
+          "tag": "hui-climate-entity-row",
+          "name": "Demo Water Heater",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": "Eco 48.3 °C",
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677159476,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "water_heater.demo_water_heater",
+          "state": "unavailable",
+          "attributes": {
+            "min_temp": 43.3,
+            "max_temp": 60,
+            "target_temp_step": 1,
+            "operation_list": [
+              "eco",
+              "electric",
+              "performance",
+              "high_demand",
+              "heat_pump",
+              "gas",
+              "off"
+            ],
+            "current_temperature": null,
+            "temperature": 48.3,
+            "target_temp_high": null,
+            "target_temp_low": null,
+            "operation_mode": "eco",
+            "away_mode": "off",
+            "friendly_name": "Demo Water Heater",
+            "supported_features": 15
+          },
+          "context": {
+            "id": "01M4KXBVCY7KPJSZWSC6HNAD1K",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.854Z",
+          "last_updated": "2026-10-10T22:01:33.854Z"
+        },
+        "row": {
+          "tag": "hui-climate-entity-row",
+          "name": "Demo Water Heater",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": "Unavailable",
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677163988
+      }
+    },
+    "humidifier.humidifier": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "humidifier.humidifier",
+          "state": "on",
+          "attributes": {
+            "min_humidity": 0,
+            "max_humidity": 100,
+            "target_humidity_step": 5,
+            "action": "humidifying",
+            "current_humidity": 45,
+            "humidity": 65,
+            "device_class": "humidifier",
+            "friendly_name": "Humidifier",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4KXBVCRB3C53054YHS73A3D",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.848Z",
+          "last_updated": "2026-10-10T22:01:33.848Z"
+        },
+        "row": {
+          "tag": "hui-humidifier-entity-row",
+          "name": "Humidifier",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": "Humidifying (On) 65% Currently : 45%",
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677164392,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "humidifier.humidifier",
+          "state": "unavailable",
+          "attributes": {
+            "min_humidity": 0,
+            "max_humidity": 100,
+            "target_humidity_step": 5,
+            "action": "humidifying",
+            "current_humidity": 45,
+            "humidity": 65,
+            "device_class": "humidifier",
+            "friendly_name": "Humidifier",
+            "supported_features": 0
+          },
+          "context": {
+            "id": "01M4KXBVCRB3C53054YHS73A3D",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.848Z",
+          "last_updated": "2026-10-10T22:01:33.848Z"
+        },
+        "row": {
+          "tag": "hui-humidifier-entity-row",
+          "name": "Humidifier",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": "Unavailable",
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677168906
+      }
+    },
+    "event.push_button_press": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "event.push_button_press",
+          "state": "2026-10-10T08:47:00.665+00:00",
+          "attributes": {
+            "event_types": [
+              "pressed"
+            ],
+            "event_type": "pressed",
+            "device_class": "button",
+            "friendly_name": "Push Button press"
+          },
+          "context": {
+            "id": "01M4KXBVCR0PA8XA2975B1ACXP",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.848Z",
+          "last_updated": "2026-10-10T22:01:33.848Z"
+        },
+        "row": {
+          "tag": "hui-event-entity-row",
+          "name": "Push Button press",
+          "hideName": false,
+          "state": null,
+          "text": "Pressed",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": "15 hours ago",
+          "what": "Pressed",
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677169210,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "event.push_button_press",
+          "state": "unavailable",
+          "attributes": {
+            "event_types": [
+              "pressed"
+            ],
+            "event_type": "pressed",
+            "device_class": "button",
+            "friendly_name": "Push Button press"
+          },
+          "context": {
+            "id": "01M4KXBVCR0PA8XA2975B1ACXP",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.848Z",
+          "last_updated": "2026-10-10T22:01:33.848Z"
+        },
+        "row": {
+          "tag": "hui-event-entity-row",
+          "name": "Push Button press",
+          "hideName": false,
+          "state": null,
+          "text": "Unavailable",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": "Unavailable",
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677173728
+      }
+    },
+    "update.demo_add_on": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "update.demo_add_on",
+          "state": "on",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo add-on",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4KXBVCXVTRDVZTEW1CYDM66",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.853Z",
+          "last_updated": "2026-10-10T22:01:33.853Z"
+        },
+        "row": {
+          "tag": "hui-update-entity-row",
+          "name": "Demo add-on",
+          "hideName": false,
+          "state": null,
+          "text": "Update available",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677174130,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "update.demo_add_on",
+          "state": "unavailable",
+          "attributes": {
+            "auto_update": false,
+            "display_precision": 0,
+            "installed_version": "1.0.0",
+            "in_progress": false,
+            "latest_version": "1.0.1",
+            "release_summary": "Awesome update, fixing everything!",
+            "release_url": "https://www.example.com/release/1.0.1",
+            "skipped_version": null,
+            "title": "AdGuard Home",
+            "update_percentage": null,
+            "entity_picture": "/api/brands/integration/demo/icon.png",
+            "friendly_name": "Demo add-on",
+            "supported_features": 11
+          },
+          "context": {
+            "id": "01M4KXBVCXVTRDVZTEW1CYDM66",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.853Z",
+          "last_updated": "2026-10-10T22:01:33.853Z"
+        },
+        "row": {
+          "tag": "hui-update-entity-row",
+          "name": "Demo add-on",
+          "hideName": false,
+          "state": null,
+          "text": "Unavailable",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677178640
+      }
+    },
+    "media_player.living_room_tv": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "media_player.living_room_tv",
+          "state": "playing",
+          "attributes": {
+            "sound_mode_list": [
+              "Music",
+              "Movie"
+            ],
+            "volume_level": 1,
+            "is_volume_muted": false,
+            "media_content_id": "eyU3bRy2x44",
+            "media_content_type": "movie",
+            "media_duration": 300,
+            "media_position": 45,
+            "media_position_updated_at": "2026-10-10T22:01:33.849848+00:00",
+            "media_title": "♥♥ The Best Fireplace Video (3 hours)",
+            "app_name": "YouTube",
+            "sound_mode": "Music",
+            "shuffle": false,
+            "entity_picture_local": "/api/media_player_proxy/media_player.living_room_tv?token=aa754dea34b3cd86689a44981304e4adf6e2c2f6f68aa7cba7a6a4a23ac61a31&cache=21fc3e0572fd0918",
+            "active_child": "media_player.living_room",
+            "device_class": "tv",
+            "entity_picture": "/api/media_player_proxy/media_player.living_room?token=bf69deb7a0d465253caab09a19fcc6f4547827c46065fa6a0d1709e993babb64&cache=bc2ffb49c4f67034",
+            "friendly_name": "Living Room TV",
+            "supported_features": 119695
+          },
+          "context": {
+            "id": "01M4KXBVCS7KS7HXTWB7KCW3S8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.850Z",
+          "last_updated": "2026-10-10T22:01:33.850Z"
+        },
+        "row": {
+          "tag": "hui-media-player-entity-row",
+          "name": "Living Room TV YouTube",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": {
+            "value": 100,
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "disabled": false
+          },
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Turn off",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Volume unmute",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Pause",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": "YouTube",
+          "right": null,
+          "what": null,
+          "volume": {
+            "value": 100
+          },
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677178949,
+        "calls": [
+          {
+            "control": "slider",
+            "label": "slider",
+            "calls": [
+              {
+                "domain": "media_player",
+                "service": "volume_set",
+                "data": {
+                  "entity_id": "media_player.living_room_tv",
+                  "volume_level": 0.01
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "media_player.living_room_tv",
+          "state": "unavailable",
+          "attributes": {
+            "sound_mode_list": [
+              "Music",
+              "Movie"
+            ],
+            "volume_level": 1,
+            "is_volume_muted": false,
+            "media_content_id": "eyU3bRy2x44",
+            "media_content_type": "movie",
+            "media_duration": 300,
+            "media_position": 45,
+            "media_position_updated_at": "2026-10-10T22:01:33.849848+00:00",
+            "media_title": "♥♥ The Best Fireplace Video (3 hours)",
+            "app_name": "YouTube",
+            "sound_mode": "Music",
+            "shuffle": false,
+            "entity_picture_local": "/api/media_player_proxy/media_player.living_room_tv?token=aa754dea34b3cd86689a44981304e4adf6e2c2f6f68aa7cba7a6a4a23ac61a31&cache=21fc3e0572fd0918",
+            "active_child": "media_player.living_room",
+            "device_class": "tv",
+            "entity_picture": "/api/media_player_proxy/media_player.living_room?token=bf69deb7a0d465253caab09a19fcc6f4547827c46065fa6a0d1709e993babb64&cache=bc2ffb49c4f67034",
+            "friendly_name": "Living Room TV",
+            "supported_features": 119695
+          },
+          "context": {
+            "id": "01M4KXBVCS7KS7HXTWB7KCW3S8",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.850Z",
+          "last_updated": "2026-10-10T22:01:33.850Z"
+        },
+        "row": {
+          "tag": "hui-media-player-entity-row",
+          "name": "Living Room TV YouTube",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": "YouTube",
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677183486
+      }
+    },
+    "media_player.kitchen_speaker": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "media_player.kitchen_speaker",
+          "state": "playing",
+          "attributes": {
+            "sound_mode_list": [
+              "Music",
+              "Movie"
+            ],
+            "group_members": null,
+            "volume_level": 1,
+            "is_volume_muted": false,
+            "media_content_id": "bounzz-1",
+            "media_content_type": "music",
+            "media_duration": 213,
+            "media_title": "I Wanna Be A Hippy (Flamman & Abraxas Radio Mix)",
+            "media_artist": "Technohead",
+            "media_album_name": "Bounzz",
+            "media_track": 1,
+            "sound_mode": "Music",
+            "shuffle": false,
+            "repeat": "off",
+            "entity_picture_local": "/api/media_player_proxy/media_player.kitchen_speaker?token=00412ba598e61916ac50b97606f85537bce84ed863146491e03775d7930853d8&cache=934338fcc8eee9ad",
+            "active_child": "media_player.kitchen",
+            "device_class": "speaker",
+            "entity_picture": "/api/media_player_proxy/media_player.kitchen?token=39d5b214a46c36e83756cf66a62f232af19daaf8db57a18317f09c658e831a40&cache=62c0c516acbc53a9",
+            "friendly_name": "Kitchen Speaker",
+            "supported_features": 914877
+          },
+          "context": {
+            "id": "01M4KXBVCT2TBH1VTTEP8BR0W6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.850Z",
+          "last_updated": "2026-10-10T22:01:33.850Z"
+        },
+        "row": {
+          "tag": "hui-media-player-entity-row",
+          "name": "Kitchen Speaker Technohead",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": {
+            "value": 100,
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "disabled": false
+          },
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Turn off",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Volume unmute",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Previous track",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Pause",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Next track",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": "Technohead",
+          "right": null,
+          "what": null,
+          "volume": {
+            "value": 100
+          },
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677183789,
+        "calls": [
+          {
+            "control": "slider",
+            "label": "slider",
+            "calls": [
+              {
+                "domain": "media_player",
+                "service": "volume_set",
+                "data": {
+                  "entity_id": "media_player.kitchen_speaker",
+                  "volume_level": 0.01
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "media_player.kitchen_speaker",
+          "state": "unavailable",
+          "attributes": {
+            "sound_mode_list": [
+              "Music",
+              "Movie"
+            ],
+            "group_members": null,
+            "volume_level": 1,
+            "is_volume_muted": false,
+            "media_content_id": "bounzz-1",
+            "media_content_type": "music",
+            "media_duration": 213,
+            "media_title": "I Wanna Be A Hippy (Flamman & Abraxas Radio Mix)",
+            "media_artist": "Technohead",
+            "media_album_name": "Bounzz",
+            "media_track": 1,
+            "sound_mode": "Music",
+            "shuffle": false,
+            "repeat": "off",
+            "entity_picture_local": "/api/media_player_proxy/media_player.kitchen_speaker?token=00412ba598e61916ac50b97606f85537bce84ed863146491e03775d7930853d8&cache=934338fcc8eee9ad",
+            "active_child": "media_player.kitchen",
+            "device_class": "speaker",
+            "entity_picture": "/api/media_player_proxy/media_player.kitchen?token=39d5b214a46c36e83756cf66a62f232af19daaf8db57a18317f09c658e831a40&cache=62c0c516acbc53a9",
+            "friendly_name": "Kitchen Speaker",
+            "supported_features": 914877
+          },
+          "context": {
+            "id": "01M4KXBVCT2TBH1VTTEP8BR0W6",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.850Z",
+          "last_updated": "2026-10-10T22:01:33.850Z"
+        },
+        "row": {
+          "tag": "hui-media-player-entity-row",
+          "name": "Kitchen Speaker Technohead",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": "Technohead",
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677188327
+      }
+    },
+    "media_player.bedroom_speaker": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "media_player.bedroom_speaker",
+          "state": "playing",
+          "attributes": {
+            "sound_mode_list": [
+              "Music",
+              "Movie"
+            ],
+            "volume_level": 1,
+            "is_volume_muted": false,
+            "media_content_id": "kxopViU98Xo",
+            "media_content_type": "movie",
+            "media_duration": 360000,
+            "media_position": 54000,
+            "media_position_updated_at": "2026-10-10T22:01:33.849854+00:00",
+            "media_title": "Epic sax guy 10 hours",
+            "app_name": "YouTube",
+            "sound_mode": "Music",
+            "shuffle": false,
+            "entity_picture_local": "/api/media_player_proxy/media_player.bedroom_speaker?token=d901bed2ab90d0526f5878616bda3b479568691954a52021bdeb89c7afa23fb2&cache=cebfb61d0e8209cb",
+            "active_child": "media_player.bedroom",
+            "device_class": "speaker",
+            "entity_picture": "/api/media_player_proxy/media_player.bedroom?token=f043857a7ac2c6aac568599592c225a73025769ffdf1a7b3e072cdc65816cb22&cache=e4513ed94ec89151",
+            "friendly_name": "Bedroom Speaker",
+            "supported_features": 119695
+          },
+          "context": {
+            "id": "01M4KXBVCTZK45V12SS9XE95MQ",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.850Z",
+          "last_updated": "2026-10-10T22:01:33.850Z"
+        },
+        "row": {
+          "tag": "hui-media-player-entity-row",
+          "name": "Bedroom Speaker YouTube",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": {
+            "value": 100,
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "disabled": false
+          },
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [
+            {
+              "label": "Turn off",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Volume unmute",
+              "disabled": false,
+              "hidden": false
+            },
+            {
+              "label": "Pause",
+              "disabled": false,
+              "hidden": false
+            }
+          ],
+          "toggle": null,
+          "secondary": "YouTube",
+          "right": null,
+          "what": null,
+          "volume": {
+            "value": 100
+          },
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677188632,
+        "calls": [
+          {
+            "control": "slider",
+            "label": "slider",
+            "calls": [
+              {
+                "domain": "media_player",
+                "service": "volume_set",
+                "data": {
+                  "entity_id": "media_player.bedroom_speaker",
+                  "volume_level": 0.01
+                },
+                "target": null
+              }
+            ]
+          }
+        ]
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "media_player.bedroom_speaker",
+          "state": "unavailable",
+          "attributes": {
+            "sound_mode_list": [
+              "Music",
+              "Movie"
+            ],
+            "volume_level": 1,
+            "is_volume_muted": false,
+            "media_content_id": "kxopViU98Xo",
+            "media_content_type": "movie",
+            "media_duration": 360000,
+            "media_position": 54000,
+            "media_position_updated_at": "2026-10-10T22:01:33.849854+00:00",
+            "media_title": "Epic sax guy 10 hours",
+            "app_name": "YouTube",
+            "sound_mode": "Music",
+            "shuffle": false,
+            "entity_picture_local": "/api/media_player_proxy/media_player.bedroom_speaker?token=d901bed2ab90d0526f5878616bda3b479568691954a52021bdeb89c7afa23fb2&cache=cebfb61d0e8209cb",
+            "active_child": "media_player.bedroom",
+            "device_class": "speaker",
+            "entity_picture": "/api/media_player_proxy/media_player.bedroom?token=f043857a7ac2c6aac568599592c225a73025769ffdf1a7b3e072cdc65816cb22&cache=e4513ed94ec89151",
+            "friendly_name": "Bedroom Speaker",
+            "supported_features": 119695
+          },
+          "context": {
+            "id": "01M4KXBVCTZK45V12SS9XE95MQ",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.850Z",
+          "last_updated": "2026-10-10T22:01:33.850Z"
+        },
+        "row": {
+          "tag": "hui-media-player-entity-row",
+          "name": "Bedroom Speaker YouTube",
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": "YouTube",
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677193176
+      }
+    },
+    "weather.demo_weather_north": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "weather.demo_weather_north",
+          "state": "rainy",
+          "attributes": {
+            "temperature": -24.4,
+            "temperature_unit": "°C",
+            "humidity": 54,
+            "pressure": 33423.66,
+            "pressure_unit": "hPa",
+            "wind_speed": 7.72,
+            "wind_speed_unit": "km/h",
+            "visibility_unit": "km",
+            "precipitation_unit": "mm",
+            "attribution": "Powered by Home Assistant",
+            "friendly_name": "Demo Weather North",
+            "supported_features": 7
+          },
+          "context": {
+            "id": "01M4KXBVCZ8X5XWRHQDBZM075N",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.855Z",
+          "last_updated": "2026-10-10T22:01:33.855Z"
+        },
+        "row": {
+          "tag": "hui-weather-entity-row",
+          "name": null,
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": "-24.4 °C -28.3 °C / -28.9 °C",
+          "what": null,
+          "volume": null,
+          "weatherIcon": true
+        },
+        "capturedAt": 1791677193579,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "weather.demo_weather_north",
+          "state": "unavailable",
+          "attributes": {
+            "temperature": -24.4,
+            "temperature_unit": "°C",
+            "humidity": 54,
+            "pressure": 33423.66,
+            "pressure_unit": "hPa",
+            "wind_speed": 7.72,
+            "wind_speed_unit": "km/h",
+            "visibility_unit": "km",
+            "precipitation_unit": "mm",
+            "attribution": "Powered by Home Assistant",
+            "friendly_name": "Demo Weather North",
+            "supported_features": 7
+          },
+          "context": {
+            "id": "01M4KXBVCZ8X5XWRHQDBZM075N",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:33.855Z",
+          "last_updated": "2026-10-10T22:01:33.855Z"
+        },
+        "row": {
+          "tag": "hui-weather-entity-row",
+          "name": null,
+          "hideName": false,
+          "state": null,
+          "text": null,
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": "Unavailable -28.3 °C / -28.9 °C",
+          "what": null,
+          "volume": null,
+          "weatherIcon": true
+        },
+        "capturedAt": 1791677198113
+      }
+    },
+    "sensor.backup_last_successful_automatic_backup": {
+      "as_is": {
+        "stateObj": {
+          "entity_id": "sensor.backup_last_successful_automatic_backup",
+          "state": "unknown",
+          "attributes": {
+            "device_class": "timestamp",
+            "friendly_name": "Backup Last successful automatic backup"
+          },
+          "context": {
+            "id": "01M4KXBT4RR9DSM4PA4QFESBWE",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:32.568Z",
+          "last_updated": "2026-10-10T22:01:32.568Z"
+        },
+        "row": {
+          "tag": "hui-sensor-entity-row",
+          "name": "Backup Last successful automatic backup",
+          "hideName": false,
+          "state": null,
+          "text": "Unknown",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677198419,
+        "calls": []
+      },
+      "unavailable": {
+        "stateObj": {
+          "entity_id": "sensor.backup_last_successful_automatic_backup",
+          "state": "unavailable",
+          "attributes": {
+            "device_class": "timestamp",
+            "friendly_name": "Backup Last successful automatic backup"
+          },
+          "context": {
+            "id": "01M4KXBT4RR9DSM4PA4QFESBWE",
+            "parent_id": null,
+            "user_id": null
+          },
+          "last_changed": "2026-10-10T22:01:32.568Z",
+          "last_updated": "2026-10-10T22:01:32.568Z"
+        },
+        "row": {
+          "tag": "hui-sensor-entity-row",
+          "name": "Backup Last successful automatic backup",
+          "hideName": false,
+          "state": null,
+          "text": "Unavailable",
+          "slider": null,
+          "input": null,
+          "select": null,
+          "date": null,
+          "time": null,
+          "buttons": [],
+          "iconButtons": [],
+          "toggle": null,
+          "secondary": null,
+          "right": null,
+          "what": null,
+          "volume": null,
+          "weatherIcon": false
+        },
+        "capturedAt": 1791677202932
       }
     }
   },

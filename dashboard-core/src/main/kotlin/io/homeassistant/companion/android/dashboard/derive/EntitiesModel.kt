@@ -21,8 +21,41 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
-/** Display-ready content of an entities card: an optional header and its rows. */
-data class EntitiesModel(val title: String?, val icon: String?, val rows: List<EntityRowModel>)
+/**
+ * Display-ready content of an entities card: an optional header (with the switch turning its entities on or off,
+ * [headerToggle]) and its rows.
+ */
+data class EntitiesModel(
+    val title: String?,
+    val icon: String?,
+    val rows: List<EntityRowModel>,
+    val headerToggle: HeaderToggle? = null,
+)
+
+/**
+ * Port of `hui-entities-toggle`: on while any of its entities is, and [calls] turn the ones that aren't yet on
+ * (or off) together (`turnOnOffEntities`: covers and locks with their own actions, the others with
+ * `homeassistant`).
+ */
+data class HeaderToggle(val checked: Boolean, private val entities: List<EntityState>) {
+    /** The calls turning the entities on (or off, when [turnOn] is false). */
+    fun calls(turnOn: Boolean): List<CardAction.CallService> = entities
+        .filter { (it.state in STATES_OFF_TOGGLE) == turnOn }
+        .groupBy { if (it.domain == "cover" || it.domain == "lock") it.domain else "homeassistant" }
+        .map { (domain, members) ->
+            val service = when (domain) {
+                "lock" -> if (turnOn) "unlock" else "lock"
+                "cover" -> if (turnOn) "open_cover" else "close_cover"
+                else -> if (turnOn) "turn_on" else "turn_off"
+            }
+            CardAction.CallService(
+                domain,
+                service,
+                JsonObject(mapOf("entity_id" to JsonArray(members.map { JsonPrimitive(it.entityId) }))),
+                target = null,
+            )
+        }
+}
 
 /**
  * One entity row (`hui-generic-entity-row` with its domain's row element).
@@ -31,6 +64,7 @@ data class EntitiesModel(val title: String?, val icon: String?, val rows: List<E
  * @property control the row's control, `null` for a text-only row
  * @property actions the gestures of the row's name and icon (more-info by default)
  * @property badge the row's icon (or picture) as `state-badge` draws it, `null` for a missing entity
+ * @property domain what a domain's own row adds (a second line, a weather picture), `null` for the others
  */
 data class EntityRowModel(
     val entityId: String,
@@ -42,6 +76,7 @@ data class EntityRowModel(
     val control: RowControl?,
     val actions: ElementActions,
     val badge: StateBadge? = null,
+    val domain: DomainRow? = null,
 )
 
 /** The control on the right of an entity row. */
@@ -90,18 +125,32 @@ data class RowButton(val label: String, val enabled: Boolean, val danger: Boolea
  * src/panels/lovelace/create-element/create-row-element.ts, src/panels/lovelace/entity-rows/). Other domains show
  * their state as text.
  */
-fun HassSnapshot.entitiesModel(card: CardConfig, now: Instant): EntitiesModel = EntitiesModel(
-    title = card.json.string("title")?.ifEmpty { null },
-    icon = card.json.string("icon")?.ifEmpty { null },
-    rows = (card.json["entities"] as? JsonArray).orEmpty().mapNotNull { entry ->
-        val config = when {
+fun HassSnapshot.entitiesModel(card: CardConfig, now: Instant): EntitiesModel {
+    val configs = (card.json["entities"] as? JsonArray).orEmpty().mapNotNull { entry ->
+        when {
             entry is JsonObject -> entry
             entry is JsonPrimitive && entry.isString -> JsonObject(mapOf("entity" to entry))
             else -> null
-        }
-        config?.takeIf { it.string("entity") != null }?.let { entityRow(it, now, cardStateColor(card)) }
-    },
-)
+        }?.takeIf { it.string("entity") != null }
+    }
+    return EntitiesModel(
+        title = card.json.string("title")?.ifEmpty { null },
+        icon = card.json.string("icon")?.ifEmpty { null },
+        rows = configs.map { entityRow(it, now, cardStateColor(card)) },
+        headerToggle = headerToggle(card.json, configs.mapNotNull { it.string("entity") }),
+    )
+}
+
+/**
+ * The header's switch: shown when asked (`show_header_toggle`), or by default with a title and at least two
+ * entities that toggle (`shouldShowHeaderToggle`); `null` when hidden or without an entity to toggle.
+ */
+private fun HassSnapshot.headerToggle(card: JsonObject, entityIds: List<String>): HeaderToggle? {
+    val shown = card.boolean("show_header_toggle")
+        ?: (card.string("title") != null && entityIds.count { it.substringBefore('.') in DOMAINS_TOGGLE } >= 2)
+    val entities = entityIds.filter { it.substringBefore('.') in DOMAINS_TOGGLE }.mapNotNull(states::get)
+    return HeaderToggle(entities.any { it.state == "on" }, entities).takeIf { shown && entities.isNotEmpty() }
+}
 
 /** The card's `state_color`, which rows without their own take; `null` when the card doesn't set it. */
 private fun cardStateColor(card: CardConfig): Boolean? =
@@ -114,17 +163,19 @@ private fun HassSnapshot.entityRow(config: JsonObject, now: Instant, cardStateCo
     val state = states[entityId]
         ?: return EntityRowModel(entityId, entityId, "mdi:alert-circle", null, false, true, null, actions)
     val name = entityNameDisplay(state, config["name"])
-    val control = rowControl(state, config) ?: inputRowControl(state, name)
+    val domain = domainRow(state, config, now)
+    val control = domain?.control ?: rowControl(state, config) ?: inputRowControl(state, name)
     return EntityRowModel(
         entityId = entityId,
         name = name,
         icon = entityIcon(entityId, config.string("icon")),
-        state = if (control == null) rowStateText(state, config, now) else null,
+        state = if (control == null) domain?.state ?: rowStateText(state, config, now) else null,
         available = state.state != STATE_UNAVAILABLE,
         missing = false,
         control = control,
         actions = actions,
         badge = stateBadge(state, config.string("icon"), config.boolean("state_color") ?: cardStateColor),
+        domain = domain,
     )
 }
 
@@ -207,6 +258,8 @@ private const val ROW_SCENE = "scene"
 private const val ROW_SCRIPT = "script"
 private const val ROW_LOCK = "lock"
 private val MAX_MODES = setOf("queued", "parallel")
+private val STATES_OFF_TOGGLE = setOf("closed", "locked", "off")
+
 private val TOGGLE_STATES = setOf("on", "off", STATE_UNAVAILABLE, STATE_UNKNOWN)
 
 /** The ported part of `DOMAIN_TO_ELEMENT_TYPE`; other domains render as text rows. */

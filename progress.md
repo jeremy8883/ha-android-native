@@ -261,6 +261,13 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 
 ## Handover notes
 
+### 2026-10-11: domain rows, the header switch, time boxes (Opus)
+- The entities card's domain rows are ported (`derive/DomainRow.kt`, `EntityRowMedia.kt`): group and valve (switch or state), cover (open/stop/close), climate and water heater, humidifier, event (when, over its type), update, media player (power and transport, the volume line with mute and slider or steps) and weather (the condition's picture, the temperature over today's extremes from the row's own forecast subscription). Golden-tested against `hui-entities-card` (`EntityDomainRowsGoldenTest`, controls.json `rows`).
+- The card's header switch (`hui-entities-toggle`, `HeaderToggle`): by default with a title and two entities that toggle.
+- Times are typed as hours and minutes with AM/PM on a 12-hour clock (`ha-time-input`, `TimeFields`), in rows and details; `DisplayFormats.amPm`.
+- The Assist chat fills its sheet, messages from the bottom over the field.
+- The test dashboard's Details view has a Rows card of these domains.
+
 ### 2026-10-11: the remaining details (Opus)
 - The dialog's state card is ported from `state-card-content` (`derive/StateCardRight.kt`, `StateCardTexts.kt`, `StateCardControls.kt`), not the entities row: dates and times show as text, climate and humidifier their targets and readings, covers their open/stop/close, locks open and lock/unlock, vacuums and mowers their next action, events their type. `canToggleState` reads the server's actions (`get_services`, reloaded on `service_registered`/`service_removed`; `HassSnapshot.services`), which also give a script's fields. Golden-tested on every test entity (`StateCardsGoldenTest`, controls.json `stateCards`, `--domains statecards`).
 - New details (`moreinfo/MoreInfoExtra.kt`), golden-tested in `MoreInfoExtraGoldenTest` (`--domains sun,date,datetime,time,input_datetime,image,group,person,script,camera,weather,conversation`): sun, date and time fields, image, group (a stand-in entity of the members' domain whose calls go to the group; a group of lights has no state card of its own, `computeShowNewMoreInfo`), person (map tiles drawn natively), script (the fields' form; the run uses the registry entry's unique ID), camera, weather, conversation (`assist/AssistChat.kt`, `assist_pipeline/run`), configurator.
