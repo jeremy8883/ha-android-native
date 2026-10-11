@@ -1,4 +1,4 @@
-# Home Assistant Native
+# HADash
 
 An Android app that shows your Home Assistant dashboards natively (drawn by the app, not a web page), alongside the
 official Home Assistant companion app. It logs in to your server itself and draws the dashboards with the same rules

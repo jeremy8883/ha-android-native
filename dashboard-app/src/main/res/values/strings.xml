@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Home Assistant Native</string>
+    <string name="app_name">HADash</string>
     <string name="login_title">Connect to Home Assistant</string>
     <string name="login_found">Found on your network</string>
     <string name="login_searching">Searching your network…</string>
