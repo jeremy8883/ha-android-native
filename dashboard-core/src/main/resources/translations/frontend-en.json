@@ -874,6 +874,49 @@
       "service_heading": "Service"
      },
      "unnamed_device": "Unnamed {type}"
+    },
+    "integrations": {
+     "config_flow": {
+      "aborted": "Aborted",
+      "close": "Close",
+      "could_not_load": "Config flow could not be loaded",
+      "created_config": "Created configuration for {name}.",
+      "device_created": "Name and assign",
+      "device_name": "Device name",
+      "error": "Error",
+      "error_saving_device": "Error updating device: {error}",
+      "error_saving_entity": "Error updating entity: {error}",
+      "external_step": {
+       "description": "This step requires you to visit an external website to be completed.",
+       "open_site": "Open website"
+      },
+      "finish": "Finish",
+      "finish_skip": "Skip and finish",
+      "loading": {
+       "fallback_title": "the integration",
+       "loading_flow": "Please wait, starting configuration wizard for {integration}",
+       "loading_step": "Loading next step for {integration}"
+      },
+      "missing_matter": "To add a {brand} device, you first need the {integration} integration and {supported_hardware_link}. Do you want to proceed with the setup of {integration}?",
+      "missing_zwave_zigbee": "To add a {brand} device, you first need {supported_hardware_link} and the {integration} integration set up. If you already have the hardware then you can proceed with the setup of {integration}.",
+      "missing_zwave_zigbee_title": "{integration} is not set up",
+      "next": "Next",
+      "no_config_flow": "This integration does not support configuration via the UI. If you followed this link from the Home Assistant website, make sure you run the latest version of Home Assistant.",
+      "not_all_required_fields": "Not all required fields are filled in.",
+      "not_loaded": "The integration could not be loaded, try to restart Home Assistant.",
+      "open_documentation": "Open documentation",
+      "preview": "Preview",
+      "proceed": "Proceed",
+      "show_integration": "Show integration",
+      "single_config_entry": "{integration_name} supports only one configuration. Adding additional ones is not needed.",
+      "single_config_entry_title": "This integration allows only one configuration",
+      "submit": "Submit",
+      "success": "Success",
+      "supported_brand_flow": "Support for {supported_brand} devices is provided by {flow_domain_name}. Do you want to continue?",
+      "supported_hardware": "supported hardware",
+      "yaml_only": "You can add this integration by adding it to your ''configuration.yaml''. See the documentation for more information.",
+      "yaml_only_title": "This integration cannot be added from the UI"
+     }
     }
    },
    "energy": {

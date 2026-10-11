@@ -62,7 +62,7 @@ custom card.
 
 ### To-do lists
 
-- Creating and deleting lists, and adding items by voice (Assist).
+- Adding items by voice (Assist).
 - Items are reordered with up and down buttons; upstream drags them.
 
 ### History and Activity

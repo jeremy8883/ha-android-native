@@ -11,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -57,6 +58,7 @@ internal fun TodoPanel(hass: State<HassSnapshot?>, now: State<ZonedDateTime?>, i
     var chosen by rememberSaveable { mutableStateOf<String?>(null) }
     val entityId = chosen?.takeIf { id -> lists.any { it.entityId == id } } ?: lists.firstOrNull()?.entityId
     var addRequests by remember { mutableIntStateOf(0) }
+    val manage = rememberTodoListManagement(snapshot, lists.map { it.entityId }, onChoose = { chosen = it })
     Box(Modifier.fillMaxSize()) {
         Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(HADimens.SPACE4)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -67,8 +69,9 @@ internal fun TodoPanel(hass: State<HassSnapshot?>, now: State<ZonedDateTime?>, i
                     entityId,
                     snapshot,
                     Modifier.weight(1f),
+                    onCreate = manage.onCreate.takeIf { snapshot.user?.isAdmin == true },
                 ) { chosen = it }
-                entityId?.let { ListMenu(it, snapshot, interactions.onAction) }
+                entityId?.let { ListMenu(it, snapshot, interactions.onAction, manage.deleter(it)) }
             }
             entityId?.let { id ->
                 val card = remember(id) {
@@ -106,6 +109,7 @@ private fun ListPicker(
     chosen: String?,
     hass: HassSnapshot,
     modifier: Modifier,
+    onCreate: (() -> Unit)?,
     onChoose: (String) -> Unit,
 ) {
     var open by remember { mutableStateOf(false) }
@@ -130,17 +134,35 @@ private fun ListPicker(
                     },
                 )
             }
+            // For admins, after the lists
+            onCreate?.let { create ->
+                if (lists.isNotEmpty()) HorizontalDivider()
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            hass.localize("ui.panel.todo.create_list"),
+                            style = HATextStyle.Body,
+                            color = colors.colorTextPrimary,
+                        )
+                    },
+                    leadingIcon = { DashboardIcon("mdi:plus", colors.colorTextSecondary, Modifier.size(HASize.X2L)) },
+                    onClick = {
+                        open = false
+                        create()
+                    },
+                )
+            }
         }
     }
 }
 
 /**
- * The list's menu: its details (`more-info`).
+ * The list's menu: its details (`more-info`), and "Delete list" for a local list ([onDelete]).
  *
- * UPSTREAM-DIFF: no "Assist" (the app has no Assist), and creating and deleting lists stay in the frontend.
+ * UPSTREAM-DIFF: no "Assist" (the app has no Assist).
  */
 @Composable
-private fun ListMenu(entityId: String, hass: HassSnapshot, onAction: (CardAction) -> Unit) {
+private fun ListMenu(entityId: String, hass: HassSnapshot, onAction: (CardAction) -> Unit, onDelete: (() -> Unit)?) {
     var open by remember { mutableStateOf(false) }
     val colors = LocalHAColorScheme.current
     val menu = hass.localize("ui.common.menu")
@@ -159,6 +181,19 @@ private fun ListMenu(entityId: String, hass: HassSnapshot, onAction: (CardAction
                     onAction(CardAction.MoreInfo(entityId))
                 },
             )
+            onDelete?.let { delete ->
+                HorizontalDivider()
+                DropdownMenuItem(
+                    text = { Text(hass.localize("ui.panel.todo.delete_list"), color = colors.colorOnDangerNormal) },
+                    leadingIcon = {
+                        DashboardIcon("mdi:delete", colors.colorOnDangerNormal, Modifier.size(HASize.X2L))
+                    },
+                    onClick = {
+                        open = false
+                        delete()
+                    },
+                )
+            }
         }
     }
 }
