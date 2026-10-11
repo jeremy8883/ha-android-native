@@ -18,6 +18,9 @@ import kotlinx.serialization.json.JsonPrimitive
  *   `null` until it is signed
  * @property name shown in the footer, `null` with `show_name: false`
  * @property state shown in the footer, `null` with `show_state: false`
+ * @property aspectRatio width over height from `aspect_ratio`; `null` sizes the picture by its own shape (16:9 until
+ *   it loads), or by the card's height when the card has a fixed number of rows in a section
+ * @property fitMode how the picture fills its box
  */
 data class PictureEntityModel(
     val entityId: String,
@@ -26,6 +29,8 @@ data class PictureEntityModel(
     val state: String?,
     val unavailable: Boolean,
     val actions: ElementActions,
+    val aspectRatio: Double? = null,
+    val fitMode: ImageFitMode = ImageFitMode.COVER,
 )
 
 /**
@@ -61,6 +66,8 @@ fun HassSnapshot.pictureEntityModel(card: CardConfig): PictureEntityModel? {
         unavailable = state.state == STATE_UNAVAILABLE,
         // `tap_action` defaults to more-info
         actions = cardActions(CardConfig(JsonObject(card.json + ("type" to JsonPrimitive("tile"))))).card,
+        aspectRatio = parseAspectRatio(card.json.string("aspect_ratio")),
+        fitMode = imageFitMode(card.json.string("fit_mode")),
     )
 }
 

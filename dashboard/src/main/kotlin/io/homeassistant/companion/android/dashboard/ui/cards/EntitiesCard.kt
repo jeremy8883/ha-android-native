@@ -187,6 +187,7 @@ internal fun RowScope.RowControlContent(
         is RowControl.IconButtons, is RowMedia -> rowIconButtons(control).forEach { RowIconButtonView(it, onAction) }
         is RowSlider -> Row(
             modifier = Modifier.weight(1f),
+            horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
         ) { RowSliderControl(control, onAction) }
         is RowNumberBox -> RowNumberBoxControl(control, onAction)

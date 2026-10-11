@@ -73,6 +73,27 @@ class CardModelsTest {
         assertEquals(DisplayColor.Theme("primary"), model.iconColor)
         assertTrue(model.contentOnly)
         assertTrue(model.buttons.single().actions.tap)
+        assertEquals(ButtonAppearance.ACCENT to ButtonColorVariant.BRAND, model.buttons.single().let { it.appearance to it.variant })
+    }
+
+    @Test
+    fun `Given buttons with an appearance and a variant when deriving an empty state then they are kept`() {
+        val model = emptyStateModel(
+            CardConfig(
+                json(
+                    """{"type": "empty-state", "buttons": [{"text": "A", "appearance": "plain", "variant": "danger"},
+                    {"text": "B", "appearance": "filled", "variant": "neutral"}, {"text": "C", "appearance": "odd"}]}""",
+                ),
+            ),
+        )
+        assertEquals(
+            listOf(
+                ButtonAppearance.PLAIN to ButtonColorVariant.DANGER,
+                ButtonAppearance.FILLED to ButtonColorVariant.NEUTRAL,
+                ButtonAppearance.ACCENT to ButtonColorVariant.BRAND,
+            ),
+            model.buttons.map { it.appearance to it.variant },
+        )
     }
 }
 

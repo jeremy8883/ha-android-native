@@ -23,8 +23,19 @@ data class EmptyStateModel(
     val buttons: List<EmptyStateButton>,
 )
 
-/** A button of an empty state card; [actions] holds its `tap_action`. */
-data class EmptyStateButton(val icon: String?, val text: String?, val actions: ElementActions)
+/**
+ * A button of an empty state card; [actions] holds its `tap_action`.
+ *
+ * @property appearance the `ha-button` appearance (`appearance`, accent by default)
+ * @property variant the `ha-button` colour variant (`variant`, brand by default)
+ */
+data class EmptyStateButton(
+    val icon: String?,
+    val text: String?,
+    val actions: ElementActions,
+    val appearance: ButtonAppearance = ButtonAppearance.ACCENT,
+    val variant: ButtonColorVariant = ButtonColorVariant.BRAND,
+)
 
 /** Port of `HuiEmptyStateCard.render` (frontend@20260624.6 src/panels/lovelace/cards/hui-empty-state-card.ts). */
 fun emptyStateModel(card: CardConfig): EmptyStateModel = EmptyStateModel(
@@ -39,6 +50,8 @@ fun emptyStateModel(card: CardConfig): EmptyStateModel = EmptyStateModel(
             text = button.string("text"),
             // Buttons run their tap action only (no default)
             actions = cardActions(CardConfig(JsonObject(button + ("type" to JsonPrimitive("button"))))).card,
+            appearance = buttonAppearance(button.string("appearance")),
+            variant = buttonColorVariant(button.string("variant")),
         )
     },
 )

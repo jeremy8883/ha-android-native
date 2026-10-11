@@ -5,6 +5,9 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,11 +20,15 @@ import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -32,6 +39,7 @@ import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.moreinfo.StateToggle
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
+import kotlin.math.abs
 
 /**
  * Port of `ha-state-control-toggle` (frontend@20260624.6 src/state-control/ha-state-control-toggle.ts): a tall
@@ -53,7 +61,8 @@ internal fun StateToggleControl(toggle: StateToggle, onAction: (CardAction) -> U
 }
 
 /**
- * Port of `ha-control-switch`, vertical and reversed: the knob slides up when on.
+ * Port of `ha-control-switch`, vertical and reversed: the knob slides up when on. A tap toggles it, a swipe up
+ * turns it on and a swipe down off.
  *
  * Upstream: `ha-control-switch` (src/components/ha-control-switch.ts)
  */
@@ -77,6 +86,7 @@ private fun ToggleSwitch(
             .toggleable(value = toggle.checked, enabled = toggle.enabled, role = Role.Switch) { on ->
                 onAction(if (on) toggle.turnOn else toggle.turnOff)
             }
+            .verticalSwipe(enabled = toggle.enabled) { up -> onAction(if (up) toggle.turnOn else toggle.turnOff) }
             .semantics { contentDescription = toggle.label },
     ) {
         Box(Modifier.matchParentSize().background(color.copy(alpha = BACKGROUND_ALPHA)))
@@ -97,6 +107,30 @@ private fun ToggleSwitch(
             )
         }
     }
+}
+
+/**
+ * Calls [onSwipe] (`true` when upwards) for a vertical swipe: like Hammer.js's `Swipe` recognizer upstream uses,
+ * a quick movement of more than [SWIPE_MIN_DISTANCE] faster than [SWIPE_MIN_VELOCITY_PX_PER_S]. Upstream turns the
+ * switch on or off by the swipe's direction, whatever its state.
+ *
+ * Upstream: part of `ha-control-switch` (src/components/ha-control-switch.ts)
+ */
+@Composable
+private fun Modifier.verticalSwipe(enabled: Boolean, onSwipe: (up: Boolean) -> Unit): Modifier {
+    var distance by remember { mutableFloatStateOf(0f) }
+    val minDistance = with(LocalDensity.current) { SWIPE_MIN_DISTANCE.toPx() }
+    val minVelocity = with(LocalDensity.current) { SWIPE_MIN_VELOCITY_PX_PER_S.dp.toPx() }
+    return draggable(
+        state = rememberDraggableState { delta -> distance += delta },
+        orientation = Orientation.Vertical,
+        enabled = enabled,
+        onDragStarted = { distance = 0f },
+        onDragStopped = { velocity ->
+            if (abs(distance) > minDistance && abs(velocity) > minVelocity) onSwipe(distance < 0)
+            distance = 0f
+        },
+    )
 }
 
 /**
@@ -169,3 +203,7 @@ private const val BACKGROUND_ALPHA = 0.2f
 private const val DISABLED_ALPHA = 0.5f
 private const val KNOB_FRACTION = 0.5f
 private val SWITCH_PADDING = 6.dp
+
+/** Hammer.js `Swipe`'s defaults: `threshold: 10` px and `velocity: 0.3` px/ms. */
+private val SWIPE_MIN_DISTANCE = 10.dp
+private const val SWIPE_MIN_VELOCITY_PX_PER_S = 300

@@ -8,6 +8,9 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.feature.ValueService
 import io.homeassistant.companion.android.dashboard.feature.number
 import io.homeassistant.companion.android.dashboard.model.string
+import java.math.BigDecimal
+import java.math.RoundingMode
+import kotlin.math.roundToLong
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -39,7 +42,17 @@ data class RowSlider(
     val state: String,
     val enabled: Boolean,
     val service: ValueService,
-) : RowControl
+) : RowControl {
+    /** [value] snapped to the slider's steps from [min], as the slider sends it. */
+    fun stepped(value: Double): Double {
+        val snapped = min + ((value - min) / step).roundToLong() * step
+        // Drops floating point noise such as 0.30000000000000004, keeping the step's own precision
+        return BigDecimal(snapped).setScale(STEP_SCALE, RoundingMode.HALF_UP).toDouble().coerceIn(min, max)
+    }
+
+    /** The value shown in the slider's tooltip while it is dragged to [value]. */
+    fun tooltip(value: Double): String = jsNumberString(stepped(value))
+}
 
 /** A number box with its unit; [value] is upstream's text of the state. */
 data class RowNumberBox(
@@ -167,5 +180,6 @@ private fun HassSnapshot.textRow(state: EntityState, name: String): RowTextInput
 )
 
 private const val AUTO_SLIDER_STEPS = 256
+private const val STEP_SCALE = 10
 private const val DEFAULT_MAX = 100.0
 private val INVALID_TEXTS = setOf(STATE_UNAVAILABLE, STATE_UNKNOWN)
