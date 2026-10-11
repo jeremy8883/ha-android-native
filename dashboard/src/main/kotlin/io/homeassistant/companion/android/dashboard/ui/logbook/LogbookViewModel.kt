@@ -3,6 +3,7 @@ package io.homeassistant.companion.android.dashboard.ui.logbook
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.homeassistant.companion.android.dashboard.data.CardPreferences
 import io.homeassistant.companion.android.dashboard.data.Loadable
 import io.homeassistant.companion.android.dashboard.data.LogbookRepository
 import io.homeassistant.companion.android.dashboard.data.map
@@ -22,7 +23,12 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.contentOrNull
 
 /**
  * A logbook: its [entries], newest first, with the [users] list (`null` when
@@ -52,7 +58,10 @@ internal data class LogbookRequest(val source: LogbookSource, val isAdmin: Boole
 
 /** Loads a logbook (an entity's details' or the Logbook panel's) while it is shown. */
 @HiltViewModel
-internal class LogbookViewModel @Inject constructor(private val repository: LogbookRepository) : ViewModel() {
+internal class LogbookViewModel @Inject constructor(
+    private val repository: LogbookRepository,
+    private val preferences: CardPreferences,
+) : ViewModel() {
     private val request = MutableStateFlow<LogbookRequest?>(null)
 
     /** The requested logbook. The users and traces fill in as they load; without them rows name less. */
@@ -64,6 +73,18 @@ internal class LogbookViewModel @Inject constructor(private val repository: Logb
     /** Load [logbookRequest]'s logbook, unless it is the one loading. */
     fun show(logbookRequest: LogbookRequest) {
         request.value = logbookRequest
+    }
+
+    /**
+     * The entities last picked on the Logbook panel, kept on the device as the frontend keeps them in the browser
+     * (`logbookPickedValue`); `null` when none were.
+     */
+    suspend fun pickedEntities(): List<String>? =
+        preferences.load(listOf(PICKED_KEY))[PICKED_KEY]?.let(::parsePickedEntities)
+
+    /** Remembers [entityIds] as the Logbook panel's picked entities. */
+    fun savePickedEntities(entityIds: List<String>) {
+        viewModelScope.launch { preferences.save(PICKED_KEY, pickedEntitiesJson(entityIds)) }
     }
 
     private fun load(request: LogbookRequest): Flow<Loadable<LoadedLogbook>> = combine(
@@ -82,6 +103,24 @@ internal class LogbookViewModel @Inject constructor(private val repository: Logb
 
     private companion object {
         const val STOP_TIMEOUT = 5_000L
+        const val PICKED_KEY = "logbookPickedValue"
         val Loading: Loadable<LoadedLogbook> = Loadable.Loading
     }
 }
+
+/** The picked target as the frontend stores it (`{"entity_id": [...]}`), its entities; `null` when unreadable. */
+internal fun parsePickedEntities(json: String): List<String>? {
+    val target = runCatching { Json.parseToJsonElement(json) }.getOrNull() as? JsonObject ?: return null
+    return when (val ids = target[ENTITY_ID]) {
+        is JsonArray -> ids.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
+        is JsonPrimitive -> listOfNotNull(ids.contentOrNull)
+        else -> emptyList()
+    }
+}
+
+/** [entityIds] as the frontend stores a picked target. */
+internal fun pickedEntitiesJson(entityIds: List<String>): String = JsonObject(
+    if (entityIds.isEmpty()) emptyMap() else mapOf(ENTITY_ID to JsonArray(entityIds.map(::JsonPrimitive))),
+).toString()
+
+private const val ENTITY_ID = "entity_id"

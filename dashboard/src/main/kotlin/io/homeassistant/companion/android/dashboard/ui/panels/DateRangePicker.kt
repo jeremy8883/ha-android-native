@@ -1,6 +1,8 @@
 package io.homeassistant.companion.android.dashboard.ui.panels
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,10 +11,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimePicker
@@ -25,20 +29,25 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.sp
 import io.homeassistant.companion.android.common.compose.composable.HAInputChip
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HATextField
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
+import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.panels.DateRange
 import io.homeassistant.companion.android.dashboard.panels.RangePreset
 import io.homeassistant.companion.android.dashboard.panels.dateRangeText
 import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDate
@@ -65,16 +74,11 @@ internal fun DateRangeField(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
     ) {
-        Box(Modifier.weight(1f)) {
-            HATextField(
-                value = hass.formats.dateRangeText(range, now.toLocalDate()),
-                onValueChange = {},
-                label = { Text("${hass.localize("$PICKER.start_date")} - ${hass.localize("$PICKER.end_date")}") },
-                modifier = Modifier.fillMaxWidth(),
-            )
-            // The field is read only: a tap anywhere on it opens the picker
-            Box(Modifier.matchParentSize().clickable(role = Role.Button) { open = true })
-        }
+        FilledField(
+            label = "${hass.localize("$PICKER.start_date")} - ${hass.localize("$PICKER.end_date")}",
+            value = hass.formats.dateRangeText(range, now.toLocalDate()),
+            modifier = Modifier.weight(1f).clickable(role = Role.Button) { open = true },
+        )
         ArrowButton("mdi:chevron-left", hass.localize("ui.common.previous")) {
             onChange(range.shift(forward = false, hass.formats.zone))
         }
@@ -87,6 +91,41 @@ internal fun DateRangeField(
             open = false
             onChange(it)
         }
+    }
+}
+
+/**
+ * The read-only field the frontend draws (a filled `ha-textarea`): a small label over the value on the input fill,
+ * with a line under it.
+ */
+@Composable
+private fun FilledField(label: String, value: String, modifier: Modifier) {
+    val dark = isSystemInDarkTheme()
+    val colors = LocalHAColorScheme.current
+    Column(
+        modifier
+            .clip(RoundedCornerShape(topStart = HADimens.SPACE1, topEnd = HADimens.SPACE1))
+            .background(resolveVariable("mdc-text-field-fill-color", dark) ?: colors.colorFillNeutralQuietResting),
+    ) {
+        Column(
+            Modifier.padding(
+                start = HADimens.SPACE4,
+                end = HADimens.SPACE4,
+                top = HADimens.SPACE4,
+                bottom = HADimens.SPACE3,
+            ),
+        ) {
+            Text(
+                label,
+                style = HATextStyle.BodyMedium.copy(fontSize = LABEL_SIZE, textAlign = TextAlign.Start),
+                color = colors.colorTextSecondary,
+            )
+            Text(value, style = HATextStyle.Body.copy(textAlign = TextAlign.Start), color = colors.colorTextPrimary)
+        }
+        HorizontalDivider(
+            color =
+            resolveVariable("mdc-text-field-idle-line-color", dark) ?: colors.colorBorderNeutralNormal,
+        )
     }
 }
 
@@ -208,4 +247,5 @@ private fun LocalDate.utcMillis(): Long = atStartOfDay(ZoneOffset.UTC).toInstant
 
 private fun Long.utcDate(): LocalDate = Instant.ofEpochMilli(this).atZone(ZoneOffset.UTC).toLocalDate()
 
+private val LABEL_SIZE = 12.sp
 private const val PICKER = "ui.components.date-range-picker"

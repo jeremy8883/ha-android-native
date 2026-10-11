@@ -105,7 +105,8 @@ class DashboardRepository @Inject constructor(private val sessions: ServerSessio
 
     /**
      * The server's entity icon and state translations for [language], as the frontend loads them on connect
-     * (`frontend/get_icons` and `frontend/get_translations` for the `entity_component` and `entity` categories).
+     * (`frontend/get_icons` and `frontend/get_translations` for the `entity_component` and `entity` categories), with
+     * the integrations' names (the `title` category, which the frontend's pages load as they need them).
      */
     fun entityResources(language: String): Flow<Loadable<EntityResources>> = sessions.withServer { session ->
         suspend fun translations(category: String) = session.request(
@@ -118,6 +119,7 @@ class DashboardRepository @Inject constructor(private val sessions: ServerSessio
                 ENTITY_ICONS to session.request("frontend/get_icons", mapOf("category" to "entity")),
                 COMPONENT_TRANSLATIONS to translations("entity_component"),
                 ENTITY_TRANSLATIONS to translations("entity"),
+                TITLE_TRANSLATIONS to translations("title"),
             )
         }
     }

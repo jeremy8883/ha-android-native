@@ -48,6 +48,7 @@ internal const val COMPONENT_ICONS = "component_icons"
 internal const val ENTITY_ICONS = "entity_icons"
 internal const val COMPONENT_TRANSLATIONS = "component_translations"
 internal const val ENTITY_TRANSLATIONS = "entity_translations"
+internal const val TITLE_TRANSLATIONS = "title_translations"
 internal const val USER_CORE = "user_core"
 internal const val SYSTEM_CORE = "system_core"
 internal const val SIDEBAR = "sidebar"
@@ -81,11 +82,13 @@ internal fun parseEntityResources(bundle: JsonObject): Fetched<EntityResources> 
     bundle.part<JsonObject>(COMPONENT_ICONS).flatMap { componentIcons ->
         bundle.part<JsonObject>(ENTITY_ICONS).flatMap { entityIcons ->
             bundle.translations(COMPONENT_TRANSLATIONS).flatMap { componentTranslations ->
-                bundle.translations(ENTITY_TRANSLATIONS).map { entityTranslations ->
-                    EntityResources(
-                        icons = IconResources.fromResults(entityComponent = componentIcons, entity = entityIcons),
-                        translations = componentTranslations + entityTranslations,
-                    )
+                bundle.translations(ENTITY_TRANSLATIONS).flatMap { entityTranslations ->
+                    bundle.translations(TITLE_TRANSLATIONS).map { titles ->
+                        EntityResources(
+                            icons = IconResources.fromResults(entityComponent = componentIcons, entity = entityIcons),
+                            translations = componentTranslations + entityTranslations + titles,
+                        )
+                    }
                 }
             }
         }

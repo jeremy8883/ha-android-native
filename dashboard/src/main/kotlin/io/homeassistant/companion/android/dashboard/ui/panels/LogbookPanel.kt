@@ -74,9 +74,16 @@ internal fun LogbookPanel(
     }
     var entityIds by rememberSaveable(query) { mutableStateOf(initial.entityIds.orEmpty()) }
     val viewModel = hiltViewModel<LogbookViewModel>(key = "logbook-panel")
+    // Opened without entities in the address, it lists those picked last time, as the frontend does
+    var restored by rememberSaveable(query) { mutableStateOf(initial.entityIds != null) }
+    LaunchedEffect(query) {
+        if (!restored) viewModel.pickedEntities()?.let { entityIds = it }
+        restored = true
+    }
     val source = LogbookSource.Range(range.start, range.end, entityIds.takeIf { it.isNotEmpty() })
     val request = LogbookRequest(source, snapshot.user?.isAdmin == true, refresh)
-    LaunchedEffect(request) { viewModel.show(request) }
+    // Not before the picked entities are known, so it doesn't load every entity's first
+    LaunchedEffect(request, restored) { if (restored) viewModel.show(request) }
     val logbook by viewModel.logbook.collectAsStateWithLifecycle()
     val instant = current.toInstant()
     val rows = remember(logbook, snapshot, current.toLocalDate()) {
@@ -93,7 +100,10 @@ internal fun LogbookPanel(
                     entityIds,
                     snapshot,
                     include = { snapshot.logbookCompatible(it) },
-                    onChange = { entityIds = it },
+                    onChange = {
+                        entityIds = it
+                        viewModel.savePickedEntities(it)
+                    },
                     modifier = Modifier.padding(top = HADimens.SPACE4),
                 )
             }

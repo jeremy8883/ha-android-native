@@ -40,15 +40,22 @@ fun HassSnapshot.historyLogbookQuery(query: String?, include: (String) -> Boolea
     )
 }
 
-/** An entity a picker offers: its [name], with where it is ([context], "Kitchen ▸ Motion sensor"). */
-data class PickerEntity(val entityId: String, val name: String, val context: String?)
+/**
+ * An entity a picker offers: its [name], with where it is ([context], "Kitchen ▸ Motion sensor") and its
+ * integration's name ([domainName], "Light").
+ */
+data class PickerEntity(val entityId: String, val name: String, val context: String?, val domainName: String? = null)
 
 /**
  * The entities that pass [include], named as `entityDisplay` names them, by name. Port of the entities
  * `ha-target-picker` offers (areas, devices and labels left out).
  */
-fun HassSnapshot.pickerEntities(include: (String) -> Boolean): List<PickerEntity> =
-    states.keys.filter(include).map(::pickerEntity).sortedBy { it.name.lowercase() }
+fun HassSnapshot.pickerEntities(include: (String) -> Boolean): List<PickerEntity> = states.keys.filter(include)
+    .map { entityId ->
+        val domain = entityId.substringBefore('.')
+        pickerEntity(entityId).copy(domainName = localize("component.$domain.title").ifEmpty { domain })
+    }
+    .sortedBy { it.name.lowercase() }
 
 /** [entityId] named as `entityDisplay` names it; [entityId] alone when it doesn't exist. */
 fun HassSnapshot.pickerEntity(entityId: String): PickerEntity {

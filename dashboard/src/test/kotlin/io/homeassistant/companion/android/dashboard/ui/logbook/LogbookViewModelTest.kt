@@ -32,7 +32,7 @@ class LogbookViewModelTest {
 
     @Test
     fun `Given an admin when showing a logbook then it has the users and traces`() = runTest {
-        val viewModel = LogbookViewModel(repository)
+        val viewModel = LogbookViewModel(repository, mockk(relaxed = true))
 
         viewModel.logbook.test {
             viewModel.show(LogbookRequest(LogbookSource.Entity("lock.door"), isAdmin = true))
@@ -49,7 +49,7 @@ class LogbookViewModelTest {
 
     @Test
     fun `Given another user when showing a logbook then only the entries are loaded`() = runTest {
-        val viewModel = LogbookViewModel(repository)
+        val viewModel = LogbookViewModel(repository, mockk(relaxed = true))
 
         viewModel.logbook.test {
             viewModel.show(LogbookRequest(LogbookSource.Entity("lock.door"), isAdmin = false))
@@ -63,7 +63,7 @@ class LogbookViewModelTest {
     @Test
     fun `Given the entries fail to load when showing the logbook then it says so rather than nothing`() = runTest {
         every { repository.entries("lock.door") } returns flowOf(Loadable.Failed(LoadError.NoResponse))
-        val viewModel = LogbookViewModel(repository)
+        val viewModel = LogbookViewModel(repository, mockk(relaxed = true))
 
         viewModel.logbook.test {
             viewModel.show(LogbookRequest(LogbookSource.Entity("lock.door"), isAdmin = true))
@@ -78,12 +78,23 @@ class LogbookViewModelTest {
         val start = Instant.parse("2026-10-11T00:00:00Z")
         val end = Instant.parse("2026-10-11T03:00:00Z")
         every { repository.entries(start, end, null) } returns flowOf(Loadable.Ready(entries))
-        val viewModel = LogbookViewModel(repository)
+        val viewModel = LogbookViewModel(repository, mockk(relaxed = true))
 
         viewModel.logbook.test {
             viewModel.show(LogbookRequest(LogbookSource.Range(start, end, null), isAdmin = false))
             assertEquals(Loadable.Loading, awaitItem())
             assertEquals(Loadable.Ready(LoadedLogbook(entries, null, null)), awaitItem())
         }
+    }
+
+    @Test
+    fun `Given picked entities when remembering them then they read back as the frontend stores them`() {
+        val json = pickedEntitiesJson(listOf("lock.door", "light.hall"))
+
+        assertEquals("""{"entity_id":["lock.door","light.hall"]}""", json)
+        assertEquals(listOf("lock.door", "light.hall"), parsePickedEntities(json))
+        assertEquals(listOf("lock.door"), parsePickedEntities("""{"entity_id":"lock.door"}"""))
+        assertEquals(emptyList<String>(), parsePickedEntities(pickedEntitiesJson(emptyList())))
+        assertEquals(null, parsePickedEntities("not json"))
     }
 }
