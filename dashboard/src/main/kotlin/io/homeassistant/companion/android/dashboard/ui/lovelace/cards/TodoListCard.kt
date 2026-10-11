@@ -2,6 +2,7 @@ package io.homeassistant.companion.android.dashboard.ui.lovelace.cards
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -53,6 +54,8 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.components.ConfirmDialog
 import io.homeassistant.companion.android.dashboard.ui.panels.todo.TodoItemDialog
+import io.homeassistant.companion.android.dashboard.ui.theme.CardHeaderPadding
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -87,14 +90,9 @@ internal fun TodoListCard(
     // The panel's "Add item" button opens a new item in the dialog
     LaunchedEffect(addRequests) { if (addRequests > 0) editing = TodoEdit.Create("") }
     DashboardCardSurface(modifier = modifier) {
-        Column(Modifier.fillMaxWidth().padding(vertical = HADimens.SPACE2)) {
+        Column(Modifier.fillMaxWidth().padding(todoListPadding(hasTitle = shown.title != null))) {
             shown.title?.let {
-                Text(
-                    it,
-                    style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start),
-                    color = LocalHAColorScheme.current.colorTextPrimary,
-                    modifier = Modifier.padding(horizontal = HADimens.SPACE4, vertical = HADimens.SPACE2),
-                )
+                Text(it, style = FrontendTextStyle.CardHeader, modifier = Modifier.padding(CardHeaderPadding))
             }
             if (shown.canAdd) AddRow(shown, localize, onAction) { editing = TodoEdit.Create(it) }
             when (val loaded = items) {
@@ -245,7 +243,7 @@ private fun ReorderMenu(model: TodoListModel, reordering: Boolean, localize: Loc
 private fun NoItems(localize: Localize) {
     Text(
         localize("ui.panel.lovelace.cards.todo-list.no_unchecked_items"),
-        style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+        style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
         color = LocalHAColorScheme.current.colorTextPrimary,
         modifier = Modifier.padding(horizontal = HADimens.SPACE6, vertical = HADimens.SPACE4),
     )
@@ -317,7 +315,7 @@ private fun SectionHeader(title: String, menu: @Composable () -> Unit) {
     ) {
         Text(
             title,
-            style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
+            style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
             color = LocalHAColorScheme.current.colorTextPrimary,
             modifier = Modifier.weight(1f),
         )
@@ -356,3 +354,7 @@ private fun SectionMenu(label: String, icon: String, danger: Boolean = false, on
         }
     }
 }
+
+/** 8dp above and below the list, none above under the card header. */
+private fun todoListPadding(hasTitle: Boolean) =
+    PaddingValues(top = if (hasTitle) HADimens.SPACE0 else HADimens.SPACE2, bottom = HADimens.SPACE2)

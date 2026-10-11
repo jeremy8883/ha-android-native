@@ -44,6 +44,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import kotlinx.serialization.json.JsonObject
 
@@ -99,11 +100,11 @@ private fun GridBalance(model: EnergyGridBalanceModel) {
                 )
                 FlowRow {
                     val secondary = colors.colorTextSecondary
-                    Text(model.imported, style = HATextStyle.Body, color = import)
-                    Text(" - ", style = HATextStyle.Body, color = secondary)
-                    Text(model.exported, style = HATextStyle.Body, color = export)
-                    Text(" = ", style = HATextStyle.Body, color = secondary)
-                    Text(model.net, style = HATextStyle.Body, color = if (model.consumption) import else export)
+                    Text(model.imported, style = FrontendTextStyle.Body, color = import)
+                    Text(" - ", style = FrontendTextStyle.Body, color = secondary)
+                    Text(model.exported, style = FrontendTextStyle.Body, color = export)
+                    Text(" = ", style = FrontendTextStyle.Body, color = secondary)
+                    Text(model.net, style = FrontendTextStyle.Body, color = if (model.consumption) import else export)
                 }
             }
         }
@@ -112,7 +113,7 @@ private fun GridBalance(model: EnergyGridBalanceModel) {
             listOf(model.tooltips.imported, model.tooltips.exported, model.tooltips.net).forEach {
                 Text(
                     it,
-                    style = HATextStyle.Body,
+                    style = FrontendTextStyle.Body,
                     color = colors.colorTextSecondary,
                     textAlign = TextAlign.Start,
                     modifier = Modifier.padding(

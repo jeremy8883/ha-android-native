@@ -33,6 +33,7 @@ import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInter
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.SensorGraphView
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.ZonedDateTime
 
@@ -72,7 +73,7 @@ internal fun EntityCard(
             ) {
                 Text(
                     model.name,
-                    style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
+                    style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
                     color = colors.colorTextSecondary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -112,7 +113,7 @@ private fun EntityValue(value: ValueParts, modifier: Modifier) {
                 style = if (isValue) {
                     HATextStyle.Headline.copy(fontSize = HAFontSize.X3L, fontWeight = FontWeight.Normal)
                 } else {
-                    HATextStyle.Body
+                    FrontendTextStyle.Body
                 },
                 color = if (isValue) colors.colorTextPrimary else colors.colorTextSecondary,
                 maxLines = 1,

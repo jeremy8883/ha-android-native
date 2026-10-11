@@ -41,7 +41,6 @@ import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.entity.EntityState
@@ -64,6 +63,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.WheelChannels
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.components.LightFavoritesSection
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.StateControlSlider
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.StateToggleControl
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 
@@ -173,7 +173,7 @@ private fun ChannelSlider(slider: LightChannelSlider, enabled: Boolean, onChange
     val colors = LocalHAColorScheme.current
     val color = colors.colorFillPrimaryLoudResting
     Column(modifier = Modifier.width(STATE_CONTROL_WIDE), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
-        Text(slider.caption, style = HATextStyle.Body, color = colors.colorTextPrimary)
+        Text(slider.caption, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),

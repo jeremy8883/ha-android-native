@@ -21,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.ThermostatCardModel
@@ -40,6 +39,7 @@ import io.homeassistant.companion.android.dashboard.ui.lovelace.cardfeatures.Til
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.CircularStateControl
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -72,7 +72,7 @@ internal fun ThermostatCard(
             ) {
                 Text(
                     model.name,
-                    style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium),
+                    style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium),
                     color = colors.colorTextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

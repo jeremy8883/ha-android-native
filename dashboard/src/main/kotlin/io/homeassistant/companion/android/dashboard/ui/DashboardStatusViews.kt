@@ -24,11 +24,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
 import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.data.LoadError
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.ZonedDateTime
 import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
@@ -47,7 +47,7 @@ internal fun LoadErrorScreen(error: LoadError, onRetry: () -> Unit) {
     ) {
         Text(
             text = stringResource(R.string.native_dashboard_error, LocalContext.current.loadErrorText(error)),
-            style = HATextStyle.Body,
+            style = FrontendTextStyle.Body,
             textAlign = TextAlign.Center,
         )
         HAAccentButton(text = stringResource(R.string.native_dashboard_retry), onClick = onRetry)

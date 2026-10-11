@@ -67,6 +67,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.mediaBrowsePage
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.LocalServerUrl
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 
 /**
  * Port of `dialog-media-player-browse` with `ha-media-player-browse`: [entityId]'s media, page by page (back goes
@@ -117,7 +118,7 @@ internal fun MediaBrowserDialog(
                 ) {
                     Text(
                         LocalContext.current.loadErrorText(shown.error),
-                        style = HATextStyle.Body,
+                        style = FrontendTextStyle.Body,
                         color = LocalHAColorScheme.current.colorOnDangerNormal,
                     )
                     HAPlainButton(stringResource(commonR.string.retry), viewModel::retry)
@@ -307,7 +308,7 @@ private fun ListRow(
         }
         Text(
             child.title,
-            style = HATextStyle.Body,
+            style = FrontendTextStyle.Body,
             color = colors.colorTextPrimary,
             modifier = Modifier.weight(1f),
             maxLines = 2,

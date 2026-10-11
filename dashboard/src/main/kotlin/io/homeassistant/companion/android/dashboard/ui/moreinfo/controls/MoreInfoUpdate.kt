@@ -52,6 +52,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.UpdateType
 import io.homeassistant.companion.android.dashboard.moreinfo.updateBackupOption
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.MarkdownText
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.Instant
 
 /**
@@ -89,7 +90,7 @@ private fun UpdateSummary(info: UpdateMoreInfo) {
         info.title?.let {
             Text(
                 it,
-                style = HATextStyle.Body.copy(fontWeight = FontWeight.Bold),
+                style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Bold),
                 color = colors.colorTextPrimary,
                 modifier = Modifier.padding(vertical = HADimens.SPACE3),
             )
@@ -223,7 +224,7 @@ private fun UpdateFooter(info: UpdateMoreInfo, option: UpdateBackupOption?, onAc
             Column(Modifier.weight(1f)) {
                 Text(
                     option.title,
-                    style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+                    style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
                     color = LocalHAColorScheme.current.colorTextPrimary,
                 )
                 option.description?.let {
@@ -257,7 +258,7 @@ private fun UpdateFooter(info: UpdateMoreInfo, option: UpdateBackupOption?, onAc
         AlertDialog(
             onDismissRequest = { explainSkip = false },
             title = { Text(info.skip.autoUpdateTitle.orEmpty(), style = HATextStyle.HeadlineMedium) },
-            text = { Text(info.skip.autoUpdateText.orEmpty(), style = HATextStyle.Body) },
+            text = { Text(info.skip.autoUpdateText.orEmpty(), style = FrontendTextStyle.Body) },
             confirmButton = { HAPlainButton(stringResource(commonR.string.ok), { explainSkip = false }) },
         )
     }

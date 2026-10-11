@@ -42,6 +42,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -73,7 +74,7 @@ internal fun WeatherForecastCard(
                 Modifier.fillMaxWidth().heightIn(min = UNAVAILABLE_HEIGHT).padding(UNAVAILABLE_PADDING),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(model.text, style = HATextStyle.Body, color = LocalHAColorScheme.current.colorTextPrimary)
+                Text(model.text, style = FrontendTextStyle.Body, color = LocalHAColorScheme.current.colorTextPrimary)
             }
         }
         is WeatherForecastCardModel.Shown -> DashboardCardSurface(
@@ -125,7 +126,7 @@ private fun CurrentWeatherRow(current: CurrentWeather, size: WeatherSize) {
         Column(Modifier.weight(1f).padding(end = HADimens.SPACE3)) {
             Text(
                 current.state,
-                style = HATextStyle.Body.copy(
+                style = FrontendTextStyle.Body.copy(
                     fontSize = size.big,
                     lineHeight = size.big * LINE_HEIGHT,
                     textAlign = TextAlign.Start,
@@ -148,12 +149,12 @@ private fun CurrentWeatherRow(current: CurrentWeather, size: WeatherSize) {
             Row(verticalAlignment = Alignment.Top) {
                 Text(
                     current.temperature ?: " ",
-                    style = HATextStyle.Body.copy(fontSize = size.big, lineHeight = size.big * LINE_HEIGHT),
+                    style = FrontendTextStyle.Body.copy(fontSize = size.big, lineHeight = size.big * LINE_HEIGHT),
                     color = colors.colorTextPrimary,
                 )
                 Text(
                     " ${current.temperatureUnit}",
-                    style = HATextStyle.Body.copy(fontSize = size.unit, lineHeight = size.unit * LINE_HEIGHT),
+                    style = FrontendTextStyle.Body.copy(fontSize = size.unit, lineHeight = size.unit * LINE_HEIGHT),
                     color = colors.colorTextPrimary,
                 )
             }
@@ -231,11 +232,11 @@ private fun ForecastEntry(item: ForecastItem, dayHeaders: Boolean) {
         }
         Text(
             item.temperature,
-            style = HATextStyle.Body.copy(lineHeight = HATextStyle.Body.fontSize),
+            style = FrontendTextStyle.Body.copy(lineHeight = FrontendTextStyle.Body.fontSize),
             color = colors.colorTextPrimary,
             maxLines = 1,
         )
-        item.low?.let { Text(it, style = HATextStyle.Body, color = colors.colorTextSecondary, maxLines = 1) }
+        item.low?.let { Text(it, style = FrontendTextStyle.Body, color = colors.colorTextSecondary, maxLines = 1) }
     }
 }
 

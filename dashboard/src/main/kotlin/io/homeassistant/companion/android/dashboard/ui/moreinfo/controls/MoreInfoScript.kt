@@ -31,7 +31,6 @@ import io.homeassistant.companion.android.common.compose.composable.HACheckbox
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.entity.EntityState
@@ -43,6 +42,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.selector.FieldEditor
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.MarkdownText
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoEntryViewModel
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.Instant
 import java.time.LocalDate
 import kotlinx.serialization.json.JsonElement
@@ -73,12 +73,12 @@ internal fun MoreInfoScript(
     val colors = LocalHAColorScheme.current
     Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
         shown.description?.let { MarkdownText(it, Modifier.fillMaxWidth()) }
-        shown.queue?.let { Text(it, style = HATextStyle.Body, color = colors.colorTextPrimary) }
+        shown.queue?.let { Text(it, style = FrontendTextStyle.Body, color = colors.colorTextPrimary) }
         shown.fields?.let { fields ->
             Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
                 Text(
                     shown.fieldsTitle,
-                    style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
+                    style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
                     color = colors.colorTextPrimary,
                 )
                 val hasOptional = fields.any { it.optional }
@@ -133,7 +133,7 @@ private fun ScriptFieldRow(
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE1)) {
             Text(
                 field.name,
-                style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+                style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
                 color = colors.colorTextPrimary,
                 modifier = if (field.optional) {
                     Modifier.clickable {
@@ -184,7 +184,7 @@ private fun ScriptButton(icon: String, label: String, enabled: Boolean, modifier
         verticalAlignment = Alignment.CenterVertically,
     ) {
         DashboardIcon(icon, colors.colorTextPrimary, Modifier.size(HASize.X2L))
-        Text(label, style = HATextStyle.Body, color = colors.colorTextPrimary)
+        Text(label, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
     }
 }
 

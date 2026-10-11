@@ -56,6 +56,7 @@ import io.homeassistant.companion.android.dashboard.derive.RowSlider
 import io.homeassistant.companion.android.dashboard.derive.RowTextInput
 import io.homeassistant.companion.android.dashboard.derive.RowTimer
 import io.homeassistant.companion.android.dashboard.ui.components.haSliderColors
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.time.Instant
 import kotlinx.coroutines.delay
@@ -126,7 +127,7 @@ private fun SliderTooltip(text: String) {
                 .background(background, RoundedCornerShape(HARadius.S))
                 .padding(HADimens.SPACE2),
         ) {
-            Text(text, style = HATextStyle.Body.copy(fontSize = HAFontSize.S), color = colors.colorTextPrimary)
+            Text(text, style = FrontendTextStyle.Body.copy(fontSize = HAFontSize.S), color = colors.colorTextPrimary)
         }
     }
 }

@@ -36,6 +36,7 @@ import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.ui.components.chart.ChartLegend
 import io.homeassistant.companion.android.dashboard.ui.components.chart.ChartLegendItem
 import io.homeassistant.companion.android.dashboard.ui.components.chart.legendTexts
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.math.BigDecimal
 import java.time.ZonedDateTime
@@ -85,7 +86,7 @@ internal fun EnergyUsageGraphCard(
                 val key = if (data.period.start == today) "no_data" else "no_data_period"
                 Text(
                     localize("ui.panel.lovelace.cards.energy.$key"),
-                    style = HATextStyle.Body,
+                    style = FrontendTextStyle.Body,
                     color = LocalHAColorScheme.current.colorTextSecondary,
                     modifier = Modifier.align(Alignment.Center),
                 )

@@ -37,6 +37,7 @@ import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.moreinfo.GroupablePlayer
 import io.homeassistant.companion.android.dashboard.moreinfo.MediaGrouping
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 
 /**
  * The grouping button: speakers, with how many play together when more than one. Opens [MediaGroupingDialog].
@@ -132,7 +133,7 @@ private fun PlayerToggle(player: GroupablePlayer, checked: Boolean, enabled: Boo
     ) {
         DashboardIcon(player.icon, colors.colorTextSecondary, Modifier.size(HASize.X2L))
         Column(Modifier.weight(1f)) {
-            Text(player.name, style = HATextStyle.Body, color = colors.colorTextPrimary)
+            Text(player.name, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
             player.context?.let { Text(it, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary) }
         }
         HASwitch(checked = checked, onCheckedChange = onChange, enabled = enabled)

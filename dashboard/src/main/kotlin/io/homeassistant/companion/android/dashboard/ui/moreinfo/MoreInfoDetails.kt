@@ -32,13 +32,13 @@ import androidx.compose.ui.unit.sp
 import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HARadius
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.MoreInfoModel
 import io.homeassistant.companion.android.dashboard.derive.moreInfoDetailsYaml
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardSurface
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
 // Port of `ha-more-info-details` (frontend@20260624.6 src/dialogs/more-info/ha-more-info-details.ts): the details
@@ -81,7 +81,7 @@ private fun DetailsSection(title: String, entries: List<Pair<String, String>>, e
     Column {
         Text(
             title,
-            style = HATextStyle.Body.copy(textAlign = TextAlign.Start, fontSize = SECTION_TITLE_SIZE),
+            style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start, fontSize = SECTION_TITLE_SIZE),
             fontWeight = FontWeight.Medium,
             color = colors.colorTextPrimary,
             modifier = Modifier.padding(bottom = HADimens.SPACE2),
@@ -91,7 +91,7 @@ private fun DetailsSection(title: String, entries: List<Pair<String, String>>, e
                 if (entries.isEmpty() && empty != null) {
                     Text(
                         empty,
-                        style = HATextStyle.Body,
+                        style = FrontendTextStyle.Body,
                         color = colors.colorTextSecondary,
                         modifier = Modifier.fillMaxWidth().padding(vertical = HADimens.SPACE2),
                     )
@@ -115,8 +115,12 @@ private fun DetailsEntry(name: String, value: String) {
     val colors = LocalHAColorScheme.current
     Layout(
         content = {
-            Text(name, style = HATextStyle.Body.copy(textAlign = TextAlign.Start), color = colors.colorTextSecondary)
-            Text(value, style = HATextStyle.Body.copy(textAlign = TextAlign.End), color = colors.colorTextPrimary)
+            Text(
+                name,
+                style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                color = colors.colorTextSecondary,
+            )
+            Text(value, style = FrontendTextStyle.Body.copy(textAlign = TextAlign.End), color = colors.colorTextPrimary)
         },
         modifier = Modifier.fillMaxWidth().padding(vertical = HADimens.SPACE2),
     ) { measurables, constraints ->

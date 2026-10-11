@@ -42,6 +42,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.weatherForecastView
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.ForecastRow
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.WeatherIconView
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.weather.ForecastEvent
 import io.homeassistant.companion.android.dashboard.weather.ForecastKey
 import java.time.Instant
@@ -81,17 +82,17 @@ internal fun MoreInfoWeather(weather: WeatherMoreInfo, state: EntityState, hass:
                 DashboardIcon(row.icon, colors.colorTextSecondary, Modifier.size(HASize.X2L))
                 Text(
                     row.name,
-                    style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+                    style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
                     color = colors.colorTextPrimary,
                     modifier = Modifier.weight(1f),
                 )
-                Text(row.value, style = HATextStyle.Body, color = colors.colorTextPrimary)
+                Text(row.value, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
             }
         }
         weather.forecastTitle?.let { title ->
             Text(
                 title,
-                style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
+                style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
                 color = colors.colorTextPrimary,
             )
             if (weather.tabs.isNotEmpty()) {

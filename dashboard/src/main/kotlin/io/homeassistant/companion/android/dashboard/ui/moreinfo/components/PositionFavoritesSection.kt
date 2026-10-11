@@ -43,6 +43,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.positionFavorites
 import io.homeassistant.companion.android.dashboard.moreinfo.positionFavoritesUpdate
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesErrorText
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.favoritesViewModel
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /** Which favourite position dialog is open: [index] `null` adds one. */
@@ -140,7 +141,7 @@ private fun PositionPill(favorite: PositionFavorite, enabled: Boolean, active: C
     ) {
         Text(
             favorite.text,
-            style = HATextStyle.Body,
+            style = FrontendTextStyle.Body,
             color = if (filled) colors.colorOnPrimaryLoud else colors.colorOnNeutralNormal,
         )
     }

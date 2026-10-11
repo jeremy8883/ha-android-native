@@ -28,6 +28,7 @@ import io.homeassistant.companion.android.dashboard.derive.RowVolume
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.haSliderColors
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.RowIconButtonView
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 
 // The parts of the entities card's domain rows: the media under a player's name, a two-line state (climate,
 // humidifier, event), a weather's temperature over today's high and low, and a player's volume line.
@@ -43,7 +44,7 @@ internal fun RowName(name: String, secondary: String?, color: Color) {
     Column {
         Text(
             name,
-            style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+            style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
             color = color,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

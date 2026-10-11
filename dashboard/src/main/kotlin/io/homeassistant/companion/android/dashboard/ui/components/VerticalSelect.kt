@@ -26,7 +26,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.moreinfo.ControlSelect
@@ -34,6 +33,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.MenuOption
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.STATE_CONTROL_HEIGHT
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.STATE_CONTROL_RADIUS
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.STATE_CONTROL_THICKNESS
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -103,7 +103,7 @@ private fun SelectOption(
         if (icon != null) {
             DashboardIcon(name = icon, tint = content, modifier = Modifier.size(HASize.X2L))
         } else {
-            Text(option.label, style = HATextStyle.Body, color = content)
+            Text(option.label, style = FrontendTextStyle.Body, color = content)
         }
     }
 }

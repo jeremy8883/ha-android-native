@@ -36,6 +36,7 @@ import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.moreinfo.SelectMenu
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 
 /**
  * The details' menus in a row, scrolling sideways when they don't fit (`ha-more-info-control-select-container`,
@@ -134,7 +135,7 @@ internal fun SelectMenuOptions(
     DropdownMenu(expanded = expanded, onDismissRequest = onDismiss) {
         menu.options.forEach { option ->
             DropdownMenuItem(
-                text = { Text(option.label, style = HATextStyle.Body, color = colors.colorTextPrimary) },
+                text = { Text(option.label, style = FrontendTextStyle.Body, color = colors.colorTextPrimary) },
                 leadingIcon = option.icon?.let { name ->
                     { DashboardIcon(name, colors.colorTextSecondary, Modifier.size(HASize.X2L)) }
                 },

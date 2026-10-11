@@ -8,7 +8,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.display.DisplayFormats
 import io.homeassistant.companion.android.dashboard.energy.EnergyData
@@ -24,6 +23,7 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.math.BigDecimal
 
 /** The sankey cards drawn natively. */
@@ -194,7 +194,7 @@ internal fun SankeyCard(
         } else {
             Text(
                 snapshot.localize(if (spec.live) NO_DATA else NO_DATA_PERIOD),
-                style = HATextStyle.Body,
+                style = FrontendTextStyle.Body,
                 color = LocalHAColorScheme.current.colorTextSecondary,
                 modifier = Modifier.padding(HADimens.SPACE4),
             )

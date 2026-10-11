@@ -48,6 +48,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.panels.DateRange
 import io.homeassistant.companion.android.dashboard.panels.RangePreset
 import io.homeassistant.companion.android.dashboard.panels.dateRangeText
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.time.DayOfWeek
 import java.time.Instant
@@ -178,7 +179,11 @@ private fun FilledField(label: String, value: String, modifier: Modifier) {
                 style = HATextStyle.BodyMedium.copy(fontSize = LABEL_SIZE, textAlign = TextAlign.Start),
                 color = colors.colorTextSecondary,
             )
-            Text(value, style = HATextStyle.Body.copy(textAlign = TextAlign.Start), color = colors.colorTextPrimary)
+            Text(
+                value,
+                style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                color = colors.colorTextPrimary,
+            )
         }
         HorizontalDivider(
             color =

@@ -27,6 +27,7 @@ import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.logbook.CausePhrase
 import io.homeassistant.companion.android.dashboard.logbook.LogbookRow
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 
 /**
  * What a named row shows beyond the row: its [time], what caused it ([cause]) and the label of its trace's link.
@@ -82,7 +83,7 @@ private fun PrimaryLine(row: LogbookRow, onOpenEntity: (String) -> Unit) {
         val entityId = row.subject?.entityId
         Text(
             row.subject?.name.orEmpty(),
-            style = HATextStyle.Body.copy(textAlign = TextAlign.Start, fontWeight = FontWeight.Medium),
+            style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start, fontWeight = FontWeight.Medium),
             color = colors.colorTextPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -92,7 +93,7 @@ private fun PrimaryLine(row: LogbookRow, onOpenEntity: (String) -> Unit) {
         )
         Text(
             row.text,
-            style = HATextStyle.Body.copy(textAlign = TextAlign.End),
+            style = FrontendTextStyle.Body.copy(textAlign = TextAlign.End),
             color = colors.colorTextPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

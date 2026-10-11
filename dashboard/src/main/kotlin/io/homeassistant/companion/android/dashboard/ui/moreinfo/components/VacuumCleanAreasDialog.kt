@@ -56,6 +56,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.vacuumCleanAreas
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.favoritesViewModel
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 
 /**
  * Upstream's "Cleaning · By area" button, opening the areas to clean; [onConfigure] opens the full dialog, where an
@@ -87,7 +88,7 @@ internal fun CleanAreasButton(
         DashboardIcon("mdi:texture-box", colors.colorTextPrimary, Modifier.size(HASize.XL))
         Column(Modifier.weight(1f)) {
             Text(label.first, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary)
-            Text(label.second, style = HATextStyle.Body, color = colors.colorTextPrimary)
+            Text(label.second, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
         }
         DashboardIcon("mdi:chevron-right", colors.colorTextSecondary, Modifier.size(HASize.XL))
     }
@@ -168,7 +169,7 @@ private fun CleanAreasContent(
             verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
         ) {
             DashboardIcon("mdi:texture-box", colors.colorTextSecondary, Modifier.size(HASize.X5L))
-            Text(empty.title, style = HATextStyle.Body, color = colors.colorTextPrimary)
+            Text(empty.title, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
             Text(
                 empty.text,
                 style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Center),

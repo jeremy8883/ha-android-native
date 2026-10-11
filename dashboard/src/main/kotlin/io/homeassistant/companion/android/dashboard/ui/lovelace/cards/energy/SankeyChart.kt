@@ -37,7 +37,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HARadius
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.energy.PlacedLink
 import io.homeassistant.companion.android.dashboard.energy.PlacedNode
@@ -47,6 +46,7 @@ import io.homeassistant.companion.android.dashboard.energy.SankeyInput
 import io.homeassistant.companion.android.dashboard.energy.SankeyLayout
 import io.homeassistant.companion.android.dashboard.energy.layout
 import io.homeassistant.companion.android.dashboard.energy.layoutInput
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import kotlin.math.min
 
@@ -148,7 +148,7 @@ private fun SankeyTooltip(text: String) {
     ) {
         Text(
             text,
-            style = HATextStyle.Body,
+            style = FrontendTextStyle.Body,
             color = colors.colorTextPrimary,
             textAlign = TextAlign.Start,
             modifier = Modifier.padding(HADimens.SPACE2),

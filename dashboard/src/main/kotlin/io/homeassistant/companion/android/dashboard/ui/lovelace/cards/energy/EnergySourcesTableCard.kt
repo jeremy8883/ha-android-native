@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HARadius
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.Gesture
 import io.homeassistant.companion.android.dashboard.energy.SourceRow
@@ -46,6 +45,7 @@ import io.homeassistant.companion.android.dashboard.model.array
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -117,7 +117,7 @@ internal fun EnergySourcesTableCard(
 private fun columnWidths(rows: List<SourceRow>, columns: List<(SourceRow) -> String>): List<Dp> {
     val measurer = rememberTextMeasurer()
     val density = LocalDensity.current
-    val style = HATextStyle.Body.copy(fontWeight = FontWeight.Bold)
+    val style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Bold)
     return remember(rows, columns) {
         columns.map { cell ->
             with(density) {
@@ -156,7 +156,7 @@ private fun TableRow(
         Box(Modifier.size(BULLET)) { row.bullet?.let { (kind, index) -> Bullet(kind, index) } }
         Text(
             row.label,
-            style = HATextStyle.Body,
+            style = FrontendTextStyle.Body,
             fontWeight = weight,
             color = color,
             maxLines = 2,
@@ -167,7 +167,7 @@ private fun TableRow(
         columns.zip(widths).forEach { (cell, width) ->
             Text(
                 cell(row),
-                style = HATextStyle.Body,
+                style = FrontendTextStyle.Body,
                 fontWeight = weight,
                 color = color,
                 textAlign = TextAlign.End,

@@ -14,9 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.energy.EnergyData
@@ -25,6 +23,7 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.strategy.energy.DEFAULT_ENERGY_COLLECTION_KEY
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardSurface
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 
 /**
  * An energy card: its title (`ha-card`'s header), then [content] with its collection's data; "Loading…" until there
@@ -42,20 +41,17 @@ internal fun EnergyCardFrame(
 ) {
     val key = card.collectionKey
     val collection by remember(key) { derivedStateOf { hass.value?.energy?.get(key) } }
-    val colors = LocalHAColorScheme.current
     DashboardCardSurface(modifier) {
         Column(Modifier.fillMaxWidth()) {
             val data = collection?.data
             card.json.string("title")?.let { title ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, top = HADimens.SPACE4),
+                    modifier = Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, top = HADimens.SPACE3),
                 ) {
                     Text(
                         title,
-                        style = HATextStyle.HeadlineMedium,
-                        color = colors.colorTextPrimary,
-                        textAlign = TextAlign.Start,
+                        style = FrontendTextStyle.CardHeader,
                         modifier = Modifier.weight(1f),
                     )
                     data?.let { headerEnd(it) }
@@ -79,7 +75,7 @@ internal fun EnergyCardFrame(
 private fun Message(text: String) {
     Text(
         text,
-        style = HATextStyle.Body,
+        style = FrontendTextStyle.Body,
         color = LocalHAColorScheme.current.colorTextSecondary,
         modifier = Modifier.padding(HADimens.SPACE4),
     )

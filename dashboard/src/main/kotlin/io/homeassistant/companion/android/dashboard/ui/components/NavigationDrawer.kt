@@ -46,6 +46,7 @@ import io.homeassistant.companion.android.dashboard.derive.DisplayColor
 import io.homeassistant.companion.android.dashboard.navigation.SidebarItem
 import io.homeassistant.companion.android.dashboard.navigation.UserBadgeModel
 import io.homeassistant.companion.android.dashboard.ui.SidebarState
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -96,7 +97,7 @@ internal fun NavigationDrawerContent(
     @Composable
     fun Entry(path: String, title: String, icon: String) {
         NavigationDrawerItem(
-            label = { Text(title, style = HATextStyle.Body) },
+            label = { Text(title, style = FrontendTextStyle.Body) },
             icon = { DashboardIcon(icon, colors.colorTextSecondary, Modifier.size(HASize.X2L)) },
             selected = path == selected,
             onClick = { onOpen("/$path") },
@@ -129,7 +130,7 @@ internal fun NavigationDrawerContent(
              */
             @Composable
             fun Action(label: String, icon: String, onClick: () -> Unit) = NavigationDrawerItem(
-                label = { Text(label, style = HATextStyle.Body) },
+                label = { Text(label, style = FrontendTextStyle.Body) },
                 icon = { DashboardIcon(icon, colors.colorTextSecondary, Modifier.size(HASize.X2L)) },
                 selected = false,
                 onClick = onClick,
@@ -142,7 +143,9 @@ internal fun NavigationDrawerContent(
                 Entry(CONFIG_PANEL, stringResource(R.string.native_dashboard_settings), SETTINGS_ICON)
             }
             NavigationDrawerItem(
-                label = { Text(stringResource(R.string.native_dashboard_notifications), style = HATextStyle.Body) },
+                label = {
+                    Text(stringResource(R.string.native_dashboard_notifications), style = FrontendTextStyle.Body)
+                },
                 icon = { DashboardIcon(NOTIFICATIONS_ICON, colors.colorTextSecondary, Modifier.size(HASize.X2L)) },
                 badge = notificationCount?.takeIf { it > 0 }?.let { count -> { CountBadge(count) } },
                 selected = false,
@@ -156,7 +159,7 @@ internal fun NavigationDrawerContent(
                     label = {
                         Text(
                             user?.name ?: stringResource(R.string.native_dashboard_profile),
-                            style = HATextStyle.Body,
+                            style = FrontendTextStyle.Body,
                         )
                     },
                     icon = { user?.let { UserBadge(it) } ?: DashboardIcon(PROFILE_ICON, colors.colorTextSecondary) },
@@ -201,7 +204,7 @@ private fun PanelEntries(
                     R.string.native_dashboard_load_failed,
                     LocalContext.current.loadErrorText(sidebar.error),
                 ),
-                style = HATextStyle.Body,
+                style = FrontendTextStyle.Body,
             )
             HAAccentButton(text = stringResource(R.string.native_dashboard_retry), onClick = onRetry)
         }
@@ -238,7 +241,7 @@ private fun SidebarHeader() {
     Box(Modifier.fillMaxWidth().height(HEADER_HEIGHT), contentAlignment = Alignment.CenterStart) {
         Text(
             stringResource(R.string.native_dashboard_sidebar_title),
-            style = HATextStyle.Body.copy(fontSize = HAFontSize.XL, textAlign = TextAlign.Start),
+            style = FrontendTextStyle.Body.copy(fontSize = HAFontSize.XL, textAlign = TextAlign.Start),
             color = LocalHAColorScheme.current.colorTextPrimary,
             maxLines = 1,
             modifier = Modifier.padding(horizontal = HEADER_PADDING),
@@ -289,7 +292,9 @@ private fun UserBadge(user: UserBadgeModel) {
         } else {
             Text(
                 user.initials,
-                style = HATextStyle.Body.copy(fontSize = if (user.initials.length > 2) HAFontSize.S else HAFontSize.L),
+                style = FrontendTextStyle.Body.copy(
+                    fontSize = if (user.initials.length > 2) HAFontSize.S else HAFontSize.L,
+                ),
                 color =
                 DisplayColor.State(listOf(TEXT_LIGHT_PRIMARY)).toColor()
                     ?: LocalHAColorScheme.current.colorTextPrimary,

@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.DisplayColor
@@ -46,6 +45,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.RoundSlider
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import kotlinx.coroutines.delay
 
@@ -154,7 +154,7 @@ private fun LightInfo(model: LightCardModel.Shown, brightness: Int, showBrightne
         Modifier.fillMaxWidth().pulledUp(INFO_OVERLAP).padding(HADimens.SPACE4),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val style = HATextStyle.Body.copy(fontSize = NAME_FONT_SIZE, lineHeight = NAME_LINE_HEIGHT)
+        val style = FrontendTextStyle.Body.copy(fontSize = NAME_FONT_SIZE, lineHeight = NAME_LINE_HEIGHT)
         val stateText = model.stateText
         if (stateText != null) {
             Text(stateText, style = style, color = colors.colorTextPrimary)

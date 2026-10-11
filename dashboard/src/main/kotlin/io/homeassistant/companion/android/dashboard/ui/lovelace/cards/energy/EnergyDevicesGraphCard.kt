@@ -44,7 +44,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HARadius
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.energy.DeviceSlice
 import io.homeassistant.companion.android.dashboard.energy.DevicesChartType
@@ -63,6 +62,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.chart.ChartLeg
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.DEVICES_CHART_TYPE_KEY
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.LocalCardPreferences
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.math.BigDecimal
 import kotlin.math.atan2
 import kotlin.math.max
@@ -165,7 +165,7 @@ private fun DeviceBars(model: EnergyDevicesGraphModel, onOpen: (DeviceSlice) -> 
             ) {
                 Text(
                     slice.name,
-                    style = HATextStyle.Body,
+                    style = FrontendTextStyle.Body,
                     color = colors.colorTextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -181,7 +181,7 @@ private fun DeviceBars(model: EnergyDevicesGraphModel, onOpen: (DeviceSlice) -> 
                         }
                     }
                 }
-                Text(slice.valueText, style = HATextStyle.Body, color = colors.colorTextSecondary, maxLines = 1)
+                Text(slice.valueText, style = FrontendTextStyle.Body, color = colors.colorTextSecondary, maxLines = 1)
             }
         }
     }
@@ -257,7 +257,7 @@ private fun DeviceDonut(
         model.total?.let {
             Text(
                 "$totalLabel\n${hass.formats.number(BigDecimal.valueOf(it), 0, 2)} kWh",
-                style = HATextStyle.Body,
+                style = FrontendTextStyle.Body,
                 fontWeight = FontWeight.Bold,
                 color = colors.colorTextSecondary,
                 textAlign = TextAlign.Center,

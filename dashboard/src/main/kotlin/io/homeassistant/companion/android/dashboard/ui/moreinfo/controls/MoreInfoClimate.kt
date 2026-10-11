@@ -29,6 +29,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.ControlSelectM
 import io.homeassistant.companion.android.dashboard.ui.components.IconToggle
 import io.homeassistant.companion.android.dashboard.ui.components.IconToggleGroup
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.CircularStateControl
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 
 /**
  * The controls of a thermostat's details, port of `more-info-climate` (frontend@20260624.6
@@ -94,7 +95,7 @@ internal fun CurrentReadings(readings: List<Pair<String, String>>) {
                 Text(label, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary)
                 Text(
                     value,
-                    style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium),
+                    style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium),
                     color = colors.colorTextPrimary,
                 )
             }

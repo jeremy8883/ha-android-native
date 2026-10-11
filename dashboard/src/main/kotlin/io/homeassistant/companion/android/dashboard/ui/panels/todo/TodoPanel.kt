@@ -31,7 +31,6 @@ import io.homeassistant.companion.android.common.compose.composable.ButtonSize
 import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.entityIcon
@@ -42,6 +41,7 @@ import io.homeassistant.companion.android.dashboard.todo.todoLists
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.TodoListCard
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.ZonedDateTime
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -130,7 +130,7 @@ private fun ListPicker(
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             lists.forEach { (id, name) ->
                 DropdownMenuItem(
-                    text = { Text(name, style = HATextStyle.Body, color = colors.colorTextPrimary) },
+                    text = { Text(name, style = FrontendTextStyle.Body, color = colors.colorTextPrimary) },
                     leadingIcon = {
                         DashboardIcon(hass.entityIcon(id), colors.colorTextSecondary, Modifier.size(HASize.X2L))
                     },
@@ -147,7 +147,7 @@ private fun ListPicker(
                     text = {
                         Text(
                             hass.localize("ui.panel.todo.create_list"),
-                            style = HATextStyle.Body,
+                            style = FrontendTextStyle.Body,
                             color = colors.colorTextPrimary,
                         )
                     },

@@ -57,6 +57,7 @@ import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookNod
 import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookRequest
 import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookSource
 import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookViewModel
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.Instant
 import java.time.LocalDate
 
@@ -185,7 +186,7 @@ private fun LogbookRowContent(
             ) {
                 Text(
                     row.text,
-                    style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+                    style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
                     color = colors.colorTextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

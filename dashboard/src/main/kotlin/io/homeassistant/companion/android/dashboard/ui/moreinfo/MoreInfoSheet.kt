@@ -79,6 +79,7 @@ import io.homeassistant.companion.android.dashboard.ui.moreinfo.logbookItems
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.rememberLogbookSection
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.StateToggleControl
 import io.homeassistant.companion.android.dashboard.ui.statesummary.StateCardRow
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -351,12 +352,12 @@ internal fun MoreInfoStateText(model: MoreInfoModel) {
         ) {
             Text(
                 model.changed,
-                style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium),
+                style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium),
                 color = colors.colorTextPrimary,
             )
             // The `after-time` slot: a vacuum's or lawn mower's battery
             (model.vacuum?.battery ?: model.lawnMower?.battery)?.let { battery ->
-                battery.text?.let { Text(it, style = HATextStyle.Body, color = colors.colorTextSecondary) }
+                battery.text?.let { Text(it, style = FrontendTextStyle.Body, color = colors.colorTextSecondary) }
                 battery.icon?.let { DashboardIcon(it, colors.colorTextSecondary, Modifier.size(HASize.XL)) }
             }
         }
@@ -373,7 +374,7 @@ private fun MoreInfoAttributes(attributes: List<Pair<String, String>>, title: St
     val colors = LocalHAColorScheme.current
     Text(
         title,
-        style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+        style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
         color = colors.colorTextPrimary,
     )
     attributes.forEach { (name, value) ->

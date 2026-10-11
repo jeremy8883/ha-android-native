@@ -47,6 +47,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.parseLightColor
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.LightColorControl
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.ShowButton
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.StateControlSlider
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import kotlin.math.roundToInt
 
 /**
@@ -133,7 +134,7 @@ internal fun ConfirmDialog(title: String, text: String, confirm: String, onConfi
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(title, style = HATextStyle.HeadlineMedium) },
-        text = { Text(text, style = HATextStyle.Body.copy(textAlign = TextAlign.Start)) },
+        text = { Text(text, style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start)) },
         confirmButton = { HAAccentButton(confirm, onConfirm, variant = ButtonVariant.DANGER) },
         dismissButton = { HAPlainButton(stringResource(commonR.string.cancel), onDismiss) },
     )
@@ -183,7 +184,7 @@ internal fun CopyFavoritesDialog(
                         })
                         Text(
                             hass.states[entityId]?.let { hass.entityName(it) } ?: entityId,
-                            style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+                            style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
                         )
                     }
                 }

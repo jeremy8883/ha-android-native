@@ -18,8 +18,8 @@ import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
 /**
@@ -48,13 +48,13 @@ internal fun HaAlert(
             title?.let {
                 Text(
                     it,
-                    style = HATextStyle.Body,
+                    style = FrontendTextStyle.Body,
                     fontWeight = FontWeight.Bold,
                     color = textColor,
                     modifier = Modifier.padding(top = TITLE_TOP),
                 )
             }
-            Text(text, style = HATextStyle.Body, color = textColor)
+            Text(text, style = FrontendTextStyle.Body, color = textColor)
         }
     }
 }

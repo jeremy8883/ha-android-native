@@ -15,11 +15,8 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.em
 import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
-import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.layout.StackArrangement
 import io.homeassistant.companion.android.dashboard.layout.StackCard
@@ -28,6 +25,7 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.DashboardCard
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.LocalConditionContext
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.ZonedDateTime
 
 /**
@@ -108,9 +106,8 @@ private fun Modifier.atLeastAsTallAsWide(): Modifier = layout { measurable, cons
 private fun StackTitle(title: String) {
     Text(
         title,
-        // `--ha-font-size-2xl` at the normal weight
-        style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start, fontWeight = FontWeight.Normal),
-        color = LocalHAColorScheme.current.colorTextPrimary,
+        // The stack's own `.card-header`, at `--ha-line-height-condensed`
+        style = FrontendTextStyle.CardHeader.copy(lineHeight = STACK_TITLE_LINE_HEIGHT.em),
         modifier = Modifier.fillMaxWidth().padding(
             start = HADimens.SPACE4,
             top = HADimens.SPACE6,
@@ -119,3 +116,6 @@ private fun StackTitle(title: String) {
         ),
     )
 }
+
+/** `--ha-line-height-condensed`. */
+private const val STACK_TITLE_LINE_HEIGHT = 1.2f

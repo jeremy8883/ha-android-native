@@ -56,6 +56,7 @@ import io.homeassistant.companion.android.dashboard.ui.panels.PanelAction
 import io.homeassistant.companion.android.dashboard.ui.panels.PanelActions
 import io.homeassistant.companion.android.dashboard.ui.panels.PanelToolbar
 import io.homeassistant.companion.android.dashboard.ui.panels.TargetSaver
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -195,7 +196,7 @@ internal fun PanelMessage(text: String, error: Boolean = false) {
     val colors = LocalHAColorScheme.current
     Text(
         text,
-        style = HATextStyle.Body.copy(textAlign = TextAlign.Center),
+        style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Center),
         color = if (error) colors.colorOnDangerNormal else colors.colorTextSecondary,
         modifier = Modifier.fillMaxWidth().padding(HADimens.SPACE4),
     )
@@ -249,7 +250,7 @@ private fun NoDataDialog(hass: HassSnapshot, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(hass.localize("$HISTORY.download_data_error"), style = HATextStyle.HeadlineMedium) },
-        text = { Text(hass.localize("$HISTORY.error_no_data"), style = HATextStyle.Body) },
+        text = { Text(hass.localize("$HISTORY.error_no_data"), style = FrontendTextStyle.Body) },
         confirmButton = { HAPlainButton(hass.localize("ui.common.ok"), onDismiss) },
     )
 }

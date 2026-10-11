@@ -26,7 +26,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.composable.HASwitch
 import io.homeassistant.companion.android.common.compose.theme.HADimens
@@ -65,6 +64,8 @@ import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowSl
 import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowTextControl
 import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowTimerText
 import io.homeassistant.companion.android.dashboard.ui.lovelace.headerfooter.HeaderFooter
+import io.homeassistant.companion.android.dashboard.ui.theme.CardHeaderAboveContentPadding
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -96,25 +97,19 @@ internal fun EntitiesCard(
                 if (header !is HeaderFooterModel.Buttons) Spacer(Modifier.height(HADimens.SPACE4))
             }
             Column(
-                modifier = Modifier.fillMaxWidth().padding(
-                    top = if (model.header == null) HADimens.SPACE2 else HADimens.SPACE0,
-                    bottom = if (model.footer == null) HADimens.SPACE2 else HADimens.SPACE0,
-                ),
+                modifier = Modifier.fillMaxWidth().padding(bottom = HADimens.SPACE4),
             ) {
-                if (model.title != null || model.headerToggle != null) {
+                val hasTitle = model.title != null || model.headerToggle != null
+                if (hasTitle) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().padding(
-                            horizontal = HADimens.SPACE4,
-                            vertical = HADimens.SPACE2,
-                        ),
+                        modifier = Modifier.fillMaxWidth().padding(CardHeaderAboveContentPadding),
                         horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         DashboardIcon(model.icon, colors.colorTextSecondary, Modifier.size(HASize.XL))
                         Text(
                             model.title.orEmpty(),
-                            style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start),
-                            color = colors.colorTextPrimary,
+                            style = FrontendTextStyle.CardHeader,
                             modifier = Modifier.weight(1f),
                         )
                         // `hui-entities-toggle`
@@ -125,7 +120,13 @@ internal fun EntitiesCard(
                         }
                     }
                 }
-                model.rows.forEach { row -> EntityRow(row, now.value?.toInstant() ?: Instant.EPOCH, interactions) }
+                // `#states`: `.card-content` (no top padding under the header) with an 8px gap between rows
+                Column(
+                    modifier = Modifier.padding(top = if (hasTitle) HADimens.SPACE0 else HADimens.SPACE4),
+                    verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                ) {
+                    model.rows.forEach { row -> EntityRow(row, now.value?.toInstant() ?: Instant.EPOCH, interactions) }
+                }
             }
             model.footer?.let { HeaderFooter(it, footer = true, hass, now, interactions) }
         }

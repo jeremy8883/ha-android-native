@@ -24,6 +24,7 @@ import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.energy.EnergyTooltip
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
 /**
@@ -82,7 +83,7 @@ internal fun ChartTooltipCard(title: String?, rows: List<TooltipLine>, total: St
                     horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
                 ) {
                     row.color?.let { Box(Modifier.size(MARKER).background(it, CircleShape)) }
-                    Text(row.text, style = HATextStyle.Body, color = colors.colorTextPrimary)
+                    Text(row.text, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
                 }
             }
             total?.let {

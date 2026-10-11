@@ -48,6 +48,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.CircularTarget
 import io.homeassistant.companion.android.dashboard.moreinfo.CircularTargets
 import io.homeassistant.companion.android.dashboard.ui.components.CircularSliderView
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -136,7 +137,7 @@ private fun SecondaryLine(
     color: Color,
     onSelect: (CircularTarget) -> Unit,
 ) {
-    val style = HATextStyle.Body.copy(fontWeight = FontWeight.Medium)
+    val style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium)
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1)) {
         when (secondary) {
             is CircularSecondary.Current -> {
@@ -194,7 +195,7 @@ private fun CircularInfo(
     Column(modifier = modifier.fillMaxWidth(LABEL_WIDTH), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = control.label.orEmpty(),
-            style = HATextStyle.Body.copy(fontSize = HAFontSize.L, fontWeight = FontWeight.Medium),
+            style = FrontendTextStyle.Body.copy(fontSize = HAFontSize.L, fontWeight = FontWeight.Medium),
             color = when {
                 control.labelDisabled -> colors.colorTextSecondary
                 else -> control.slider.actionColor?.toColor() ?: colors.colorTextPrimary
@@ -281,14 +282,14 @@ private fun BigNumberText(number: BigNumber, bottomUnit: Boolean) {
         if (bottomUnit) {
             Text(
                 decimal + number.unit,
-                style = HATextStyle.Body.copy(fontSize = UNIT_SIZE),
+                style = FrontendTextStyle.Body.copy(fontSize = UNIT_SIZE),
                 color = color,
                 modifier = Modifier.padding(bottom = HADimens.SPACE2),
             )
         } else {
             Column(modifier = Modifier.padding(vertical = HADimens.SPACE1)) {
-                Text(number.unit, style = HATextStyle.Body.copy(fontSize = UNIT_SIZE), color = color)
-                Text(decimal, style = HATextStyle.Body.copy(fontSize = DECIMAL_SIZE), color = color)
+                Text(number.unit, style = FrontendTextStyle.Body.copy(fontSize = UNIT_SIZE), color = color)
+                Text(decimal, style = FrontendTextStyle.Body.copy(fontSize = DECIMAL_SIZE), color = color)
             }
         }
     }

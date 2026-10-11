@@ -35,6 +35,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardS
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -66,7 +67,7 @@ internal fun GaugeCard(
             }
             Text(
                 model.name,
-                style = HATextStyle.Body,
+                style = FrontendTextStyle.Body,
                 color = colors.colorTextPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

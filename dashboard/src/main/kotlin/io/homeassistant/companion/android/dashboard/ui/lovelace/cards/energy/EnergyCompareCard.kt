@@ -27,7 +27,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.composable.HABanner
 import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.energy.energyCompare
@@ -36,6 +35,7 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.EnergyChange
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 
 /**
  * While comparing, which periods are compared, with a link to compare with the other kind of period and a button
@@ -77,13 +77,13 @@ internal fun EnergyCompareCard(
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append(shown.compared) }
                     append(after)
                 },
-                style = HATextStyle.Body,
+                style = FrontendTextStyle.Body,
                 color = colors.colorTextPrimary,
                 textAlign = TextAlign.Start,
             )
             Text(
                 "(${localize("$prefix.${shown.switchKey}")})",
-                style = HATextStyle.Body,
+                style = FrontendTextStyle.Body,
                 color = colors.colorOnPrimaryNormal,
                 textAlign = TextAlign.Start,
                 modifier = Modifier.clickable(role = Role.Button) {

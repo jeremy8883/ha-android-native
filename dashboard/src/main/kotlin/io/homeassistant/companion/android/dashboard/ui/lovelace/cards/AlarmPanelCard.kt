@@ -36,10 +36,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.homeassistant.companion.android.common.compose.composable.ButtonSize
@@ -63,6 +61,8 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardS
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
+import io.homeassistant.companion.android.dashboard.ui.theme.CardHeaderPadding
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -110,21 +110,13 @@ internal fun AlarmPanelCard(
  */
 @Composable
 private fun AlarmHeader(model: AlarmPanelCardModel.Shown, onMoreInfo: () -> Unit) {
-    val colors = LocalHAColorScheme.current
     Row(
-        Modifier.fillMaxWidth().padding(
-            start = HADimens.SPACE4,
-            top = HADimens.SPACE6,
-            end = HADimens.SPACE4,
-            bottom = HADimens.SPACE4,
-        ),
+        Modifier.fillMaxWidth().padding(CardHeaderPadding),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             model.name,
-            // The card header's `--ha-font-size-2xl` at the normal weight
-            style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start, fontWeight = FontWeight.Normal),
-            color = colors.colorTextPrimary,
+            style = FrontendTextStyle.CardHeader,
             modifier = Modifier.weight(1f),
         )
         StateChip(model, onMoreInfo)
@@ -255,7 +247,7 @@ private fun KeypadKey(label: String, clear: Boolean, enabled: Boolean, onClick: 
         if (clear) {
             DashboardIcon(CLEAR_ICON, red, Modifier.size(HASize.X2L))
         } else {
-            Text(label, style = HATextStyle.Body.copy(fontSize = KEY_FONT_SIZE), color = colors.colorTextPrimary)
+            Text(label, style = FrontendTextStyle.Body.copy(fontSize = KEY_FONT_SIZE), color = colors.colorTextPrimary)
         }
     }
 }

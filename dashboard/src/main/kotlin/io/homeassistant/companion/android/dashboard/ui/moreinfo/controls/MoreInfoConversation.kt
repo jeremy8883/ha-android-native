@@ -63,6 +63,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.HaAlert
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.MarkdownText
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -95,7 +96,7 @@ internal fun MoreInfoConversation(agentId: String, hass: HassSnapshot, modifier:
             hass.localize(
                 "ui.dialogs.voice_command.${if (shown.notFound) "not_found" else "unknown"}_error_load_assist",
             ),
-            style = HATextStyle.Body,
+            style = FrontendTextStyle.Body,
             color = colors.colorOnDangerNormal,
         )
         is ConversationState.Ready -> Column(

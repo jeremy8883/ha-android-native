@@ -38,6 +38,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.chart.TimeSpan
 import io.homeassistant.companion.android.dashboard.ui.components.chart.TimelineChartView
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.Instant
 
 /**
@@ -90,7 +91,11 @@ internal fun MoreInfoSectionHeader(
     val colors = LocalHAColorScheme.current
     Row(modifier = modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Column(Modifier.weight(1f)) {
-            Text(title, style = HATextStyle.Body.copy(textAlign = TextAlign.Start), color = colors.colorTextPrimary)
+            Text(
+                title,
+                style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                color = colors.colorTextPrimary,
+            )
             subtitle?.let { Text(it, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start)) }
         }
         HAPlainButton(showMore, onShowMore)

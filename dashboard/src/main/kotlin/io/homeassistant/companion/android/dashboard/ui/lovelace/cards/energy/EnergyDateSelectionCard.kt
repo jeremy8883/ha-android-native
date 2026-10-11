@@ -39,6 +39,7 @@ import io.homeassistant.companion.android.dashboard.ui.EnergyChange
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardSurface
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.DayOfWeek
 import java.time.ZonedDateTime
 
@@ -80,7 +81,7 @@ internal fun EnergyDateSelectionCard(
             Column(Modifier.weight(1f).padding(horizontal = HADimens.SPACE2)) {
                 Text(title.title, style = HATextStyle.BodyMedium, color = LocalHAColorScheme.current.colorTextPrimary)
                 title.subtitle?.let {
-                    Text(it, style = HATextStyle.Body, color = LocalHAColorScheme.current.colorTextSecondary)
+                    Text(it, style = FrontendTextStyle.Body, color = LocalHAColorScheme.current.colorTextSecondary)
                 }
             }
             if (shown.loading) HALoading(modifier = Modifier.size(HADimens.SPACE5))
@@ -133,7 +134,7 @@ private fun RangeMenu(localize: (String) -> String, onPick: (EnergyRangePreset) 
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             EnergyRangePreset.entries.forEach { preset ->
                 DropdownMenuItem(
-                    text = { Text(localize(PICKER + "ranges." + preset.key), style = HATextStyle.Body) },
+                    text = { Text(localize(PICKER + "ranges." + preset.key), style = FrontendTextStyle.Body) },
                     onClick = {
                         open = false
                         onPick(preset)
@@ -168,7 +169,7 @@ private fun OverflowMenu(
         SelectorButton(MDI_MORE, stringResource(R.string.native_dashboard_more_options)) { open = true }
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             DropdownMenuItem(
-                text = { Text(labels.now, style = HATextStyle.Body) },
+                text = { Text(labels.now, style = FrontendTextStyle.Body) },
                 leadingIcon = { DashboardIcon(MDI_NOW, tint = colors.colorTextPrimary) },
                 onClick = {
                     open = false
@@ -176,7 +177,7 @@ private fun OverflowMenu(
                 },
             )
             DropdownMenuItem(
-                text = { Text(labels.compare, style = HATextStyle.Body) },
+                text = { Text(labels.compare, style = FrontendTextStyle.Body) },
                 leadingIcon = {
                     DashboardIcon(
                         if (comparing) MDI_CHECKED else MDI_UNCHECKED,
@@ -190,7 +191,7 @@ private fun OverflowMenu(
                 },
             )
             DropdownMenuItem(
-                text = { Text(labels.download, style = HATextStyle.Body) },
+                text = { Text(labels.download, style = FrontendTextStyle.Body) },
                 leadingIcon = { DashboardIcon(MDI_DOWNLOAD, tint = colors.colorTextPrimary) },
                 onClick = {
                     open = false

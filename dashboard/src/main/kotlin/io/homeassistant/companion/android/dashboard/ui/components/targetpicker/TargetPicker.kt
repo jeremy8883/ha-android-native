@@ -35,7 +35,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.composable.HAFilledButton
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.DisplayColor
 import io.homeassistant.companion.android.dashboard.derive.cssColor
@@ -48,6 +47,7 @@ import io.homeassistant.companion.android.dashboard.target.chips
 import io.homeassistant.companion.android.dashboard.target.expand
 import io.homeassistant.companion.android.dashboard.theme.resolveDisplayColor
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
 /**
@@ -142,7 +142,7 @@ private fun TargetChipView(
         }
         Text(
             chip.name,
-            style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+            style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
             color = colors.colorTextPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

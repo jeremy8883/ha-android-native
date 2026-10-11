@@ -37,6 +37,7 @@ import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInf
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoPerson
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoScript
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoWeather
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.Instant
 
 /**
@@ -88,11 +89,11 @@ private fun MoreInfoSun(rows: List<SunRow>) {
                 // `.key`: the name, then when, on one line
                 Text(
                     listOfNotNull(row.name, row.relative).joinToString(" "),
-                    style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+                    style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
                     color = colors.colorTextPrimary,
                     modifier = Modifier.weight(1f),
                 )
-                Text(row.value, style = HATextStyle.Body, color = colors.colorTextPrimary)
+                Text(row.value, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
             }
         }
     }

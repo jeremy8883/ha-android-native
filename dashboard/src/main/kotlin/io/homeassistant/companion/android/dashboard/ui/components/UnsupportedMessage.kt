@@ -11,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
 import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 
 /**
  * What can't be shown natively, with a button opening it in the companion app when other pages can be opened.
@@ -27,7 +27,7 @@ internal fun UnsupportedMessage(text: String, onOpenElsewhere: (() -> Unit)?) {
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text, style = HATextStyle.Body, color = LocalHAColorScheme.current.colorTextSecondary)
+        Text(text, style = FrontendTextStyle.Body, color = LocalHAColorScheme.current.colorTextSecondary)
         onOpenElsewhere?.let { HAAccentButton(stringResource(R.string.native_dashboard_open_elsewhere), it) }
     }
 }

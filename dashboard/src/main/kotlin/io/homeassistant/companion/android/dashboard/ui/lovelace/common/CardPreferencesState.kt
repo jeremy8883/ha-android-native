@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.ui.lovelace.common
 
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -10,9 +11,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.dashboard.data.CardPreferences
 import io.homeassistant.companion.android.dashboard.ui.components.LocalBrandsToken
 import io.homeassistant.companion.android.dashboard.ui.components.LocalServerUrl
+import io.homeassistant.companion.android.dashboard.ui.theme.BODY_LINE_HEIGHT
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,8 +27,8 @@ import kotlinx.coroutines.launch
 internal class CardPreferenceValues(val values: Map<String, String>, val set: (String, String) -> Unit)
 
 /**
- * Gives [content]'s cards the server's URL ([serverUrl], for its pictures), the brands API's token and the card
- * choices kept on the device.
+ * Gives [content]'s cards the server's URL ([serverUrl], for its pictures), the brands API's token, the card
+ * choices kept on the device, and the frontend's body text size for text without its own style.
  *
  * Upstream: none (native: hands the cards what the frontend reads from `hass` and local storage)
  */
@@ -37,6 +40,7 @@ internal fun ProvideCardLocals(serverUrl: String?, content: @Composable () -> Un
         LocalServerUrl provides serverUrl,
         LocalBrandsToken provides brandsToken,
         LocalCardPreferences provides rememberCardPreferences(),
+        LocalTextStyle provides LocalTextStyle.current.merge(fontSize = HAFontSize.M, lineHeight = BODY_LINE_HEIGHT),
         content = content,
     )
 }

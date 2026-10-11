@@ -63,6 +63,7 @@ import io.homeassistant.companion.android.dashboard.target.TargetRef
 import io.homeassistant.companion.android.dashboard.target.TargetType
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
@@ -215,7 +216,7 @@ private fun ItemRow(item: TargetPickerItem, hass: HassSnapshot, onClick: () -> U
         Column(Modifier.weight(1f).padding(start = HADimens.SPACE4, top = HADimens.SPACE2, bottom = HADimens.SPACE2)) {
             Text(
                 item.primary,
-                style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+                style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
                 color = colors.colorTextPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -290,7 +291,7 @@ private fun EmptyRow(text: String, searching: Boolean) {
             colors.colorTextSecondary,
             Modifier.size(HASize.X2L),
         )
-        Text(text, style = HATextStyle.Body.copy(textAlign = TextAlign.Start), color = colors.colorTextPrimary)
+        Text(text, style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start), color = colors.colorTextPrimary)
     }
 }
 

@@ -25,6 +25,7 @@ import io.homeassistant.companion.android.dashboard.derive.StateCard
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.RowControlContent
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.Instant
 
@@ -55,7 +56,7 @@ internal fun StateCardRow(
             Column(Modifier.weight(1f)) {
                 Text(
                     card.name,
-                    style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+                    style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
                     color = colors.colorTextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

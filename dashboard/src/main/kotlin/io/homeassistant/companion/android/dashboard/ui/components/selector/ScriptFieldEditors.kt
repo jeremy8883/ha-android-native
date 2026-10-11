@@ -27,10 +27,10 @@ import io.homeassistant.companion.android.common.compose.composable.HASwitch
 import io.homeassistant.companion.android.common.compose.composable.HATextField
 import io.homeassistant.companion.android.common.compose.composable.RadioOption
 import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.moreinfo.FieldSelector
 import io.homeassistant.companion.android.dashboard.ui.components.haSliderColors
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.LocalDate
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -79,7 +79,7 @@ internal fun FieldEditor(
         FieldSelector.Time -> TimeEditor(text, enabled) { onChange(JsonPrimitive(it)) }
         FieldSelector.DateTime -> DateTimeEditor(text, enabled, today, onChange)
         is FieldSelector.Duration -> DurationEditor(value, enabled, selector.enableDay, onChange)
-        is FieldSelector.Constant -> Text(selector.label ?: selector.value.toString(), style = HATextStyle.Body)
+        is FieldSelector.Constant -> Text(selector.label ?: selector.value.toString(), style = FrontendTextStyle.Body)
         is FieldSelector.Unsupported -> UnsupportedEditor(text ?: value?.toString().orEmpty(), enabled, onChange)
     }
 }
@@ -198,7 +198,7 @@ private fun SelectEditor(
                         },
                         enabled = enabled,
                     )
-                    Text(label, style = HATextStyle.Body, color = LocalHAColorScheme.current.colorTextPrimary)
+                    Text(label, style = FrontendTextStyle.Body, color = LocalHAColorScheme.current.colorTextPrimary)
                 }
             }
         }

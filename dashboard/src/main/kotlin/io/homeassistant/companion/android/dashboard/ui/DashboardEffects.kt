@@ -28,6 +28,7 @@ import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.dialogs.entercode.CodeDialog
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -78,7 +79,7 @@ internal fun DashboardEffects(
         AlertDialog(
             onDismissRequest = dismiss,
             title = pending.confirmation.title?.let { { Text(it, style = HATextStyle.HeadlineMedium) } },
-            text = { Text(pending.confirmation.text, style = HATextStyle.Body) },
+            text = { Text(pending.confirmation.text, style = FrontendTextStyle.Body) },
             confirmButton = {
                 HAPlainButton(pending.confirmation.confirmText ?: stringResource(commonR.string.ok), {
                     confirm = null

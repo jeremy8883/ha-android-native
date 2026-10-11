@@ -31,7 +31,6 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.HAThemeForPreview
 import io.homeassistant.companion.android.dashboard.NativeDashboardRequest
 import io.homeassistant.companion.android.dashboard.R
@@ -52,6 +51,7 @@ import io.homeassistant.companion.android.dashboard.ui.lovelace.views.ViewFooter
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoSheet
 import io.homeassistant.companion.android.dashboard.ui.panels.NativePanel
 import io.homeassistant.companion.android.dashboard.ui.panels.PanelToolbar
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.ZonedDateTime
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -343,7 +343,7 @@ internal fun DashboardScreenContent(
  */
 @Composable
 internal fun Message(text: String) {
-    Text(text, style = HATextStyle.Body, modifier = Modifier.padding(HADimens.SPACE4))
+    Text(text, style = FrontendTextStyle.Body, modifier = Modifier.padding(HADimens.SPACE4))
 }
 
 @Preview

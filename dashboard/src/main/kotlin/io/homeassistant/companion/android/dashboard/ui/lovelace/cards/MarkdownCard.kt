@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard.ui.lovelace.cards
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
@@ -12,8 +13,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.m3.markdownColor
 import com.mikepenz.markdown.m3.markdownTypography
@@ -29,6 +30,8 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardSurface
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.LocalCardTextAlign
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.alignedMarkdownComponents
+import io.homeassistant.companion.android.dashboard.ui.theme.CardHeaderPadding
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 
 /**
  * A markdown card: the server-rendered template as markdown, in a card unless `text_only`. Nothing is shown until
@@ -52,18 +55,22 @@ internal fun MarkdownCard(card: CardConfig, hass: State<HassSnapshot?>, modifier
 @Composable
 private fun MarkdownCardContent(model: MarkdownModel, modifier: Modifier = Modifier) {
     val colors = LocalHAColorScheme.current
+    // `ha-markdown`'s padding: 2px 4px text-only, none above under a header, else 16px
+    val padding = when {
+        model.textOnly -> PaddingValues(horizontal = HADimens.SPACE1, vertical = TEXT_ONLY_VERTICAL_PADDING)
+        model.title != null -> PaddingValues(start = HADimens.SPACE4, end = HADimens.SPACE4, bottom = HADimens.SPACE4)
+        else -> PaddingValues(HADimens.SPACE4)
+    }
     val content = @Composable {
-        Column(modifier = Modifier.fillMaxWidth().padding(if (model.textOnly) HADimens.SPACE0 else HADimens.SPACE4)) {
-            model.error?.let { Text(it, style = HATextStyle.BodyMedium, color = colors.colorOnDangerNormal) }
+        Column(modifier = Modifier.fillMaxWidth()) {
             model.title?.let {
-                Text(
-                    it,
-                    style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start),
-                    color = colors.colorTextPrimary,
-                )
+                Text(it, style = FrontendTextStyle.CardHeader, modifier = Modifier.padding(CardHeaderPadding))
             }
-            (model.content ?: model.placeholder)?.let { text ->
-                MarkdownText(text, Modifier.fillMaxWidth().alpha(if (model.content == null) 0f else 1f))
+            Column(modifier = Modifier.fillMaxWidth().padding(padding)) {
+                model.error?.let { Text(it, style = HATextStyle.BodyMedium, color = colors.colorOnDangerNormal) }
+                (model.content ?: model.placeholder)?.let { text ->
+                    MarkdownText(text, Modifier.fillMaxWidth().alpha(if (model.content == null) 0f else 1f))
+                }
             }
         }
     }
@@ -83,7 +90,7 @@ private fun MarkdownCardContent(model: MarkdownModel, modifier: Modifier = Modif
 internal fun MarkdownText(text: String, modifier: Modifier = Modifier) {
     val colors = LocalHAColorScheme.current
     val align = LocalCardTextAlign.current
-    val body = HATextStyle.Body.copy(textAlign = align, color = colors.colorTextPrimary)
+    val body = FrontendTextStyle.Body.copy(textAlign = align, color = colors.colorTextPrimary)
     val heading = body.copy(fontWeight = FontWeight.Bold)
     Markdown(
         content = text,
@@ -126,3 +133,6 @@ private fun MarkdownCardPreview() {
         )
     }
 }
+
+/** `.text-only ha-markdown`'s 2px above and below. */
+private val TEXT_ONLY_VERTICAL_PADDING = 2.dp

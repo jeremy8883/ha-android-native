@@ -27,7 +27,6 @@ import io.homeassistant.companion.android.common.compose.composable.HAPlainButto
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.Gesture
 import io.homeassistant.companion.android.dashboard.derive.ButtonAppearance
@@ -38,6 +37,7 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardSurface
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /** `.container`'s `max-width`. */
@@ -76,7 +76,12 @@ internal fun EmptyStateCard(card: CardConfig, interactions: CardInteractions, mo
                     )
                 }
                 model.content?.let {
-                    Text(it, style = HATextStyle.Body, color = colors.colorTextSecondary, textAlign = TextAlign.Center)
+                    Text(
+                        it,
+                        style = FrontendTextStyle.Body,
+                        color = colors.colorTextSecondary,
+                        textAlign = TextAlign.Center,
+                    )
                 }
                 if (model.buttons.isNotEmpty()) {
                     FlowRow(

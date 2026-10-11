@@ -13,7 +13,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.energy.PowerSourcesGraphModel
 import io.homeassistant.companion.android.dashboard.energy.PowerStack
@@ -23,6 +22,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.ui.components.chart.ChartLegendItem
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -51,7 +51,7 @@ internal fun PowerSourcesGraphCard(
         if (graph.series.none { it.points.isNotEmpty() }) {
             Text(
                 snapshot.localize(if (graph.today) NO_DATA else NO_DATA_PERIOD),
-                style = HATextStyle.Body,
+                style = FrontendTextStyle.Body,
                 color = LocalHAColorScheme.current.colorTextSecondary,
                 modifier = Modifier.padding(HADimens.SPACE4),
             )

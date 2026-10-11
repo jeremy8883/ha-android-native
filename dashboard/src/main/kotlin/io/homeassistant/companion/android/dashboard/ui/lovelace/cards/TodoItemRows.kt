@@ -35,6 +35,7 @@ import io.homeassistant.companion.android.dashboard.todo.TodoStatus
 import io.homeassistant.companion.android.dashboard.todo.deleteTodoItems
 import io.homeassistant.companion.android.dashboard.todo.toggleTodoItem
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
 /**
@@ -73,7 +74,7 @@ internal fun TodoItemRow(
         Column(Modifier.weight(1f)) {
             Text(
                 item.summary,
-                style = HATextStyle.Body.copy(
+                style = FrontendTextStyle.Body.copy(
                     textAlign = TextAlign.Start,
                     textDecoration = if (completed) TextDecoration.LineThrough else null,
                 ),
@@ -145,7 +146,7 @@ internal fun ReorderRow(
     Row(Modifier.fillMaxWidth().padding(start = HADimens.SPACE4), verticalAlignment = Alignment.CenterVertically) {
         Text(
             row.item.summary,
-            style = HATextStyle.Body.copy(textAlign = TextAlign.Start),
+            style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
             color = colors.colorTextPrimary,
             modifier = Modifier.weight(1f),
         )

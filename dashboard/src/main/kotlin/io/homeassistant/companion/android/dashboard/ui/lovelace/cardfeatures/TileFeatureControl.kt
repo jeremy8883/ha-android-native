@@ -33,13 +33,13 @@ import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.feature.TileFeature
 import io.homeassistant.companion.android.dashboard.ui.components.ControlSlider
 import io.homeassistant.companion.android.dashboard.ui.components.ControlSliderStyle
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -222,7 +222,7 @@ private fun FeatureNumber(
         }
         Text(
             text = shown?.let(item::display) ?: "–",
-            style = HATextStyle.Body,
+            style = FrontendTextStyle.Body,
             color = if (enabled) colors.colorOnNeutralNormal else colors.colorOnDisabledQuiet,
         )
         IconButton(onClick = { step(1) }, enabled = enabled) {

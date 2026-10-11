@@ -46,7 +46,6 @@ import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HAFontSize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -59,6 +58,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardS
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.MarkdownText
 import io.homeassistant.companion.android.dashboard.ui.panels.ToolbarIconButton
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.ZonedDateTime
 
 /**
@@ -140,7 +140,7 @@ private fun DrawerHeader(title: String, closeLabel: String, onClose: () -> Unit)
     ) {
         Text(
             title,
-            style = HATextStyle.Body.copy(fontSize = HAFontSize.XL, textAlign = TextAlign.Start),
+            style = FrontendTextStyle.Body.copy(fontSize = HAFontSize.XL, textAlign = TextAlign.Start),
             color = LocalHAColorScheme.current.colorTextPrimary,
             modifier = Modifier.weight(1f),
         )
@@ -176,14 +176,14 @@ private fun NotificationList(
                     R.string.native_dashboard_load_failed,
                     LocalContext.current.loadErrorText(notifications.error),
                 ),
-                style = HATextStyle.Body,
+                style = FrontendTextStyle.Body,
             )
             HAAccentButton(text = stringResource(R.string.native_dashboard_retry), onClick = viewModel::retry)
         }
         is Loadable.Ready -> if (notifications.value.isEmpty()) {
             Text(
                 localize(EMPTY),
-                style = HATextStyle.Body,
+                style = FrontendTextStyle.Body,
                 color = LocalHAColorScheme.current.colorTextPrimary,
                 modifier = modifier.fillMaxWidth().padding(HADimens.SPACE4),
             )
@@ -248,7 +248,7 @@ private fun NotificationItem(
             notification.title?.let {
                 Text(
                     it,
-                    style = HATextStyle.Body.copy(
+                    style = FrontendTextStyle.Body.copy(
                         fontSize = HAFontSize.X2L,
                         lineHeight = TITLE_LINE_HEIGHT,
                         textAlign = TextAlign.Start,
@@ -262,7 +262,7 @@ private fun NotificationItem(
                 created?.let {
                     Text(
                         it,
-                        style = HATextStyle.Body.copy(textAlign = TextAlign.End),
+                        style = FrontendTextStyle.Body.copy(textAlign = TextAlign.End),
                         color = colors.colorTextSecondary,
                         modifier = Modifier.fillMaxWidth().padding(top = TIME_MARGIN),
                     )

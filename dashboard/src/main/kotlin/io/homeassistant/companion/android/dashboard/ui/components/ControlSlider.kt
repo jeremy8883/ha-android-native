@@ -43,9 +43,9 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HARadius
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.moreinfo.SliderMode
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import kotlin.math.roundToInt
 
 /**
@@ -294,7 +294,7 @@ private fun Tooltip(text: String, fraction: Float, vertical: Boolean, style: Con
     val colors = LocalHAColorScheme.current
     Text(
         text = text,
-        style = HATextStyle.Body.copy(fontSize = style.tooltipFontSize),
+        style = FrontendTextStyle.Body.copy(fontSize = style.tooltipFontSize),
         color = colors.colorTextPrimary,
         modifier = Modifier
             .layout { measurable, constraints ->

@@ -1,6 +1,5 @@
 package io.homeassistant.companion.android.dashboard.ui.lovelace.cards
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -18,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
@@ -33,6 +31,8 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
+import io.homeassistant.companion.android.dashboard.ui.theme.CardHeaderPadding
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -61,20 +61,21 @@ internal fun GlanceCard(
         }
     }
     val model = glance ?: return
-    val colors = LocalHAColorScheme.current
     DashboardCardSurface(modifier = modifier) {
-        Column(
-            Modifier.fillMaxWidth().padding(HADimens.SPACE4),
-            verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
-        ) {
+        Column(Modifier.fillMaxWidth()) {
             model.title?.let {
-                Text(
-                    it,
-                    style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start),
-                    color = colors.colorTextPrimary,
-                )
+                Text(it, style = FrontendTextStyle.CardHeader, modifier = Modifier.padding(CardHeaderPadding))
             }
-            FlowRow(Modifier.fillMaxWidth(), maxItemsInEachRow = model.columns) {
+            // `.entities`, with `.no-header`'s top padding
+            FlowRow(
+                Modifier.fillMaxWidth().padding(
+                    start = HADimens.SPACE4,
+                    top = if (model.title == null) HADimens.SPACE4 else HADimens.SPACE0,
+                    end = HADimens.SPACE4,
+                    bottom = HADimens.SPACE1,
+                ),
+                maxItemsInEachRow = model.columns,
+            ) {
                 model.entities.forEach { entity ->
                     GlanceEntityView(entity, Modifier.weight(1f).elementGestures(entity.actions, interactions))
                 }
@@ -96,7 +97,11 @@ internal fun GlanceCard(
 private fun GlanceEntityView(entity: GlanceEntity, modifier: Modifier) {
     val colors = LocalHAColorScheme.current
     val textColor = if (entity.missing) colors.colorOnWarningNormal else colors.colorTextPrimary
-    Column(modifier.padding(HADimens.SPACE1), horizontalAlignment = Alignment.CenterHorizontally) {
+    // `.entity`: 4px on the sides, 12px under
+    Column(
+        modifier.padding(start = HADimens.SPACE1, end = HADimens.SPACE1, bottom = HADimens.SPACE3),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         entity.name?.let {
             Text(it, style = HATextStyle.BodyMedium, color = textColor, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }

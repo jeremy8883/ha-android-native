@@ -30,6 +30,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.moreinfo.MediaPlayerMoreInfo
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import java.time.Instant
 
 /**
@@ -141,7 +142,7 @@ private fun MediaTitles(title: String?, artist: String?) {
         artist?.let {
             Text(
                 it,
-                style = HATextStyle.Body,
+                style = FrontendTextStyle.Body,
                 color = colors.colorTextSecondary,
                 maxLines = 1,
                 textAlign = TextAlign.Center,

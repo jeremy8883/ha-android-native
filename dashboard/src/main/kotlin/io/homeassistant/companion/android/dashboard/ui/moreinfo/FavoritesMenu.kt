@@ -27,6 +27,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.components.ConfirmDialog
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.components.CopyFavoritesDialog
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 
 /** The favourites' items of the dialog's menu, each closing the menu with the given function first. */
 internal typealias FavoritesMenuItems = @Composable (close: () -> Unit) -> Unit
@@ -134,7 +135,7 @@ private fun MenuItem(icon: String, label: String, enabled: Boolean = true, onCli
         text = {
             Text(
                 label,
-                style = HATextStyle.Body,
+                style = FrontendTextStyle.Body,
                 color = if (enabled) colors.colorTextPrimary else colors.colorTextDisabled,
             )
         },

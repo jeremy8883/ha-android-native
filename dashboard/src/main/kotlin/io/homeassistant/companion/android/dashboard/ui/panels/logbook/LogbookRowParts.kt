@@ -35,6 +35,7 @@ import io.homeassistant.companion.android.dashboard.logbook.LogbookRow
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
 import io.homeassistant.companion.android.dashboard.ui.components.chart.TimelineColors
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
@@ -124,7 +125,7 @@ internal fun CauseBadgeView(cause: LogbookCause, badge: CauseBadge) {
 internal fun LogbookDayHeader(text: String, modifier: Modifier = Modifier) {
     Text(
         text,
-        style = HATextStyle.Body.copy(textAlign = TextAlign.Start, fontWeight = FontWeight.Medium),
+        style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start, fontWeight = FontWeight.Medium),
         color = LocalHAColorScheme.current.colorTextPrimary,
         modifier = modifier.padding(top = HADimens.SPACE4),
     )

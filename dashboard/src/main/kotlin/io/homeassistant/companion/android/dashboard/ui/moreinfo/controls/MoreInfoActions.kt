@@ -22,7 +22,6 @@ import io.homeassistant.companion.android.common.compose.composable.HAHorizontal
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HATextField
 import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.entity.EntityState
@@ -32,6 +31,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.TimerButton
 import io.homeassistant.companion.android.dashboard.moreinfo.TimerDuration
 import io.homeassistant.companion.android.dashboard.moreinfo.TimerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.timerStartCall
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 
 /**
  * Port of the dialogs' `.actions`: plain text buttons, centred and wrapping.
@@ -62,8 +62,8 @@ internal fun MoreInfoAutomation(info: AutomationMoreInfo, onAction: (CardAction)
     Column {
         HAHorizontalDivider(Modifier.padding(vertical = HADimens.SPACE4))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(info.lastTriggeredLabel, style = HATextStyle.Body, color = color)
-            Text(info.lastTriggered, style = HATextStyle.Body, color = color)
+            Text(info.lastTriggeredLabel, style = FrontendTextStyle.Body, color = color)
+            Text(info.lastTriggered, style = FrontendTextStyle.Body, color = color)
         }
         MoreInfoActionRow(listOf(info.run), onAction)
     }
@@ -105,9 +105,9 @@ internal fun MoreInfoTimer(info: TimerMoreInfo, state: EntityState, onAction: (C
 private fun DurationInput(duration: TimerDuration, onChange: (TimerDuration) -> Unit) {
     Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2), verticalAlignment = Alignment.CenterVertically) {
         DurationField(duration.hours) { onChange(duration.copy(hours = it)) }
-        Text(":", style = HATextStyle.Body)
+        Text(":", style = FrontendTextStyle.Body)
         DurationField(duration.minutes, padded = true) { onChange(duration.copy(minutes = it)) }
-        Text(":", style = HATextStyle.Body)
+        Text(":", style = FrontendTextStyle.Body)
         DurationField(duration.seconds, padded = true) { onChange(duration.copy(seconds = it)) }
     }
 }
