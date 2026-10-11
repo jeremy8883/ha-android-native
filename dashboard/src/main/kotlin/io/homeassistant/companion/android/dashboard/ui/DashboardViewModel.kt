@@ -53,7 +53,10 @@ import io.homeassistant.companion.android.dashboard.navigation.SidebarSettings
 import io.homeassistant.companion.android.dashboard.navigation.defaultPanelUrlPath
 import io.homeassistant.companion.android.dashboard.navigation.panelTitle
 import io.homeassistant.companion.android.dashboard.navigation.sidebarItems
+import io.homeassistant.companion.android.dashboard.panels.HOME_PANEL
 import io.homeassistant.companion.android.dashboard.panels.NATIVE_PANELS
+import io.homeassistant.companion.android.dashboard.panels.groupedByNative
+import io.homeassistant.companion.android.dashboard.panels.isNative
 import io.homeassistant.companion.android.dashboard.strategy.StrategyData
 import io.homeassistant.companion.android.dashboard.strategy.energy.ENERGY_PANEL
 import io.homeassistant.companion.android.dashboard.strategy.energy.energyDashboard
@@ -717,9 +720,11 @@ private fun sidebarState(inputs: StructureInputs, data: SidebarData): SidebarSta
         localize = inputs.hass.localize,
         locale = Locale.forLanguageTag(BUNDLED_LANGUAGE),
     )
+    val groups = items.groupedByNative(inputs.panelInfo)
     return SidebarState(
         items = items,
-        dashboardItems = items.filter { item -> inputs.panelInfo[item.urlPath]?.let(::isNativeDashboard) == true },
+        dashboardItems = groups.native,
+        elsewhereItems = groups.elsewhere,
         panels = inputs.panelInfo,
         panelTitles = inputs.panelInfo.mapNotNull { (path, panel) ->
             panelTitle(panel, inputs.hass.localize)?.let { path to it }
@@ -854,6 +859,8 @@ data class SidebarState(
     val items: List<SidebarItem>,
     /** [items] the native dashboards show themselves, for when other pages can't be opened. */
     val dashboardItems: List<SidebarItem>,
+    /** [items] that open in the companion app, listed apart under their own heading. */
+    val elsewhereItems: List<SidebarItem> = emptyList(),
     val panels: Map<String, PanelInfo>,
     /** Each panel's title by its path, also for the panels the sidebar hides. */
     val panelTitles: Map<String, String> = emptyMap(),
@@ -861,15 +868,5 @@ data class SidebarState(
     val isAdmin: Boolean,
 )
 
-/**
- * Whether [panel] is a dashboard the native renderer shows: the home dashboard, Lovelace dashboards, the summary
- * panels (lights, climate, security, maintenance) and the energy panel, which are generated dashboards too.
- */
-internal fun isNativeDashboard(panel: PanelInfo): Boolean = panel.componentName == HOME_PANEL ||
-    panel.componentName == LOVELACE_PANEL ||
-    panel.componentName in SUMMARY_PANELS ||
-    panel.componentName == ENERGY_PANEL ||
-    panel.componentName in NATIVE_PANELS
-
-private const val HOME_PANEL = "home"
-private const val LOVELACE_PANEL = "lovelace"
+/** Whether [panel] is shown natively (see [PanelInfo.isNative]). */
+internal fun isNativeDashboard(panel: PanelInfo): Boolean = panel.isNative()

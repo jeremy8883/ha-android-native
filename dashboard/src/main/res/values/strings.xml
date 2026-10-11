@@ -34,4 +34,7 @@
     <string name="native_dashboard_favorites_save_failed">Couldn\'t save the favorite colors: %1$s</string>
     <string name="native_dashboard_favorites_copy_failed">Couldn\'t copy the favorite colors to %1$d lights: %2$s</string>
     <string name="native_dashboard_open_elsewhere">Open in the Home Assistant app</string>
+    <string name="native_dashboard_elsewhere_heading">In the Home Assistant app</string>
+    <!-- The frontend's sidebar title, not translated upstream either -->
+    <string name="native_dashboard_sidebar_title" translatable="false">Home Assistant</string>
 </resources>
