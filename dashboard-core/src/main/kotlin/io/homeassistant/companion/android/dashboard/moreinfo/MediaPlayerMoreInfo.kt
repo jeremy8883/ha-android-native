@@ -137,7 +137,7 @@ internal fun HassSnapshot.mediaControl(state: EntityState, icon: String, action:
     )
 }
 
-private fun HassSnapshot.mediaPosition(state: EntityState): MediaPosition? {
+internal fun HassSnapshot.mediaPosition(state: EntityState): MediaPosition? {
     val duration = maxOf(state.attributes.numberOrNull("media_duration") ?: 0.0, 0.0).takeIf { it > 0 }
         ?: return null
     val updatedAt = state.attributes.string("media_position_updated_at")

@@ -6,6 +6,10 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.string
+import io.homeassistant.companion.android.dashboard.moreinfo.MediaGrouping
+import io.homeassistant.companion.android.dashboard.moreinfo.MediaPosition
+import io.homeassistant.companion.android.dashboard.moreinfo.mediaGrouping
+import io.homeassistant.companion.android.dashboard.moreinfo.mediaPosition
 import java.net.URLDecoder
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
@@ -17,8 +21,15 @@ import kotlinx.serialization.json.put
  * @property picture the artwork, a path on the server (or a full URL)
  * @property title the media title, or the description when there is no title
  * @property subtitle the description under a title
- * @property off whether the player is off (dimmed upstream)
+ * @property off whether the player is off (`isOffState`): the artwork hides and the background turns grey
+ * @property unavailable whether it is unavailable, unknown, or off without a way to turn it on (`isUnavailable`):
+ *   only the name shows
  * @property moreInfoLabel the label of the button opening the player's details
+ * @property browseLabel the browse button's label, `null` when the player can't browse media
+ * @property grouping the join button's grouping, `null` when the player can't group
+ * @property progress the track's position for the progress bar, `null` without one (not playing or paused, or no
+ *   duration or position); [seekable] when a tap on it seeks
+ * @property idleOrOn whether the player is idle or on, when the controls show even on a very narrow card
  */
 data class MediaControlModel(
     val entityId: String,
@@ -31,21 +42,31 @@ data class MediaControlModel(
     val unavailable: Boolean,
     val controls: List<MediaControl>,
     val moreInfoLabel: String,
+    val browseLabel: String? = null,
+    val grouping: MediaGrouping? = null,
+    val progress: MediaPosition? = null,
+    val seekable: Boolean = false,
+    val idleOrOn: Boolean = false,
 )
 
-/** A media player button. */
-data class MediaControl(val label: String, val icon: String, val action: CardAction.CallService)
+/** A media player button; [main] for the play, pause and stop buttons, which the card draws larger. */
+data class MediaControl(
+    val label: String,
+    val icon: String,
+    val action: CardAction.CallService,
+    val main: Boolean = false,
+)
 
 /**
  * Derive a media control card, or `null` when the entity does not exist.
  * Port of `HuiMediaControlCard.render` (frontend@20260624.6 src/panels/lovelace/cards/hui-media-control-card.ts)
  * with `computeMediaControls`, `computeMediaDescription` and `cleanupMediaTitle` (src/data/media-player.ts).
- * The progress bar and browse-media button are not ported yet.
  */
 fun HassSnapshot.mediaControlModel(card: CardConfig): MediaControlModel? {
     val state = card.entity?.let(states::get) ?: return null
     val entityId = state.entityId
-    val unavailable = state.state == STATE_UNAVAILABLE || state.state == STATE_UNKNOWN
+    val missing = state.state == STATE_UNAVAILABLE || state.state == STATE_UNKNOWN
+    val off = !state.isActive() && !missing
     val title = cleanupMediaTitle(state.attributes.string("media_title"))
     val description = mediaDescription(state)
     return MediaControlModel(
@@ -56,8 +77,8 @@ fun HassSnapshot.mediaControlModel(card: CardConfig): MediaControlModel? {
             ?.ifEmpty { null },
         title = title ?: description,
         subtitle = description.takeIf { title != null },
-        off = !state.isActive() && !unavailable,
-        unavailable = unavailable,
+        off = off,
+        unavailable = missing || (off && !state.supportsFeature(TURN_ON)),
         controls = mediaControls(state).map { (icon, action) ->
             MediaControl(
                 label = localize("ui.card.media_player.$action"),
@@ -68,11 +89,25 @@ fun HassSnapshot.mediaControlModel(card: CardConfig): MediaControlModel? {
                     buildJsonObject { put("entity_id", entityId) },
                     target = null,
                 ),
+                main = action in MAIN_ACTIONS,
             )
         },
         moreInfoLabel = localize("ui.panel.lovelace.cards.show_more_info"),
+        browseLabel = localize("ui.card.media_player.browse_media").takeIf { state.supportsFeature(BROWSE_MEDIA) },
+        grouping = mediaGrouping(state),
+        progress = mediaPosition(state).takeIf { showsProgress(state) },
+        seekable = state.supportsFeature(SEEK),
+        idleOrOn = state.state == "idle" || state.state == "on",
     )
 }
+
+/** `_showProgressBar` (the card's width aside): playing or paused, with a duration and a position. */
+private fun showsProgress(state: EntityState): Boolean = (state.state == "playing" || state.state == "paused") &&
+    "media_duration" in state.attributes &&
+    "media_position" in state.attributes
+
+/** The buttons the card draws larger. */
+private val MAIN_ACTIONS = setOf("media_play", "media_play_pause", "media_pause", "media_stop")
 
 /**
  * Port of `computeMediaControls`: icon and service pairs, with the shuffle and repeat controls when [extended].
@@ -183,3 +218,5 @@ private const val STOP = 4096
 private const val PLAY = 16384
 private const val SHUFFLE_SET = 32768
 private const val REPEAT_SET = 262144
+private const val SEEK = 2
+private const val BROWSE_MEDIA = 131072

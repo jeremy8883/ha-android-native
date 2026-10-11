@@ -26,8 +26,6 @@ on the right are the frontend's (20260624.6).
 
 ## Missing features
 
-25. Media control card: no progress bar, browse or join buttons; artwork on top instead of at the side with its
-    colours (`ui/cards/MediaControlCard.kt:39`; hui-media-control-card.ts:201,300-344)
 26. Area card: icon and name only; upstream is a tile with the area's picture, sensors, alerts and features
     (`ui/cards/AreaCard.kt:32`; hui-area-card.ts:114,643,671-703)
 38. History: no "Add to dashboard" (`ui/panels/HistoryPanel.kt:215`) — needs dashboard editing, in the README

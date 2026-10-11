@@ -87,7 +87,7 @@ internal fun MediaGroupingButton(grouping: MediaGrouping, onAction: (CardAction)
  * Upstream: `dialog-join-media-players` (src/components/media-player/dialog-join-media-players.ts)
  */
 @Composable
-private fun MediaGroupingDialog(grouping: MediaGrouping, onAction: (CardAction) -> Unit, onDismiss: () -> Unit) {
+internal fun MediaGroupingDialog(grouping: MediaGrouping, onAction: (CardAction) -> Unit, onDismiss: () -> Unit) {
     var selected by remember { mutableStateOf(grouping.members) }
     AlertDialog(
         onDismissRequest = onDismiss,

@@ -60,7 +60,7 @@ internal fun DashboardCard(
         in ENTITY_CARD_TYPES -> EntityCards(card, hass, now, interactions, modifier)
         in ENERGY_CARD_TYPES -> EnergyCard(card, hass, now, interactions, modifier)
         CARD_TODO_LIST -> TodoListCard(card, hass, now, interactions.onAction, modifier)
-        else -> OtherCard(card, hass, interactions, modifier, cardModifier)
+        else -> OtherCard(card, hass, now, interactions, modifier, cardModifier)
     }
 }
 
@@ -99,6 +99,7 @@ private fun EntityCards(
 private fun OtherCard(
     card: CardConfig,
     hass: State<HassSnapshot?>,
+    now: State<ZonedDateTime?>,
     interactions: CardInteractions,
     modifier: Modifier,
     cardModifier: Modifier,
@@ -108,7 +109,7 @@ private fun OtherCard(
         infoTile != null -> InfoTileCard(card, hass, cardModifier, infoTile)
         card.type == CARD_AREA -> AreaCard(card, hass, cardModifier)
         card.type == CARD_MARKDOWN -> MarkdownCard(card, hass, cardModifier)
-        card.type == CARD_MEDIA_CONTROL -> MediaControlCard(card, hass, interactions, cardModifier)
+        card.type == CARD_MEDIA_CONTROL -> MediaControlCard(card, hass, now, interactions, cardModifier)
         card.type == CARD_EMPTY_STATE -> EmptyStateCard(card, interactions, modifier)
         card.type == CARD_SHORTCUT -> ShortcutCard(card, hass, cardModifier)
         card.type == CARD_PICTURE_ENTITY -> PictureEntityCard(card, hass, interactions, modifier)

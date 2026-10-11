@@ -1,0 +1,152 @@
+[
+ {
+  "seed": 1,
+  "fg": "#ffffff",
+  "bg": "#d77fc9"
+ },
+ {
+  "seed": 2,
+  "fg": "#264748",
+  "bg": "#14cb14"
+ },
+ {
+  "seed": 3,
+  "fg": "#ffffff",
+  "bg": "#46b6ef"
+ },
+ {
+  "seed": 4,
+  "fg": "#ffffff",
+  "bg": "#8620f8"
+ },
+ {
+  "seed": 5,
+  "fg": "#4d460a",
+  "bg": "#7cd30c"
+ },
+ {
+  "seed": 6,
+  "fg": "#71f6d3",
+  "bg": "#266696"
+ },
+ {
+  "seed": 7,
+  "fg": "#000000",
+  "bg": "#d0fa28"
+ },
+ {
+  "seed": 8,
+  "fg": "#ffffff",
+  "bg": "#6cbdda"
+ },
+ {
+  "seed": 9,
+  "fg": "#262bef",
+  "bg": "#c1e345"
+ },
+ {
+  "seed": 10,
+  "fg": "#ffffff",
+  "bg": "#a3c11f"
+ },
+ {
+  "seed": 11,
+  "fg": "#f6f6e8",
+  "bg": "#057683"
+ },
+ {
+  "seed": 12,
+  "fg": "#ffffff",
+  "bg": "#622ee8"
+ },
+ {
+  "seed": 13,
+  "fg": "#ffffff",
+  "bg": "#c17792"
+ },
+ {
+  "seed": 14,
+  "fg": "#e9afed",
+  "bg": "#722b1b"
+ },
+ {
+  "seed": 15,
+  "fg": "#ffffff",
+  "bg": "#765c18"
+ },
+ {
+  "seed": 16,
+  "fg": "#ffffff",
+  "bg": "#afba9a"
+ },
+ {
+  "seed": 17,
+  "fg": "#32d2e2",
+  "bg": "#351dda"
+ },
+ {
+  "seed": 18,
+  "fg": "#ffffff",
+  "bg": "#f70e3b"
+ },
+ {
+  "seed": 19,
+  "fg": "#000000",
+  "bg": "#b8f6f6"
+ },
+ {
+  "seed": 20,
+  "fg": "#ffffff",
+  "bg": "#d648cd"
+ },
+ {
+  "seed": 21,
+  "fg": "#102218",
+  "bg": "#0de0cc"
+ },
+ {
+  "seed": 22,
+  "fg": "#ffffff",
+  "bg": "#0d6ed9"
+ },
+ {
+  "seed": 23,
+  "fg": "#ffffff",
+  "bg": "#743fc6"
+ },
+ {
+  "seed": 24,
+  "fg": "#ffffff",
+  "bg": "#0ce3d0"
+ },
+ {
+  "seed": 25,
+  "fg": "#ffffff",
+  "bg": "#119709"
+ },
+ {
+  "seed": 26,
+  "fg": "#f4f3ea",
+  "bg": "#7a4973"
+ },
+ {
+  "seed": 27,
+  "fg": "#8e90f1",
+  "bg": "#23254d"
+ },
+ {
+  "seed": 28,
+  "fg": "#ffffff",
+  "bg": "#7db8b6"
+ },
+ {
+  "seed": 29,
+  "fg": "#ffffff",
+  "bg": "#54caa2"
+ },
+ {
+  "seed": 30,
+  "fg": "#ffffff",
+  "bg": "#056230"
+ }
+]
