@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HARadius
@@ -237,7 +238,10 @@ private fun FeatureNumber(
 
 private const val SELECTED_ALPHA = 0.2f
 private const val SLIDER_BACKGROUND_ALPHA = 0.2f
-private val CONTROL_HEIGHT = HADimens.SPACE10
+
+/** `hui-card-features`' `--feature-height`. */
+private val CONTROL_HEIGHT = 42.dp
+
 private const val NUMBER_DEBOUNCE_MS = 1000L
 private const val MINUS = "mdi:minus"
 private const val PLUS = "mdi:plus"

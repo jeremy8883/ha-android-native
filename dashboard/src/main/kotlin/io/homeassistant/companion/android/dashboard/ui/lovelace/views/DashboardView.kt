@@ -44,6 +44,7 @@ import io.homeassistant.companion.android.dashboard.layout.viewLayout
 import io.homeassistant.companion.android.dashboard.layout.viewSidebar
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.ViewConfig
+import io.homeassistant.companion.android.dashboard.model.ViewType
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.ui.DashboardUiState
 import io.homeassistant.companion.android.dashboard.ui.Message
@@ -139,11 +140,11 @@ private fun ViewRows(
     }
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        // `.wrapper`'s column gap on the sides and the header's `--row-gap` above. Room at the end to scroll the last
-        // cards clear of the offline bar, kept so nothing moves when it shows
+        // `.wrapper`'s column gap on the sides and the header's `--row-gap` above (other views: their cards' 8px).
+        // Room at the end to scroll the last cards clear of the offline bar, kept so nothing moves when it shows
         contentPadding = PaddingValues(
             start = columnGap,
-            top = HADimens.SPACE6,
+            top = if (view == null || view.viewType == ViewType.SECTIONS) HADimens.SPACE6 else HADimens.SPACE2,
             end = columnGap,
             bottom = BOTTOM_BAR_CLEARANCE,
         ),
