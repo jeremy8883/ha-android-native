@@ -55,6 +55,7 @@ internal const val USER_CORE = "user_core"
 internal const val SYSTEM_CORE = "system_core"
 internal const val SIDEBAR = "sidebar"
 internal const val HOME = "home"
+internal const val LANGUAGE = "language"
 internal const val DASHBOARD_CONFIG = "dashboard_config"
 
 internal fun parseRegistries(bundle: JsonObject): Fetched<Registries> =

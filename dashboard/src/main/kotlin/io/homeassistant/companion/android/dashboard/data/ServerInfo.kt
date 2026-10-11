@@ -51,5 +51,6 @@ private fun parseConfig(config: JsonObject): HassConfig? = config.array("compone
             .orEmpty().toMap(),
         locationName = config.string("location_name"),
         currency = config.string("currency"),
+        timeZone = config.string("time_zone"),
     )
 }

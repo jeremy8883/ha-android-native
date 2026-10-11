@@ -38,6 +38,8 @@ data class HassConfig(
     val locationName: String? = null,
     /** `currency`: the ISO 4217 code costs are in, such as "EUR". */
     val currency: String? = null,
+    /** `time_zone`: the server's time zone, such as "Europe/Amsterdam". */
+    val timeZone: String? = null,
 ) {
     /** `unit_system.temperature`, for example "°C". */
     val temperatureUnit: String? get() = unitSystem["temperature"]

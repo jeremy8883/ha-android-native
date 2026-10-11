@@ -147,6 +147,16 @@ class DashboardRepository @Inject constructor(private val sessions: ServerSessio
     }
 
     /**
+     * The user's language and format preferences (`frontend/get_user_data {key: "language"}`, which the frontend's
+     * `subscribeTranslationPreferences` reads), `null` when they never changed them.
+     */
+    fun userLanguageData(): Flow<Loadable<JsonObject?>> = sessions.withServer { session ->
+        session.parsed(name = "user-language-data", parse = { bundle -> storedValue(bundle[LANGUAGE]) }) {
+            bundle(LANGUAGE to session.request("frontend/get_user_data", mapOf("key" to "language")))
+        }
+    }
+
+    /**
      * The stored config of the dashboard at [urlPath] (`null` for the default dashboard), loaded again whenever the
      * server reports a `lovelace_updated` event for it.
      */

@@ -26,6 +26,9 @@ import io.homeassistant.companion.android.dashboard.derive.cameraSnapshotEntitie
 import io.homeassistant.companion.android.dashboard.derive.graphHistoryRequests
 import io.homeassistant.companion.android.dashboard.derive.templateRequests
 import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
+import io.homeassistant.companion.android.dashboard.display.TimeZoneOption
+import io.homeassistant.companion.android.dashboard.display.TimeZones
+import io.homeassistant.companion.android.dashboard.display.resolveTimeZones
 import io.homeassistant.companion.android.dashboard.energy.EnergyCollection
 import io.homeassistant.companion.android.dashboard.energy.energyEnvironment
 import io.homeassistant.companion.android.dashboard.entity.EntityStates
@@ -109,6 +112,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.JsonObject
+import timber.log.Timber
 
 /** What the dashboard screen shows. */
 sealed interface DashboardUiState {
@@ -255,8 +259,8 @@ class DashboardViewModel @VisibleForTesting internal constructor(
     /** The current time for `time` conditions, updated often enough for their minute resolution. */
     val now: StateFlow<ZonedDateTime?> = flow {
         while (true) {
-            // The frontend's default time zone setting follows the device
-            emit(clock.now().toJavaInstant().atZone(ZoneId.systemDefault()))
+            // Days start in the zone of the user's time zone setting (calcDate, checkTimeInRange)
+            emit(clock.now().toJavaInstant().atZone(timeZones.value.calendar))
             delay(CLOCK_TICK)
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
@@ -269,6 +273,25 @@ class DashboardViewModel @VisibleForTesting internal constructor(
 
     private val serverInfo = repository.serverInfo()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), Loadable.Loading)
+
+    /**
+     * The zones times are shown and days counted in: the user's profile setting (the frontend's default, the
+     * device's zone, until it is loaded or when it fails to load) with the server's zone.
+     */
+    private val timeZones: StateFlow<TimeZones> = combine(repository.userLanguageData(), serverInfo) { language, info ->
+        if (language is Loadable.Failed) Timber.w("Time zone setting not loaded, using the default: ${language.error}")
+        resolveTimeZones(
+            TimeZoneOption.fromUserData(language.valueOrNull),
+            info.valueOrNull?.config?.timeZone,
+            ZoneId.systemDefault(),
+        )
+    }.distinctUntilChanged()
+        // Until both are known, the frontend's default: the device's zone
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            resolveTimeZones(TimeZoneOption.Local, serverTimeZone = null, ZoneId.systemDefault()),
+        )
 
     // Reading the bundled resource touches disk, so never on the main thread
     private val bundledLocalize = viewModelScope.async(dispatchers.io, start = CoroutineStart.LAZY) {
@@ -306,17 +329,17 @@ class DashboardViewModel @VisibleForTesting internal constructor(
     private val structureInputs: StateFlow<Loadable<StructureInputs>> = combine(
         repository.registries(),
         serverInfo,
-        combine(strategyData, repository.homeSystemData(), ::Pair),
+        combine(strategyData, repository.homeSystemData(), timeZones, ::Triple),
         entityStates.distinctUntilChanged { old, new -> old.statesPhase() == new.statesPhase() },
         entityDisplay,
-    ) { registries, info, (strategy, home), _, display ->
+    ) { registries, info, (strategy, home, zones), _, display ->
         // The latest states, not those of the phase change: later changes are read on the next regeneration
         val states = entityStates.value
         combineLoadables(
             combineLoadables(registries, info, strategy, ::ServerData),
             combineLoadables(home, states, display, ::Triple),
         ) { server, (homeSettings, currentStates, entityDisplay) ->
-            structureInputs(server, homeSettings, currentStates, entityDisplay)
+            structureInputs(server, homeSettings, currentStates, entityDisplay, zones.display)
         }
     }.flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), Loadable.Loading)
@@ -704,6 +727,7 @@ private fun structureInputs(
     homeSettings: JsonObject?,
     states: EntityStates,
     display: Pair<Localize, IconResources>,
+    zone: ZoneId,
 ) = StructureInputs(
     hass = HassSnapshot(
         states = states,
@@ -713,7 +737,7 @@ private fun structureInputs(
         panels = server.info.panels,
         localize = display.first,
         icons = display.second,
-        formats = JdkDisplayFormats(Locale.forLanguageTag(BUNDLED_LANGUAGE), ZoneId.systemDefault()),
+        formats = JdkDisplayFormats(Locale.forLanguageTag(BUNDLED_LANGUAGE), zone),
     ),
     strategyData = server.strategyData,
     homeSettings = homeSettings,
