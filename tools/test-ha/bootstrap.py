@@ -25,6 +25,7 @@ import aiohttp
 HERE = Path(__file__).resolve().parent
 ENV_FILE = HERE / ".env"
 DASHBOARD_FILE = HERE / "dashboard-test.json"
+TEST_CARD_RESOURCE = "/local/test-card.js"
 
 USERNAME = "dev"
 PASSWORD = "dev"
@@ -347,6 +348,11 @@ async def seed_dashboard(ws: Ws) -> None:
         )
         log("dashboard created: dashboard-test")
     await ws.call("lovelace/config/save", url_path="dashboard-test", config=config)
+    # A custom card (config/www/test-card.js), for the native dashboard's web fallback
+    resources = await ws.call("lovelace/resources")
+    if not any(r.get("url") == TEST_CARD_RESOURCE for r in resources):
+        await ws.call("lovelace/resources/create", res_type="module", url=TEST_CARD_RESOURCE)
+        log("registered the test custom card")
 
 
 async def seed_usage(ws: Ws, states: list[dict]) -> None:

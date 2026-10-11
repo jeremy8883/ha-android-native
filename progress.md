@@ -134,7 +134,7 @@ Decided 2026-10-09: the native dashboards are an app of their own, installed alo
 - [ ] Edit a server's name and addresses (internal URL, home networks) in Settings
 - [ ] Client certificates (mTLS) in the native login: pick one with `KeyChain` when the server asks
 - [ ] Sign in with the browser for servers behind a web sign-in page (Cloudflare Access, Authelia...); ideally detect when it's needed and offer it automatically
-- [ ] WebView fallback for cards not drawn natively yet, created only when a dashboard has one
+- [x] WebView fallback for cards not drawn natively yet, created only when a dashboard has one (`ui/cards/web/`, see the 2026-10-11 note)
 - [ ] Widgets and notification-drawer actions, ported from the companion app
 
 ### Pages outside the dashboards
@@ -260,6 +260,11 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - Dependency lockfiles are global, so avoid adding new libraries to `:app`/`:automotive` (merge conflicts).
 
 ## Handover notes
+
+### 2026-10-11: web fallback for cards (Opus)
+- A card the app doesn't draw (custom, or built-in and not ported) is drawn by the frontend in its own web view (`ui/cards/web/WebCard.kt`, `assets/native_web_card.js`): signed in as the companion app's web view is (`externalApp.getExternalAuth`, `externalAuthSetToken`, and a `config/get` answer with none of its extras), it loads `/lovelace/0` so the frontend has `hui-card`, loads the dashboard resources (custom cards' scripts, as `loadLovelaceResources`), mounts the card alone over the hidden app and reports its height. Its details open natively (`hass-more-info`); pages it opens on a tap go to the app (other routing of the hidden app is left alone). While it loads, a progress bar; if it can't, the placeholder.
+- Each web card loads the frontend on its own (a few seconds each, the first slowest); sharing one web view between a view's web cards would save that.
+- The test instance serves a custom card (`config/www/test-card.js`, registered by `bootstrap.py`), and the test dashboard's Web view shows it with history graph, to-do list and picture-glance cards.
 
 ### 2026-10-11: domain rows, the header switch, time boxes (Opus)
 - The entities card's domain rows are ported (`derive/DomainRow.kt`, `EntityRowMedia.kt`): group and valve (switch or state), cover (open/stop/close), climate and water heater, humidifier, event (when, over its type), update, media player (power and transport, the volume line with mute and slider or steps) and weather (the condition's picture, the temperature over today's extremes from the row's own forecast subscription). Golden-tested against `hui-entities-card` (`EntityDomainRowsGoldenTest`, controls.json `rows`).

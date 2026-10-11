@@ -390,6 +390,37 @@
           ]
         }
       ]
+    },
+    {
+      "title": "Web",
+      "path": "web",
+      "cards": [
+        {
+          "type": "custom:test-card",
+          "entity": "light.bed_light",
+          "title": "Custom card"
+        },
+        {
+          "type": "history-graph",
+          "entities": [
+            "sensor.outside_temperature"
+          ],
+          "hours_to_show": 6
+        },
+        {
+          "type": "todo-list",
+          "entity": "todo.shopping_list"
+        },
+        {
+          "type": "picture-glance",
+          "title": "Living room",
+          "image": "/static/icons/favicon-192x192.png",
+          "entities": [
+            "light.bed_light",
+            "light.kitchen_lights"
+          ]
+        }
+      ]
     }
   ]
 }

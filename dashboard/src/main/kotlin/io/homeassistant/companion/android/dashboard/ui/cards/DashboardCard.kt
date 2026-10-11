@@ -20,6 +20,7 @@ import io.homeassistant.companion.android.dashboard.layout.stackCard
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.cards.energy.ENERGY_CARD_TYPES
 import io.homeassistant.companion.android.dashboard.ui.cards.energy.EnergyCard
+import io.homeassistant.companion.android.dashboard.ui.cards.web.WebCard
 import java.time.ZonedDateTime
 
 /** Renders [card] with its native renderer, or a placeholder when the type is not supported yet. */
@@ -96,7 +97,8 @@ private fun OtherCard(
         card.type == CARD_EMPTY_STATE -> EmptyStateCard(card, interactions, modifier)
         card.type == CARD_SHORTCUT -> ShortcutCard(card, hass, cardModifier)
         card.type == CARD_PICTURE_ENTITY -> PictureEntityCard(card, hass, interactions, modifier)
-        else -> UnsupportedCard(card.type.orEmpty(), cardModifier)
+        // Cards not drawn natively (custom ones, built-in ones not ported yet) are the frontend's own
+        else -> WebCard(card.json, card.type.orEmpty(), interactions.onAction, cardModifier)
     }
 }
 
