@@ -201,6 +201,7 @@ private fun SidebarSwitch(sidebar: SidebarLayout, showSidebar: Boolean, onChange
     val colors = LocalHAColorScheme.current
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
         listOf(false to sidebar.contentLabel, true to sidebar.sidebarLabel).forEach { (isSidebar, label) ->
+            // UPSTREAM-DIFF: two chips switch between the content and the sidebar; upstream uses a segmented control.
             FilterChip(
                 selected = showSidebar == isSidebar,
                 onClick = { onChange(isSidebar) },

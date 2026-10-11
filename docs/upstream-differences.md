@@ -7,23 +7,34 @@ noticed comparing each composable with its frontend file.
 For each: **keep** (deliberate: add an `// UPSTREAM-DIFF:` marker) or **fix** (port upstream's behaviour). Paths
 on the right are the frontend's (20260624.6).
 
-## Possibly deliberate (decided in earlier sessions, or a native choice)
-
-1. Drawer: pages opening in the companion app are grouped under their own heading; upstream keeps one list in the
-   user's order (`ui/components/NavigationDrawer.kt:176`; src/components/ha-sidebar.ts:392-418)
-2. Alarm and lock codes use the system number keyboard; upstream draws its own keypad with clear and submit, a
-   "Code" label, a show toggle, and checks the lock's code pattern (`ui/dialogs/entercode/CodeDialog.kt:35`;
-   src/dialogs/enter-code/dialog-enter-code.ts:115-200)
-3. Sections view on a phone: the content/sidebar switch is two chips; upstream uses a segmented control
-   (`ui/lovelace/views/DashboardView.kt:227`; src/panels/lovelace/views/hui-sections-view.ts:606-618)
-4. Copy light favourites: a list of checkboxes; upstream uses a required multi-entity picker
-   (`ui/moreinfo/components/LightFavoriteDialogs.kt:160`; src/dialogs/more-info/favorites.ts:96-120)
-5. Details: the History view is titled "History"; upstream keeps the entity's name (`ui/moreinfo/MoreInfoView.kt:167`;
-   src/dialogs/more-info/ha-more-info-dialog.ts:575-580)
-
-## Looks and small behaviour
-
-
 ## Missing features
 
 38. History: no "Add to dashboard" (`ui/panels/history/HistoryPanel.kt:215`) — needs dashboard editing, in the README
+
+## Left by the fixes (found 2026-10-11, keep or fix)
+
+39. Toolbar Search opens the dashboard in the companion app: the quick bar can't be asked for by address
+    (`ui/lovelace/DashboardTopBar.kt`; src/panels/lovelace/hui-root.ts)
+40. Drawer: the Settings entry has no updates and repairs count (`ui/components/NavigationDrawer.kt`;
+    src/components/ha-sidebar.ts)
+41. Notifications: configurator entities aren't listed (`ui/dialogs/notifications/NotificationDrawer.kt`;
+    src/dialogs/notifications/notification-drawer.ts)
+42. Energy devices donut: a tap on a slice opens the device; upstream opens it from the slice's outside label, which
+    isn't drawn (`ui/lovelace/cards/energy/EnergyDevicesGraphCard.kt`; hui-energy-devices-graph-card.ts)
+43. Energy total chip: the tooltip shows on a long press instead of on hover
+    (`ui/lovelace/cards/energy/EnergyUsageGraphCard.kt`; hui-energy-graph-chip.ts)
+44. Energy "Download data" saves through Android's save-as picker instead of a browser download
+    (`ui/lovelace/cards/energy/EnergyCsvDownload.kt`; hui-energy-period-selector.ts)
+45. Details YAML view: no syntax colours, fold markers, or copy and full-screen buttons
+    (`ui/moreinfo/MoreInfoDetails.kt`; src/components/ha-yaml-editor.ts)
+46. Details: the state and attributes cards are the app's grey filled cards; upstream's are outlined
+    (`ui/moreinfo/MoreInfoDetails.kt`; src/dialogs/more-info/ha-more-info-details.ts)
+47. Assist: thinking text in the primary text colour (upstream: secondary), and its header doesn't reach the bubble's
+    edges (`ui/moreinfo/controls/MoreInfoConversation.kt`; src/components/ha-assist-chat.ts)
+48. Assist: an answer with no spoken response drops upstream's trailing "…"
+    (`ui/moreinfo/controls/MoreInfoConversation.kt`; src/components/ha-assist-chat.ts)
+49. Card features (thermostat, area, tile) only draw the types already ported; climate HVAC modes, for one, don't
+    show (`ui/lovelace/cardfeatures/TileFeatureControl.kt`; src/panels/lovelace/card-features/)
+50. Media control card: a long title is cut short instead of scrolling (`ui/lovelace/cards/MediaControlCard.kt`;
+    hui-media-control-card.ts)
+51. Area card: `camera_view: live` shows the snapshot (`ui/lovelace/cards/AreaCard.kt`; hui-area-card.ts)

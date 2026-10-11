@@ -168,6 +168,7 @@ private fun ToolbarTitle(model: MoreInfoModel, view: MoreInfoView, localize: Loc
         Text(
             when (view) {
                 MoreInfoView.Main -> model.name
+                // UPSTREAM-DIFF: the history view is titled "History"; upstream keeps the entity's name.
                 MoreInfoView.History -> localize("ui.dialogs.more_info_control.history")
                 MoreInfoView.Details -> localize("ui.dialogs.more_info_control.details")
             },

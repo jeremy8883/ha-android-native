@@ -185,6 +185,8 @@ private fun PanelEntries(
     onRetry: () -> Unit,
     entry: @Composable (SidebarItem) -> Unit,
 ) {
+    // UPSTREAM-DIFF: pages that open in the companion app are grouped under their own heading; upstream keeps one
+    // list in the user's order.
     val colors = LocalHAColorScheme.current
     when (sidebar) {
         Loadable.Loading -> Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {

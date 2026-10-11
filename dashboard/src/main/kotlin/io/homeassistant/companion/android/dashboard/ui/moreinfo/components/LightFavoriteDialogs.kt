@@ -175,6 +175,8 @@ internal fun CopyFavoritesDialog(
                             },
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
+                        // UPSTREAM-DIFF: the lights to copy to are a list of checkboxes; upstream uses a multiple
+                        // entity picker.
                         HACheckbox(checked = checked, onCheckedChange = { on ->
                             chosen =
                                 if (on) chosen + entityId else chosen - entityId

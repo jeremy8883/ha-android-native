@@ -29,6 +29,8 @@ internal fun CodeDialog(request: CodeRequest, onSubmit: (String) -> Unit, onDism
         onDismissRequest = onDismiss,
         title = { Text(request.title, style = HATextStyle.HeadlineMedium) },
         text = {
+            // UPSTREAM-DIFF: the system keyboard (numbers for a number code) instead of upstream's own keypad
+            // with clear and submit keys.
             HATextField(
                 value = code,
                 onValueChange = { code = it },
