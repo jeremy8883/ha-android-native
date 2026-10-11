@@ -13,6 +13,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.jsTruthy
+import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.string
 import java.time.Instant
 import kotlinx.serialization.json.JsonArray
@@ -30,6 +31,8 @@ data class EntitiesModel(
     val icon: String?,
     val rows: List<EntityRowModel>,
     val headerToggle: HeaderToggle? = null,
+    val header: HeaderFooterModel? = null,
+    val footer: HeaderFooterModel? = null,
 )
 
 /**
@@ -138,6 +141,8 @@ fun HassSnapshot.entitiesModel(card: CardConfig, now: Instant): EntitiesModel {
         icon = card.json.string("icon")?.ifEmpty { null },
         rows = configs.map { entityRow(it, now, cardStateColor(card)) },
         headerToggle = headerToggle(card.json, configs.mapNotNull { it.string("entity") }),
+        header = headerFooterModel(card.json.obj("header")),
+        footer = headerFooterModel(card.json.obj("footer")),
     )
 }
 

@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -33,6 +35,7 @@ import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.EntityRowModel
+import io.homeassistant.companion.android.dashboard.derive.HeaderFooterModel
 import io.homeassistant.companion.android.dashboard.derive.RowButton
 import io.homeassistant.companion.android.dashboard.derive.RowControl
 import io.homeassistant.companion.android.dashboard.derive.RowDateTime
@@ -51,7 +54,8 @@ import java.time.Instant
 import java.time.ZonedDateTime
 
 /**
- * An entities card: an optional header, then one row per entity with its control or state.
+ * An entities card: its header element, an optional title, one row per entity with its control or state, then its
+ * footer element.
  *
  * Upstream: `hui-entities-card`, with `hui-entities-toggle` (src/panels/lovelace/cards/hui-entities-card.ts;
  * src/panels/lovelace/components/hui-entities-toggle.ts)
@@ -70,32 +74,44 @@ internal fun EntitiesCard(
     val model = entities ?: return
     val colors = LocalHAColorScheme.current
     DashboardCardSurface(modifier = modifier) {
-        Column(modifier = Modifier.fillMaxWidth().padding(vertical = HADimens.SPACE2)) {
-            if (model.title != null || model.headerToggle != null) {
-                Row(
-                    modifier = Modifier.fillMaxWidth().padding(
-                        horizontal = HADimens.SPACE4,
-                        vertical = HADimens.SPACE2,
-                    ),
-                    horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    DashboardIcon(model.icon, colors.colorTextSecondary, Modifier.size(HASize.XL))
-                    Text(
-                        model.title.orEmpty(),
-                        style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start),
-                        color = colors.colorTextPrimary,
-                        modifier = Modifier.weight(1f),
-                    )
-                    // `hui-entities-toggle`
-                    model.headerToggle?.let { toggle ->
-                        HASwitch(checked = toggle.checked, onCheckedChange = { on ->
-                            toggle.calls(on).forEach(interactions.onAction)
-                        })
+        Column(modifier = Modifier.fillMaxWidth()) {
+            model.header?.let { header ->
+                HeaderFooter(header, footer = false, hass, now, interactions)
+                if (header !is HeaderFooterModel.Buttons) Spacer(Modifier.height(HADimens.SPACE4))
+            }
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(
+                    top = if (model.header == null) HADimens.SPACE2 else HADimens.SPACE0,
+                    bottom = if (model.footer == null) HADimens.SPACE2 else HADimens.SPACE0,
+                ),
+            ) {
+                if (model.title != null || model.headerToggle != null) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth().padding(
+                            horizontal = HADimens.SPACE4,
+                            vertical = HADimens.SPACE2,
+                        ),
+                        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        DashboardIcon(model.icon, colors.colorTextSecondary, Modifier.size(HASize.XL))
+                        Text(
+                            model.title.orEmpty(),
+                            style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start),
+                            color = colors.colorTextPrimary,
+                            modifier = Modifier.weight(1f),
+                        )
+                        // `hui-entities-toggle`
+                        model.headerToggle?.let { toggle ->
+                            HASwitch(checked = toggle.checked, onCheckedChange = { on ->
+                                toggle.calls(on).forEach(interactions.onAction)
+                            })
+                        }
                     }
                 }
+                model.rows.forEach { row -> EntityRow(row, now.value?.toInstant() ?: Instant.EPOCH, interactions) }
             }
-            model.rows.forEach { row -> EntityRow(row, now.value?.toInstant() ?: Instant.EPOCH, interactions) }
+            model.footer?.let { HeaderFooter(it, footer = true, hass, now, interactions) }
         }
     }
 }
