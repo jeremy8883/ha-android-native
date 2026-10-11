@@ -1,0 +1,211 @@
+package io.homeassistant.companion.android.dashboard.ui.panels
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DateRangePicker
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.rememberDateRangePickerState
+import androidx.compose.material3.rememberTimePickerState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import io.homeassistant.companion.android.common.compose.composable.HAInputChip
+import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
+import io.homeassistant.companion.android.common.compose.composable.HATextField
+import io.homeassistant.companion.android.common.compose.theme.HADimens
+import io.homeassistant.companion.android.common.compose.theme.HASize
+import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
+import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
+import io.homeassistant.companion.android.dashboard.panels.DateRange
+import io.homeassistant.companion.android.dashboard.panels.RangePreset
+import io.homeassistant.companion.android.dashboard.panels.dateRangeText
+import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
+import java.time.DayOfWeek
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.ZoneOffset
+import java.time.ZonedDateTime
+
+/**
+ * Port of `ha-date-range-picker` with `time-picker`: the period's ends in a field that opens the picker, with arrows
+ * to the period before and after, as long as it.
+ */
+@Composable
+internal fun DateRangeField(
+    range: DateRange,
+    hass: HassSnapshot,
+    now: ZonedDateTime,
+    presets: List<RangePreset>,
+    onChange: (DateRange) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var open by remember { mutableStateOf(false) }
+    Row(
+        modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+    ) {
+        Box(Modifier.weight(1f)) {
+            HATextField(
+                value = hass.formats.dateRangeText(range, now.toLocalDate()),
+                onValueChange = {},
+                label = { Text("${hass.localize("$PICKER.start_date")} - ${hass.localize("$PICKER.end_date")}") },
+                modifier = Modifier.fillMaxWidth(),
+            )
+            // The field is read only: a tap anywhere on it opens the picker
+            Box(Modifier.matchParentSize().clickable(role = Role.Button) { open = true })
+        }
+        ArrowButton("mdi:chevron-left", hass.localize("ui.common.previous")) {
+            onChange(range.shift(forward = false, hass.formats.zone))
+        }
+        ArrowButton("mdi:chevron-right", hass.localize("ui.common.next")) {
+            onChange(range.shift(forward = true, hass.formats.zone))
+        }
+    }
+    if (open) {
+        DateRangeDialog(range, hass, now, presets, onDismiss = { open = false }) {
+            open = false
+            onChange(it)
+        }
+    }
+}
+
+@Composable
+private fun ArrowButton(icon: String, label: String, onClick: () -> Unit) {
+    IconButton(onClick = onClick, modifier = Modifier.semantics { contentDescription = label }) {
+        DashboardIcon(icon, LocalHAColorScheme.current.colorTextPrimary, Modifier.size(HASize.X2L))
+    }
+}
+
+/**
+ * The picker: the presets ("Today", "Yesterday", "This week"…), the days on a calendar, and the start and end times
+ * (`time-picker`). A preset is applied at once; the calendar's days with the times when selected.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DateRangeDialog(
+    range: DateRange,
+    hass: HassSnapshot,
+    now: ZonedDateTime,
+    presets: List<RangePreset>,
+    onDismiss: () -> Unit,
+    onSelect: (DateRange) -> Unit,
+) {
+    val zone = hass.formats.zone
+    val startAt = range.start.atZone(zone)
+    val endAt = range.end.atZone(zone)
+    // The calendar works in UTC days
+    val state = rememberDateRangePickerState(
+        initialSelectedStartDateMillis = startAt.toLocalDate().utcMillis(),
+        initialSelectedEndDateMillis = endAt.toLocalDate().utcMillis(),
+    )
+    var startTime by remember { mutableStateOf(startAt.toLocalTime()) }
+    var endTime by remember { mutableStateOf(endAt.toLocalTime()) }
+    val firstDayOfWeek = DayOfWeek.of(hass.formats.firstWeekday)
+    DatePickerDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            HAPlainButton(hass.localize("$PICKER.select"), {
+                val start = state.selectedStartDateMillis?.utcDate() ?: return@HAPlainButton
+                val end = state.selectedEndDateMillis?.utcDate() ?: start
+                onSelect(
+                    DateRange(
+                        start.atTime(startTime).atZone(zone).toInstant(),
+                        end.atTime(endTime).atZone(zone).toInstant(),
+                    ),
+                )
+            })
+        },
+        dismissButton = { HAPlainButton(hass.localize("ui.common.cancel"), onDismiss) },
+    ) {
+        Column {
+            FlowRow(
+                modifier = Modifier.padding(start = HADimens.SPACE4, top = HADimens.SPACE4, end = HADimens.SPACE4),
+                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+            ) {
+                presets.forEach { preset ->
+                    HAInputChip(hass.localize("$PICKER.ranges.${preset.key}"), {
+                        onSelect(preset.range(now, firstDayOfWeek))
+                    })
+                }
+            }
+            DateRangePicker(state = state, modifier = Modifier.weight(1f), title = null, showModeToggle = false)
+            Row(Modifier.padding(HADimens.SPACE4), horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+                val ok = hass.localize("ui.common.ok")
+                TimeButton(hass.localize("$PICKER.time_from"), ok, startTime, Modifier.weight(1f)) { startTime = it }
+                TimeButton(hass.localize("$PICKER.time_to"), ok, endTime, Modifier.weight(1f)) { endTime = it }
+            }
+        }
+    }
+}
+
+/** A time of the picker, as a field opening the clock. */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TimeButton(
+    label: String,
+    okLabel: String,
+    time: LocalTime,
+    modifier: Modifier,
+    onPick: (LocalTime) -> Unit,
+) {
+    var open by remember { mutableStateOf(false) }
+    Box(modifier) {
+        HATextField(
+            value = "%02d:%02d".format(java.util.Locale.ROOT, time.hour, time.minute),
+            onValueChange = {},
+            label = { Text(label) },
+            modifier = Modifier.fillMaxWidth(),
+        )
+        Box(Modifier.matchParentSize().clickable(role = Role.Button) { open = true })
+    }
+    if (!open) return
+    val picker = rememberTimePickerState(initialHour = time.hour, initialMinute = time.minute)
+    AlertDialog(
+        onDismissRequest = { open = false },
+        text = { TimePicker(state = picker) },
+        confirmButton = {
+            HAPlainButton(okLabel, {
+                open = false
+                // The end of a minute keeps its last millisecond, as a whole day's end has
+                onPick(
+                    LocalTime.of(picker.hour, picker.minute).let {
+                        if (it ==
+                            time.withSecond(0).withNano(0)
+                        ) {
+                            time
+                        } else {
+                            it
+                        }
+                    },
+                )
+            })
+        },
+    )
+}
+
+private fun LocalDate.utcMillis(): Long = atStartOfDay(ZoneOffset.UTC).toInstant().toEpochMilli()
+
+private fun Long.utcDate(): LocalDate = Instant.ofEpochMilli(this).atZone(ZoneOffset.UTC).toLocalDate()
+
+private const val PICKER = "ui.components.date-range-picker"

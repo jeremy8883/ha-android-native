@@ -6,15 +6,18 @@ import io.homeassistant.companion.android.dashboard.logbook.TRACE_CONTEXTS_COMMA
 import io.homeassistant.companion.android.dashboard.logbook.TraceContext
 import io.homeassistant.companion.android.dashboard.logbook.USERS_COMMAND
 import io.homeassistant.companion.android.dashboard.logbook.logbookPurgeBefore
+import io.homeassistant.companion.android.dashboard.logbook.logbookRangeCommand
 import io.homeassistant.companion.android.dashboard.logbook.logbookStreamCommand
 import io.homeassistant.companion.android.dashboard.logbook.parseLogbookEvents
 import io.homeassistant.companion.android.dashboard.logbook.parseTraceContexts
 import io.homeassistant.companion.android.dashboard.logbook.withStreamEvents
+import java.time.Instant
 import javax.inject.Inject
 import kotlin.time.Clock
 import kotlin.time.toJavaInstant
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -46,6 +49,29 @@ class LogbookRepository @Inject constructor(private val sessions: ServerSessions
                 } ?: null.also { Timber.w("Ignoring an unexpected $description message") }
             },
         )
+    }
+
+    /**
+     * The logbook entries from [start] to [end] for [entityIds] (every entity's when `null`), newest first, with the
+     * new ones added while [end] is ahead. A period that hasn't started has none, without asking the server, as
+     * `ha-logbook` does. After a reconnection it starts again from the stream's first message. Port of `ha-logbook`'s
+     * subscription for a range.
+     */
+    fun entries(start: Instant, end: Instant, entityIds: List<String>?): Flow<Loadable<List<LogbookEntry>>> {
+        if (start > clock.now().toJavaInstant()) return flowOf(Loadable.Ready(emptyList()))
+        return sessions.withServer { session ->
+            val description = "logbook from $start to $end"
+            KeptData<List<LogbookEntry>>(description, NotKept(), session.connection).subscribed<JsonElement>(
+                subscribe = {
+                    val command = logbookRangeCommand(start, end, entityIds)
+                    session.subscribe(command.type, command.params)
+                },
+                reduce = { current, event ->
+                    (event as? JsonObject)?.let(::parseLogbookEvents)?.let { current.withStreamEvents(it, null) }
+                        ?: null.also { Timber.w("Ignoring an unexpected $description message") }
+                },
+            )
+        }
     }
 
     /** The users (`config/auth/list`), which only admins may list, to name who caused entries. */

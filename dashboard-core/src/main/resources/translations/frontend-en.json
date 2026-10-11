@@ -334,6 +334,10 @@
    "delete": "Delete",
    "error_required": "Required",
    "menu": "Menu",
+   "next": "Next",
+   "ok": "OK",
+   "previous": "Previous",
+   "refresh": "Refresh",
    "save": "Save"
   },
   "components": {
@@ -532,6 +536,48 @@
      "min": "min",
      "state": "state",
      "sum": "sum"
+    }
+   },
+   "target-picker": {
+    "add_target": "Add target",
+    "area_not_found": "Area not found",
+    "device_not_found": "Device not found",
+    "devices_count": "{count} {count, plural,\n one {device}\n other {devices}\n}",
+    "entities_count": "{count} {count, plural,\n one {entity}\n other {entities}\n}",
+    "entity_not_found": "Entity not found",
+    "expand": "Expand",
+    "expand_area_id": "Split this area into separate devices and entities",
+    "expand_device_id": "Split this device into separate entities",
+    "expand_floor_id": "Split this floor into separate areas",
+    "expand_label_id": "Split this label into separate areas, devices and entities",
+    "floor_not_found": "Floor not found",
+    "label_not_found": "Label not found",
+    "no_target_found": "No target found for {term}",
+    "no_targets": "No targets",
+    "remove": "Remove",
+    "remove_area_id": "Remove area",
+    "remove_device_id": "Remove device",
+    "remove_entity_id": "Remove entity",
+    "remove_floor_id": "Remove floor",
+    "remove_label_id": "Remove label",
+    "selected": {
+     "area": "Areas: {count}",
+     "device": "Devices: {count}",
+     "entity": "Entities: {count}",
+     "floor": "Floors: {count}",
+     "label": "Labels: {count}"
+    },
+    "target_details": "Target details",
+    "type": {
+     "area": "Area",
+     "areas": "Areas",
+     "device": "Device",
+     "devices": "Devices",
+     "entities": "Entities",
+     "entity": "Entity",
+     "floor": "Floor",
+     "label": "Label",
+     "labels": "Labels"
     }
    },
    "todo": {

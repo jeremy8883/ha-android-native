@@ -50,6 +50,29 @@ fun logbookStreamCommand(entityId: String, now: Instant): WsCommand = WsCommand(
     },
 )
 
+/**
+ * The subscription to the logbook from [start] to [end] for [entityIds] (every entity when `null`), as the Logbook
+ * panel's `ha-logbook` subscribes for a range; it streams new entries while [end] is ahead.
+ */
+fun logbookRangeCommand(start: Instant, end: Instant, entityIds: List<String>?): WsCommand = WsCommand(
+    "logbook/event_stream",
+    buildJsonObject {
+        put("start_time", isoString(start))
+        put("end_time", isoString(end))
+        entityIds?.let { ids -> putJsonArray("entity_ids") { ids.forEach { add(JsonPrimitive(it)) } } }
+    },
+)
+
+/**
+ * The entities the Logbook panel's picker offers: those whose states aren't continuous values. Port of
+ * `filterLogbookCompatibleEntities` (src/data/logbook.ts).
+ */
+fun HassSnapshot.logbookCompatible(entityId: String): Boolean {
+    val state = states[entityId] ?: return false
+    val domain = entityId.substringBefore('.')
+    return domain !in CONTINUOUS_DOMAINS && !(domain == "sensor" && isNumericEntity(domain, state))
+}
+
 /** Entries from before this, in epoch seconds, have left the window that ends at [now]. */
 fun logbookPurgeBefore(now: Instant): Double = (now.toEpochMilli() / MILLIS) - LOGBOOK_RECENT_SECONDS
 

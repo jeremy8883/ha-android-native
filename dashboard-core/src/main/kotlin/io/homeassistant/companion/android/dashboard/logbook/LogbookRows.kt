@@ -31,6 +31,7 @@ import kotlinx.serialization.json.JsonPrimitive
  * @property dateHeader the day above the row, on the first of each day: "Today · October 9, 2026"
  * @property firstOfDay whether the rail starts at the row's dot
  * @property lastOfDay whether the rail ends at the row's dot, which also has no divider below
+ * @property subject what the row is about, in the Logbook panel's rows that name it ("list" layout)
  */
 data class LogbookRow(
     val whenMillis: Long,
@@ -41,7 +42,14 @@ data class LogbookRow(
     val dateHeader: String?,
     val firstOfDay: Boolean,
     val lastOfDay: Boolean,
+    val subject: LogbookSubject? = null,
 )
+
+/**
+ * What a named row is about: the entity's (else its device's) [name] with where it is ([context], "Kitchen ▸ Motion
+ * sensor"), and the [entityId] whose details its name opens, while the entity exists.
+ */
+data class LogbookSubject(val name: String?, val context: String?, val entityId: String?)
 
 /** The colour of a row's dot. */
 sealed interface LogbookDot {
@@ -67,13 +75,16 @@ private enum class Category(val dotVariable: String) {
 
 /**
  * The rows of [entries] (newest first), as of [now]: the cause names the [users], and runs link to their
- * [traces] (`null` while they aren't known, so no run links).
+ * [traces] (`null` while they aren't known, so no run links). [named] rows say what they are about and what caused
+ * every kind of entry, as the Logbook panel's (`show-cause`, "list" layout); the others are about one entity and
+ * show the cause of its state changes only.
  */
 fun HassSnapshot.logbookRows(
     entries: List<LogbookEntry>,
     users: LogbookUsers,
     traces: Map<String, TraceContext>?,
     now: Instant,
+    named: Boolean = false,
 ): List<LogbookRow> {
     val days = entries.map { LocalDate.ofInstant(it.instant(), formats.zone) }
     val today = LocalDate.ofInstant(now, formats.zone)
@@ -82,15 +93,17 @@ fun HassSnapshot.logbookRows(
         val firstOfDay = index == 0 || days[index - 1] != days[index]
         LogbookRow(
             whenMillis = entry.instant().toEpochMilli(),
-            text = logbookValue(entry).replaceFirstChar { it.uppercaseChar() },
-            dot = logbookDot(entry, category),
-            cause = if (category == Category.ENTITY) logbookCause(entry, users) else null,
+            // Only the rows without names capitalise their first letter
+            text = logbookValue(entry).let { if (named) it else it.replaceFirstChar { c -> c.uppercaseChar() } },
+            dot = logbookDot(entry, category, timeline = !named),
+            cause = if (named || category == Category.ENTITY) logbookCause(entry, users) else null,
             traceLink = entry.context.id
                 ?.takeIf { entry.domain in TRIGGER_DOMAINS }
                 ?.let { traces?.get(it)?.path },
             dateHeader = if (firstOfDay) dateHeader(days[index], today, entry.instant()) else null,
             firstOfDay = firstOfDay,
             lastOfDay = index == entries.lastIndex || days[index + 1] != days[index],
+            subject = if (named) logbookSubject(entry) else null,
         )
     }
 }
@@ -114,15 +127,15 @@ private fun HassSnapshot.dateHeader(day: LocalDate, today: LocalDate, instant: I
 }
 
 /**
- * The dot's colour: the state's timeline colour when the entity was available, else the state's colour for a state
- * change, else the row kind's.
+ * The dot's colour: the state's [timeline] colour when the entity was available (in rows without names), else the
+ * state's colour for a state change, else the row kind's.
  */
-private fun HassSnapshot.logbookDot(entry: LogbookEntry, category: Category): LogbookDot {
+private fun HassSnapshot.logbookDot(entry: LogbookEntry, category: Category, timeline: Boolean): LogbookDot {
     val state = entry.state
     val current = entry.entityId?.let { states[it] }
     return when {
         state == UNAVAILABLE -> LogbookDot.Unavailable
-        !state.isNullOrEmpty() -> LogbookDot.Timeline(timelineColor(entry.entityId.orEmpty(), state))
+        timeline && !state.isNullOrEmpty() -> LogbookDot.Timeline(timelineColor(entry.entityId.orEmpty(), state))
         category == Category.ENTITY && current != null ->
             stateColor(historicState(current, state.orEmpty()))?.let { LogbookDot.State(it) }
         else -> null

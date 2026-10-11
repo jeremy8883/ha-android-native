@@ -3,20 +3,24 @@ package io.homeassistant.companion.android.dashboard.ui.panels
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
+import io.homeassistant.companion.android.dashboard.ui.DashboardUiState
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
 import java.time.ZonedDateTime
 
-/** A panel drawn natively that isn't a dashboard, by its [name] (one of `NATIVE_PANELS`). */
+/** A panel drawn natively that isn't a dashboard (one of `NATIVE_PANELS`); a new [refresh] loads it again. */
 @Composable
 internal fun NativePanel(
-    name: String,
+    panel: DashboardUiState.Panel,
+    refresh: Int,
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
     interactions: CardInteractions,
 ) {
-    when (name) {
+    when (panel.name) {
         TODO -> TodoPanel(hass, now, interactions)
+        LOGBOOK -> LogbookPanel(hass, now, panel.query, refresh, interactions)
     }
 }
 
 private const val TODO = "todo"
+private const val LOGBOOK = "logbook"

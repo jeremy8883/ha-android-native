@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
@@ -17,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -25,22 +25,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.composable.HALoading
-import io.homeassistant.companion.android.common.compose.composable.HATopBar
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.HAThemeForPreview
-import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.NativeDashboardRequest
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.data.valueOrNull
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.ui.cards.CardInteractions
-import io.homeassistant.companion.android.dashboard.ui.cards.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.cards.ProvideCardLocals
 import io.homeassistant.companion.android.dashboard.ui.panels.NativePanel
 import java.time.ZonedDateTime
@@ -238,6 +233,9 @@ internal fun DashboardScreenContent(
     onRetry: () -> Unit = {},
 ) {
     val content = uiState as? DashboardUiState.Content
+    val panel = uiState as? DashboardUiState.Panel
+    // A panel's refresh button asks it to load again
+    var panelRefreshes by remember(panel?.name) { mutableIntStateOf(0) }
     Scaffold(
         // Over the content, so they never move it
         snackbarHost = {
@@ -245,29 +243,7 @@ internal fun DashboardScreenContent(
         },
         // A view's footer (the energy date selection) stays at the bottom, below the messages
         bottomBar = { content?.view?.let { ViewFooter(it, hass, now, interactions) } },
-        topBar = {
-            val title = @Composable {
-                Text(content?.title ?: (uiState as? DashboardUiState.Panel)?.title.orEmpty())
-            }
-            if (content?.showsBack == true) {
-                HATopBar(title = title, onBackClick = onBack)
-            } else {
-                HATopBar(
-                    title = title,
-                    navigationIcon = {
-                        val menuLabel = stringResource(R.string.native_dashboard_menu)
-                        IconButton(
-                            onClick = onOpenMenu,
-                            modifier = Modifier.semantics {
-                                contentDescription = menuLabel
-                            },
-                        ) {
-                            DashboardIcon(name = MENU_ICON, tint = LocalHAColorScheme.current.colorTextPrimary)
-                        }
-                    },
-                )
-            }
-        },
+        topBar = { DashboardTopBar(uiState, onBack, onOpenMenu, hass, onRefreshPanel = { panelRefreshes++ }) },
     ) { padding ->
         Box(Modifier.padding(padding).fillMaxSize()) {
             when (uiState) {
@@ -280,7 +256,7 @@ internal fun DashboardScreenContent(
                     stringResource(R.string.native_dashboard_unsupported_strategy, uiState.type.orEmpty()),
                 )
                 is DashboardUiState.Content -> DashboardView(uiState, hass, now, onSelectTab, interactions)
-                is DashboardUiState.Panel -> NativePanel(uiState.name, hass, now, interactions)
+                is DashboardUiState.Panel -> NativePanel(uiState, panelRefreshes, hass, now, interactions)
             }
             // Offline, the offline bar says it; retries would flicker the bar
             RefreshIndicator(
@@ -310,8 +286,6 @@ private fun DashboardScreenNotFoundPreview() {
         )
     }
 }
-
-private const val MENU_ICON = "mdi:menu"
 
 /** What the cards report, to [viewModel]. */
 @Composable

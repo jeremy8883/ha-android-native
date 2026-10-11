@@ -41,6 +41,7 @@ function parseArgs(argv) {
     else if (a === "--out") args.out = argv[++i];
     else if (a === "--controls-only") args.controlsOnly = true;
     else if (a === "--domains") args.domains = argv[++i].split(",");
+    else if (a === "--logbook-panel") args.logbookPanel = true;
     else if (a === "-h" || a === "--help") {
       console.log("node capture.mjs [--variant admin|nonadmin|all] [--out <fixtures/home dir>] [--controls-only [--domains a,b]]");
       process.exit(0);
@@ -834,6 +835,57 @@ async function captureMoreInfoLogbook(entityIds) {
     el.remove();
   }
   return { capturedAt: new Date().toISOString(), entities: out };
+}
+
+/**
+ * Opens the Logbook panel for [path] (its entities and period) and returns what it fetched and each row it drew, in
+ * its "list" layout with causes. The list is virtualized, so only the rows in the (tall) viewport are drawn. Runs in
+ * the page.
+ */
+async function capturePanelLogbook(path) {
+  const g = window.__golden;
+  const ha = document.querySelector("home-assistant");
+  const text = (n) => n?.textContent.replace(/\s+/g, " ").trim() ?? null;
+  g.navigate(path);
+  const panel = () => ha.shadowRoot.querySelector("home-assistant-main")?.shadowRoot?.querySelector("ha-panel-logbook");
+  const logbook = () => panel()?.shadowRoot?.querySelector("ha-logbook");
+  for (let i = 0; i < 150 && !(logbook()?._logbookEntries || logbook()?._error); i++) await new Promise((r) => setTimeout(r, 100));
+  // The users and traces load alongside
+  await new Promise((r) => setTimeout(r, 2000));
+  const lb = logbook();
+  const renderer = lb?.shadowRoot?.querySelector("ha-logbook-renderer");
+  const rows = [];
+  renderer?.shadowRoot?.querySelectorAll(".entry-container").forEach((container) => {
+    const root = container.querySelector("ha-logbook-entry")?.shadowRoot;
+    const div = root?.querySelector(".entry");
+    const dot = root?.querySelector(".dot");
+    const lines = root ? [...root.querySelectorAll(".secondary")] : [];
+    rows.push({
+      dateHeader: text(container.querySelector("h4.date")),
+      classes: div ? [...div.classList].sort() : [],
+      dotColor: dot?.style.getPropertyValue("--node-color") || null,
+      dotUnavailable: dot?.classList.contains("unavailable") ?? false,
+      subject: text(root?.querySelector(".subject")),
+      value: text(root?.querySelector(".value")),
+      context: text(lines[0]?.querySelector(".secondary-text")),
+      time: text(root?.querySelector(".time-chip")),
+      causeLine: lines[1] ? text(lines[1]) : null,
+      causeEntity: lines[1]?.querySelector(".cause-entity")?.entityId ?? null,
+      traceLink: root?.querySelector(".trace-link")?.getAttribute("href") ?? null,
+    });
+  });
+  return {
+    capturedAt: new Date().toISOString(),
+    path,
+    range: lb ? lb.time.range.map((d) => d.toISOString()) : null,
+    entityIds: lb?.entityIds ?? null,
+    states: g.clone(ha.hass.states),
+    entries: lb?._logbookEntries ? g.clone(lb._logbookEntries) : null,
+    userIdToName: lb ? g.clone(lb._userIdToName) : null,
+    systemUserIds: lb ? [...lb._systemUserIds].sort() : null,
+    traceContexts: lb ? g.clone(lb._traceContexts) : null,
+    rows,
+  };
 }
 
 /** The simple cards the controls capture draws (with "cards" among the entities). */
@@ -3268,7 +3320,7 @@ function sanitizeFile(name) {
 // --------------------------------------------------------------------------------------------
 // One variant
 
-async function captureVariant(browser, { baseUrl, variant, tokens, outDir, controlsOnly, domains: CONTROL_DOMAINS }) {
+async function captureVariant(browser, { baseUrl, variant, tokens, outDir, controlsOnly, logbookPanel, domains: CONTROL_DOMAINS }) {
   console.log(`\n== variant ${variant} -> ${relative(REPO, outDir)}`);
   const context = await browser.newContext({
     locale: "en-US",
@@ -3308,6 +3360,20 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir, contr
   await page.goto(`${baseUrl}/home`, { waitUntil: "domcontentloaded" });
   if (page.url().includes("/auth/authorize")) throw new Error("token injection failed: landed on the login page");
   await waitForHomePanel(page);
+  if (logbookPanel) {
+    // Only the Logbook panel over the last two days of the logbook's entities, written over the existing fixtures
+    const end = new Date();
+    const start = new Date(end.getTime() - 2 * 86400 * 1000);
+    const path = `/logbook?entity_id=${LOGBOOK_ENTITIES.join(",")}&start_date=${start.toISOString()}&end_date=${end.toISOString()}`;
+    // A phone's width, where the panel lists its rows (the "list" layout), tall so more rows are drawn
+    await page.setViewportSize({ width: 412, height: 3000 });
+    await page.waitForTimeout(500);
+    const data = await page.evaluate(capturePanelLogbook, path);
+    writeFileSync(join(outDir, "logbook", "panel.json"), stableStringify(data));
+    console.log(`  recorded ${data.rows.length} rows of the Logbook panel`);
+    await context.close();
+    return { checks: [], problems: [] };
+  }
   if (controlsOnly) {
     // Only the more-info controls, written over the variant's existing fixtures
     // With --domains, only those domains' entities, merged into the existing controls
@@ -3556,7 +3622,7 @@ async function main() {
         tokens = { ...t, expires: Date.now() + t.expires_in * 1000 };
       }
       const dir = join(outRoot, variant === "admin" ? "test-instance" : "test-instance-nonadmin");
-      const { checks, problems } = await captureVariant(browser, { baseUrl, variant, tokens, outDir: dir, controlsOnly: args.controlsOnly, domains: args.domains });
+      const { checks, problems } = await captureVariant(browser, { baseUrl, variant, tokens, outDir: dir, controlsOnly: args.controlsOnly, logbookPanel: args.logbookPanel, domains: args.domains });
       if (problems.length || checks.some((c) => !c.ok)) failed = true;
     }
   } finally {

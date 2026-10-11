@@ -14,6 +14,11 @@ from pathlib import Path
 
 # Dotted paths of the subtrees to keep. Extend when ported code needs more keys.
 SUBTREES = [
+    "ui.common.ok",
+    "ui.common.refresh",
+    "ui.common.next",
+    "ui.common.previous",
+    "ui.components.target-picker",
     "ui.common.error_required",
     "ui.common.save",
     "ui.common.delete",

@@ -51,6 +51,7 @@ import io.homeassistant.companion.android.dashboard.navigation.PanelInfo
 import io.homeassistant.companion.android.dashboard.navigation.SidebarItem
 import io.homeassistant.companion.android.dashboard.navigation.SidebarSettings
 import io.homeassistant.companion.android.dashboard.navigation.defaultPanelUrlPath
+import io.homeassistant.companion.android.dashboard.navigation.panelTitle
 import io.homeassistant.companion.android.dashboard.navigation.sidebarItems
 import io.homeassistant.companion.android.dashboard.panels.NATIVE_PANELS
 import io.homeassistant.companion.android.dashboard.strategy.StrategyData
@@ -116,9 +117,15 @@ sealed interface DashboardUiState {
 
     /**
      * A panel drawn natively that isn't a dashboard ([name], one of `NATIVE_PANELS`), titled as the sidebar names it
-     * ([title], `null` until known).
+     * ([title], `null` until known), opened with [query] (the address's, "entity_id=…&start_date=…"). It shows back
+     * when [canGoBack] to the page that opened it.
      */
-    data class Panel(val name: String, val title: String? = null) : DashboardUiState
+    data class Panel(
+        val name: String,
+        val title: String? = null,
+        val query: String? = null,
+        val canGoBack: Boolean = false,
+    ) : DashboardUiState
 
     /** Nothing could be loaded to show the dashboard; loading is retried. */
     data class Error(val error: LoadError) : DashboardUiState
@@ -231,6 +238,9 @@ class DashboardViewModel @VisibleForTesting internal constructor(
      */
     private val returnPoints = MutableStateFlow<List<Location>>(emptyList())
 
+    /** The query of the address a native panel was opened with, as `/logbook?entity_id=…` gives it. */
+    private val panelQuery = MutableStateFlow<String?>(null)
+
     /** The current time for `time` conditions, updated often enough for their minute resolution. */
     val now: StateFlow<ZonedDateTime?> = flow {
         while (true) {
@@ -309,11 +319,14 @@ class DashboardViewModel @VisibleForTesting internal constructor(
     }.flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), Loadable.Loading)
 
-    /** The shown dashboard's name in the sidebar (like "Overview"), the frontend's title for it; `null` until known. */
+    /**
+     * The shown dashboard's name in the sidebar (like "Overview"), the frontend's title for it, also for a panel the
+     * sidebar hides; `null` until known.
+     */
     val dashboardTitle: StateFlow<String?> = combine(sidebar, selectedDashboard) { sidebar, urlPath ->
         sidebar.valueOrNull?.let { state ->
             val path = urlPath ?: state.defaultPanel
-            state.items.firstOrNull { it.urlPath == path }?.title
+            state.items.firstOrNull { it.urlPath == path }?.title ?: state.panelTitles[path]
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
 
@@ -360,13 +373,17 @@ class DashboardViewModel @VisibleForTesting internal constructor(
 
     val uiState: StateFlow<DashboardUiState> = dashboard
         .filterNotNull()
-        .combine(combine(viewStack, otherPages, returnPoints, ::Navigation)) { (urlPath, loadable), navigation ->
+        .combine(combine(viewStack, otherPages, returnPoints, panelQuery, ::Navigation)) {
+                (urlPath, loadable),
+                navigation,
+            ->
             when (loadable) {
                 Loadable.Loading -> DashboardUiState.Loading
                 is Loadable.Failed -> DashboardUiState.Error(loadable.error)
                 is Loadable.Ready -> {
                     val (config, inputs) = loadable.value
                     val state = config.toUiState(urlPath, inputs, navigation.stack)
+                        .withPanelQuery(navigation.panelQuery)
                         .withReturn(navigation.returnPoints.isNotEmpty())
                     if (navigation.canOpenOtherPages) state else state.withoutLinksOut(inputs.panelInfo)
                 }
@@ -529,6 +546,7 @@ class DashboardViewModel @VisibleForTesting internal constructor(
 
     fun onSelectDashboard(urlPath: String?) {
         returnPoints.value = emptyList()
+        panelQuery.value = null
         viewStack.value = emptyList()
         selectedDashboard.value = urlPath
     }
@@ -616,6 +634,7 @@ class DashboardViewModel @VisibleForTesting internal constructor(
             returnPoints.update { if (path.hasHistoryBack()) it + here else emptyList() }
             selectedDashboard.value = if (urlPath == HOME_PANEL) null else urlPath
             viewStack.value = segments.drop(1).take(1)
+            panelQuery.value = path.substringAfter('?', "").ifEmpty { null }
         }
     }
 
@@ -695,6 +714,9 @@ private fun sidebarState(inputs: StructureInputs, data: SidebarData): SidebarSta
         items = items,
         dashboardItems = items.filter { item -> inputs.panelInfo[item.urlPath]?.let(::isNativeDashboard) == true },
         panels = inputs.panelInfo,
+        panelTitles = inputs.panelInfo.mapNotNull { (path, panel) ->
+            panelTitle(panel, inputs.hass.localize)?.let { path to it }
+        }.toMap(),
         defaultPanel = defaultPanel,
         isAdmin = inputs.hass.user?.isAdmin == true,
     )
@@ -826,6 +848,8 @@ data class SidebarState(
     /** [items] the native dashboards show themselves, for when other pages can't be opened. */
     val dashboardItems: List<SidebarItem>,
     val panels: Map<String, PanelInfo>,
+    /** Each panel's title by its path, also for the panels the sidebar hides. */
+    val panelTitles: Map<String, String> = emptyMap(),
     val defaultPanel: String,
     val isAdmin: Boolean,
 )
