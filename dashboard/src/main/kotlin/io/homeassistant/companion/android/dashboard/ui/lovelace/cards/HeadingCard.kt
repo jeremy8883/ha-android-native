@@ -5,6 +5,7 @@ import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
@@ -22,10 +23,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HASize
@@ -66,13 +70,9 @@ internal fun HeadingCard(
     val heading = model ?: return
     if (heading.text.isEmpty() && heading.badges.isEmpty()) return
     val colors = LocalHAColorScheme.current
+    // `.container`: 4px on the sides, at least `ha-card`'s 24px tall
     Row(
-        modifier = Modifier.padding(
-            start = HADimens.SPACE1,
-            top = HADimens.SPACE4,
-            end = HADimens.SPACE1,
-            bottom = HADimens.SPACE1,
-        ),
+        modifier = Modifier.heightIn(min = HEADING_MIN_HEIGHT).padding(horizontal = HADimens.SPACE1),
         horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -85,19 +85,23 @@ internal fun HeadingCard(
             DashboardIcon(
                 name = heading.icon,
                 tint = colors.colorTextSecondary,
-                modifier = Modifier.size(if (heading.isSubtitle) HASize.L else HASize.XL),
+                modifier = Modifier.size(HEADING_ICON_SIZE),
             )
             if (heading.text.isNotEmpty()) {
                 Text(
                     text = heading.text,
-                    style = if (heading.isSubtitle) HATextStyle.Body else HATextStyle.HeadlineMedium,
-                    color = colors.colorTextPrimary,
+                    style = if (heading.isSubtitle) SUBTITLE_STYLE else TITLE_STYLE,
+                    color = if (heading.isSubtitle) colors.colorTextSecondary else colors.colorTextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
             if (heading.actionable) {
-                DashboardIcon(name = CHEVRON, tint = colors.colorTextSecondary, modifier = Modifier.size(HASize.L))
+                DashboardIcon(
+                    name = CHEVRON,
+                    tint = colors.colorTextSecondary,
+                    modifier = Modifier.size(HEADING_ICON_SIZE),
+                )
             }
         }
         if (heading.badges.isNotEmpty()) {
@@ -197,6 +201,27 @@ private const val DISABLED = "disabled-color"
 
 /** `ha-heading-badge`'s 3px gap between the icon and the state. */
 private val ENTITY_BADGE_GAP = 3.dp
+
+/** `ha-card`'s `min-height` in the heading card. */
+private val HEADING_MIN_HEIGHT = 24.dp
+
+/** `.content`'s `--mdc-icon-size`. */
+private val HEADING_ICON_SIZE = 18.dp
+
+/** `.content`: `--ha-font-size-l`, normal weight, `--ha-line-height-normal`, 0.1px apart. */
+private val TITLE_STYLE = TextStyle(
+    fontSize = HAFontSize.L,
+    fontWeight = FontWeight.Normal,
+    lineHeight = 1.6.em,
+    letterSpacing = 0.1.sp,
+)
+
+/** `.content.subtitle`: `--ha-font-size-m`, medium weight, `--ha-line-height-condensed`. */
+private val SUBTITLE_STYLE = TITLE_STYLE.copy(
+    fontSize = HAFontSize.M,
+    fontWeight = FontWeight.Medium,
+    lineHeight = 1.2.em,
+)
 
 /** `--ha-heading-badge-size`. */
 private val BUTTON_BADGE_SIZE = 26.dp

@@ -29,14 +29,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
@@ -160,17 +157,17 @@ private fun AreaTile(model: AreaCardModel.Shown, color: Color, minHeight: Dp?, i
     ) {
         if (model.vertical) {
             Column(
-                modifier = Modifier.fillMaxWidth().padding(vertical = HADimens.SPACE3),
+                modifier = Modifier.fillMaxWidth().padding(vertical = TILE_PADDING),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.spacedBy(TILE_PADDING, Alignment.CenterVertically),
             ) {
                 AreaTileIcon(model, color)
                 AreaTileText(model, TextAlign.Center, Modifier.fillMaxWidth().padding(horizontal = HADimens.SPACE3))
             }
         } else {
             Row(
-                modifier = Modifier.fillMaxWidth().padding(HADimens.SPACE4),
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+                modifier = Modifier.fillMaxWidth().heightIn(min = TILE_ROW_HEIGHT).padding(horizontal = TILE_PADDING),
+                horizontalArrangement = Arrangement.spacedBy(TILE_PADDING),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 AreaTileIcon(model, color)
@@ -181,7 +178,8 @@ private fun AreaTile(model: AreaCardModel.Shown, color: Color, minHeight: Dp?, i
         if (!model.inlineFeatures && model.features.isNotEmpty()) {
             Column(
                 Modifier.padding(start = HADimens.SPACE3, end = HADimens.SPACE3, bottom = HADimens.SPACE3),
-                verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                // `hui-card-features`' gap
+                verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
             ) {
                 model.features.forEach { AreaControlsRow(it, interactions, stretch = true) }
             }
@@ -198,7 +196,7 @@ private fun AreaTile(model: AreaCardModel.Shown, color: Color, minHeight: Dp?, i
 private fun AreaTileIcon(model: AreaCardModel.Shown, color: Color) {
     Box {
         // Not interactive, so without the tile icon's background
-        Box(Modifier.size(HASize.X5L), contentAlignment = Alignment.Center) {
+        Box(Modifier.size(TILE_ICON_SIZE), contentAlignment = Alignment.Center) {
             DashboardIcon(model.icon, color, Modifier.size(HASize.X2L))
         }
         // Compact cards carry a single alert, as a badge
@@ -234,7 +232,7 @@ private fun AreaTileText(model: AreaCardModel.Shown, textAlign: TextAlign, modif
     ) {
         Text(
             model.name,
-            style = TextStyle(fontSize = HAFontSize.M, fontWeight = FontWeight.Medium, textAlign = textAlign),
+            style = TILE_PRIMARY_STYLE.copy(textAlign = textAlign),
             color = colors.colorTextPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -242,8 +240,9 @@ private fun AreaTileText(model: AreaCardModel.Shown, textAlign: TextAlign, modif
         model.sensors?.let {
             Text(
                 it,
-                style = TextStyle(fontSize = HAFontSize.S, textAlign = textAlign),
-                color = colors.colorTextSecondary,
+                style = TILE_SECONDARY_STYLE.copy(textAlign = textAlign),
+                // `ha-tile-info`'s secondary line is in the primary text colour
+                color = colors.colorTextPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
             )

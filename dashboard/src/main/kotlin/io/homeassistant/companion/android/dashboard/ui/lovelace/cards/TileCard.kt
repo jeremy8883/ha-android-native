@@ -94,7 +94,8 @@ internal fun TileCardContent(
                         end = HADimens.SPACE3,
                         bottom = HADimens.SPACE3,
                     ),
-                    verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                    // `hui-card-features`' gap
+                    verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
                 ) {
                     val color = tile.color.toColor() ?: LocalHAColorScheme.current.colorFillPrimaryLoudResting
                     tile.features.forEach { feature -> TileFeatureControl(feature, tile.available, color, onAction) }
@@ -126,8 +127,8 @@ private fun TileInfo(tile: TileModel, iconModifier: Modifier) {
 @Composable
 private fun HorizontalTileInfo(tile: TileModel, iconModifier: Modifier) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(HADimens.SPACE4),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+        modifier = Modifier.fillMaxWidth().heightIn(min = TILE_ROW_HEIGHT).padding(horizontal = TILE_PADDING),
+        horizontalArrangement = Arrangement.spacedBy(TILE_PADDING),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         TileIcon(tile, iconModifier)
@@ -143,9 +144,9 @@ private fun HorizontalTileInfo(tile: TileModel, iconModifier: Modifier) {
 @Composable
 private fun VerticalTileInfo(tile: TileModel, iconModifier: Modifier) {
     Column(
-        modifier = Modifier.fillMaxWidth().heightIn(min = VERTICAL_TILE_MIN_HEIGHT).padding(vertical = HADimens.SPACE3),
+        modifier = Modifier.fillMaxWidth().heightIn(min = VERTICAL_TILE_MIN_HEIGHT).padding(vertical = TILE_PADDING),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(TILE_PADDING, Alignment.CenterVertically),
     ) {
         TileIcon(tile, iconModifier)
         TileText(tile, TextAlign.Center, Modifier.fillMaxWidth().padding(horizontal = HADimens.SPACE3))
@@ -168,7 +169,7 @@ private fun TileIcon(tile: TileModel, modifier: Modifier) {
             Modifier
         }
         Box(
-            modifier = Modifier.size(HASize.X5L).then(background).then(modifier),
+            modifier = Modifier.size(TILE_ICON_SIZE).then(background).then(modifier),
             contentAlignment = Alignment.Center,
         ) {
             DashboardIcon(name = icon, tint = color, modifier = Modifier.size(HASize.X2L))
@@ -191,7 +192,7 @@ private fun TileText(tile: TileModel, textAlign: TextAlign, modifier: Modifier) 
     ) {
         Text(
             text = tile.name,
-            style = PRIMARY_STYLE.copy(textAlign = textAlign),
+            style = TILE_PRIMARY_STYLE.copy(textAlign = textAlign),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             color = colors.colorTextPrimary,
@@ -199,7 +200,7 @@ private fun TileText(tile: TileModel, textAlign: TextAlign, modifier: Modifier) 
         tile.state?.let { state ->
             Text(
                 text = state,
-                style = SECONDARY_STYLE.copy(textAlign = textAlign),
+                style = TILE_SECONDARY_STYLE.copy(textAlign = textAlign),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 color = colors.colorTextPrimary,
@@ -244,13 +245,22 @@ private fun VerticalTileCardContentPreview() {
     }
 }
 
-private val VERTICAL_TILE_MIN_HEIGHT = 112.dp
+internal val VERTICAL_TILE_MIN_HEIGHT = 112.dp
+
+/** `ha-tile-container`'s `.content`: 10px padding and gap. */
+internal val TILE_PADDING = 10.dp
+
+/** `ha-tile-container`'s `.content` minimum height, `--row-height`. */
+internal val TILE_ROW_HEIGHT = 56.dp
+
+/** `--tile-icon-size`. */
+internal val TILE_ICON_SIZE = 36.dp
 
 /** `--tile-icon-opacity`. */
 private const val ICON_BACKGROUND_ALPHA = 0.2f
 
 /** `ha-tile-info`'s `.primary`: `--ha-font-size-m`, medium, `--ha-line-height-normal`, 0.1px apart. */
-private val PRIMARY_STYLE = TextStyle(
+internal val TILE_PRIMARY_STYLE = TextStyle(
     fontSize = HAFontSize.M,
     fontWeight = FontWeight.Medium,
     lineHeight = 1.6.em,
@@ -258,7 +268,7 @@ private val PRIMARY_STYLE = TextStyle(
 )
 
 /** `ha-tile-info`'s `.secondary`: `--ha-font-size-s`, normal, `--ha-line-height-condensed`, 0.4px apart. */
-private val SECONDARY_STYLE = TextStyle(
+internal val TILE_SECONDARY_STYLE = TextStyle(
     fontSize = HAFontSize.S,
     fontWeight = FontWeight.Normal,
     lineHeight = 1.2.em,

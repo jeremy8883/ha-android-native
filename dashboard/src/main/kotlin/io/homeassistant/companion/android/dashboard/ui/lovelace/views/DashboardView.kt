@@ -139,11 +139,12 @@ private fun ViewRows(
     }
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        // Room at the end to scroll the last cards clear of the offline bar, kept so nothing moves when it shows
+        // `.wrapper`'s column gap on the sides and the header's `--row-gap` above. Room at the end to scroll the last
+        // cards clear of the offline bar, kept so nothing moves when it shows
         contentPadding = PaddingValues(
-            start = HADimens.SPACE4,
-            top = HADimens.SPACE4,
-            end = HADimens.SPACE4,
+            start = columnGap,
+            top = HADimens.SPACE6,
+            end = columnGap,
             bottom = BOTTOM_BAR_CLEARANCE,
         ),
         verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),

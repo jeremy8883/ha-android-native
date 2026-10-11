@@ -11,11 +11,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
@@ -32,10 +35,9 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.R as commonR
-import io.homeassistant.companion.android.common.compose.composable.HATopBar
 import io.homeassistant.companion.android.common.compose.theme.HADimens
+import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.derive.DisplayColor
@@ -52,6 +54,7 @@ import io.homeassistant.companion.android.dashboard.ui.dialogs.notifications.has
 import io.homeassistant.companion.android.dashboard.ui.panels.PanelActions
 import io.homeassistant.companion.android.dashboard.ui.panels.PanelToolbarActions
 import io.homeassistant.companion.android.dashboard.ui.panels.ToolbarIconButton as PanelIconButton
+import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -62,6 +65,7 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
  * Upstream: part of `hui-root`, `ha-top-app-bar-fixed` (src/panels/lovelace/hui-root.ts;
  * src/components/ha-top-app-bar-fixed.ts)
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun DashboardTopBar(
     uiState: DashboardUiState,
@@ -77,7 +81,17 @@ internal fun DashboardTopBar(
     val panel = uiState as? DashboardUiState.Panel
     val goesBack = content?.showsBack == true || panel?.canGoBack == true
     val localize by remember(hass) { derivedStateOf { hass.value?.localize } }
-    HATopBar(
+    val colors = LocalHAColorScheme.current
+    // HATopBar's colours, at the frontend's `--header-height` and `--ha-font-size-xl` title
+    TopAppBar(
+        expandedHeight = TOOLBAR_HEIGHT,
+        colors = TopAppBarColors(
+            containerColor = colors.colorSurfaceDefault,
+            scrolledContainerColor = colors.colorSurfaceDefault,
+            navigationIconContentColor = colors.colorOnNeutralQuiet,
+            titleContentColor = colors.colorTextPrimary,
+            actionIconContentColor = colors.colorOnNeutralQuiet,
+        ),
         title = {
             val tabs = content?.takeIf { !it.isSubview && it.tabs.size > 1 }
             val shownLocalize = localize
@@ -87,6 +101,7 @@ internal fun DashboardTopBar(
                 Text(
                     content?.title ?: panel?.title
                         ?: (uiState as? DashboardUiState.UnsupportedStrategy)?.title.orEmpty(),
+                    fontSize = HAFontSize.XL,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -201,7 +216,7 @@ private fun OverflowMenu(menu: DashboardMenu, localize: Localize, onAction: (Das
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             menu.overflow.forEach { action ->
                 DropdownMenuItem(
-                    text = { Text(localize(action.labelKey), style = HATextStyle.Body) },
+                    text = { Text(localize(action.labelKey), style = FrontendTextStyle.Body) },
                     leadingIcon = { DashboardIcon(action.icon, LocalHAColorScheme.current.colorTextSecondary) },
                     onClick = {
                         open = false
@@ -263,8 +278,8 @@ private const val UNNAMED_VIEW = "ui.panel.lovelace.views.unnamed_view"
 private const val OPEN_MENU = "ui.panel.lovelace.editor.menu.open"
 private const val ACCENT = "accent-color"
 
-/** Material's toolbar height, which the tabs fill as upstream's fill its header. */
-private val TOOLBAR_HEIGHT = 64.dp
+/** The frontend's `--header-height`, which the tabs fill as upstream's fill its header. */
+private val TOOLBAR_HEIGHT = 56.dp
 
 /** `ha-menu-button`'s dot: 12px, 9px from the top and 7px from the end of its 48px button, with a 2px border. */
 private val DOT_SIZE = 12.dp
