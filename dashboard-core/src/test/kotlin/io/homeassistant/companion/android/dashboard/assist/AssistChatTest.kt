@@ -26,6 +26,15 @@ class AssistChatTest {
     }
 
     @Test
+    fun `Given an answer without a spoken response when it ends then it keeps upstream's ellipsis`() {
+        val ended = chat.apply(
+            json("""{"type": "intent-end", "data": {"intent_output": {"response": {"response_type": "action_done"}}}}"""),
+        )
+        assertEquals(ChatMessage(fromUser = false, "…"), ended.messages.last())
+        assertEquals(false, ended.processing)
+    }
+
+    @Test
     fun `Given a sent message when the run fails then the answer shows the error`() {
         val failed = chat.apply(json("""{"type": "error", "data": {"code": "x", "message": "No agent"}}"""))
         assertEquals(ChatMessage(fromUser = false, "No agent", error = true), failed.messages.last())

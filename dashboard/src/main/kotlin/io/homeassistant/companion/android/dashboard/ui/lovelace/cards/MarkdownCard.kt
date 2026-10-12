@@ -12,11 +12,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.isSpecified
 import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.m3.markdownColor
 import com.mikepenz.markdown.m3.markdownTypography
@@ -81,19 +85,27 @@ private fun MarkdownCardContent(model: MarkdownModel, modifier: Modifier = Modif
 }
 
 /**
- * Markdown in the theme's text styles, as `ha-markdown` renders it.
+ * Markdown in the theme's text styles, as `ha-markdown` renders it: in [color] (the primary text colour by default)
+ * at [fontSize] (the body's by default), as the element around it sets them.
  *
  * Upstream: `ha-markdown` (src/components/ha-markdown.ts)
  */
 @Composable
-internal fun MarkdownText(text: String, modifier: Modifier = Modifier) {
+internal fun MarkdownText(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+    fontSize: TextUnit = TextUnit.Unspecified,
+) {
     val colors = LocalHAColorScheme.current
     val align = LocalCardTextAlign.current
-    val body = Css.Text.Body.copy(textAlign = align, color = colors.colorTextPrimary)
+    val textColor = color.takeOrElse { colors.colorTextPrimary }
+    val body = Css.Text.Body.copy(textAlign = align, color = textColor)
+        .let { if (fontSize.isSpecified) it.copy(fontSize = fontSize) else it }
     val heading = body.copy(fontWeight = FontWeight.Bold)
     Markdown(
         content = text,
-        colors = markdownColor(text = colors.colorTextPrimary),
+        colors = markdownColor(text = textColor),
         typography = markdownTypography(
             text = body,
             paragraph = body,

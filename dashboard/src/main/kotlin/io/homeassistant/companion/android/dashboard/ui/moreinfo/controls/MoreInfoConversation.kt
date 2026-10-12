@@ -143,9 +143,18 @@ private fun MessageBubble(message: ChatMessage, showDetails: String) {
             bottomStart = if (message.fromUser) Css.Radius.Xl else 0.dp,
             bottomEnd = if (message.fromUser) 0.dp else Css.Radius.Xl,
         )
-        Column(Modifier.widthIn(max = BUBBLE_MAX).background(background, shape).padding(Css.Space.S2)) {
+        Column(Modifier.widthIn(max = BUBBLE_MAX).background(background, shape)) {
+            // `.message { padding: var(--ha-space-2) }`; the details reach the bubble's edges
+            // (`.thinking-wrapper { margin: calc(var(--ha-space-2) * -1) ... }`)
             if (message.hasDetails) MessageDetails(message, showDetails)
-            if (message.text.isNotEmpty()) MarkdownText(message.text)
+            if (message.text.isNotEmpty()) {
+                MarkdownText(
+                    message.text,
+                    Modifier
+                        .padding(horizontal = Css.Space.S2)
+                        .padding(top = if (message.hasDetails) 0.dp else Css.Space.S2, bottom = Css.Space.S2),
+                )
+            }
         }
     }
 }
@@ -160,11 +169,11 @@ private fun MessageBubble(message: ChatMessage, showDetails: String) {
 private fun MessageDetails(message: ChatMessage, label: String) {
     val colors = LocalHAColorScheme.current
     var expanded by remember { mutableStateOf(false) }
-    Column(Modifier.padding(bottom = if (message.text.isEmpty()) 0.dp else Css.Space.S2)) {
+    Column {
         Row(
             Modifier
                 .clickable(role = Role.Button) { expanded = !expanded }
-                .padding(vertical = Css.Space.S1),
+                .padding(Css.Space.S2),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
         ) {
@@ -177,12 +186,16 @@ private fun MessageDetails(message: ChatMessage, label: String) {
             )
         }
         AnimatedVisibility(expanded) {
+            // `.thinking-content`: in the secondary text colour, `--ha-font-size-m`
             Column(
-                Modifier.padding(top = Css.Space.S2).heightIn(max = DETAILS_MAX_HEIGHT)
-                    .verticalScroll(rememberScrollState()),
+                Modifier.heightIn(max = DETAILS_MAX_HEIGHT)
+                    .verticalScroll(rememberScrollState())
+                    .padding(Css.Space.S2),
                 verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
             ) {
-                if (message.thinking.isNotEmpty()) MarkdownText(message.thinking)
+                if (message.thinking.isNotEmpty()) {
+                    MarkdownText(message.thinking, color = colors.colorTextSecondary, fontSize = Css.FontSize.M)
+                }
                 message.toolCalls.forEach { ToolCallView(it) }
             }
         }

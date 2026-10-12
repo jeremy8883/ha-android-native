@@ -75,7 +75,8 @@ data class AssistChat(
                 val ended =
                     copy(conversationId = output?.string("conversation_id") ?: conversationId, processing = false)
                 when {
-                    speech.isNullOrEmpty() -> ended.withAnswer { it.copy(text = it.text.removeSuffix(ELLIPSIS)) }
+                    // Without a spoken response the answer stays as it streamed, "…" and all
+                    speech.isNullOrEmpty() -> ended
                     response.string("response_type") == "error" -> ended.withError(speech)
                     else -> ended.withAnswer { it.copy(text = speech) }
                 }
