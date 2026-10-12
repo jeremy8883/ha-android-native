@@ -39,8 +39,10 @@ Compose
 
 - **Native Material 3 Android.** Don't copy the web frontend's look. Match its *information* and *behaviour*: same
   cards, same order, same conditions.
-- Use `HATheme` (`:common` `common.compose.theme`): `LocalHAColorScheme` tokens, `HATextStyle`, and `HADimens.SPACE*`.
-  No magic numbers, no hardcoded colours.
+- Colours come from `HATheme` (`:common` `common.compose.theme`): `LocalHAColorScheme` tokens, no hardcoded colours.
+  Sizes come from the frontend's CSS through `ui/theme/Css.kt` (see "Sizes from the frontend's CSS" below), never
+  from the companion app's presets (`HATextStyle`, `HAFontSize`, `HADimens`, `HARadius`, `HABorderWidth`):
+  `dashboard/detekt.yml` fails `:dashboard:detektMain` on importing them.
 - Icons: entity and config icons are `mdi:*` names. `:common` depends on an MDI compose library (see how
   `HATopBar` uses `Mdi.ArrowLeft.rememberImageVector()`). A name → vector lookup is needed.
 - Sections views (`type: sections`) are a 12-column grid per section, using `grid_options` (`columns`, `rows`) and
@@ -84,6 +86,9 @@ Compose
 - Don't commit anything from a real Home Assistant instance.
 - Don't differ from upstream's look or behaviour silently: mark each deliberate difference with a
   `// UPSTREAM-DIFF:` comment saying what upstream does instead (see `progress.md`, Context).
+- Don't convert sizes when porting: copy the frontend's CSS value as is. A raw px value is `n.cssPx` (dp) or
+  `n.cssFontPx` (sp, for `font-size`, `line-height` and `letter-spacing`); a CSS variable is the `Css.*` token named
+  after it (table below). The `Upstream:` file's CSS is where to read them.
 - Don't add a composable without its `Upstream:` line: every `@Composable` function's KDoc names the frontend
   component it ports and its file (``Upstream: `hui-tile-card` (src/panels/lovelace/cards/hui-tile-card.ts)``), or
   `Upstream: part of …` for a piece of one, or `Upstream: none (native: why)`. The link only goes from here to the
@@ -99,3 +104,36 @@ Compose
 - Don't port the frontend's date or time pickers for fields: use Android's own (Material 3 `DatePicker`,
   `DateRangePicker`, `TimePicker`). Only calendars drawn in a page (the Calendar panel, the calendar card) are
   ported (see `progress.md`, Context).
+
+## Sizes from the frontend's CSS
+
+1 CSS px is 1 dp, and a font px is 1 sp (equal to dp at the default font scale, as CSS px are at the browser's default
+zoom). So a value is ported with the same number, never converted:
+
+| CSS | Kotlin |
+|---|---|
+| raw length, `padding: 12px` | `12.cssPx` (`Dp`) |
+| raw `font-size: 36px`, `line-height: 16px`, `letter-spacing: 0.4px` | `36.cssFontPx`, `16.cssFontPx`, `0.4.cssFontPx` (`TextUnit`) |
+| unitless `line-height: 1.4`, `font-size: 1.2em` of 14px | `1.4.em`, `Css.FontSize.M * 1.2f` |
+| `--ha-font-size-xs` … `--ha-font-size-5xl` (10, 12, 14, 16, 20, 24, 28, 32, 40) | `Css.FontSize.Xs`, `S`, `M`, `L`, `Xl`, `X2l`, `X3l`, `X4l`, `X5l` |
+| `--ha-font-size-scale` | applied inside `Css.FontSize` only (`FONT_SIZE_SCALE` in `Css.kt`, 1), as upstream; raw px sizes ignore it |
+| `--ha-font-weight-light` / `normal` / `medium` / `bold` | `Css.FontWeight.Light` / `Normal` / `Medium` / `Bold` |
+| `--ha-font-weight-body` / `heading` / `action` | `Css.FontWeight.Body` / `Heading` / `Action` |
+| `--ha-line-height-condensed` / `normal` / `expanded` (1.2, 1.6, 2) | `Css.LineHeight.Condensed` / `Normal` / `Expanded` (em) |
+| `--ha-space-1` … `--ha-space-20` (n × 4px) | `Css.Space.S1` … `Css.Space.S20` |
+| `--ha-border-radius-square` / `sm` / `md` / `lg` / `xl` / `2xl` … `6xl` / `pill` | `Css.Radius.Square` / `Sm` / `Md` / `Lg` / `Xl` / `X2l` … `X6l` / `Pill` |
+| `--ha-border-radius-circle` (50%) | `CircleShape` |
+| `--ha-border-width-sm` / `md` / `lg` | `Css.BorderWidth.Sm` / `Md` / `Lg` |
+
+Text styles (`Css.Text`, composable getters):
+
+| Frontend | Kotlin |
+|---|---|
+| body text (`haStyle` `:host`: `--ha-font-size-m`, `--ha-line-height-normal`) | `Css.Text.Body`: centred, secondary colour; its line height is fixed at 22.4, so a copy at another `fontSize` sets `lineHeight` too (`Css.LineHeight.Normal` when the element inherits the body's) |
+| body text in `--primary-text-color`, start-aligned | `Css.Text.Primary` |
+| `ha-card` `.card-header` | `Css.Text.CardHeader` (padding: `CardHeaderPadding`, `CardHeaderAboveContentPadding`) |
+| `ha-dialog-header` `.header-title` (every `ha-dialog`'s title) | `Css.Text.DialogTitle` |
+| `haStyle` `h1` / `h2` / `h3` | `Css.Text.H1` / `H2` / `H3` |
+
+Values that aren't the frontend's (a Material component's own size, a native-only layout) stay plain `dp`/`sp`.
+
