@@ -232,6 +232,27 @@ The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.
 - [x] R8 on the release build (shrunk, optimized, resources shrunk): the APK went from 22 MB to 7.3 MB. Checked: login, dashboards, details, History, Energy, To-do, the web-drawn cards. Keep `dashboard-app/proguard-rules.pro` for what a crash shows R8 removed
 - [ ] Baseline profile (none in the project yet): a fully compiled build started no faster on the emulator, so it mostly helps a fresh install's first starts; measure on a real phone first
 
+### Later — Snapshot tests (under consideration, 2026-10-12)
+Not started; the user is deciding. The proposal:
+- Native screenshots with Roborazzi: Robolectric on the JVM, no emulator, deterministic. It renders the real
+  composables.
+- Data from a real test server, recorded once per CI run:
+  - start the `tools/test-ha` container with a pinned HA version and seed it with `bootstrap.py`;
+  - record what the server sends, with the clock frozen;
+  - render HADash from that recording (Roborazzi), and the web frontend in Playwright with its WebSocket fed the same
+    recording.
+  - New cases are new seeds in the test server, not hand-written data.
+- Images stay out of git: about 500 shots at about 100 KB each, rewritten on every visual change. CI keeps them as
+  artifacts, or on an orphan screenshots branch. A pull request gets a diff report against its base (reg-suit, or
+  Argos CI's free open-source tier).
+- HADash against the web: pixel diffs never match (fonts, the native look). Instead, show the pairs side by side and
+  check sizes: compare each card's, row's and text's bounds from the DOM with the Compose semantics tree, and flag
+  what's off. Run it on each frontend version bump.
+- Order: Roborazzi with the CI diff report first, then the web pairs with the size check.
+
+### Later — Other ideas
+- History: "Add to dashboard" (needs dashboard editing).
+
 ### Step 7 — Tests
 - [ ] JSON fixtures (real dashboards) and deserialization
 - [ ] Config interpretation and layout

@@ -1,0 +1,1 @@
+../dashboard-app/AGENTS.md
