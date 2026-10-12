@@ -68,6 +68,9 @@ sealed interface QuickBarAction {
      * the frontend's [confirm] texts under `ui.dialogs.restart.<service>`.
      */
     data class CallService(val domain: String, val service: String, val confirm: Boolean) : QuickBarAction
+
+    /** Show the keyboard shortcuts (`showShortcutsDialog`). */
+    data object ShowShortcuts : QuickBarAction
 }
 
 /**

@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.PathParser
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -58,6 +59,7 @@ import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.Localize
+import io.homeassistant.companion.android.dashboard.keyboard.KeyPress
 import io.homeassistant.companion.android.dashboard.quickbar.QuickBarAction
 import io.homeassistant.companion.android.dashboard.quickbar.QuickBarIcon
 import io.homeassistant.companion.android.dashboard.quickbar.QuickBarItem
@@ -81,7 +83,8 @@ import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
  * then Entities, Devices and Areas; the admin's sections only for admins) and the list: each section's items under
  * its title, or one section's, the best matches first when searching. Choosing an item hands its [QuickBarAction]
  * to [onChoose] and closes the sheet; restarting or stopping the server asks first; a reload is handed to [onRun]
- * with a spinner on its row, and the sheet closes once it is done.
+ * with a spinner on its row, and the sheet closes once it is done. It opens on [initialSection] (all when `null` or
+ * not offered, as `effectiveQuickBarMode`); [onKey] sees the hardware keys pressed in it (Ctrl+K closes it).
  *
  * Upstream: `ha-quick-bar`, `ha-picker-combo-box` (src/dialogs/quick-bar/ha-quick-bar.ts;
  * src/components/ha-picker-combo-box.ts)
@@ -93,14 +96,16 @@ internal fun QuickBarSheet(
     onDismiss: () -> Unit,
     onChoose: (QuickBarAction) -> Unit,
     onRun: (QuickBarAction.CallService, onDone: () -> Unit) -> Unit,
+    initialSection: QuickBarSection? = null,
+    onKey: (KeyPress) -> Boolean = { false },
 ) {
     val localize = source.hass.localize
+    val items = remember(source) { QuickBarItems(source) }
     var search by rememberSaveable { mutableStateOf("") }
-    var section by rememberSaveable { mutableStateOf<QuickBarSection?>(null) }
+    var section by rememberSaveable { mutableStateOf(initialSection?.takeIf { it in items.sections }) }
     var confirming by remember { mutableStateOf<QuickBarAction.CallService?>(null) }
     // The command running, until it is done; nothing else can be chosen meanwhile (`_itemSelected`)
     var running by remember { mutableStateOf<String?>(null) }
-    val items = remember(source) { QuickBarItems(source) }
     val rows = remember(items, search, section) { items.rows(search.trim(), section) }
     val focus = remember { FocusRequester() }
     val choose = { item: QuickBarItem ->
@@ -122,7 +127,14 @@ internal fun QuickBarSheet(
         bottomSheetState = rememberHAModalBottomSheetState(skipPartiallyExpanded = true),
         onDismissRequest = onDismiss,
     ) {
-        SearchField(search, { search = it }, localize, Modifier.focusRequester(focus))
+        SearchField(
+            search,
+            { search = it },
+            localize,
+            Modifier.focusRequester(focus).onPreviewKeyEvent { event ->
+                event.nativeKeyEvent.toKeyPress()?.let(onKey) == true
+            },
+        )
         SectionChips(items, section) { section = if (section == it) null else it }
         LazyColumn(Modifier.fillMaxWidth().consumeSheetScrollFling()) {
             items(rows, key = ::rowKey) { row ->

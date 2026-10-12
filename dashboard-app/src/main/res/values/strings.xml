@@ -20,6 +20,9 @@
     <string name="settings_add_server">Add server</string>
     <string name="settings_log_out">Log out</string>
     <string name="settings_log_out_title">Log out of %1$s?</string>
+    <string name="settings_general">General</string>
+    <string name="settings_shortcuts">Keyboard shortcuts</string>
+    <string name="settings_shortcuts_description">Enable or disable keyboard shortcuts for performing various actions in the UI.</string>
     <string name="settings_log_out_text">This app forgets the server. The companion app and other devices stay logged in.</string>
     <string name="unsupported_opening_companion">This isn\'t available here yet. Opening it in the Home Assistant app.</string>
     <string name="unsupported_opening_browser">This isn\'t available here yet. Opening it in your browser.</string>

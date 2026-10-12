@@ -10,13 +10,13 @@ import io.homeassistant.companion.android.dashboard.panels.isNative
 
 /**
  * Port of `generateNavigationCommands`: every panel but the system ones, then the pages of Settings the user can see
- * (each path once), then the app store for admins on a supervised install; each "Navigate", ordered by name.
+ * (each path once), then the app store for admins on a supervised install, then "Shortcuts" (the keyboard shortcuts,
+ * without a path); each "Navigate", ordered by name.
  *
- * Upstream also lists each installed app (with its logo, from the Supervisor) and "Shortcuts", which opens the
- * keyboard shortcuts; neither applies here.
+ * Upstream also lists each installed app (with its logo, from the Supervisor), which isn't ported yet.
  */
 fun QuickBarSource.navigationItems(): List<QuickBarItem> {
-    val commands = panelCommands() + configPageCommands() + appStoreCommands()
+    val commands = panelCommands() + configPageCommands() + appStoreCommands() + shortcutsCommand()
     val secondary = hass.localize("$QUICK_BAR.commands.types.navigation")
     return commands.mapIndexed { index, command ->
         QuickBarItem(
@@ -25,18 +25,34 @@ fun QuickBarSource.navigationItems(): List<QuickBarItem> {
             primary = command.primary,
             secondary = secondary,
             icon = command.icon,
-            action = QuickBarAction.Navigate(command.path),
+            // Upstream's item without a path opens the keyboard shortcuts
+            action = if (command.path.isEmpty()) {
+                QuickBarAction.ShowShortcuts
+            } else {
+                QuickBarAction.Navigate(
+                    command.path,
+                )
+            },
             searchLabels = mapOf("primary" to command.primary, "path" to command.path, "secondary" to secondary),
             sortingLabel = "${command.primary}_$secondary",
         )
     }.filter { !nativeOnly || opensNatively(it) }.sortedBySortingLabel()
 }
 
-/** Whether the page [item] leads to is shown natively (its panel, as the drawer tells them apart). */
-private fun QuickBarSource.opensNatively(item: QuickBarItem): Boolean {
-    val path = (item.action as? QuickBarAction.Navigate)?.path ?: return false
-    return panels[path.removePrefix("/").substringBefore('/')]?.isNative() == true
+/** Whether what [item] opens is shown natively: the keyboard shortcuts, or a page whose panel the drawer shows. */
+private fun QuickBarSource.opensNatively(item: QuickBarItem): Boolean = when (val action = item.action) {
+    QuickBarAction.ShowShortcuts -> true
+    is QuickBarAction.Navigate ->
+        panels[action.path.removePrefix("/").substringBefore('/')]?.isNative() == true
+    else -> false
 }
+
+/** Upstream's `additionalItems`: "Shortcuts", which opens the keyboard shortcuts. */
+private fun QuickBarSource.shortcutsCommand(): NavigationCommand = NavigationCommand(
+    path = "",
+    primary = hass.localize("$QUICK_BAR.commands.navigation.shortcuts"),
+    icon = QuickBarIcon.Plain(SHORTCUTS_ICON),
+)
 
 /** A page the Navigate section leads to (`BaseNavigationCommand`). */
 private class NavigationCommand(val path: String, val primary: String, val icon: QuickBarIcon)
@@ -194,6 +210,7 @@ private const val PROFILE = "profile"
 private const val PROFILE_ICON = "mdi:account"
 private const val PANEL_FALLBACK_ICON = "mdi:view-dashboard"
 private const val APP_STORE_ICON = "mdi:store-plus"
+private const val SHORTCUTS_ICON = "mdi:keyboard"
 private const val APP_COLOR = "#F1C447"
 
 /** `SYSTEM_PANELS`: the panels the quick bar never lists. */

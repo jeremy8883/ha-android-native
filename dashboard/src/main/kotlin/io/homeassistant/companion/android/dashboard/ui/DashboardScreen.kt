@@ -127,7 +127,7 @@ internal fun DashboardScreen(
                 status = status,
                 onRetry = viewModel::onRetry,
                 onOpenElsewhere = onOpenWeb?.let { { viewModel.onOpenShownInWeb() } },
-                onMenuAction = dashboardMenuActions(viewModel, hass, onOpenWeb, onMoreInfo = { moreInfo = it }),
+                onMenuAction = dashboardMenuActions(viewModel, hass, onOpenWeb, { moreInfo = it }, onOpenSettings),
                 hasNotifications = hasNotifications(),
             )
         }

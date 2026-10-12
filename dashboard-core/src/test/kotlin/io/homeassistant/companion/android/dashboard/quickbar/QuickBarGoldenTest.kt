@@ -46,6 +46,11 @@ class QuickBarGoldenTest {
         assertTrue("/logbook" in paths && "/energy" in paths && "/dashboard-test" in paths)
         assertTrue(paths.none { it.startsWith("/config") || it == "/profile" || it == "/media-browser" })
         assertTrue(items.rows("kitchen", null).none { it is QuickBarRow.Title && it.text == "Devices" })
+        assertTrue(
+            items.rows("shortcuts", QuickBarSection.NAVIGATE).any {
+                (it as? QuickBarRow.Item)?.item?.action == QuickBarAction.ShowShortcuts
+            },
+        )
     }
 
     private fun cases(variant: String): List<DynamicTest> {
@@ -55,7 +60,7 @@ class QuickBarGoldenTest {
             sections.jsonObject.map { (section, expected) ->
                 DynamicTest.dynamicTest("'$search' in $section") {
                     val rows = items.rows(search, QuickBarSection.entries.firstOrNull { it.key == section })
-                    val shown = expected.jsonArray.map { it.jsonObject }.filter(::isPorted).map(::expectedRow)
+                    val shown = expected.jsonArray.map { it.jsonObject }.map(::expectedRow)
                     assertEquals(shown, rows.mapNotNull(::drawnRow))
                 }
             }
@@ -95,9 +100,6 @@ class QuickBarGoldenTest {
         )
     }
 
-    /** Upstream's "Shortcuts" (keyboard shortcuts) isn't offered. */
-    private fun isPorted(row: JsonObject): Boolean = row.string("path") != ""
-
     private fun expectedRow(row: JsonObject): List<String?> {
         row.string("title")?.let { return listOf("title", it) }
         val icon = when {
@@ -127,7 +129,8 @@ class QuickBarGoldenTest {
 
     /** Whether upstream gives the item's icon by name (a panel's, an area's own), not as a path. */
     private fun QuickBarItem.isNamedUpstream(): Boolean = when (section) {
-        QuickBarSection.NAVIGATE -> true
+        // "Shortcuts" gives its icon as a path
+        QuickBarSection.NAVIGATE -> action != QuickBarAction.ShowShortcuts
         QuickBarSection.AREA -> icon != QuickBarIcon.Plain("mdi:texture-box")
         else -> false
     }

@@ -16,21 +16,26 @@ import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.data.LoadError
 import io.homeassistant.companion.android.dashboard.data.Loadable
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
+import io.homeassistant.companion.android.dashboard.keyboard.KeyPress
+import io.homeassistant.companion.android.dashboard.keyboard.ShortcutCommand
 import io.homeassistant.companion.android.dashboard.layout.DashboardMenuAction
 import io.homeassistant.companion.android.dashboard.layout.DashboardMenuHandler
 import io.homeassistant.companion.android.dashboard.navigation.PanelInfo
 import io.homeassistant.companion.android.dashboard.quickbar.QuickBarAction
+import io.homeassistant.companion.android.dashboard.quickbar.QuickBarSection
 import io.homeassistant.companion.android.dashboard.quickbar.QuickBarSource
 import io.homeassistant.companion.android.dashboard.ui.DashboardViewModel
 import io.homeassistant.companion.android.dashboard.ui.LoadErrorScreen
 import io.homeassistant.companion.android.dashboard.ui.components.targetpicker.TargetPickerViewModel
+import io.homeassistant.companion.android.dashboard.ui.dialogs.shortcuts.ShortcutsDialog
 
 /**
- * What the dashboard's toolbar actions do: Search opens the quick bar, drawn here while open; the others open the
- * dashboard shown in the frontend, so only Search is offered when other pages can't be opened ([onOpenWeb] is
- * `null`), and the quick bar then offers only what is handled here.
+ * What the dashboard's toolbar actions and keyboard shortcuts do: Search opens the quick bar, drawn here while open,
+ * as do the shortcuts' sections; the others open the dashboard shown in the frontend, so only Search is offered when
+ * other pages can't be opened ([onOpenWeb] is `null`), and the quick bar then offers only what is handled here. The
+ * keyboard shortcuts dialog's hint leads to [onOpenSettings].
  *
- * Upstream: part of `hui-root` (src/panels/lovelace/hui-root.ts)
+ * Upstream: part of `hui-root`, `quick-bar-mixin` (src/panels/lovelace/hui-root.ts; src/state/quick-bar-mixin.ts)
  */
 @Composable
 internal fun dashboardMenuActions(
@@ -38,13 +43,44 @@ internal fun dashboardMenuActions(
     hass: State<HassSnapshot?>,
     onOpenWeb: ((String) -> Unit)?,
     onMoreInfo: (String) -> Unit,
+    onOpenSettings: (() -> Unit)? = null,
 ): DashboardMenuHandler {
-    var open by rememberSaveable { mutableStateOf(false) }
+    // The quick bar's section when open ("" for all), as upstream's `mode`
+    var quickBar by rememberSaveable { mutableStateOf<String?>(null) }
+    var shortcuts by rememberSaveable { mutableStateOf(false) }
     val nativeOnly = onOpenWeb == null
-    if (open) DashboardQuickBar(viewModel, hass, nativeOnly, onDismiss = { open = false }, onMoreInfo = onMoreInfo)
     val offered = if (nativeOnly) setOf(DashboardMenuAction.Search) else ALL_ACTIONS
+    val onShortcut = rememberShortcutHandler(viewModel, hass, offered) { command ->
+        when (command) {
+            is ShortcutCommand.ShowQuickBar -> quickBar = command.section.key
+            ShortcutCommand.ToggleQuickBar -> quickBar = if (quickBar == null) ALL_SECTIONS else null
+            ShortcutCommand.ShowShortcuts -> shortcuts = true
+            else -> Unit
+        }
+    }
+    val quickBarOpen = quickBar != null
+    UnhandledKeys { press -> onShortcut(press, quickBarOpen) }
+    quickBar?.let { mode ->
+        DashboardQuickBar(
+            viewModel = viewModel,
+            hass = hass,
+            nativeOnly = nativeOnly,
+            initialSection = QuickBarSection.entries.firstOrNull { it.key == mode },
+            onDismiss = { quickBar = null },
+            onMoreInfo = onMoreInfo,
+            onShowShortcuts = { shortcuts = true },
+            onKey = { press -> onShortcut(press, true) },
+        )
+    }
+    if (shortcuts) {
+        hass.value?.localize?.let { ShortcutsDialog(it, onOpenSettings, onDismiss = { shortcuts = false }) }
+    }
     return DashboardMenuHandler(offered) { action ->
-        if (action == DashboardMenuAction.Search) open = true else viewModel.onOpenShownInWeb(flag = action.webParam)
+        if (action == DashboardMenuAction.Search) {
+            quickBar = ALL_SECTIONS
+        } else {
+            viewModel.onOpenShownInWeb(flag = action.webParam)
+        }
     }
 }
 
@@ -59,8 +95,11 @@ private fun DashboardQuickBar(
     viewModel: DashboardViewModel,
     hass: State<HassSnapshot?>,
     nativeOnly: Boolean,
+    initialSection: QuickBarSection?,
     onDismiss: () -> Unit,
     onMoreInfo: (String) -> Unit,
+    onShowShortcuts: () -> Unit,
+    onKey: (KeyPress) -> Boolean,
 ) {
     val sidebar by viewModel.sidebar.collectAsStateWithLifecycle()
     val panels = when (val loaded = sidebar) {
@@ -75,11 +114,14 @@ private fun DashboardQuickBar(
         onRetry = viewModel::onRetry,
         onDismiss = onDismiss,
         onRun = { action, onDone -> viewModel.onAction(action.toCardAction()).invokeOnCompletion { onDone() } },
+        initialSection = initialSection,
+        onKey = onKey,
     ) { action ->
         when (action) {
             is QuickBarAction.MoreInfo -> onMoreInfo(action.entityId)
             is QuickBarAction.Navigate -> viewModel.onOpenPath(action.path)
             is QuickBarAction.CallService -> viewModel.onAction(action.toCardAction())
+            QuickBarAction.ShowShortcuts -> onShowShortcuts()
         }
     }
 }
@@ -100,6 +142,8 @@ internal fun QuickBarHost(
     onRetry: () -> Unit,
     onDismiss: () -> Unit,
     onRun: (QuickBarAction.CallService, onDone: () -> Unit) -> Unit,
+    initialSection: QuickBarSection? = null,
+    onKey: (KeyPress) -> Boolean = { false },
     onChoose: (QuickBarAction) -> Unit,
 ) {
     val entries: TargetPickerViewModel = hiltViewModel()
@@ -112,7 +156,7 @@ internal fun QuickBarHost(
             val source = remember(snapshot, panels.value, configEntryDomains, nativeOnly) {
                 QuickBarSource(snapshot, panels.value, configEntryDomains, nativeOnly)
             }
-            QuickBarSheet(source, onDismiss, onChoose, onRun)
+            QuickBarSheet(source, onDismiss, onChoose, onRun, initialSection, onKey)
         }
     }
 }
@@ -132,6 +176,9 @@ private fun FailedSheet(error: LoadError, onRetry: () -> Unit, onDismiss: () -> 
 
 private fun QuickBarAction.CallService.toCardAction() =
     CardAction.CallService(domain, service, data = null, target = null)
+
+/** The quick bar's mode showing every section. */
+private const val ALL_SECTIONS = ""
 
 private val ALL_ACTIONS = setOf(
     DashboardMenuAction.Search,

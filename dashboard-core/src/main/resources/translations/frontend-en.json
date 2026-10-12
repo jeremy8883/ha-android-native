@@ -954,6 +954,57 @@
      "confirm_title": "Stop Home Assistant?"
     }
    },
+   "shortcuts": {
+    "assist": {
+     "open_assist": "open Assist dialog",
+     "title": "Assist"
+    },
+    "automation_script": {
+     "copy": "to copy the selected item to clipboard",
+     "cut": "to cut the selected item and place it on the clipboard",
+     "delete": "to delete the selected item",
+     "paste": "to paste automation/script YAML from clipboard to editor",
+     "redo": "to redo last undone change",
+     "save": "to save automation/script",
+     "title": "Automations / Scripts",
+     "undo": "to undo last change"
+    },
+    "charts": {
+     "click_legend_solo": "on a chart legend item to show only that series",
+     "double_click": "to zoom in on part of the chart",
+     "drag_to_zoom": "to zoom in part of a chart",
+     "scroll_to_zoom": "to zoom in or out",
+     "title": "Charts"
+    },
+    "enable_shortcuts_hint": "For keyboard shortcuts to work, make sure you have them enabled in your {user_profile}.",
+    "enable_shortcuts_hint_user_profile": "user profile",
+    "keys": {
+     "ctrl": "Ctrl",
+     "del": "Del"
+    },
+    "other": {
+     "my_link": "get My Home Assistant link",
+     "show_shortcuts": "show keyboard shortcuts",
+     "title": "Other"
+    },
+    "searching": {
+     "on_any_page": "On any page",
+     "on_pages_with_tables": "On pages with tables",
+     "search": "Quick search",
+     "search_command": "search commands",
+     "search_devices": "search devices",
+     "search_entities": "search entities",
+     "search_in_table": "to search in tables",
+     "title": "Searching"
+    },
+    "shortcuts": {
+     "click": "Click",
+     "double_click": "Double-click",
+     "drag": "Drag",
+     "scroll_wheel": "Scroll"
+    },
+    "title": "Shortcuts"
+   },
    "update_backup": {
     "create": "Create",
     "text": "This will create a backup before installing.",

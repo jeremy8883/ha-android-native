@@ -71,6 +71,7 @@ SUBTREES = [
     "ui.panel.lovelace.editor.menu.open",
     "ui.notification_drawer",
     "ui.dialogs.quick-bar",
+    "ui.dialogs.shortcuts",
     "ui.dialogs.restart.restart",
     "ui.dialogs.restart.stop",
     "ui.components.combo-box.no_items",

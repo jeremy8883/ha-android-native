@@ -28,7 +28,8 @@ import io.homeassistant.companion.android.common.compose.theme.LocalHAColorSchem
 import net.jeremycasey.homeassistantnative.R
 
 /**
- * The app's settings: the servers it's logged in to (to switch to, log out of, or add another).
+ * The app's settings: the servers it's logged in to (to switch to, log out of, or add another), and whether
+ * keyboard shortcuts are on.
  *
  * @param onAddServer opens the login for another server
  *
@@ -60,6 +61,8 @@ internal fun SettingsScreen(onBack: () -> Unit, onAddServer: () -> Unit) {
                 onAddServer,
                 Modifier.padding(horizontal = HADimens.SPACE2),
             )
+            SectionTitle(stringResource(R.string.settings_general))
+            KeyboardShortcutsSetting()
         }
     }
     loggingOut?.let { serverId ->
