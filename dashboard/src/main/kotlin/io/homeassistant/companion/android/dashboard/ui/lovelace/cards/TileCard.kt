@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -19,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -31,6 +34,7 @@ import io.homeassistant.companion.android.common.compose.theme.HAThemeForPreview
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.action.CardAction
+import io.homeassistant.companion.android.dashboard.derive.TileBadge
 import io.homeassistant.companion.android.dashboard.derive.TileModel
 import io.homeassistant.companion.android.dashboard.derive.tileModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -167,12 +171,34 @@ private fun TileIcon(tile: TileModel, modifier: Modifier) {
         } else {
             Modifier
         }
-        Box(
-            modifier = Modifier.size(TILE_ICON_SIZE).then(background).then(modifier),
-            contentAlignment = Alignment.Center,
-        ) {
-            DashboardIcon(name = icon, tint = color, modifier = Modifier.size(HASize.X2L))
+        Box(modifier = Modifier.size(TILE_ICON_SIZE)) {
+            Box(
+                modifier = Modifier.matchParentSize().then(background).then(modifier),
+                contentAlignment = Alignment.Center,
+            ) {
+                DashboardIcon(name = icon, tint = color, modifier = Modifier.size(HASize.X2L))
+            }
+            tile.badge?.let {
+                TileIconBadge(it, Modifier.align(Alignment.TopEnd).offset(x = BADGE_OUTSET, y = -BADGE_OUTSET))
+            }
         }
+    }
+}
+
+/**
+ * Port of `ha-tile-badge`: a 16px rounded square in the badge's colour (the primary colour without one) with its
+ * icon in white, sticking out 3px past the icon's top end corner as the frontend lays it out.
+ *
+ * Upstream: `ha-tile-badge` (src/components/tile/ha-tile-badge.ts; src/panels/lovelace/cards/hui-tile-card.ts)
+ */
+@Composable
+private fun TileIconBadge(badge: TileBadge, modifier: Modifier) {
+    val background = badge.color?.toColor() ?: LocalHAColorScheme.current.colorFillPrimaryLoudResting
+    Box(
+        modifier = modifier.size(BADGE_SIZE).clip(RoundedCornerShape(Css.Radius.Md)).background(background),
+        contentAlignment = Alignment.Center,
+    ) {
+        DashboardIcon(name = badge.icon, tint = Color.White, modifier = Modifier.size(BADGE_ICON_SIZE))
     }
 }
 
@@ -254,6 +280,11 @@ internal val TILE_ROW_HEIGHT = 56.dp
 
 /** `--tile-icon-size`. */
 internal val TILE_ICON_SIZE = 36.cssPx
+
+/** `ha-tile-badge`'s size, its icon's (`--mdc-icon-size`), and how far it sticks out of the icon. */
+private val BADGE_SIZE = 16.cssPx
+private val BADGE_ICON_SIZE = 12.cssPx
+private val BADGE_OUTSET = 3.cssPx
 
 /** `--tile-icon-opacity`. */
 private const val ICON_BACKGROUND_ALPHA = 0.2f
