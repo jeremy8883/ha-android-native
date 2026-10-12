@@ -37,8 +37,9 @@ internal fun MoreInfoGroup(
                 )
             }
             val toGroup = { action: CardAction -> onAction(group.toGroup(action)) }
+            // The state header keeps its own 20px under it
+            if (inner.stateHeader) MoreInfoStateText(inner)
             Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
-                if (inner.stateHeader) MoreInfoStateText(inner)
                 DomainControls(inner, innerState, innerHass, now, toGroup)
             }
         }

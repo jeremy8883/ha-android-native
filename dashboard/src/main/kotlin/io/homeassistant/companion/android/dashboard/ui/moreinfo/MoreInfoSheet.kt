@@ -188,7 +188,8 @@ private fun ColumnScope.MoreInfoMain(
     LazyColumn(
         state = listState,
         modifier = Modifier.fillMaxWidth().weight(1f),
-        contentPadding = PaddingValues(horizontal = Css.Space.S6),
+        // `ha-more-info-info`'s `.content`: 24px all round
+        contentPadding = PaddingValues(Css.Space.S6),
     ) { mainItems(MainList(model, hass, now, interactions, logbook, onShowFull)) }
     if (update != null && state != null) {
         HAHorizontalDivider()
@@ -216,7 +217,7 @@ private fun LazyListScope.mainItems(list: MainList) {
         item(key = "state-card") { Box(section) { StateCardRow(card, now, interactions.onAction) } }
     }
     if (model.stateHeader) {
-        item(key = "state") { Box(section) { MoreInfoStateText(model) } }
+        item(key = "state") { MoreInfoStateText(model) }
     }
     hass.states[model.entityId]?.let { state ->
         item(key = "controls") {
@@ -331,7 +332,8 @@ private fun WithFavoritesMenu(
 }
 
 /**
- * Port of `ha-more-info-state-header`: the state, and when it last changed, centred.
+ * Port of `ha-more-info-state-header`: the state, and when it last changed (4px above and under it), centred, with
+ * 20px under them.
  *
  * Upstream: `ha-more-info-state-header` (src/dialogs/more-info/components/ha-more-info-state-header.ts)
  */
@@ -348,12 +350,16 @@ internal fun MoreInfoStateText(model: MoreInfoModel) {
             ),
             color = colors.colorTextPrimary,
         )
+        // `.time-row`'s `margin-bottom`
         Row(
+            modifier = Modifier.padding(bottom = Css.Space.S5),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
         ) {
             Text(
                 model.changed,
+                // `.last-changed`'s `padding: 4px 0`
+                modifier = Modifier.padding(vertical = Css.Space.S1),
                 style = Css.Text.Body.copy(
                     fontSize = Css.FontSize.L,
                     lineHeight = Css.LineHeight.Normal,
