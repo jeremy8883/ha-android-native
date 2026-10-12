@@ -1,25 +1,17 @@
 package io.homeassistant.companion.android.dashboard.derive
 
 import io.homeassistant.companion.android.dashboard.action.CardAction
-import io.homeassistant.companion.android.dashboard.action.DOMAINS_TOGGLE
 import io.homeassistant.companion.android.dashboard.action.ElementActions
-import io.homeassistant.companion.android.dashboard.action.elementActions
 import io.homeassistant.companion.android.dashboard.condition.ConditionContext
 import io.homeassistant.companion.android.dashboard.condition.conditionsMet
-import io.homeassistant.companion.android.dashboard.display.attributeTimestampDisplay
-import io.homeassistant.companion.android.dashboard.display.formatEntityAttributeValue
-import io.homeassistant.companion.android.dashboard.display.formatEntityAttributeValueParts
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.obj
 import io.homeassistant.companion.android.dashboard.model.string
 import java.time.Instant
 import kotlinx.serialization.json.JsonArray
-import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.buildJsonObject
-import kotlinx.serialization.json.put
 
 // The rows of an entities card that aren't an entity's own (frontend@20260624.6 src/panels/lovelace/special-rows/),
 // and the choice between them by `type` (`createRowElement`, src/panels/lovelace/create-element/create-row-element.ts).
@@ -82,29 +74,42 @@ internal fun HassSnapshot.entitiesRow(
     return rowElement(withStateColor, now, context)
 }
 
+/** Builds the special row of a `type` from its config, the time and the conditions' context. */
+private typealias RowFactory = HassSnapshot.(
+    config: JsonObject,
+    now: Instant,
+    context: ConditionContext,
+) -> EntitiesRow?
+
+/** The special rows by `type`, as `createRowElement`'s `SPECIAL_ROWS`. */
+private val SPECIAL_ROWS: Map<String, RowFactory> = mapOf(
+    DIVIDER to { _, _, _ -> EntitiesRow.Divider },
+    SECTION to { config, _, _ -> EntitiesRow.Section(config.string("label")?.ifEmpty { null }) },
+    WEBLINK to { config, _, _ -> weblinkRow(config) },
+    BUTTON to { config, _, _ -> buttonRow(config) },
+    CALL_SERVICE to { config, _, _ -> callServiceRow(config) },
+    PERFORM_ACTION to { config, _, _ -> callServiceRow(config) },
+    BUTTONS to { config, _, _ -> buttonsRow(config) },
+    CAST to { config, _, _ -> castRow(config) },
+    CONDITIONAL to { config, now, context -> conditionalRow(config, now, context) },
+    ATTRIBUTE to { config, now, _ -> attributeRow(config, now) },
+    TEXT to { config, _, _ -> textRow(config) },
+)
+
 /** Port of `createRowElement` for an entry with its `state_color` already resolved. */
-private fun HassSnapshot.rowElement(config: JsonObject, now: Instant, context: ConditionContext): EntitiesRow? =
-    when (val type = config.string(TYPE)) {
-        null -> config.string(ENTITY)?.let { EntitiesRow.Entity(entityRow(config, now, EntityRowKind.DOMAIN)) }
-            ?: invalidRow()
-        DIVIDER -> EntitiesRow.Divider
-        SECTION -> EntitiesRow.Section(config.string("label")?.ifEmpty { null })
-        WEBLINK -> weblinkRow(config)
-        BUTTON -> buttonRow(config)
-        CALL_SERVICE, PERFORM_ACTION -> callServiceRow(config)
-        BUTTONS -> buttonsRow(config)
-        CAST -> castRow(config)
-        CONDITIONAL -> conditionalRow(config, now, context)
-        ATTRIBUTE -> attributeRow(config, now)
-        TEXT -> textRow(config)
-        in ENTITY_ROW_TYPES -> config.string(ENTITY)?.let {
-            EntitiesRow.Entity(entityRow(config, now, ENTITY_ROW_TYPES.getValue(type)))
-        } ?: invalidRow()
+private fun HassSnapshot.rowElement(config: JsonObject, now: Instant, context: ConditionContext): EntitiesRow? {
+    val type = config.string(TYPE)
+    val special = type?.let(SPECIAL_ROWS::get)
+    val kind = if (type == null) EntityRowKind.DOMAIN else ENTITY_ROW_TYPES[type]
+    return when {
+        special != null -> special(config, now, context)
+        kind != null -> config.string(ENTITY)?.let { EntitiesRow.Entity(entityRow(config, now, kind)) } ?: invalidRow()
         else -> invalidRow()
     }
+}
 
 /** `hui-error-card` outside the editor: only its title, "Configuration error". */
-private fun HassSnapshot.invalidRow() = EntitiesRow.Invalid(localize("ui.errors.config.configuration_error"))
+internal fun HassSnapshot.invalidRow() = EntitiesRow.Invalid(localize("ui.errors.config.configuration_error"))
 
 /**
  * Port of `HuiWeblinkRow`: named after its URL and with a link icon by default; a URL with a scheme (or one set to
@@ -117,75 +122,6 @@ private fun HassSnapshot.weblinkRow(config: JsonObject): EntitiesRow {
         name = config.string("name") ?: url,
         icon = config.string("icon") ?: WEBLINK_ICON,
         action = if (external) CardAction.OpenUrl(url) else CardAction.Navigate(url, replace = false),
-    )
-}
-
-/**
- * Port of `HuiButtonRow`: toggles a toggleable entity on tap and opens the details otherwise or on hold, unless
- * configured; "Run" unless `action_name` names the button.
- */
-private fun HassSnapshot.buttonRow(config: JsonObject): EntitiesRow {
-    val entityId = config.string(ENTITY)?.ifEmpty { null }
-    val name = config.string("name")?.ifEmpty { null }
-    if (name == null && entityId == null) return invalidRow()
-    val defaults = buildJsonObject {
-        put(TAP_ACTION, actionObject(if (entityId?.substringBefore('.') in DOMAINS_TOGGLE) "toggle" else MORE_INFO))
-        put(HOLD_ACTION, actionObject(MORE_INFO))
-    }
-    val state = entityId?.let(states::get)
-    return EntitiesRow.Button(
-        name = state?.let { entityNameDisplay(it, config["name"]) } ?: name.orEmpty(),
-        icon = config.string(ICON)?.ifEmpty { null } ?: state?.let { entityIcon(it.entityId) },
-        label = config.string("action_name")?.ifEmpty { null } ?: localize("ui.card.service.run"),
-        actions = elementActions(JsonObject(defaults + config)),
-    )
-}
-
-/** Port of `HuiCallServiceRow`: a button row performing its `action` (or `service`) with its `data` on tap. */
-private fun HassSnapshot.callServiceRow(config: JsonObject): EntitiesRow {
-    val action = config.string("action")?.ifEmpty { null } ?: config.string("service")?.ifEmpty { null }
-    if (config.string("name").isNullOrEmpty() || action == null) return invalidRow()
-    val tap = buildJsonObject {
-        put("action", "perform-action")
-        put("perform_action", action)
-        (config["data"] ?: config["service_data"])?.let { put("data", it) }
-    }
-    return buttonRow(JsonObject(mapOf(TAP_ACTION to tap) + config))
-}
-
-/**
- * Port of `HuiButtonsRow`: `hui-buttons-base` with each entity toggling on tap when it can (else opening its
- * details) and opening its details on hold, unless configured.
- */
-private fun HassSnapshot.buttonsRow(config: JsonObject): EntitiesRow {
-    val entries = config["entities"] as? JsonArray ?: return invalidRow()
-    val configs = entries.map { entry ->
-        when {
-            entry is JsonPrimitive && entry.isString -> JsonObject(mapOf(ENTITY to entry))
-            entry is JsonObject && (TYPE in entry || ENTITY in entry) -> entry
-            else -> return invalidRow()
-        }
-    }
-    return EntitiesRow.Buttons(
-        configs.map { entry ->
-            val entityId = entry.string(ENTITY)
-            val defaults = buildJsonObject {
-                put(
-                    TAP_ACTION,
-                    actionObject(
-                        if (entityId?.substringBefore('.') in
-                            DOMAINS_TOGGLE
-                        ) {
-                            "toggle"
-                        } else {
-                            MORE_INFO
-                        },
-                    ),
-                )
-                put(HOLD_ACTION, actionObject(MORE_INFO))
-            }
-            buttonModel(JsonObject(defaults + entry))
-        },
     )
 }
 
@@ -208,40 +144,15 @@ private fun castRow(config: JsonObject): EntitiesRow? = if (config.boolean("hide
  * hidden otherwise; invalid without conditions or a row.
  */
 private fun HassSnapshot.conditionalRow(config: JsonObject, now: Instant, context: ConditionContext): EntitiesRow? {
-    val conditions = config["conditions"] as? JsonArray ?: return invalidRow()
-    val row = config.obj("row") ?: return invalidRow()
-    if (!conditionsMet(conditions.filterIsInstance<JsonObject>(), context)) return null
-    val inner = if (config.boolean(STATE_COLOR) ==
-        true
-    ) {
-        JsonObject(mapOf(STATE_COLOR to JsonPrimitive(true)) + row)
-    } else {
-        row
+    val conditions = config["conditions"] as? JsonArray
+    val row = config.obj("row")
+    return when {
+        conditions == null || row == null -> invalidRow()
+        !conditionsMet(conditions.filterIsInstance<JsonObject>(), context) -> null
+        config.boolean(STATE_COLOR) == true ->
+            rowElement(JsonObject(mapOf(STATE_COLOR to JsonPrimitive(true)) + row), now, context)
+        else -> rowElement(row, now, context)
     }
-    return rowElement(inner, now, context)
-}
-
-/**
- * Port of `HuiAttributeRow`: an entity's row showing one of its attributes, between the `prefix` and `suffix`; a
- * date in its `time_format` when it has one, "—" when the attribute is missing.
- */
-private fun HassSnapshot.attributeRow(config: JsonObject, now: Instant): EntitiesRow {
-    val entityId = config.string(ENTITY)?.ifEmpty { null }
-    val attribute = config.string("attribute")?.ifEmpty { null }
-    if (entityId == null || attribute == null) return invalidRow()
-    val row = entityRow(config, now, SIMPLE)
-    val state = states[entityId] ?: return EntitiesRow.Entity(row)
-    val value = state.attributes[attribute]
-    val timeFormat = config.string("time_format")?.ifEmpty { null }
-    val suffix = config.string("suffix")
-    val text = timeFormat?.let { attributeTimestampDisplay(value, now, it) }
-        ?: when {
-            value == null -> NO_VALUE
-            // `ha-attribute-value` hides the unit when the row has its own suffix
-            !suffix.isNullOrEmpty() && value !is JsonNull -> formatEntityAttributeValueParts(state, attribute).value
-            else -> formatEntityAttributeValue(state, attribute)
-        }
-    return EntitiesRow.Entity(row.copy(state = config.string("prefix").orEmpty() + text + suffix.orEmpty()))
 }
 
 /** Port of `HuiTextRow`: invalid without a name and a text. */
@@ -251,8 +162,6 @@ private fun HassSnapshot.textRow(config: JsonObject): EntitiesRow {
     if (name == null || text == null) return invalidRow()
     return EntitiesRow.Text(name, text, config.string(ICON)?.ifEmpty { null })
 }
-
-private fun actionObject(action: String) = buildJsonObject { put("action", action) }
 
 /** How a typed entity row shows its entity. */
 internal enum class EntityRowKind {
@@ -266,8 +175,6 @@ internal enum class EntityRowKind {
     SENSOR,
 }
 
-private val SIMPLE = EntityRowKind.SIMPLE
-
 /** The entity row `type`s (`<type>-entity`), and how each shows its entity. */
 private val ENTITY_ROW_TYPES = mapOf("simple-entity" to EntityRowKind.SIMPLE, "sensor-entity" to EntityRowKind.SENSOR) +
     listOf(
@@ -280,9 +187,6 @@ private const val TYPE = "type"
 private const val ENTITY = "entity"
 private const val ICON = "icon"
 private const val STATE_COLOR = "state_color"
-private const val TAP_ACTION = "tap_action"
-private const val HOLD_ACTION = "hold_action"
-private const val MORE_INFO = "more-info"
 private const val DIVIDER = "divider"
 private const val SECTION = "section"
 private const val WEBLINK = "weblink"
@@ -296,7 +200,6 @@ private const val ATTRIBUTE = "attribute"
 private const val TEXT = "text"
 private const val WEBLINK_ICON = "mdi:link"
 private const val CAST_ICON = "mdi:television"
-private const val NO_VALUE = "—"
 
 // `HuiCastRow`'s defaults and text, in English upstream too
 private const val CAST_NAME = "Home Assistant Cast"
