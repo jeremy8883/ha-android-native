@@ -113,7 +113,7 @@ private fun PersonMap(location: MapLocation, person: MoreInfoExtra.Person, modif
         Marker(person, Modifier.align(Alignment.Center))
         Text(
             ATTRIBUTION,
-            style = Css.Text.Body.copy(fontSize = Css.FontSize.M * ATTRIBUTION_SCALE),
+            style = Css.Text.Document.copy(fontSize = Css.FontSize.M * ATTRIBUTION_SCALE),
             color = colors.colorTextSecondary,
             modifier = Modifier.align(Alignment.BottomEnd).background(Color.White.copy(alpha = ATTRIBUTION_BACKGROUND))
                 .padding(horizontal = Css.Space.S1),
@@ -140,7 +140,7 @@ private fun Marker(person: MoreInfoExtra.Person, modifier: Modifier) {
         } else {
             Text(
                 person.markerLabel,
-                style = Css.Text.Body.copy(fontSize = Css.FontSize.Xl),
+                style = Css.Text.Document.copy(fontSize = Css.FontSize.Xl),
                 color = colors.colorTextPrimary,
             )
         }

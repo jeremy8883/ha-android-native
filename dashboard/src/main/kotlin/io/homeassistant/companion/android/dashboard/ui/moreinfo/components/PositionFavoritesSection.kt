@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.R as commonR
@@ -74,7 +75,11 @@ internal fun PositionFavoritesSection(state: EntityState, hass: HassSnapshot, on
     ) {
         favorites.sections.forEach { section ->
             section.label?.let {
-                Text(it, style = Css.Text.Body, color = LocalHAColorScheme.current.colorTextSecondary)
+                Text(
+                    it,
+                    style = Css.Text.Body.copy(textAlign = TextAlign.Center),
+                    color = LocalHAColorScheme.current.colorTextSecondary,
+                )
             }
             FavoritesRow(
                 deleteLabels = section.favorites.map { it.deleteLabel },
@@ -138,7 +143,7 @@ private fun PositionPill(favorite: PositionFavorite, enabled: Boolean, active: C
     ) {
         Text(
             favorite.text,
-            style = Css.Text.Body,
+            style = Css.Text.Body.copy(textAlign = TextAlign.Center),
             color = if (filled) colors.colorOnPrimaryLoud else colors.colorOnNeutralNormal,
         )
     }

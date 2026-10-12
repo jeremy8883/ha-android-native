@@ -64,7 +64,7 @@ internal fun GaugeCard(
                 GaugeArc(model, Modifier.fillMaxWidth().aspectRatio(VIEW_WIDTH / VIEW_HEIGHT))
                 Text(
                     model.valueText,
-                    style = Css.Text.Primary.copy(fontSize = VALUE_FONT_SIZE, lineHeight = VALUE_LINE_HEIGHT),
+                    style = Css.Text.Body.copy(fontSize = VALUE_FONT_SIZE, lineHeight = VALUE_LINE_HEIGHT),
                     color = colors.colorTextPrimary,
                     maxLines = 1,
                 )

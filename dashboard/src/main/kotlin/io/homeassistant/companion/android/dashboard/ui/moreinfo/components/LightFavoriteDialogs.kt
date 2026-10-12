@@ -159,10 +159,7 @@ internal fun CopyFavoritesDialog(
         title = { Text(title, style = Css.Text.DialogTitle) },
         text = {
             Column(Modifier.heightIn(max = LIST_MAX_HEIGHT).verticalScroll(rememberScrollState())) {
-                Text(
-                    helper,
-                    style = Css.Text.Body.copy(textAlign = TextAlign.Start),
-                )
+                Text(helper, style = Css.Text.Body, color = LocalHAColorScheme.current.colorTextSecondary)
                 targets.forEach { entityId ->
                     val checked = entityId in chosen
                     Row(

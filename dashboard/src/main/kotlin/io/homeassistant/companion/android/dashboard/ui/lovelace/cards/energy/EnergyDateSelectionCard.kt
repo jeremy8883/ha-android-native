@@ -81,7 +81,7 @@ internal fun EnergyDateSelectionCard(
                 // `.header-title`, `.header-subtitle`
                 Text(
                     title.title,
-                    style = Css.Text.Primary.copy(
+                    style = Css.Text.Body.copy(
                         fontSize = Css.FontSize.Xl,
                         fontWeight = Css.FontWeight.Medium,
                         lineHeight = Css.LineHeight.Condensed,

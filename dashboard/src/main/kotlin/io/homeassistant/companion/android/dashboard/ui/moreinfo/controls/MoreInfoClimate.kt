@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.entity.EntityState
@@ -95,6 +96,7 @@ internal fun CurrentReadings(readings: List<Pair<String, String>>) {
                 Text(
                     label,
                     style = Css.Text.Body.copy(
+                        textAlign = TextAlign.Center,
                         lineHeight = Css.LineHeight.Condensed,
                         letterSpacing = LABEL_LETTER_SPACING.cssFontPx,
                     ),
@@ -103,6 +105,7 @@ internal fun CurrentReadings(readings: List<Pair<String, String>>) {
                 Text(
                     value,
                     style = Css.Text.Body.copy(
+                        textAlign = TextAlign.Center,
                         fontSize = Css.FontSize.Xl,
                         fontWeight = Css.FontWeight.Medium,
                         lineHeight = Css.LineHeight.Condensed,

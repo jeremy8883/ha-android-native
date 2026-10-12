@@ -129,8 +129,8 @@ Text styles (`Css.Text`, composable getters):
 
 | Frontend | Kotlin |
 |---|---|
-| body text (`haStyle` `:host`: `--ha-font-size-m`, `--ha-line-height-normal`) | `Css.Text.Body`: centred, secondary colour; its line height is fixed at 22.4, so a copy at another `fontSize` sets `lineHeight` too (`Css.LineHeight.Normal` when the element inherits the body's) |
-| body text in `--primary-text-color`, start-aligned | `Css.Text.Primary` |
+| body text (`haStyle` `:host`: `--ha-font-size-m`, `--ha-line-height-normal`, `--primary-text-color`, start-aligned) | `Css.Text.Body`: its line height is 1.6em, so a copy at another `fontSize` scales it as CSS does; the extra height is split above and below each line, the first and last too (`CSS_LINE_HEIGHT_STYLE`), as in CSS |
+| body text where nothing sets a line height (the document's `line-height: normal`: most more-info domain controls) | `Css.Text.Document` (`Css.LineHeight.CssNormal`) |
 | `ha-card` `.card-header` | `Css.Text.CardHeader` (padding: `CardHeaderPadding`, `CardHeaderAboveContentPadding`) |
 | `ha-dialog-header` `.header-title` (every `ha-dialog`'s title) | `Css.Text.DialogTitle` |
 | `haStyle` `h1` / `h2` / `h3` | `Css.Text.H1` / `H2` / `H3` |

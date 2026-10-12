@@ -238,7 +238,7 @@ private fun ViewTab(selected: Boolean, onClick: () -> Unit, modifier: Modifier, 
     ) {
         CompositionLocalProvider(
             LocalContentColor provides color,
-            LocalTextStyle provides Css.Text.Primary.copy(color = color, fontWeight = Css.FontWeight.Action),
+            LocalTextStyle provides Css.Text.Body.copy(color = color, fontWeight = Css.FontWeight.Action),
         ) { content() }
     }
 }

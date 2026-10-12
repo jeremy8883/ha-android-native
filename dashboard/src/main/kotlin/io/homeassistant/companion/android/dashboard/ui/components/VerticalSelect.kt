@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HASize
@@ -103,7 +104,7 @@ private fun SelectOption(
         if (icon != null) {
             DashboardIcon(name = icon, tint = content, modifier = Modifier.size(HASize.X2L))
         } else {
-            Text(option.label, style = Css.Text.Body, color = content)
+            Text(option.label, style = Css.Text.Body.copy(textAlign = TextAlign.Center), color = content)
         }
     }
 }

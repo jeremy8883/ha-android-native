@@ -38,6 +38,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.composable.ButtonSize
 import io.homeassistant.companion.android.common.compose.composable.ButtonVariant
@@ -150,7 +151,7 @@ private fun StateChip(model: AlarmPanelCardModel.Shown, onClick: () -> Unit) {
         horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
     ) {
         DashboardIcon(model.stateIcon, onChip, Modifier.size(HASize.L))
-        Text(model.stateLabel, style = Css.Text.Body, color = onChip)
+        Text(model.stateLabel, style = Css.Text.Body.copy(textAlign = TextAlign.Center), color = onChip)
     }
 }
 
@@ -244,7 +245,11 @@ private fun KeypadKey(label: String, clear: Boolean, enabled: Boolean, onClick: 
         if (clear) {
             DashboardIcon(CLEAR_ICON, red, Modifier.size(HASize.X2L))
         } else {
-            Text(label, style = Css.Text.Body.copy(fontSize = KEY_FONT_SIZE), color = colors.colorTextPrimary)
+            Text(
+                label,
+                style = Css.Text.Body.copy(textAlign = TextAlign.Center, fontSize = KEY_FONT_SIZE),
+                color = colors.colorTextPrimary,
+            )
         }
     }
 }

@@ -19,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
@@ -98,7 +99,11 @@ private fun OpenButton(open: LockOpen, onAction: (CardAction) -> Unit) {
                 tint = colors.colorFillSuccessLoudResting,
                 modifier = Modifier.size(HASize.X2L),
             )
-            Text(open.doneLabel, style = Css.Text.Body, color = colors.colorFillSuccessLoudResting)
+            Text(
+                open.doneLabel,
+                style = Css.Text.Body.copy(textAlign = TextAlign.Center),
+                color = colors.colorFillSuccessLoudResting,
+            )
         }
         return
     }

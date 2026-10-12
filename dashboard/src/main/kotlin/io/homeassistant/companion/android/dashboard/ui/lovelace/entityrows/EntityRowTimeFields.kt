@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.composable.HADropdownItem
 import io.homeassistant.companion.android.common.compose.composable.HADropdownMenu
 import io.homeassistant.companion.android.common.compose.composable.HATextField
+import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.RowDateTime
 import io.homeassistant.companion.android.dashboard.ui.theme.Css
@@ -56,7 +57,7 @@ internal fun TimeFields(control: RowDateTime, onAction: (CardAction) -> Unit) {
     }
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Css.Space.S1)) {
         TimeBox(hours, "hh", control.enabled, { hours = it }, commit)
-        Text(":", style = Css.Text.Body)
+        Text(":", style = Css.Text.Body, color = LocalHAColorScheme.current.colorTextSecondary)
         TimeBox(minutes, "mm", control.enabled, { minutes = it }, commit)
         if (control.amPm) {
             HADropdownMenu(

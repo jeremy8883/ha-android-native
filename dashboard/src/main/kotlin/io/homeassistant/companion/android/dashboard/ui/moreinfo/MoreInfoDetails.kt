@@ -71,7 +71,7 @@ private fun DetailsSection(title: String, entries: List<Pair<String, String>>, e
                 if (entries.isEmpty() && empty != null) {
                     Text(
                         empty,
-                        style = Css.Text.Body,
+                        style = Css.Text.Body.copy(textAlign = TextAlign.Center),
                         color = colors.colorTextSecondary,
                         modifier = Modifier.fillMaxWidth().padding(vertical = Css.Space.S2),
                     )

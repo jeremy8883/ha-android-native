@@ -177,7 +177,7 @@ private fun SidebarItem(
         icon(tint)
         Text(
             label,
-            style = Css.Text.Primary.copy(fontWeight = Css.FontWeight.Medium),
+            style = Css.Text.Body.copy(fontWeight = Css.FontWeight.Medium),
             color = if (selected) colors.colorOnPrimaryNormal else colors.colorTextPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -226,7 +226,8 @@ private fun PanelEntries(
                     R.string.native_dashboard_load_failed,
                     LocalContext.current.loadErrorText(sidebar.error),
                 ),
-                style = Css.Text.Body,
+                style = Css.Text.Body.copy(textAlign = TextAlign.Center),
+                color = colors.colorTextSecondary,
             )
             HAAccentButton(text = stringResource(R.string.native_dashboard_retry), onClick = onRetry)
         }
@@ -316,6 +317,7 @@ private fun UserBadge(user: UserBadgeModel) {
             Text(
                 user.initials,
                 style = Css.Text.Body.copy(
+                    textAlign = TextAlign.Center,
                     fontSize = if (user.initials.length > 2) Css.FontSize.S else Css.FontSize.L,
                 ),
                 color =

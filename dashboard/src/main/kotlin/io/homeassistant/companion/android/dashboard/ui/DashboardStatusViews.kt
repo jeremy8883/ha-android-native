@@ -47,6 +47,7 @@ internal fun LoadErrorScreen(error: LoadError, onRetry: () -> Unit) {
         Text(
             text = stringResource(R.string.native_dashboard_error, LocalContext.current.loadErrorText(error)),
             style = Css.Text.Body,
+            color = LocalHAColorScheme.current.colorTextSecondary,
             textAlign = TextAlign.Center,
         )
         HAAccentButton(text = stringResource(R.string.native_dashboard_retry), onClick = onRetry)

@@ -94,7 +94,8 @@ internal fun MoreInfoSectionHeader(
                 style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                 color = colors.colorTextPrimary,
             )
-            subtitle?.let { Text(it, style = Css.Text.Body.copy(textAlign = TextAlign.Start)) }
+            // `.header-secondary`
+            subtitle?.let { Text(it, style = Css.Text.Body, color = colors.colorTextSecondary) }
         }
         HAPlainButton(showMore, onShowMore)
     }

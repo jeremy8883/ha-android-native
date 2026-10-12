@@ -7,6 +7,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.style.TextAlign
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.display.DisplayFormats
 import io.homeassistant.companion.android.dashboard.energy.EnergyData
@@ -193,7 +194,7 @@ internal fun SankeyCard(
         } else {
             Text(
                 snapshot.localize(if (spec.live) NO_DATA else NO_DATA_PERIOD),
-                style = Css.Text.Body,
+                style = Css.Text.Body.copy(textAlign = TextAlign.Center),
                 color = LocalHAColorScheme.current.colorTextSecondary,
                 modifier = Modifier.padding(Css.Space.S4),
             )

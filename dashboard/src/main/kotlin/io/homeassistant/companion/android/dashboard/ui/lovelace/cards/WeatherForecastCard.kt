@@ -76,7 +76,7 @@ internal fun WeatherForecastCard(
                 // `.unavailable`: `--ha-font-size-l`
                 Text(
                     model.text,
-                    style = Css.Text.Body.copy(fontSize = Css.FontSize.L),
+                    style = Css.Text.Body.copy(textAlign = TextAlign.Center, fontSize = Css.FontSize.L),
                     color = LocalHAColorScheme.current.colorTextPrimary,
                 )
             }

@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.energy.PowerSourcesGraphModel
 import io.homeassistant.companion.android.dashboard.energy.PowerStack
@@ -50,7 +51,7 @@ internal fun PowerSourcesGraphCard(
         if (graph.series.none { it.points.isNotEmpty() }) {
             Text(
                 snapshot.localize(if (graph.today) NO_DATA else NO_DATA_PERIOD),
-                style = Css.Text.Body,
+                style = Css.Text.Body.copy(textAlign = TextAlign.Center),
                 color = LocalHAColorScheme.current.colorTextSecondary,
                 modifier = Modifier.padding(Css.Space.S4),
             )

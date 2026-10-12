@@ -343,7 +343,7 @@ internal fun MoreInfoStateText(model: MoreInfoModel) {
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             model.state,
-            style = Css.Text.Primary.copy(
+            style = Css.Text.Body.copy(
                 fontSize = STATE_FONT_SIZE,
                 lineHeight = Css.LineHeight.Condensed,
                 textAlign = TextAlign.Center,
@@ -361,6 +361,7 @@ internal fun MoreInfoStateText(model: MoreInfoModel) {
                 // `.last-changed`'s `padding: 4px 0`
                 modifier = Modifier.padding(vertical = Css.Space.S1),
                 style = Css.Text.Body.copy(
+                    textAlign = TextAlign.Center,
                     fontSize = Css.FontSize.L,
                     lineHeight = Css.LineHeight.Normal,
                     fontWeight = Css.FontWeight.Medium,
@@ -369,7 +370,13 @@ internal fun MoreInfoStateText(model: MoreInfoModel) {
             )
             // The `after-time` slot: a vacuum's or lawn mower's battery
             (model.vacuum?.battery ?: model.lawnMower?.battery)?.let { battery ->
-                battery.text?.let { Text(it, style = Css.Text.Body, color = colors.colorTextSecondary) }
+                battery.text?.let {
+                    Text(
+                        it,
+                        style = Css.Text.Body.copy(textAlign = TextAlign.Center),
+                        color = colors.colorTextSecondary,
+                    )
+                }
                 battery.icon?.let { DashboardIcon(it, colors.colorTextSecondary, Modifier.size(HASize.XL)) }
             }
         }

@@ -24,6 +24,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.energy.EnergyBarChart
@@ -86,7 +87,7 @@ internal fun EnergyUsageGraphCard(
                 val key = if (data.period.start == today) "no_data" else "no_data_period"
                 Text(
                     localize("ui.panel.lovelace.cards.energy.$key"),
-                    style = Css.Text.Body,
+                    style = Css.Text.Body.copy(textAlign = TextAlign.Center),
                     color = LocalHAColorScheme.current.colorTextSecondary,
                     modifier = Modifier.align(Alignment.Center),
                 )

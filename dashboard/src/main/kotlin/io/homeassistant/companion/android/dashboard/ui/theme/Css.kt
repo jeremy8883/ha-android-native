@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight as ComposeFontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -121,6 +122,12 @@ internal object Css {
 
         /** `--ha-line-height-expanded`: 2. */
         val Expanded = 2.em
+
+        /**
+         * The CSS keyword `normal` (not `--ha-line-height-normal`): the font's own line spacing, which text gets where
+         * no element sets a line height (the document, dialogs such as more-info).
+         */
+        val CssNormal = TextUnit.Unspecified
     }
 
     /** `--ha-space-*`: `--ha-space-n` is n × 4px. */
@@ -239,28 +246,30 @@ internal object Css {
 
         /**
          * The frontend's body text (`haStyle`'s `:host`): `--ha-font-size-m` at `--ha-line-height-normal`, normal
-         * weight. Centred and in the secondary text colour, so set `color`/`textAlign` where the frontend shows
-         * primary or start-aligned text. Its line height is fixed (22.4px), so a copy at another size keeps it.
+         * weight, in `--primary-text-color`, start-aligned. Its line height is in em, so a copy at another
+         * `fontSize` scales it as CSS does with a unitless line height; the extra height is split above and below
+         * every line, the first and last too, as CSS does ([CSS_LINE_HEIGHT_STYLE]).
          */
         val Body
             @Composable
             get() = TextStyle(
                 fontStyle = FontStyle.Normal,
                 fontSize = FontSize.M,
-                lineHeight = BODY_LINE_HEIGHT,
+                lineHeight = LineHeight.Normal,
+                lineHeightStyle = CSS_LINE_HEIGHT_STYLE,
                 fontWeight = FontWeight.Body,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Start,
                 letterSpacing = 0.sp,
-                color = LocalHAColorScheme.current.colorTextSecondary,
+                color = LocalHAColorScheme.current.colorTextPrimary,
             )
 
         /**
-         * [Body] start-aligned in the primary text colour, the frontend's default for text (`--primary-text-color`)
-         * and the base of its titles.
+         * [Body] where no element sets a line height, so it is the document's `line-height: normal` (the font's own):
+         * the text of most more-info domain controls (`more-info-update`, `more-info-script`, `more-info-sun`...).
          */
-        val Primary
+        val Document
             @Composable
-            get() = Body.copy(textAlign = TextAlign.Start, color = LocalHAColorScheme.current.colorTextPrimary)
+            get() = Body.copy(lineHeight = LineHeight.CssNormal)
 
         /** `ha-card`'s `.card-header`: `--ha-font-size-2xl`, normal weight, at `--ha-line-height-expanded`. */
         val CardHeader
@@ -268,6 +277,7 @@ internal object Css {
             get() = TextStyle(
                 fontSize = FontSize.X2l,
                 lineHeight = LineHeight.Expanded,
+                lineHeightStyle = CSS_LINE_HEIGHT_STYLE,
                 letterSpacing = CARD_HEADER_LETTER_SPACING.em,
                 fontWeight = FontWeight.Normal,
                 textAlign = TextAlign.Start,
@@ -280,7 +290,7 @@ internal object Css {
          */
         val DialogTitle
             @Composable
-            get() = Primary.copy(
+            get() = Body.copy(
                 fontSize = FontSize.Xl,
                 fontWeight = FontWeight.Medium,
                 lineHeight = LineHeight.Condensed,
@@ -289,7 +299,7 @@ internal object Css {
         /** `haStyle`'s `h1`: `--ha-font-size-2xl`, normal weight, at `--ha-line-height-condensed`. */
         val H1
             @Composable
-            get() = Primary.copy(
+            get() = Body.copy(
                 fontSize = FontSize.X2l,
                 fontWeight = FontWeight.Normal,
                 lineHeight = LineHeight.Condensed,
@@ -298,12 +308,12 @@ internal object Css {
         /** `haStyle`'s `h2`: `--ha-font-size-xl`, medium weight, at `--ha-line-height-normal`. */
         val H2
             @Composable
-            get() = Primary.copy(fontSize = FontSize.Xl, fontWeight = FontWeight.Medium, lineHeight = LineHeight.Normal)
+            get() = Body.copy(fontSize = FontSize.Xl, fontWeight = FontWeight.Medium, lineHeight = LineHeight.Normal)
 
         /** `haStyle`'s `h3`: `--ha-font-size-l`, normal weight, at `--ha-line-height-normal`. */
         val H3
             @Composable
-            get() = Primary.copy(fontSize = FontSize.L, fontWeight = FontWeight.Normal, lineHeight = LineHeight.Normal)
+            get() = Body.copy(fontSize = FontSize.L, fontWeight = FontWeight.Normal, lineHeight = LineHeight.Normal)
     }
 }
 
@@ -326,8 +336,11 @@ internal val CardHeaderAboveContentPadding = PaddingValues(
     bottom = Css.Space.S2,
 )
 
-/** `--ha-line-height-normal` (1.6) of `--ha-font-size-m`, fixed so a copy at another size keeps the same rhythm. */
-internal val BODY_LINE_HEIGHT = 22.4.cssFontPx
+/**
+ * How CSS lays a line height out: the extra height split evenly above and below each line, the first and last lines
+ * too (Compose trims it off them by default).
+ */
+internal val CSS_LINE_HEIGHT_STYLE = LineHeightStyle(LineHeightStyle.Alignment.Center, LineHeightStyle.Trim.None)
 
 /** `.card-header`'s `letter-spacing: -0.012em`. */
 private const val CARD_HEADER_LETTER_SPACING = -0.012f

@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HASwitch
@@ -67,6 +68,7 @@ internal fun MediaGroupingButton(grouping: MediaGrouping, onAction: (CardAction)
                     Text(
                         "$count",
                         style = Css.Text.Body.copy(
+                            textAlign = TextAlign.Center,
                             fontSize =
                             Css.FontSize.M * BADGE_TEXT,
                         ),

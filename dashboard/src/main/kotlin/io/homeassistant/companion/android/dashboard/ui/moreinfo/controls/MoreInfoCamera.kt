@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -96,7 +97,7 @@ internal fun MoreInfoCamera(camera: MoreInfoExtra.Camera, state: EntityState) {
         if ((download as? SnapshotDownload.Done)?.failed == true) {
             Text(
                 camera.downloadFailed,
-                style = Css.Text.Body,
+                style = Css.Text.Body.copy(textAlign = TextAlign.Center),
                 color = LocalHAColorScheme.current.colorOnDangerNormal,
             )
         }

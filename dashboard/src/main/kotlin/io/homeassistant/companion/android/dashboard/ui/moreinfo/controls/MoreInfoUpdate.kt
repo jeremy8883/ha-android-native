@@ -88,7 +88,7 @@ private fun UpdateSummary(info: UpdateMoreInfo) {
         info.title?.let {
             Text(
                 it,
-                style = Css.Text.Body.copy(fontWeight = FontWeight.Bold),
+                style = Css.Text.Document.copy(fontWeight = FontWeight.Bold),
                 color = colors.colorTextPrimary,
                 modifier = Modifier.padding(vertical = Css.Space.S3),
             )
@@ -126,8 +126,8 @@ internal fun MoreInfoUpdateFooter(
 @Composable
 private fun VersionRow(key: String, value: String) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(key, style = Css.Text.Body, color = LocalHAColorScheme.current.colorTextPrimary)
-        Text(value, style = Css.Text.Body, color = LocalHAColorScheme.current.colorTextPrimary)
+        Text(key, style = Css.Text.Document, color = LocalHAColorScheme.current.colorTextPrimary)
+        Text(value, style = Css.Text.Document, color = LocalHAColorScheme.current.colorTextPrimary)
     }
 }
 
@@ -141,7 +141,7 @@ private fun ReleaseLink(label: String, url: String) {
     val context = LocalContext.current
     Text(
         label,
-        style = Css.Text.Body.copy(textAlign = TextAlign.Start, textDecoration = TextDecoration.Underline),
+        style = Css.Text.Document.copy(textAlign = TextAlign.Start, textDecoration = TextDecoration.Underline),
         color = LocalHAColorScheme.current.colorOnPrimaryNormal,
         modifier = Modifier.clickable(role = Role.Button) {
             context.startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
@@ -175,7 +175,7 @@ private fun ReleaseNotes(info: UpdateMoreInfo, entityId: String) {
         }
         is Loadable.Failed -> Text(
             LocalContext.current.loadErrorText(loaded.error),
-            style = Css.Text.Body,
+            style = Css.Text.Document,
             color = LocalHAColorScheme.current.colorOnDangerNormal,
         )
         is Loadable.Ready -> loaded.value?.let {
@@ -222,13 +222,13 @@ private fun UpdateFooter(info: UpdateMoreInfo, option: UpdateBackupOption?, onAc
             Column(Modifier.weight(1f)) {
                 Text(
                     option.title,
-                    style = Css.Text.Body.copy(textAlign = TextAlign.Start),
+                    style = Css.Text.Document.copy(textAlign = TextAlign.Start),
                     color = LocalHAColorScheme.current.colorTextPrimary,
                 )
                 option.description?.let {
                     Text(
                         it,
-                        style = Css.Text.Body.copy(textAlign = TextAlign.Start),
+                        style = Css.Text.Document.copy(textAlign = TextAlign.Start),
                         color = LocalHAColorScheme.current.colorTextSecondary,
                     )
                 }
@@ -256,7 +256,7 @@ private fun UpdateFooter(info: UpdateMoreInfo, option: UpdateBackupOption?, onAc
         AlertDialog(
             onDismissRequest = { explainSkip = false },
             title = { Text(info.skip.autoUpdateTitle.orEmpty(), style = Css.Text.DialogTitle) },
-            text = { Text(info.skip.autoUpdateText.orEmpty(), style = Css.Text.Body) },
+            text = { Text(info.skip.autoUpdateText.orEmpty(), style = Css.Text.Document) },
             confirmButton = { HAPlainButton(stringResource(commonR.string.ok), { explainSkip = false }) },
         )
     }

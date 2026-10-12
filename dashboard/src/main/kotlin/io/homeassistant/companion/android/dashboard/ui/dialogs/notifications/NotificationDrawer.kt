@@ -176,14 +176,15 @@ private fun NotificationList(
                     R.string.native_dashboard_load_failed,
                     LocalContext.current.loadErrorText(notifications.error),
                 ),
-                style = Css.Text.Body,
+                style = Css.Text.Body.copy(textAlign = TextAlign.Center),
+                color = LocalHAColorScheme.current.colorTextSecondary,
             )
             HAAccentButton(text = stringResource(R.string.native_dashboard_retry), onClick = viewModel::retry)
         }
         is Loadable.Ready -> if (notifications.value.isEmpty()) {
             Text(
                 localize(EMPTY),
-                style = Css.Text.Body,
+                style = Css.Text.Body.copy(textAlign = TextAlign.Center),
                 color = LocalHAColorScheme.current.colorTextPrimary,
                 modifier = modifier.fillMaxWidth().padding(Css.Space.S4),
             )

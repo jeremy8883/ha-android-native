@@ -39,6 +39,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -262,7 +263,7 @@ private fun GridCard(
         }
         Text(
             child.title,
-            style = Css.Text.Body,
+            style = Css.Text.Body.copy(textAlign = TextAlign.Center),
             color = colors.colorTextPrimary,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
@@ -343,7 +344,7 @@ private fun PlayButton(call: CardAction.CallService, label: String, onPlay: (Car
 private fun FooterText(text: String) {
     Text(
         text,
-        style = Css.Text.Body,
+        style = Css.Text.Body.copy(textAlign = TextAlign.Center),
         color = LocalHAColorScheme.current.colorTextSecondary,
         modifier = Modifier.padding(Css.Space.S4),
     )

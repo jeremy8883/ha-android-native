@@ -292,7 +292,7 @@ private fun Tooltip(text: String, fraction: Float, vertical: Boolean, style: Con
     val colors = LocalHAColorScheme.current
     Text(
         text = text,
-        style = Css.Text.Body.copy(fontSize = style.tooltipFontSize),
+        style = Css.Text.Body.copy(fontSize = style.tooltipFontSize, lineHeight = Css.LineHeight.CssNormal),
         color = colors.colorTextPrimary,
         modifier = Modifier
             .layout { measurable, constraints ->

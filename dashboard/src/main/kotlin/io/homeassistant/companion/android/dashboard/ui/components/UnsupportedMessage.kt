@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
@@ -26,7 +27,11 @@ internal fun UnsupportedMessage(text: String, onOpenElsewhere: (() -> Unit)?) {
         verticalArrangement = Arrangement.spacedBy(Css.Space.S4, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text, style = Css.Text.Body, color = LocalHAColorScheme.current.colorTextSecondary)
+        Text(
+            text,
+            style = Css.Text.Body.copy(textAlign = TextAlign.Center),
+            color = LocalHAColorScheme.current.colorTextSecondary,
+        )
         onOpenElsewhere?.let { HAAccentButton(stringResource(R.string.native_dashboard_open_elsewhere), it) }
     }
 }

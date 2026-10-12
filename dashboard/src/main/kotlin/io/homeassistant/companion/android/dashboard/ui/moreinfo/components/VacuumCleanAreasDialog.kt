@@ -174,7 +174,7 @@ private fun CleanAreasContent(
             verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
         ) {
             DashboardIcon("mdi:texture-box", colors.colorTextSecondary, Modifier.size(HASize.X5L))
-            Text(empty.title, style = Css.Text.Body, color = colors.colorTextPrimary)
+            Text(empty.title, style = Css.Text.Body.copy(textAlign = TextAlign.Center), color = colors.colorTextPrimary)
             Text(
                 empty.text,
                 style = Css.Text.Body.copy(textAlign = TextAlign.Center),
@@ -213,7 +213,7 @@ private fun CleanAreasContent(
                 section.areas.forEach { area -> AreaCard(area, chosen.indexOf(area.areaId)) { onToggle(area.areaId) } }
             }
         }
-        Text(view.hint, style = Css.Text.Body, color = colors.colorTextSecondary)
+        Text(view.hint, style = Css.Text.Body.copy(textAlign = TextAlign.Center), color = colors.colorTextSecondary)
     }
 }
 
@@ -253,7 +253,12 @@ private fun AreaCard(area: CleanArea, order: Int, onClick: () -> Unit) {
                 if (selected) colors.colorFillPrimaryLoudResting else colors.colorTextSecondary,
                 Modifier.size(HASize.X2L),
             )
-            Text(area.name, style = Css.Text.Body, color = colors.colorTextPrimary, maxLines = 2)
+            Text(
+                area.name,
+                style = Css.Text.Body.copy(textAlign = TextAlign.Center),
+                color = colors.colorTextPrimary,
+                maxLines = 2,
+            )
         }
         if (selected) {
             Box(
@@ -261,7 +266,13 @@ private fun AreaCard(area: CleanArea, order: Int, onClick: () -> Unit) {
                     Alignment.TopEnd,
                 ).size(BADGE).clip(CircleShape).background(colors.colorFillPrimaryLoudResting),
                 contentAlignment = Alignment.Center,
-            ) { Text("${order + 1}", style = Css.Text.Body, color = colors.colorOnPrimaryLoud) }
+            ) {
+                Text(
+                    "${order + 1}",
+                    style = Css.Text.Body.copy(textAlign = TextAlign.Center),
+                    color = colors.colorOnPrimaryLoud,
+                )
+            }
         }
     }
 }

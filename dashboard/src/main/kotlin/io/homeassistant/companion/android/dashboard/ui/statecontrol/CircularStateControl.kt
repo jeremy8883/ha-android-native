@@ -193,7 +193,11 @@ private fun CircularInfo(
     Column(modifier = modifier.fillMaxWidth(LABEL_WIDTH), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = control.label.orEmpty(),
-            style = Css.Text.Body.copy(fontSize = Css.FontSize.L, fontWeight = FontWeight.Medium),
+            style = Css.Text.Body.copy(
+                textAlign = TextAlign.Center,
+                fontSize = Css.FontSize.L,
+                fontWeight = FontWeight.Medium,
+            ),
             color = when {
                 control.labelDisabled -> colors.colorTextSecondary
                 else -> control.slider.actionColor?.toColor() ?: colors.colorTextPrimary
@@ -246,7 +250,7 @@ private fun CircularPrimaryView(
         is CircularPrimary.Current -> BigNumberText(primary.number, bottomUnit)
         is CircularPrimary.Text -> Text(
             primary.text,
-            style = Css.Text.Primary.copy(fontSize = STATE_SIZE, lineHeight = STATE_LINE_HEIGHT),
+            style = Css.Text.Body.copy(fontSize = STATE_SIZE, lineHeight = STATE_LINE_HEIGHT),
             color = colors.colorTextPrimary,
             textAlign = TextAlign.Center,
         )
@@ -270,20 +274,28 @@ private fun BigNumberText(number: BigNumber, bottomUnit: Boolean) {
     Row(modifier = Modifier.semantics { contentDescription = description }, verticalAlignment = Alignment.Bottom) {
         Text(
             integer,
-            style = Css.Text.Primary.copy(fontSize = BIG_SIZE, lineHeight = BIG_LINE_HEIGHT.em),
+            style = Css.Text.Body.copy(fontSize = BIG_SIZE, lineHeight = BIG_LINE_HEIGHT.em),
             color = color,
         )
         if (bottomUnit) {
             Text(
                 decimal + number.unit,
-                style = Css.Text.Body.copy(fontSize = UNIT_SIZE),
+                style = Css.Text.Body.copy(fontSize = UNIT_SIZE, lineHeight = Css.LineHeight.Condensed),
                 color = color,
                 modifier = Modifier.padding(bottom = Css.Space.S2),
             )
         } else {
             Column(modifier = Modifier.padding(vertical = Css.Space.S1)) {
-                Text(number.unit, style = Css.Text.Body.copy(fontSize = UNIT_SIZE), color = color)
-                Text(decimal, style = Css.Text.Body.copy(fontSize = DECIMAL_SIZE), color = color)
+                Text(
+                    number.unit,
+                    style = Css.Text.Body.copy(fontSize = UNIT_SIZE, lineHeight = Css.LineHeight.Condensed),
+                    color = color,
+                )
+                Text(
+                    decimal,
+                    style = Css.Text.Body.copy(fontSize = DECIMAL_SIZE, lineHeight = DECIMAL_LINE_HEIGHT.em),
+                    color = color,
+                )
             }
         }
     }
@@ -327,8 +339,9 @@ private val BUTTONS_BOTTOM = 10.dp
 private val BIG_SIZE = 57.cssFontPx
 private const val BIG_LINE_HEIGHT = 1.12f
 
-/** `.value .decimal`'s `font-size: 0.42em` of [BIG_SIZE]. */
+/** `.value .decimal`'s `font-size: 0.42em` of [BIG_SIZE], at `line-height: 1.33`. */
 private val DECIMAL_SIZE = BIG_SIZE * 0.42f
+private const val DECIMAL_LINE_HEIGHT = 1.33f
 
 /** `.value .unit`'s `font-size: 0.33em` of [BIG_SIZE]. */
 private val UNIT_SIZE = BIG_SIZE * 0.33f

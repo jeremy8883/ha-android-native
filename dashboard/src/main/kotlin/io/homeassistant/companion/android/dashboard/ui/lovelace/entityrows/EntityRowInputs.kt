@@ -173,7 +173,11 @@ private fun SliderTooltip(text: String) {
                 .background(background, RoundedCornerShape(Css.Radius.Sm))
                 .padding(Css.Space.S2),
         ) {
-            Text(text, style = Css.Text.Body.copy(fontSize = Css.FontSize.S), color = colors.colorTextPrimary)
+            Text(
+                text,
+                style = Css.Text.Body.copy(fontSize = Css.FontSize.S, lineHeight = Css.LineHeight.Condensed),
+                color = colors.colorTextPrimary,
+            )
         }
     }
 }

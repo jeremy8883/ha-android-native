@@ -78,7 +78,7 @@ internal fun FieldEditor(
         FieldSelector.Time -> TimeEditor(text, enabled) { onChange(JsonPrimitive(it)) }
         FieldSelector.DateTime -> DateTimeEditor(text, enabled, today, onChange)
         is FieldSelector.Duration -> DurationEditor(value, enabled, selector.enableDay, onChange)
-        is FieldSelector.Constant -> Text(selector.label ?: selector.value.toString(), style = Css.Text.Body)
+        is FieldSelector.Constant -> Text(selector.label ?: selector.value.toString(), style = Css.Text.Document)
         is FieldSelector.Unsupported -> UnsupportedEditor(text ?: value?.toString().orEmpty(), enabled, onChange)
     }
 }
@@ -197,7 +197,7 @@ private fun SelectEditor(
                         },
                         enabled = enabled,
                     )
-                    Text(label, style = Css.Text.Body, color = LocalHAColorScheme.current.colorTextPrimary)
+                    Text(label, style = Css.Text.Document, color = LocalHAColorScheme.current.colorTextPrimary)
                 }
             }
         }

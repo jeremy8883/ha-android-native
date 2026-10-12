@@ -71,12 +71,12 @@ internal fun MoreInfoScript(
     val colors = LocalHAColorScheme.current
     Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
         shown.description?.let { MarkdownText(it, Modifier.fillMaxWidth()) }
-        shown.queue?.let { Text(it, style = Css.Text.Body, color = colors.colorTextPrimary) }
+        shown.queue?.let { Text(it, style = Css.Text.Document, color = colors.colorTextPrimary) }
         shown.fields?.let { fields ->
             Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
                 Text(
                     shown.fieldsTitle,
-                    style = Css.Text.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
+                    style = Css.Text.Document.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
                     color = colors.colorTextPrimary,
                 )
                 val hasOptional = fields.any { it.optional }
@@ -131,7 +131,7 @@ private fun ScriptFieldRow(
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Css.Space.S1)) {
             Text(
                 field.name,
-                style = Css.Text.Body.copy(textAlign = TextAlign.Start),
+                style = Css.Text.Document.copy(textAlign = TextAlign.Start),
                 color = colors.colorTextPrimary,
                 modifier = if (field.optional) {
                     Modifier.clickable {
@@ -182,7 +182,7 @@ private fun ScriptButton(icon: String, label: String, enabled: Boolean, modifier
         verticalAlignment = Alignment.CenterVertically,
     ) {
         DashboardIcon(icon, colors.colorTextPrimary, Modifier.size(HASize.X2L))
-        Text(label, style = Css.Text.Body, color = colors.colorTextPrimary)
+        Text(label, style = Css.Text.Document, color = colors.colorTextPrimary)
     }
 }
 

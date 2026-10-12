@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.energy.EnergyData
@@ -74,7 +75,7 @@ internal fun EnergyCardFrame(
 private fun Message(text: String) {
     Text(
         text,
-        style = Css.Text.Body,
+        style = Css.Text.Body.copy(textAlign = TextAlign.Center),
         color = LocalHAColorScheme.current.colorTextSecondary,
         modifier = Modifier.padding(Css.Space.S4),
     )

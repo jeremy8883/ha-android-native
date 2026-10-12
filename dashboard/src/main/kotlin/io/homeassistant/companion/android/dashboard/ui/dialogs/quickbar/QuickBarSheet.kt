@@ -164,7 +164,7 @@ private fun SearchField(value: String, onChange: (String) -> Unit, localize: Loc
         value = value,
         onValueChange = onChange,
         modifier = modifier.fillMaxWidth().padding(horizontal = Css.Space.S4),
-        placeholder = { Text(localize(TITLE), style = Css.Text.Body) },
+        placeholder = { Text(localize(TITLE), style = Css.Text.Body, color = colors.colorTextSecondary) },
         leadingIcon = { DashboardIcon("mdi:magnify", colors.colorTextPrimary, Modifier.size(HASize.X2L)) },
         trailingIcon = if (value.isEmpty()) {
             null

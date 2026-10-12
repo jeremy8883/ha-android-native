@@ -111,7 +111,11 @@ private fun EmptyCover(state: String, icon: Boolean) {
         if (icon) {
             DashboardIcon("mdi:music-note", colors.colorTextSecondary, Modifier.size(EMPTY_ICON))
         } else {
-            Text(state, style = Css.Text.Body.copy(fontSize = EMPTY_COVER_FONT_SIZE), color = colors.colorTextSecondary)
+            Text(
+                state,
+                style = Css.Text.Document.copy(fontSize = EMPTY_COVER_FONT_SIZE),
+                color = colors.colorTextSecondary,
+            )
         }
     }
 }
@@ -129,7 +133,7 @@ private fun MediaTitles(title: String?, artist: String?) {
         title?.let {
             Text(
                 it,
-                style = Css.Text.Primary.copy(fontSize = Css.FontSize.Xl, fontWeight = Css.FontWeight.Bold),
+                style = Css.Text.Document.copy(fontSize = Css.FontSize.Xl, fontWeight = Css.FontWeight.Bold),
                 color = colors.colorTextPrimary,
                 maxLines = 1,
                 textAlign = TextAlign.Center,
@@ -139,7 +143,7 @@ private fun MediaTitles(title: String?, artist: String?) {
         artist?.let {
             Text(
                 it,
-                style = Css.Text.Body.copy(fontSize = Css.FontSize.L),
+                style = Css.Text.Document.copy(fontSize = Css.FontSize.L),
                 color = colors.colorTextSecondary,
                 maxLines = 1,
                 textAlign = TextAlign.Center,

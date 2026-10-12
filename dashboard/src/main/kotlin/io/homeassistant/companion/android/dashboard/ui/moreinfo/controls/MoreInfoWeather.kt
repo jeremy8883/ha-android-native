@@ -110,7 +110,7 @@ internal fun MoreInfoWeather(weather: WeatherMoreInfo, state: EntityState, hass:
         weather.attribution?.let {
             Text(
                 it,
-                style = Css.Text.Body,
+                style = Css.Text.Body.copy(textAlign = TextAlign.Center),
                 color = colors.colorTextSecondary,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
@@ -127,7 +127,7 @@ internal fun MoreInfoWeather(weather: WeatherMoreInfo, state: EntityState, hass:
 private fun WeatherConditions(weather: WeatherMoreInfo, secondary: SecondaryWeather?) {
     val colors = LocalHAColorScheme.current
     // `.state, .temp-attribute .temp`
-    val stateStyle = Css.Text.Primary.copy(fontSize = Css.FontSize.X3l, lineHeight = Css.LineHeight.Condensed)
+    val stateStyle = Css.Text.Body.copy(fontSize = Css.FontSize.X3l, lineHeight = Css.LineHeight.Condensed)
     // `.attribute`
     val attributeStyle = Css.Text.Body.copy(lineHeight = ATTRIBUTE_LINE_HEIGHT.em)
     Row(

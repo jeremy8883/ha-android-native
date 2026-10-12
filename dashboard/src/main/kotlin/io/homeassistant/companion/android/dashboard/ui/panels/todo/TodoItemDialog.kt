@@ -203,7 +203,12 @@ private fun DueFields(
     hass: HassSnapshot,
     today: LocalDate,
 ) {
-    Text("${hass.localize("$STRINGS.due")}:", style = Css.Text.Body.copy(textAlign = TextAlign.Start))
+    // `.label`: `--input-label-ink-color`
+    Text(
+        "${hass.localize("$STRINGS.due")}:",
+        style = Css.Text.Body,
+        color = LocalHAColorScheme.current.colorTextSecondary,
+    )
     Row(verticalAlignment = Alignment.CenterVertically) {
         DateEditor(draft.dueDate?.toString(), enabled = editable) { draft.dueDate = LocalDate.parse(it) }
         if (features.dueDateTime) {

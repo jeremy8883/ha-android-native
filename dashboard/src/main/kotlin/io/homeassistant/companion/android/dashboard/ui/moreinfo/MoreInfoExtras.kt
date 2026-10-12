@@ -87,11 +87,11 @@ private fun MoreInfoSun(rows: List<SunRow>) {
                 // `.key`: the name, then when, on one line
                 Text(
                     listOfNotNull(row.name, row.relative).joinToString(" "),
-                    style = Css.Text.Body.copy(textAlign = TextAlign.Start),
+                    style = Css.Text.Document.copy(textAlign = TextAlign.Start),
                     color = colors.colorTextPrimary,
                     modifier = Modifier.weight(1f),
                 )
-                Text(row.value, style = Css.Text.Body, color = colors.colorTextPrimary)
+                Text(row.value, style = Css.Text.Document, color = colors.colorTextPrimary)
             }
         }
     }
@@ -108,7 +108,7 @@ private fun MoreInfoConfigurator(configurator: ConfiguratorMoreInfo, onAction: (
     val values = remember(configurator) { mutableStateMapOf<String, String>() }
     Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
         configurator.description?.let { MarkdownText(it, Modifier.fillMaxWidth()) }
-        configurator.errors?.let { Text(it, style = Css.Text.Body, color = colors.colorOnDangerNormal) }
+        configurator.errors?.let { Text(it, style = Css.Text.Document, color = colors.colorOnDangerNormal) }
         configurator.fields.forEach { field ->
             HATextField(
                 value = values[field.id].orEmpty(),

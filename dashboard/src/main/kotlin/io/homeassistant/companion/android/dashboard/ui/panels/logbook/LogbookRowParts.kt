@@ -138,7 +138,7 @@ internal fun LogbookDayHeader(text: String, modifier: Modifier = Modifier) {
 internal fun LogbookMessage(text: String, color: Color) {
     Text(
         text,
-        style = Css.Text.Body,
+        style = Css.Text.Body.copy(textAlign = TextAlign.Center),
         color = color,
         modifier = Modifier.fillMaxWidth().padding(Css.Space.S4),
     )

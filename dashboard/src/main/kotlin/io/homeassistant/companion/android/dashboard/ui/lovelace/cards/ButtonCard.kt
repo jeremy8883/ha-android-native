@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
@@ -62,7 +63,11 @@ internal fun ButtonCard(
                 Text(
                     it,
                     // `ha-card`'s `--ha-font-size-l` at `--ha-line-height-condensed`
-                    style = Css.Text.Body.copy(fontSize = Css.FontSize.L, lineHeight = Css.LineHeight.Condensed),
+                    style = Css.Text.Body.copy(
+                        textAlign = TextAlign.Center,
+                        fontSize = Css.FontSize.L,
+                        lineHeight = Css.LineHeight.Condensed,
+                    ),
                     color = colors.colorTextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

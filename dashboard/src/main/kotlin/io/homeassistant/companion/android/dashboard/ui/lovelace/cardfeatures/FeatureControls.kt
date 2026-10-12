@@ -49,6 +49,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import io.homeassistant.companion.android.common.R as commonR
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
@@ -271,7 +272,11 @@ internal fun FeatureOpenDoor(feature: TileFeature.OpenDoor, onAction: (CardActio
             verticalAlignment = Alignment.CenterVertically,
         ) {
             DashboardIcon(CHECK, success, Modifier.size(HASize.X2L))
-            Text(feature.doneLabel, style = Css.Text.Body.copy(fontWeight = Css.FontWeight.Medium), color = success)
+            Text(
+                feature.doneLabel,
+                style = Css.Text.Body.copy(textAlign = TextAlign.Center, fontWeight = Css.FontWeight.Medium),
+                color = success,
+            )
         }
         return
     }
@@ -299,7 +304,7 @@ internal fun FeatureOpenDoor(feature: TileFeature.OpenDoor, onAction: (CardActio
     ) {
         Text(
             if (step == DoorStep.Confirm) feature.confirmLabel else feature.label,
-            style = Css.Text.Body,
+            style = Css.Text.Body.copy(textAlign = TextAlign.Center),
             color = colors.colorTextPrimary,
         )
     }
@@ -337,7 +342,7 @@ internal fun FeatureDateSet(feature: TileFeature.DateSet, onAction: (CardAction)
             .clickable(enabled = feature.enabled, role = Role.Button) { open = true },
         contentAlignment = Alignment.Center,
     ) {
-        Text(feature.label, style = Css.Text.Body, color = colors.colorTextPrimary)
+        Text(feature.label, style = Css.Text.Body.copy(textAlign = TextAlign.Center), color = colors.colorTextPrimary)
     }
     if (!open) return
     // The picker works in UTC days

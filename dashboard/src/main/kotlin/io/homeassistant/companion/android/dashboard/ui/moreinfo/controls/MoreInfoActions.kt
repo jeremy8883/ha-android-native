@@ -104,9 +104,9 @@ internal fun MoreInfoTimer(info: TimerMoreInfo, state: EntityState, onAction: (C
 private fun DurationInput(duration: TimerDuration, onChange: (TimerDuration) -> Unit) {
     Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S2), verticalAlignment = Alignment.CenterVertically) {
         DurationField(duration.hours) { onChange(duration.copy(hours = it)) }
-        Text(":", style = Css.Text.Body)
+        Text(":", style = Css.Text.Body, color = LocalHAColorScheme.current.colorTextSecondary)
         DurationField(duration.minutes, padded = true) { onChange(duration.copy(minutes = it)) }
-        Text(":", style = Css.Text.Body)
+        Text(":", style = Css.Text.Body, color = LocalHAColorScheme.current.colorTextSecondary)
         DurationField(duration.seconds, padded = true) { onChange(duration.copy(seconds = it)) }
     }
 }

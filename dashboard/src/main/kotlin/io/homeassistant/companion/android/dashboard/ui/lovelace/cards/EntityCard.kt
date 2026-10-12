@@ -108,7 +108,7 @@ private fun EntityValue(value: ValueParts, modifier: Modifier) {
             Text(
                 text,
                 style = if (isValue) {
-                    Css.Text.Primary.copy(fontSize = Css.FontSize.X3l, lineHeight = Css.LineHeight.Condensed)
+                    Css.Text.Body.copy(fontSize = Css.FontSize.X3l, lineHeight = Css.LineHeight.Condensed)
                 } else {
                     Css.Text.Body.copy(fontSize = Css.FontSize.L)
                 },

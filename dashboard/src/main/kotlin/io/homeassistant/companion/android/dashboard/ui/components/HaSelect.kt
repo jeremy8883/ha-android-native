@@ -64,7 +64,7 @@ internal fun HaSelect(
         ) {
             options.forEach { (option, optionLabel) ->
                 DropdownMenuItem(
-                    text = { Text(optionLabel, style = Css.Text.Primary) },
+                    text = { Text(optionLabel, style = Css.Text.Body) },
                     onClick = {
                         open = false
                         if (option != value) onSelect(option)
@@ -109,7 +109,7 @@ private fun PickerField(label: String?, value: String?, enabled: Boolean, onClic
                 // The overline mimics mdc-select's floating label: 0.75 of 1rem at 1.15rem
                 Text(
                     label,
-                    style = Css.Text.Primary.copy(fontSize = OVERLINE_SIZE, lineHeight = OVERLINE_LINE_HEIGHT),
+                    style = Css.Text.Body.copy(fontSize = OVERLINE_SIZE, lineHeight = OVERLINE_LINE_HEIGHT),
                     color = colors.colorTextSecondary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -117,7 +117,7 @@ private fun PickerField(label: String?, value: String?, enabled: Boolean, onClic
             }
             Text(
                 value ?: label.orEmpty(),
-                style = Css.Text.Primary,
+                style = Css.Text.Body,
                 color = if (value != null) colors.colorTextPrimary else colors.colorTextSecondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

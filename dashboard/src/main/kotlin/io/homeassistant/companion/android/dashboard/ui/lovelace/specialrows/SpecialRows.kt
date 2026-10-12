@@ -79,7 +79,7 @@ private fun SectionRow(row: EntitiesRow.Section, modifier: Modifier) {
         row.label?.let { label ->
             Text(
                 label,
-                style = Css.Text.Primary.copy(fontWeight = Css.FontWeight.Medium),
+                style = Css.Text.Body.copy(fontWeight = Css.FontWeight.Medium),
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(start = Css.Space.S2, top = Css.Space.S4, bottom = Css.Space.S2),
@@ -106,7 +106,7 @@ private fun WeblinkRow(row: EntitiesRow.Weblink, interactions: CardInteractions,
     IconNameRow(row.icon, modifier.clickable { interactions.onAction(row.action) }) {
         Text(
             row.name,
-            style = Css.Text.Primary.copy(textDecoration = TextDecoration.Underline),
+            style = Css.Text.Body.copy(textDecoration = TextDecoration.Underline),
             color = LocalHAColorScheme.current.colorTextLink,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -127,7 +127,7 @@ private fun ButtonRow(row: EntitiesRow.Button, interactions: CardInteractions, m
     IconNameRow(row.icon, modifier) {
         Text(
             row.name,
-            style = Css.Text.Primary,
+            style = Css.Text.Body,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f),
@@ -144,7 +144,7 @@ private fun ButtonRow(row: EntitiesRow.Button, interactions: CardInteractions, m
         ) {
             Text(
                 row.label,
-                style = Css.Text.Primary.copy(fontWeight = Css.FontWeight.Action, lineHeight = BUTTON_LINE_HEIGHT),
+                style = Css.Text.Body.copy(fontWeight = Css.FontWeight.Action, lineHeight = BUTTON_LINE_HEIGHT),
                 color = colors.colorOnPrimaryNormal,
                 maxLines = 1,
             )
@@ -162,12 +162,12 @@ private fun CastRow(row: EntitiesRow.Cast, modifier: Modifier) {
     IconNameRow(row.icon, modifier) {
         Text(
             row.name,
-            style = Css.Text.Primary,
+            style = Css.Text.Body,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f),
         )
-        Text(row.status, style = Css.Text.Primary, maxLines = 1)
+        Text(row.status, style = Css.Text.Body, maxLines = 1)
     }
 }
 
@@ -181,14 +181,14 @@ private fun TextRow(row: EntitiesRow.Text, modifier: Modifier) {
     IconNameRow(row.icon, modifier) {
         Text(
             row.name,
-            style = Css.Text.Primary,
+            style = Css.Text.Body,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f),
         )
         Text(
             row.text,
-            style = Css.Text.Primary.copy(textAlign = TextAlign.End),
+            style = Css.Text.Body.copy(textAlign = TextAlign.End),
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f),

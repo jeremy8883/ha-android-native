@@ -79,7 +79,7 @@ internal fun EnergyGaugeCard(
             EnergyGaugeModel.Hidden -> Unit
             is EnergyGaugeModel.Message -> Text(
                 model.text,
-                style = Css.Text.Body,
+                style = Css.Text.Body.copy(textAlign = TextAlign.Center),
                 color = colors.colorTextPrimary,
                 modifier = Modifier.padding(Css.Space.S4),
             )
