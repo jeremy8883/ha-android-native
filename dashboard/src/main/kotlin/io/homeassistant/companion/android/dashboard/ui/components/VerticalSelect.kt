@@ -25,8 +25,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.moreinfo.ControlSelect
@@ -35,11 +33,12 @@ import io.homeassistant.companion.android.dashboard.ui.statecontrol.STATE_CONTRO
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.STATE_CONTROL_RADIUS
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.STATE_CONTROL_THICKNESS
 import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
  * Port of `ha-control-select` vertical, as the state controls size it: [select]'s options top to bottom, on a tint
- * of its background, the chosen one filled with its colour. An option shows its icon, else its label; choosing the
+ * of its background, the chosen one filled with its colour. An option shows its icon above its label; choosing the
  * one already chosen does nothing.
  *
  * Upstream: `ha-control-select` (src/components/ha-control-select.ts)
@@ -75,7 +74,7 @@ internal fun VerticalSelect(
 }
 
 /**
- * An option of the select: its icon, else its label, filled with its colour when chosen.
+ * An option of the select: its icon above its label (`.content`), filled with its colour when chosen.
  *
  * Upstream: part of `ha-control-select` (src/components/ha-control-select.ts)
  */
@@ -100,11 +99,18 @@ private fun SelectOption(
             .semantics { contentDescription = option.label },
         contentAlignment = Alignment.Center,
     ) {
-        val icon = option.icon
-        if (icon != null) {
-            DashboardIcon(name = icon, tint = content, modifier = Modifier.size(HASize.X2L))
-        } else {
-            Text(option.label, style = Css.Text.Body.copy(textAlign = TextAlign.Center), color = content)
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(CONTENT_PADDING),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(CONTENT_GAP),
+        ) {
+            option.icon?.let { DashboardIcon(name = it, tint = content, modifier = Modifier.size(ICON_SIZE)) }
+            Text(
+                option.label,
+                style = Css.Text.Body.copy(fontWeight = Css.FontWeight.Medium, textAlign = TextAlign.Center),
+                color = content,
+                modifier = Modifier.fillMaxWidth(),
+            )
         }
     }
 }
@@ -112,4 +118,15 @@ private fun SelectOption(
 private const val TRANSITION_MS = 180
 private const val BACKGROUND_ALPHA = 0.2f
 private const val DISABLED_ALPHA = 0.5f
-private val SELECT_PADDING = 6.dp
+
+/** `--control-select-padding`. */
+private val SELECT_PADDING = 4.cssPx
+
+/** `.option .content`'s padding. */
+private val CONTENT_PADDING = 2.cssPx
+
+/** `.content > *:not(:last-child)`'s bottom margin, between the icon and the label. */
+private val CONTENT_GAP = 4.cssPx
+
+/** `--mdc-icon-size`. */
+private val ICON_SIZE = 20.cssPx

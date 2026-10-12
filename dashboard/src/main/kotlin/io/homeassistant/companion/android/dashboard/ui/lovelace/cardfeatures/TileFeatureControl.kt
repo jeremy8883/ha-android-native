@@ -250,7 +250,14 @@ private fun FeatureSelect(select: TileFeature.Select, featureColor: Color, onAct
                 contentAlignment = Alignment.Center,
             ) {
                 if (select.showLabels || option.icon == null) {
-                    Text(option.label, style = Css.Text.Body, color = tint, maxLines = 1, overflow = TextOverflow.Clip)
+                    Text(
+                        option.label,
+                        // ha-control-select's `font-weight: var(--ha-font-weight-medium)`
+                        style = Css.Text.Body.copy(fontWeight = Css.FontWeight.Medium),
+                        color = tint,
+                        maxLines = 1,
+                        overflow = TextOverflow.Clip,
+                    )
                 } else {
                     DashboardIcon(name = option.icon, tint = tint, modifier = Modifier.size(HASize.L))
                 }
