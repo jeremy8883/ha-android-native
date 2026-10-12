@@ -20,6 +20,9 @@ SUBTREES = [
     "ui.panel.config.devices.type",
     "ui.panel.config.devices.unnamed_device",
     "ui.common.ok",
+    "ui.common.yes",
+    "ui.common.no",
+    "ui.dialogs.update_backup",
     "ui.common.refresh",
     "ui.common.next",
     "ui.common.previous",
@@ -65,6 +68,13 @@ SUBTREES = [
     "ui.panel.lovelace.menu.configure_ui",
     "ui.panel.lovelace.editor.menu.open",
     "ui.notification_drawer",
+    "ui.dialogs.quick-bar",
+    "ui.dialogs.restart.restart",
+    "ui.dialogs.restart.stop",
+    "ui.components.combo-box.no_items",
+    "ui.components.entity.entity-state-picker.state",
+    "ui.common.copied_clipboard",
+    "ui.components.yaml-editor.copy_to_clipboard",
 ]
 
 OUT_DIR = Path(__file__).resolve().parents[2] / "dashboard-core/src/main/resources/translations"

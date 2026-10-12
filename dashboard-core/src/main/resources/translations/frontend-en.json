@@ -331,16 +331,22 @@
    "cancel": "Cancel",
    "clear": "Clear",
    "close": "Close",
+   "copied_clipboard": "Copied to clipboard",
    "delete": "Delete",
    "error_required": "Required",
    "menu": "Menu",
    "next": "Next",
+   "no": "No",
    "ok": "OK",
    "previous": "Previous",
    "refresh": "Refresh",
-   "save": "Save"
+   "save": "Save",
+   "yes": "Yes"
   },
   "components": {
+   "combo-box": {
+    "no_items": "No items available"
+   },
    "date-range-picker": {
     "end_date": "End date",
     "ranges": {
@@ -599,6 +605,9 @@
      "save": "Save item",
      "summary": "Task name"
     }
+   },
+   "yaml-editor": {
+    "copy_to_clipboard": "Copy to clipboard"
    }
   },
   "dialogs": {
@@ -823,6 +832,132 @@
     "zone": {
      "graph_unit": "People in zone"
     }
+   },
+   "quick-bar": {
+    "commands": {
+     "home_assistant_control": {
+      "perform_action": "{action} Home Assistant",
+      "restart": "Restart",
+      "stop": "Stop"
+     },
+     "navigation": {
+      "ai-tasks": "AI tasks",
+      "analytics": "Analytics",
+      "app_info": "{app} info",
+      "app_store": "App store",
+      "apps": "Apps",
+      "areas": "Areas",
+      "automation": "Automations",
+      "backup": "Backups",
+      "backups": "Backups",
+      "blueprint": "Blueprints",
+      "bluetooth": "Bluetooth",
+      "developer-tools": "Developer tools",
+      "devices": "Devices",
+      "energy": "Energy configuration",
+      "entities": "Entities",
+      "general": "Home information",
+      "hardware": "Hardware",
+      "helpers": "Helpers",
+      "info": "About",
+      "insteon": "Insteon",
+      "integrations": "Integrations",
+      "knx": "KNX",
+      "labs": "Labs",
+      "logs": "Logs",
+      "lovelace": "Dashboards",
+      "matter": "Matter",
+      "network": "Network",
+      "person": "People",
+      "radio_frequency": "Radio frequency",
+      "repairs": "Repairs",
+      "scene": "Scenes",
+      "script": "Scripts",
+      "server_control": "YAML",
+      "shortcuts": "Shortcuts",
+      "storage": "Storage",
+      "system": "System",
+      "system_health": "System health",
+      "tags": "Tags",
+      "thread": "Thread",
+      "updates": "Updates",
+      "users": "Users",
+      "voice-assistants": "Voice assistants",
+      "zha": "Zigbee",
+      "zone": "Zones",
+      "zwave_js": "Z-Wave"
+     },
+     "reload": {
+      "all": "All YAML configuration",
+      "automation": "Automations",
+      "command_line": "Command line entities",
+      "core": "Location & customizations",
+      "filesize": "File size entities",
+      "filter": "Filter entities",
+      "generic": "Generic IP camera entities",
+      "generic_thermostat": "Generic thermostat entities",
+      "group": "Groups, group entities, and notify services",
+      "history_stats": "History stats entities",
+      "homekit": "HomeKit",
+      "input_boolean": "Input booleans",
+      "input_button": "Input buttons",
+      "input_datetime": "Input datetimes",
+      "input_number": "Input numbers",
+      "input_select": "Input selects",
+      "input_text": "Input texts",
+      "min_max": "Min/max entities",
+      "mqtt": "Manually configured MQTT entities",
+      "person": "People",
+      "ping": "Ping binary sensor entities",
+      "reload": "{domain}",
+      "rest": "REST entities and notify services",
+      "rpi_gpio": "Raspberry Pi GPIO entities",
+      "scene": "Scenes",
+      "script": "Scripts",
+      "smtp": "SMTP notify services",
+      "statistics": "Statistics entities",
+      "telegram": "Telegram notify services",
+      "template": "Template entities",
+      "themes": "Themes",
+      "trend": "Trend entities",
+      "universal": "Universal media player entities",
+      "zone": "Zones"
+     },
+     "types": {
+      "app_settings": "App settings",
+      "home_assistant_control": "Interrupts all running automations and scripts",
+      "navigation": "Navigate",
+      "reload": "Reload"
+     }
+    },
+    "commands_title": "Commands",
+    "filter_placeholder": "Search entities",
+    "filter_placeholder_devices": "Search devices",
+    "key_c_tip": "Press {keyboard_shortcut} 'c' on any page to open the command dialog",
+    "navigate_title": "Navigate",
+    "nothing_found": "Nothing found!",
+    "title": "Search Home Assistant"
+   },
+   "restart": {
+    "restart": {
+     "confirm_action": "Restart",
+     "confirm_action_backup": "Wait and restart",
+     "confirm_description": "This will interrupt all running automations and scripts.",
+     "confirm_title": "Restart Home Assistant?",
+     "description": "Interrupts all running automations and scripts.",
+     "failed": "Failed to restart Home Assistant",
+     "title": "Restart Home Assistant"
+    },
+    "stop": {
+     "confirm_action": "Stop",
+     "confirm_description": "This will interrupt all running automations and scripts.",
+     "confirm_title": "Stop Home Assistant?"
+    }
+   },
+   "update_backup": {
+    "create": "Create",
+    "text": "This will create a backup before installing.",
+    "title": "Create backup?"
    },
    "voice_command": {
     "conversation_no_control": "This assistant cannot control your home.",
@@ -1371,7 +1506,7 @@
    },
    "todo": {
     "add_item": "Add item",
-    "assist": "[%key:ui::panel::lovelace::menu::assist%]",
+    "assist": "Assist",
     "create_list": "Create list",
     "delete_confirm_text": "Are you sure you want to remove this list and all of its items?",
     "delete_confirm_title": "Remove {name}?",

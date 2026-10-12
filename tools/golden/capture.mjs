@@ -45,6 +45,7 @@ function parseArgs(argv) {
     else if (a === "--history-panel") args.historyPanel = true;
     else if (a === "--history-axes") args.historyAxes = true;
     else if (a === "--target-picker") args.targetPicker = true;
+    else if (a === "--quick-bar") args.quickBar = true;
     else if (a === "-h" || a === "--help") {
       console.log("node capture.mjs [--variant admin|nonadmin|all] [--out <fixtures/home dir>] [--controls-only [--domains a,b]]");
       process.exit(0);
@@ -1008,6 +1009,85 @@ async function capturePanelTargetPicker({ searches, targets }) {
     expansions,
     resolved,
     chips,
+  };
+}
+
+/** The searches the quick bar is recorded for. */
+const QUICK_BAR_SEARCHES = ["", "kitchen", "light", "reload", "restart", "logs", "door lock", "bedrom", "ground", "living room light", "zzzz"];
+
+/**
+ * Opens a dashboard's quick bar ("Search Home Assistant", `ha-quick-bar`) and records its items for each of
+ * [searches] in every section, with the states, registries, panels, services, config entries and integration names
+ * they come from. Runs in the page.
+ */
+async function captureQuickBar({ searches }) {
+  const g = window.__golden;
+  const ha = document.querySelector("home-assistant");
+  const conn = ha.hass.connection;
+  g.navigate("/dashboard-test");
+  let root;
+  for (let i = 0; i < 150 && !(root = g.deepAll("hui-root")[0]); i++) await new Promise((r) => setTimeout(r, 100));
+  root._showQuickBar();
+  let bar;
+  for (let i = 0; i < 150 && !((bar = g.deepAll("ha-quick-bar")[0]) && !bar._loading); i++) {
+    await new Promise((r) => setTimeout(r, 100));
+  }
+  await new Promise((r) => setTimeout(r, 1500));
+  const simplify = (item) =>
+    typeof item === "string"
+      ? { title: item }
+      : {
+          id: item.id,
+          primary: item.primary ?? null,
+          secondary: item.secondary || null,
+          domainName: item.domain_name ?? null,
+          domain: item.domain ?? null,
+          icon: item.icon ?? null,
+          iconPath: item.icon_path ?? null,
+          iconColor: item.iconColor ?? null,
+          image: item.image ?? null,
+          path: item.path ?? null,
+          action: item.action ?? null,
+          entityId: item.stateObj?.entity_id ?? null,
+        };
+  const sections = [undefined, "navigate", "command", "entity", "device", "area"];
+  const items = {};
+  for (const search of searches) {
+    items[search] = {};
+    for (const section of sections) {
+      bar._getItemsMemoized.clear?.();
+      items[search][section ?? "all"] = (bar._getItems(search, section) || []).map(simplify);
+    }
+  }
+  bar._selectedSection = undefined;
+  const send = (type) => conn.sendMessagePromise({ type });
+  const configEntries = await send("config_entries/get");
+  const latest = ha.hass;
+  const domains = new Set([
+    ...Object.keys(latest.states).map((id) => id.split(".")[0]),
+    ...configEntries.map((e) => e.domain),
+    ...Object.keys(latest.services),
+  ]);
+  const titles = {};
+  domains.forEach((domain) => {
+    const title = latest.localize(`component.${domain}.title`);
+    if (title) titles[`component.${domain}.title`] = title;
+  });
+  return {
+    capturedAt: new Date().toISOString(),
+    language: latest.locale.language,
+    user: g.clone(latest.user),
+    components: g.clone(latest.config.components),
+    panels: g.clone(latest.panels),
+    services: g.clone(latest.services),
+    states: g.clone(Object.values(latest.states)),
+    entityRegistry: await send("config/entity_registry/list_for_display"),
+    devices: await send("config/device_registry/list"),
+    areas: await send("config/area_registry/list"),
+    floors: await send("config/floor_registry/list"),
+    configEntries: configEntries.map((e) => ({ entry_id: e.entry_id, domain: e.domain })),
+    titles,
+    items,
   };
 }
 
@@ -3579,7 +3659,7 @@ function sanitizeFile(name) {
 // --------------------------------------------------------------------------------------------
 // One variant
 
-async function captureVariant(browser, { baseUrl, variant, tokens, outDir, controlsOnly, logbookPanel, historyPanel, historyAxes, targetPicker, domains: CONTROL_DOMAINS }) {
+async function captureVariant(browser, { baseUrl, variant, tokens, outDir, controlsOnly, logbookPanel, historyPanel, historyAxes, targetPicker, quickBar, domains: CONTROL_DOMAINS }) {
   console.log(`\n== variant ${variant} -> ${relative(REPO, outDir)}`);
   const context = await browser.newContext({
     locale: "en-US",
@@ -3619,6 +3699,17 @@ async function captureVariant(browser, { baseUrl, variant, tokens, outDir, contr
   await page.goto(`${baseUrl}/home`, { waitUntil: "domcontentloaded" });
   if (page.url().includes("/auth/authorize")) throw new Error("token injection failed: landed on the login page");
   await waitForHomePanel(page);
+  if (quickBar) {
+    // Only a dashboard's quick bar, written over the existing fixtures
+    await page.setViewportSize({ width: 412, height: 915 });
+    await page.waitForTimeout(500);
+    const data = await page.evaluate(captureQuickBar, { searches: QUICK_BAR_SEARCHES });
+    mkdirSync(join(outDir, "quick-bar"), { recursive: true });
+    writeFileSync(join(outDir, "quick-bar", "items.json"), stableStringify(data));
+    console.log(`  recorded the quick bar: ${Object.keys(data.items).length} searches`);
+    await context.close();
+    return { checks: [], problems: [] };
+  }
   if (targetPicker) {
     // Only the Logbook panel's target picker, written over the existing fixtures
     await page.setViewportSize({ width: 412, height: 915 });
@@ -3927,7 +4018,7 @@ async function main() {
         tokens = { ...t, expires: Date.now() + t.expires_in * 1000 };
       }
       const dir = join(outRoot, variant === "admin" ? "test-instance" : "test-instance-nonadmin");
-      const { checks, problems } = await captureVariant(browser, { baseUrl, variant, tokens, outDir: dir, controlsOnly: args.controlsOnly, logbookPanel: args.logbookPanel, historyPanel: args.historyPanel, historyAxes: args.historyAxes, targetPicker: args.targetPicker, domains: args.domains });
+      const { checks, problems } = await captureVariant(browser, { baseUrl, variant, tokens, outDir: dir, controlsOnly: args.controlsOnly, logbookPanel: args.logbookPanel, historyPanel: args.historyPanel, historyAxes: args.historyAxes, targetPicker: args.targetPicker, quickBar: args.quickBar, domains: args.domains });
       if (problems.length || checks.some((c) => !c.ok)) failed = true;
     }
   } finally {
