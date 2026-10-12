@@ -218,7 +218,7 @@ private fun DrawScope.drawSlider(look: SliderLook, visual: Float, known: Boolean
     }
 }
 
-/** The bar from the start to [fraction] of the length, ending in a handle when [showHandle]. */
+/** The bar from the start to [fraction] of the length, ending in a handle, which [showHandle] keeps in view at 0. */
 private fun DrawScope.drawBar(
     fraction: Float,
     vertical: Boolean,
@@ -240,7 +240,7 @@ private fun DrawScope.drawBar(
     } else {
         drawRoundRect(style.color, Offset(end - length, 0f), Size(length, thickness), CornerRadius(radius))
     }
-    if (!showHandle) return
+    // Upstream always draws the handle at the bar's end; `show-handle` only keeps room for it at the minimum
     val handleLength = thickness / 2
     val handleOffset = end - handleMargin - handleSize
     val topLeft = if (vertical) {

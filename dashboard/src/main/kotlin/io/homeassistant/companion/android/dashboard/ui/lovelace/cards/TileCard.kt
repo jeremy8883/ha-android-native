@@ -3,8 +3,10 @@ package io.homeassistant.companion.android.dashboard.ui.lovelace.cards
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
@@ -88,23 +90,35 @@ internal fun TileCardContent(
     onAction: (CardAction) -> Unit = {},
 ) {
     DashboardCardSurface(modifier = modifier) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            TileInfo(tile, iconModifier)
-            if (tile.features.isNotEmpty()) {
-                Column(
-                    modifier = Modifier.padding(
-                        start = Css.Space.S3,
-                        end = Css.Space.S3,
-                        bottom = Css.Space.S3,
-                    ),
-                    // `hui-card-features`' gap
-                    verticalArrangement = Arrangement.spacedBy(Css.Space.S3),
-                ) {
-                    val color = tile.color.toColor() ?: LocalHAColorScheme.current.colorFillPrimaryLoudResting
-                    tile.features.forEach { feature -> TileFeatureControl(feature, tile.available, color, onAction) }
-                }
+        // `ha-tile-container`: the icon and text take the height left over, centred, the features at the bottom
+        BoxWithConstraints {
+            val bounded = constraints.hasBoundedHeight
+            Column(modifier = Modifier.fillMaxWidth().then(if (bounded) Modifier.fillMaxHeight() else Modifier)) {
+                Box(
+                    modifier = if (bounded) Modifier.weight(1f) else Modifier,
+                    contentAlignment = Alignment.CenterStart,
+                ) { TileInfo(tile, iconModifier) }
+                TileFeatures(tile, onAction)
             }
         }
+    }
+}
+
+/**
+ * The tile's features under its content, a gap apart.
+ *
+ * Upstream: `hui-card-features` (src/panels/lovelace/card-features/hui-card-features.ts)
+ */
+@Composable
+private fun TileFeatures(tile: TileModel, onAction: (CardAction) -> Unit) {
+    if (tile.features.isEmpty()) return
+    Column(
+        modifier = Modifier.padding(start = Css.Space.S3, end = Css.Space.S3, bottom = Css.Space.S3),
+        // `hui-card-features`' gap
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S3),
+    ) {
+        val color = tile.color.toColor() ?: LocalHAColorScheme.current.colorFillPrimaryLoudResting
+        tile.features.forEach { feature -> TileFeatureControl(feature, tile.available, color, onAction) }
     }
 }
 
