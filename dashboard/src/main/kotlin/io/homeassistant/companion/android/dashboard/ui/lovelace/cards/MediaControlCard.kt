@@ -56,6 +56,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.mediaplayer.MediaBrowserDialog
 import io.homeassistant.companion.android.dashboard.ui.components.mediaplayer.MediaGroupingDialog
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.lovelace.components.Marquee
 import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
@@ -167,21 +168,14 @@ private fun MediaPlayer(
 }
 
 /**
- * The title (larger) and the description under it.
+ * The title (larger, scrolling by when tapped and too long) and the description under it.
  *
  * Upstream: part of `hui-media-control-card` (`.media-info`) (src/panels/lovelace/cards/hui-media-control-card.ts)
  */
 @Composable
 private fun MediaInfo(model: MediaControlModel, foreground: Color) {
     model.title?.let {
-        Text(
-            it,
-            style = TextStyle(fontSize = TITLE_SIZE),
-            color = foreground,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(bottom = Css.Space.S1),
-        )
+        Marquee(it, TextStyle(fontSize = TITLE_SIZE), foreground, Modifier.padding(bottom = Css.Space.S1))
     }
     model.subtitle?.let {
         Text(
