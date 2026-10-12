@@ -43,6 +43,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.layout.DashboardMenu
 import io.homeassistant.companion.android.dashboard.layout.DashboardMenuAction
+import io.homeassistant.companion.android.dashboard.layout.DashboardMenuHandler
 import io.homeassistant.companion.android.dashboard.layout.NARROW_MAX_WIDTH_DP
 import io.homeassistant.companion.android.dashboard.layout.ViewTabLabel
 import io.homeassistant.companion.android.dashboard.layout.dashboardMenu
@@ -183,7 +184,9 @@ private fun ViewTabContent(label: ViewTabLabel, localize: Localize) {
 @Composable
 private fun DashboardMenuActions(hass: State<HassSnapshot?>, onAction: (DashboardMenuAction) -> Unit) {
     val narrow = LocalConfiguration.current.screenWidthDp <= NARROW_MAX_WIDTH_DP
-    val menu by remember(hass, narrow) {
+    // Without the companion app, only the actions drawn natively
+    val offered = (onAction as? DashboardMenuHandler)?.offered
+    val menu by remember(hass, narrow, offered) {
         derivedStateOf {
             hass.value?.let { snapshot ->
                 val user = snapshot.user
@@ -192,6 +195,7 @@ private fun DashboardMenuActions(hass: State<HassSnapshot?>, onAction: (Dashboar
                     isAdmin = user?.isAdmin == true,
                     recoveryMode = snapshot.config.recoveryMode,
                     components = snapshot.config.components,
+                    offered = offered,
                 ) to snapshot.localize
             }
         }

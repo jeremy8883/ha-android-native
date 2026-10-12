@@ -29,21 +29,38 @@ sealed class DashboardMenuAction(val icon: String, val labelKey: String, val web
     )
 }
 
+/**
+ * What the toolbar's actions do ([onAction]), and which of them can be done here ([offered]): without the companion
+ * app, only those drawn natively.
+ */
+class DashboardMenuHandler(
+    val offered: Set<DashboardMenuAction>,
+    private val onAction: (DashboardMenuAction) -> Unit,
+) : (DashboardMenuAction) -> Unit {
+    override fun invoke(action: DashboardMenuAction) = onAction(action)
+}
+
 /** A dashboard's toolbar actions: [buttons] shown as icons, then [overflow] behind the menu button. */
 data class DashboardMenu(val buttons: List<DashboardMenuAction>, val overflow: List<DashboardMenuAction>)
 
 /**
  * The toolbar actions of a dashboard, outside edit mode: Search and Assist (when the `conversation` integration is
  * loaded) as buttons, or in the menu on a [narrow] screen; Edit dashboard for admins out of recovery mode, in the
- * menu unless it is alone there. Port of `hui-root`'s `_renderActionItems` (frontend@20260624.6
- * src/panels/lovelace/hui-root.ts), without the YAML mode's entries.
+ * menu unless it is alone there; only those [offered] when given. Port of `hui-root`'s `_renderActionItems`
+ * (frontend@20260624.6 src/panels/lovelace/hui-root.ts), without the YAML mode's entries.
  */
-fun dashboardMenu(narrow: Boolean, isAdmin: Boolean, recoveryMode: Boolean, components: Set<String>): DashboardMenu {
+fun dashboardMenu(
+    narrow: Boolean,
+    isAdmin: Boolean,
+    recoveryMode: Boolean,
+    components: Set<String>,
+    offered: Set<DashboardMenuAction>? = null,
+): DashboardMenu {
     val items = buildList {
         add(DashboardMenuAction.Search to narrow)
         if (CONVERSATION in components) add(DashboardMenuAction.Assist to narrow)
         if (isAdmin && !recoveryMode) add(DashboardMenuAction.EditDashboard to true)
-    }
+    }.filter { (action, _) -> offered == null || action in offered }
     val overflow = items.filter { (_, inOverflow) -> inOverflow }.map { it.first }
     // A lone Edit dashboard is promoted to a button (`overflow_can_promote`)
     val promote = overflow == listOf(DashboardMenuAction.EditDashboard)

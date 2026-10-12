@@ -45,8 +45,11 @@ sealed interface QuickBarIcon {
     /** An icon, [icon] an `mdi:` name or an SVG path on MDI's 24 × 24 viewport (see [isSvgPath]). */
     data class Plain(val icon: String) : QuickBarIcon
 
-    /** An icon in white on a circle of [color] (a page of Settings). */
-    data class Colored(val icon: String, val color: String) : QuickBarIcon
+    /**
+     * An icon in white on a circle of [color] (a page of Settings); an SVG path drawn [viewBoxTop] units down its
+     * viewport's top (its `iconViewBox`).
+     */
+    data class Colored(val icon: String, val color: String, val viewBoxTop: Int = 0) : QuickBarIcon
 }
 
 /** Whether an item's [icon] is an SVG path (a logo the frontend draws itself) rather than an `mdi:` name. */
@@ -69,12 +72,14 @@ sealed interface QuickBarAction {
 
 /**
  * What the quick bar's items are drawn from: [hass], the server's [panels] and each config entry's integration
- * ([configEntryDomains], by entry id) for devices and the Bluetooth page.
+ * ([configEntryDomains], by entry id) for devices and the Bluetooth page. With [nativeOnly] (when other pages can't
+ * be opened), only the items handled here are offered: no device, area or page that isn't shown natively.
  */
 class QuickBarSource(
     val hass: HassSnapshot,
     val panels: Map<String, PanelInfo>,
     val configEntryDomains: Map<String, String>,
+    val nativeOnly: Boolean = false,
 ) {
     /** Whether the user is an admin: only admins see commands, devices and areas. */
     val isAdmin: Boolean get() = hass.user?.isAdmin == true

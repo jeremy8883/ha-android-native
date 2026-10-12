@@ -647,10 +647,11 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         }
     }
 
-    /** Run [action] that a card control started directly (such as a tile feature) or that the user confirmed. */
-    fun onAction(action: CardAction) {
-        viewModelScope.launch { actions.run(action) }
-    }
+    /**
+     * Run [action] that a card control started directly (such as a tile feature) or that the user confirmed; its job
+     * tells when it is done (the quick bar's commands show their progress until then).
+     */
+    fun onAction(action: CardAction) = viewModelScope.launch { actions.run(action) }
 
     /** Run [action] with the [code] the user entered for it. */
     fun onCodeEntered(action: CardAction.CallService, code: String) {

@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -79,27 +80,42 @@ import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
  * Port of the quick bar ("Search Home Assistant") on a phone: the search, the section chips (Navigate, Commands,
  * then Entities, Devices and Areas; the admin's sections only for admins) and the list: each section's items under
  * its title, or one section's, the best matches first when searching. Choosing an item hands its [QuickBarAction]
- * to [onChoose] and closes the sheet; restarting or stopping the server asks first.
+ * to [onChoose] and closes the sheet; restarting or stopping the server asks first; a reload is handed to [onRun]
+ * with a spinner on its row, and the sheet closes once it is done.
  *
  * Upstream: `ha-quick-bar`, `ha-picker-combo-box` (src/dialogs/quick-bar/ha-quick-bar.ts;
  * src/components/ha-picker-combo-box.ts)
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun QuickBarSheet(source: QuickBarSource, onDismiss: () -> Unit, onChoose: (QuickBarAction) -> Unit) {
+internal fun QuickBarSheet(
+    source: QuickBarSource,
+    onDismiss: () -> Unit,
+    onChoose: (QuickBarAction) -> Unit,
+    onRun: (QuickBarAction.CallService, onDone: () -> Unit) -> Unit,
+) {
     val localize = source.hass.localize
     var search by rememberSaveable { mutableStateOf("") }
     var section by rememberSaveable { mutableStateOf<QuickBarSection?>(null) }
     var confirming by remember { mutableStateOf<QuickBarAction.CallService?>(null) }
+    // The command running, until it is done; nothing else can be chosen meanwhile (`_itemSelected`)
+    var running by remember { mutableStateOf<String?>(null) }
     val items = remember(source) { QuickBarItems(source) }
     val rows = remember(items, search, section) { items.rows(search.trim(), section) }
     val focus = remember { FocusRequester() }
-    val choose = { action: QuickBarAction ->
-        if (action is QuickBarAction.CallService && action.confirm) {
-            confirming = action
-        } else {
-            onDismiss()
-            onChoose(action)
+    val choose = { item: QuickBarItem ->
+        val action = item.action
+        when {
+            running != null -> Unit
+            action is QuickBarAction.CallService && action.confirm -> confirming = action
+            action is QuickBarAction.CallService -> {
+                running = item.id
+                onRun(action, onDismiss)
+            }
+            else -> {
+                onDismiss()
+                onChoose(action)
+            }
         }
     }
     HAModalBottomSheet(
@@ -112,7 +128,7 @@ internal fun QuickBarSheet(source: QuickBarSource, onDismiss: () -> Unit, onChoo
             items(rows, key = ::rowKey) { row ->
                 when (row) {
                     is QuickBarRow.Title -> SectionTitle(row.text)
-                    is QuickBarRow.Item -> ItemRow(row.item, source.hass) { choose(row.item.action) }
+                    is QuickBarRow.Item -> ItemRow(row.item, source.hass, row.item.id == running) { choose(row.item) }
                     is QuickBarRow.Empty -> EmptyRow(row.text, searching = search.isNotBlank())
                 }
             }
@@ -224,10 +240,13 @@ private fun SectionChips(items: QuickBarItems, selected: QuickBarSection?, onTog
  * src/components/ha-combo-box-item.ts)
  */
 @Composable
-private fun ItemRow(item: QuickBarItem, hass: HassSnapshot, onClick: () -> Unit) {
+private fun ItemRow(item: QuickBarItem, hass: HassSnapshot, running: Boolean, onClick: () -> Unit) {
     val colors = LocalHAColorScheme.current
+    val runningColor = resolveVariable("ha-color-fill-primary-normal-resting", isSystemInDarkTheme())
+        ?: colors.colorFillPrimaryNormalResting
     Row(
         modifier = Modifier.fillMaxWidth()
+            .then(if (running) Modifier.background(runningColor) else Modifier)
             .heightIn(min = if (item.secondary != null) TWO_LINE_HEIGHT else ONE_LINE_HEIGHT)
             .clickable(role = Role.Button, onClick = onClick)
             .padding(horizontal = Css.Space.S4),
@@ -261,6 +280,8 @@ private fun ItemRow(item: QuickBarItem, hass: HassSnapshot, onClick: () -> Unit)
                 modifier = Modifier.padding(start = Css.Space.S2),
             )
         }
+        // A small `ha-spinner` at the row's end while its command runs
+        if (running) CircularProgressIndicator(Modifier.size(SPINNER_SIZE))
     }
 }
 
@@ -282,29 +303,32 @@ private fun ItemIcon(icon: QuickBarIcon, hass: HassSnapshot) {
             Modifier.size(ICON_BOX).background(parseCssColor(icon.color) ?: tint, CircleShape),
             contentAlignment = Alignment.Center,
         ) {
-            Glyph(icon.icon, Color.White, Modifier.size(HASize.X2L))
+            Glyph(icon.icon, Color.White, Modifier.size(HASize.X2L), icon.viewBoxTop)
         }
     }
 }
 
 /**
- * An `mdi:` icon, or a logo given as its SVG path on MDI's 24 × 24 viewport.
+ * An `mdi:` icon, or a logo given as its SVG path on MDI's 24 × 24 viewport, starting [viewBoxTop] units down.
  *
  * Upstream: `ha-icon`, `ha-svg-icon` (src/components/ha-icon.ts; src/components/ha-svg-icon.ts)
  */
 @Composable
-private fun Glyph(icon: String, tint: Color, modifier: Modifier) {
+private fun Glyph(icon: String, tint: Color, modifier: Modifier, viewBoxTop: Int = 0) {
     if (!isSvgPath(icon)) {
         DashboardIcon(icon, tint, modifier)
         return
     }
-    val vector = remember(icon) {
+    val vector = remember(icon, viewBoxTop) {
         ImageVector.Builder(
             defaultWidth = VIEWPORT.cssPx,
             defaultHeight = VIEWPORT.cssPx,
             viewportWidth = VIEWPORT.toFloat(),
             viewportHeight = VIEWPORT.toFloat(),
-        ).addPath(PathParser().parsePathString(icon).toNodes(), fill = SolidColor(Color.Black)).build()
+        ).addGroup(translationY = -viewBoxTop.toFloat())
+            .addPath(PathParser().parsePathString(icon).toNodes(), fill = SolidColor(Color.Black))
+            .clearGroup()
+            .build()
     }
     Image(vector, contentDescription = null, colorFilter = ColorFilter.tint(tint), modifier = modifier)
 }
@@ -341,3 +365,6 @@ private val SECTION_BORDER = 1.cssPx
 private val ONE_LINE_HEIGHT = 48.cssPx
 private val TWO_LINE_HEIGHT = 64.cssPx
 private val ICON_BOX = 32.cssPx
+
+/** `ha-spinner`'s small size. */
+private val SPINNER_SIZE = 28.cssPx

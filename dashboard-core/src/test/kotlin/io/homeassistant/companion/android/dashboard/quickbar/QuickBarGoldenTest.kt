@@ -19,7 +19,9 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestFactory
 
 /**
@@ -34,7 +36,33 @@ class QuickBarGoldenTest {
     @TestFactory
     fun `Given a search and a section when listing a non-admin's quick bar then it is the frontend's`() = cases("test-instance-nonadmin")
 
+    @Test
+    fun `Given other pages can't be opened when listing the quick bar then only what is handled here is offered`() {
+        val items = QuickBarItems(source("test-instance", nativeOnly = true))
+        assertEquals(listOf(QuickBarSection.NAVIGATE, QuickBarSection.COMMAND, QuickBarSection.ENTITY), items.sections)
+        val paths = items.rows("", QuickBarSection.NAVIGATE).mapNotNull {
+            ((it as? QuickBarRow.Item)?.item?.action as? QuickBarAction.Navigate)?.path
+        }
+        assertTrue("/logbook" in paths && "/energy" in paths && "/dashboard-test" in paths)
+        assertTrue(paths.none { it.startsWith("/config") || it == "/profile" || it == "/media-browser" })
+        assertTrue(items.rows("kitchen", null).none { it is QuickBarRow.Title && it.text == "Devices" })
+    }
+
     private fun cases(variant: String): List<DynamicTest> {
+        val capture = GoldenFixture(variant).json("quick-bar/items.json")
+        val items = QuickBarItems(source(variant))
+        return capture.obj("items")!!.flatMap { (search, sections) ->
+            sections.jsonObject.map { (section, expected) ->
+                DynamicTest.dynamicTest("'$search' in $section") {
+                    val rows = items.rows(search, QuickBarSection.entries.firstOrNull { it.key == section })
+                    val shown = expected.jsonArray.map { it.jsonObject }.filter(::isPorted).map(::expectedRow)
+                    assertEquals(shown, rows.mapNotNull(::drawnRow))
+                }
+            }
+        }
+    }
+
+    private fun source(variant: String, nativeOnly: Boolean = false): QuickBarSource {
         val fixture = GoldenFixture(variant)
         val capture = fixture.json("quick-bar/items.json")
         val user = capture.obj("user")!!
@@ -57,23 +85,14 @@ class QuickBarGoldenTest {
                 capture.obj("titles")!!.mapValues { it.value.stringOrNull.orEmpty() },
             ),
         )
-        val source = QuickBarSource(
+        return QuickBarSource(
             hass = hass,
             panels = parsePanels(capture.obj("panels")!!),
             configEntryDomains = capture.objects("configEntries").associate {
                 it.string("entry_id")!! to it.string("domain")!!
             },
+            nativeOnly = nativeOnly,
         )
-        val items = QuickBarItems(source)
-        return capture.obj("items")!!.flatMap { (search, sections) ->
-            sections.jsonObject.map { (section, expected) ->
-                DynamicTest.dynamicTest("'$search' in $section") {
-                    val rows = items.rows(search, QuickBarSection.entries.firstOrNull { it.key == section })
-                    val shown = expected.jsonArray.map { it.jsonObject }.filter(::isPorted).map(::expectedRow)
-                    assertEquals(shown, rows.mapNotNull(::drawnRow))
-                }
-            }
-        }
     }
 
     /** Upstream's "Shortcuts" (keyboard shortcuts) isn't offered. */

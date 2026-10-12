@@ -34,10 +34,15 @@ sealed interface QuickBarRow {
  */
 class QuickBarItems(private val source: QuickBarSource) {
     /** The sections the user may choose, in the order of their chips. */
-    val sections: List<QuickBarSection> = if (source.isAdmin) {
-        QuickBarSection.entries
-    } else {
-        listOf(QuickBarSection.NAVIGATE, QuickBarSection.ENTITY)
+    val sections: List<QuickBarSection> = when {
+        // Devices and areas open their Settings pages
+        source.nativeOnly -> listOfNotNull(
+            QuickBarSection.NAVIGATE,
+            QuickBarSection.COMMAND.takeIf { source.isAdmin },
+            QuickBarSection.ENTITY,
+        )
+        source.isAdmin -> QuickBarSection.entries
+        else -> listOf(QuickBarSection.NAVIGATE, QuickBarSection.ENTITY)
     }
 
     private val groups: Map<QuickBarSection, Group> by lazy {

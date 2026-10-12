@@ -2,6 +2,7 @@ package io.homeassistant.companion.android.dashboard.quickbar
 
 import io.homeassistant.companion.android.dashboard.navigation.PanelInfo
 import io.homeassistant.companion.android.dashboard.navigation.panelTitle
+import io.homeassistant.companion.android.dashboard.panels.isNative
 
 // The quick bar's Navigate section. Port of `generateNavigationCommands` (frontend@20260624.6 src/data/quick_bar.ts)
 // with the pages of Settings it lists (`configSections`, src/panels/config/ha-panel-config.ts) and
@@ -28,7 +29,13 @@ fun QuickBarSource.navigationItems(): List<QuickBarItem> {
             searchLabels = mapOf("primary" to command.primary, "path" to command.path, "secondary" to secondary),
             sortingLabel = "${command.primary}_$secondary",
         )
-    }.sortedBySortingLabel()
+    }.filter { !nativeOnly || opensNatively(it) }.sortedBySortingLabel()
+}
+
+/** Whether the page [item] leads to is shown natively (its panel, as the drawer tells them apart). */
+private fun QuickBarSource.opensNatively(item: QuickBarItem): Boolean {
+    val path = (item.action as? QuickBarAction.Navigate)?.path ?: return false
+    return panels[path.removePrefix("/").substringBefore('/')]?.isNative() == true
 }
 
 /** A page the Navigate section leads to (`BaseNavigationCommand`). */
@@ -62,7 +69,8 @@ private fun QuickBarSource.configPageCommands(): List<NavigationCommand> {
     CONFIG_PAGES.filter { canShow(it) }.forEach { page ->
         val caption = hass.localize("$QUICK_BAR.commands.navigation.${page.name}")
         if (caption.isNotEmpty() && commands.none { it.path == page.path }) {
-            commands += NavigationCommand(page.path, caption, QuickBarIcon.Colored(page.icon, page.color))
+            val viewBoxTop = if (page.path == MATTER_PATH) MATTER_VIEW_BOX_TOP else 0
+            commands += NavigationCommand(page.path, caption, QuickBarIcon.Colored(page.icon, page.color, viewBoxTop))
         }
     }
     return commands
@@ -175,6 +183,10 @@ private val CONFIG_PAGES = listOf(
 )
 
 internal const val QUICK_BAR = "ui.dialogs.quick-bar"
+private const val MATTER_PATH = "/config/matter"
+
+/** The top of the Matter logo's `iconViewBox` (`0 1 24 24`). */
+private const val MATTER_VIEW_BOX_TOP = 1
 private const val EXTERNAL_APP_CONFIGURATION = "#external-app-configuration"
 private const val BLUETOOTH = "bluetooth"
 private const val HASSIO = "hassio"
