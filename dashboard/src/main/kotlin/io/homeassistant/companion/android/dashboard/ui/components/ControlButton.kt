@@ -24,11 +24,10 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.moreinfo.StatusIcon
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -51,12 +50,12 @@ internal fun ControlButton(
         modifier = modifier
             .height(CONTROL_BUTTON_HEIGHT)
             .alpha(if (enabled) 1f else DISABLED_ALPHA)
-            .clip(RoundedCornerShape(HARadius.X3L))
+            .clip(RoundedCornerShape(Css.Radius.X3l))
             .background(tint.copy(alpha = TINT_ALPHA))
             .clickable(enabled = enabled, role = Role.Button, onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
-        Text(label, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
+        Text(label, style = Css.Text.Body, color = colors.colorTextPrimary)
     }
 }
 
@@ -70,7 +69,7 @@ internal fun ControlButtonIcon(icon: String, label: String, modifier: Modifier =
     val colors = LocalHAColorScheme.current
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(HARadius.XL))
+            .clip(RoundedCornerShape(Css.Radius.Xl))
             .background(colors.colorFillDisabledLoudResting.copy(alpha = TINT_ALPHA))
             .clickable(role = Role.Button, onClick = onClick)
             .semantics { contentDescription = label },

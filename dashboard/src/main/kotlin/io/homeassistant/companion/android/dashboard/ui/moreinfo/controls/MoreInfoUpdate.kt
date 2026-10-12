@@ -35,9 +35,7 @@ import io.homeassistant.companion.android.common.compose.composable.HAAccentButt
 import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HASwitch
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -52,7 +50,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.UpdateType
 import io.homeassistant.companion.android.dashboard.moreinfo.updateBackupOption
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.MarkdownText
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.Instant
 
 /**
@@ -64,7 +62,7 @@ import java.time.Instant
  */
 @Composable
 internal fun MoreInfoUpdate(info: UpdateMoreInfo, entityId: String) {
-    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
         UpdateSummary(info)
         ReleaseNotes(info, entityId)
     }
@@ -90,9 +88,9 @@ private fun UpdateSummary(info: UpdateMoreInfo) {
         info.title?.let {
             Text(
                 it,
-                style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Bold),
+                style = Css.Text.Body.copy(fontWeight = FontWeight.Bold),
                 color = colors.colorTextPrimary,
-                modifier = Modifier.padding(vertical = HADimens.SPACE3),
+                modifier = Modifier.padding(vertical = Css.Space.S3),
             )
         }
         info.versions.forEach { (key, value) -> VersionRow(key, value) }
@@ -115,7 +113,7 @@ internal fun MoreInfoUpdateFooter(
     onAction: (CardAction) -> Unit,
 ) {
     val backup = info.install?.backupType?.let { type -> rememberBackupOption(type, state, hass, now) }
-    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3)) {
+    Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(Css.Space.S3)) {
         UpdateFooter(info, backup, onAction)
     }
 }
@@ -128,8 +126,8 @@ internal fun MoreInfoUpdateFooter(
 @Composable
 private fun VersionRow(key: String, value: String) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(key, style = HATextStyle.BodyMedium, color = LocalHAColorScheme.current.colorTextPrimary)
-        Text(value, style = HATextStyle.BodyMedium, color = LocalHAColorScheme.current.colorTextPrimary)
+        Text(key, style = Css.Text.Body, color = LocalHAColorScheme.current.colorTextPrimary)
+        Text(value, style = Css.Text.Body, color = LocalHAColorScheme.current.colorTextPrimary)
     }
 }
 
@@ -143,7 +141,7 @@ private fun ReleaseLink(label: String, url: String) {
     val context = LocalContext.current
     Text(
         label,
-        style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start, textDecoration = TextDecoration.Underline),
+        style = Css.Text.Body.copy(textAlign = TextAlign.Start, textDecoration = TextDecoration.Underline),
         color = LocalHAColorScheme.current.colorOnPrimaryNormal,
         modifier = Modifier.clickable(role = Role.Button) {
             context.startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
@@ -177,7 +175,7 @@ private fun ReleaseNotes(info: UpdateMoreInfo, entityId: String) {
         }
         is Loadable.Failed -> Text(
             LocalContext.current.loadErrorText(loaded.error),
-            style = HATextStyle.BodyMedium,
+            style = Css.Text.Body,
             color = LocalHAColorScheme.current.colorOnDangerNormal,
         )
         is Loadable.Ready -> loaded.value?.let {
@@ -224,13 +222,13 @@ private fun UpdateFooter(info: UpdateMoreInfo, option: UpdateBackupOption?, onAc
             Column(Modifier.weight(1f)) {
                 Text(
                     option.title,
-                    style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                    style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                     color = LocalHAColorScheme.current.colorTextPrimary,
                 )
                 option.description?.let {
                     Text(
                         it,
-                        style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+                        style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                         color = LocalHAColorScheme.current.colorTextSecondary,
                     )
                 }
@@ -238,7 +236,7 @@ private fun UpdateFooter(info: UpdateMoreInfo, option: UpdateBackupOption?, onAc
             HASwitch(checked = backup, onCheckedChange = { backup = it }, enabled = !install.installing)
         }
     }
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.End)) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(Css.Space.S2, Alignment.End)) {
         val skip = info.skip
         HAPlainButton(skip.label, {
             if (skip.autoUpdateTitle !=
@@ -257,8 +255,8 @@ private fun UpdateFooter(info: UpdateMoreInfo, option: UpdateBackupOption?, onAc
     if (explainSkip) {
         AlertDialog(
             onDismissRequest = { explainSkip = false },
-            title = { Text(info.skip.autoUpdateTitle.orEmpty(), style = HATextStyle.HeadlineMedium) },
-            text = { Text(info.skip.autoUpdateText.orEmpty(), style = FrontendTextStyle.Body) },
+            title = { Text(info.skip.autoUpdateTitle.orEmpty(), style = Css.Text.DialogTitle) },
+            text = { Text(info.skip.autoUpdateText.orEmpty(), style = Css.Text.Body) },
             confirmButton = { HAPlainButton(stringResource(commonR.string.ok), { explainSkip = false }) },
         )
     }

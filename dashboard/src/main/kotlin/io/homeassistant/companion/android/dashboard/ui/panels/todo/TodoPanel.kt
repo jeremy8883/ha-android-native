@@ -29,7 +29,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import io.homeassistant.companion.android.common.compose.composable.ButtonSize
 import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
@@ -41,7 +40,7 @@ import io.homeassistant.companion.android.dashboard.todo.todoLists
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.TodoListCard
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.ZonedDateTime
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -62,7 +61,7 @@ internal fun TodoPanel(hass: State<HassSnapshot?>, now: State<ZonedDateTime?>, i
     var addRequests by remember { mutableIntStateOf(0) }
     val manage = rememberTodoListManagement(snapshot, lists.map { it.entityId }, onChoose = { chosen = it })
     Box(Modifier.fillMaxSize()) {
-        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(HADimens.SPACE4)) {
+        Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState()).padding(Css.Space.S4)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 ListPicker(
                     lists.map {
@@ -94,7 +93,7 @@ internal fun TodoPanel(hass: State<HassSnapshot?>, now: State<ZonedDateTime?>, i
             HAAccentButton(
                 snapshot.localize("ui.panel.todo.add_item"),
                 { addRequests++ },
-                modifier = Modifier.align(Alignment.BottomEnd).padding(HADimens.SPACE4),
+                modifier = Modifier.align(Alignment.BottomEnd).padding(Css.Space.S4),
                 size = ButtonSize.LARGE,
                 prefix = {
                     DashboardIcon("mdi:plus", LocalHAColorScheme.current.colorOnPrimaryLoud, Modifier.size(HASize.X2L))
@@ -130,7 +129,7 @@ private fun ListPicker(
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             lists.forEach { (id, name) ->
                 DropdownMenuItem(
-                    text = { Text(name, style = FrontendTextStyle.Body, color = colors.colorTextPrimary) },
+                    text = { Text(name, style = Css.Text.Body, color = colors.colorTextPrimary) },
                     leadingIcon = {
                         DashboardIcon(hass.entityIcon(id), colors.colorTextSecondary, Modifier.size(HASize.X2L))
                     },
@@ -147,7 +146,7 @@ private fun ListPicker(
                     text = {
                         Text(
                             hass.localize("ui.panel.todo.create_list"),
-                            style = FrontendTextStyle.Body,
+                            style = Css.Text.Body,
                             color = colors.colorTextPrimary,
                         )
                     },

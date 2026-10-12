@@ -21,16 +21,13 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.moreinfo.MediaPlayerMoreInfo
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.Instant
 
 /**
@@ -51,7 +48,7 @@ internal fun MoreInfoMediaPlayer(
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S4),
     ) {
         val unavailable = info.unavailable
         if (unavailable != null) {
@@ -87,7 +84,7 @@ private fun Artwork(info: MediaPlayerMoreInfo) {
                 .widthIn(max = width)
                 .fillMaxWidth()
                 .aspectRatio(1f)
-                .clip(RoundedCornerShape(HARadius.X3L)),
+                .clip(RoundedCornerShape(Css.Radius.X3l)),
         )
     }
 }
@@ -106,7 +103,7 @@ private fun EmptyCover(state: String, icon: Boolean) {
             .widthIn(max = COVER_IDLE)
             .fillMaxWidth()
             .aspectRatio(1f)
-            .clip(RoundedCornerShape(HARadius.X3L))
+            .clip(RoundedCornerShape(Css.Radius.X3l))
             .background(colors.colorFillDisabledQuietResting)
             .semantics { contentDescription = state },
         contentAlignment = Alignment.Center,
@@ -114,7 +111,7 @@ private fun EmptyCover(state: String, icon: Boolean) {
         if (icon) {
             DashboardIcon("mdi:music-note", colors.colorTextSecondary, Modifier.size(EMPTY_ICON))
         } else {
-            Text(state, style = HATextStyle.HeadlineMedium, color = colors.colorTextSecondary)
+            Text(state, style = Css.Text.Body.copy(fontSize = EMPTY_COVER_FONT_SIZE), color = colors.colorTextSecondary)
         }
     }
 }
@@ -132,7 +129,7 @@ private fun MediaTitles(title: String?, artist: String?) {
         title?.let {
             Text(
                 it,
-                style = HATextStyle.HeadlineMedium,
+                style = Css.Text.Primary.copy(fontSize = Css.FontSize.Xl, fontWeight = Css.FontWeight.Bold),
                 color = colors.colorTextPrimary,
                 maxLines = 1,
                 textAlign = TextAlign.Center,
@@ -142,7 +139,7 @@ private fun MediaTitles(title: String?, artist: String?) {
         artist?.let {
             Text(
                 it,
-                style = FrontendTextStyle.Body,
+                style = Css.Text.Body.copy(fontSize = Css.FontSize.L),
                 color = colors.colorTextSecondary,
                 maxLines = 1,
                 textAlign = TextAlign.Center,
@@ -155,3 +152,6 @@ private fun MediaTitles(title: String?, artist: String?) {
 private val COVER_PLAYING = 320.dp
 private val COVER_IDLE = 240.dp
 private val EMPTY_ICON = 96.dp
+
+/** `.empty-cover`'s `font-size: 1.5em` of the dialog's `--ha-font-size-m`. */
+private val EMPTY_COVER_FONT_SIZE = Css.FontSize.M * 1.5f

@@ -27,9 +27,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.R as commonR
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HATextField
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -43,7 +40,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.positionFavorites
 import io.homeassistant.companion.android.dashboard.moreinfo.positionFavoritesUpdate
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesErrorText
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.favoritesViewModel
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /** Which favourite position dialog is open: [index] `null` adds one. */
@@ -73,11 +70,11 @@ internal fun PositionFavoritesSection(state: EntityState, hass: HassSnapshot, on
     }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S3),
     ) {
         favorites.sections.forEach { section ->
             section.label?.let {
-                Text(it, style = HATextStyle.BodyMedium, color = LocalHAColorScheme.current.colorTextSecondary)
+                Text(it, style = Css.Text.Body, color = LocalHAColorScheme.current.colorTextSecondary)
             }
             FavoritesRow(
                 deleteLabels = section.favorites.map { it.deleteLabel },
@@ -134,14 +131,14 @@ private fun PositionPill(favorite: PositionFavorite, enabled: Boolean, active: C
                 } else {
                     colors.colorFillNeutralNormalResting
                 },
-                RoundedCornerShape(HARadius.Pill),
+                RoundedCornerShape(Css.Radius.Pill),
             )
             .semantics { contentDescription = favorite.label },
         contentAlignment = Alignment.Center,
     ) {
         Text(
             favorite.text,
-            style = FrontendTextStyle.Body,
+            style = Css.Text.Body,
             color = if (filled) colors.colorOnPrimaryLoud else colors.colorOnNeutralNormal,
         )
     }
@@ -220,7 +217,7 @@ private fun PositionPrompt(
     val number = text.trim().toDoubleOrNull()
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(title, style = HATextStyle.HeadlineMedium) },
+        title = { Text(title, style = Css.Text.DialogTitle) },
         text = {
             HATextField(
                 value = text,

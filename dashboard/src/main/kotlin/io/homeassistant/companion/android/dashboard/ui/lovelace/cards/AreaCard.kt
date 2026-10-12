@@ -33,8 +33,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.AreaCardModel
@@ -51,6 +49,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -117,20 +116,20 @@ private fun AreaPicture(
                 Modifier.fillMaxSize().background(color.copy(alpha = HEADER_ICON_BACKGROUND_ALPHA)),
                 contentAlignment = Alignment.Center,
             ) {
-                header.icon?.let { DashboardIcon(it, color, Modifier.size(HADimens.SPACE12)) }
+                header.icon?.let { DashboardIcon(it, color, Modifier.size(Css.Space.S12)) }
             }
         }
         if (model.alerts.isNotEmpty()) {
-            Row(Modifier.padding(HADimens.SPACE2), horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+            Row(Modifier.padding(Css.Space.S2), horizontalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
                 model.alerts.forEach { icon ->
                     Box(
                         Modifier
-                            .size(HADimens.SPACE6)
-                            .clip(RoundedCornerShape(HARadius.XL))
+                            .size(Css.Space.S6)
+                            .clip(RoundedCornerShape(Css.Radius.Xl))
                             .background(alertColor()),
                         contentAlignment = Alignment.Center,
                     ) {
-                        DashboardIcon(icon, Color.White, Modifier.size(HADimens.SPACE4))
+                        DashboardIcon(icon, Color.White, Modifier.size(Css.Space.S4))
                     }
                 }
             }
@@ -162,7 +161,7 @@ private fun AreaTile(model: AreaCardModel.Shown, color: Color, minHeight: Dp?, i
                 verticalArrangement = Arrangement.spacedBy(TILE_PADDING, Alignment.CenterVertically),
             ) {
                 AreaTileIcon(model, color)
-                AreaTileText(model, TextAlign.Center, Modifier.fillMaxWidth().padding(horizontal = HADimens.SPACE3))
+                AreaTileText(model, TextAlign.Center, Modifier.fillMaxWidth().padding(horizontal = Css.Space.S3))
             }
         } else {
             Row(
@@ -177,9 +176,9 @@ private fun AreaTile(model: AreaCardModel.Shown, color: Color, minHeight: Dp?, i
         }
         if (!model.inlineFeatures && model.features.isNotEmpty()) {
             Column(
-                Modifier.padding(start = HADimens.SPACE3, end = HADimens.SPACE3, bottom = HADimens.SPACE3),
+                Modifier.padding(start = Css.Space.S3, end = Css.Space.S3, bottom = Css.Space.S3),
                 // `hui-card-features`' gap
-                verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+                verticalArrangement = Arrangement.spacedBy(Css.Space.S3),
             ) {
                 model.features.forEach { AreaControlsRow(it, interactions, stretch = true) }
             }
@@ -260,7 +259,7 @@ private fun AreaTileText(model: AreaCardModel.Shown, textAlign: TextAlign, modif
 private fun AreaControlsRow(controls: AreaControls, interactions: CardInteractions, stretch: Boolean) {
     Row(
         modifier = if (stretch) Modifier.fillMaxWidth() else Modifier,
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S3),
     ) {
         controls.buttons.forEach { button ->
             AreaControlButtonView(
@@ -286,7 +285,7 @@ private fun AreaControlButtonView(button: AreaControlButton, interactions: CardI
     Box(
         modifier
             .heightIn(min = CONTROL_HEIGHT)
-            .clip(RoundedCornerShape(HARadius.XL))
+            .clip(RoundedCornerShape(Css.Radius.Xl))
             .background(background.copy(alpha = CONTROL_BACKGROUND_ALPHA))
             .clickable(role = Role.Button) { interactions.onAction(button.action) }
             .semantics { contentDescription = button.label },
@@ -313,7 +312,7 @@ private const val HEADER_ICON_BACKGROUND_ALPHA = 0.12f
 
 /** `--control-button-background-opacity`. */
 private const val CONTROL_BACKGROUND_ALPHA = 0.2f
-private val CONTROL_HEIGHT = HADimens.SPACE10
+private val CONTROL_HEIGHT = Css.Space.S10
 private val INLINE_BUTTON_WIDTH = 48.dp
 private val BADGE_SIZE = 16.dp
 private val BADGE_ICON_SIZE = 12.dp

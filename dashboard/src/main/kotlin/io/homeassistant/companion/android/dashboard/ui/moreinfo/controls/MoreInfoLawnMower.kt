@@ -6,11 +6,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.moreinfo.LawnMowerMoreInfo
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.MowerStatus
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -25,7 +25,7 @@ internal fun MoreInfoLawnMower(info: LawnMowerMoreInfo, onAction: (CardAction) -
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
     ) {
         MowerStatus(info.visual, info.color?.toColor() ?: LocalHAColorScheme.current.colorFillDisabledLoudResting)
         CommandButtonRow(info.buttons, onAction)

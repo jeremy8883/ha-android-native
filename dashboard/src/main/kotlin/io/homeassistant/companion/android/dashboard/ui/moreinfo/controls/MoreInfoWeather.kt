@@ -21,15 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.em
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.data.ForecastRepository
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -42,7 +40,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.weatherForecastView
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.ForecastRow
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.WeatherIconView
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.weather.ForecastEvent
 import io.homeassistant.companion.android.dashboard.weather.ForecastKey
 import java.time.Instant
@@ -72,27 +70,27 @@ internal fun MoreInfoWeather(weather: WeatherMoreInfo, state: EntityState, hass:
     LaunchedEffect(state.entityId, type) { type?.let { forecasts.show(ForecastKey(state.entityId, it)) } }
     val event by forecasts.event.collectAsStateWithLifecycle()
     val view = remember(state, event, now) { hass.weatherForecastView(state, event, now) }
-    Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
         WeatherConditions(weather, view.secondary)
         weather.rows.forEach { row ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+                horizontalArrangement = Arrangement.spacedBy(Css.Space.S4),
             ) {
                 DashboardIcon(row.icon, colors.colorTextSecondary, Modifier.size(HASize.X2L))
                 Text(
                     row.name,
-                    style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                    style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                     color = colors.colorTextPrimary,
                     modifier = Modifier.weight(1f),
                 )
-                Text(row.value, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
+                Text(row.value, style = Css.Text.Body, color = colors.colorTextPrimary)
             }
         }
         weather.forecastTitle?.let { title ->
             Text(
                 title,
-                style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
+                style = Css.Text.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
                 color = colors.colorTextPrimary,
             )
             if (weather.tabs.isNotEmpty()) {
@@ -112,7 +110,7 @@ internal fun MoreInfoWeather(weather: WeatherMoreInfo, state: EntityState, hass:
         weather.attribution?.let {
             Text(
                 it,
-                style = HATextStyle.BodyMedium,
+                style = Css.Text.Body,
                 color = colors.colorTextSecondary,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
@@ -128,8 +126,12 @@ internal fun MoreInfoWeather(weather: WeatherMoreInfo, state: EntityState, hass:
 @Composable
 private fun WeatherConditions(weather: WeatherMoreInfo, secondary: SecondaryWeather?) {
     val colors = LocalHAColorScheme.current
+    // `.state, .temp-attribute .temp`
+    val stateStyle = Css.Text.Primary.copy(fontSize = Css.FontSize.X3l, lineHeight = Css.LineHeight.Condensed)
+    // `.attribute`
+    val attributeStyle = Css.Text.Body.copy(lineHeight = ATTRIBUTE_LINE_HEIGHT.em)
     Row(
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S4),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         weather.condition?.let { WeatherIconView(it, colors.colorTextSecondary, Modifier.size(CONDITION_SIZE)) }
@@ -137,29 +139,29 @@ private fun WeatherConditions(weather: WeatherMoreInfo, secondary: SecondaryWeat
         Column(Modifier.weight(1f)) {
             Text(
                 weather.state,
-                style = HATextStyle.Headline.copy(textAlign = TextAlign.Start, fontSize = STATE_SIZE),
+                style = stateStyle,
                 color = colors.colorTextPrimary,
             )
             Text(
                 weather.changed,
-                style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+                style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                 color = colors.colorTextSecondary,
             )
         }
         Column(horizontalAlignment = Alignment.End) {
             weather.temperature?.let {
-                Text(it, style = HATextStyle.Headline.copy(fontSize = STATE_SIZE), color = colors.colorTextPrimary)
+                Text(it, style = stateStyle, color = colors.colorTextPrimary)
             }
             secondary?.let { shown ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
+                    horizontalArrangement = Arrangement.spacedBy(Css.Space.S1),
                 ) {
                     shown.icon?.let { DashboardIcon(it, colors.colorTextSecondary, Modifier.size(HASize.XL)) }
                     shown.label?.let {
-                        Text(it, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary)
+                        Text(it, style = attributeStyle, color = colors.colorTextSecondary)
                     }
-                    Text(shown.value, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary)
+                    Text(shown.value, style = attributeStyle, color = colors.colorTextSecondary)
                 }
             }
         }
@@ -189,4 +191,6 @@ internal class MoreInfoForecastViewModel @Inject constructor(repository: Forecas
 }
 
 private val CONDITION_SIZE = 64.dp
-private val STATE_SIZE = 24.sp
+
+/** `.attribute`'s `line-height: 1`. */
+private const val ATTRIBUTE_LINE_HEIGHT = 1f

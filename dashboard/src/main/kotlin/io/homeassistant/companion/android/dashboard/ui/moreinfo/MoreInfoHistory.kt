@@ -18,8 +18,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -38,7 +36,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.chart.TimeSpan
 import io.homeassistant.companion.android.dashboard.ui.components.chart.TimelineChartView
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.Instant
 
 /**
@@ -55,7 +53,7 @@ internal fun MoreInfoHistory(entityId: String, hass: HassSnapshot, now: Instant,
         HistoryRequest(entityId, hass.historyUsesStatistics(entityId), hass.historyWithoutAttributes(entityId))
     LaunchedEffect(request) { viewModel.show(request) }
     val history by viewModel.history.collectAsStateWithLifecycle()
-    Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
         val aggregate = (history as? Loadable.Ready)?.value is EntityHistory.Statistics
         MoreInfoSectionHeader(
             title = hass.localize("$MORE_INFO.history"),
@@ -93,10 +91,10 @@ internal fun MoreInfoSectionHeader(
         Column(Modifier.weight(1f)) {
             Text(
                 title,
-                style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                 color = colors.colorTextPrimary,
             )
-            subtitle?.let { Text(it, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start)) }
+            subtitle?.let { Text(it, style = Css.Text.Body.copy(textAlign = TextAlign.Start)) }
         }
         HAPlainButton(showMore, onShowMore)
     }
@@ -111,7 +109,7 @@ internal fun MoreInfoSectionHeader(
 private fun HistoryError(hass: HassSnapshot, message: String) {
     Text(
         "${hass.localize("ui.components.history_charts.error")}: $message",
-        style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+        style = Css.Text.Body.copy(textAlign = TextAlign.Start),
         color = LocalHAColorScheme.current.colorOnDangerNormal,
     )
 }

@@ -21,8 +21,6 @@ import io.homeassistant.companion.android.common.compose.composable.HADropdownIt
 import io.homeassistant.companion.android.common.compose.composable.HADropdownMenu
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HATextField
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.moreinfo.SirenAdvanced
@@ -30,6 +28,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.SirenMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.sirenTurnOnCall
 import io.homeassistant.companion.android.dashboard.ui.components.ControlButtonIcon
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.StateToggleControl
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /**
  * The controls of a siren's details, port of `more-info-siren` (frontend@20260624.6
@@ -68,9 +67,9 @@ private fun SirenAdvancedDialog(
     var duration by remember { mutableStateOf("") }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(controls.title, style = HATextStyle.HeadlineMedium) },
+        title = { Text(controls.title, style = Css.Text.DialogTitle) },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+            Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
                 controls.tones?.let { tones ->
                     HADropdownMenu(
                         items = tones.map { (value, name) -> HADropdownItem(value, name) },
@@ -83,7 +82,7 @@ private fun SirenAdvancedDialog(
                 if (controls.duration) NumberField(controls.durationLabel, duration, "s") { duration = it }
                 Row(
                     Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4, Alignment.CenterHorizontally),
+                    horizontalArrangement = Arrangement.spacedBy(Css.Space.S4, Alignment.CenterHorizontally),
                 ) {
                     ControlButtonIcon("mdi:play", controls.turnOnLabel, Modifier.size(BUTTON_SIZE)) {
                         // Upstream keeps a volume or duration that isn't a number unset

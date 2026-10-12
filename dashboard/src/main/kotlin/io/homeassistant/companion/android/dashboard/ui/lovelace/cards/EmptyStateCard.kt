@@ -24,8 +24,6 @@ import io.homeassistant.companion.android.common.compose.composable.ButtonVarian
 import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
 import io.homeassistant.companion.android.common.compose.composable.HAFilledButton
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.Gesture
@@ -37,7 +35,7 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardSurface
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /** `.container`'s `max-width`. */
@@ -58,19 +56,19 @@ internal fun EmptyStateCard(card: CardConfig, interactions: CardInteractions, mo
             Column(
                 modifier = Modifier
                     .widthIn(max = CONTAINER_MAX_WIDTH)
-                    .padding(vertical = HADimens.SPACE8, horizontal = HADimens.SPACE4),
+                    .padding(vertical = Css.Space.S8, horizontal = Css.Space.S4),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+                verticalArrangement = Arrangement.spacedBy(Css.Space.S4),
             ) {
                 DashboardIcon(
                     model.icon,
                     model.iconColor?.toColor() ?: colors.colorTextSecondary,
-                    Modifier.size(HADimens.SPACE16),
+                    Modifier.size(Css.Space.S16),
                 )
                 model.title?.let {
                     Text(
                         it,
-                        style = TextStyle(fontSize = HAFontSize.XL, fontWeight = FontWeight.Medium),
+                        style = TextStyle(fontSize = Css.FontSize.Xl, fontWeight = FontWeight.Medium),
                         color = colors.colorTextPrimary,
                         textAlign = TextAlign.Center,
                     )
@@ -78,15 +76,15 @@ internal fun EmptyStateCard(card: CardConfig, interactions: CardInteractions, mo
                 model.content?.let {
                     Text(
                         it,
-                        style = FrontendTextStyle.Body,
+                        style = Css.Text.Body,
                         color = colors.colorTextSecondary,
                         textAlign = TextAlign.Center,
                     )
                 }
                 if (model.buttons.isNotEmpty()) {
                     FlowRow(
-                        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.CenterHorizontally),
-                        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2, Alignment.CenterHorizontally),
+                        verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
                     ) {
                         model.buttons.forEach { button ->
                             EmptyStateCardButton(button) {

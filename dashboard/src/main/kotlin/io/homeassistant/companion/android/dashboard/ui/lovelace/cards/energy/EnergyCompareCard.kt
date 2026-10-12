@@ -26,7 +26,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.composable.HABanner
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.energy.energyCompare
@@ -35,7 +34,7 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.EnergyChange
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /**
  * While comparing, which periods are compared, with a link to compare with the other kind of period and a button
@@ -63,8 +62,8 @@ internal fun EnergyCompareCard(
     HABanner(modifier.fillMaxWidth()) {
         DashboardIcon(INFO_ICON, colors.colorOnPrimaryNormal, Modifier.size(ICON))
         Column(
-            Modifier.weight(1f).padding(horizontal = HADimens.SPACE2),
-            verticalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
+            Modifier.weight(1f).padding(horizontal = Css.Space.S2),
+            verticalArrangement = Arrangement.spacedBy(Css.Space.S1),
         ) {
             Text(
                 buildAnnotatedString {
@@ -77,13 +76,13 @@ internal fun EnergyCompareCard(
                     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append(shown.compared) }
                     append(after)
                 },
-                style = FrontendTextStyle.Body,
+                style = Css.Text.Body,
                 color = colors.colorTextPrimary,
                 textAlign = TextAlign.Start,
             )
             Text(
                 "(${localize("$prefix.${shown.switchKey}")})",
-                style = FrontendTextStyle.Body,
+                style = Css.Text.Body,
                 color = colors.colorOnPrimaryNormal,
                 textAlign = TextAlign.Start,
                 modifier = Modifier.clickable(role = Role.Button) {

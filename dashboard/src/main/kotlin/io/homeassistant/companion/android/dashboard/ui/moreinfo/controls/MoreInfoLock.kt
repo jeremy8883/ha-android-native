@@ -20,9 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.moreinfo.LockMoreInfo
@@ -34,6 +32,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.PulsingStatusI
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.STATE_CONTROL_HEIGHT
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.STATE_CONTROL_THICKNESS
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.StateToggleControl
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import kotlinx.coroutines.delay
 
@@ -49,7 +48,7 @@ internal fun MoreInfoLock(info: LockMoreInfo, onAction: (CardAction) -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
     ) {
         info.toggle?.let { StateToggleControl(it, onAction) }
         info.jammed?.let { jammed ->
@@ -61,7 +60,7 @@ internal fun MoreInfoLock(info: LockMoreInfo, onAction: (CardAction) -> Unit) {
         info.jammed?.let { jammed ->
             Row(
                 modifier = Modifier.fillMaxWidth().widthIn(max = JAMMED_MAX_WIDTH),
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+                horizontalArrangement = Arrangement.spacedBy(Css.Space.S3),
             ) {
                 jammed.buttons.forEach { (label, action) ->
                     ControlButton(label, Modifier.weight(1f)) { onAction(action) }
@@ -92,14 +91,14 @@ private fun OpenButton(open: LockOpen, onAction: (CardAction) -> Unit) {
         Row(
             modifier = Modifier.height(CONTROL_BUTTON_HEIGHT),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+            horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
         ) {
             DashboardIcon(
                 name = "mdi:check",
                 tint = colors.colorFillSuccessLoudResting,
                 modifier = Modifier.size(HASize.X2L),
             )
-            Text(open.doneLabel, style = HATextStyle.BodyMedium, color = colors.colorFillSuccessLoudResting)
+            Text(open.doneLabel, style = Css.Text.Body, color = colors.colorFillSuccessLoudResting)
         }
         return
     }

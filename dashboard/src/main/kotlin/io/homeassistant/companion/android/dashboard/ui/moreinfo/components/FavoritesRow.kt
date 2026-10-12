@@ -47,13 +47,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import io.homeassistant.companion.android.common.compose.theme.HABorderWidth
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.moreinfo.LightFavorite
 import io.homeassistant.companion.android.dashboard.moreinfo.LightFavorites
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.parseCssColor
 import kotlin.math.roundToInt
 
@@ -77,8 +76,8 @@ internal fun FavoritesRow(
     val bounds = remember { mutableStateMapOf<Int, Rect>() }
     FlowRow(
         modifier = Modifier.widthIn(max = state.maxWidth),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4, Alignment.CenterHorizontally),
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S4, Alignment.CenterHorizontally),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S4),
     ) {
         deleteLabels.forEachIndexed { index, deleteLabel ->
             FavoriteBubble(
@@ -215,7 +214,7 @@ private fun Swatch(favorite: LightFavorite, enabled: Boolean, modifier: Modifier
             .clip(CircleShape)
             .background(if (enabled) color else colors.colorFillDisabledLoudResting)
             .border(
-                HABorderWidth.S,
+                Css.BorderWidth.Sm,
                 if (favorite.outlined) colors.colorBorderNeutralQuiet else Color.Transparent,
                 CircleShape,
             )
@@ -256,7 +255,7 @@ private fun RoundButton(icon: String, label: String, onClick: () -> Unit) {
         modifier = Modifier
             .size(SWATCH_SIZE)
             .clip(CircleShape)
-            .border(HABorderWidth.S, colors.colorBorderNeutralNormal, CircleShape)
+            .border(Css.BorderWidth.Sm, colors.colorBorderNeutralNormal, CircleShape)
             .clickable(role = Role.Button, onClick = onClick)
             .semantics { contentDescription = label },
         contentAlignment = Alignment.Center,
@@ -296,7 +295,7 @@ private const val DISABLED_ALPHA = 0.5f
 private const val SHAKE_MS = 450
 private const val SHAKE_STAGGER_MS = 150
 private const val SHAKE_DEGREES = 3f
-private val SWATCH_SIZE = HADimens.SPACE10
+private val SWATCH_SIZE = Css.Space.S10
 private val ROW_MAX_WIDTH = 250.dp
 private val DELETE_OFFSET = 6.dp
-private val DELETE_RADIUS = HADimens.SPACE2
+private val DELETE_RADIUS = Css.Space.S2

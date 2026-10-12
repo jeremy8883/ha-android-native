@@ -46,9 +46,7 @@ import io.homeassistant.companion.android.common.compose.composable.HASearchFiel
 import io.homeassistant.companion.android.common.compose.composable.consumeSheetScrollFling
 import io.homeassistant.companion.android.common.compose.composable.rememberHAModalBottomSheetState
 import io.homeassistant.companion.android.common.compose.composable.rememberSearchFieldState
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.stateBadge
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -63,7 +61,7 @@ import io.homeassistant.companion.android.dashboard.target.TargetRef
 import io.homeassistant.companion.android.dashboard.target.TargetType
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
@@ -94,7 +92,7 @@ internal fun TargetPickerSheet(
     ) {
         HASearchField(
             state = search,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = HADimens.SPACE4),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = Css.Space.S4),
             leadingIcon = { DashboardIcon("mdi:magnify", colors.colorTextPrimary, Modifier.size(HASize.X2L)) },
         )
         SectionChips(source.hass, section) { section = if (section == it) null else it }
@@ -126,8 +124,8 @@ private fun SectionChips(hass: HassSnapshot, selected: TargetType?, onToggle: (T
     val colors = LocalHAColorScheme.current
     Row(
         Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())
-            .padding(start = HADimens.SPACE4, end = HADimens.SPACE4, top = HADimens.SPACE3, bottom = HADimens.SPACE3),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+            .padding(start = Css.Space.S4, end = Css.Space.S4, top = Css.Space.S3, bottom = Css.Space.S3),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         TARGET_SECTIONS.forEach { type ->
@@ -135,11 +133,11 @@ private fun SectionChips(hass: HassSnapshot, selected: TargetType?, onToggle: (T
                 Box(
                     Modifier.width(
                         SEPARATOR_WIDTH,
-                    ).heightIn(min = HADimens.SPACE8).background(colors.colorBorderNeutralQuiet),
+                    ).heightIn(min = Css.Space.S8).background(colors.colorBorderNeutralQuiet),
                 )
             }
             val chosen = type == selected
-            val shape = RoundedCornerShape(HADimens.SPACE2)
+            val shape = RoundedCornerShape(Css.Space.S2)
             Row(
                 modifier = Modifier
                     .clip(shape)
@@ -154,15 +152,15 @@ private fun SectionChips(hass: HassSnapshot, selected: TargetType?, onToggle: (T
                         },
                     )
                     .clickable(role = Role.Checkbox) { onToggle(type) }
-                    .padding(horizontal = HADimens.SPACE4, vertical = HADimens.SPACE2),
+                    .padding(horizontal = Css.Space.S4, vertical = Css.Space.S2),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
             ) {
                 // A chosen filter chip shows a check
                 if (chosen) DashboardIcon("mdi:check", colors.colorTextPrimary, Modifier.size(HASize.L))
                 Text(
                     hass.localize("$TARGET.type.${SECTION_LABELS.getValue(type)}"),
-                    style = HATextStyle.BodyMedium,
+                    style = Css.Text.Body,
                     color = colors.colorTextPrimary,
                 )
             }
@@ -180,11 +178,11 @@ private fun SectionTitle(text: String) {
     val colors = LocalHAColorScheme.current
     Text(
         text,
-        style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start, fontWeight = FontWeight.Bold),
+        style = Css.Text.Body.copy(textAlign = TextAlign.Start, fontWeight = FontWeight.Bold),
         color = colors.colorTextSecondary,
         modifier = Modifier.fillMaxWidth().background(colors.colorFillNeutralQuietResting)
-            .heightIn(min = HADimens.SPACE6)
-            .padding(horizontal = HADimens.SPACE4, vertical = HADimens.SPACE1),
+            .heightIn(min = Css.Space.S6)
+            .padding(horizontal = Css.Space.S4, vertical = Css.Space.S1),
     )
 }
 
@@ -202,21 +200,21 @@ private fun ItemRow(item: TargetPickerItem, hass: HassSnapshot, onClick: () -> U
             .height(IntrinsicSize.Min)
             .heightIn(min = if (item.secondary != null) TWO_LINE_HEIGHT else ONE_LINE_HEIGHT)
             .clickable(role = Role.Button, onClick = onClick)
-            .padding(end = HADimens.SPACE4),
+            .padding(end = Css.Space.S4),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         if (item.underFloor) {
             TreeIndicator(item.last, Modifier.width(TREE_WIDTH).fillMaxHeight())
         } else {
-            Box(Modifier.width(HADimens.SPACE4))
+            Box(Modifier.width(Css.Space.S4))
         }
         Box(Modifier.size(ICON_BOX), contentAlignment = Alignment.Center) {
             item.icon?.let { TargetIconView(it, hass, Modifier.size(HASize.X2L), tint = colors.colorTextSecondary) }
         }
-        Column(Modifier.weight(1f).padding(start = HADimens.SPACE4, top = HADimens.SPACE2, bottom = HADimens.SPACE2)) {
+        Column(Modifier.weight(1f).padding(start = Css.Space.S4, top = Css.Space.S2, bottom = Css.Space.S2)) {
             Text(
                 item.primary,
-                style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                 color = colors.colorTextPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -224,7 +222,7 @@ private fun ItemRow(item: TargetPickerItem, hass: HassSnapshot, onClick: () -> U
             item.secondary?.let {
                 Text(
                     it,
-                    style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+                    style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                     color = colors.colorTextSecondary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -234,10 +232,10 @@ private fun ItemRow(item: TargetPickerItem, hass: HassSnapshot, onClick: () -> U
         item.domainName?.let {
             Text(
                 it,
-                style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.End),
+                style = Css.Text.Body.copy(textAlign = TextAlign.End),
                 color = colors.colorTextSecondary,
                 maxLines = 1,
-                modifier = Modifier.padding(start = HADimens.SPACE2),
+                modifier = Modifier.padding(start = Css.Space.S2),
             )
         }
     }
@@ -282,16 +280,16 @@ private fun TreeIndicator(end: Boolean, modifier: Modifier) {
 private fun EmptyRow(text: String, searching: Boolean) {
     val colors = LocalHAColorScheme.current
     Row(
-        Modifier.fillMaxWidth().heightIn(min = ONE_LINE_HEIGHT).padding(horizontal = HADimens.SPACE4),
+        Modifier.fillMaxWidth().heightIn(min = ONE_LINE_HEIGHT).padding(horizontal = Css.Space.S4),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S4),
     ) {
         DashboardIcon(
             if (searching) "mdi:magnify" else "mdi:minus-box-outline",
             colors.colorTextSecondary,
             Modifier.size(HASize.X2L),
         )
-        Text(text, style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start), color = colors.colorTextPrimary)
+        Text(text, style = Css.Text.Body.copy(textAlign = TextAlign.Start), color = colors.colorTextPrimary)
     }
 }
 

@@ -21,9 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
 import io.homeassistant.companion.android.common.compose.composable.HALoading
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.energy.CompareMode
@@ -39,7 +38,7 @@ import io.homeassistant.companion.android.dashboard.ui.EnergyChange
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardSurface
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.DayOfWeek
 import java.time.ZonedDateTime
 
@@ -75,16 +74,28 @@ internal fun EnergyDateSelectionCard(
     DashboardCardSurface(modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = HADimens.SPACE2, vertical = HADimens.SPACE1),
+            modifier = Modifier.padding(horizontal = Css.Space.S2, vertical = Css.Space.S1),
         ) {
             RangeMenu(localize = { localize(it) }, onPick = { choose(it.period(today, firstDay)) })
-            Column(Modifier.weight(1f).padding(horizontal = HADimens.SPACE2)) {
-                Text(title.title, style = HATextStyle.BodyMedium, color = LocalHAColorScheme.current.colorTextPrimary)
+            Column(Modifier.weight(1f).padding(horizontal = Css.Space.S2)) {
+                // `.header-title`, `.header-subtitle`
+                Text(
+                    title.title,
+                    style = Css.Text.Primary.copy(
+                        fontSize = Css.FontSize.Xl,
+                        fontWeight = Css.FontWeight.Medium,
+                        lineHeight = Css.LineHeight.Condensed,
+                    ),
+                )
                 title.subtitle?.let {
-                    Text(it, style = FrontendTextStyle.Body, color = LocalHAColorScheme.current.colorTextSecondary)
+                    Text(
+                        it,
+                        style = Css.Text.Body.copy(textAlign = TextAlign.Start, lineHeight = Css.LineHeight.Condensed),
+                        color = LocalHAColorScheme.current.colorTextSecondary,
+                    )
                 }
             }
-            if (shown.loading) HALoading(modifier = Modifier.size(HADimens.SPACE5))
+            if (shown.loading) HALoading(modifier = Modifier.size(Css.Space.S5))
             SelectorButton(MDI_PREVIOUS, localize(SELECTOR + "previous")) {
                 choose(shown.period.shift(forward = false))
             }
@@ -134,7 +145,7 @@ private fun RangeMenu(localize: (String) -> String, onPick: (EnergyRangePreset) 
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             EnergyRangePreset.entries.forEach { preset ->
                 DropdownMenuItem(
-                    text = { Text(localize(PICKER + "ranges." + preset.key), style = FrontendTextStyle.Body) },
+                    text = { Text(localize(PICKER + "ranges." + preset.key), style = Css.Text.Body) },
                     onClick = {
                         open = false
                         onPick(preset)
@@ -169,7 +180,7 @@ private fun OverflowMenu(
         SelectorButton(MDI_MORE, stringResource(R.string.native_dashboard_more_options)) { open = true }
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             DropdownMenuItem(
-                text = { Text(labels.now, style = FrontendTextStyle.Body) },
+                text = { Text(labels.now, style = Css.Text.Body) },
                 leadingIcon = { DashboardIcon(MDI_NOW, tint = colors.colorTextPrimary) },
                 onClick = {
                     open = false
@@ -177,7 +188,7 @@ private fun OverflowMenu(
                 },
             )
             DropdownMenuItem(
-                text = { Text(labels.compare, style = FrontendTextStyle.Body) },
+                text = { Text(labels.compare, style = Css.Text.Body) },
                 leadingIcon = {
                     DashboardIcon(
                         if (comparing) MDI_CHECKED else MDI_UNCHECKED,
@@ -191,7 +202,7 @@ private fun OverflowMenu(
                 },
             )
             DropdownMenuItem(
-                text = { Text(labels.download, style = FrontendTextStyle.Body) },
+                text = { Text(labels.download, style = Css.Text.Body) },
                 leadingIcon = { DashboardIcon(MDI_DOWNLOAD, tint = colors.colorTextPrimary) },
                 onClick = {
                     open = false

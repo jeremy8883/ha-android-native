@@ -15,8 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.buttonCardModel
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -26,7 +24,8 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssFontPx
 import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 
 /**
@@ -48,9 +47,9 @@ internal fun ButtonCard(
     val colors = LocalHAColorScheme.current
     DashboardCardSurface(modifier = modifier.elementGestures(model.actions, interactions)) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(HADimens.SPACE4),
+            modifier = Modifier.fillMaxWidth().padding(Css.Space.S4),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+            verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
         ) {
             model.icon?.let { icon ->
                 DashboardIcon(
@@ -62,14 +61,21 @@ internal fun ButtonCard(
             model.name?.let {
                 Text(
                     it,
-                    style = FrontendTextStyle.Body,
+                    // `ha-card`'s `--ha-font-size-l` at `--ha-line-height-condensed`
+                    style = Css.Text.Body.copy(fontSize = Css.FontSize.L, lineHeight = Css.LineHeight.Condensed),
                     color = colors.colorTextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
             }
             model.state?.let {
-                Text(it, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary, maxLines = 1)
+                // `.state`'s `font-size: 0.9rem`
+                Text(
+                    it,
+                    style = Css.Text.Body.copy(fontSize = STATE_FONT_SIZE, lineHeight = Css.LineHeight.Condensed),
+                    color = colors.colorTextSecondary,
+                    maxLines = 1,
+                )
             }
         }
     }
@@ -79,3 +85,6 @@ internal fun ButtonCard(
 private fun iconSize(height: String?) = height?.removeSuffix("px")?.trim()?.toFloatOrNull()?.dp ?: ICON_SIZE
 
 private val ICON_SIZE = 64.dp
+
+/** `.state`'s `font-size: 0.9rem` (the root's 14px). */
+private val STATE_FONT_SIZE = 12.6.cssFontPx

@@ -18,16 +18,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
+import androidx.compose.ui.unit.em
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.logbook.CausePhrase
 import io.homeassistant.companion.android.dashboard.logbook.LogbookRow
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /**
  * What a named row shows beyond the row: its [time], what caused it ([cause]) and the label of its trace's link.
@@ -52,13 +52,13 @@ internal fun LogbookListRow(row: LogbookRow, texts: LogbookListTexts, actions: L
     val colors = LocalHAColorScheme.current
     Row(
         modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min).heightIn(min = ROW_MIN_HEIGHT),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
     ) {
         LogbookNode(row, Modifier.width(NODE_WIDTH).fillMaxHeight(), dotCentre = DOT_CENTRE)
         Column(Modifier.weight(1f)) {
             Column(
-                Modifier.padding(vertical = HADimens.SPACE2),
-                verticalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
+                Modifier.padding(vertical = Css.Space.S2),
+                verticalArrangement = Arrangement.spacedBy(Css.Space.S1),
             ) {
                 PrimaryLine(row, actions.onOpenEntity)
                 SecondaryLine(row.subject?.context, texts.time, actions.onToggleTime)
@@ -79,11 +79,11 @@ internal fun LogbookListRow(row: LogbookRow, texts: LogbookListTexts, actions: L
 @Composable
 private fun PrimaryLine(row: LogbookRow, onOpenEntity: (String) -> Unit) {
     val colors = LocalHAColorScheme.current
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
         val entityId = row.subject?.entityId
         Text(
             row.subject?.name.orEmpty(),
-            style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start, fontWeight = FontWeight.Medium),
+            style = Css.Text.Body.copy(textAlign = TextAlign.Start, fontWeight = FontWeight.Medium),
             color = colors.colorTextPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -93,7 +93,7 @@ private fun PrimaryLine(row: LogbookRow, onOpenEntity: (String) -> Unit) {
         )
         Text(
             row.text,
-            style = FrontendTextStyle.Body.copy(textAlign = TextAlign.End),
+            style = Css.Text.Body.copy(textAlign = TextAlign.End),
             color = colors.colorTextPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -110,18 +110,20 @@ private fun PrimaryLine(row: LogbookRow, onOpenEntity: (String) -> Unit) {
 @Composable
 private fun SecondaryLine(context: String?, time: String, onToggleTime: () -> Unit) {
     val colors = LocalHAColorScheme.current
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
+        // `.secondary`: `--ha-font-size-s`
         Text(
             context.orEmpty(),
-            style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+            style = secondaryStyle,
             color = colors.colorTextSecondary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f),
         )
+        // `.time-chip`: `--ha-font-size-s` at `line-height: 1`
         Text(
             time,
-            style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.End),
+            style = secondaryStyle.copy(textAlign = TextAlign.End, lineHeight = TIME_LINE_HEIGHT.em),
             color = colors.colorTextSecondary,
             maxLines = 1,
             modifier = Modifier.widthIn(min = TIME_MIN_WIDTH).clickable(role = Role.Button, onClick = onToggleTime),
@@ -137,8 +139,8 @@ private fun SecondaryLine(context: String?, time: String, onToggleTime: () -> Un
 @Composable
 private fun CauseLine(cause: CausePhrase?, traceLink: String?, traceLabel: String, actions: LogbookListActions) {
     val colors = LocalHAColorScheme.current
-    val style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start)
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1)) {
+    val style = secondaryStyle
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Css.Space.S1)) {
         cause?.let { phrase ->
             if (phrase.text.isNotBlank()) Text(phrase.text.trimEnd(), style = style, color = colors.colorTextSecondary)
             phrase.link?.let { link ->
@@ -159,7 +161,7 @@ private fun CauseLine(cause: CausePhrase?, traceLink: String?, traceLabel: Strin
                 traceLabel,
                 style = style,
                 color = colors.colorOnPrimaryNormal,
-                modifier = Modifier.padding(start = HADimens.SPACE1).clickable(role = Role.Button) {
+                modifier = Modifier.padding(start = Css.Space.S1).clickable(role = Role.Button) {
                     actions.onOpenTrace(path)
                 },
             )
@@ -178,3 +180,15 @@ private val VALUE_MAX_WIDTH = 200.dp
 
 /** Times line up: at least 6em on a 12-hour clock, as upstream's time chips. */
 private val TIME_MIN_WIDTH = 84.dp
+
+/** `.time-chip`'s `line-height: 1`. */
+private const val TIME_LINE_HEIGHT = 1f
+
+/** `.secondary`: `--ha-font-size-s`, at the entry's `--ha-line-height-normal`. */
+private val secondaryStyle: TextStyle
+    @Composable
+    get() = Css.Text.Body.copy(
+        fontSize = Css.FontSize.S,
+        lineHeight = Css.LineHeight.Normal,
+        textAlign = TextAlign.Start,
+    )

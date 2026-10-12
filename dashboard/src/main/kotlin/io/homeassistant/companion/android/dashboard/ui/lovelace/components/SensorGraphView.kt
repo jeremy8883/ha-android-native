@@ -26,8 +26,6 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.DisplayColor
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -37,6 +35,7 @@ import io.homeassistant.companion.android.dashboard.history.GraphPoint
 import io.homeassistant.companion.android.dashboard.history.SensorGraph
 import io.homeassistant.companion.android.dashboard.history.historyKey
 import io.homeassistant.companion.android.dashboard.history.sensorGraphCoordinates
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import java.time.ZonedDateTime
 
@@ -78,9 +77,9 @@ internal fun SensorGraphView(
             }
             is GraphContent.Message -> Text(
                 shown.text,
-                style = HATextStyle.BodyMedium,
+                style = Css.Text.Body,
                 color = LocalHAColorScheme.current.colorTextSecondary,
-                modifier = Modifier.fillMaxWidth().padding(HADimens.SPACE2),
+                modifier = Modifier.fillMaxWidth().padding(Css.Space.S2),
             )
             null -> Unit
         }

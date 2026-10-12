@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.composable.HAFilledButton
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.DisplayColor
@@ -47,7 +46,7 @@ import io.homeassistant.companion.android.dashboard.target.chips
 import io.homeassistant.companion.android.dashboard.target.expand
 import io.homeassistant.companion.android.dashboard.theme.resolveDisplayColor
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
 /**
@@ -73,7 +72,7 @@ internal fun TargetPicker(
     val chips = remember(source, target) { source.chips(target) }
     var open by remember { mutableStateOf(false) }
     val colors = LocalHAColorScheme.current
-    Column(modifier, verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
         HAFilledButton(
             hass.localize("$TARGET.add_target"),
             { open = true },
@@ -82,8 +81,8 @@ internal fun TargetPicker(
         )
         if (chips.isNotEmpty()) {
             FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
-                verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
+                verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
             ) {
                 chips.forEach { chip ->
                     TargetChipView(
@@ -135,18 +134,18 @@ private fun TargetChipView(
             // A floor's has no colour of its own
             Modifier.fillMaxHeight().background(
                 accent ?: surface,
-            ).padding(horizontal = HADimens.SPACE1, vertical = HADimens.SPACE2),
+            ).padding(horizontal = Css.Space.S1, vertical = Css.Space.S2),
             contentAlignment = Alignment.Center,
         ) {
             TargetIconView(chip.icon, hass, Modifier.size(HASize.X2L), tint = colors.colorTextPrimary)
         }
         Text(
             chip.name,
-            style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+            style = Css.Text.Body.copy(textAlign = TextAlign.Start),
             color = colors.colorTextPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(start = HADimens.SPACE2).weight(1f, fill = false),
+            modifier = Modifier.padding(start = Css.Space.S2).weight(1f, fill = false),
         )
         if (chip.expandable) {
             val label = hass.localize("$TARGET.expand_${chip.ref.type.key}_id")

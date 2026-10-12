@@ -32,8 +32,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.Gesture
 import io.homeassistant.companion.android.dashboard.energy.SourceRow
@@ -45,7 +43,7 @@ import io.homeassistant.companion.android.dashboard.model.array
 import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.stringOrNull
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
@@ -87,9 +85,9 @@ internal fun EnergySourcesTableCard(
         )
         val widths = columnWidths(listOf(header) + table.rows, columns)
         // Like the frontend's table, it scrolls sideways when its columns don't fit
-        BoxWithConstraints(Modifier.fillMaxWidth().padding(vertical = HADimens.SPACE2)) {
-            val needed = HADimens.SPACE4 * 2 + BULLET + MIN_LABEL + widths.fold(0.dp) { sum, width -> sum + width } +
-                HADimens.SPACE2 * (widths.size + 1)
+        BoxWithConstraints(Modifier.fillMaxWidth().padding(vertical = Css.Space.S2)) {
+            val needed = Css.Space.S4 * 2 + BULLET + MIN_LABEL + widths.fold(0.dp) { sum, width -> sum + width } +
+                Css.Space.S2 * (widths.size + 1)
             val width = if (needed > maxWidth) {
                 Modifier.horizontalScroll(rememberScrollState()).width(needed)
             } else {
@@ -117,7 +115,7 @@ internal fun EnergySourcesTableCard(
 private fun columnWidths(rows: List<SourceRow>, columns: List<(SourceRow) -> String>): List<Dp> {
     val measurer = rememberTextMeasurer()
     val density = LocalDensity.current
-    val style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Bold)
+    val style = Css.Text.Body.copy(fontWeight = FontWeight.Bold)
     return remember(rows, columns) {
         columns.map { cell ->
             with(density) {
@@ -146,17 +144,17 @@ private fun TableRow(
     val color = if (header) colors.colorTextSecondary else colors.colorTextPrimary
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = ROW_HEIGHT)
             .then(if (onClick != null) Modifier.clickable(role = Role.Button, onClick = onClick) else Modifier)
-            .padding(horizontal = HADimens.SPACE4),
+            .padding(horizontal = Css.Space.S4),
     ) {
         Box(Modifier.size(BULLET)) { row.bullet?.let { (kind, index) -> Bullet(kind, index) } }
         Text(
             row.label,
-            style = FrontendTextStyle.Body,
+            style = Css.Text.Body,
             fontWeight = weight,
             color = color,
             maxLines = 2,
@@ -167,7 +165,7 @@ private fun TableRow(
         columns.zip(widths).forEach { (cell, width) ->
             Text(
                 cell(row),
-                style = FrontendTextStyle.Body,
+                style = Css.Text.Body,
                 fontWeight = weight,
                 color = color,
                 textAlign = TextAlign.End,
@@ -188,7 +186,7 @@ private fun TableRow(
 private fun Bullet(kind: String, index: Int) {
     val variable = SOURCE_COLORS[kind] ?: return
     val dark = isSystemInDarkTheme()
-    val shape = RoundedCornerShape(HARadius.S)
+    val shape = RoundedCornerShape(Css.Radius.Sm)
     Box(
         Modifier
             .size(BULLET)

@@ -42,8 +42,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.energy.DeviceSlice
 import io.homeassistant.companion.android.dashboard.energy.DevicesChartType
@@ -62,7 +60,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.chart.ChartLeg
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.DEVICES_CHART_TYPE_KEY
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.LocalCardPreferences
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.math.BigDecimal
 import kotlin.math.atan2
 import kotlin.math.max
@@ -155,17 +153,17 @@ private fun DeviceBars(model: EnergyDevicesGraphModel, onOpen: (DeviceSlice) -> 
     val dark = isSystemInDarkTheme()
     val largest = model.slices.maxOfOrNull { max(it.value, it.compareValue ?: 0.0) }?.takeIf { it > 0 } ?: 1.0
     Column(
-        Modifier.fillMaxWidth().padding(HADimens.SPACE4),
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+        Modifier.fillMaxWidth().padding(Css.Space.S4),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
     ) {
         model.slices.forEach { slice ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
             ) {
                 Text(
                     slice.name,
-                    style = FrontendTextStyle.Body,
+                    style = Css.Text.Body,
                     color = colors.colorTextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -181,7 +179,7 @@ private fun DeviceBars(model: EnergyDevicesGraphModel, onOpen: (DeviceSlice) -> 
                         }
                     }
                 }
-                Text(slice.valueText, style = FrontendTextStyle.Body, color = colors.colorTextSecondary, maxLines = 1)
+                Text(slice.valueText, style = Css.Text.Body, color = colors.colorTextSecondary, maxLines = 1)
             }
         }
     }
@@ -194,7 +192,7 @@ private fun DeviceBars(model: EnergyDevicesGraphModel, onOpen: (DeviceSlice) -> 
  */
 @Composable
 private fun Bar(slice: DeviceSlice, dark: Boolean, share: Double, width: Dp, compare: Boolean, thick: Boolean) {
-    val shape = RoundedCornerShape(topEnd = HARadius.S, bottomEnd = HARadius.S)
+    val shape = RoundedCornerShape(topEnd = Css.Radius.Sm, bottomEnd = Css.Radius.Sm)
     Box(
         Modifier
             .width(width * share.toFloat().coerceIn(0f, 1f))
@@ -221,7 +219,7 @@ private fun DeviceDonut(
     val dark = isSystemInDarkTheme()
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, top = HADimens.SPACE4)
+        modifier = Modifier.padding(start = Css.Space.S4, end = Css.Space.S4, top = Css.Space.S4)
             .fillMaxWidth().height(DONUT),
     ) {
         val slices = model.slices.map {
@@ -257,7 +255,7 @@ private fun DeviceDonut(
         model.total?.let {
             Text(
                 "$totalLabel\n${hass.formats.number(BigDecimal.valueOf(it), 0, 2)} kWh",
-                style = FrontendTextStyle.Body,
+                style = Css.Text.Body,
                 fontWeight = FontWeight.Bold,
                 color = colors.colorTextSecondary,
                 textAlign = TextAlign.Center,

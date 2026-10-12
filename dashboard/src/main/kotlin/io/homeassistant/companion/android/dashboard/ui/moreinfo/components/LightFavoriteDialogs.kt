@@ -31,8 +31,6 @@ import io.homeassistant.companion.android.common.compose.composable.ButtonVarian
 import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
 import io.homeassistant.companion.android.common.compose.composable.HACheckbox
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.action.CardAction
@@ -47,7 +45,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.parseLightColor
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.LightColorControl
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.ShowButton
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.StateControlSlider
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import kotlin.math.roundToInt
 
 /**
@@ -84,18 +82,18 @@ internal fun FavoriteColorDialog(
     Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
         Column(
             modifier = Modifier
-                .padding(HADimens.SPACE4)
+                .padding(Css.Space.S4)
                 .fillMaxWidth()
                 .background(LocalHAColorScheme.current.colorSurfaceDefault, RoundedCornerShape(DIALOG_RADIUS))
                 .verticalScroll(rememberScrollState())
-                .padding(HADimens.SPACE6),
+                .padding(Css.Space.S6),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+            verticalArrangement = Arrangement.spacedBy(Css.Space.S4),
         ) {
             Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     title,
-                    style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start),
+                    style = Css.Text.DialogTitle,
                     modifier = Modifier.weight(1f),
                 )
                 if (modes.size > 1) {
@@ -133,8 +131,8 @@ internal fun FavoriteColorDialog(
 internal fun ConfirmDialog(title: String, text: String, confirm: String, onConfirm: () -> Unit, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(title, style = HATextStyle.HeadlineMedium) },
-        text = { Text(text, style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start)) },
+        title = { Text(title, style = Css.Text.DialogTitle) },
+        text = { Text(text, style = Css.Text.Body.copy(textAlign = TextAlign.Start)) },
         confirmButton = { HAAccentButton(confirm, onConfirm, variant = ButtonVariant.DANGER) },
         dismissButton = { HAPlainButton(stringResource(commonR.string.cancel), onDismiss) },
     )
@@ -158,12 +156,12 @@ internal fun CopyFavoritesDialog(
     var chosen by remember { mutableStateOf(emptySet<String>()) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(title, style = HATextStyle.HeadlineMedium) },
+        title = { Text(title, style = Css.Text.DialogTitle) },
         text = {
             Column(Modifier.heightIn(max = LIST_MAX_HEIGHT).verticalScroll(rememberScrollState())) {
                 Text(
                     helper,
-                    style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+                    style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                 )
                 targets.forEach { entityId ->
                     val checked = entityId in chosen
@@ -184,7 +182,7 @@ internal fun CopyFavoritesDialog(
                         })
                         Text(
                             hass.states[entityId]?.let { hass.entityName(it) } ?: entityId,
-                            style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                            style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                         )
                     }
                 }

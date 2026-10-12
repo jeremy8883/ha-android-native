@@ -19,8 +19,6 @@ import io.homeassistant.companion.android.common.compose.composable.ButtonVarian
 import io.homeassistant.companion.android.common.compose.composable.HACheckbox
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HATextField
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.stateName
@@ -38,6 +36,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.selector.DateE
 import io.homeassistant.companion.android.dashboard.ui.components.selector.TimeEditor
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.TodoEdit
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.components.ConfirmDialog
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
@@ -68,7 +67,7 @@ internal fun TodoItemDialog(
                 Text(hass.localize("$STRINGS.${if (item == null) "add" else "edit"}"))
                 Text(
                     hass.states[model.entityId]?.stateName() ?: model.entityId,
-                    style = HATextStyle.BodyMedium,
+                    style = Css.Text.Body,
                     color = LocalHAColorScheme.current.colorTextSecondary,
                 )
             }
@@ -154,7 +153,7 @@ private fun DraftFields(
     hass: HassSnapshot,
     today: LocalDate,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S3)) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             HACheckbox(
                 checked = draft.checked,
@@ -174,7 +173,7 @@ private fun DraftFields(
         item?.completedAt(hass.formats.zone)?.let { at ->
             Text(
                 hass.localize("$STRINGS.completed_time", mapOf("datetime" to hass.formats.dateTime(at))),
-                style = HATextStyle.BodyMedium.copy(fontStyle = FontStyle.Italic, textAlign = TextAlign.Start),
+                style = Css.Text.Body.copy(fontStyle = FontStyle.Italic, textAlign = TextAlign.Start),
             )
         }
         if (features.description) {
@@ -204,7 +203,7 @@ private fun DueFields(
     hass: HassSnapshot,
     today: LocalDate,
 ) {
-    Text("${hass.localize("$STRINGS.due")}:", style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start))
+    Text("${hass.localize("$STRINGS.due")}:", style = Css.Text.Body.copy(textAlign = TextAlign.Start))
     Row(verticalAlignment = Alignment.CenterVertically) {
         DateEditor(draft.dueDate?.toString(), enabled = editable) { draft.dueDate = LocalDate.parse(it) }
         if (features.dueDateTime) {

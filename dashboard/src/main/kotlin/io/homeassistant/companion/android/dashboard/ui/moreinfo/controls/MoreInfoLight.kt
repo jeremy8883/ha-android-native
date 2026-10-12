@@ -36,10 +36,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HABorderWidth
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
@@ -63,7 +59,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.WheelChannels
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.components.LightFavoritesSection
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.StateControlSlider
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.StateToggleControl
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 
@@ -87,7 +83,7 @@ internal fun MoreInfoLight(
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
     ) {
         light.toggle?.let { StateToggleControl(it, onAction) }
         when (main) {
@@ -131,7 +127,7 @@ internal fun LightColorControl(state: EntityState, hass: HassSnapshot, onAction:
             delay(THROTTLE_MS)
         }
     }
-    Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
         HsColorWheel(
             hue = picker.hue,
             saturation = picker.saturation,
@@ -172,11 +168,11 @@ internal fun LightColorControl(state: EntityState, hass: HassSnapshot, onAction:
 private fun ChannelSlider(slider: LightChannelSlider, enabled: Boolean, onChanged: (Double) -> Unit) {
     val colors = LocalHAColorScheme.current
     val color = colors.colorFillPrimaryLoudResting
-    Column(modifier = Modifier.width(STATE_CONTROL_WIDE), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
-        Text(slider.caption, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
+    Column(modifier = Modifier.width(STATE_CONTROL_WIDE), verticalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
+        Text(slider.caption, style = Css.Text.Body, color = colors.colorTextPrimary)
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+            horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
         ) {
             DashboardIcon(slider.icon, colors.colorTextSecondary, Modifier.size(HASize.X2L))
             ControlSlider(
@@ -187,11 +183,11 @@ private fun ChannelSlider(slider: LightChannelSlider, enabled: Boolean, onChange
                 valueText = { "${it.roundToInt()}%" },
                 style = ControlSliderStyle(
                     thickness = CHANNEL_SLIDER_HEIGHT,
-                    cornerRadius = HARadius.M,
+                    cornerRadius = Css.Radius.Md,
                     color = color,
                     background = SolidColor(color),
                     backgroundAlpha = CHANNEL_BACKGROUND_ALPHA,
-                    tooltipFontSize = HAFontSize.M,
+                    tooltipFontSize = Css.FontSize.M,
                 ),
                 onChanged = onChanged,
                 modifier = Modifier.weight(1f).height(CHANNEL_SLIDER_HEIGHT),
@@ -234,8 +230,8 @@ private fun LightButtons(
                 is LightButton.Show -> ShowButton(button, selected = button.control == main) { onShow(button.control) }
                 LightButton.Separator -> Box(
                     Modifier
-                        .padding(horizontal = HABorderWidth.S)
-                        .width(HABorderWidth.S)
+                        .padding(horizontal = Css.BorderWidth.Sm)
+                        .width(Css.BorderWidth.Sm)
                         .height(SEPARATOR_HEIGHT)
                         .background(colors.colorTextPrimary.copy(alpha = SEPARATOR_ALPHA)),
                 )
@@ -269,7 +265,7 @@ private fun ButtonIcon(icon: String, label: String, enabled: Boolean) {
 @Composable
 internal fun ShowButton(button: LightButton.Show, selected: Boolean, onClick: () -> Unit) {
     val colors = LocalHAColorScheme.current
-    val shape = RoundedCornerShape(HARadius.X2L)
+    val shape = RoundedCornerShape(Css.Radius.X2l)
     val ring = selected && button.enabled
     Box(
         modifier = Modifier
@@ -296,7 +292,7 @@ internal fun ShowButton(button: LightButton.Show, selected: Boolean, onClick: ()
             }
             else -> Box(
                 modifier = highlight.then(
-                    if (ring) Modifier.border(HABorderWidth.M, colors.colorTextPrimary, shape) else Modifier,
+                    if (ring) Modifier.border(Css.BorderWidth.Md, colors.colorTextPrimary, shape) else Modifier,
                 ),
                 contentAlignment = Alignment.Center,
             ) {
@@ -304,7 +300,7 @@ internal fun ShowButton(button: LightButton.Show, selected: Boolean, onClick: ()
                     Modifier
                         .size(SWATCH_SIZE)
                         .alpha(if (button.enabled) 1f else DISABLED_ALPHA)
-                        .clip(RoundedCornerShape(HARadius.XL))
+                        .clip(RoundedCornerShape(Css.Radius.Xl))
                         .then(
                             if (button.control == LightMainControl.Color) {
                                 Modifier.background(COLOR_SWATCH).background(COLOR_SWATCH_CENTRE)
@@ -344,12 +340,12 @@ private const val THROTTLE_MS = 500L
 private const val DISABLED_ALPHA = 0.5f
 private const val SEPARATOR_ALPHA = 0.15f
 private const val CHANNEL_BACKGROUND_ALPHA = 0.2f
-private val CHANNEL_SLIDER_HEIGHT = HADimens.SPACE8
-private val GROUP_HEIGHT = HADimens.SPACE12
-private val GROUP_RADIUS = HADimens.SPACE7
-private val HIGHLIGHT_SIZE = HADimens.SPACE10
+private val CHANNEL_SLIDER_HEIGHT = Css.Space.S8
+private val GROUP_HEIGHT = Css.Space.S12
+private val GROUP_RADIUS = Css.Space.S7
+private val HIGHLIGHT_SIZE = Css.Space.S10
 private val SWATCH_SIZE = 30.dp
-private val SEPARATOR_HEIGHT = HADimens.SPACE10
+private val SEPARATOR_HEIGHT = Css.Space.S10
 private val STATE_CONTROL_WIDE = 320.dp
 
 /** `rgba(139, 145, 151, 0.1)`, the group's background in both themes. */

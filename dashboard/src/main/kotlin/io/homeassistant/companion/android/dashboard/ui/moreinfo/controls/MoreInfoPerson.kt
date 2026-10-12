@@ -28,13 +28,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.moreinfo.MapLocation
 import io.homeassistant.companion.android.dashboard.moreinfo.MoreInfoExtra
 import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.floor
@@ -50,9 +50,9 @@ import kotlin.math.tan
  */
 @Composable
 internal fun MoreInfoPerson(person: MoreInfoExtra.Person, onAction: (CardAction) -> Unit) {
-    Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
         person.location?.let { location ->
-            PersonMap(location, person, Modifier.fillMaxWidth().padding(vertical = HADimens.SPACE4).height(MAP_HEIGHT))
+            PersonMap(location, person, Modifier.fillMaxWidth().padding(vertical = Css.Space.S4).height(MAP_HEIGHT))
         }
         person.createZone?.let { label ->
             // UPSTREAM-DIFF: opens the zones settings in the frontend; upstream opens the zone editor there with the
@@ -113,10 +113,10 @@ private fun PersonMap(location: MapLocation, person: MoreInfoExtra.Person, modif
         Marker(person, Modifier.align(Alignment.Center))
         Text(
             ATTRIBUTION,
-            style = HATextStyle.BodyMedium.copy(fontSize = HATextStyle.BodyMedium.fontSize * ATTRIBUTION_SCALE),
+            style = Css.Text.Body.copy(fontSize = Css.FontSize.M * ATTRIBUTION_SCALE),
             color = colors.colorTextSecondary,
             modifier = Modifier.align(Alignment.BottomEnd).background(Color.White.copy(alpha = ATTRIBUTION_BACKGROUND))
-                .padding(horizontal = HADimens.SPACE1),
+                .padding(horizontal = Css.Space.S1),
         )
     }
 }
@@ -131,14 +131,18 @@ private fun Marker(person: MoreInfoExtra.Person, modifier: Modifier) {
     val colors = LocalHAColorScheme.current
     Box(
         modifier.size(MARKER_SIZE).clip(CircleShape).background(colors.colorSurfaceDefault)
-            .border(1.dp, colors.colorFillPrimaryLoudResting, CircleShape),
+            .border(1.cssPx, colors.colorFillPrimaryLoudResting, CircleShape),
         contentAlignment = Alignment.Center,
     ) {
         val picture = person.picture
         if (picture != null) {
             ServerImage(picture, person.markerLabel, Modifier.fillMaxSize())
         } else {
-            Text(person.markerLabel, style = HATextStyle.HeadlineMedium, color = colors.colorTextPrimary)
+            Text(
+                person.markerLabel,
+                style = Css.Text.Body.copy(fontSize = Css.FontSize.Xl),
+                color = colors.colorTextPrimary,
+            )
         }
     }
 }
@@ -155,4 +159,4 @@ private const val ATTRIBUTION_BACKGROUND = 0.7f
 private const val ATTRIBUTION = "© OpenStreetMap, © CARTO"
 private val TILE_SIZE: Dp = 256.dp
 private val MAP_HEIGHT = 300.dp
-private val MARKER_SIZE = 48.dp
+private val MARKER_SIZE = 48.cssPx

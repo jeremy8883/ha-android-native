@@ -23,7 +23,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.composable.HALoading
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -49,6 +48,7 @@ import io.homeassistant.companion.android.dashboard.ui.panels.PanelAction
 import io.homeassistant.companion.android.dashboard.ui.panels.PanelActions
 import io.homeassistant.companion.android.dashboard.ui.panels.PanelToolbar
 import io.homeassistant.companion.android.dashboard.ui.panels.TargetSaver
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -100,7 +100,7 @@ internal fun LogbookPanel(
     var relative by rememberSaveable { mutableStateOf(false) }
     LazyColumn(Modifier.fillMaxSize()) {
         item(key = "filters") {
-            Column(Modifier.padding(HADimens.SPACE4)) {
+            Column(Modifier.padding(Css.Space.S4)) {
                 DateRangeField(range, snapshot, current, RangePreset.BASIC, onChange = { range = it })
                 TargetPicker(
                     target,
@@ -110,7 +110,7 @@ internal fun LogbookPanel(
                         target = it
                         viewModel.savePickedTarget(it)
                     },
-                    modifier = Modifier.padding(top = HADimens.SPACE4),
+                    modifier = Modifier.padding(top = Css.Space.S4),
                 )
             }
         }
@@ -163,8 +163,8 @@ private fun LazyListScope.logbookContent(
         } else {
             val traceLabel = hass.localize("$LOGBOOK.view_trace")
             itemsIndexed(rows.value) { _, row ->
-                Column(Modifier.padding(horizontal = HADimens.SPACE4)) {
-                    row.dateHeader?.let { LogbookDayHeader(it, Modifier.padding(bottom = HADimens.SPACE2)) }
+                Column(Modifier.padding(horizontal = Css.Space.S4)) {
+                    row.dateHeader?.let { LogbookDayHeader(it, Modifier.padding(bottom = Css.Space.S2)) }
                     val at = Instant.ofEpochMilli(row.whenMillis)
                     val time = if (relative) hass.formats.relativeTime(at, now) else hass.formats.timeWithSeconds(at)
                     LogbookListRow(

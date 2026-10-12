@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HATextField
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.entity.EntityState
@@ -31,7 +30,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.TimerButton
 import io.homeassistant.companion.android.dashboard.moreinfo.TimerDuration
 import io.homeassistant.companion.android.dashboard.moreinfo.TimerMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.timerStartCall
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /**
  * Port of the dialogs' `.actions`: plain text buttons, centred and wrapping.
@@ -43,7 +42,7 @@ import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
 @Composable
 internal fun MoreInfoActionRow(actions: List<MoreInfoAction>, onAction: (CardAction) -> Unit) {
     FlowRow(
-        Modifier.fillMaxWidth().padding(vertical = HADimens.SPACE2),
+        Modifier.fillMaxWidth().padding(vertical = Css.Space.S2),
         horizontalArrangement = Arrangement.Center,
     ) {
         actions.forEach { HAPlainButton(it.label, { onAction(it.action) }, enabled = it.enabled) }
@@ -60,10 +59,10 @@ internal fun MoreInfoActionRow(actions: List<MoreInfoAction>, onAction: (CardAct
 internal fun MoreInfoAutomation(info: AutomationMoreInfo, onAction: (CardAction) -> Unit) {
     val color = LocalHAColorScheme.current.colorTextPrimary
     Column {
-        HAHorizontalDivider(Modifier.padding(vertical = HADimens.SPACE4))
+        HAHorizontalDivider(Modifier.padding(vertical = Css.Space.S4))
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(info.lastTriggeredLabel, style = FrontendTextStyle.Body, color = color)
-            Text(info.lastTriggered, style = FrontendTextStyle.Body, color = color)
+            Text(info.lastTriggeredLabel, style = Css.Text.Body, color = color)
+            Text(info.lastTriggered, style = Css.Text.Body, color = color)
         }
         MoreInfoActionRow(listOf(info.run), onAction)
     }
@@ -80,7 +79,7 @@ internal fun MoreInfoTimer(info: TimerMoreInfo, state: EntityState, onAction: (C
     var duration by remember(state.entityId) { mutableStateOf(info.duration) }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
     ) {
         DurationInput(duration ?: TimerDuration(0, 0, 0, 0)) { duration = it }
         MoreInfoActionRow(
@@ -103,11 +102,11 @@ internal fun MoreInfoTimer(info: TimerMoreInfo, state: EntityState, onAction: (C
  */
 @Composable
 private fun DurationInput(duration: TimerDuration, onChange: (TimerDuration) -> Unit) {
-    Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2), verticalAlignment = Alignment.CenterVertically) {
+    Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S2), verticalAlignment = Alignment.CenterVertically) {
         DurationField(duration.hours) { onChange(duration.copy(hours = it)) }
-        Text(":", style = FrontendTextStyle.Body)
+        Text(":", style = Css.Text.Body)
         DurationField(duration.minutes, padded = true) { onChange(duration.copy(minutes = it)) }
-        Text(":", style = FrontendTextStyle.Body)
+        Text(":", style = Css.Text.Body)
         DurationField(duration.seconds, padded = true) { onChange(duration.copy(seconds = it)) }
     }
 }

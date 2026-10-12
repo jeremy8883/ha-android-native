@@ -24,9 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.MediaControl
@@ -42,6 +40,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.SelectMenuOpti
 import io.homeassistant.companion.android.dashboard.ui.components.haSliderColors
 import io.homeassistant.companion.android.dashboard.ui.components.mediaplayer.MediaBrowserDialog
 import io.homeassistant.companion.android.dashboard.ui.components.mediaplayer.MediaGroupingButton
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.Instant
 import kotlinx.coroutines.delay
 
@@ -93,7 +92,7 @@ internal fun MediaPositionBar(position: MediaPosition, now: Instant, onAction: (
  */
 @Composable
 private fun TimeText(text: String) {
-    Text(text, style = HATextStyle.BodyMedium, color = LocalHAColorScheme.current.colorTextSecondary)
+    Text(text, style = Css.Text.Body, color = LocalHAColorScheme.current.colorTextSecondary)
 }
 
 /**
@@ -133,7 +132,7 @@ internal fun MediaMainButtons(controls: MediaMainControls, onAction: (CardAction
 @Composable
 private fun SideButton(control: MediaControl?, onAction: (CardAction) -> Unit) {
     if (control == null) {
-        Box(Modifier.size(HADimens.SPACE12))
+        Box(Modifier.size(Css.Space.S12))
     } else {
         IconButton(onClick = { onAction(control.action) }) {
             ControlIcon(control, LocalHAColorScheme.current.colorTextPrimary, Modifier.size(HASize.X2L))
@@ -205,7 +204,7 @@ internal fun MediaControlsRow(
             info.grouping != null ||
             info.browseLabel != null
     if (!buttons) return
-    Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.CenterHorizontally)) {
+    Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S2, Alignment.CenterHorizontally)) {
         info.browseLabel?.let { BrowseButton(it, entityId, hass, onAction) }
         info.grouping?.let { MediaGroupingButton(it, onAction) }
         info.source?.let { MenuButton(it, onAction) }

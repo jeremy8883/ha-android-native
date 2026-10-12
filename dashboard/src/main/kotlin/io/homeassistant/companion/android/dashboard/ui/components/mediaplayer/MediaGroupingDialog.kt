@@ -29,15 +29,13 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HASwitch
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.moreinfo.GroupablePlayer
 import io.homeassistant.companion.android.dashboard.moreinfo.MediaGrouping
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /**
  * The grouping button: speakers, with how many play together when more than one. Opens [MediaGroupingDialog].
@@ -68,9 +66,9 @@ internal fun MediaGroupingButton(grouping: MediaGrouping, onAction: (CardAction)
                 ) {
                     Text(
                         "$count",
-                        style = HATextStyle.BodyMedium.copy(
+                        style = Css.Text.Body.copy(
                             fontSize =
-                            HATextStyle.BodyMedium.fontSize * BADGE_TEXT,
+                            Css.FontSize.M * BADGE_TEXT,
                         ),
                         color = colors.colorOnPrimaryLoud,
                     )
@@ -94,7 +92,7 @@ internal fun MediaGroupingDialog(grouping: MediaGrouping, onAction: (CardAction)
         onDismissRequest = onDismiss,
         title = {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(grouping.title, style = HATextStyle.HeadlineMedium, modifier = Modifier.weight(1f))
+                Text(grouping.title, style = Css.Text.DialogTitle, modifier = Modifier.weight(1f))
                 HAPlainButton(grouping.selectAllLabel, { selected = grouping.candidates.map { it.entityId }.toSet() })
             }
         },
@@ -127,14 +125,14 @@ internal fun MediaGroupingDialog(grouping: MediaGrouping, onAction: (CardAction)
 private fun PlayerToggle(player: GroupablePlayer, checked: Boolean, enabled: Boolean, onChange: (Boolean) -> Unit) {
     val colors = LocalHAColorScheme.current
     Row(
-        modifier = Modifier.fillMaxWidth().heightIn(min = ROW_HEIGHT).padding(vertical = HADimens.SPACE1),
+        modifier = Modifier.fillMaxWidth().heightIn(min = ROW_HEIGHT).padding(vertical = Css.Space.S1),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S4),
     ) {
         DashboardIcon(player.icon, colors.colorTextSecondary, Modifier.size(HASize.X2L))
         Column(Modifier.weight(1f)) {
-            Text(player.name, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
-            player.context?.let { Text(it, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary) }
+            Text(player.name, style = Css.Text.Body, color = colors.colorTextPrimary)
+            player.context?.let { Text(it, style = Css.Text.Body, color = colors.colorTextSecondary) }
         }
         HASwitch(checked = checked, onCheckedChange = onChange, enabled = enabled)
     }

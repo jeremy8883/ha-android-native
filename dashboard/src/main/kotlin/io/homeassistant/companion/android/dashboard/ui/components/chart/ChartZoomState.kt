@@ -23,10 +23,10 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.history.ChartZoom
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
 /** The zoom of one chart, or of all the History panel's charts at once (`sync-charts`). */
@@ -110,7 +110,7 @@ internal fun ChartZoomReset(state: ChartZoomState, label: String, modifier: Modi
     if (!state.zoom.isZoomed) return
     val colors = LocalHAColorScheme.current
     val dark = isSystemInDarkTheme()
-    val shape = RoundedCornerShape(HARadius.S)
+    val shape = RoundedCornerShape(Css.Radius.Sm)
     Box(
         modifier
             .size(RESET_SIZE)

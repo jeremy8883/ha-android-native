@@ -10,7 +10,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.dashboard.energy.COMPARE_PREFIX
 import io.homeassistant.companion.android.dashboard.energy.energyDevicesDetailGraph
 import io.homeassistant.companion.android.dashboard.energy.energyTooltip
@@ -19,6 +18,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.number
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.math.BigDecimal
 
 /**
@@ -41,7 +41,7 @@ internal fun EnergyDevicesDetailGraphCard(
     EnergyCardFrame(card, hass, modifier) { data ->
         val chart = remember(data, snapshot.formats, maxDevices) { snapshot.energyDevicesDetailGraph(data, maxDevices) }
         var hidden by rememberSaveable { mutableStateOf(emptySet<String>()) }
-        Box(Modifier.padding(HADimens.SPACE4)) {
+        Box(Modifier.padding(Css.Space.S4)) {
             EnergyBarChartView(
                 chart = chart,
                 formats = snapshot.formats,

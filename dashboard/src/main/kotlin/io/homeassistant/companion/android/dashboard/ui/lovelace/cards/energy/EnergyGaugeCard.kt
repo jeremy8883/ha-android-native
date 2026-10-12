@@ -35,7 +35,6 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.energy.EnergyGaugeModel
 import io.homeassistant.companion.android.dashboard.energy.EnergyGaugeType
@@ -43,7 +42,7 @@ import io.homeassistant.companion.android.dashboard.energy.energyGauge
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
 /**
@@ -80,9 +79,9 @@ internal fun EnergyGaugeCard(
             EnergyGaugeModel.Hidden -> Unit
             is EnergyGaugeModel.Message -> Text(
                 model.text,
-                style = FrontendTextStyle.Body,
+                style = Css.Text.Body,
                 color = colors.colorTextPrimary,
-                modifier = Modifier.padding(HADimens.SPACE4),
+                modifier = Modifier.padding(Css.Space.S4),
             )
             is EnergyGaugeModel.Gauge -> GaugeContent(model)
         }
@@ -102,24 +101,24 @@ private fun GaugeContent(model: EnergyGaugeModel.Gauge) {
     Box(Modifier.fillMaxWidth()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth().padding(HADimens.SPACE4),
+            modifier = Modifier.fillMaxWidth().padding(Css.Space.S4),
         ) {
             Gauge(model, Modifier.widthIn(max = MAX_GAUGE_WIDTH).fillMaxWidth().aspectRatio(VIEW_WIDTH / VIEW_HEIGHT))
             Text(
                 model.name,
-                style = FrontendTextStyle.Body,
+                style = Css.Text.Body,
                 color = colors.colorTextPrimary,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(top = HADimens.SPACE2),
+                modifier = Modifier.padding(top = Css.Space.S2),
             )
             if (showInfo) {
                 model.info.forEach {
                     Text(
                         it,
-                        style = FrontendTextStyle.Body,
+                        style = Css.Text.Body,
                         color = colors.colorTextSecondary,
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(top = HADimens.SPACE2),
+                        modifier = Modifier.padding(top = Css.Space.S2),
                     )
                 }
             }
@@ -129,7 +128,7 @@ private fun GaugeContent(model: EnergyGaugeModel.Gauge) {
             colors.colorTextSecondary,
             Modifier
                 .align(Alignment.TopEnd)
-                .padding(HADimens.SPACE1)
+                .padding(Css.Space.S1)
                 .clickable(role = Role.Button) { showInfo = !showInfo }
                 .size(INFO_SIZE),
         )

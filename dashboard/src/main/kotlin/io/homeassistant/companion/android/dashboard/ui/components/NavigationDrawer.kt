@@ -30,14 +30,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
 import io.homeassistant.companion.android.common.compose.composable.HALoading
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -46,7 +43,7 @@ import io.homeassistant.companion.android.dashboard.derive.DisplayColor
 import io.homeassistant.companion.android.dashboard.navigation.SidebarItem
 import io.homeassistant.companion.android.dashboard.navigation.UserBadgeModel
 import io.homeassistant.companion.android.dashboard.ui.SidebarState
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -97,12 +94,12 @@ internal fun NavigationDrawerContent(
     @Composable
     fun Entry(path: String, title: String, icon: String) {
         NavigationDrawerItem(
-            label = { Text(title, style = FrontendTextStyle.Body) },
+            label = { Text(title, style = Css.Text.Body) },
             icon = { DashboardIcon(icon, colors.colorTextSecondary, Modifier.size(HASize.X2L)) },
             selected = path == selected,
             onClick = { onOpen("/$path") },
             colors = itemColors,
-            modifier = Modifier.padding(horizontal = HADimens.SPACE2),
+            modifier = Modifier.padding(horizontal = Css.Space.S2),
         )
     }
     // Material's phone drawer: the screen's width less a touch target for the scrim, at most 320dp
@@ -117,12 +114,12 @@ internal fun NavigationDrawerContent(
     ) {
         SidebarHeader()
         Column(
-            modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(vertical = HADimens.SPACE2),
+            modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(vertical = Css.Space.S2),
         ) {
             PanelEntries(sidebar, onlyDashboards, onRetry) { Entry(it.urlPath, it.title, it.icon) }
         }
         HorizontalDivider()
-        Column(modifier = Modifier.padding(vertical = HADimens.SPACE2)) {
+        Column(modifier = Modifier.padding(vertical = Css.Space.S2)) {
             /**
              * An entry that does something in the app instead of opening a panel.
              *
@@ -130,12 +127,12 @@ internal fun NavigationDrawerContent(
              */
             @Composable
             fun Action(label: String, icon: String, onClick: () -> Unit) = NavigationDrawerItem(
-                label = { Text(label, style = FrontendTextStyle.Body) },
+                label = { Text(label, style = Css.Text.Body) },
                 icon = { DashboardIcon(icon, colors.colorTextSecondary, Modifier.size(HASize.X2L)) },
                 selected = false,
                 onClick = onClick,
                 colors = itemColors,
-                modifier = Modifier.padding(horizontal = HADimens.SPACE2),
+                modifier = Modifier.padding(horizontal = Css.Space.S2),
             )
             if (onOpenSettings != null) {
                 Action(stringResource(R.string.native_dashboard_settings), SETTINGS_ICON, onOpenSettings)
@@ -144,14 +141,14 @@ internal fun NavigationDrawerContent(
             }
             NavigationDrawerItem(
                 label = {
-                    Text(stringResource(R.string.native_dashboard_notifications), style = FrontendTextStyle.Body)
+                    Text(stringResource(R.string.native_dashboard_notifications), style = Css.Text.Body)
                 },
                 icon = { DashboardIcon(NOTIFICATIONS_ICON, colors.colorTextSecondary, Modifier.size(HASize.X2L)) },
                 badge = notificationCount?.takeIf { it > 0 }?.let { count -> { CountBadge(count) } },
                 selected = false,
                 onClick = onOpenNotifications,
                 colors = itemColors,
-                modifier = Modifier.padding(horizontal = HADimens.SPACE2),
+                modifier = Modifier.padding(horizontal = Css.Space.S2),
             )
             // The profile opens elsewhere, so it needs other pages
             if (onOpenSettings == null || !onlyDashboards) {
@@ -159,19 +156,19 @@ internal fun NavigationDrawerContent(
                     label = {
                         Text(
                             user?.name ?: stringResource(R.string.native_dashboard_profile),
-                            style = FrontendTextStyle.Body,
+                            style = Css.Text.Body,
                         )
                     },
                     icon = { user?.let { UserBadge(it) } ?: DashboardIcon(PROFILE_ICON, colors.colorTextSecondary) },
                     selected = selected == PROFILE_PANEL,
                     onClick = { onOpen("/$PROFILE_PANEL") },
                     colors = itemColors,
-                    modifier = Modifier.padding(horizontal = HADimens.SPACE2),
+                    modifier = Modifier.padding(horizontal = Css.Space.S2),
                 )
             }
             onSwitchServer?.let { Action(stringResource(R.string.native_dashboard_switch_server), SERVER_ICON, it) }
         }
-        Spacer(modifier = Modifier.padding(bottom = HADimens.SPACE2))
+        Spacer(modifier = Modifier.padding(bottom = Css.Space.S2))
     }
 }
 
@@ -193,18 +190,18 @@ private fun PanelEntries(
     val colors = LocalHAColorScheme.current
     when (sidebar) {
         Loadable.Loading -> Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            HALoading(Modifier.padding(HADimens.SPACE4))
+            HALoading(Modifier.padding(Css.Space.S4))
         }
         is Loadable.Failed -> Column(
-            modifier = Modifier.padding(HADimens.SPACE4),
-            verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+            modifier = Modifier.padding(Css.Space.S4),
+            verticalArrangement = Arrangement.spacedBy(Css.Space.S3),
         ) {
             Text(
                 text = stringResource(
                     R.string.native_dashboard_load_failed,
                     LocalContext.current.loadErrorText(sidebar.error),
                 ),
-                style = FrontendTextStyle.Body,
+                style = Css.Text.Body,
             )
             HAAccentButton(text = stringResource(R.string.native_dashboard_retry), onClick = onRetry)
         }
@@ -215,13 +212,13 @@ private fun PanelEntries(
             if (elsewhere.isNotEmpty()) {
                 Text(
                     stringResource(R.string.native_dashboard_elsewhere_heading),
-                    style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+                    style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                     color = colors.colorTextSecondary,
                     modifier = Modifier.padding(
-                        start = HADimens.SPACE6,
-                        end = HADimens.SPACE6,
-                        top = HADimens.SPACE4,
-                        bottom = HADimens.SPACE2,
+                        start = Css.Space.S6,
+                        end = Css.Space.S6,
+                        top = Css.Space.S4,
+                        bottom = Css.Space.S2,
                     ),
                 )
                 elsewhere.forEach { entry(it) }
@@ -241,7 +238,7 @@ private fun SidebarHeader() {
     Box(Modifier.fillMaxWidth().height(HEADER_HEIGHT), contentAlignment = Alignment.CenterStart) {
         Text(
             stringResource(R.string.native_dashboard_sidebar_title),
-            style = FrontendTextStyle.Body.copy(fontSize = HAFontSize.XL, textAlign = TextAlign.Start),
+            style = Css.Text.Body.copy(fontSize = Css.FontSize.Xl, textAlign = TextAlign.Start),
             color = LocalHAColorScheme.current.colorTextPrimary,
             maxLines = 1,
             modifier = Modifier.padding(horizontal = HEADER_PADDING),
@@ -259,10 +256,11 @@ private fun SidebarHeader() {
 private fun CountBadge(count: Int) {
     Text(
         count.toString(),
-        style = HATextStyle.BodyMedium,
+        // `.badge`'s `line-height: normal`
+        style = Css.Text.Body.copy(lineHeight = TextUnit.Unspecified),
         color = DisplayColor.State(listOf(TEXT_ACCENT)).toColor() ?: LocalHAColorScheme.current.colorOnPrimaryLoud,
         modifier = Modifier
-            .clip(RoundedCornerShape(HARadius.XL))
+            .clip(RoundedCornerShape(Css.Radius.Xl))
             .background(
                 DisplayColor.State(listOf(ACCENT)).toColor() ?: LocalHAColorScheme.current.colorFillPrimaryLoudResting,
             )
@@ -292,8 +290,8 @@ private fun UserBadge(user: UserBadgeModel) {
         } else {
             Text(
                 user.initials,
-                style = FrontendTextStyle.Body.copy(
-                    fontSize = if (user.initials.length > 2) HAFontSize.S else HAFontSize.L,
+                style = Css.Text.Body.copy(
+                    fontSize = if (user.initials.length > 2) Css.FontSize.S else Css.FontSize.L,
                 ),
                 color =
                 DisplayColor.State(listOf(TEXT_LIGHT_PRIMARY)).toColor()

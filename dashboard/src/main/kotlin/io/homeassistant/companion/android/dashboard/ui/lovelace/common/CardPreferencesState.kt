@@ -11,11 +11,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.dashboard.data.CardPreferences
 import io.homeassistant.companion.android.dashboard.ui.components.LocalBrandsToken
 import io.homeassistant.companion.android.dashboard.ui.components.LocalServerUrl
 import io.homeassistant.companion.android.dashboard.ui.theme.BODY_LINE_HEIGHT
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,7 +40,7 @@ internal fun ProvideCardLocals(serverUrl: String?, content: @Composable () -> Un
         LocalServerUrl provides serverUrl,
         LocalBrandsToken provides brandsToken,
         LocalCardPreferences provides rememberCardPreferences(),
-        LocalTextStyle provides LocalTextStyle.current.merge(fontSize = HAFontSize.M, lineHeight = BODY_LINE_HEIGHT),
+        LocalTextStyle provides LocalTextStyle.current.merge(fontSize = Css.FontSize.M, lineHeight = BODY_LINE_HEIGHT),
         content = content,
     )
 }

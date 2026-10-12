@@ -23,9 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.energy.EnergyBarChart
 import io.homeassistant.companion.android.dashboard.energy.energyTooltip
@@ -36,7 +33,7 @@ import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.ui.components.chart.ChartLegend
 import io.homeassistant.companion.android.dashboard.ui.components.chart.ChartLegendItem
 import io.homeassistant.companion.android.dashboard.ui.components.chart.legendTexts
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.math.BigDecimal
 import java.time.ZonedDateTime
@@ -73,7 +70,7 @@ internal fun EnergyUsageGraphCard(
     ) { data ->
         val model = remember(data, snapshot.formats) { snapshot.energyUsageGraph(data) }
         var hidden by rememberSaveable { mutableStateOf(emptySet<String>()) }
-        Box(Modifier.padding(HADimens.SPACE4)) {
+        Box(Modifier.padding(Css.Space.S4)) {
             EnergyBarChartView(
                 chart = model.chart,
                 formats = snapshot.formats,
@@ -86,7 +83,7 @@ internal fun EnergyUsageGraphCard(
                 val key = if (data.period.start == today) "no_data" else "no_data_period"
                 Text(
                     localize("ui.panel.lovelace.cards.energy.$key"),
-                    style = FrontendTextStyle.Body,
+                    style = Css.Text.Body,
                     color = LocalHAColorScheme.current.colorTextSecondary,
                     modifier = Modifier.align(Alignment.Center),
                 )
@@ -110,7 +107,7 @@ internal fun EnergyUsageGraphCard(
 internal fun TotalChip(text: String, tooltip: String) {
     val colors = LocalHAColorScheme.current
     val dark = isSystemInDarkTheme()
-    val shape = RoundedCornerShape(HARadius.M)
+    val shape = RoundedCornerShape(Css.Radius.Md)
     TooltipBox(
         positionProvider = TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
         tooltip = {
@@ -120,18 +117,18 @@ internal fun TotalChip(text: String, tooltip: String) {
                 contentColor = colors.colorTextPrimary,
                 shadowElevation = TOOLTIP_ELEVATION,
             ) {
-                Text(tooltip, style = HATextStyle.BodyMedium, modifier = Modifier.padding(HADimens.SPACE1))
+                Text(tooltip, style = Css.Text.Body, modifier = Modifier.padding(Css.Space.S1))
             }
         },
         state = rememberTooltipState(),
     ) {
         Text(
             text,
-            style = HATextStyle.BodyMedium,
+            style = Css.Text.Body,
             color = colors.colorTextPrimary,
             modifier = Modifier
                 .border(1.dp, resolveVariable("divider-color", dark) ?: colors.colorBorderNeutralQuiet, shape)
-                .padding(horizontal = HADimens.SPACE2, vertical = HADimens.SPACE1),
+                .padding(horizontal = Css.Space.S2, vertical = Css.Space.S1),
         )
     }
 }
@@ -183,7 +180,7 @@ internal fun LegendItems(
         hidden = hidden,
         texts = hass.legendTexts(),
         onHiddenChange = onHiddenChange,
-        modifier = Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, bottom = HADimens.SPACE4),
+        modifier = Modifier.padding(start = Css.Space.S4, end = Css.Space.S4, bottom = Css.Space.S4),
         onOpen = onOpen,
     )
 }

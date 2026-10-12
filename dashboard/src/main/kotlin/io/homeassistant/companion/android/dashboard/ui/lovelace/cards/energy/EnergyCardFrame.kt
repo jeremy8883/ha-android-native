@@ -14,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.energy.EnergyData
@@ -23,7 +22,7 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.strategy.energy.DEFAULT_ENERGY_COLLECTION_KEY
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardSurface
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /**
  * An energy card: its title (`ha-card`'s header), then [content] with its collection's data; "Loading…" until there
@@ -47,11 +46,11 @@ internal fun EnergyCardFrame(
             card.json.string("title")?.let { title ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, top = HADimens.SPACE3),
+                    modifier = Modifier.padding(start = Css.Space.S4, end = Css.Space.S4, top = Css.Space.S3),
                 ) {
                     Text(
                         title,
-                        style = FrontendTextStyle.CardHeader,
+                        style = Css.Text.CardHeader,
                         modifier = Modifier.weight(1f),
                     )
                     data?.let { headerEnd(it) }
@@ -75,9 +74,9 @@ internal fun EnergyCardFrame(
 private fun Message(text: String) {
     Text(
         text,
-        style = FrontendTextStyle.Body,
+        style = Css.Text.Body,
         color = LocalHAColorScheme.current.colorTextSecondary,
-        modifier = Modifier.padding(HADimens.SPACE4),
+        modifier = Modifier.padding(Css.Space.S4),
     )
 }
 

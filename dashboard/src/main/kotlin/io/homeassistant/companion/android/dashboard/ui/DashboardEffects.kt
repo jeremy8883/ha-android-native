@@ -23,12 +23,11 @@ import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.res.stringResource
 import io.homeassistant.companion.android.common.R as commonR
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.dialogs.entercode.CodeDialog
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -78,8 +77,8 @@ internal fun DashboardEffects(
         val dismiss = { confirm = null }
         AlertDialog(
             onDismissRequest = dismiss,
-            title = pending.confirmation.title?.let { { Text(it, style = HATextStyle.HeadlineMedium) } },
-            text = { Text(pending.confirmation.text, style = FrontendTextStyle.Body) },
+            title = pending.confirmation.title?.let { { Text(it, style = Css.Text.DialogTitle) } },
+            text = { Text(pending.confirmation.text, style = Css.Text.Body) },
             confirmButton = {
                 HAPlainButton(pending.confirmation.confirmText ?: stringResource(commonR.string.ok), {
                     confirm = null

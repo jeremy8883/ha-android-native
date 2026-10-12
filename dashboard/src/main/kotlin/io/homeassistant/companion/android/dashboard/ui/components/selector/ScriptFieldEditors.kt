@@ -26,11 +26,10 @@ import io.homeassistant.companion.android.common.compose.composable.HARadioGroup
 import io.homeassistant.companion.android.common.compose.composable.HASwitch
 import io.homeassistant.companion.android.common.compose.composable.HATextField
 import io.homeassistant.companion.android.common.compose.composable.RadioOption
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.moreinfo.FieldSelector
 import io.homeassistant.companion.android.dashboard.ui.components.haSliderColors
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.LocalDate
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
@@ -79,7 +78,7 @@ internal fun FieldEditor(
         FieldSelector.Time -> TimeEditor(text, enabled) { onChange(JsonPrimitive(it)) }
         FieldSelector.DateTime -> DateTimeEditor(text, enabled, today, onChange)
         is FieldSelector.Duration -> DurationEditor(value, enabled, selector.enableDay, onChange)
-        is FieldSelector.Constant -> Text(selector.label ?: selector.value.toString(), style = FrontendTextStyle.Body)
+        is FieldSelector.Constant -> Text(selector.label ?: selector.value.toString(), style = Css.Text.Body)
         is FieldSelector.Unsupported -> UnsupportedEditor(text ?: value?.toString().orEmpty(), enabled, onChange)
     }
 }
@@ -139,7 +138,7 @@ private fun NumberEditor(
     onChange: (JsonElement?) -> Unit,
 ) {
     var typed by remember(value) { mutableStateOf(value?.let(::numberText).orEmpty()) }
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
         val min = selector.min
         val max = selector.max
         if (!selector.box && min != null && max != null) {
@@ -198,7 +197,7 @@ private fun SelectEditor(
                         },
                         enabled = enabled,
                     )
-                    Text(label, style = FrontendTextStyle.Body, color = LocalHAColorScheme.current.colorTextPrimary)
+                    Text(label, style = Css.Text.Body, color = LocalHAColorScheme.current.colorTextPrimary)
                 }
             }
         }
@@ -218,7 +217,7 @@ private fun SelectEditor(
             options = options.map { (key, label) -> RadioOption(key, label, enabled = enabled) },
             onSelect = { onChange(JsonPrimitive(it.selectionKey)) },
             selectionKey = current,
-            spaceBy = HADimens.SPACE2,
+            spaceBy = Css.Space.S2,
         )
     }
 }
@@ -237,7 +236,7 @@ private fun DurationEditor(
 ) {
     val parts = DURATION_PARTS.filter { enableDay || it != "days" }
     val current = (value as? JsonObject).orEmpty()
-    Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+    Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
         parts.forEach { part ->
             HATextField(
                 value = (current[part] as? JsonPrimitive)?.content.orEmpty(),

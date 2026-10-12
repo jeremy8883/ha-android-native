@@ -26,9 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
+import androidx.compose.ui.unit.em
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.CurrentWeather
 import io.homeassistant.companion.android.dashboard.derive.ForecastColumns
@@ -42,7 +40,8 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -74,7 +73,12 @@ internal fun WeatherForecastCard(
                 Modifier.fillMaxWidth().heightIn(min = UNAVAILABLE_HEIGHT).padding(UNAVAILABLE_PADDING),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(model.text, style = FrontendTextStyle.Body, color = LocalHAColorScheme.current.colorTextPrimary)
+                // `.unavailable`: `--ha-font-size-l`
+                Text(
+                    model.text,
+                    style = Css.Text.Body.copy(fontSize = Css.FontSize.L),
+                    color = LocalHAColorScheme.current.colorTextPrimary,
+                )
             }
         }
         is WeatherForecastCardModel.Shown -> DashboardCardSurface(
@@ -83,10 +87,10 @@ internal fun WeatherForecastCard(
             BoxWithConstraints(Modifier.fillMaxWidth()) {
                 val width = maxWidth
                 val size = WeatherSize.of(width)
-                Column(Modifier.fillMaxWidth().padding(vertical = HADimens.SPACE4)) {
+                Column(Modifier.fillMaxWidth().padding(vertical = Css.Space.S4)) {
                     model.current?.let { CurrentWeatherRow(it, size) }
                     model.forecast?.let { forecast ->
-                        val top = if (model.current != null) HADimens.SPACE4 else 0.dp
+                        val top = if (model.current != null) Css.Space.S4 else 0.dp
                         ForecastRow(forecast, width, Modifier.padding(top = top))
                     }
                 }
@@ -97,9 +101,9 @@ internal fun WeatherForecastCard(
 
 /** Upstream's width classes: smaller text and icon when narrow, no name or measure when very narrow. */
 private enum class WeatherSize(val icon: Dp, val big: TextUnit, val unit: TextUnit, val showDetails: Boolean) {
-    REGULAR(64.dp, 28.sp, 24.sp, true),
-    NARROW(52.dp, 20.sp, 16.sp, true),
-    VERY_NARROW(52.dp, 20.sp, 16.sp, false),
+    REGULAR(64.cssPx, Css.FontSize.X3l, Css.FontSize.X2l, true),
+    NARROW(52.cssPx, Css.FontSize.Xl, Css.FontSize.L, true),
+    VERY_NARROW(52.cssPx, Css.FontSize.Xl, Css.FontSize.L, false),
     ;
 
     companion object {
@@ -119,14 +123,14 @@ private enum class WeatherSize(val icon: Dp, val big: TextUnit, val unit: TextUn
 @Composable
 private fun CurrentWeatherRow(current: CurrentWeather, size: WeatherSize) {
     val colors = LocalHAColorScheme.current
-    Row(Modifier.fillMaxWidth().padding(horizontal = HADimens.SPACE4), verticalAlignment = Alignment.CenterVertically) {
-        val iconModifier = Modifier.padding(end = HADimens.SPACE4).size(size.icon)
+    Row(Modifier.fillMaxWidth().padding(horizontal = Css.Space.S4), verticalAlignment = Alignment.CenterVertically) {
+        val iconModifier = Modifier.padding(end = Css.Space.S4).size(size.icon)
         current.condition?.let { WeatherIconView(it, colors.colorTextSecondary, iconModifier) }
             ?: DashboardIcon(current.stateIcon, colors.colorTextSecondary, iconModifier)
-        Column(Modifier.weight(1f).padding(end = HADimens.SPACE3)) {
+        Column(Modifier.weight(1f).padding(end = Css.Space.S3)) {
             Text(
                 current.state,
-                style = FrontendTextStyle.Body.copy(
+                style = Css.Text.Body.copy(
                     fontSize = size.big,
                     lineHeight = size.big * LINE_HEIGHT,
                     textAlign = TextAlign.Start,
@@ -138,7 +142,7 @@ private fun CurrentWeatherRow(current: CurrentWeather, size: WeatherSize) {
             if (size.showDetails) {
                 Text(
                     current.name,
-                    style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+                    style = Css.Text.Body.copy(textAlign = TextAlign.Start, lineHeight = Css.LineHeight.Condensed),
                     color = colors.colorTextSecondary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -149,24 +153,24 @@ private fun CurrentWeatherRow(current: CurrentWeather, size: WeatherSize) {
             Row(verticalAlignment = Alignment.Top) {
                 Text(
                     current.temperature ?: " ",
-                    style = FrontendTextStyle.Body.copy(fontSize = size.big, lineHeight = size.big * LINE_HEIGHT),
+                    style = Css.Text.Body.copy(fontSize = size.big, lineHeight = size.big * LINE_HEIGHT),
                     color = colors.colorTextPrimary,
                 )
                 Text(
                     " ${current.temperatureUnit}",
-                    style = FrontendTextStyle.Body.copy(fontSize = size.unit, lineHeight = size.unit * LINE_HEIGHT),
+                    style = Css.Text.Body.copy(fontSize = size.unit, lineHeight = size.unit * LINE_HEIGHT),
                     color = colors.colorTextPrimary,
                 )
             }
             current.secondary?.takeIf { size.showDetails }?.let { secondary ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
+                    horizontalArrangement = Arrangement.spacedBy(Css.Space.S1),
                 ) {
                     secondary.icon?.let { DashboardIcon(it, colors.colorTextSecondary, Modifier.size(ATTRIBUTE_ICON)) }
                     Text(
                         listOfNotNull(secondary.label, secondary.value).joinToString(" "),
-                        style = HATextStyle.BodyMedium,
+                        style = Css.Text.Body.copy(lineHeight = Css.LineHeight.Condensed),
                         color = colors.colorTextSecondary,
                         maxLines = 1,
                     )
@@ -187,7 +191,7 @@ internal fun ForecastRow(forecast: ForecastColumns, width: Dp, modifier: Modifie
         modifier
             .horizontalScroll(rememberScrollState())
             .widthIn(min = width)
-            .padding(horizontal = HADimens.SPACE4),
+            .padding(horizontal = Css.Space.S4),
         horizontalArrangement = Arrangement.SpaceAround,
     ) {
         forecast.groups.forEach { group ->
@@ -207,11 +211,11 @@ internal fun ForecastRow(forecast: ForecastColumns, width: Dp, modifier: Modifie
 private fun ForecastEntry(item: ForecastItem, dayHeaders: Boolean) {
     val colors = LocalHAColorScheme.current
     Column(
-        Modifier.widthIn(min = ENTRY_MIN_WIDTH).padding(horizontal = HADimens.SPACE2),
+        Modifier.widthIn(min = ENTRY_MIN_WIDTH).padding(horizontal = Css.Space.S2),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S1),
     ) {
-        val small = HATextStyle.BodyMedium.copy(fontSize = SMALL_FONT, lineHeight = SMALL_FONT)
+        val small = Css.Text.Body.copy(fontSize = SMALL_FONT, lineHeight = SMALL_FONT)
         if (dayHeaders) {
             // The slot keeps the entries aligned when only the day's first has a header
             Text(
@@ -232,22 +236,23 @@ private fun ForecastEntry(item: ForecastItem, dayHeaders: Boolean) {
         }
         Text(
             item.temperature,
-            style = FrontendTextStyle.Body.copy(lineHeight = FrontendTextStyle.Body.fontSize),
+            // `.forecast .temp`: `--ha-font-size-l` at `line-height: 1`
+            style = Css.Text.Body.copy(fontSize = Css.FontSize.L, lineHeight = 1.em),
             color = colors.colorTextPrimary,
             maxLines = 1,
         )
-        item.low?.let { Text(it, style = FrontendTextStyle.Body, color = colors.colorTextSecondary, maxLines = 1) }
+        item.low?.let { Text(it, style = Css.Text.Body, color = colors.colorTextSecondary, maxLines = 1) }
     }
 }
 
 private const val LINE_HEIGHT = 1.2f
 private val NARROW_WIDTH = 375.dp
 private val VERY_NARROW_WIDTH = 300.dp
-private val ATTRIBUTE_ICON = 20.dp
-private val ENTRY_MIN_WIDTH = 48.dp
-private val FORECAST_ICON = 40.dp
-private val ICON_PADDING = 6.dp
-private val HEADER_SLOT = 16.dp
-private val SMALL_FONT = 12.sp
-private val UNAVAILABLE_HEIGHT = 100.dp
+private val ATTRIBUTE_ICON = 20.cssPx
+private val ENTRY_MIN_WIDTH = 48.cssPx
+private val FORECAST_ICON = 40.cssPx
+private val ICON_PADDING = 6.cssPx
+private val HEADER_SLOT = 16.cssPx
+private val SMALL_FONT = Css.FontSize.S
+private val UNAVAILABLE_HEIGHT = 100.cssPx
 private val UNAVAILABLE_PADDING = 20.dp

@@ -6,13 +6,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.moreinfo.CircularControl
 import io.homeassistant.companion.android.dashboard.moreinfo.CircularTargets
 import io.homeassistant.companion.android.dashboard.moreinfo.SelectMenu
 import io.homeassistant.companion.android.dashboard.ui.components.ControlSelectMenus
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.CircularStateControl
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /**
  * The controls of a single-target dial domain (`more-info-water_heater`, `more-info-humidifier`): the current
@@ -34,7 +34,7 @@ internal fun SingleDialControls(
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
     ) {
         CurrentReadings(current)
         CircularStateControl(

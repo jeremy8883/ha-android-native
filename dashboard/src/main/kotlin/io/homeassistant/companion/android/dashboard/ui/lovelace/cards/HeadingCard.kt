@@ -27,13 +27,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.DisplayColor
 import io.homeassistant.companion.android.dashboard.derive.HeadingBadgeModel
@@ -44,6 +38,9 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.LocalConditionContext
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssFontPx
+import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -72,14 +69,14 @@ internal fun HeadingCard(
     val colors = LocalHAColorScheme.current
     // `.container`: 4px on the sides, at least `ha-card`'s 24px tall
     Row(
-        modifier = Modifier.heightIn(min = HEADING_MIN_HEIGHT).padding(horizontal = HADimens.SPACE1),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+        modifier = Modifier.heightIn(min = HEADING_MIN_HEIGHT).padding(horizontal = Css.Space.S1),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         // The title takes the tap action; badges handle their own gestures
         Row(
             modifier = modifier.weight(1f, fill = false),
-            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+            horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             DashboardIcon(
@@ -107,7 +104,7 @@ internal fun HeadingCard(
         if (heading.badges.isNotEmpty()) {
             Row(
                 modifier = Modifier.weight(1f).horizontalScroll(rememberScrollState(), reverseScrolling = true),
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.End),
+                horizontalArrangement = Arrangement.spacedBy(Css.Space.S2, Alignment.End),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 heading.badges.forEach { badge -> HeadingBadge(badge, interactions) }
@@ -144,7 +141,7 @@ private fun EntityHeadingBadge(badge: HeadingBadgeModel.Entity, interactions: Ca
         DisplayColor.State(listOf(SECONDARY_TEXT)).toColor() ?: LocalHAColorScheme.current.colorTextSecondary
     Row(
         modifier = Modifier
-            .clip(RoundedCornerShape(HADimens.SPACE1))
+            .clip(RoundedCornerShape(Css.Space.S1))
             .elementGestures(badge.actions, interactions)
             .semantics { contentDescription = badge.name },
         horizontalArrangement = Arrangement.spacedBy(ENTITY_BADGE_GAP),
@@ -152,7 +149,12 @@ private fun EntityHeadingBadge(badge: HeadingBadgeModel.Entity, interactions: Ca
     ) {
         DashboardIcon(name = badge.icon, tint = badge.color?.toColor() ?: secondary, modifier = Modifier.size(HASize.L))
         badge.state?.let {
-            Text(it, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start), color = secondary, maxLines = 1)
+            Text(
+                it,
+                style = Css.Text.Body.copy(textAlign = TextAlign.Start, lineHeight = BADGE_LINE_HEIGHT),
+                color = secondary,
+                maxLines = 1,
+            )
         }
     }
 }
@@ -175,7 +177,7 @@ private fun ButtonHeadingBadge(badge: HeadingBadgeModel.Button, interactions: Ca
             .clip(CircleShape)
             .background(background.copy(alpha = BUTTON_BACKGROUND_ALPHA))
             .elementGestures(badge.actions, interactions)
-            .padding(horizontal = if (badge.text != null) HADimens.SPACE2 else HADimens.SPACE0),
+            .padding(horizontal = if (badge.text != null) Css.Space.S2 else 0.cssPx),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -185,10 +187,14 @@ private fun ButtonHeadingBadge(badge: HeadingBadgeModel.Button, interactions: Ca
         badge.text?.let {
             Text(
                 it,
-                style = HATextStyle.BodyMedium.copy(fontSize = HAFontSize.S, fontWeight = FontWeight.Medium),
+                style = Css.Text.Body.copy(
+                    fontSize = Css.FontSize.S,
+                    lineHeight = Css.LineHeight.Normal,
+                    fontWeight = Css.FontWeight.Medium,
+                ),
                 color = colors.colorTextPrimary,
                 maxLines = 1,
-                modifier = Modifier.padding(horizontal = HADimens.SPACE1),
+                modifier = Modifier.padding(horizontal = Css.Space.S1),
             )
         }
     }
@@ -200,28 +206,31 @@ private const val SECONDARY_TEXT = "secondary-text-color"
 private const val DISABLED = "disabled-color"
 
 /** `ha-heading-badge`'s 3px gap between the icon and the state. */
-private val ENTITY_BADGE_GAP = 3.dp
+private val ENTITY_BADGE_GAP = 3.cssPx
+
+/** `ha-heading-badge`'s `--ha-heading-badge-line-height`, 20px. */
+private val BADGE_LINE_HEIGHT = 20.cssFontPx
 
 /** `ha-card`'s `min-height` in the heading card. */
-private val HEADING_MIN_HEIGHT = 24.dp
+private val HEADING_MIN_HEIGHT = 24.cssPx
 
 /** `.content`'s `--mdc-icon-size`. */
-private val HEADING_ICON_SIZE = 18.dp
+private val HEADING_ICON_SIZE = 18.cssPx
 
 /** `.content`: `--ha-font-size-l`, normal weight, `--ha-line-height-normal`, 0.1px apart. */
 private val TITLE_STYLE = TextStyle(
-    fontSize = HAFontSize.L,
-    fontWeight = FontWeight.Normal,
-    lineHeight = 1.6.em,
-    letterSpacing = 0.1.sp,
+    fontSize = Css.FontSize.L,
+    fontWeight = Css.FontWeight.Normal,
+    lineHeight = Css.LineHeight.Normal,
+    letterSpacing = 0.1.cssFontPx,
 )
 
 /** `.content.subtitle`: `--ha-font-size-m`, medium weight, `--ha-line-height-condensed`. */
 private val SUBTITLE_STYLE = TITLE_STYLE.copy(
-    fontSize = HAFontSize.M,
-    fontWeight = FontWeight.Medium,
-    lineHeight = 1.2.em,
+    fontSize = Css.FontSize.M,
+    fontWeight = Css.FontWeight.Medium,
+    lineHeight = Css.LineHeight.Condensed,
 )
 
 /** `--ha-heading-badge-size`. */
-private val BUTTON_BADGE_SIZE = 26.dp
+private val BUTTON_BADGE_SIZE = 26.cssPx

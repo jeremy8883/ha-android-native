@@ -32,9 +32,7 @@ import io.homeassistant.companion.android.common.compose.composable.ButtonSize
 import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
 import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.history.ChartZoom
@@ -56,7 +54,7 @@ import io.homeassistant.companion.android.dashboard.ui.panels.PanelAction
 import io.homeassistant.companion.android.dashboard.ui.panels.PanelActions
 import io.homeassistant.companion.android.dashboard.ui.panels.PanelToolbar
 import io.homeassistant.companion.android.dashboard.ui.panels.TargetSaver
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -109,7 +107,7 @@ internal fun HistoryPanel(
     Box(Modifier.fillMaxSize()) {
         LazyColumn(Modifier.fillMaxSize()) {
             item(key = "filters") {
-                Column(Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, top = HADimens.SPACE4)) {
+                Column(Modifier.padding(start = Css.Space.S4, end = Css.Space.S4, top = Css.Space.S4)) {
                     // Neither can be changed while the history loads
                     val enabled = state != HistoryPanelState.Loading
                     DateRangeField(
@@ -125,13 +123,13 @@ internal fun HistoryPanel(
                         snapshot,
                         entityFilter = { true },
                         onChange = pick,
-                        modifier = Modifier.padding(top = HADimens.SPACE2),
+                        modifier = Modifier.padding(top = Css.Space.S2),
                         enabled = enabled,
                     )
                 }
             }
             item(key = "charts") {
-                Box(Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, bottom = HADimens.SPACE4)) {
+                Box(Modifier.padding(start = Css.Space.S4, end = Css.Space.S4, bottom = Css.Space.S4)) {
                     HistoryContent(state, snapshot, range, current.toInstant(), interactions, zoom)
                 }
             }
@@ -174,7 +172,7 @@ private fun HistoryContent(
     zoom: ChartZoomState,
 ) {
     when (state) {
-        HistoryPanelState.Loading -> Box(Modifier.fillMaxWidth().padding(HADimens.SPACE4), Alignment.Center) {
+        HistoryPanelState.Loading -> Box(Modifier.fillMaxWidth().padding(Css.Space.S4), Alignment.Center) {
             HALoading()
         }
         HistoryPanelState.NoTarget -> PanelMessage(hass.localize("ui.panel.history.start_search"))
@@ -196,9 +194,9 @@ internal fun PanelMessage(text: String, error: Boolean = false) {
     val colors = LocalHAColorScheme.current
     Text(
         text,
-        style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Center),
+        style = Css.Text.Body.copy(textAlign = TextAlign.Center),
         color = if (error) colors.colorOnDangerNormal else colors.colorTextSecondary,
-        modifier = Modifier.fillMaxWidth().padding(HADimens.SPACE4),
+        modifier = Modifier.fillMaxWidth().padding(Css.Space.S4),
     )
 }
 
@@ -249,8 +247,8 @@ private fun HistoryToolbar(
 private fun NoDataDialog(hass: HassSnapshot, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(hass.localize("$HISTORY.download_data_error"), style = HATextStyle.HeadlineMedium) },
-        text = { Text(hass.localize("$HISTORY.error_no_data"), style = FrontendTextStyle.Body) },
+        title = { Text(hass.localize("$HISTORY.download_data_error"), style = Css.Text.DialogTitle) },
+        text = { Text(hass.localize("$HISTORY.error_no_data"), style = Css.Text.Body) },
         confirmButton = { HAPlainButton(hass.localize("ui.common.ok"), onDismiss) },
     )
 }
@@ -270,7 +268,7 @@ private fun DownloadOutcome(hass: HassSnapshot, viewModel: HistoryPanelViewModel
     }
     AlertDialog(
         onDismissRequest = viewModel::onDownloadShown,
-        title = { Text(hass.localize("$HISTORY.download_data_error"), style = HATextStyle.HeadlineMedium) },
+        title = { Text(hass.localize("$HISTORY.download_data_error"), style = Css.Text.DialogTitle) },
         confirmButton = { HAPlainButton(hass.localize("ui.common.ok"), viewModel::onDownloadShown) },
     )
 }

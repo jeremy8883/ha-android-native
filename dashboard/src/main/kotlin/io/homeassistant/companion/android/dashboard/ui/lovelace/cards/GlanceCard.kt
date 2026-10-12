@@ -18,9 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.GlanceEntity
 import io.homeassistant.companion.android.dashboard.derive.glanceCardModel
@@ -32,7 +30,8 @@ import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
 import io.homeassistant.companion.android.dashboard.ui.theme.CardHeaderPadding
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -64,15 +63,15 @@ internal fun GlanceCard(
     DashboardCardSurface(modifier = modifier) {
         Column(Modifier.fillMaxWidth()) {
             model.title?.let {
-                Text(it, style = FrontendTextStyle.CardHeader, modifier = Modifier.padding(CardHeaderPadding))
+                Text(it, style = Css.Text.CardHeader, modifier = Modifier.padding(CardHeaderPadding))
             }
             // `.entities`, with `.no-header`'s top padding
             FlowRow(
                 Modifier.fillMaxWidth().padding(
-                    start = HADimens.SPACE4,
-                    top = if (model.title == null) HADimens.SPACE4 else HADimens.SPACE0,
-                    end = HADimens.SPACE4,
-                    bottom = HADimens.SPACE1,
+                    start = Css.Space.S4,
+                    top = if (model.title == null) Css.Space.S4 else 0.cssPx,
+                    end = Css.Space.S4,
+                    bottom = Css.Space.S1,
                 ),
                 maxItemsInEachRow = model.columns,
             ) {
@@ -99,34 +98,34 @@ private fun GlanceEntityView(entity: GlanceEntity, modifier: Modifier) {
     val textColor = if (entity.missing) colors.colorOnWarningNormal else colors.colorTextPrimary
     // `.entity`: 4px on the sides, 12px under
     Column(
-        modifier.padding(start = HADimens.SPACE1, end = HADimens.SPACE1, bottom = HADimens.SPACE3),
+        modifier.padding(start = Css.Space.S1, end = Css.Space.S1, bottom = Css.Space.S3),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         entity.name?.let {
-            Text(it, style = HATextStyle.BodyMedium, color = textColor, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(it, style = Css.Text.Body, color = textColor, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
         val picture = entity.picture
         when {
             picture != null -> ServerImage(
                 picture,
                 entity.name,
-                Modifier.padding(HADimens.SPACE2).size(HASize.X5L).clip(CircleShape),
+                Modifier.padding(Css.Space.S2).size(HASize.X5L).clip(CircleShape),
             )
             entity.missing -> DashboardIcon(
                 "mdi:alert",
                 colors.colorOnWarningNormal,
-                Modifier.padding(HADimens.SPACE2).size(HASize.X2L),
+                Modifier.padding(Css.Space.S2).size(HASize.X2L),
             )
             entity.icon != null -> DashboardIcon(
                 entity.icon,
                 entityIconTint(entity.color, entity.unavailable, entity.brightness),
-                Modifier.padding(HADimens.SPACE2).size(HASize.X2L),
+                Modifier.padding(Css.Space.S2).size(HASize.X2L),
             )
         }
         entity.state?.let {
             Text(
                 it,
-                style = HATextStyle.BodyMedium,
+                style = Css.Text.Body,
                 color = colors.colorTextSecondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,

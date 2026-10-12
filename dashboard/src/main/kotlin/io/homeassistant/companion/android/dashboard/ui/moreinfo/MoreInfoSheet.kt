@@ -35,14 +35,11 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
 import io.homeassistant.companion.android.common.compose.composable.HAModalBottomSheet
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.MoreInfoModel
@@ -79,7 +76,8 @@ import io.homeassistant.companion.android.dashboard.ui.moreinfo.logbookItems
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.rememberLogbookSection
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.StateToggleControl
 import io.homeassistant.companion.android.dashboard.ui.statesummary.StateCardRow
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssFontPx
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -183,18 +181,18 @@ private fun ColumnScope.MoreInfoMain(
         MoreInfoConversation(
             conversation.agentId,
             hass,
-            Modifier.fillMaxWidth().weight(1f).padding(horizontal = HADimens.SPACE6),
+            Modifier.fillMaxWidth().weight(1f).padding(horizontal = Css.Space.S6),
         )
         return
     }
     LazyColumn(
         state = listState,
         modifier = Modifier.fillMaxWidth().weight(1f),
-        contentPadding = PaddingValues(horizontal = HADimens.SPACE6),
+        contentPadding = PaddingValues(horizontal = Css.Space.S6),
     ) { mainItems(MainList(model, hass, now, interactions, logbook, onShowFull)) }
     if (update != null && state != null) {
         HAHorizontalDivider()
-        Box(Modifier.padding(horizontal = HADimens.SPACE6, vertical = HADimens.SPACE4)) {
+        Box(Modifier.padding(horizontal = Css.Space.S6, vertical = Css.Space.S4)) {
             MoreInfoUpdateFooter(update, state, hass, now, interactions.onAction)
         }
     }
@@ -213,7 +211,7 @@ private class MainList(
 private fun LazyListScope.mainItems(list: MainList) {
     val (model, hass, now) = Triple(list.model, list.hass, list.now)
     val interactions = list.interactions
-    val section = Modifier.padding(bottom = HADimens.SPACE4)
+    val section = Modifier.padding(bottom = Css.Space.S4)
     model.stateCard?.let { card ->
         item(key = "state-card") { Box(section) { StateCardRow(card, now, interactions.onAction) } }
     }
@@ -222,7 +220,7 @@ private fun LazyListScope.mainItems(list: MainList) {
     }
     hass.states[model.entityId]?.let { state ->
         item(key = "controls") {
-            Column(section, verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+            Column(section, verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
                 DomainControls(model, state, hass, now, interactions.onAction, list.onShowFull)
             }
         }
@@ -234,8 +232,8 @@ private fun LazyListScope.mainItems(list: MainList) {
     if (model.inlineAttributes && model.attributes.isNotEmpty()) {
         item(key = "attributes") {
             Column(
-                Modifier.padding(vertical = HADimens.SPACE4),
-                verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+                Modifier.padding(vertical = Css.Space.S4),
+                verticalArrangement = Arrangement.spacedBy(Css.Space.S4),
             ) {
                 MoreInfoAttributes(model.attributes, hass.localize("ui.dialogs.more_info_control.attributes"))
             }
@@ -256,10 +254,10 @@ private fun ColumnScope.MoreInfoHistoryView(
     interactions: CardInteractions,
 ) {
     val logbook = if (hass.showsLogbook(entityId)) rememberLogbookSection(entityId, hass, now) else null
-    LazyColumn(Modifier.fillMaxWidth().weight(1f), contentPadding = PaddingValues(horizontal = HADimens.SPACE6)) {
+    LazyColumn(Modifier.fillMaxWidth().weight(1f), contentPadding = PaddingValues(horizontal = Css.Space.S6)) {
         if (hass.showsHistory(entityId)) {
             item(key = "history") {
-                Box(Modifier.padding(bottom = HADimens.SPACE4)) { MoreInfoHistory(entityId, hass, now, interactions) }
+                Box(Modifier.padding(bottom = Css.Space.S4)) { MoreInfoHistory(entityId, hass, now, interactions) }
             }
         }
         logbook?.let { logbookItems(it, hass, now, interactions) }
@@ -343,21 +341,29 @@ internal fun MoreInfoStateText(model: MoreInfoModel) {
     Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             model.state,
-            style = HATextStyle.Headline.copy(fontSize = STATE_FONT_SIZE, fontWeight = FontWeight.Normal),
+            style = Css.Text.Primary.copy(
+                fontSize = STATE_FONT_SIZE,
+                lineHeight = Css.LineHeight.Condensed,
+                textAlign = TextAlign.Center,
+            ),
             color = colors.colorTextPrimary,
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+            horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
         ) {
             Text(
                 model.changed,
-                style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium),
+                style = Css.Text.Body.copy(
+                    fontSize = Css.FontSize.L,
+                    lineHeight = Css.LineHeight.Normal,
+                    fontWeight = Css.FontWeight.Medium,
+                ),
                 color = colors.colorTextPrimary,
             )
             // The `after-time` slot: a vacuum's or lawn mower's battery
             (model.vacuum?.battery ?: model.lawnMower?.battery)?.let { battery ->
-                battery.text?.let { Text(it, style = FrontendTextStyle.Body, color = colors.colorTextSecondary) }
+                battery.text?.let { Text(it, style = Css.Text.Body, color = colors.colorTextSecondary) }
                 battery.icon?.let { DashboardIcon(it, colors.colorTextSecondary, Modifier.size(HASize.XL)) }
             }
         }
@@ -374,13 +380,13 @@ private fun MoreInfoAttributes(attributes: List<Pair<String, String>>, title: St
     val colors = LocalHAColorScheme.current
     Text(
         title,
-        style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+        style = Css.Text.Body.copy(textAlign = TextAlign.Start),
         color = colors.colorTextPrimary,
     )
     attributes.forEach { (name, value) ->
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(name, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start), modifier = Modifier.weight(1f))
-            Text(value, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.End), color = colors.colorTextPrimary)
+            Text(name, style = Css.Text.Body.copy(textAlign = TextAlign.Start), modifier = Modifier.weight(1f))
+            Text(value, style = Css.Text.Body.copy(textAlign = TextAlign.End), color = colors.colorTextPrimary)
         }
     }
 }
@@ -389,7 +395,7 @@ private fun MoreInfoAttributes(attributes: List<Pair<String, String>>, title: St
 private val FAVORITES_DOMAINS = setOf("light", "cover", "valve")
 
 /** The state's size in the header (36px). */
-private val STATE_FONT_SIZE = 36.sp
+private val STATE_FONT_SIZE = 36.cssFontPx
 
 /** At the bottom of the window, centred. */
 private object WindowBottom : PopupPositionProvider {

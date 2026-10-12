@@ -30,13 +30,13 @@ import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.composable.ButtonSize
 import io.homeassistant.companion.android.common.compose.composable.ButtonVariant
 import io.homeassistant.companion.android.common.compose.composable.HAFilledButton
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.history.legendOverflowLimit
 import io.homeassistant.companion.android.dashboard.history.legendSoloed
 import io.homeassistant.companion.android.dashboard.history.legendToggled
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /**
  * An item of a chart's legend: the series it hides or shows ([id]), its [name], its [color] (the check's), its
@@ -79,7 +79,7 @@ internal fun ChartLegend(
     )
     FlowRow(
         modifier = modifier.fillMaxWidth().padding(top = LEGEND_TOP),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2, Alignment.CenterHorizontally),
         // On a touch screen the rows are taller instead of spaced (`@media (pointer: coarse)`)
         itemVerticalAlignment = Alignment.CenterVertically,
     ) {
@@ -154,7 +154,7 @@ private fun LegendItem(item: ChartLegendItem, hidden: Boolean, multiple: Boolean
                     onClick = { actions.onToggle(item.id) },
                 )
                 .semantics { contentDescription = actions.toggleLabel }
-                .padding(start = TOGGLE_PADDING, top = TOGGLE_PADDING, bottom = TOGGLE_PADDING, end = HADimens.SPACE1)
+                .padding(start = TOGGLE_PADDING, top = TOGGLE_PADDING, bottom = TOGGLE_PADDING, end = Css.Space.S1)
                 .size(ICON_SIZE),
         )
         Text(
@@ -163,7 +163,7 @@ private fun LegendItem(item: ChartLegendItem, hidden: Boolean, multiple: Boolean
             color = if (hidden) colors.colorTextSecondary else colors.colorTextPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(start = HADimens.SPACE1).weight(1f, fill = false)
+            modifier = Modifier.padding(start = Css.Space.S1).weight(1f, fill = false)
                 .combinedClickable(
                     role = Role.Button,
                     onLongClick = { actions.onSolo(item.id) },
@@ -176,7 +176,7 @@ private fun LegendItem(item: ChartLegendItem, hidden: Boolean, multiple: Boolean
                 style = style,
                 color = colors.colorTextSecondary,
                 maxLines = 1,
-                modifier = Modifier.padding(start = HADimens.SPACE1),
+                modifier = Modifier.padding(start = Css.Space.S1),
             )
         }
     }

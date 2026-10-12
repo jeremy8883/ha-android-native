@@ -15,11 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
 /**
@@ -39,22 +37,22 @@ internal fun HaAlert(
     Row(
         modifier
             .fillMaxWidth()
-            .background(color.copy(alpha = BACKGROUND_ALPHA), RoundedCornerShape(HARadius.S))
-            .padding(HADimens.SPACE2),
+            .background(color.copy(alpha = BACKGROUND_ALPHA), RoundedCornerShape(Css.Radius.Sm))
+            .padding(Css.Space.S2),
         verticalAlignment = if (title == null) Alignment.CenterVertically else Alignment.Top,
     ) {
         DashboardIcon(type.icon, color, Modifier.size(HASize.X2L))
-        Column(Modifier.padding(horizontal = HADimens.SPACE2)) {
+        Column(Modifier.padding(horizontal = Css.Space.S2)) {
             title?.let {
                 Text(
                     it,
-                    style = FrontendTextStyle.Body,
+                    style = Css.Text.Body,
                     fontWeight = FontWeight.Bold,
                     color = textColor,
                     modifier = Modifier.padding(top = TITLE_TOP),
                 )
             }
-            Text(text, style = FrontendTextStyle.Body, color = textColor)
+            Text(text, style = Css.Text.Body, color = textColor)
         }
     }
 }

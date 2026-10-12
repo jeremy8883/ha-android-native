@@ -14,8 +14,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import io.homeassistant.companion.android.common.R as commonR
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HATextField
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.dashboard.action.CodeRequest
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /**
  * Asks for the code of a protected lock or alarm, like upstream's enter-code dialog.
@@ -27,7 +27,7 @@ internal fun CodeDialog(request: CodeRequest, onSubmit: (String) -> Unit, onDism
     var code by remember { mutableStateOf("") }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(request.title, style = HATextStyle.HeadlineMedium) },
+        title = { Text(request.title, style = Css.Text.DialogTitle) },
         text = {
             // UPSTREAM-DIFF: the system keyboard (numbers for a number code) instead of upstream's own keypad
             // with clear and submit keys.

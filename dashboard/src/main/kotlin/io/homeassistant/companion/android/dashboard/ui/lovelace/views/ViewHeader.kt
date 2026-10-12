@@ -38,10 +38,6 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.DisplayColor
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -57,6 +53,9 @@ import io.homeassistant.companion.android.dashboard.ui.lovelace.common.Dashboard
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.LocalCardTextAlign
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.LocalConditionContext
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssFontPx
+import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -91,7 +90,7 @@ internal fun ViewHeader(
     }
     when (val flow = arrangement.flow) {
         is HeaderFlow.Stacked -> Column(
-            verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+            verticalArrangement = Arrangement.spacedBy(Css.Space.S4),
             horizontalAlignment = if (flow.centered) Alignment.CenterHorizontally else Alignment.Start,
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -103,7 +102,7 @@ internal fun ViewHeader(
             if (!flow.badgesFirst) badges?.invoke(Modifier.fillMaxWidth())
         }
         is HeaderFlow.SideBySide -> Row(
-            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+            horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
             verticalAlignment = if (flow.alignTop) Alignment.Top else Alignment.Bottom,
             modifier = Modifier.fillMaxWidth(),
         ) {
@@ -134,8 +133,8 @@ private fun ViewBadges(
     if (!arrangement.scroll) {
         FlowRow(
             modifier = modifier,
-            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2, alignment),
-            verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+            horizontalArrangement = Arrangement.spacedBy(Css.Space.S2, alignment),
+            verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
         ) {
             badges.forEach { ViewBadge(it, interactions) }
         }
@@ -148,9 +147,9 @@ private fun ViewBadges(
                 .widthIn(min = maxWidth)
                 .padding(horizontal = SCROLL_PADDING),
             horizontalArrangement = if (arrangement.alignment == BadgesAlignment.SpaceAround) {
-                SpaceAroundAtLeast(HADimens.SPACE2)
+                SpaceAroundAtLeast(Css.Space.S2)
             } else {
-                Arrangement.spacedBy(HADimens.SPACE2, alignment)
+                Arrangement.spacedBy(Css.Space.S2, alignment)
             },
             verticalAlignment = Alignment.Top,
         ) {
@@ -181,15 +180,15 @@ private fun ViewBadge(badge: ViewBadgeModel, interactions: CardInteractions) {
             .padding(
                 // The icon's -4px margin pulls it towards the start
                 start = if (iconOnly) {
-                    HADimens.SPACE0
+                    0.cssPx
                 } else if (badge.icon != null) {
-                    HADimens.SPACE2
+                    Css.Space.S2
                 } else {
-                    HADimens.SPACE3
+                    Css.Space.S3
                 },
-                end = if (iconOnly) HADimens.SPACE0 else HADimens.SPACE3,
+                end = if (iconOnly) 0.cssPx else Css.Space.S3,
             ),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         DashboardIcon(
@@ -212,7 +211,7 @@ private fun ViewBadge(badge: ViewBadgeModel, interactions: CardInteractions) {
 @Composable
 private fun BadgeInfo(label: String?, content: String?) {
     val colors = LocalHAColorScheme.current
-    val base = HATextStyle.BodyMedium.copy(
+    val base = Css.Text.Body.copy(
         textAlign = TextAlign.Start,
         fontWeight = FontWeight.Medium,
         letterSpacing = BADGE_LETTER_SPACING,
@@ -221,7 +220,7 @@ private fun BadgeInfo(label: String?, content: String?) {
         label?.let {
             Text(
                 it,
-                style = base.copy(fontSize = HAFontSize.XS, lineHeight = HAFontSize.XS),
+                style = base.copy(fontSize = Css.FontSize.Xs, lineHeight = 10.cssFontPx),
                 color = colors.colorTextSecondary,
                 maxLines = 1,
             )
@@ -229,7 +228,7 @@ private fun BadgeInfo(label: String?, content: String?) {
         content?.let {
             Text(
                 it,
-                style = base.copy(fontSize = HAFontSize.S, lineHeight = BADGE_CONTENT_LINE_HEIGHT),
+                style = base.copy(fontSize = Css.FontSize.S, lineHeight = Css.LineHeight.Condensed),
                 color = colors.colorTextPrimary,
                 maxLines = 1,
             )
@@ -293,10 +292,7 @@ private val BADGE_ICON_SIZE = 18.dp
 
 /** `--ha-card-border-width`. */
 private val BADGE_BORDER = 1.dp
-private val BADGE_LETTER_SPACING = 0.1.sp
-
-/** `--ha-line-height-condensed` (1.2) of the 12px content. */
-private val BADGE_CONTENT_LINE_HEIGHT = 14.4.sp
+private val BADGE_LETTER_SPACING = 0.1.cssFontPx
 
 /** `--badge-padding` of scrolling badges. */
 private val SCROLL_PADDING = 16.dp

@@ -41,9 +41,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.DisplayColor
@@ -59,6 +56,8 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.mediaplayer.MediaBrowserDialog
 import io.homeassistant.companion.android.dashboard.ui.components.mediaplayer.MediaGroupingDialog
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -127,26 +126,26 @@ private fun MediaPlayer(
             Modifier
                 .fillMaxWidth()
                 .padding(
-                    start = HADimens.SPACE4,
-                    top = HADimens.SPACE4,
-                    end = HADimens.SPACE4,
+                    start = Css.Space.S4,
+                    top = Css.Space.S4,
+                    end = Css.Space.S4,
                     // `.no-progress.player:not(.no-controls)`
-                    bottom = if (progress == null && showControls) HADimens.SPACE0 else HADimens.SPACE4,
+                    bottom = if (progress == null && showControls) 0.cssPx else Css.Space.S4,
                 ),
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(end = HADimens.SPACE10)) {
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(end = Css.Space.S10)) {
                 DashboardIcon(model.icon, foreground, Modifier.size(HASize.X2L))
                 Text(
                     model.name,
-                    style = TextStyle(fontSize = HAFontSize.M),
+                    style = TextStyle(fontSize = Css.FontSize.M),
                     color = foreground,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(start = HADimens.SPACE2),
+                    modifier = Modifier.padding(start = Css.Space.S2),
                 )
             }
             if (content) {
-                Column(Modifier.padding(top = HADimens.SPACE4)) {
+                Column(Modifier.padding(top = Css.Space.S4)) {
                     MediaInfo(model, foreground)
                     if (showControls) {
                         MediaControls(model, foreground, narrow, progress == null, hass, interactions)
@@ -159,7 +158,7 @@ private fun MediaPlayer(
             onClick = { interactions.onAction(CardAction.MoreInfo(model.entityId)) },
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(HADimens.SPACE1)
+                .padding(Css.Space.S1)
                 .semantics { contentDescription = model.moreInfoLabel },
         ) {
             DashboardIcon(MORE_INFO_ICON, foreground, Modifier.size(HASize.X2L))
@@ -181,13 +180,13 @@ private fun MediaInfo(model: MediaControlModel, foreground: Color) {
             color = foreground,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(bottom = HADimens.SPACE1),
+            modifier = Modifier.padding(bottom = Css.Space.S1),
         )
     }
     model.subtitle?.let {
         Text(
             it,
-            style = TextStyle(fontSize = HAFontSize.M),
+            style = TextStyle(fontSize = Css.FontSize.M),
             color = foreground,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -209,13 +208,13 @@ private fun MediaControls(
     hass: State<HassSnapshot?>,
     interactions: CardInteractions,
 ) {
-    val bottom = if (narrow || noProgress || model.picture == null) HADimens.SPACE0 else HADimens.SPACE2
-    val vertical = if (model.picture == null) HADimens.SPACE0 else HADimens.SPACE2
+    val bottom = if (narrow || noProgress || model.picture == null) 0.cssPx else Css.Space.S2
+    val vertical = if (model.picture == null) 0.cssPx else Css.Space.S2
     Row(
         Modifier
             .fillMaxWidth()
-            .startMargin(-HADimens.SPACE3)
-            .padding(top = vertical, bottom = bottom, end = if (model.picture == null) 0.dp else HADimens.SPACE2),
+            .startMargin(-Css.Space.S3)
+            .padding(top = vertical, bottom = bottom, end = if (model.picture == null) 0.dp else Css.Space.S2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(Modifier.weight(1f), verticalAlignment = Alignment.CenterVertically) {
@@ -298,10 +297,10 @@ private fun JoinButton(grouping: MediaGrouping, foreground: Color, interactions:
                     .widthIn(min = BADGE_HEIGHT)
                     .clip(RoundedCornerShape(BADGE_RADIUS))
                     .background(accent)
-                    .padding(horizontal = HADimens.SPACE1),
+                    .padding(horizontal = Css.Space.S1),
                 contentAlignment = Alignment.Center,
             ) {
-                Text("$count", style = TextStyle(fontSize = HAFontSize.XS), color = onAccent)
+                Text("$count", style = TextStyle(fontSize = Css.FontSize.Xs), color = onAccent)
             }
         }
     }
@@ -382,7 +381,9 @@ private const val PERCENT = 100f
 private const val TICK_MS = 1000L
 private val NARROW_WIDTH = 350.dp
 private val VERY_NARROW_WIDTH = 300.dp
-private val TITLE_SIZE = 16.8.sp
+
+/** `hui-marquee`'s `font-size: 1.2em` of the card's 14px. */
+private val TITLE_SIZE = Css.FontSize.M * 1.2f
 private val BUTTON = 44.dp
 private val ICON = 30.dp
 private val MAIN_BUTTON = 56.dp

@@ -41,11 +41,9 @@ import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.moreinfo.SliderMode
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import kotlin.math.roundToInt
 
 /**
@@ -294,7 +292,7 @@ private fun Tooltip(text: String, fraction: Float, vertical: Boolean, style: Con
     val colors = LocalHAColorScheme.current
     Text(
         text = text,
-        style = FrontendTextStyle.Body.copy(fontSize = style.tooltipFontSize),
+        style = Css.Text.Body.copy(fontSize = style.tooltipFontSize),
         color = colors.colorTextPrimary,
         modifier = Modifier
             .layout { measurable, constraints ->
@@ -317,7 +315,7 @@ private fun Tooltip(text: String, fraction: Float, vertical: Boolean, style: Con
             }
             .shadow(TOOLTIP_ELEVATION, RoundedCornerShape(TOOLTIP_RADIUS))
             .background(colors.colorSurfaceDefault, RoundedCornerShape(TOOLTIP_RADIUS))
-            .padding(horizontal = HADimens.SPACE2, vertical = HADimens.SPACE1),
+            .padding(horizontal = Css.Space.S2, vertical = Css.Space.S1),
     )
 }
 
@@ -328,10 +326,10 @@ internal fun steppedValue(value: Double, range: ClosedFloatingPointRange<Double>
 private const val TRANSITION_MS = 180
 private const val HANDLE_MARGIN_DIVISOR = 8
 private const val CURSOR_DIVISOR = 4
-private val HANDLE_SIZE = HADimens.SPACE1
-private val BAR_RADIUS = HARadius.M
+private val HANDLE_SIZE = Css.Space.S1
+private val BAR_RADIUS = Css.Radius.Md
 private val SHADOW = Color.Black.copy(alpha = 0.2f)
 private val SHADOW_OFFSET = 2.dp
-private val TOOLTIP_MARGIN = HADimens.SPACE1
-private val TOOLTIP_RADIUS = HARadius.L
+private val TOOLTIP_MARGIN = Css.Space.S1
+private val TOOLTIP_RADIUS = Css.Radius.Lg
 private val TOOLTIP_ELEVATION = 2.dp

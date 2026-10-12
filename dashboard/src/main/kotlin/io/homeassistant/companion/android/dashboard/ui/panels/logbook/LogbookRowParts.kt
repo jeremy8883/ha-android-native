@@ -25,8 +25,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.logbook.CauseBadge
 import io.homeassistant.companion.android.dashboard.logbook.LogbookCause
@@ -35,7 +33,7 @@ import io.homeassistant.companion.android.dashboard.logbook.LogbookRow
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
 import io.homeassistant.companion.android.dashboard.ui.components.chart.TimelineColors
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
@@ -125,9 +123,9 @@ internal fun CauseBadgeView(cause: LogbookCause, badge: CauseBadge) {
 internal fun LogbookDayHeader(text: String, modifier: Modifier = Modifier) {
     Text(
         text,
-        style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start, fontWeight = FontWeight.Medium),
+        style = Css.Text.Body.copy(textAlign = TextAlign.Start, fontWeight = FontWeight.Medium),
         color = LocalHAColorScheme.current.colorTextPrimary,
-        modifier = modifier.padding(top = HADimens.SPACE4),
+        modifier = modifier.padding(top = Css.Space.S4),
     )
 }
 
@@ -140,9 +138,9 @@ internal fun LogbookDayHeader(text: String, modifier: Modifier = Modifier) {
 internal fun LogbookMessage(text: String, color: Color) {
     Text(
         text,
-        style = HATextStyle.BodyMedium,
+        style = Css.Text.Body,
         color = color,
-        modifier = Modifier.fillMaxWidth().padding(HADimens.SPACE4),
+        modifier = Modifier.fillMaxWidth().padding(Css.Space.S4),
     )
 }
 

@@ -7,7 +7,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.dashboard.action.cardActions
 import io.homeassistant.companion.android.dashboard.derive.InfoTileModel
 import io.homeassistant.companion.android.dashboard.derive.discoveredDevicesModel
@@ -41,6 +40,7 @@ import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.WeatherFor
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.energy.ENERGY_CARD_TYPES
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.energy.EnergyCard
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.web.WebCard
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.ZonedDateTime
 
 /**
@@ -63,7 +63,7 @@ internal fun DashboardCard(
     if (stack != null) return StackCardView(stack, hass, now, interactions, modifier)
     val actions = remember(card) { cardActions(card) }
     // Gestures work on every card, so actions are available before every card type is native
-    val cardModifier = modifier.clip(RoundedCornerShape(HARadius.XL)).elementGestures(actions.card, interactions)
+    val cardModifier = modifier.clip(RoundedCornerShape(Css.Radius.Xl)).elementGestures(actions.card, interactions)
     when (card.type) {
         CARD_TILE -> TileCard(
             card = card,
@@ -96,7 +96,7 @@ private fun EntityCards(
     interactions: CardInteractions,
     modifier: Modifier,
 ) {
-    val rounded = modifier.clip(RoundedCornerShape(HARadius.XL))
+    val rounded = modifier.clip(RoundedCornerShape(Css.Radius.Xl))
     when (card.type) {
         CARD_BUTTON -> ButtonCard(card, hass, interactions, rounded)
         CARD_GLANCE -> GlanceCard(card, hass, now, interactions, modifier)
@@ -127,7 +127,7 @@ private fun OtherCard(
     when {
         infoTile != null -> InfoTileCard(card, hass, cardModifier, infoTile)
         // The area card handles its tile's and picture's gestures itself
-        card.type == CARD_AREA -> AreaCard(card, hass, interactions, modifier.clip(RoundedCornerShape(HARadius.XL)))
+        card.type == CARD_AREA -> AreaCard(card, hass, interactions, modifier.clip(RoundedCornerShape(Css.Radius.Xl)))
         card.type == CARD_MARKDOWN -> MarkdownCard(card, hass, cardModifier)
         card.type == CARD_MEDIA_CONTROL -> MediaControlCard(card, hass, now, interactions, cardModifier)
         card.type == CARD_EMPTY_STATE -> EmptyStateCard(card, interactions, modifier)

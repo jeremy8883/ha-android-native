@@ -35,8 +35,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.R as commonR
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
@@ -54,7 +52,8 @@ import io.homeassistant.companion.android.dashboard.ui.dialogs.notifications.has
 import io.homeassistant.companion.android.dashboard.ui.panels.PanelActions
 import io.homeassistant.companion.android.dashboard.ui.panels.PanelToolbarActions
 import io.homeassistant.companion.android.dashboard.ui.panels.ToolbarIconButton as PanelIconButton
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -101,7 +100,7 @@ internal fun DashboardTopBar(
                 Text(
                     content?.title ?: panel?.title
                         ?: (uiState as? DashboardUiState.UnsupportedStrategy)?.title.orEmpty(),
-                    fontSize = HAFontSize.XL,
+                    fontSize = Css.FontSize.Xl,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -134,7 +133,7 @@ private fun ViewTabs(content: DashboardUiState.Content, localize: Localize, onSe
         modifier = Modifier.height(TOOLBAR_HEIGHT),
         containerColor = colors.colorSurfaceDefault,
         contentColor = colors.colorOnPrimaryNormal,
-        edgePadding = HADimens.SPACE0,
+        edgePadding = 0.cssPx,
         divider = {},
     ) {
         content.tabs.forEachIndexed { index, tab ->
@@ -166,7 +165,7 @@ private fun ViewTabContent(label: ViewTabLabel, localize: Localize) {
             modifier = Modifier.size(HASize.X2L).semantics { label.title?.let { contentDescription = it } },
         )
         is ViewTabLabel.IconAndTitle -> Row(
-            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+            horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             DashboardIcon(name = label.icon, tint = color, modifier = Modifier.size(HASize.X2L))
@@ -216,7 +215,7 @@ private fun OverflowMenu(menu: DashboardMenu, localize: Localize, onAction: (Das
         DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
             menu.overflow.forEach { action ->
                 DropdownMenuItem(
-                    text = { Text(localize(action.labelKey), style = FrontendTextStyle.Body) },
+                    text = { Text(localize(action.labelKey), style = Css.Text.Body) },
                     leadingIcon = { DashboardIcon(action.icon, LocalHAColorScheme.current.colorTextSecondary) },
                     onClick = {
                         open = false

@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import io.homeassistant.companion.android.common.R as commonR
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
-import io.homeassistant.companion.android.common.compose.theme.HADimens
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
@@ -36,7 +36,7 @@ import kotlinx.serialization.json.JsonPrimitive
  */
 @Composable
 internal fun DateTimeEditor(text: String?, enabled: Boolean, today: LocalDate, onChange: (JsonElement?) -> Unit) {
-    Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+    Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
         val (date, time) = text.orEmpty().split(' ').let { it.getOrNull(0)?.ifEmpty { null } to it.getOrNull(1) }
         DateEditor(date, enabled) { onChange(JsonPrimitive("$it ${time ?: MIDNIGHT}")) }
         TimeEditor(time, enabled) { onChange(JsonPrimitive("${date ?: today} $it")) }

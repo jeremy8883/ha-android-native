@@ -21,8 +21,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
@@ -35,6 +33,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.ControlSelectM
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.components.CleanAreasButton
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.VacuumStatus
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -57,7 +56,7 @@ internal fun MoreInfoVacuum(
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
     ) {
         VacuumStatus(info.visual, info.color?.toColor() ?: colors.colorFillDisabledLoudResting)
         CommandButtonRow(info.buttons, onAction)
@@ -76,7 +75,7 @@ internal fun CommandButtonRow(buttons: List<CommandButton>, onAction: (CardActio
     if (buttons.isEmpty()) return
     Row(
         modifier = Modifier.fillMaxWidth().widthIn(max = GROUP_MAX_WIDTH).height(CONTROL_BUTTON_HEIGHT),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S3),
     ) {
         buttons.forEach { VacuumCommand(it, onAction, Modifier.weight(1f)) }
     }
@@ -94,7 +93,7 @@ private fun VacuumCommand(button: CommandButton, onAction: (CardAction) -> Unit,
         modifier = modifier
             .fillMaxHeight()
             .alpha(if (button.enabled) 1f else DISABLED_ALPHA)
-            .clip(RoundedCornerShape(HARadius.X3L))
+            .clip(RoundedCornerShape(Css.Radius.X3l))
             .background(colors.colorFillDisabledLoudResting.copy(alpha = TINT_ALPHA))
             .clickable(enabled = button.enabled, role = Role.Button) { onAction(button.action) }
             .semantics { contentDescription = button.label },

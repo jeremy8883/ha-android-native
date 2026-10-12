@@ -28,8 +28,6 @@ import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HASwitch
 import io.homeassistant.companion.android.common.compose.composable.HATextField
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.entity.withFallback
@@ -45,7 +43,7 @@ import io.homeassistant.companion.android.dashboard.flow.initialTexts
 import io.homeassistant.companion.android.dashboard.flow.values
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.panels.todo.ListFlow
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import kotlinx.serialization.json.JsonObject
 
 /**
@@ -70,14 +68,14 @@ internal fun ConfigFlowDialog(flow: ListFlow, localize: Localize, onSubmit: (Jso
         is ListFlow.Step -> when (val step = flow.step) {
             is FlowStep.Form -> FormStep(step, flow, texts, onSubmit, onClose)
             is FlowStep.CreateEntry -> FlowAlert(texts("$FLOW.success"), onClose, texts("$FLOW.finish")) {
-                Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+                Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
                     texts.createdTexts(step).forEach {
-                        Text(it, style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start))
+                        Text(it, style = Css.Text.Body.copy(textAlign = TextAlign.Start))
                     }
                 }
             }
             is FlowStep.Abort -> FlowAlert(texts("$FLOW.aborted"), onClose, texts("$FLOW.close")) {
-                Text(texts.abortText(step), style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start))
+                Text(texts.abortText(step), style = Css.Text.Body.copy(textAlign = TextAlign.Start))
             }
         }
     }
@@ -106,13 +104,13 @@ private fun FormStep(
         text = {
             Column(
                 Modifier.verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+                verticalArrangement = Arrangement.spacedBy(Css.Space.S3),
             ) {
-                texts.description?.let { Text(it, style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start)) }
+                texts.description?.let { Text(it, style = Css.Text.Body.copy(textAlign = TextAlign.Start)) }
                 val base = texts.errors["base"]
                     ?: localize("$FLOW.not_all_required_fields").takeIf { missing }
                     ?: flow.failure?.let { "${localize("$FLOW.error")}: ${LocalContext.current.loadErrorText(it)}" }
-                base?.let { Text(it, color = danger, style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start)) }
+                base?.let { Text(it, color = danger, style = Css.Text.Body.copy(textAlign = TextAlign.Start)) }
                 step.fields.forEach { field ->
                     FlowFieldInput(field, texts, typed[field.name].orEmpty(), enabled = !flow.submitting) {
                         typed = typed + (field.name to it)
@@ -147,12 +145,12 @@ private fun FlowFieldInput(
     // Required fields are marked with a star, as `ha-form` does
     val label = (texts.labels[field.name] ?: field.name) + if (field.required) "*" else ""
     val colors = LocalHAColorScheme.current
-    Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE1)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S1)) {
         when (val type = field.type) {
             FlowFieldType.Toggle -> Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     label,
-                    style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                    style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                     modifier = Modifier.weight(1f),
                 )
                 HASwitch(checked = value == "true", onCheckedChange = { onChange(it.toString()) }, enabled = enabled)
@@ -190,14 +188,14 @@ private fun FlowFieldInput(
         texts.helpers[field.name]?.let {
             Text(
                 it,
-                style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+                style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                 color = colors.colorTextSecondary,
             )
         }
         texts.errors[field.name]?.let {
             Text(
                 it,
-                style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+                style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                 color = colors.colorOnDangerNormal,
             )
         }

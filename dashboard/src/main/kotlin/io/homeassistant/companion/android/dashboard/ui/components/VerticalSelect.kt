@@ -33,7 +33,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.MenuOption
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.STATE_CONTROL_HEIGHT
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.STATE_CONTROL_RADIUS
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.STATE_CONTROL_THICKNESS
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -103,7 +103,7 @@ private fun SelectOption(
         if (icon != null) {
             DashboardIcon(name = icon, tint = content, modifier = Modifier.size(HASize.X2L))
         } else {
-            Text(option.label, style = FrontendTextStyle.Body, color = content)
+            Text(option.label, style = Css.Text.Body, color = content)
         }
     }
 }

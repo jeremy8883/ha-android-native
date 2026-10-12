@@ -32,12 +32,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import io.homeassistant.companion.android.common.compose.theme.HABorderWidth
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.display.blankBeforeUnit
 import io.homeassistant.companion.android.dashboard.moreinfo.BigNumber
@@ -48,7 +45,8 @@ import io.homeassistant.companion.android.dashboard.moreinfo.CircularTarget
 import io.homeassistant.companion.android.dashboard.moreinfo.CircularTargets
 import io.homeassistant.companion.android.dashboard.ui.components.CircularSliderView
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssFontPx
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -137,8 +135,8 @@ private fun SecondaryLine(
     color: Color,
     onSelect: (CircularTarget) -> Unit,
 ) {
-    val style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium)
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1)) {
+    val style = Css.Text.Body.copy(fontWeight = FontWeight.Medium)
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Css.Space.S1)) {
         when (secondary) {
             is CircularSecondary.Current -> {
                 DashboardIcon(THERMOMETER, color, Modifier.size(HASize.L))
@@ -195,7 +193,7 @@ private fun CircularInfo(
     Column(modifier = modifier.fillMaxWidth(LABEL_WIDTH), horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
             text = control.label.orEmpty(),
-            style = FrontendTextStyle.Body.copy(fontSize = HAFontSize.L, fontWeight = FontWeight.Medium),
+            style = Css.Text.Body.copy(fontSize = Css.FontSize.L, fontWeight = FontWeight.Medium),
             color = when {
                 control.labelDisabled -> colors.colorTextSecondary
                 else -> control.slider.actionColor?.toColor() ?: colors.colorTextPrimary
@@ -232,7 +230,7 @@ private fun CircularPrimaryView(
             primary.number.copy(value = targets.value ?: primary.number.value),
             bottomUnit,
         )
-        is CircularPrimary.Range -> Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE6)) {
+        is CircularPrimary.Range -> Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S6)) {
             listOf(
                 CircularTarget.Low to (targets.low ?: primary.low.value),
                 CircularTarget.High to (targets.high ?: primary.high.value),
@@ -248,7 +246,7 @@ private fun CircularPrimaryView(
         is CircularPrimary.Current -> BigNumberText(primary.number, bottomUnit)
         is CircularPrimary.Text -> Text(
             primary.text,
-            style = HATextStyle.Headline.copy(fontSize = STATE_SIZE, fontWeight = FontWeight.Normal),
+            style = Css.Text.Primary.copy(fontSize = STATE_SIZE, lineHeight = STATE_LINE_HEIGHT),
             color = colors.colorTextPrimary,
             textAlign = TextAlign.Center,
         )
@@ -272,24 +270,20 @@ private fun BigNumberText(number: BigNumber, bottomUnit: Boolean) {
     Row(modifier = Modifier.semantics { contentDescription = description }, verticalAlignment = Alignment.Bottom) {
         Text(
             integer,
-            style = HATextStyle.Headline.copy(
-                fontSize = BIG_SIZE,
-                lineHeight = BIG_LINE,
-                fontWeight = FontWeight.Normal,
-            ),
+            style = Css.Text.Primary.copy(fontSize = BIG_SIZE, lineHeight = BIG_LINE_HEIGHT.em),
             color = color,
         )
         if (bottomUnit) {
             Text(
                 decimal + number.unit,
-                style = FrontendTextStyle.Body.copy(fontSize = UNIT_SIZE),
+                style = Css.Text.Body.copy(fontSize = UNIT_SIZE),
                 color = color,
-                modifier = Modifier.padding(bottom = HADimens.SPACE2),
+                modifier = Modifier.padding(bottom = Css.Space.S2),
             )
         } else {
-            Column(modifier = Modifier.padding(vertical = HADimens.SPACE1)) {
-                Text(number.unit, style = FrontendTextStyle.Body.copy(fontSize = UNIT_SIZE), color = color)
-                Text(decimal, style = FrontendTextStyle.Body.copy(fontSize = DECIMAL_SIZE), color = color)
+            Column(modifier = Modifier.padding(vertical = Css.Space.S1)) {
+                Text(number.unit, style = Css.Text.Body.copy(fontSize = UNIT_SIZE), color = color)
+                Text(decimal, style = Css.Text.Body.copy(fontSize = DECIMAL_SIZE), color = color)
             }
         }
     }
@@ -304,13 +298,13 @@ private fun BigNumberText(number: BigNumber, bottomUnit: Boolean) {
 @Composable
 private fun StepButtons(color: Color?, modifier: Modifier, onStep: (Int) -> Unit) {
     val colors = LocalHAColorScheme.current
-    Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE6)) {
+    Row(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(Css.Space.S6)) {
         listOf(-1 to "mdi:minus", 1 to "mdi:plus").forEach { (sign, icon) ->
             Box(
                 modifier = Modifier
-                    .size(HADimens.SPACE12)
+                    .size(Css.Space.S12)
                     .clip(CircleShape)
-                    .border(HABorderWidth.S, color ?: colors.colorBorderNeutralNormal, CircleShape)
+                    .border(Css.BorderWidth.Sm, color ?: colors.colorBorderNeutralNormal, CircleShape)
                     .clickable(role = Role.Button) { onStep(sign) },
                 contentAlignment = Alignment.Center,
             ) {
@@ -328,8 +322,17 @@ private const val LABEL_WIDTH = 0.6f
 private const val UNSELECTED_ALPHA = 0.7f
 private val CONTROL_SIZE = 320.dp
 private val BUTTONS_BOTTOM = 10.dp
-private val BIG_SIZE = 57.sp
-private val BIG_LINE = 64.sp
-private val DECIMAL_SIZE = 24.sp
-private val UNIT_SIZE = 19.sp
-private val STATE_SIZE = 36.sp
+
+/** `ha-big-number`'s `font-size: 57px; line-height: 1.12`. */
+private val BIG_SIZE = 57.cssFontPx
+private const val BIG_LINE_HEIGHT = 1.12f
+
+/** `.value .decimal`'s `font-size: 0.42em` of [BIG_SIZE]. */
+private val DECIMAL_SIZE = BIG_SIZE * 0.42f
+
+/** `.value .unit`'s `font-size: 0.33em` of [BIG_SIZE]. */
+private val UNIT_SIZE = BIG_SIZE * 0.33f
+
+/** `.primary-state`'s `font-size: 36px`; it inherits its line height, kept at 40. */
+private val STATE_SIZE = 36.cssFontPx
+private val STATE_LINE_HEIGHT = 40.sp

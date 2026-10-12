@@ -30,9 +30,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
@@ -40,7 +37,7 @@ import io.homeassistant.companion.android.dashboard.feature.TileFeature
 import io.homeassistant.companion.android.dashboard.ui.components.ControlSlider
 import io.homeassistant.companion.android.dashboard.ui.components.ControlSliderStyle
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -65,7 +62,7 @@ internal fun TileFeatureControl(
         is TileFeature.Slider -> FeatureSlider(feature, color, onAction)
         is TileFeature.Buttons -> FeatureButtons(feature, onAction)
         is TileFeature.Select -> FeatureSelect(feature, color, onAction)
-        is TileFeature.NumberButtons -> Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+        is TileFeature.NumberButtons -> Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
             feature.items.forEach { FeatureNumber(it, available, onAction, Modifier.weight(1f)) }
         }
     }
@@ -86,11 +83,11 @@ private fun FeatureSlider(slider: TileFeature.Slider, color: Color, onAction: (C
         valueText = { "${it.roundToInt()}${slider.unit}" },
         style = ControlSliderStyle(
             thickness = CONTROL_HEIGHT,
-            cornerRadius = HARadius.XL,
+            cornerRadius = Css.Radius.Xl,
             color = color,
             background = SolidColor(color),
             backgroundAlpha = SLIDER_BACKGROUND_ALPHA,
-            tooltipFontSize = HAFontSize.M,
+            tooltipFontSize = Css.FontSize.M,
         ),
         onChanged = { onAction(slider.service.withValue(it)) },
         modifier = Modifier.fillMaxWidth().height(CONTROL_HEIGHT),
@@ -108,7 +105,7 @@ private fun FeatureSlider(slider: TileFeature.Slider, color: Color, onAction: (C
 @Composable
 private fun FeatureButtons(buttons: TileFeature.Buttons, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current
-    Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+    Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
         buttons.buttons.forEach { button ->
             FilledTonalIconButton(
                 onClick = { onAction(button.action) },
@@ -119,7 +116,7 @@ private fun FeatureButtons(buttons: TileFeature.Buttons, onAction: (CardAction) 
                     disabledContainerColor = colors.colorFillNeutralQuietResting,
                     disabledContentColor = colors.colorOnDisabledQuiet,
                 ),
-                shape = RoundedCornerShape(HARadius.XL),
+                shape = RoundedCornerShape(Css.Radius.Xl),
                 modifier = Modifier.weight(1f).semantics { contentDescription = button.label },
             ) {
                 DashboardIcon(
@@ -145,7 +142,7 @@ private fun FeatureSelect(select: TileFeature.Select, featureColor: Color, onAct
         modifier = Modifier
             .fillMaxWidth()
             .height(CONTROL_HEIGHT)
-            .clip(RoundedCornerShape(HARadius.XL))
+            .clip(RoundedCornerShape(Css.Radius.Xl))
             .background(colors.colorFillNeutralNormalResting)
             .semantics { contentDescription = select.label },
     ) {
@@ -155,7 +152,7 @@ private fun FeatureSelect(select: TileFeature.Select, featureColor: Color, onAct
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
-                    .clip(RoundedCornerShape(HARadius.XL))
+                    .clip(RoundedCornerShape(Css.Radius.Xl))
                     .background(if (selected) accent.copy(alpha = SELECTED_ALPHA) else Color.Transparent)
                     .selectable(selected = selected, enabled = select.enabled, role = Role.RadioButton) {
                         if (!selected) onAction(option.action)
@@ -207,9 +204,9 @@ private fun FeatureNumber(
     Row(
         modifier = modifier
             .height(CONTROL_HEIGHT)
-            .clip(RoundedCornerShape(HARadius.XL))
+            .clip(RoundedCornerShape(Css.Radius.Xl))
             .background(colors.colorFillNeutralNormalResting)
-            .padding(horizontal = HADimens.SPACE1)
+            .padding(horizontal = Css.Space.S1)
             .semantics { contentDescription = item.label },
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -223,7 +220,7 @@ private fun FeatureNumber(
         }
         Text(
             text = shown?.let(item::display) ?: "–",
-            style = FrontendTextStyle.Body,
+            style = Css.Text.Body,
             color = if (enabled) colors.colorOnNeutralNormal else colors.colorOnDisabledQuiet,
         )
         IconButton(onClick = { step(1) }, enabled = enabled) {

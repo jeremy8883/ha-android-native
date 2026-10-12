@@ -31,11 +31,10 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.composable.HALoading
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -57,7 +56,7 @@ import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookNod
 import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookRequest
 import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookSource
 import io.homeassistant.companion.android.dashboard.ui.panels.logbook.LogbookViewModel
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.Instant
 import java.time.LocalDate
 
@@ -100,7 +99,7 @@ internal fun LazyListScope.logbookItems(
                 val path = moreInfoPanelPath("logbook", section.entityId, now, hass.formats.zone)
                 interactions.onAction(CardAction.Navigate(path, replace = false))
             },
-            modifier = Modifier.padding(bottom = HADimens.SPACE2),
+            modifier = Modifier.padding(bottom = Css.Space.S2),
         )
     }
     when (val loaded = section.logbook) {
@@ -175,18 +174,18 @@ private fun LogbookRowContent(
     val colors = LocalHAColorScheme.current
     Row(
         modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min).heightIn(min = ROW_MIN_HEIGHT),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
     ) {
         LogbookNode(row, Modifier.width(NODE_WIDTH).fillMaxHeight())
         Column(Modifier.weight(1f).fillMaxHeight(), verticalArrangement = Arrangement.Center) {
             Row(
                 modifier = Modifier.weight(1f),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
             ) {
                 Text(
                     row.text,
-                    style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                    style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                     color = colors.colorTextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -194,16 +193,18 @@ private fun LogbookRowContent(
                 )
                 row.cause?.let { cause -> badge?.let { CauseBadgeView(cause, it) } }
                 row.traceLink?.let { path ->
+                    // `.trailing`: `--ha-font-size-s`
                     Text(
                         traceLabel,
-                        style = HATextStyle.BodyMedium,
+                        style = Css.Text.Body.copy(fontSize = Css.FontSize.S, lineHeight = Css.LineHeight.Normal),
                         color = colors.colorOnPrimaryNormal,
                         modifier = Modifier.clickable(role = Role.Button) { onOpenTrace(path) },
                     )
                 }
+                // `.time-chip`: `--ha-font-size-s` at `line-height: 1`
                 Text(
                     time,
-                    style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.End),
+                    style = Css.Text.Body.copy(fontSize = Css.FontSize.S, lineHeight = 1.em, textAlign = TextAlign.End),
                     color = colors.colorTextSecondary,
                     maxLines = 1,
                     modifier = Modifier.widthIn(

@@ -28,9 +28,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.composable.HASwitch
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.EntityRowModel
@@ -65,7 +63,8 @@ import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowTe
 import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowTimerText
 import io.homeassistant.companion.android.dashboard.ui.lovelace.headerfooter.HeaderFooter
 import io.homeassistant.companion.android.dashboard.ui.theme.CardHeaderAboveContentPadding
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -94,22 +93,22 @@ internal fun EntitiesCard(
         Column(modifier = Modifier.fillMaxWidth()) {
             model.header?.let { header ->
                 HeaderFooter(header, footer = false, hass, now, interactions)
-                if (header !is HeaderFooterModel.Buttons) Spacer(Modifier.height(HADimens.SPACE4))
+                if (header !is HeaderFooterModel.Buttons) Spacer(Modifier.height(Css.Space.S4))
             }
             Column(
-                modifier = Modifier.fillMaxWidth().padding(bottom = HADimens.SPACE4),
+                modifier = Modifier.fillMaxWidth().padding(bottom = Css.Space.S4),
             ) {
                 val hasTitle = model.title != null || model.headerToggle != null
                 if (hasTitle) {
                     Row(
                         modifier = Modifier.fillMaxWidth().padding(CardHeaderAboveContentPadding),
-                        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         DashboardIcon(model.icon, colors.colorTextSecondary, Modifier.size(HASize.XL))
                         Text(
                             model.title.orEmpty(),
-                            style = FrontendTextStyle.CardHeader,
+                            style = Css.Text.CardHeader,
                             modifier = Modifier.weight(1f),
                         )
                         // `hui-entities-toggle`
@@ -122,8 +121,8 @@ internal fun EntitiesCard(
                 }
                 // `#states`: `.card-content` (no top padding under the header) with an 8px gap between rows
                 Column(
-                    modifier = Modifier.padding(top = if (hasTitle) HADimens.SPACE0 else HADimens.SPACE4),
-                    verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                    modifier = Modifier.padding(top = if (hasTitle) 0.cssPx else Css.Space.S4),
+                    verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
                 ) {
                     model.rows.forEach { row -> EntityRow(row, now.value?.toInstant() ?: Instant.EPOCH, interactions) }
                 }
@@ -146,10 +145,10 @@ private fun EntityRow(row: EntityRowModel, now: Instant, interactions: CardInter
     // Dropdowns and text fields carry the name as their label, in its place
     val namedControl = row.control is RowSelect || row.control is RowTextInput
     val domain = row.domain
-    Column(Modifier.fillMaxWidth().padding(horizontal = HADimens.SPACE4)) {
+    Column(Modifier.fillMaxWidth().padding(horizontal = Css.Space.S4)) {
         Row(
             modifier = Modifier.fillMaxWidth().heightIn(min = HASize.X5L),
-            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+            horizontalArrangement = Arrangement.spacedBy(Css.Space.S3),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             // The icon and name open more-info (or the row's tap action), like hui-generic-entity-row
@@ -163,7 +162,7 @@ private fun EntityRow(row: EntityRowModel, now: Instant, interactions: CardInter
                         )
                     }
                     ).elementGestures(row.actions, interactions),
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+                horizontalArrangement = Arrangement.spacedBy(Css.Space.S4),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 domain?.condition?.let { WeatherIconView(it, colors.colorTextSecondary, Modifier.size(BADGE_SIZE)) }
@@ -228,7 +227,7 @@ internal fun RowScope.RowControlContent(
         is RowTextInput -> RowTextControl(control, onAction)
         is RowDateTime -> RowDateTimeControl(control, onAction)
         is RowTimer -> RowTimerText(control, now)
-        null -> state?.let { Text(it, style = HATextStyle.BodyMedium, color = textColor, maxLines = 1) }
+        null -> state?.let { Text(it, style = Css.Text.Body, color = textColor, maxLines = 1) }
     }
 }
 
@@ -254,7 +253,7 @@ private fun RowTextButton(button: RowButton, onAction: (CardAction) -> Unit) {
     TextButton(onClick = { onAction(button.action) }, enabled = button.enabled) {
         Text(
             button.label,
-            style = HATextStyle.BodyMedium,
+            style = Css.Text.Body,
             color = if (button.danger) colors.colorOnDangerNormal else colors.colorOnPrimaryNormal,
         )
     }

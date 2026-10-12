@@ -27,10 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.ImageFitMode
@@ -45,6 +42,8 @@ import io.homeassistant.companion.android.dashboard.ui.components.LocalServerUrl
 import io.homeassistant.companion.android.dashboard.ui.components.resolveServerUrl
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssFontPx
 
 /**
  * A picture of an entity (a camera snapshot, an image entity, a person) with its name and state over it. The picture
@@ -137,12 +136,12 @@ private fun BoxScope.PictureEntityImage(model: PictureEntityModel, onNaturalRati
 private fun PictureEntityFooter(name: String?, state: String?, modifier: Modifier) {
     if (name == null && state == null) return
     // White text on a dark footer like upstream's, so it stays readable in both themes
-    val style = TextStyle(fontSize = HAFontSize.L, lineHeight = FOOTER_LINE_HEIGHT, color = Color.White)
+    val style = TextStyle(fontSize = Css.FontSize.L, lineHeight = FOOTER_LINE_HEIGHT, color = Color.White)
     Row(
         modifier = modifier
             .fillMaxWidth()
             .background(Color.Black.copy(alpha = FOOTER_ALPHA))
-            .padding(HADimens.SPACE4),
+            .padding(Css.Space.S4),
         horizontalArrangement = if (name != null && state != null) Arrangement.SpaceBetween else Arrangement.Center,
     ) {
         name?.let { Text(it, style = style, maxLines = 1, overflow = TextOverflow.Ellipsis) }
@@ -152,6 +151,6 @@ private fun PictureEntityFooter(name: String?, state: String?, modifier: Modifie
 
 private const val DEFAULT_ASPECT_RATIO = 16f / 9f
 private const val FOOTER_ALPHA = 0.3f
-private val FOOTER_LINE_HEIGHT = 16.sp
+private val FOOTER_LINE_HEIGHT = 16.cssFontPx
 private const val UNAVAILABLE_ICON = "mdi:video-off"
 private const val LOADING_ICON = "mdi:image"

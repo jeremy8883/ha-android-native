@@ -28,8 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.composable.HACheckbox
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
@@ -42,7 +40,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.selector.FieldEditor
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.MarkdownText
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoEntryViewModel
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.Instant
 import java.time.LocalDate
 import kotlinx.serialization.json.JsonElement
@@ -71,14 +69,14 @@ internal fun MoreInfoScript(
             mutableStateMapOf<String, JsonElement>().apply { putAll(shown.initialData) }
         }
     val colors = LocalHAColorScheme.current
-    Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
         shown.description?.let { MarkdownText(it, Modifier.fillMaxWidth()) }
-        shown.queue?.let { Text(it, style = FrontendTextStyle.Body, color = colors.colorTextPrimary) }
+        shown.queue?.let { Text(it, style = Css.Text.Body, color = colors.colorTextPrimary) }
         shown.fields?.let { fields ->
-            Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+            Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
                 Text(
                     shown.fieldsTitle,
-                    style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
+                    style = Css.Text.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
                     color = colors.colorTextPrimary,
                 )
                 val hasOptional = fields.any { it.optional }
@@ -94,7 +92,7 @@ internal fun MoreInfoScript(
                 }
             }
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S3)) {
             ScriptButton(STOP_ICON, shown.cancel, shown.cancelEnabled, Modifier.weight(1f)) {
                 onAction(shown.cancelCall())
             }
@@ -130,10 +128,10 @@ private fun ScriptFieldRow(
             )
             hasOptional -> Box(Modifier.width(CHECKBOX_SPACE))
         }
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE1)) {
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(Css.Space.S1)) {
             Text(
                 field.name,
-                style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                 color = colors.colorTextPrimary,
                 modifier = if (field.optional) {
                     Modifier.clickable {
@@ -177,14 +175,14 @@ private fun ScriptButton(icon: String, label: String, enabled: Boolean, modifier
         modifier = modifier
             .height(BUTTON_HEIGHT)
             .alpha(if (enabled) 1f else DISABLED_ALPHA)
-            .clip(RoundedCornerShape(HARadius.X3L))
+            .clip(RoundedCornerShape(Css.Radius.X3l))
             .background(colors.colorFillDisabledLoudResting.copy(alpha = TINT_ALPHA))
             .clickable(enabled = enabled, role = Role.Button, onClick = onClick),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         DashboardIcon(icon, colors.colorTextPrimary, Modifier.size(HASize.X2L))
-        Text(label, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
+        Text(label, style = Css.Text.Body, color = colors.colorTextPrimary)
     }
 }
 

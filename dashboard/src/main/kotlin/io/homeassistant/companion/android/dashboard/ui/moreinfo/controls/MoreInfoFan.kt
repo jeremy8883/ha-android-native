@@ -14,8 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HABorderWidth
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
@@ -26,6 +24,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.VerticalSelect
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.StateControlSlider
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.StateToggleControl
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import kotlin.math.roundToInt
 
 /**
@@ -40,7 +39,7 @@ internal fun MoreInfoFan(info: FanMoreInfo, onAction: (CardAction) -> Unit) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
     ) {
         when (val speed = info.speed) {
             is FanSpeedControl.Buttons -> VerticalSelect(speed.select, onAction)
@@ -65,7 +64,7 @@ private fun PowerButton(call: CardAction.CallService, enabled: Boolean, onAction
         modifier = Modifier
             .size(POWER_SIZE)
             .clip(CircleShape)
-            .border(HABorderWidth.S, colors.colorBorderNeutralQuiet, CircleShape)
+            .border(Css.BorderWidth.Sm, colors.colorBorderNeutralQuiet, CircleShape)
             .clickable(enabled = enabled, role = Role.Button) { onAction(call) },
         contentAlignment = Alignment.Center,
     ) {

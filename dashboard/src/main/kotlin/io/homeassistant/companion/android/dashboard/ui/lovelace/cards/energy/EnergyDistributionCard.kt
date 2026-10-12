@@ -20,12 +20,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.energy.EnergyDistributionModel
 import io.homeassistant.companion.android.dashboard.energy.energyDistribution
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -63,10 +63,10 @@ private fun Distribution(model: EnergyDistributionModel, label: (String) -> Stri
     val high = model.battery != null || model.waterBelow
     BoxWithConstraints(
         Modifier.fillMaxWidth().padding(
-            start = HADimens.SPACE4,
-            end = HADimens.SPACE4,
-            bottom = HADimens.SPACE4,
-            top = HADimens.SPACE2,
+            start = Css.Space.S4,
+            end = Css.Space.S4,
+            bottom = Css.Space.S4,
+            top = Css.Space.S2,
         ),
     ) {
         // The lines between the circles, under them
@@ -102,7 +102,7 @@ private fun TopRow(model: EnergyDistributionModel, colors: DistributionColors, l
         model.lowCarbon?.let { value ->
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(end = HADimens.SPACE1),
+                modifier = Modifier.padding(end = Css.Space.S1),
             ) {
                 NodeLabel(label("low_carbon"))
                 Node(colors.lowCarbon) {
@@ -115,7 +115,7 @@ private fun TopRow(model: EnergyDistributionModel, colors: DistributionColors, l
         when {
             solar != null -> Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(horizontal = HADimens.SPACE1).height(TOP_HEIGHT),
+                modifier = Modifier.padding(horizontal = Css.Space.S1).height(TOP_HEIGHT),
             ) {
                 NodeLabel(label("solar"))
                 Node(colors.solar) {
@@ -142,7 +142,7 @@ private fun TopRow(model: EnergyDistributionModel, colors: DistributionColors, l
 private fun UtilityNode(name: String, icon: String, value: String, color: Color, flows: Boolean) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(start = HADimens.SPACE1).height(TOP_HEIGHT),
+        modifier = Modifier.padding(start = Css.Space.S1).height(TOP_HEIGHT),
     ) {
         NodeLabel(name)
         Node(color) {
@@ -232,7 +232,7 @@ private fun BottomRow(model: EnergyDistributionModel, colors: DistributionColors
         if (model.waterBelow && water != null) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(start = HADimens.SPACE1).pullUp(WATER_BELOW_SHIFT),
+                modifier = Modifier.padding(start = Css.Space.S1).pullUp(WATER_BELOW_SHIFT),
             ) {
                 FlowLine(colors.water, animated = model.waterFlows, upwards = true)
                 Node(colors.water) {

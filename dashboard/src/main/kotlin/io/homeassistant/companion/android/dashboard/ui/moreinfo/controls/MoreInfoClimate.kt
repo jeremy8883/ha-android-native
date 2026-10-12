@@ -13,8 +13,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.entity.EntityState
@@ -29,7 +27,8 @@ import io.homeassistant.companion.android.dashboard.ui.components.ControlSelectM
 import io.homeassistant.companion.android.dashboard.ui.components.IconToggle
 import io.homeassistant.companion.android.dashboard.ui.components.IconToggleGroup
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.CircularStateControl
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssFontPx
 
 /**
  * The controls of a thermostat's details, port of `more-info-climate` (frontend@20260624.6
@@ -44,7 +43,7 @@ internal fun MoreInfoClimate(climate: ClimateMoreInfo, state: EntityState, onAct
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
     ) {
         CurrentReadings(climate.current)
         val humidity = climate.humidity
@@ -89,13 +88,25 @@ internal fun MoreInfoClimate(climate: ClimateMoreInfo, state: EntityState, onAct
 internal fun CurrentReadings(readings: List<Pair<String, String>>) {
     if (readings.isEmpty()) return
     val colors = LocalHAColorScheme.current
-    Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE6)) {
+    Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S6)) {
         readings.forEach { (label, value) ->
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Text(label, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary)
+                // `.current .label`, `.current .value`
+                Text(
+                    label,
+                    style = Css.Text.Body.copy(
+                        lineHeight = Css.LineHeight.Condensed,
+                        letterSpacing = LABEL_LETTER_SPACING.cssFontPx,
+                    ),
+                    color = colors.colorTextSecondary,
+                )
                 Text(
                     value,
-                    style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium),
+                    style = Css.Text.Body.copy(
+                        fontSize = Css.FontSize.Xl,
+                        fontWeight = Css.FontWeight.Medium,
+                        lineHeight = Css.LineHeight.Condensed,
+                    ),
                     color = colors.colorTextPrimary,
                 )
             }
@@ -104,3 +115,6 @@ internal fun CurrentReadings(readings: List<Pair<String, String>>) {
 }
 
 private const val UNAVAILABLE = "unavailable"
+
+/** `.current .label`'s `letter-spacing: 0.4px`. */
+private const val LABEL_LETTER_SPACING = 0.4

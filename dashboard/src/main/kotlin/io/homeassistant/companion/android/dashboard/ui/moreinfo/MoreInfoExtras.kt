@@ -20,8 +20,6 @@ import androidx.compose.ui.text.style.TextAlign
 import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
 import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
 import io.homeassistant.companion.android.common.compose.composable.HATextField
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.entity.EntityState
@@ -37,7 +35,7 @@ import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInf
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoPerson
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoScript
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoWeather
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.Instant
 
 /**
@@ -82,18 +80,18 @@ internal fun MoreInfoExtraView(
 @Composable
 private fun MoreInfoSun(rows: List<SunRow>) {
     val colors = LocalHAColorScheme.current
-    Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
         HAHorizontalDivider()
         rows.forEach { row ->
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
                 // `.key`: the name, then when, on one line
                 Text(
                     listOfNotNull(row.name, row.relative).joinToString(" "),
-                    style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                    style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                     color = colors.colorTextPrimary,
                     modifier = Modifier.weight(1f),
                 )
-                Text(row.value, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
+                Text(row.value, style = Css.Text.Body, color = colors.colorTextPrimary)
             }
         }
     }
@@ -108,9 +106,9 @@ private fun MoreInfoSun(rows: List<SunRow>) {
 private fun MoreInfoConfigurator(configurator: ConfiguratorMoreInfo, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current
     val values = remember(configurator) { mutableStateMapOf<String, String>() }
-    Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
         configurator.description?.let { MarkdownText(it, Modifier.fillMaxWidth()) }
-        configurator.errors?.let { Text(it, style = HATextStyle.BodyMedium, color = colors.colorOnDangerNormal) }
+        configurator.errors?.let { Text(it, style = Css.Text.Body, color = colors.colorOnDangerNormal) }
         configurator.fields.forEach { field ->
             HATextField(
                 value = values[field.id].orEmpty(),

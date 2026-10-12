@@ -4,13 +4,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.moreinfo.MoreInfoExtra
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.DomainControls
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoStateText
 import io.homeassistant.companion.android.dashboard.ui.statesummary.StateCardRow
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.Instant
 
 /**
@@ -26,7 +26,7 @@ internal fun MoreInfoGroup(
     now: Instant,
     onAction: (CardAction) -> Unit,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
         val inner = group.inner
         val innerState = group.innerState
         if (inner != null && innerState != null) {
@@ -37,7 +37,7 @@ internal fun MoreInfoGroup(
                 )
             }
             val toGroup = { action: CardAction -> onAction(group.toGroup(action)) }
-            Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+            Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
                 if (inner.stateHeader) MoreInfoStateText(inner)
                 DomainControls(inner, innerState, innerHass, now, toGroup)
             }

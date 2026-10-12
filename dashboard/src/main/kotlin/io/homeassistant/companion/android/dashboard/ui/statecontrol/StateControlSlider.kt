@@ -18,13 +18,13 @@ import androidx.compose.ui.graphics.Shader
 import androidx.compose.ui.graphics.ShaderBrush
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.moreinfo.ControlSlider
 import io.homeassistant.companion.android.dashboard.moreinfo.SliderBackground
 import io.homeassistant.companion.android.dashboard.ui.components.ControlSlider
 import io.homeassistant.companion.android.dashboard.ui.components.ControlSliderStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.parseCssColor
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import kotlinx.coroutines.delay
@@ -87,7 +87,7 @@ internal fun StateControlSlider(
             color = color,
             background = background.first,
             backgroundAlpha = background.second,
-            tooltipFontSize = HAFontSize.XL,
+            tooltipFontSize = Css.FontSize.Xl,
             overlay = overlay,
             overlayAlpha = STRIPES_ALPHA,
         ),

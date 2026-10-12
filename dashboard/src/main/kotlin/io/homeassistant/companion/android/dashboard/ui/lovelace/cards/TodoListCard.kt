@@ -34,9 +34,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
 import io.homeassistant.companion.android.common.compose.composable.HATextField
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -55,7 +53,8 @@ import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.components.ConfirmDialog
 import io.homeassistant.companion.android.dashboard.ui.panels.todo.TodoItemDialog
 import io.homeassistant.companion.android.dashboard.ui.theme.CardHeaderPadding
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import java.time.Instant
 import java.time.ZonedDateTime
 
@@ -92,18 +91,18 @@ internal fun TodoListCard(
     DashboardCardSurface(modifier = modifier) {
         Column(Modifier.fillMaxWidth().padding(todoListPadding(hasTitle = shown.title != null))) {
             shown.title?.let {
-                Text(it, style = FrontendTextStyle.CardHeader, modifier = Modifier.padding(CardHeaderPadding))
+                Text(it, style = Css.Text.CardHeader, modifier = Modifier.padding(CardHeaderPadding))
             }
             if (shown.canAdd) AddRow(shown, localize, onAction) { editing = TodoEdit.Create(it) }
             when (val loaded = items) {
                 Loadable.Loading -> CircularProgressIndicator(
-                    Modifier.align(Alignment.CenterHorizontally).padding(HADimens.SPACE4),
+                    Modifier.align(Alignment.CenterHorizontally).padding(Css.Space.S4),
                 )
                 is Loadable.Failed -> Text(
                     LocalContext.current.loadErrorText(loaded.error),
-                    style = HATextStyle.BodyMedium,
+                    style = Css.Text.Body,
                     color = LocalHAColorScheme.current.colorOnDangerNormal,
-                    modifier = Modifier.padding(HADimens.SPACE4),
+                    modifier = Modifier.padding(Css.Space.S4),
                 )
                 is Loadable.Ready -> TodoSections(shown, localize, onAction, viewModel::move) {
                     editing =
@@ -168,7 +167,7 @@ private fun AddRow(
                 DashboardIcon("mdi:plus", LocalHAColorScheme.current.colorTextPrimary, Modifier.size(HASize.X2L))
             }
         },
-        modifier = Modifier.fillMaxWidth().padding(horizontal = HADimens.SPACE4, vertical = HADimens.SPACE2),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = Css.Space.S4, vertical = Css.Space.S2),
     )
 }
 
@@ -243,9 +242,9 @@ private fun ReorderMenu(model: TodoListModel, reordering: Boolean, localize: Loc
 private fun NoItems(localize: Localize) {
     Text(
         localize("ui.panel.lovelace.cards.todo-list.no_unchecked_items"),
-        style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+        style = Css.Text.Body.copy(textAlign = TextAlign.Start),
         color = LocalHAColorScheme.current.colorTextPrimary,
-        modifier = Modifier.padding(horizontal = HADimens.SPACE6, vertical = HADimens.SPACE4),
+        modifier = Modifier.padding(horizontal = Css.Space.S6, vertical = Css.Space.S4),
     )
 }
 
@@ -310,12 +309,12 @@ private fun ReorderList(
 @Composable
 private fun SectionHeader(title: String, menu: @Composable () -> Unit) {
     Row(
-        Modifier.fillMaxWidth().padding(start = HADimens.SPACE4, end = HADimens.SPACE1, top = HADimens.SPACE2),
+        Modifier.fillMaxWidth().padding(start = Css.Space.S4, end = Css.Space.S1, top = Css.Space.S2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             title,
-            style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
+            style = Css.Text.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
             color = LocalHAColorScheme.current.colorTextPrimary,
             modifier = Modifier.weight(1f),
         )
@@ -357,4 +356,4 @@ private fun SectionMenu(label: String, icon: String, danger: Boolean = false, on
 
 /** 8dp above and below the list, none above under the card header. */
 private fun todoListPadding(hasTitle: Boolean) =
-    PaddingValues(top = if (hasTitle) HADimens.SPACE0 else HADimens.SPACE2, bottom = HADimens.SPACE2)
+    PaddingValues(top = if (hasTitle) 0.cssPx else Css.Space.S2, bottom = Css.Space.S2)

@@ -37,14 +37,13 @@ import androidx.media3.ui.compose.PlayerSurface
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.homeassistant.companion.android.common.compose.composable.HAFilledButton
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.data.CameraRepository
 import io.homeassistant.companion.android.dashboard.data.Fetched
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.moreinfo.MoreInfoExtra
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
@@ -76,7 +75,7 @@ internal fun MoreInfoCamera(camera: MoreInfoExtra.Camera, state: EntityState) {
     val saveAs = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(JPEG)) { uri ->
         uri?.let(viewModel::downloadSnapshot)
     }
-    Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
         // The picture fills the width at its own ratio, as upstream's `img`; a video at 16:9 until it plays
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             when (val shown = stream) {
@@ -111,7 +110,7 @@ internal fun MoreInfoCamera(camera: MoreInfoExtra.Camera, state: EntityState) {
         if ((download as? SnapshotDownload.Done)?.failed == true) {
             Text(
                 camera.downloadFailed,
-                style = HATextStyle.BodyMedium,
+                style = Css.Text.Body,
                 color = LocalHAColorScheme.current.colorOnDangerNormal,
             )
         }

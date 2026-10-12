@@ -12,15 +12,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.mikepenz.markdown.m3.Markdown
 import com.mikepenz.markdown.m3.markdownColor
 import com.mikepenz.markdown.m3.markdownTypography
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.HAThemeForPreview
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.MarkdownModel
@@ -31,7 +30,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardS
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.LocalCardTextAlign
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.alignedMarkdownComponents
 import io.homeassistant.companion.android.dashboard.ui.theme.CardHeaderPadding
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /**
  * A markdown card: the server-rendered template as markdown, in a card unless `text_only`. Nothing is shown until
@@ -57,17 +56,17 @@ private fun MarkdownCardContent(model: MarkdownModel, modifier: Modifier = Modif
     val colors = LocalHAColorScheme.current
     // `ha-markdown`'s padding: 2px 4px text-only, none above under a header, else 16px
     val padding = when {
-        model.textOnly -> PaddingValues(horizontal = HADimens.SPACE1, vertical = TEXT_ONLY_VERTICAL_PADDING)
-        model.title != null -> PaddingValues(start = HADimens.SPACE4, end = HADimens.SPACE4, bottom = HADimens.SPACE4)
-        else -> PaddingValues(HADimens.SPACE4)
+        model.textOnly -> PaddingValues(horizontal = Css.Space.S1, vertical = TEXT_ONLY_VERTICAL_PADDING)
+        model.title != null -> PaddingValues(start = Css.Space.S4, end = Css.Space.S4, bottom = Css.Space.S4)
+        else -> PaddingValues(Css.Space.S4)
     }
     val content = @Composable {
         Column(modifier = Modifier.fillMaxWidth()) {
             model.title?.let {
-                Text(it, style = FrontendTextStyle.CardHeader, modifier = Modifier.padding(CardHeaderPadding))
+                Text(it, style = Css.Text.CardHeader, modifier = Modifier.padding(CardHeaderPadding))
             }
             Column(modifier = Modifier.fillMaxWidth().padding(padding)) {
-                model.error?.let { Text(it, style = HATextStyle.BodyMedium, color = colors.colorOnDangerNormal) }
+                model.error?.let { Text(it, style = Css.Text.Body, color = colors.colorOnDangerNormal) }
                 (model.content ?: model.placeholder)?.let { text ->
                     MarkdownText(text, Modifier.fillMaxWidth().alpha(if (model.content == null) 0f else 1f))
                 }
@@ -90,7 +89,7 @@ private fun MarkdownCardContent(model: MarkdownModel, modifier: Modifier = Modif
 internal fun MarkdownText(text: String, modifier: Modifier = Modifier) {
     val colors = LocalHAColorScheme.current
     val align = LocalCardTextAlign.current
-    val body = FrontendTextStyle.Body.copy(textAlign = align, color = colors.colorTextPrimary)
+    val body = Css.Text.Body.copy(textAlign = align, color = colors.colorTextPrimary)
     val heading = body.copy(fontWeight = FontWeight.Bold)
     Markdown(
         content = text,
@@ -103,13 +102,14 @@ internal fun MarkdownText(text: String, modifier: Modifier = Modifier) {
             list = body,
             table = body,
             quote = body,
-            h1 = heading.copy(fontSize = HAFontSize.X2L, lineHeight = HAFontSize.X3L),
-            h2 = heading.copy(fontSize = HAFontSize.XL, lineHeight = HAFontSize.X2L),
-            h3 = heading.copy(fontSize = HAFontSize.L, lineHeight = HAFontSize.X2L),
-            h4 = heading.copy(fontSize = HAFontSize.L, lineHeight = HAFontSize.X2L),
-            h5 = heading.copy(fontSize = HAFontSize.M, lineHeight = HAFontSize.XL),
-            h6 = heading.copy(fontSize = HAFontSize.M, lineHeight = HAFontSize.XL),
-            textLink = HATextStyle.Link,
+            h1 = heading.copy(fontSize = Css.FontSize.X2l, lineHeight = Css.FontSize.X3l),
+            h2 = heading.copy(fontSize = Css.FontSize.Xl, lineHeight = Css.FontSize.X2l),
+            h3 = heading.copy(fontSize = Css.FontSize.L, lineHeight = Css.FontSize.X2l),
+            h4 = heading.copy(fontSize = Css.FontSize.L, lineHeight = Css.FontSize.X2l),
+            h5 = heading.copy(fontSize = Css.FontSize.M, lineHeight = Css.FontSize.Xl),
+            h6 = heading.copy(fontSize = Css.FontSize.M, lineHeight = Css.FontSize.Xl),
+            // `a { color: var(--markdown-link-color, var(--primary-color)) }`: the text's own size and weight
+            textLink = TextLinkStyles(SpanStyle(color = colors.colorTextLink)),
         ),
         components = remember(align) { alignedMarkdownComponents(align) },
         modifier = modifier,
@@ -119,7 +119,7 @@ internal fun MarkdownText(text: String, modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun MarkdownCardPreview() {
-    HAThemeForPreview(modifier = Modifier.padding(HADimens.SPACE4)) {
+    HAThemeForPreview(modifier = Modifier.padding(Css.Space.S4)) {
         MarkdownCardContent(
             MarkdownModel(
                 title = "Daily briefing",

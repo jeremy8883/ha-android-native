@@ -28,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.condition.ConditionContext
@@ -51,6 +50,7 @@ import io.homeassistant.companion.android.dashboard.ui.Message
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.DashboardCard
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.LocalConditionContext
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.ZonedDateTime
 import kotlinx.coroutines.flow.map
 
@@ -128,14 +128,14 @@ private fun ViewRows(
     now: State<ZonedDateTime?>,
     interactions: CardInteractions,
 ) {
-    val columnGap = if (narrow) HADimens.SPACE2 else HADimens.SPACE8
+    val columnGap = if (narrow) Css.Space.S2 else Css.Space.S8
     var showSidebar by rememberSaveable(view) { mutableStateOf(false) }
     val sectionRow: @Composable (List<SectionLayout>) -> Unit = { sections ->
         DashboardGrid(
             cells = sections.map { it.cell.copy(row = 0, rowSpan = 1) },
             columnCount = columnCount,
             columnGap = columnGap,
-            rowGap = HADimens.SPACE6,
+            rowGap = Css.Space.S6,
         ) { index -> SectionGrid(sections[index], hass, now, interactions) }
     }
     LazyColumn(
@@ -144,11 +144,11 @@ private fun ViewRows(
         // Room at the end to scroll the last cards clear of the offline bar, kept so nothing moves when it shows
         contentPadding = PaddingValues(
             start = columnGap,
-            top = if (view == null || view.viewType == ViewType.SECTIONS) HADimens.SPACE6 else HADimens.SPACE2,
+            top = if (view == null || view.viewType == ViewType.SECTIONS) Css.Space.S6 else Css.Space.S2,
             end = columnGap,
             bottom = BOTTOM_BAR_CLEARANCE,
         ),
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
     ) {
         if (view != null) item { ViewHeader(view, hass, now, interactions) }
         when (sidebar?.mode) {
@@ -157,7 +157,7 @@ private fun ViewRows(
                 Row(horizontalArrangement = Arrangement.spacedBy(columnGap)) {
                     Column(
                         modifier = Modifier.weight(columnCount.toFloat()),
-                        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
+                        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
                     ) { rows.forEach { sectionRow(it) } }
                     SidebarSections(sidebar, hass, now, interactions, Modifier.weight(1f))
                 }
@@ -188,7 +188,7 @@ private fun SidebarSections(
     interactions: CardInteractions,
     modifier: Modifier,
 ) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6)) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(Css.Space.S6)) {
         sidebar.sections.forEach { SectionGrid(it, hass, now, interactions) }
     }
 }
@@ -212,7 +212,7 @@ private fun SidebarSwitch(sidebar: SidebarLayout, showSidebar: Boolean, onChange
                     selectedContainerColor = colors.colorFillPrimaryLoudResting,
                     selectedLabelColor = colors.colorOnPrimaryLoud,
                 ),
-                modifier = Modifier.padding(horizontal = HADimens.SPACE1),
+                modifier = Modifier.padding(horizontal = Css.Space.S1),
             )
         }
     }
@@ -233,8 +233,8 @@ private fun SectionGrid(
     DashboardGrid(
         cells = section.cards.map { it.cell },
         columnCount = section.columnCount,
-        columnGap = HADimens.SPACE2,
-        rowGap = HADimens.SPACE2,
+        columnGap = Css.Space.S2,
+        rowGap = Css.Space.S2,
     ) { index ->
         section.cards[index].let { placed ->
             // Fixed-row cards keep the web's row rhythm but may grow to fit native content
@@ -273,6 +273,6 @@ internal fun ViewFooter(
         hass = hass,
         now = now,
         interactions = interactions,
-        modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(HADimens.SPACE2),
+        modifier = Modifier.fillMaxWidth().navigationBarsPadding().padding(Css.Space.S2),
     )
 }

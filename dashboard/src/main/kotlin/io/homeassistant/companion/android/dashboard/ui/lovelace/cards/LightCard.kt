@@ -30,7 +30,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
@@ -45,7 +44,8 @@ import io.homeassistant.companion.android.dashboard.ui.components.RoundSlider
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssFontPx
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import kotlinx.coroutines.delay
 
@@ -82,7 +82,7 @@ internal fun LightCard(
     DashboardCardSurface(modifier = modifier) {
         Box(Modifier.fillMaxWidth()) {
             Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                BrightnessControl(model, interactions, Modifier.padding(HADimens.SPACE4)) { value ->
+                BrightnessControl(model, interactions, Modifier.padding(Css.Space.S4)) { value ->
                     dragged = value
                     if (value != null) showBrightness = true
                 }
@@ -151,10 +151,10 @@ private fun LightInfo(model: LightCardModel.Shown, brightness: Int, showBrightne
     val brightnessAlpha by animateFloatAsState(if (showBrightness) 1f else 0f, tween(FADE_MS), label = "brightness")
     // Upstream pulls the info up into the slider's open bottom
     Column(
-        Modifier.fillMaxWidth().pulledUp(INFO_OVERLAP).padding(HADimens.SPACE4),
+        Modifier.fillMaxWidth().pulledUp(INFO_OVERLAP).padding(Css.Space.S4),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val style = FrontendTextStyle.Body.copy(fontSize = NAME_FONT_SIZE, lineHeight = NAME_LINE_HEIGHT)
+        val style = Css.Text.Body.copy(fontSize = NAME_FONT_SIZE, lineHeight = NAME_LINE_HEIGHT)
         val stateText = model.stateText
         if (stateText != null) {
             Text(stateText, style = style, color = colors.colorTextPrimary)
@@ -192,5 +192,5 @@ private val SLIDER_MAX_WIDTH = 200.dp
 private val INFO_OVERLAP = 56.dp
 
 /** `--name-font-size: 1.2rem`. */
-private val NAME_FONT_SIZE = 19.2.sp
+private val NAME_FONT_SIZE = 19.2.cssFontPx
 private val NAME_LINE_HEIGHT = 24.sp

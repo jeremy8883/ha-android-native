@@ -44,8 +44,6 @@ import io.homeassistant.companion.android.common.compose.composable.HAAccentButt
 import io.homeassistant.companion.android.common.compose.composable.HAFilledButton
 import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -58,7 +56,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardS
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.MarkdownText
 import io.homeassistant.companion.android.dashboard.ui.panels.ToolbarIconButton
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.ZonedDateTime
 
 /**
@@ -135,12 +133,12 @@ private fun NotificationDrawer(
 @Composable
 private fun DrawerHeader(title: String, closeLabel: String, onClose: () -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth().height(HEADER_HEIGHT).padding(start = HADimens.SPACE4),
+        modifier = Modifier.fillMaxWidth().height(HEADER_HEIGHT).padding(start = Css.Space.S4),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             title,
-            style = FrontendTextStyle.Body.copy(fontSize = HAFontSize.XL, textAlign = TextAlign.Start),
+            style = Css.Text.Body.copy(fontSize = Css.FontSize.Xl, textAlign = TextAlign.Start),
             color = LocalHAColorScheme.current.colorTextPrimary,
             modifier = Modifier.weight(1f),
         )
@@ -168,34 +166,34 @@ private fun NotificationList(
     when (notifications) {
         Loadable.Loading -> Box(modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { HALoading() }
         is Loadable.Failed -> Column(
-            modifier = modifier.padding(HADimens.SPACE4),
-            verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+            modifier = modifier.padding(Css.Space.S4),
+            verticalArrangement = Arrangement.spacedBy(Css.Space.S3),
         ) {
             Text(
                 stringResource(
                     R.string.native_dashboard_load_failed,
                     LocalContext.current.loadErrorText(notifications.error),
                 ),
-                style = FrontendTextStyle.Body,
+                style = Css.Text.Body,
             )
             HAAccentButton(text = stringResource(R.string.native_dashboard_retry), onClick = viewModel::retry)
         }
         is Loadable.Ready -> if (notifications.value.isEmpty()) {
             Text(
                 localize(EMPTY),
-                style = FrontendTextStyle.Body,
+                style = Css.Text.Body,
                 color = LocalHAColorScheme.current.colorTextPrimary,
-                modifier = modifier.fillMaxWidth().padding(HADimens.SPACE4),
+                modifier = modifier.fillMaxWidth().padding(Css.Space.S4),
             )
         } else {
-            LazyColumn(modifier = modifier, contentPadding = PaddingValues(top = HADimens.SPACE4)) {
+            LazyColumn(modifier = modifier, contentPadding = PaddingValues(top = Css.Space.S4)) {
                 items(notifications.value, key = { it.id }) { notification ->
                     NotificationItem(notification, hass, now, localize(DISMISS)) { viewModel.dismiss(notification.id) }
                 }
             }
             if (notifications.value.size > 1) {
                 HorizontalDivider(color = LocalHAColorScheme.current.colorBorderNeutralQuiet)
-                Box(Modifier.fillMaxWidth().padding(HADimens.SPACE4), contentAlignment = Alignment.Center) {
+                Box(Modifier.fillMaxWidth().padding(Css.Space.S4), contentAlignment = Alignment.Center) {
                     HAFilledButton(
                         localize(DISMISS_ALL),
                         onClick = {
@@ -239,37 +237,37 @@ private fun NotificationItem(
     }
     DashboardCardSurface(
         modifier = Modifier.fillMaxWidth().padding(
-            start = HADimens.SPACE4,
-            end = HADimens.SPACE4,
-            bottom = HADimens.SPACE4,
+            start = Css.Space.S4,
+            end = Css.Space.S4,
+            bottom = Css.Space.S4,
         ),
     ) {
         Column(Modifier.fillMaxWidth()) {
             notification.title?.let {
                 Text(
                     it,
-                    style = FrontendTextStyle.Body.copy(
-                        fontSize = HAFontSize.X2L,
+                    style = Css.Text.Body.copy(
+                        fontSize = Css.FontSize.X2l,
                         lineHeight = TITLE_LINE_HEIGHT,
                         textAlign = TextAlign.Start,
                     ),
                     color = colors.colorTextPrimary,
-                    modifier = Modifier.padding(start = HADimens.SPACE4, top = HADimens.SPACE4, end = HADimens.SPACE4),
+                    modifier = Modifier.padding(start = Css.Space.S4, top = Css.Space.S4, end = Css.Space.S4),
                 )
             }
-            Column(Modifier.fillMaxWidth().padding(HADimens.SPACE4)) {
+            Column(Modifier.fillMaxWidth().padding(Css.Space.S4)) {
                 MarkdownText(notification.message, Modifier.fillMaxWidth())
                 created?.let {
                     Text(
                         it,
-                        style = FrontendTextStyle.Body.copy(textAlign = TextAlign.End),
+                        style = Css.Text.Body.copy(textAlign = TextAlign.End),
                         color = colors.colorTextSecondary,
                         modifier = Modifier.fillMaxWidth().padding(top = TIME_MARGIN),
                     )
                 }
             }
             HorizontalDivider(color = colors.colorBorderNeutralQuiet)
-            Box(Modifier.fillMaxWidth().padding(HADimens.SPACE2), contentAlignment = Alignment.CenterEnd) {
+            Box(Modifier.fillMaxWidth().padding(Css.Space.S2), contentAlignment = Alignment.CenterEnd) {
                 HAPlainButton(dismissLabel, onDismiss)
             }
         }
@@ -292,7 +290,7 @@ private val DRAWER_WIDTH = 500.dp
 private val HEADER_HEIGHT = 56.dp
 
 /** `--ha-line-height-condensed` (1.2) of the 24px title. */
-private val TITLE_LINE_HEIGHT = HAFontSize.X3L
+private val TITLE_LINE_HEIGHT = Css.FontSize.X3l
 
 /** The time's `margin-top`. */
 private val TIME_MARGIN = 6.dp

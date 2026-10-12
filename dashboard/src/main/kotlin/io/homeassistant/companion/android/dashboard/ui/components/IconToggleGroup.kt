@@ -15,10 +15,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /**
  * Port of `ha-icon-button-group` with `ha-icon-button-toggle`s (frontend@20260624.6 src/components/): icons in a
@@ -32,7 +31,7 @@ internal fun IconToggleGroup(toggles: List<IconToggle>, onSelect: (Int) -> Unit,
     val colors = LocalHAColorScheme.current
     Row(
         modifier = modifier
-            .height(HADimens.SPACE12)
+            .height(Css.Space.S12)
             .clip(RoundedCornerShape(GROUP_RADIUS))
             .background(GROUP_BACKGROUND),
         verticalAlignment = Alignment.CenterVertically,
@@ -40,7 +39,7 @@ internal fun IconToggleGroup(toggles: List<IconToggle>, onSelect: (Int) -> Unit,
         toggles.forEachIndexed { index, toggle ->
             Box(
                 modifier = Modifier
-                    .size(HADimens.SPACE12)
+                    .size(Css.Space.S12)
                     .selectable(selected = toggle.selected, enabled = toggle.enabled, role = Role.Tab) {
                         onSelect(index)
                     }
@@ -50,8 +49,8 @@ internal fun IconToggleGroup(toggles: List<IconToggle>, onSelect: (Int) -> Unit,
                 val filled = toggle.selected && toggle.enabled
                 Box(
                     modifier = Modifier
-                        .size(HADimens.SPACE10)
-                        .clip(RoundedCornerShape(HARadius.X2L))
+                        .size(Css.Space.S10)
+                        .clip(RoundedCornerShape(Css.Radius.X2l))
                         .background(if (filled) colors.colorTextPrimary else Color.Transparent),
                     contentAlignment = Alignment.Center,
                 ) {
@@ -70,7 +69,7 @@ internal fun IconToggleGroup(toggles: List<IconToggle>, onSelect: (Int) -> Unit,
     }
 }
 
-private val GROUP_RADIUS = HADimens.SPACE7
+private val GROUP_RADIUS = Css.Space.S7
 
 /** `rgba(139, 145, 151, 0.1)`, the group's background in both themes. */
 private val GROUP_BACKGROUND = Color(red = 139, green = 145, blue = 151, alpha = 26)

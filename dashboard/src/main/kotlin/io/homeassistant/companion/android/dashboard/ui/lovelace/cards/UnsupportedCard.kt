@@ -5,11 +5,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardSurface
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /**
  * A placeholder saying that [label] can't be shown.
@@ -22,9 +21,9 @@ internal fun UnsupportedCard(label: String, modifier: Modifier = Modifier) {
     DashboardCardSurface(modifier = modifier) {
         Text(
             text = stringResource(R.string.native_dashboard_unsupported_card, label),
-            style = HATextStyle.BodyMedium,
+            style = Css.Text.Body,
             color = colors.colorTextSecondary,
-            modifier = Modifier.padding(HADimens.SPACE3),
+            modifier = Modifier.padding(Css.Space.S3),
         )
     }
 }

@@ -19,12 +19,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.energy.EnergyTooltip
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
 /**
@@ -64,14 +61,14 @@ internal fun ChartTooltipCard(title: String?, rows: List<TooltipLine>, total: St
     Card(
         colors = CardDefaults.cardColors(containerColor = colors.colorSurfaceDefault),
         elevation = CardDefaults.cardElevation(defaultElevation = ELEVATION),
-        shape = RoundedCornerShape(HARadius.M),
-        modifier = Modifier.padding(start = HADimens.SPACE8, top = HADimens.SPACE2),
+        shape = RoundedCornerShape(Css.Radius.Md),
+        modifier = Modifier.padding(start = Css.Space.S8, top = Css.Space.S2),
     ) {
-        Column(Modifier.padding(HADimens.SPACE2), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE1)) {
+        Column(Modifier.padding(Css.Space.S2), verticalArrangement = Arrangement.spacedBy(Css.Space.S1)) {
             title?.let {
                 Text(
                     it,
-                    style = HATextStyle.BodyMedium,
+                    style = Css.Text.Body,
                     fontWeight = FontWeight.Bold,
                     color = colors.colorTextPrimary,
                     textAlign = TextAlign.Center,
@@ -80,14 +77,14 @@ internal fun ChartTooltipCard(title: String?, rows: List<TooltipLine>, total: St
             rows.forEach { row ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
+                    horizontalArrangement = Arrangement.spacedBy(Css.Space.S1),
                 ) {
                     row.color?.let { Box(Modifier.size(MARKER).background(it, CircleShape)) }
-                    Text(row.text, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
+                    Text(row.text, style = Css.Text.Body, color = colors.colorTextPrimary)
                 }
             }
             total?.let {
-                Text(it, style = HATextStyle.BodyMedium, fontWeight = FontWeight.Bold, color = colors.colorTextPrimary)
+                Text(it, style = Css.Text.Body, fontWeight = FontWeight.Bold, color = colors.colorTextPrimary)
             }
         }
     }

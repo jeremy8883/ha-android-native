@@ -30,17 +30,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.derive.MoreInfoModel
 import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.FavoritesMenuItems
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssFontPx
 
 // The details' toolbar and views. Port of the toolbar of `ha-more-info-dialog` (frontend@20260624.6
 // src/dialogs/more-info/ha-more-info-dialog.ts).
@@ -92,7 +91,7 @@ internal fun MoreInfoToolbar(
     val colors = LocalHAColorScheme.current
     var menu by remember { mutableStateOf(false) }
     Row(
-        Modifier.fillMaxWidth().padding(horizontal = HADimens.SPACE1, vertical = HADimens.SPACE2),
+        Modifier.fillMaxWidth().padding(horizontal = Css.Space.S1, vertical = Css.Space.S2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         val main = view == MoreInfoView.Main
@@ -100,7 +99,7 @@ internal fun MoreInfoToolbar(
             if (main) CLOSE_ICON else BACK_ICON,
             localize(if (main) "ui.common.close" else "ui.common.back"),
         ) { if (main) onClose() else onView(MoreInfoView.Main) }
-        ToolbarTitle(model, view, localize, Modifier.weight(1f).padding(horizontal = HADimens.SPACE2))
+        ToolbarTitle(model, view, localize, Modifier.weight(1f).padding(horizontal = Css.Space.S2))
         if (view == MoreInfoView.Details) {
             ToolbarButton(YAML_ICON, localize("ui.dialogs.more_info_control.toggle_yaml_mode"), onToggleYaml)
         }
@@ -159,7 +158,7 @@ private fun ToolbarTitle(model: MoreInfoModel, view: MoreInfoView, localize: Loc
         model.context?.let { breadcrumb ->
             Text(
                 breadcrumb,
-                style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start, lineHeight = BREADCRUMB_LINE_HEIGHT),
+                style = Css.Text.Body.copy(textAlign = TextAlign.Start, lineHeight = BREADCRUMB_LINE_HEIGHT),
                 color = colors.colorTextSecondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -172,7 +171,7 @@ private fun ToolbarTitle(model: MoreInfoModel, view: MoreInfoView, localize: Loc
                 MoreInfoView.History -> localize("ui.dialogs.more_info_control.history")
                 MoreInfoView.Details -> localize("ui.dialogs.more_info_control.details")
             },
-            style = HATextStyle.HeadlineMedium.copy(textAlign = TextAlign.Start, fontSize = TITLE_FONT_SIZE),
+            style = Css.Text.DialogTitle,
             color = colors.colorTextPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -202,7 +201,4 @@ private const val YAML_ICON = "mdi:code-braces"
 private val MIN_TOP_GAP = 48.dp
 
 /** The breadcrumb's 16px line. */
-private val BREADCRUMB_LINE_HEIGHT = 16.sp
-
-/** The toolbar title, `--ha-font-size-xl`. */
-private val TITLE_FONT_SIZE = 20.sp
+private val BREADCRUMB_LINE_HEIGHT = 16.cssFontPx

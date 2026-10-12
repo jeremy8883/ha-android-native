@@ -16,7 +16,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
@@ -31,6 +30,7 @@ import io.homeassistant.companion.android.dashboard.history.timelineChart
 import io.homeassistant.companion.android.dashboard.panels.DateRange
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.energy.graphColorVariable
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.time.Instant
 
@@ -83,14 +83,14 @@ internal fun HistoryChartsList(
         history.line.forEachIndexed { index, unit ->
             if (index > 0 || timelines.isNotEmpty()) {
                 HorizontalDivider(
-                    modifier = Modifier.padding(top = HADimens.SPACE4),
+                    modifier = Modifier.padding(top = Css.Space.S4),
                     thickness = DIVIDER,
                     color = LocalHAColorScheme.current.colorBorderNeutralQuiet,
                 )
             }
             var hidden by rememberSaveable(unit.identifier) { mutableStateOf(emptySet<String>()) }
             val chart = lines[index]
-            Column(Modifier.padding(top = HADimens.SPACE2)) {
+            Column(Modifier.padding(top = Css.Space.S2)) {
                 HistoryLineChartView(
                     chart,
                     unit.unit,

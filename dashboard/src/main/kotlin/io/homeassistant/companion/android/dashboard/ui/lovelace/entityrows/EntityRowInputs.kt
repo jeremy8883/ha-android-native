@@ -44,10 +44,6 @@ import androidx.compose.ui.window.PopupProperties
 import io.homeassistant.companion.android.common.compose.composable.HADropdownItem
 import io.homeassistant.companion.android.common.compose.composable.HADropdownMenu
 import io.homeassistant.companion.android.common.compose.composable.HATextField
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
-import io.homeassistant.companion.android.common.compose.theme.HARadius
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.RowNumberBox
@@ -56,7 +52,7 @@ import io.homeassistant.companion.android.dashboard.derive.RowSlider
 import io.homeassistant.companion.android.dashboard.derive.RowTextInput
 import io.homeassistant.companion.android.dashboard.derive.RowTimer
 import io.homeassistant.companion.android.dashboard.ui.components.haSliderColors
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.time.Instant
 import kotlinx.coroutines.delay
@@ -98,11 +94,11 @@ internal fun RowScope.RowSliderControl(control: RowSlider, onAction: (CardAction
         modifier = Modifier
             .weight(1f, fill = false)
             .widthIn(min = SLIDER_MIN_WIDTH, max = SLIDER_MAX_WIDTH)
-            .padding(horizontal = HADimens.SPACE2),
+            .padding(horizontal = Css.Space.S2),
     )
     Text(
         control.state,
-        style = HATextStyle.BodyMedium,
+        style = Css.Text.Body,
         color = LocalHAColorScheme.current.colorTextPrimary,
         textAlign = TextAlign.End,
         modifier = Modifier.widthIn(min = STATE_MIN_WIDTH),
@@ -124,10 +120,10 @@ private fun SliderTooltip(text: String) {
     Popup(popupPositionProvider = position, properties = PopupProperties(clippingEnabled = false)) {
         Box(
             Modifier
-                .background(background, RoundedCornerShape(HARadius.S))
-                .padding(HADimens.SPACE2),
+                .background(background, RoundedCornerShape(Css.Radius.Sm))
+                .padding(Css.Space.S2),
         ) {
-            Text(text, style = FrontendTextStyle.Body.copy(fontSize = HAFontSize.S), color = colors.colorTextPrimary)
+            Text(text, style = Css.Text.Body.copy(fontSize = Css.FontSize.S), color = colors.colorTextPrimary)
         }
     }
 }
@@ -221,7 +217,7 @@ internal fun RowTimerText(control: RowTimer, now: Instant) {
     }
     Text(
         control.display(now.plusSeconds(ticks.toLong())),
-        style = HATextStyle.BodyMedium,
+        style = Css.Text.Body,
         color = LocalHAColorScheme.current.colorTextPrimary,
     )
 }
@@ -274,11 +270,11 @@ private val NUMBER_WIDTH = 140.dp
 private val SLIDER_MIN_WIDTH = 100.dp
 private val SLIDER_MAX_WIDTH = 200.dp
 private val STATE_MIN_WIDTH = 45.dp
-private val TOOLTIP_GAP = HADimens.SPACE2
+private val TOOLTIP_GAP = Css.Space.S2
 private const val TOOLTIP_BACKGROUND = "secondary-background-color"
 
 /** Spacing between a row's date and time pickers. */
-internal val PICKER_GAP = HADimens.SPACE1
+internal val PICKER_GAP = Css.Space.S1
 
 /**
  * Lays out a row's pickers side by side.

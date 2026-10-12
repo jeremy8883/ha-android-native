@@ -17,9 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.DomainRow
@@ -28,7 +26,7 @@ import io.homeassistant.companion.android.dashboard.derive.RowVolume
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.haSliderColors
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.RowIconButtonView
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 // The parts of the entities card's domain rows: the media under a player's name, a two-line state (climate,
 // humidifier, event), a weather's temperature over today's high and low, and a player's volume line.
@@ -44,7 +42,7 @@ internal fun RowName(name: String, secondary: String?, color: Color) {
     Column {
         Text(
             name,
-            style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+            style = Css.Text.Body.copy(textAlign = TextAlign.Start),
             color = color,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -52,7 +50,7 @@ internal fun RowName(name: String, secondary: String?, color: Color) {
         secondary?.let {
             Text(
                 it,
-                style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+                style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                 color = colors.colorTextSecondary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -73,18 +71,18 @@ internal fun RowName(name: String, secondary: String?, color: Color) {
 internal fun DomainRowState(state: String?, domain: DomainRow, color: Color) {
     val colors = LocalHAColorScheme.current
     Column(horizontalAlignment = Alignment.End) {
-        state?.let { Text(it, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.End), color = color) }
+        state?.let { Text(it, style = Css.Text.Body.copy(textAlign = TextAlign.End), color = color) }
         domain.stateSecondary?.let {
-            Text(it, style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.End), color = colors.colorTextSecondary)
+            Text(it, style = Css.Text.Body.copy(textAlign = TextAlign.End), color = colors.colorTextSecondary)
         }
         domain.weatherDetail?.let { detail ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
+                horizontalArrangement = Arrangement.spacedBy(Css.Space.S1),
             ) {
                 detail.icon?.let { DashboardIcon(it, colors.colorTextSecondary, Modifier.size(HASize.XL)) }
-                detail.label?.let { Text(it, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary) }
-                Text(detail.value, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary)
+                detail.label?.let { Text(it, style = Css.Text.Body, color = colors.colorTextSecondary) }
+                Text(detail.value, style = Css.Text.Body, color = colors.colorTextSecondary)
             }
         }
     }

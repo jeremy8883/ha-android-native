@@ -6,12 +6,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.dashboard.energy.SourceGraphKind
 import io.homeassistant.companion.android.dashboard.energy.energySourceGraph
 import io.homeassistant.companion.android.dashboard.energy.energyTooltip
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.math.BigDecimal
 
 /**
@@ -60,7 +60,7 @@ internal fun EnergySourceGraphCard(
         },
     ) { data ->
         val model = remember(data, snapshot.formats) { snapshot.energySourceGraph(data, kind) }
-        Box(Modifier.padding(HADimens.SPACE4)) {
+        Box(Modifier.padding(Css.Space.S4)) {
             EnergyBarChartView(
                 chart = model.chart,
                 formats = snapshot.formats,

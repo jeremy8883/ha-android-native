@@ -23,7 +23,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
@@ -41,6 +40,7 @@ import io.homeassistant.companion.android.dashboard.ui.statecontrol.STATE_CONTRO
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.STATE_CONTROL_RADIUS
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.StateControlSlider
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.StateToggleControl
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import kotlin.math.roundToInt
 
 /**
@@ -62,13 +62,13 @@ internal fun MoreInfoPosition(
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE6),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
     ) {
         if (buttons) {
             info.toggle?.let { StateToggleControl(it, onAction) }
             info.buttons?.let { PositionButtonsView(it, onAction) }
         } else {
-            Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE6)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S6)) {
                 listOfNotNull(info.position, info.tilt).forEach { slider ->
                     StateControlSlider(slider, valueText = { "${it.roundToInt()}%" }, onAction = onAction)
                 }

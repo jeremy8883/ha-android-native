@@ -24,8 +24,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.text.style.TextOverflow
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
+import androidx.compose.ui.unit.sp
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.GaugeCardModel
 import io.homeassistant.companion.android.dashboard.derive.gaugeCardModel
@@ -35,7 +34,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardS
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -57,17 +56,22 @@ internal fun GaugeCard(
     model.warning?.let { return CardWarning(it, modifier) }
     val colors = LocalHAColorScheme.current
     DashboardCardSurface(modifier = modifier.elementGestures(model.actions, interactions)) {
-        Column(Modifier.fillMaxWidth().padding(HADimens.SPACE3), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.fillMaxWidth().padding(Css.Space.S3), horizontalAlignment = Alignment.CenterHorizontally) {
             Box(
                 Modifier.fillMaxWidth().aspectRatio(VIEW_WIDTH / VIEW_HEIGHT),
                 contentAlignment = Alignment.BottomCenter,
             ) {
                 GaugeArc(model, Modifier.fillMaxWidth().aspectRatio(VIEW_WIDTH / VIEW_HEIGHT))
-                Text(model.valueText, style = HATextStyle.HeadlineMedium, color = colors.colorTextPrimary, maxLines = 1)
+                Text(
+                    model.valueText,
+                    style = Css.Text.Primary.copy(fontSize = VALUE_FONT_SIZE, lineHeight = VALUE_LINE_HEIGHT),
+                    color = colors.colorTextPrimary,
+                    maxLines = 1,
+                )
             }
             Text(
                 model.name,
-                style = FrontendTextStyle.Body,
+                style = Css.Text.Body,
                 color = colors.colorTextPrimary,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
@@ -142,6 +146,13 @@ private fun angleOf(value: Double, min: Double, max: Double): Float {
 private const val HALF = 180f
 private const val VIEW_WIDTH = 100f
 private const val VIEW_HEIGHT = 55f
+
+/**
+ * The value's size. Upstream (`.value-text`) scales its SVG text to fit 55% of the gauge's width and 40% of its height;
+ * until that's ported, a fixed 28sp on a 40sp line.
+ */
+private val VALUE_FONT_SIZE = 28.sp
+private val VALUE_LINE_HEIGHT = 40.sp
 private const val RADIUS = 40f
 private const val RADIUS_OFFSET = 50f
 private const val STROKE = 12f

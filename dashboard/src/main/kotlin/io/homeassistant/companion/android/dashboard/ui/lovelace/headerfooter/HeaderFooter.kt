@@ -25,8 +25,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.HeaderFooterButton
@@ -41,6 +39,7 @@ import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInter
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.SensorGraphView
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.ZonedDateTime
 
@@ -98,14 +97,14 @@ private fun PictureHeaderFooter(model: HeaderFooterModel.Picture, interactions: 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ButtonsHeaderFooter(model: HeaderFooterModel.Buttons, footer: Boolean, interactions: CardInteractions) {
-    if (footer) HAHorizontalDivider(Modifier.padding(vertical = HADimens.SPACE4))
+    if (footer) HAHorizontalDivider(Modifier.padding(vertical = Css.Space.S4))
     val padding = Modifier
-        .padding(horizontal = HADimens.SPACE3)
+        .padding(horizontal = Css.Space.S3)
         .padding(
-            top = if (!footer) HADimens.SPACE4 else HADimens.SPACE2,
-            bottom = if (footer) HADimens.SPACE4 else HADimens.SPACE2,
+            top = if (!footer) Css.Space.S4 else Css.Space.S2,
+            bottom = if (footer) Css.Space.S4 else Css.Space.S2,
         )
-    val gap = Arrangement.spacedBy(HADimens.SPACE2)
+    val gap = Arrangement.spacedBy(Css.Space.S2)
     // Upstream wraps the chips, but keeps them on one scrolling line on phones (450px wide or less)
     if (LocalConfiguration.current.screenWidthDp > PHONE_MAX_WIDTH_DP) {
         FlowRow(Modifier.fillMaxWidth().then(padding), horizontalArrangement = gap, verticalArrangement = gap) {
@@ -119,7 +118,7 @@ private fun ButtonsHeaderFooter(model: HeaderFooterModel.Buttons, footer: Boolea
             model.buttons.forEach { button -> EntityChip(button, interactions) }
         }
     }
-    if (!footer) HAHorizontalDivider(Modifier.padding(bottom = HADimens.SPACE4))
+    if (!footer) HAHorizontalDivider(Modifier.padding(bottom = Css.Space.S4))
 }
 
 /**
@@ -141,11 +140,11 @@ private fun EntityChip(button: HeaderFooterButton, interactions: CardInteraction
             .elementGestures(button.actions, interactions)
             // The icon keeps its space before the (empty) label, like `ha-assist-chip`
             .padding(
-                start = if (badge != null) HADimens.SPACE2 else HADimens.SPACE4,
-                end = if (badge != null && button.name.isEmpty()) HADimens.SPACE6 else HADimens.SPACE4,
+                start = if (badge != null) Css.Space.S2 else Css.Space.S4,
+                end = if (badge != null && button.name.isEmpty()) Css.Space.S6 else Css.Space.S4,
             ),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
     ) {
         badge?.let {
             val picture = it.picture
@@ -160,7 +159,7 @@ private fun EntityChip(button: HeaderFooterButton, interactions: CardInteraction
             }
         }
         if (button.name.isNotEmpty()) {
-            Text(button.name, style = HATextStyle.BodyMedium, color = colors.colorTextPrimary, maxLines = 1)
+            Text(button.name, style = Css.Text.Body, color = colors.colorTextPrimary, maxLines = 1)
         }
     }
 }

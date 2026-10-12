@@ -36,15 +36,13 @@ import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.R as commonR
 import io.homeassistant.companion.android.common.compose.composable.ButtonSize
 import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -56,7 +54,8 @@ import io.homeassistant.companion.android.dashboard.moreinfo.vacuumCleanAreas
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.favoritesViewModel
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssFontPx
 
 /**
  * Upstream's "Cleaning · By area" button, opening the areas to clean; [onConfigure] opens the full dialog, where an
@@ -78,17 +77,23 @@ internal fun CleanAreasButton(
         modifier = Modifier
             .widthIn(max = BUTTON_MAX_WIDTH)
             .fillMaxWidth()
-            .clip(RoundedCornerShape(HARadius.L))
+            .clip(RoundedCornerShape(Css.Radius.Lg))
             .background(colors.colorFillDisabledLoudResting.copy(alpha = TINT_ALPHA))
             .clickable(enabled = state.state != "unavailable", role = Role.Button) { open = true }
-            .padding(HADimens.SPACE3),
+            .padding(Css.Space.S3),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S3),
     ) {
         DashboardIcon("mdi:texture-box", colors.colorTextPrimary, Modifier.size(HASize.XL))
         Column(Modifier.weight(1f)) {
-            Text(label.first, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary)
-            Text(label.second, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
+            // `.clean-areas-button`: `line-height: 1.4; letter-spacing: 0.25px`
+            val buttonText = Css.Text.Body.copy(
+                textAlign = TextAlign.Start,
+                lineHeight = BUTTON_LINE_HEIGHT.em,
+                letterSpacing = BUTTON_LETTER_SPACING.cssFontPx,
+            )
+            Text(label.first, style = buttonText, color = colors.colorTextSecondary)
+            Text(label.second, style = buttonText, color = colors.colorTextPrimary)
         }
         DashboardIcon("mdi:chevron-right", colors.colorTextSecondary, Modifier.size(HASize.XL))
     }
@@ -116,13 +121,13 @@ private fun CleanAreasDialog(
     var chosen by remember { mutableStateOf(listOf<String>()) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = view?.let { { Text(it.title, style = HATextStyle.HeadlineMedium) } },
+        title = view?.let { { Text(it.title, style = Css.Text.DialogTitle) } },
         text = {
             when (val loaded = entry) {
                 Loadable.Loading -> Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { HALoading() }
                 is Loadable.Failed -> Text(
                     LocalContext.current.loadErrorText(loaded.error),
-                    style = HATextStyle.BodyMedium,
+                    style = Css.Text.Body,
                     color = LocalHAColorScheme.current.colorOnDangerNormal,
                 )
                 is Loadable.Ready -> view?.let {
@@ -166,13 +171,13 @@ private fun CleanAreasContent(
     view.empty?.let { empty ->
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+            verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
         ) {
             DashboardIcon("mdi:texture-box", colors.colorTextSecondary, Modifier.size(HASize.X5L))
-            Text(empty.title, style = FrontendTextStyle.Body, color = colors.colorTextPrimary)
+            Text(empty.title, style = Css.Text.Body, color = colors.colorTextPrimary)
             Text(
                 empty.text,
-                style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Center),
+                style = Css.Text.Body.copy(textAlign = TextAlign.Center),
                 color = colors.colorTextSecondary,
             )
             val configureLabel = empty.configureLabel
@@ -189,26 +194,26 @@ private fun CleanAreasContent(
     }
     Column(
         Modifier.verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S4),
     ) {
         view.sections.forEach { section ->
             section.label?.let { label ->
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                    horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
                 ) {
                     section.icon?.let { DashboardIcon(it, colors.colorTextSecondary, Modifier.size(HASize.XL)) }
-                    Text(label, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary)
+                    Text(label, style = Css.Text.Body, color = colors.colorTextSecondary)
                 }
             }
             FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
-                verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
+                verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
             ) {
                 section.areas.forEach { area -> AreaCard(area, chosen.indexOf(area.areaId)) { onToggle(area.areaId) } }
             }
         }
-        Text(view.hint, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary)
+        Text(view.hint, style = Css.Text.Body, color = colors.colorTextSecondary)
     }
 }
 
@@ -225,7 +230,7 @@ private fun AreaCard(area: CleanArea, order: Int, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .width(CARD_WIDTH)
-            .clip(RoundedCornerShape(HARadius.L))
+            .clip(RoundedCornerShape(Css.Radius.Lg))
             .background(colors.colorFillDisabledLoudResting.copy(alpha = TINT_ALPHA))
             .border(
                 BORDER,
@@ -236,11 +241,11 @@ private fun AreaCard(area: CleanArea, order: Int, onClick: () -> Unit) {
                         alpha = 0f,
                     )
                 },
-                RoundedCornerShape(HARadius.L),
+                RoundedCornerShape(Css.Radius.Lg),
             )
             .clickable(role = Role.Checkbox, onClick = onClick)
             .semantics { this.selected = selected }
-            .padding(HADimens.SPACE3),
+            .padding(Css.Space.S3),
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
             DashboardIcon(
@@ -248,7 +253,7 @@ private fun AreaCard(area: CleanArea, order: Int, onClick: () -> Unit) {
                 if (selected) colors.colorFillPrimaryLoudResting else colors.colorTextSecondary,
                 Modifier.size(HASize.X2L),
             )
-            Text(area.name, style = HATextStyle.BodyMedium, color = colors.colorTextPrimary, maxLines = 2)
+            Text(area.name, style = Css.Text.Body, color = colors.colorTextPrimary, maxLines = 2)
         }
         if (selected) {
             Box(
@@ -256,12 +261,14 @@ private fun AreaCard(area: CleanArea, order: Int, onClick: () -> Unit) {
                     Alignment.TopEnd,
                 ).size(BADGE).clip(CircleShape).background(colors.colorFillPrimaryLoudResting),
                 contentAlignment = Alignment.Center,
-            ) { Text("${order + 1}", style = HATextStyle.BodyMedium, color = colors.colorOnPrimaryLoud) }
+            ) { Text("${order + 1}", style = Css.Text.Body, color = colors.colorOnPrimaryLoud) }
         }
     }
 }
 
 private const val TINT_ALPHA = 0.2f
+private const val BUTTON_LINE_HEIGHT = 1.4f
+private const val BUTTON_LETTER_SPACING = 0.25
 private val BUTTON_MAX_WIDTH = 400.dp
 private val CARD_WIDTH = 104.dp
 private val BADGE = 20.dp

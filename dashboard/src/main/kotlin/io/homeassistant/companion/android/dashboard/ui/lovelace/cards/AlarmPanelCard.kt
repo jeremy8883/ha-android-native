@@ -39,15 +39,11 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import io.homeassistant.companion.android.common.compose.composable.ButtonSize
 import io.homeassistant.companion.android.common.compose.composable.ButtonVariant
 import io.homeassistant.companion.android.common.compose.composable.HAFilledButton
 import io.homeassistant.companion.android.common.compose.composable.HATextField
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.AlarmAction
@@ -62,7 +58,8 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
 import io.homeassistant.companion.android.dashboard.ui.theme.CardHeaderPadding
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -88,7 +85,7 @@ internal fun AlarmPanelCard(
     var code by remember { mutableStateOf("") }
     DashboardCardSurface(modifier = modifier) {
         Column(
-            Modifier.fillMaxWidth().padding(bottom = HADimens.SPACE4),
+            Modifier.fillMaxWidth().padding(bottom = Css.Space.S4),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             AlarmHeader(model) { interactions.onAction(CardAction.MoreInfo(model.entityId)) }
@@ -116,7 +113,7 @@ private fun AlarmHeader(model: AlarmPanelCardModel.Shown, onMoreInfo: () -> Unit
     ) {
         Text(
             model.name,
-            style = FrontendTextStyle.CardHeader,
+            style = Css.Text.CardHeader,
             modifier = Modifier.weight(1f),
         )
         StateChip(model, onMoreInfo)
@@ -145,15 +142,15 @@ private fun StateChip(model: AlarmPanelCardModel.Shown, onClick: () -> Unit) {
     Row(
         Modifier
             .alpha(if (model.pulsing) pulse else 1f)
-            .clip(RoundedCornerShape(HARadius.Pill))
+            .clip(RoundedCornerShape(Css.Radius.Pill))
             .background(background)
             .clickable(role = Role.Button, onClick = onClick)
-            .padding(horizontal = HADimens.SPACE3, vertical = HADimens.SPACE1),
+            .padding(horizontal = Css.Space.S3, vertical = Css.Space.S1),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
     ) {
         DashboardIcon(model.stateIcon, onChip, Modifier.size(HASize.L))
-        Text(model.stateLabel, style = HATextStyle.BodyMedium, color = onChip)
+        Text(model.stateLabel, style = Css.Text.Body, color = onChip)
     }
 }
 
@@ -166,9 +163,9 @@ private fun StateChip(model: AlarmPanelCardModel.Shown, onClick: () -> Unit) {
 @Composable
 private fun AlarmActions(model: AlarmPanelCardModel.Shown, onClick: (AlarmAction) -> Unit) {
     FlowRow(
-        Modifier.padding(horizontal = HADimens.SPACE4),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.CenterHorizontally),
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+        Modifier.padding(horizontal = Css.Space.S4),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2, Alignment.CenterHorizontally),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
     ) {
         model.actions.forEach { action ->
             HAFilledButton(
@@ -197,7 +194,7 @@ private fun AlarmCode(entry: AlarmCodeEntry, code: String, onChange: (String) ->
         keyboardOptions = KeyboardOptions(
             keyboardType = if (entry.keypad) KeyboardType.NumberPassword else KeyboardType.Password,
         ),
-        modifier = Modifier.padding(HADimens.SPACE2).widthIn(max = CODE_MAX_WIDTH),
+        modifier = Modifier.padding(Css.Space.S2).widthIn(max = CODE_MAX_WIDTH),
     )
     if (entry.keypad) Keypad(entry.clearLabel, clearEnabled = code.isNotEmpty()) { key -> onChange(key(code)) }
 }
@@ -209,9 +206,9 @@ private fun AlarmCode(entry: AlarmCodeEntry, code: String, onChange: (String) ->
  */
 @Composable
 private fun Keypad(clearLabel: String, clearEnabled: Boolean, onKey: ((String) -> String) -> Unit) {
-    Column(Modifier.padding(HADimens.SPACE3), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+    Column(Modifier.padding(Css.Space.S3), verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
         KEYS.chunked(KEYPAD_COLUMNS).forEach { row ->
-            Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
                 row.forEach { key ->
                     when (key) {
                         "" -> Spacer(Modifier.size(KEY_SIZE))
@@ -247,7 +244,7 @@ private fun KeypadKey(label: String, clear: Boolean, enabled: Boolean, onClick: 
         if (clear) {
             DashboardIcon(CLEAR_ICON, red, Modifier.size(HASize.X2L))
         } else {
-            Text(label, style = FrontendTextStyle.Body.copy(fontSize = KEY_FONT_SIZE), color = colors.colorTextPrimary)
+            Text(label, style = Css.Text.Body.copy(fontSize = KEY_FONT_SIZE), color = colors.colorTextPrimary)
         }
     }
 }
@@ -264,7 +261,9 @@ private const val DISABLED_ALPHA = 0.5f
 
 /** Port of `BUTTONS`. */
 private val KEYS = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", CLEAR, "0", "")
-private val KEY_SIZE = 56.dp
-private val KEY_RADIUS = 24.dp
-private val KEY_FONT_SIZE = 24.sp
+
+/** The keypad's `ha-control-button`: 56px, `--ha-border-radius-4xl`, `--ha-font-size-2xl`. */
+private val KEY_SIZE = 56.cssPx
+private val KEY_RADIUS = Css.Radius.X4l
+private val KEY_FONT_SIZE = Css.FontSize.X2l
 private val CODE_MAX_WIDTH = 150.dp

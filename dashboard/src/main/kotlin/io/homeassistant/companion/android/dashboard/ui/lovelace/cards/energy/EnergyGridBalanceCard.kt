@@ -34,9 +34,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.energy.EnergyGridBalanceModel
 import io.homeassistant.companion.android.dashboard.energy.energyGridBalance
@@ -44,7 +41,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import kotlinx.serialization.json.JsonObject
 
@@ -82,8 +79,8 @@ private fun GridBalance(model: EnergyGridBalanceModel) {
     Column(Modifier.fillMaxWidth().clickable(role = Role.Button) { explained = !explained }) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
-            modifier = Modifier.padding(HADimens.SPACE3),
+            horizontalArrangement = Arrangement.spacedBy(Css.Space.S3),
+            modifier = Modifier.padding(Css.Space.S3),
         ) {
             Box(
                 Modifier.size(TILE_ICON).background(colors.colorFillNeutralQuietResting, CircleShape),
@@ -94,17 +91,17 @@ private fun GridBalance(model: EnergyGridBalanceModel) {
             Column {
                 Text(
                     model.title,
-                    style = HATextStyle.BodyMedium,
+                    style = Css.Text.Body,
                     color = colors.colorTextPrimary,
                     textAlign = TextAlign.Start,
                 )
                 FlowRow {
                     val secondary = colors.colorTextSecondary
-                    Text(model.imported, style = FrontendTextStyle.Body, color = import)
-                    Text(" - ", style = FrontendTextStyle.Body, color = secondary)
-                    Text(model.exported, style = FrontendTextStyle.Body, color = export)
-                    Text(" = ", style = FrontendTextStyle.Body, color = secondary)
-                    Text(model.net, style = FrontendTextStyle.Body, color = if (model.consumption) import else export)
+                    Text(model.imported, style = Css.Text.Body, color = import)
+                    Text(" - ", style = Css.Text.Body, color = secondary)
+                    Text(model.exported, style = Css.Text.Body, color = export)
+                    Text(" = ", style = Css.Text.Body, color = secondary)
+                    Text(model.net, style = Css.Text.Body, color = if (model.consumption) import else export)
                 }
             }
         }
@@ -113,13 +110,13 @@ private fun GridBalance(model: EnergyGridBalanceModel) {
             listOf(model.tooltips.imported, model.tooltips.exported, model.tooltips.net).forEach {
                 Text(
                     it,
-                    style = FrontendTextStyle.Body,
+                    style = Css.Text.Body,
                     color = colors.colorTextSecondary,
                     textAlign = TextAlign.Start,
                     modifier = Modifier.padding(
-                        start = HADimens.SPACE3,
-                        end = HADimens.SPACE3,
-                        bottom = HADimens.SPACE2,
+                        start = Css.Space.S3,
+                        end = Css.Space.S3,
+                        bottom = Css.Space.S2,
                     ),
                 )
             }
@@ -138,7 +135,7 @@ private fun BalanceBar(model: EnergyGridBalanceModel, import: Color, export: Col
     BoxWithConstraints(
         Modifier
             .fillMaxWidth()
-            .padding(start = HADimens.SPACE3, end = HADimens.SPACE3, bottom = HADimens.SPACE4, top = CENTER_OVERHANG)
+            .padding(start = Css.Space.S3, end = Css.Space.S3, bottom = Css.Space.S4, top = CENTER_OVERHANG)
             .height(BAR_HEIGHT),
     ) {
         val half = maxWidth / 2
@@ -163,7 +160,7 @@ private fun BalanceBar(model: EnergyGridBalanceModel, import: Color, export: Col
  */
 @Composable
 private fun Half(width: Dp, color: Color, share: Double, net: Double?, left: Boolean) {
-    val radius = HARadius.L
+    val radius = Css.Radius.Lg
     val shape = if (left) {
         RoundedCornerShape(
             topStart = radius,

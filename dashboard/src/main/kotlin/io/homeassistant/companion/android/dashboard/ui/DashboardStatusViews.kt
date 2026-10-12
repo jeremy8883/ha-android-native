@@ -23,12 +23,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import io.homeassistant.companion.android.common.compose.composable.HAAccentButton
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.data.LoadError
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.ZonedDateTime
 import kotlin.time.Instant
 import kotlinx.coroutines.flow.Flow
@@ -41,13 +40,13 @@ import kotlinx.coroutines.flow.Flow
 @Composable
 internal fun LoadErrorScreen(error: LoadError, onRetry: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(HADimens.SPACE6),
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4, Alignment.CenterVertically),
+        modifier = Modifier.fillMaxSize().padding(Css.Space.S6),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S4, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = stringResource(R.string.native_dashboard_error, LocalContext.current.loadErrorText(error)),
-            style = FrontendTextStyle.Body,
+            style = Css.Text.Body,
             textAlign = TextAlign.Center,
         )
         HAAccentButton(text = stringResource(R.string.native_dashboard_retry), onClick = onRetry)
@@ -87,7 +86,7 @@ internal fun DashboardBottomBars(
     Column(Modifier.fillMaxWidth()) {
         SnackbarHost(snackbar)
         if (offline) {
-            Snackbar(modifier = Modifier.padding(HADimens.SPACE3)) {
+            Snackbar(modifier = Modifier.padding(Css.Space.S3)) {
                 val text = stringResource(R.string.native_dashboard_offline)
                 Text(if (updatedAt != null) "$text · ${updatedText(updatedAt, now.value)}" else text)
             }

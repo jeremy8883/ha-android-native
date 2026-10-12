@@ -18,9 +18,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.EntityCardModel
 import io.homeassistant.companion.android.dashboard.derive.entityCardModel
@@ -33,7 +30,7 @@ import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInter
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.SensorGraphView
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.ZonedDateTime
 
@@ -64,20 +61,20 @@ internal fun EntityCard(
         Column(Modifier.fillMaxWidth()) {
             Row(
                 modifier = Modifier.fillMaxWidth().padding(
-                    start = HADimens.SPACE4,
-                    top = HADimens.SPACE2,
-                    end = HADimens.SPACE4,
+                    start = Css.Space.S4,
+                    top = Css.Space.S2,
+                    end = Css.Space.S4,
                 ),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
                     model.name,
-                    style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
+                    style = Css.Text.Body.copy(fontWeight = FontWeight.Medium, textAlign = TextAlign.Start),
                     color = colors.colorTextSecondary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.weight(1f).padding(vertical = HADimens.SPACE2),
+                    modifier = Modifier.weight(1f).padding(vertical = Css.Space.S2),
                 )
                 DashboardIcon(
                     model.icon,
@@ -87,7 +84,7 @@ internal fun EntityCard(
             }
             EntityValue(
                 model.value,
-                Modifier.padding(start = HADimens.SPACE4, end = HADimens.SPACE4, bottom = HADimens.SPACE4),
+                Modifier.padding(start = Css.Space.S4, end = Css.Space.S4, bottom = Css.Space.S4),
             )
             model.graph?.let { SensorGraphView(it, hass, now, Modifier.fillMaxWidth()) }
         }
@@ -102,7 +99,7 @@ internal fun EntityCard(
 @Composable
 private fun EntityValue(value: ValueParts, modifier: Modifier) {
     val colors = LocalHAColorScheme.current
-    Row(modifier, verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1)) {
+    Row(modifier, verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.spacedBy(Css.Space.S1)) {
         val parts = listOfNotNull(
             value.value to true,
             value.unit?.let { it to false },
@@ -111,9 +108,9 @@ private fun EntityValue(value: ValueParts, modifier: Modifier) {
             Text(
                 text,
                 style = if (isValue) {
-                    HATextStyle.Headline.copy(fontSize = HAFontSize.X3L, fontWeight = FontWeight.Normal)
+                    Css.Text.Primary.copy(fontSize = Css.FontSize.X3l, lineHeight = Css.LineHeight.Condensed)
                 } else {
-                    FrontendTextStyle.Body
+                    Css.Text.Body.copy(fontSize = Css.FontSize.L)
                 },
                 color = if (isValue) colors.colorTextPrimary else colors.colorTextSecondary,
                 maxLines = 1,

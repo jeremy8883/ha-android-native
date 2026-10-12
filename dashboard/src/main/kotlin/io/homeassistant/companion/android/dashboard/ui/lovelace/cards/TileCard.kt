@@ -26,10 +26,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.HAThemeForPreview
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
@@ -42,6 +38,9 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardSurface
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cardfeatures.TileFeatureControl
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssFontPx
+import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 import java.time.Instant
 import java.time.ZonedDateTime
@@ -90,12 +89,12 @@ internal fun TileCardContent(
             if (tile.features.isNotEmpty()) {
                 Column(
                     modifier = Modifier.padding(
-                        start = HADimens.SPACE3,
-                        end = HADimens.SPACE3,
-                        bottom = HADimens.SPACE3,
+                        start = Css.Space.S3,
+                        end = Css.Space.S3,
+                        bottom = Css.Space.S3,
                     ),
                     // `hui-card-features`' gap
-                    verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+                    verticalArrangement = Arrangement.spacedBy(Css.Space.S3),
                 ) {
                     val color = tile.color.toColor() ?: LocalHAColorScheme.current.colorFillPrimaryLoudResting
                     tile.features.forEach { feature -> TileFeatureControl(feature, tile.available, color, onAction) }
@@ -149,7 +148,7 @@ private fun VerticalTileInfo(tile: TileModel, iconModifier: Modifier) {
         verticalArrangement = Arrangement.spacedBy(TILE_PADDING, Alignment.CenterVertically),
     ) {
         TileIcon(tile, iconModifier)
-        TileText(tile, TextAlign.Center, Modifier.fillMaxWidth().padding(horizontal = HADimens.SPACE3))
+        TileText(tile, TextAlign.Center, Modifier.fillMaxWidth().padding(horizontal = Css.Space.S3))
     }
 }
 
@@ -212,7 +211,7 @@ private fun TileText(tile: TileModel, textAlign: TextAlign, modifier: Modifier) 
 @Preview
 @Composable
 private fun TileCardContentPreview() {
-    HAThemeForPreview(modifier = Modifier.padding(HADimens.SPACE4)) {
+    HAThemeForPreview(modifier = Modifier.padding(Css.Space.S4)) {
         TileCardContent(
             tile = TileModel(
                 entityId = "light.kitchen",
@@ -230,7 +229,7 @@ private fun TileCardContentPreview() {
 @Preview
 @Composable
 private fun VerticalTileCardContentPreview() {
-    HAThemeForPreview(modifier = Modifier.padding(HADimens.SPACE4)) {
+    HAThemeForPreview(modifier = Modifier.padding(Css.Space.S4)) {
         TileCardContent(
             tile = TileModel(
                 entityId = "zone.home",
@@ -254,23 +253,23 @@ internal val TILE_PADDING = 10.dp
 internal val TILE_ROW_HEIGHT = 56.dp
 
 /** `--tile-icon-size`. */
-internal val TILE_ICON_SIZE = 36.dp
+internal val TILE_ICON_SIZE = 36.cssPx
 
 /** `--tile-icon-opacity`. */
 private const val ICON_BACKGROUND_ALPHA = 0.2f
 
 /** `ha-tile-info`'s `.primary`: `--ha-font-size-m`, medium, `--ha-line-height-normal`, 0.1px apart. */
 internal val TILE_PRIMARY_STYLE = TextStyle(
-    fontSize = HAFontSize.M,
-    fontWeight = FontWeight.Medium,
-    lineHeight = 1.6.em,
-    letterSpacing = 0.1.sp,
+    fontSize = Css.FontSize.M,
+    fontWeight = Css.FontWeight.Medium,
+    lineHeight = Css.LineHeight.Normal,
+    letterSpacing = 0.1.cssFontPx,
 )
 
 /** `ha-tile-info`'s `.secondary`: `--ha-font-size-s`, normal, `--ha-line-height-condensed`, 0.4px apart. */
 internal val TILE_SECONDARY_STYLE = TextStyle(
-    fontSize = HAFontSize.S,
-    fontWeight = FontWeight.Normal,
-    lineHeight = 1.2.em,
-    letterSpacing = 0.4.sp,
+    fontSize = Css.FontSize.S,
+    fontWeight = Css.FontWeight.Normal,
+    lineHeight = Css.LineHeight.Condensed,
+    letterSpacing = 0.4.cssFontPx,
 )

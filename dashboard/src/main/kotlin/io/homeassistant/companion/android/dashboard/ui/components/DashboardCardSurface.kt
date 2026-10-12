@@ -7,8 +7,8 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /**
  * A card's rounded surface, tinted when [active].
@@ -27,7 +27,7 @@ internal fun DashboardCardSurface(
         colors = CardDefaults.cardColors(
             containerColor = if (active) colors.colorFillPrimaryQuietResting else colors.colorSurfaceLow,
         ),
-        shape = RoundedCornerShape(HARadius.XL),
+        shape = RoundedCornerShape(Css.Radius.Xl),
     ) {
         Row(content = content)
     }

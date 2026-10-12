@@ -39,17 +39,13 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.homeassistant.companion.android.common.compose.composable.HATextField
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.assist.AssistChat
 import io.homeassistant.companion.android.dashboard.assist.ChatMessage
@@ -63,7 +59,7 @@ import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.HaAlert
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.MarkdownText
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -96,12 +92,12 @@ internal fun MoreInfoConversation(agentId: String, hass: HassSnapshot, modifier:
             hass.localize(
                 "ui.dialogs.voice_command.${if (shown.notFound) "not_found" else "unknown"}_error_load_assist",
             ),
-            style = FrontendTextStyle.Body,
+            style = Css.Text.Body,
             color = colors.colorOnDangerNormal,
         )
         is ConversationState.Ready -> Column(
             modifier.imePadding(),
-            verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+            verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
         ) {
             if (!hass.assistControlsHome(shown.pipeline)) {
                 HaAlert(hass.localize("ui.dialogs.voice_command.conversation_no_control"))
@@ -112,7 +108,7 @@ internal fun MoreInfoConversation(agentId: String, hass: HassSnapshot, modifier:
             LazyColumn(
                 Modifier.fillMaxWidth().weight(1f),
                 reverseLayout = true,
-                verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2, Alignment.Bottom),
+                verticalArrangement = Arrangement.spacedBy(Css.Space.S2, Alignment.Bottom),
             ) {
                 items(messages.size, key = { messages.size - 1 - it }) { index ->
                     MessageBubble(messages[index], showDetails)
@@ -142,12 +138,12 @@ private fun MessageBubble(message: ChatMessage, showDetails: String) {
             else -> colors.colorFillDisabledLoudResting.copy(alpha = HASS_BUBBLE_ALPHA)
         }
         val shape = RoundedCornerShape(
-            topStart = HARadius.XL,
-            topEnd = HARadius.XL,
-            bottomStart = if (message.fromUser) HARadius.XL else 0.dp,
-            bottomEnd = if (message.fromUser) 0.dp else HARadius.XL,
+            topStart = Css.Radius.Xl,
+            topEnd = Css.Radius.Xl,
+            bottomStart = if (message.fromUser) Css.Radius.Xl else 0.dp,
+            bottomEnd = if (message.fromUser) 0.dp else Css.Radius.Xl,
         )
-        Column(Modifier.widthIn(max = BUBBLE_MAX).background(background, shape).padding(HADimens.SPACE2)) {
+        Column(Modifier.widthIn(max = BUBBLE_MAX).background(background, shape).padding(Css.Space.S2)) {
             if (message.hasDetails) MessageDetails(message, showDetails)
             if (message.text.isNotEmpty()) MarkdownText(message.text)
         }
@@ -164,16 +160,16 @@ private fun MessageBubble(message: ChatMessage, showDetails: String) {
 private fun MessageDetails(message: ChatMessage, label: String) {
     val colors = LocalHAColorScheme.current
     var expanded by remember { mutableStateOf(false) }
-    Column(Modifier.padding(bottom = if (message.text.isEmpty()) 0.dp else HADimens.SPACE2)) {
+    Column(Modifier.padding(bottom = if (message.text.isEmpty()) 0.dp else Css.Space.S2)) {
         Row(
             Modifier
                 .clickable(role = Role.Button) { expanded = !expanded }
-                .padding(vertical = HADimens.SPACE1),
+                .padding(vertical = Css.Space.S1),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+            horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
         ) {
             DashboardIcon(DETAILS_ICON, colors.colorTextSecondary, Modifier.size(HASize.M))
-            Text(label, style = HATextStyle.BodyMedium, color = colors.colorTextSecondary)
+            Text(label, style = Css.Text.Body, color = colors.colorTextSecondary)
             DashboardIcon(
                 if (expanded) "mdi:chevron-up" else "mdi:chevron-down",
                 colors.colorTextSecondary,
@@ -182,9 +178,9 @@ private fun MessageDetails(message: ChatMessage, label: String) {
         }
         AnimatedVisibility(expanded) {
             Column(
-                Modifier.padding(top = HADimens.SPACE2).heightIn(max = DETAILS_MAX_HEIGHT)
+                Modifier.padding(top = Css.Space.S2).heightIn(max = DETAILS_MAX_HEIGHT)
                     .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
             ) {
                 if (message.thinking.isNotEmpty()) MarkdownText(message.thinking)
                 message.toolCalls.forEach { ToolCallView(it) }
@@ -205,19 +201,19 @@ private fun ToolCallView(call: ToolCall) {
     Column(
         Modifier
             .drawBehind { drawRect(divider, size = size.copy(width = TOOL_BORDER.toPx())) }
-            .padding(horizontal = HADimens.SPACE2, vertical = HADimens.SPACE1),
+            .padding(horizontal = Css.Space.S2, vertical = Css.Space.S1),
     ) {
-        Text(call.name, style = HATextStyle.BodyMedium, fontWeight = FontWeight.Bold, color = colors.colorTextSecondary)
+        Text(call.name, style = Css.Text.Body, fontWeight = FontWeight.Bold, color = colors.colorTextSecondary)
         listOfNotNull(call.argsText, call.resultText).forEach { json ->
             Text(
                 json,
                 style = TextStyle(fontFamily = FontFamily.Monospace, fontSize = TOOL_DATA_SIZE),
                 color = colors.colorTextSecondary,
                 modifier = Modifier
-                    .padding(top = HADimens.SPACE1)
+                    .padding(top = Css.Space.S1)
                     .fillMaxWidth()
-                    .background(colors.colorSurfaceDefault, RoundedCornerShape(HARadius.S))
-                    .padding(HADimens.SPACE1),
+                    .background(colors.colorSurfaceDefault, RoundedCornerShape(Css.Radius.Sm))
+                    .padding(Css.Space.S1),
             )
         }
     }
@@ -328,4 +324,4 @@ private val DETAILS_MAX_HEIGHT = 500.dp
 private val TOOL_BORDER = 2.dp
 
 /** `.tool-data`'s 0.9em of the details' 14px. */
-private val TOOL_DATA_SIZE = 12.6.sp
+private val TOOL_DATA_SIZE = Css.FontSize.M * 0.9f

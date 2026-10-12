@@ -30,15 +30,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.MoreInfoModel
 import io.homeassistant.companion.android.dashboard.derive.moreInfoDetailsYaml
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardSurface
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
 // Port of `ha-more-info-details` (frontend@20260624.6 src/dialogs/more-info/ha-more-info-details.ts): the details
@@ -54,8 +52,8 @@ import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 internal fun ColumnScope.MoreInfoDetailsView(model: MoreInfoModel, localize: Localize) {
     LazyColumn(
         Modifier.fillMaxWidth().weight(1f),
-        contentPadding = PaddingValues(HADimens.SPACE6),
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+        contentPadding = PaddingValues(Css.Space.S6),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S4),
     ) {
         item(key = "state") {
             DetailsSection(localize("ui.components.entity.entity-state-picker.state"), model.details, empty = null)
@@ -81,19 +79,19 @@ private fun DetailsSection(title: String, entries: List<Pair<String, String>>, e
     Column {
         Text(
             title,
-            style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start, fontSize = SECTION_TITLE_SIZE),
+            style = Css.Text.Body.copy(textAlign = TextAlign.Start, fontSize = SECTION_TITLE_SIZE),
             fontWeight = FontWeight.Medium,
             color = colors.colorTextPrimary,
-            modifier = Modifier.padding(bottom = HADimens.SPACE2),
+            modifier = Modifier.padding(bottom = Css.Space.S2),
         )
         DashboardCardSurface(Modifier.fillMaxWidth()) {
-            Column(Modifier.weight(1f).padding(horizontal = HADimens.SPACE4, vertical = HADimens.SPACE2)) {
+            Column(Modifier.weight(1f).padding(horizontal = Css.Space.S4, vertical = Css.Space.S2)) {
                 if (entries.isEmpty() && empty != null) {
                     Text(
                         empty,
-                        style = FrontendTextStyle.Body,
+                        style = Css.Text.Body,
                         color = colors.colorTextSecondary,
-                        modifier = Modifier.fillMaxWidth().padding(vertical = HADimens.SPACE2),
+                        modifier = Modifier.fillMaxWidth().padding(vertical = Css.Space.S2),
                     )
                 }
                 entries.forEachIndexed { index, (name, value) ->
@@ -117,12 +115,12 @@ private fun DetailsEntry(name: String, value: String) {
         content = {
             Text(
                 name,
-                style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                 color = colors.colorTextSecondary,
             )
-            Text(value, style = FrontendTextStyle.Body.copy(textAlign = TextAlign.End), color = colors.colorTextPrimary)
+            Text(value, style = Css.Text.Body.copy(textAlign = TextAlign.End), color = colors.colorTextPrimary)
         },
-        modifier = Modifier.fillMaxWidth().padding(vertical = HADimens.SPACE2),
+        modifier = Modifier.fillMaxWidth().padding(vertical = Css.Space.S2),
     ) { measurables, constraints ->
         val width = constraints.maxWidth
         val valuePlaceable = measurables[1].measure(
@@ -157,15 +155,15 @@ internal fun ColumnScope.MoreInfoDetailsYamlView(entityId: String, hass: HassSna
     val background = resolveVariable(CODE_BACKGROUND, dark) ?: colors.colorSurfaceLow
     val gutter = resolveVariable(GUTTER_BACKGROUND, dark) ?: Color.Transparent
     val code = TextStyle(fontFamily = FontFamily.Monospace, fontSize = CODE_FONT_SIZE, lineHeight = CODE_LINE_HEIGHT)
-    Box(Modifier.fillMaxWidth().weight(1f).padding(HADimens.SPACE6)) {
+    Box(Modifier.fillMaxWidth().weight(1f).padding(Css.Space.S6)) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .background(background, RoundedCornerShape(HARadius.L))
+                .background(background, RoundedCornerShape(Css.Radius.Lg))
                 .verticalScroll(rememberScrollState()),
         ) {
             Column(
-                Modifier.background(gutter).padding(horizontal = HADimens.SPACE2),
+                Modifier.background(gutter).padding(horizontal = Css.Space.S2),
                 horizontalAlignment = Alignment.End,
             ) {
                 // One text like the code's, so the numbers keep to its lines
@@ -182,7 +180,7 @@ internal fun ColumnScope.MoreInfoDetailsYamlView(entityId: String, hass: HassSna
                     style = code,
                     color = colors.colorTextPrimary,
                     softWrap = false,
-                    modifier = Modifier.padding(horizontal = HADimens.SPACE2),
+                    modifier = Modifier.padding(horizontal = Css.Space.S2),
                 )
             }
         }
@@ -195,7 +193,7 @@ private const val CODE_BACKGROUND = "card-background-color"
 private const val GUTTER_BACKGROUND = "secondary-background-color"
 
 /** The sections' titles, `--ha-font-size-m`. */
-private val SECTION_TITLE_SIZE = 14.sp
+private val SECTION_TITLE_SIZE = Css.FontSize.M
 private val CODE_FONT_SIZE = 14.sp
 private val CODE_LINE_HEIGHT = 20.sp
-private val GUTTER_MIN_WIDTH = HADimens.SPACE5
+private val GUTTER_MIN_WIDTH = Css.Space.S5

@@ -40,15 +40,13 @@ import androidx.compose.ui.unit.sp
 import io.homeassistant.companion.android.common.compose.composable.HAInputChip
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HATextField
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.panels.DateRange
 import io.homeassistant.companion.android.dashboard.panels.RangePreset
 import io.homeassistant.companion.android.dashboard.panels.dateRangeText
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.time.DayOfWeek
 import java.time.Instant
@@ -74,7 +72,7 @@ internal fun DateRangeField(
     enabled: Boolean = true,
 ) {
     var open by remember { mutableStateOf(false) }
-    Column(modifier, verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3)) {
+    Column(modifier, verticalArrangement = Arrangement.spacedBy(Css.Space.S3)) {
         PresetChips(range, hass, now, presets, enabled, onChange)
         RangeRow(range, hass, now, enabled, onOpen = { open = true }, onChange)
     }
@@ -107,7 +105,7 @@ private fun PresetChips(
     val selected = RangePreset.matching(range, presets, now, firstDayOfWeek)
     Row(
         Modifier.horizontalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
     ) {
         presets.forEach { preset ->
             HAInputChip(
@@ -134,7 +132,7 @@ private fun RangeRow(
     onOpen: () -> Unit,
     onChange: (DateRange) -> Unit,
 ) {
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
         FilledField(
             label = "${hass.localize("$PICKER.start_date")} - ${hass.localize("$PICKER.end_date")}",
             value = hass.formats.dateRangeText(range, now.toLocalDate()),
@@ -163,25 +161,25 @@ private fun FilledField(label: String, value: String, modifier: Modifier) {
     val colors = LocalHAColorScheme.current
     Column(
         modifier
-            .clip(RoundedCornerShape(topStart = HADimens.SPACE1, topEnd = HADimens.SPACE1))
+            .clip(RoundedCornerShape(topStart = Css.Space.S1, topEnd = Css.Space.S1))
             .background(resolveVariable("mdc-text-field-fill-color", dark) ?: colors.colorFillNeutralQuietResting),
     ) {
         Column(
             Modifier.padding(
-                start = HADimens.SPACE4,
-                end = HADimens.SPACE4,
-                top = HADimens.SPACE4,
-                bottom = HADimens.SPACE3,
+                start = Css.Space.S4,
+                end = Css.Space.S4,
+                top = Css.Space.S4,
+                bottom = Css.Space.S3,
             ),
         ) {
             Text(
                 label,
-                style = HATextStyle.BodyMedium.copy(fontSize = LABEL_SIZE, textAlign = TextAlign.Start),
+                style = Css.Text.Body.copy(fontSize = LABEL_SIZE, textAlign = TextAlign.Start),
                 color = colors.colorTextSecondary,
             )
             Text(
                 value,
-                style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                 color = colors.colorTextPrimary,
             )
         }
@@ -254,7 +252,7 @@ private fun DateRangeDialog(
     ) {
         Column {
             DateRangePicker(state = state, modifier = Modifier.weight(1f), title = null, showModeToggle = false)
-            Row(Modifier.padding(HADimens.SPACE4), horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4)) {
+            Row(Modifier.padding(Css.Space.S4), horizontalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
                 val ok = hass.localize("ui.common.ok")
                 TimeButton(hass.localize("$PICKER.time_from"), ok, startTime, Modifier.weight(1f)) { startTime = it }
                 TimeButton(hass.localize("$PICKER.time_to"), ok, endTime, Modifier.weight(1f)) { endTime = it }

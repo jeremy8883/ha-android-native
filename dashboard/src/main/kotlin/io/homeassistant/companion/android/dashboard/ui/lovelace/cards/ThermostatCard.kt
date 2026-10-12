@@ -19,7 +19,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
@@ -39,7 +38,7 @@ import io.homeassistant.companion.android.dashboard.ui.lovelace.cardfeatures.Til
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
 import io.homeassistant.companion.android.dashboard.ui.statecontrol.CircularStateControl
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
@@ -67,16 +66,16 @@ internal fun ThermostatCard(
     DashboardCardSurface(modifier = modifier) {
         Box(Modifier.fillMaxWidth()) {
             Column(
-                Modifier.fillMaxWidth().padding(bottom = HADimens.SPACE4),
+                Modifier.fillMaxWidth().padding(bottom = Css.Space.S4),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
                     model.name,
-                    style = FrontendTextStyle.Body.copy(fontWeight = FontWeight.Medium),
+                    style = Css.Text.Body.copy(fontWeight = FontWeight.Medium),
                     color = colors.colorTextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(horizontal = HADimens.SPACE12, vertical = HADimens.SPACE3),
+                    modifier = Modifier.padding(horizontal = Css.Space.S12, vertical = Css.Space.S3),
                 )
                 if (model.waterHeater) {
                     CircularStateControl(
@@ -126,8 +125,8 @@ private fun ThermostatFeatures(model: ThermostatCardModel.Shown, interactions: C
     if (model.features.isEmpty()) return
     val color = model.featureColor?.toColor() ?: LocalHAColorScheme.current.colorFillPrimaryLoudResting
     Column(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = HADimens.SPACE3),
-        verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+        modifier = Modifier.fillMaxWidth().padding(horizontal = Css.Space.S3),
+        verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
     ) {
         model.features.forEach { feature -> TileFeatureControl(feature, model.available, color, interactions.onAction) }
     }

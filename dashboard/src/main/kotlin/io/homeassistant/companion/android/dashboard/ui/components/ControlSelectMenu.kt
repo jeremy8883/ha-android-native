@@ -28,15 +28,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HAFontSize
-import io.homeassistant.companion.android.common.compose.theme.HARadius
+import androidx.compose.ui.unit.em
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.moreinfo.SelectMenu
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
+import io.homeassistant.companion.android.dashboard.ui.theme.cssFontPx
+import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 
 /**
  * The details' menus in a row, scrolling sideways when they don't fit (`ha-more-info-control-select-container`,
@@ -54,7 +53,7 @@ internal fun ControlSelectMenus(
     if (menus.isEmpty()) return
     Row(
         modifier = modifier.fillMaxWidth().horizontalScroll(rememberScrollState()),
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S3, Alignment.CenterHorizontally),
     ) {
         menus.forEach { ControlSelectMenu(it, onAction) }
     }
@@ -79,11 +78,11 @@ internal fun ControlSelectMenu(menu: SelectMenu, onAction: (CardAction) -> Unit,
         Row(
             modifier = Modifier
                 .widthIn(min = MENU_MIN_WIDTH, max = MENU_MAX_WIDTH)
-                .height(HADimens.SPACE12)
-                .clip(RoundedCornerShape(HARadius.L))
+                .height(Css.Space.S12)
+                .clip(RoundedCornerShape(Css.Radius.Lg))
                 .background(colors.colorFillDisabledLoudResting.copy(alpha = BACKGROUND_ALPHA))
                 .clickable(enabled = menu.enabled, role = Role.DropdownList) { expanded = true }
-                .padding(horizontal = MENU_PADDING, vertical = HADimens.SPACE1),
+                .padding(horizontal = MENU_PADDING, vertical = Css.Space.S1),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(MENU_PADDING),
         ) {
@@ -91,15 +90,16 @@ internal fun ControlSelectMenu(menu: SelectMenu, onAction: (CardAction) -> Unit,
             Column(modifier = Modifier.weight(1f, fill = false)) {
                 Text(
                     menu.label,
-                    style = HATextStyle.BodyMedium.copy(
-                        fontSize = if (selected !=
-                            null
-                        ) {
-                            HAFontSize.S
-                        } else {
-                            HAFontSize.M
-                        },
-                    ),
+                    // `.label`, or the value's size while nothing is selected (`.select-no-value .label`)
+                    style = if (selected != null) {
+                        Css.Text.Body.copy(
+                            fontSize = Css.FontSize.S,
+                            lineHeight = MENU_LINE_HEIGHT.em,
+                            letterSpacing = LABEL_LETTER_SPACING.cssFontPx,
+                        )
+                    } else {
+                        Css.Text.Body.copy(lineHeight = MENU_LINE_HEIGHT.em)
+                    },
                     color = textColor,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -107,7 +107,7 @@ internal fun ControlSelectMenu(menu: SelectMenu, onAction: (CardAction) -> Unit,
                 selected?.let {
                     Text(
                         it.label,
-                        style = HATextStyle.BodyMedium.copy(fontSize = HAFontSize.M),
+                        style = Css.Text.Body.copy(lineHeight = MENU_LINE_HEIGHT.em),
                         color = textColor,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
@@ -135,7 +135,7 @@ internal fun SelectMenuOptions(
     DropdownMenu(expanded = expanded, onDismissRequest = onDismiss) {
         menu.options.forEach { option ->
             DropdownMenuItem(
-                text = { Text(option.label, style = FrontendTextStyle.Body, color = colors.colorTextPrimary) },
+                text = { Text(option.label, style = Css.Text.Body, color = colors.colorTextPrimary) },
                 leadingIcon = option.icon?.let { name ->
                     { DashboardIcon(name, colors.colorTextSecondary, Modifier.size(HASize.X2L)) }
                 },
@@ -156,4 +156,10 @@ internal fun SelectMenuOptions(
 private const val BACKGROUND_ALPHA = 0.2f
 private val MENU_MIN_WIDTH = 120.dp
 private val MENU_MAX_WIDTH = 160.dp
-private val MENU_PADDING = 10.dp
+private val MENU_PADDING = 10.cssPx
+
+/** `ha-control-select-menu`'s `line-height: 1.4`. */
+private const val MENU_LINE_HEIGHT = 1.4f
+
+/** `.label`'s `letter-spacing: 0.4px`. */
+private const val LABEL_LETTER_SPACING = 0.4

@@ -51,10 +51,7 @@ import io.homeassistant.companion.android.common.R as commonR
 import io.homeassistant.companion.android.common.compose.composable.HAFilledButton
 import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
-import io.homeassistant.companion.android.common.compose.theme.HADimens
-import io.homeassistant.companion.android.common.compose.theme.HARadius
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.common.compose.util.isLight
 import io.homeassistant.companion.android.dashboard.action.CardAction
@@ -67,7 +64,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.mediaBrowsePage
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.LocalServerUrl
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /**
  * Port of `dialog-media-player-browse` with `ha-media-player-browse`: [entityId]'s media, page by page (back goes
@@ -113,12 +110,12 @@ internal fun MediaBrowserDialog(
                     HALoading()
                 }
                 is BrowsePage.Failed -> Column(
-                    Modifier.padding(HADimens.SPACE4),
-                    verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2),
+                    Modifier.padding(Css.Space.S4),
+                    verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
                 ) {
                     Text(
                         LocalContext.current.loadErrorText(shown.error),
-                        style = FrontendTextStyle.Body,
+                        style = Css.Text.Body,
                         color = LocalHAColorScheme.current.colorOnDangerNormal,
                     )
                     HAPlainButton(stringResource(commonR.string.retry), viewModel::retry)
@@ -137,7 +134,7 @@ internal fun MediaBrowserDialog(
 @Composable
 private fun BrowserTopBar(title: String, canGoBack: Boolean, onBack: () -> Unit, onClose: () -> Unit) {
     val colors = LocalHAColorScheme.current
-    Row(Modifier.fillMaxWidth().padding(HADimens.SPACE1), verticalAlignment = Alignment.CenterVertically) {
+    Row(Modifier.fillMaxWidth().padding(Css.Space.S1), verticalAlignment = Alignment.CenterVertically) {
         IconButton(onClick = if (canGoBack) onBack else onClose) {
             DashboardIcon(
                 if (canGoBack) "mdi:arrow-left" else "mdi:close",
@@ -147,7 +144,7 @@ private fun BrowserTopBar(title: String, canGoBack: Boolean, onBack: () -> Unit,
         }
         Text(
             title,
-            style = HATextStyle.HeadlineMedium,
+            style = Css.Text.DialogTitle,
             color = colors.colorTextPrimary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -173,9 +170,9 @@ private fun BrowserPage(
         is MediaBrowseLayout.Grid -> LazyVerticalGrid(
             columns = GridCells.Adaptive(CARD_WIDTH),
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(HADimens.SPACE4),
-            horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
-            verticalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+            contentPadding = PaddingValues(Css.Space.S4),
+            horizontalArrangement = Arrangement.spacedBy(Css.Space.S3),
+            verticalArrangement = Arrangement.spacedBy(Css.Space.S3),
         ) {
             page.play?.let { call ->
                 item(span = { GridItemSpan(maxLineSpan) }) { PageHeader(page, call, thumbnails, onPlay) }
@@ -189,7 +186,7 @@ private fun BrowserPage(
         }
         is MediaBrowseLayout.List -> LazyColumn(
             Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(HADimens.SPACE2),
+            contentPadding = PaddingValues(Css.Space.S2),
         ) {
             page.play?.let { call -> item { PageHeader(page, call, thumbnails, onPlay) } }
             items(page.children) { child ->
@@ -215,15 +212,15 @@ private fun PageHeader(
     onPlay: (CardAction.CallService) -> Unit,
 ) {
     Row(
-        Modifier.fillMaxWidth().padding(bottom = HADimens.SPACE3),
+        Modifier.fillMaxWidth().padding(bottom = Css.Space.S3),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S4),
     ) {
         page.thumbnail?.let { url ->
             MediaBrowserThumbnail(
                 url,
                 thumbnails,
-                Modifier.size(HEADER_IMAGE).clip(RoundedCornerShape(HARadius.L)),
+                Modifier.size(HEADER_IMAGE).clip(RoundedCornerShape(Css.Radius.Lg)),
                 ContentScale.Crop,
             )
         }
@@ -251,7 +248,7 @@ private fun GridCard(
     val colors = LocalHAColorScheme.current
     Column(
         Modifier
-            .clip(RoundedCornerShape(HARadius.L))
+            .clip(RoundedCornerShape(Css.Radius.Lg))
             .background(colors.colorFillDisabledLoudResting.copy(alpha = TINT_ALPHA))
             .clickable(role = Role.Button, onClick = onTap),
     ) {
@@ -265,11 +262,11 @@ private fun GridCard(
         }
         Text(
             child.title,
-            style = HATextStyle.BodyMedium,
+            style = Css.Text.Body,
             color = colors.colorTextPrimary,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.padding(HADimens.SPACE2),
+            modifier = Modifier.padding(Css.Space.S2),
         )
     }
 }
@@ -289,9 +286,9 @@ private fun ListRow(
 ) {
     val colors = LocalHAColorScheme.current
     Row(
-        Modifier.fillMaxWidth().clickable(role = Role.Button, onClick = onTap).padding(HADimens.SPACE2),
+        Modifier.fillMaxWidth().clickable(role = Role.Button, onClick = onTap).padding(Css.Space.S2),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE3),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S3),
     ) {
         Box(Modifier.size(ROW_IMAGE), contentAlignment = Alignment.Center) {
             DashboardIcon(child.icon, colors.colorTextSecondary, Modifier.size(HASize.X2L))
@@ -301,14 +298,14 @@ private fun ListRow(
                 MediaBrowserThumbnail(
                     it,
                     thumbnails,
-                    Modifier.fillMaxSize().clip(RoundedCornerShape(HARadius.M)),
+                    Modifier.fillMaxSize().clip(RoundedCornerShape(Css.Radius.Md)),
                     ContentScale.Crop,
                 )
             }
         }
         Text(
             child.title,
-            style = FrontendTextStyle.Body,
+            style = Css.Text.Body,
             color = colors.colorTextPrimary,
             modifier = Modifier.weight(1f),
             maxLines = 2,
@@ -346,9 +343,9 @@ private fun PlayButton(call: CardAction.CallService, label: String, onPlay: (Car
 private fun FooterText(text: String) {
     Text(
         text,
-        style = HATextStyle.BodyMedium,
+        style = Css.Text.Body,
         color = LocalHAColorScheme.current.colorTextSecondary,
-        modifier = Modifier.padding(HADimens.SPACE4),
+        modifier = Modifier.padding(Css.Space.S4),
     )
 }
 

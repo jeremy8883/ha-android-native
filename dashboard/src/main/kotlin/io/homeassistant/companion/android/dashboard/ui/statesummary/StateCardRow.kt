@@ -14,9 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.derive.RowSelect
@@ -25,7 +23,7 @@ import io.homeassistant.companion.android.dashboard.derive.StateCard
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.RowControlContent
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.entityIconTint
 import java.time.Instant
 
@@ -49,14 +47,14 @@ internal fun StateCardRow(
     Row(
         modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE4),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S4),
     ) {
         StateCardBadge(card)
         if (!labelled) {
             Column(Modifier.weight(1f)) {
                 Text(
                     card.name,
-                    style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+                    style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                     color = colors.colorTextPrimary,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -64,7 +62,7 @@ internal fun StateCardRow(
                 card.changed?.let {
                     Text(
                         it,
-                        style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.Start),
+                        style = Css.Text.Body.copy(textAlign = TextAlign.Start),
                         color = colors.colorTextSecondary,
                     )
                 }
@@ -75,12 +73,12 @@ internal fun StateCardRow(
             Column(horizontalAlignment = Alignment.End) {
                 Text(
                     right.state.orEmpty(),
-                    style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.End),
+                    style = Css.Text.Body.copy(textAlign = TextAlign.End),
                     color = colors.colorTextPrimary,
                 )
                 Text(
                     secondary,
-                    style = HATextStyle.BodyMedium.copy(textAlign = TextAlign.End),
+                    style = Css.Text.Body.copy(textAlign = TextAlign.End),
                     color = colors.colorTextSecondary,
                 )
             }

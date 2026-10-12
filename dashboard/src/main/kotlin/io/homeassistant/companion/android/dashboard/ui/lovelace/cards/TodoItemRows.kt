@@ -21,9 +21,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.entity.Localize
@@ -35,7 +33,7 @@ import io.homeassistant.companion.android.dashboard.todo.TodoStatus
 import io.homeassistant.companion.android.dashboard.todo.deleteTodoItems
 import io.homeassistant.companion.android.dashboard.todo.toggleTodoItem
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 
 /**
@@ -59,7 +57,7 @@ internal fun TodoItemRow(
     Row(
         Modifier.fillMaxWidth()
             .clickable(enabled = !model.unavailable) { onTap(model, item, onAction, onOpen) }
-            .padding(end = HADimens.SPACE4, top = HADimens.SPACE1, bottom = HADimens.SPACE1),
+            .padding(end = Css.Space.S4, top = Css.Space.S1, bottom = Css.Space.S1),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         TriStateCheckbox(
@@ -74,7 +72,7 @@ internal fun TodoItemRow(
         Column(Modifier.weight(1f)) {
             Text(
                 item.summary,
-                style = FrontendTextStyle.Body.copy(
+                style = Css.Text.Body.copy(
                     textAlign = TextAlign.Start,
                     textDecoration = if (completed) TextDecoration.LineThrough else null,
                 ),
@@ -121,10 +119,10 @@ private fun DueText(due: String, overdue: Boolean) {
     val color = if (overdue) warning else colors.colorTextSecondary
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE1),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S1),
     ) {
         DashboardIcon("mdi:clock", color, Modifier.size(HASize.M))
-        Text(due, style = HATextStyle.BodyMedium, color = color)
+        Text(due, style = Css.Text.Body, color = color)
     }
 }
 
@@ -143,10 +141,10 @@ internal fun ReorderRow(
     onMove: (up: Boolean) -> Unit,
 ) {
     val colors = LocalHAColorScheme.current
-    Row(Modifier.fillMaxWidth().padding(start = HADimens.SPACE4), verticalAlignment = Alignment.CenterVertically) {
+    Row(Modifier.fillMaxWidth().padding(start = Css.Space.S4), verticalAlignment = Alignment.CenterVertically) {
         Text(
             row.item.summary,
-            style = FrontendTextStyle.Body.copy(textAlign = TextAlign.Start),
+            style = Css.Text.Body.copy(textAlign = TextAlign.Start),
             color = colors.colorTextPrimary,
             modifier = Modifier.weight(1f),
         )

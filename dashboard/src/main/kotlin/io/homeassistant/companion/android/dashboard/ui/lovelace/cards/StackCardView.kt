@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.em
-import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.layout.StackArrangement
 import io.homeassistant.companion.android.dashboard.layout.StackCard
@@ -25,7 +24,7 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.DashboardCard
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.LocalConditionContext
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.ZonedDateTime
 
 /**
@@ -56,10 +55,10 @@ internal fun StackCardView(
     Column(modifier) {
         stack.title?.let { StackTitle(it) }
         when (val arrangement = stack.arrangement) {
-            StackArrangement.Vertical -> Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+            StackArrangement.Vertical -> Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
                 cards.forEach { key(it) { card(it, Modifier.fillMaxWidth()) } }
             }
-            StackArrangement.Horizontal -> Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+            StackArrangement.Horizontal -> Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
                 cards.forEach { key(it) { card(it, Modifier.weight(1f)) } }
             }
             is StackArrangement.Grid -> StackGrid(cards, arrangement, card)
@@ -79,9 +78,9 @@ private fun StackGrid(
     card: @Composable (CardConfig, Modifier) -> Unit,
 ) {
     val cell = if (grid.square) Modifier.atLeastAsTallAsWide() else Modifier
-    Column(verticalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+    Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
         cards.chunked(grid.columns).forEach { row ->
-            Row(horizontalArrangement = Arrangement.spacedBy(HADimens.SPACE2)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S2)) {
                 row.forEach { key(it) { card(it, Modifier.weight(1f).then(cell)) } }
                 // Keep the last row's cells as wide as the others
                 repeat(grid.columns - row.size) { Box(Modifier.weight(1f)) }
@@ -107,12 +106,12 @@ private fun StackTitle(title: String) {
     Text(
         title,
         // The stack's own `.card-header`, at `--ha-line-height-condensed`
-        style = FrontendTextStyle.CardHeader.copy(lineHeight = STACK_TITLE_LINE_HEIGHT.em),
+        style = Css.Text.CardHeader.copy(lineHeight = STACK_TITLE_LINE_HEIGHT.em),
         modifier = Modifier.fillMaxWidth().padding(
-            start = HADimens.SPACE4,
-            top = HADimens.SPACE6,
-            end = HADimens.SPACE4,
-            bottom = HADimens.SPACE4,
+            start = Css.Space.S4,
+            top = Css.Space.S6,
+            end = Css.Space.S4,
+            bottom = Css.Space.S4,
         ),
     )
 }

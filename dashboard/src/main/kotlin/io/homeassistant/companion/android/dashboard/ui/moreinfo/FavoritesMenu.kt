@@ -15,7 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.theme.HASize
-import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.data.Loadable
@@ -27,7 +26,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.components.ConfirmDialog
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.components.CopyFavoritesDialog
-import io.homeassistant.companion.android.dashboard.ui.theme.FrontendTextStyle
+import io.homeassistant.companion.android.dashboard.ui.theme.Css
 
 /** The favourites' items of the dialog's menu, each closing the menu with the given function first. */
 internal typealias FavoritesMenuItems = @Composable (close: () -> Unit) -> Unit
@@ -135,7 +134,7 @@ private fun MenuItem(icon: String, label: String, enabled: Boolean = true, onCli
         text = {
             Text(
                 label,
-                style = FrontendTextStyle.Body,
+                style = Css.Text.Body,
                 color = if (enabled) colors.colorTextPrimary else colors.colorTextDisabled,
             )
         },
@@ -168,7 +167,7 @@ internal fun FavoritesErrorText(error: FavoritesError) {
                 reason,
             )
         },
-        style = HATextStyle.BodyMedium,
+        style = Css.Text.Body,
         color = LocalHAColorScheme.current.colorOnDangerQuiet,
     )
 }
