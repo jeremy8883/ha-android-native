@@ -42,6 +42,7 @@ import io.homeassistant.companion.android.dashboard.ui.components.UnsupportedMes
 import io.homeassistant.companion.android.dashboard.ui.dialogs.notifications.NotificationDrawerHost
 import io.homeassistant.companion.android.dashboard.ui.dialogs.notifications.NotificationsViewModel
 import io.homeassistant.companion.android.dashboard.ui.dialogs.notifications.hasNotifications
+import io.homeassistant.companion.android.dashboard.ui.dialogs.quickbar.dashboardMenuActions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.DashboardTopBar
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.ProvideCardLocals
@@ -124,7 +125,7 @@ internal fun DashboardScreen(
                 status = status,
                 onRetry = viewModel::onRetry,
                 onOpenElsewhere = onOpenWeb?.let { { viewModel.onOpenShownInWeb() } },
-                onMenuAction = onOpenWeb?.let { { action -> viewModel.onOpenShownInWeb(flag = action.webParam) } },
+                onMenuAction = dashboardMenuActions(viewModel, hass, onOpenWeb, onMoreInfo = { moreInfo = it }),
                 hasNotifications = hasNotifications(),
             )
         }

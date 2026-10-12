@@ -1,13 +1,13 @@
 package io.homeassistant.companion.android.dashboard.layout
 
 /**
- * An entry of a dashboard's toolbar. None is drawn natively: each opens the dashboard shown in the frontend, with
- * [webParam] (as `?<webParam>=1`) asking it to do the same there.
+ * An entry of a dashboard's toolbar. Search is drawn natively; the others open the dashboard shown in the frontend,
+ * with [webParam] (as `?<webParam>=1`) asking it to do the same there.
  *
  * @property labelKey the frontend's translation key of its label
  */
 sealed class DashboardMenuAction(val icon: String, val labelKey: String, val webParam: String?) {
-    /** The quick bar, which the frontend can't be asked to open from an address. */
+    /** The quick bar ("Search Home Assistant"), drawn natively. */
     data object Search : DashboardMenuAction(
         icon = "mdi:magnify",
         labelKey = "ui.panel.lovelace.menu.search_home_assistant",

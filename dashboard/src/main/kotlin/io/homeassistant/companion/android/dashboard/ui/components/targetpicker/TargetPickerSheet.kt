@@ -174,7 +174,7 @@ private fun SectionChips(hass: HassSnapshot, selected: TargetType?, onToggle: (T
  * Upstream: part of `ha-picker-combo-box` (src/components/ha-picker-combo-box.ts)
  */
 @Composable
-private fun SectionTitle(text: String) {
+internal fun SectionTitle(text: String) {
     val colors = LocalHAColorScheme.current
     Text(
         text,
@@ -277,7 +277,7 @@ private fun TreeIndicator(end: Boolean, modifier: Modifier) {
  * Upstream: part of `ha-picker-combo-box` (src/components/ha-picker-combo-box.ts)
  */
 @Composable
-private fun EmptyRow(text: String, searching: Boolean) {
+internal fun EmptyRow(text: String, searching: Boolean) {
     val colors = LocalHAColorScheme.current
     Row(
         Modifier.fillMaxWidth().heightIn(min = ONE_LINE_HEIGHT).padding(horizontal = Css.Space.S4),

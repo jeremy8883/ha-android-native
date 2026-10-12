@@ -13,8 +13,6 @@ on the right are the frontend's (20260624.6).
 
 ## Left by the fixes (found 2026-10-11, keep or fix)
 
-39. Toolbar Search opens the dashboard in the companion app: the quick bar can't be asked for by address
-    (`ui/lovelace/DashboardTopBar.kt`; src/panels/lovelace/hui-root.ts)
 40. Drawer: the Settings entry has no updates and repairs count (`ui/components/NavigationDrawer.kt`;
     src/components/ha-sidebar.ts)
 41. Notifications: configurator entities aren't listed (`ui/dialogs/notifications/NotificationDrawer.kt`;
