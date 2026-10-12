@@ -1,8 +1,6 @@
 package io.homeassistant.companion.android.dashboard.ui.moreinfo.controls
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.moreinfo.CircularControl
 import io.homeassistant.companion.android.dashboard.moreinfo.CircularTargets
@@ -26,9 +24,8 @@ internal fun SingleDialControls(
     onSet: (Double) -> Unit,
     onAction: (CardAction) -> Unit,
     bottomUnit: Boolean = false,
-    minHeight: Dp = 0.dp,
 ) {
-    DialControlsLayout(current = current, minHeight = minHeight, menus = { ControlSelectMenus(menus, onAction) }) {
+    DialControlsLayout(current = current, menus = { ControlSelectMenus(menus, onAction) }) {
         CircularStateControl(
             control = control,
             targets = CircularTargets(target, null, null),

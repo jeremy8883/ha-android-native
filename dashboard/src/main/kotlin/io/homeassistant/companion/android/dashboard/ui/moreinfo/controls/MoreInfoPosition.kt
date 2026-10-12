@@ -59,11 +59,7 @@ internal fun MoreInfoPosition(
     onAction: (CardAction) -> Unit,
 ) {
     var buttons by rememberSaveable(state.entityId) { mutableStateOf(!info.positionFirst) }
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
-    ) {
+    MoreInfoControlsLayout {
         if (buttons) {
             info.toggle?.let { StateToggleControl(it, onAction) }
             info.buttons?.let { PositionButtonsView(it, onAction) }

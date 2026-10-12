@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -80,11 +79,8 @@ internal fun MoreInfoLight(
     var main by rememberSaveable(state.entityId, saver = MainControlSaver) {
         mutableStateOf<LightMainControl>(LightMainControl.Brightness)
     }
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
-    ) {
+    // The effect menu's `<div>` follows the controls whatever it holds
+    MoreInfoControlsLayout(bottom = { ControlSelectMenus(listOfNotNull(light.effect), onAction) }) {
         light.toggle?.let { StateToggleControl(it, onAction) }
         when (main) {
             LightMainControl.Brightness -> light.brightness?.let { slider ->
@@ -99,7 +95,6 @@ internal fun MoreInfoLight(
         }
         if (light.buttons.isNotEmpty()) LightButtons(light.buttons, main, onShow = { main = it }, onAction = onAction)
         LightFavoritesSection(state, hass, onAction)
-        ControlSelectMenus(listOfNotNull(light.effect), onAction)
     }
 }
 

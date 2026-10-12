@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -53,11 +52,7 @@ internal fun MoreInfoVacuum(
     onShowFull: (() -> Unit)? = null,
 ) {
     val colors = LocalHAColorScheme.current
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
-    ) {
+    MoreInfoControlsLayout {
         VacuumStatus(info.visual, info.color?.toColor() ?: colors.colorFillDisabledLoudResting)
         CommandButtonRow(info.buttons, onAction)
         ControlSelectMenus(listOfNotNull(info.fanSpeed), onAction)

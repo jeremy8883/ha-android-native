@@ -2,10 +2,7 @@ package io.homeassistant.companion.android.dashboard.ui.moreinfo.controls
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
@@ -36,11 +33,7 @@ import kotlin.math.roundToInt
  */
 @Composable
 internal fun MoreInfoFan(info: FanMoreInfo, onAction: (CardAction) -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
-    ) {
+    MoreInfoControlsLayout(bottom = { ControlSelectMenus(info.menus, onAction) }) {
         when (val speed = info.speed) {
             is FanSpeedControl.Buttons -> VerticalSelect(speed.select, onAction)
             is FanSpeedControl.Slider ->
@@ -48,7 +41,6 @@ internal fun MoreInfoFan(info: FanMoreInfo, onAction: (CardAction) -> Unit) {
             null -> info.toggle?.let { StateToggleControl(it, onAction) }
         }
         info.power?.let { PowerButton(it, info.powerEnabled, onAction) }
-        ControlSelectMenus(info.menus, onAction)
     }
 }
 

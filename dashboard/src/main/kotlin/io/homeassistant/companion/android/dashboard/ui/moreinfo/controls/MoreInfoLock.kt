@@ -2,7 +2,6 @@ package io.homeassistant.companion.android.dashboard.ui.moreinfo.controls
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
+import io.homeassistant.companion.android.dashboard.moreinfo.JammedLock
 import io.homeassistant.companion.android.dashboard.moreinfo.LockMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.LockOpen
 import io.homeassistant.companion.android.dashboard.ui.components.CONTROL_BUTTON_HEIGHT
@@ -46,11 +46,8 @@ import kotlinx.coroutines.delay
  */
 @Composable
 internal fun MoreInfoLock(info: LockMoreInfo, onAction: (CardAction) -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
-    ) {
+    // The jammed buttons' `<div>` follows the controls whatever it holds
+    MoreInfoControlsLayout(bottom = { info.jammed?.let { JammedButtons(it, onAction) } }) {
         info.toggle?.let { StateToggleControl(it, onAction) }
         info.jammed?.let { jammed ->
             Box(Modifier.height(STATE_CONTROL_HEIGHT), contentAlignment = Alignment.Center) {
@@ -58,15 +55,22 @@ internal fun MoreInfoLock(info: LockMoreInfo, onAction: (CardAction) -> Unit) {
             }
         }
         info.open?.let { OpenButton(it, onAction) }
-        info.jammed?.let { jammed ->
-            Row(
-                modifier = Modifier.fillMaxWidth().widthIn(max = JAMMED_MAX_WIDTH),
-                horizontalArrangement = Arrangement.spacedBy(Css.Space.S3),
-            ) {
-                jammed.buttons.forEach { (label, action) ->
-                    ControlButton(label, Modifier.weight(1f)) { onAction(action) }
-                }
-            }
+    }
+}
+
+/**
+ * The unlock and lock buttons of a jammed lock.
+ *
+ * Upstream: part of `more-info-lock` (src/dialogs/more-info/controls/more-info-lock.ts)
+ */
+@Composable
+private fun JammedButtons(jammed: JammedLock, onAction: (CardAction) -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth().widthIn(max = JAMMED_MAX_WIDTH),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S3),
+    ) {
+        jammed.buttons.forEach { (label, action) ->
+            ControlButton(label, Modifier.weight(1f)) { onAction(action) }
         }
     }
 }

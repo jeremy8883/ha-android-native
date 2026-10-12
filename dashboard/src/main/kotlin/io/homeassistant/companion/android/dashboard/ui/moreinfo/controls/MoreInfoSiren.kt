@@ -40,7 +40,7 @@ import io.homeassistant.companion.android.dashboard.ui.theme.Css
 @Composable
 internal fun MoreInfoSiren(info: SirenMoreInfo, state: EntityState, onAction: (CardAction) -> Unit) {
     var advanced by remember { mutableStateOf(false) }
-    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+    MoreInfoControlsLayout {
         StateToggleControl(info.toggle, onAction)
         info.advanced?.let { controls ->
             HAPlainButton(controls.title, { advanced = true })

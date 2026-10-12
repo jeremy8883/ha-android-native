@@ -31,8 +31,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
@@ -67,6 +69,7 @@ import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoHistory
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.SimpleDomainControls
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoAlarm
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoClimate
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoControlsLayout
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoConversation
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoFan
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.MoreInfoLight
@@ -225,13 +228,25 @@ private fun LazyListScope.mainItems(list: MainList, controlsHeight: Dp) {
     model.stateCard?.let { card ->
         item(key = "state-card") { Box(section) { StateCardRow(card, now, interactions.onAction) } }
     }
-    if (model.stateHeader) {
-        item(key = "state") { MoreInfoStateText(model) }
-    }
-    hass.states[model.entityId]?.let { state ->
+    val state = hass.states[model.entityId]
+    // Full-height details (`more-info-content[full-height]`): the header and the controls fill the room together
+    if (state != null && model.fullHeight && model.stateCard == null) {
         item(key = "controls") {
-            Column(section, verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
-                DomainControls(model, state, hass, now, interactions.onAction, list.onShowFull, controlsHeight)
+            FullHeightControls(
+                minHeight = controlsHeight,
+                header = if (model.stateHeader) ({ MoreInfoStateText(model) }) else null,
+                modifier = section,
+            ) { DomainControls(model, state, hass, now, interactions.onAction, list.onShowFull) }
+        }
+    } else {
+        if (model.stateHeader) {
+            item(key = "state") { MoreInfoStateText(model) }
+        }
+        state?.let {
+            item(key = "controls") {
+                Column(section, verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
+                    DomainControls(model, it, hass, now, interactions.onAction, list.onShowFull)
+                }
             }
         }
     }
@@ -275,9 +290,42 @@ private fun ColumnScope.MoreInfoHistoryView(
 }
 
 /**
+ * The [header] then the [controls], together at least [minHeight] tall: the controls get the room the header leaves
+ * as their minimum height, as the frontend's flex column gives it to `.controls`.
+ *
+ * Upstream: `more-info-content[full-height]` of `ha-more-info-info`, `moreInfoControlStyle`
+ * (src/dialogs/more-info/ha-more-info-info.ts; src/dialogs/more-info/components/more-info-control-style.ts)
+ */
+@Composable
+private fun FullHeightControls(
+    minHeight: Dp,
+    header: (@Composable () -> Unit)?,
+    modifier: Modifier = Modifier,
+    controls: @Composable () -> Unit,
+) {
+    Layout(
+        modifier = modifier.fillMaxWidth(),
+        content = {
+            Box { header?.invoke() }
+            Box(Modifier.fillMaxWidth(), propagateMinConstraints = true) { controls() }
+        },
+    ) { measurables, constraints ->
+        val loose = Constraints(maxWidth = constraints.maxWidth)
+        val headerPlaceable = measurables[0].measure(loose)
+        val room = (minHeight.roundToPx() - headerPlaceable.height).coerceAtLeast(0)
+        val controlsPlaceable = measurables[1].measure(loose.copy(minHeight = room))
+        val width = constraints.maxWidth
+        layout(width, headerPlaceable.height + controlsPlaceable.height) {
+            headerPlaceable.place((width - headerPlaceable.width) / 2, 0)
+            controlsPlaceable.place(0, headerPlaceable.height)
+        }
+    }
+}
+
+/**
  * The controls of the entity's domain, as its `more-info-<domain>` leads with them; [onShowFull] opens the full
- * dialog for what they leave to it. A thermostat's, water heater's and humidifier's fill [minHeight] at least,
- * centring their dial in it, as `moreInfoControlStyle` does in a full-height dialog.
+ * dialog for what they leave to it. Given a minimum height (full-height details), each domain's controls fill it,
+ * centred in it as `moreInfoControlStyle` does.
  *
  * Upstream: `more-info-content` (src/dialogs/more-info/more-info-content.ts)
  */
@@ -289,10 +337,9 @@ internal fun DomainControls(
     now: Instant,
     onAction: (CardAction) -> Unit,
     onShowFull: (() -> Unit)? = null,
-    minHeight: Dp = 0.dp,
 ) {
     model.light?.let { MoreInfoLight(it, state, hass, onAction) }
-    model.climate?.let { MoreInfoClimate(it, state, onAction, minHeight) }
+    model.climate?.let { MoreInfoClimate(it, state, onAction) }
     model.position?.let { MoreInfoPosition(it, state, hass, onAction) }
     model.fan?.let { MoreInfoFan(it, onAction) }
     model.lock?.let { MoreInfoLock(it, onAction) }
@@ -308,7 +355,6 @@ internal fun DomainControls(
             menus = heater.menus,
             onSet = { onAction(waterHeaterTemperatureCall(state, it)) },
             onAction = onAction,
-            minHeight = minHeight,
         )
     }
     model.humidifier?.let { humidifier ->
@@ -320,11 +366,10 @@ internal fun DomainControls(
             onSet = { onAction(humidifierHumidityCall(state, it)) },
             onAction = onAction,
             bottomUnit = true,
-            minHeight = minHeight,
         )
     }
     model.stateToggle?.let { toggle ->
-        Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) { StateToggleControl(toggle, onAction) }
+        MoreInfoControlsLayout { StateToggleControl(toggle, onAction) }
     }
     model.extra?.let { MoreInfoExtraView(it, state, hass, now, onAction) }
 }
