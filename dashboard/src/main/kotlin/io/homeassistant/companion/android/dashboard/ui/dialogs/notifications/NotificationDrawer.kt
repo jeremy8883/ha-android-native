@@ -84,6 +84,8 @@ private fun NotificationDrawer(
     now: State<ZonedDateTime?>,
     onDismiss: () -> Unit,
 ) {
+    // UPSTREAM-DIFF: only the persistent notifications are listed; upstream adds the configurator entities, and one
+    // of them blanked the whole list in testing
     val notifications by viewModel.notifications.collectAsStateWithLifecycle()
     val localize = hass.value?.localize ?: return
     val snackbar = remember { SnackbarHostState() }
