@@ -85,7 +85,7 @@ private fun HassSnapshot.formatAttributeDate(value: String): String? =
     }
 
 /** Port of `getWeatherUnit` (src/data/weather.ts): the entity's own unit, else one from the unit system. */
-private fun HassSnapshot.weatherUnit(state: EntityState, measure: String): String =
+internal fun HassSnapshot.weatherUnit(state: EntityState, measure: String): String =
     WEATHER_UNIT_ATTRIBUTES[measure]?.let { state.attributes.string(it)?.ifEmpty { null } }
         ?: systemWeatherUnit(measure)
 

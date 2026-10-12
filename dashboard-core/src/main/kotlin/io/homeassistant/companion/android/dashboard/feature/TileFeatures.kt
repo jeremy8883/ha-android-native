@@ -212,10 +212,17 @@ fun HassSnapshot.tileFeatures(card: CardConfig, now: Instant? = null): List<Tile
     val state = card.entity?.let(states::get) ?: return emptyList()
     val color = card.json.string("color")?.ifEmpty { null }
     return card.json.objects("features").mapNotNull { feature ->
-        if (feature.string("type") == TREND_GRAPH) {
-            trendGraph(state, feature, now?.toEpochMilli()?.toDouble())
-        } else {
-            tileFeature(state, feature, color)
+        val nowMillis = now?.toEpochMilli()?.toDouble()
+        when (feature.string("type")) {
+            TREND_GRAPH -> trendGraph(state, feature, nowMillis)
+            "temperature-forecast" -> forecastFeature(state, feature, ForecastKind.Temperature, nowMillis)
+            "precipitation-forecast" -> forecastFeature(
+                state,
+                feature,
+                ForecastKind.Precipitation(probability = feature.string("precipitation_type") == "probability"),
+                nowMillis,
+            )
+            else -> tileFeature(state, feature, color)
         }
     }
 }
@@ -278,9 +285,6 @@ private val FEATURES: Map<String, FeatureOf> = mapOf(
     "media-player-source" to { mediaPlayerList(it.state, it.feature, sound = false) },
     "media-player-sound-mode" to { mediaPlayerList(it.state, it.feature, sound = true) },
 )
-
-/** The card feature types not ported yet, which draw nothing. */
-val UNPORTED_FEATURE_TYPES = setOf("temperature-forecast", "precipitation-forecast")
 
 internal fun EntityState.available() = state != STATE_UNAVAILABLE
 

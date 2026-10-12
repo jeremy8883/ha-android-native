@@ -1,9 +1,8 @@
 package io.homeassistant.companion.android.dashboard.layout
 
-import io.homeassistant.companion.android.dashboard.feature.UNPORTED_FEATURE_TYPES
 import io.homeassistant.companion.android.dashboard.model.CardConfig
+import io.homeassistant.companion.android.dashboard.model.array
 import io.homeassistant.companion.android.dashboard.model.boolean
-import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
 import kotlinx.serialization.json.JsonObject
 
@@ -11,8 +10,7 @@ import kotlinx.serialization.json.JsonObject
 internal fun elementGridOptions(card: CardConfig): GridOptions {
     val json = card.json
     val vertical = json.boolean("vertical") == true
-    // Features not ported yet draw nothing, so they take no row (upstream every feature takes one)
-    val features = json.objects("features").count { it.string("type") !in UNPORTED_FEATURE_TYPES }
+    val features = json.array("features")?.size ?: 0
     return when (card.type) {
         "tile" -> tileGridOptions(json, vertical, features)
         "area" -> areaGridOptions(json, vertical, features)

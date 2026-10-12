@@ -1282,6 +1282,41 @@
        "url": "URL"
       }
      },
+     "features": {
+      "types": {
+       "precipitation-forecast": {
+        "color": "Color",
+        "failed_to_load": "Failed to load forecast: {error}",
+        "forecast_type": "Forecast type",
+        "forecast_type_options": {
+         "daily": "Daily",
+         "hourly": "Hourly",
+         "twice_daily": "Twice daily"
+        },
+        "label": "Precipitation forecast",
+        "no_forecast": "No forecast data available",
+        "precipitation_type": "Precipitation type",
+        "precipitation_type_options": {
+         "amount": "Amount",
+         "probability": "Probability"
+        },
+        "show_labels": "Show labels"
+       },
+       "temperature-forecast": {
+        "color": "Color",
+        "failed_to_load": "Failed to load forecast: {error}",
+        "forecast_type": "Forecast type",
+        "forecast_type_options": {
+         "daily": "Daily",
+         "hourly": "Hourly",
+         "twice_daily": "Twice daily"
+        },
+        "label": "Temperature forecast",
+        "no_forecast": "No forecast data available",
+        "show_labels": "Show labels"
+       }
+      }
+     },
      "menu": {
       "open": "Open dashboard menu"
      }

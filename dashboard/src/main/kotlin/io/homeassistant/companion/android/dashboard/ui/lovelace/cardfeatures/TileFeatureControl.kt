@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
+import io.homeassistant.companion.android.dashboard.feature.ForecastFeature
 import io.homeassistant.companion.android.dashboard.feature.LightColorFavoritesFeature
 import io.homeassistant.companion.android.dashboard.feature.PositionFavoritesFeature
 import io.homeassistant.companion.android.dashboard.feature.TileFeature
@@ -87,6 +88,7 @@ private fun OtherFeatureControl(feature: TileFeature, color: Color, onAction: (C
         is PositionFavoritesFeature -> FeaturePositionFavorites(feature, color, onAction)
         is LightColorFavoritesFeature -> FeatureLightColorFavorites(feature, onAction)
         is TrendGraphFeature -> FeatureTrendGraph(feature, color)
+        is ForecastFeature -> FeatureForecast(feature, color)
         // Drawn by TileFeatureControl
         else -> Unit
     }

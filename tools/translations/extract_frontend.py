@@ -23,6 +23,8 @@ SUBTREES = [
     "ui.common.yes",
     "ui.common.no",
     "ui.dialogs.update_backup",
+    "ui.panel.lovelace.editor.features.types.temperature-forecast",
+    "ui.panel.lovelace.editor.features.types.precipitation-forecast",
     "ui.common.refresh",
     "ui.common.next",
     "ui.common.previous",

@@ -5,6 +5,7 @@ import io.homeassistant.companion.android.dashboard.display.parseJsDate
 import io.homeassistant.companion.android.dashboard.energy.WsCommand
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.EntityStates
+import io.homeassistant.companion.android.dashboard.feature.forecastFeatureRequests
 import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
@@ -87,8 +88,8 @@ private const val DAY_MS = 86_400_000L
 
 /**
  * The forecasts the shown [cards] subscribe to, when the server has weather (`isComponentLoaded(weather)`): weather
- * forecast cards with a `forecast_type` (other than `legacy`), and the entities cards' weather rows, each its
- * entity's default type (`hui-weather-entity-row`).
+ * forecast cards with a `forecast_type` (other than `legacy`), the entities cards' weather rows, each its
+ * entity's default type (`hui-weather-entity-row`), and the tiles' forecast features.
  */
 fun forecastRequests(cards: List<CardConfig>, components: Set<String>, states: EntityStates): Set<ForecastKey> {
     if (WEATHER !in components) return emptySet()
@@ -104,7 +105,7 @@ fun forecastRequests(cards: List<CardConfig>, components: Set<String>, states: E
                 ?.let { state -> defaultForecastType(state)?.let { ForecastKey(state.entityId, it) } }
         }
     }
-    return (forecastCards + rows).toSet()
+    return (forecastCards + rows + cards.flatMap { forecastFeatureRequests(it, states) }).toSet()
 }
 
 /** Port of `getDefaultForecastType`: daily, else twice daily, else hourly, as [state] supports them. */

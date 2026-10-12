@@ -93,10 +93,10 @@ fun sensorGraphCoordinates(
 data class GraphBox(val width: Double, val height: Double)
 
 /** How many points a graph keeps at most, and whether a period's mean stands for it (else its extremes). */
-private data class Sampling(val maxDetails: Double, val useMean: Boolean)
+internal data class Sampling(val maxDetails: Double, val useMean: Boolean)
 
 /** The bounds of a graph; unset ones come from its data. */
-private data class Limits(val minX: Double?, val maxX: Double?, val minY: Double?, val maxY: Double?)
+internal data class Limits(val minX: Double?, val maxX: Double?, val minY: Double?, val maxY: Double?)
 
 /** The values a graph spans from its bottom to its top, and the height of its zero line. */
 private data class YRange(val min: Double, val max: Double, val origin: Double)
@@ -107,8 +107,19 @@ private fun coordinates(
     sampling: Sampling,
     limits: Limits,
 ): GraphCoordinates {
-    val points = history.map { GraphPoint(it.lastUpdated * MILLIS, jsNumber(it.state)) }.filterNot { it.y.isNaN() }
-    val sampled = downSample(points, sampling.maxDetails, limits.minX, limits.maxX, sampling.useMean)
+    val points = history.map { GraphPoint(it.lastUpdated * MILLIS, jsNumber(it.state)) }
+    return pointCoordinates(points, box, sampling, limits)
+}
+
+/** Port of `coordinates`: [points] (x in milliseconds) without the unknown ones, down-sampled and scaled into [box]. */
+internal fun pointCoordinates(
+    points: List<GraphPoint>,
+    box: GraphBox,
+    sampling: Sampling,
+    limits: Limits,
+): GraphCoordinates {
+    val known = points.filterNot { it.y.isNaN() }
+    val sampled = downSample(known, sampling.maxDetails, limits.minX, limits.maxX, sampling.useMean)
     return calcPoints(sampled, box, limits)
 }
 

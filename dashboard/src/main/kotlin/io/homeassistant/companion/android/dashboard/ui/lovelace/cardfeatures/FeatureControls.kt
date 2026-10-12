@@ -329,6 +329,7 @@ private sealed interface DoorStep {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+// UPSTREAM-DIFF: Android's own date picker; upstream opens its own (the user chose native pickers for dates)
 internal fun FeatureDateSet(feature: TileFeature.DateSet, onAction: (CardAction) -> Unit) {
     val colors = LocalHAColorScheme.current
     var open by remember { mutableStateOf(false) }

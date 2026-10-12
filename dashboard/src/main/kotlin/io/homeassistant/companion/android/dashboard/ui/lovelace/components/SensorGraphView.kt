@@ -1,7 +1,6 @@
 package io.homeassistant.companion.android.dashboard.ui.lovelace.components
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +25,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.derive.DisplayColor
@@ -136,7 +136,7 @@ internal fun DrawScope.drawGraph(coordinates: GraphCoordinates, fill: Color?, li
 }
 
 /** Port of `getPath`: quadratic curves through the midpoints, each bending towards a point. */
-private fun smoothPath(points: List<GraphPoint>, scale: Float): Path = Path().apply {
+internal fun smoothPath(points: List<GraphPoint>, scale: Float): Path = Path().apply {
     fun x(point: GraphPoint) = point.x.toFloat() * scale
     fun y(point: GraphPoint) = point.y.toFloat() * scale
     var last = points.first()
