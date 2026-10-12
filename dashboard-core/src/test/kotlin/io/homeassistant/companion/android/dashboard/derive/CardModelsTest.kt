@@ -48,7 +48,7 @@ class CardModelsTest {
             Instant.EPOCH,
         )
         assertEquals("Device", model.title)
-        val (light, lock, button, sensor, missing) = model.rows
+        val (light, lock, button, sensor, missing) = model.entityRows
         assertEquals(true, (light.control as RowControl.Toggle).checked)
         assertEquals("Unlock", (lock.control as RowControl.Buttons).buttons.single().label)
         assertEquals("press", (button.control as RowControl.Buttons).buttons.single().action.service)
@@ -56,7 +56,7 @@ class CardModelsTest {
         assertEquals("15.6 °C", sensor.state)
         assertTrue(missing.missing)
         // Only sensor rows show relative times; a datetime row is a date and a time
-        assertEquals("2020-01-01", (model.rows.last().control as RowDateTime).date)
+        assertEquals("2020-01-01", (model.entityRows.last().control as RowDateTime).date)
         assertTrue(light.actions.tap)
     }
 

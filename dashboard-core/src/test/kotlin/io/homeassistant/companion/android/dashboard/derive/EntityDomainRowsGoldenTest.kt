@@ -36,7 +36,7 @@ class EntityDomainRowsGoldenTest {
         val (hass, _) = fixture.withState(captured.obj("stateObj")!!)
         val drawn = captured.obj("row")!!
         val card = CardConfig(JsonObject(mapOf("type" to JsonPrimitive("entities"), "entities" to JsonArray(listOf(JsonPrimitive(entityId))))))
-        val row = hass.entitiesModel(card, Instant.EPOCH).rows.single()
+        val row = hass.entitiesModel(card, Instant.EPOCH).entityRows.single()
         val control = row.control
         // The switch, checked as upstream's
         assertEquals(drawn.obj("toggle")?.let { it["checked"].toString() }, (control as? RowControl.Toggle)?.checked?.toString(), "switch")

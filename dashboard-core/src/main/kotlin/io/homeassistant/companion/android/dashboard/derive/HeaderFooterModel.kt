@@ -116,7 +116,8 @@ private fun withDefaultActions(config: JsonObject): JsonObject {
     return JsonObject(merged + ("tap_action" to sceneOn))
 }
 
-private fun HassSnapshot.buttonModel(config: JsonObject): HeaderFooterButton {
+/** A chip of `hui-buttons-base` for the entity [config] (its actions already defaulted). */
+internal fun HassSnapshot.buttonModel(config: JsonObject): HeaderFooterButton {
     val entityId = config.string(ENTITY).orEmpty()
     val state = states[entityId]
     return HeaderFooterButton(entityId, buttonName(config, state), buttonBadge(config, state), elementActions(config))

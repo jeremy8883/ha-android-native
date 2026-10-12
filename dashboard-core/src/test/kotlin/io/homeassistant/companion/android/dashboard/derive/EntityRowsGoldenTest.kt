@@ -118,7 +118,7 @@ class EntityRowsGoldenTest {
             DynamicTest.dynamicTest("$entityId $name") {
                 val (hass, _) = fixture.withState((captured as JsonObject).obj("stateObj")!!)
                 val card = CardConfig(JsonObject(mapOf("type" to JsonPrimitive("entities"), "entities" to JsonArray(listOf(JsonPrimitive(entityId))))))
-                check(hass.entitiesModel(card, Instant.EPOCH).rows.single().control, captured)
+                check(hass.entitiesModel(card, Instant.EPOCH).entityRows.single().control, captured)
             }
         }
     }

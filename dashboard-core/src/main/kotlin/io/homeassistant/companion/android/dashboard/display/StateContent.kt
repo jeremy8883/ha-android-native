@@ -129,6 +129,13 @@ private fun HassSnapshot.timestampAttributeMillis(value: JsonElement?): Double? 
     else -> Double.NaN
 }
 
+/**
+ * What `hui-timestamp-display` shows for an attribute [value] as `new Date(value)` reads it (a date string or epoch
+ * milliseconds), `null` when that is not a valid date.
+ */
+internal fun HassSnapshot.attributeTimestampDisplay(value: JsonElement?, now: Instant, format: String): String? =
+    timestampAttributeMillis(value)?.takeUnless { it.isNaN() }?.let { timestamp(it, now, format) }
+
 /** What `hui-timestamp-display` shows for the date string [value] in [format] ("relative", "total", "datetime"...). */
 internal fun HassSnapshot.timestampDisplay(value: String, now: Instant, format: String): String =
     timestamp(parseJsDate(value, formats.zone)?.toEpochMilli()?.toDouble() ?: Double.NaN, now, format)

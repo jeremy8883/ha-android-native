@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard.ui.lovelace.cards
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -27,10 +28,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import io.homeassistant.companion.android.common.compose.composable.HASwitch
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
+import io.homeassistant.companion.android.dashboard.derive.EntitiesModel
+import io.homeassistant.companion.android.dashboard.derive.EntitiesRow
 import io.homeassistant.companion.android.dashboard.derive.EntityRowModel
 import io.homeassistant.companion.android.dashboard.derive.HeaderFooterModel
 import io.homeassistant.companion.android.dashboard.derive.RowButton
@@ -49,8 +51,10 @@ import io.homeassistant.companion.android.dashboard.model.CardConfig
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardCardSurface
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.components.EntityToggle
+import io.homeassistant.companion.android.dashboard.ui.components.HaSwitch
 import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
+import io.homeassistant.companion.android.dashboard.ui.lovelace.common.LocalConditionContext
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
 import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.DomainRowState
 import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.MediaVolumeLine
@@ -62,6 +66,7 @@ import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowSl
 import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowTextControl
 import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowTimerText
 import io.homeassistant.companion.android.dashboard.ui.lovelace.headerfooter.HeaderFooter
+import io.homeassistant.companion.android.dashboard.ui.lovelace.specialrows.SpecialRow
 import io.homeassistant.companion.android.dashboard.ui.theme.CardHeaderAboveContentPadding
 import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
@@ -73,8 +78,7 @@ import java.time.ZonedDateTime
  * An entities card: its header element, an optional title, one row per entity with its control or state, then its
  * footer element.
  *
- * Upstream: `hui-entities-card`, with `hui-entities-toggle` (src/panels/lovelace/cards/hui-entities-card.ts;
- * src/panels/lovelace/components/hui-entities-toggle.ts)
+ * Upstream: `hui-entities-card` (src/panels/lovelace/cards/hui-entities-card.ts)
  */
 @Composable
 internal fun EntitiesCard(
@@ -84,11 +88,14 @@ internal fun EntitiesCard(
     interactions: CardInteractions,
     modifier: Modifier = Modifier,
 ) {
-    val entities by remember(card) {
-        derivedStateOf { hass.value?.entitiesModel(card, now.value?.toInstant() ?: Instant.EPOCH) }
+    val context = LocalConditionContext.current
+    val entities by remember(card, context) {
+        derivedStateOf {
+            val time = now.value
+            hass.value?.entitiesModel(card, time?.toInstant() ?: Instant.EPOCH, context.copy(now = time))
+        }
     }
     val model = entities ?: return
-    val colors = LocalHAColorScheme.current
     DashboardCardSurface(modifier = modifier) {
         Column(modifier = Modifier.fillMaxWidth()) {
             model.header?.let { header ->
@@ -98,36 +105,52 @@ internal fun EntitiesCard(
             Column(
                 modifier = Modifier.fillMaxWidth().padding(bottom = Css.Space.S4),
             ) {
-                val hasTitle = model.title != null || model.headerToggle != null
-                if (hasTitle) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(CardHeaderAboveContentPadding),
-                        horizontalArrangement = Arrangement.spacedBy(Css.Space.S2),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        DashboardIcon(model.icon, colors.colorTextSecondary, Modifier.size(HASize.XL))
-                        Text(
-                            model.title.orEmpty(),
-                            style = Css.Text.CardHeader,
-                            modifier = Modifier.weight(1f),
-                        )
-                        // `hui-entities-toggle`
-                        model.headerToggle?.let { toggle ->
-                            HASwitch(checked = toggle.checked, onCheckedChange = { on ->
-                                toggle.calls(on).forEach(interactions.onAction)
-                            })
-                        }
-                    }
-                }
+                val hasTitle = model.title != null || model.headerToggle != null || model.icon != null
+                if (hasTitle) EntitiesHeader(model, interactions)
                 // `#states`: `.card-content` (no top padding under the header) with an 8px gap between rows
                 Column(
                     modifier = Modifier.padding(top = if (hasTitle) 0.cssPx else Css.Space.S4),
                     verticalArrangement = Arrangement.spacedBy(Css.Space.S2),
                 ) {
-                    model.rows.forEach { row -> EntityRow(row, now.value?.toInstant() ?: Instant.EPOCH, interactions) }
+                    model.rows.forEach { row ->
+                        if (row is EntitiesRow.Entity) {
+                            EntityRow(row.row, now.value?.toInstant() ?: Instant.EPOCH, interactions)
+                        } else {
+                            SpecialRow(row, interactions)
+                        }
+                    }
                 }
             }
             model.footer?.let { HeaderFooter(it, footer = true, hass, now, interactions) }
+        }
+    }
+}
+
+/**
+ * The card's header: its icon, title and the switch turning its entities on or off, each when it has one.
+ *
+ * Upstream: part of `hui-entities-card`, with `hui-entities-toggle` (src/panels/lovelace/cards/hui-entities-card.ts;
+ * src/panels/lovelace/components/hui-entities-toggle.ts)
+ */
+@Composable
+private fun EntitiesHeader(model: EntitiesModel, interactions: CardInteractions) {
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(CardHeaderAboveContentPadding),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        // `.icon`: `padding: 0 18px 0 8px`
+        model.icon?.let {
+            DashboardIcon(
+                it,
+                LocalHAColorScheme.current.colorTextSecondary,
+                Modifier.padding(start = Css.Space.S2, end = HEADER_ICON_END).size(HASize.X2L),
+            )
+        }
+        Text(model.title.orEmpty(), style = Css.Text.CardHeader, modifier = Modifier.weight(1f))
+        model.headerToggle?.let { toggle ->
+            HaSwitch(checked = toggle.checked, onCheckedChange = { on ->
+                toggle.calls(on).forEach(interactions.onAction)
+            })
         }
     }
 }
@@ -145,39 +168,43 @@ private fun EntityRow(row: EntityRowModel, now: Instant, interactions: CardInter
     // Dropdowns and text fields carry the name as their label, in its place
     val namedControl = row.control is RowSelect || row.control is RowTextInput
     val domain = row.domain
-    Column(Modifier.fillMaxWidth().padding(horizontal = Css.Space.S4)) {
-        Row(
-            modifier = Modifier.fillMaxWidth().heightIn(min = HASize.X5L),
-            horizontalArrangement = Arrangement.spacedBy(Css.Space.S3),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            // The icon and name open more-info (or the row's tap action), like hui-generic-entity-row
+    BoxWithConstraints(Modifier.fillMaxWidth().padding(horizontal = Css.Space.S4)) {
+        // Number rows hide their state when at most 300px wide
+        val wide = maxWidth > NARROW_ROW_WIDTH
+        Column(Modifier.fillMaxWidth()) {
             Row(
-                modifier = (
-                    if (namedControl) {
-                        Modifier
-                    } else {
-                        Modifier.weight(
-                            1f,
-                        )
-                    }
-                    ).elementGestures(row.actions, interactions),
-                horizontalArrangement = Arrangement.spacedBy(Css.Space.S4),
+                modifier = Modifier.fillMaxWidth().heightIn(min = HASize.X5L),
+                horizontalArrangement = Arrangement.spacedBy(Css.Space.S3),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                domain?.condition?.let { WeatherIconView(it, colors.colorTextSecondary, Modifier.size(BADGE_SIZE)) }
-                    ?: RowBadge(row)
-                if (!namedControl) RowName(row.name, domain?.nameSecondary, textColor)
+                // The icon and name open more-info (or the row's tap action), like hui-generic-entity-row
+                Row(
+                    modifier = (
+                        if (namedControl) {
+                            Modifier
+                        } else {
+                            Modifier.weight(
+                                1f,
+                            )
+                        }
+                        ).elementGestures(row.actions, interactions),
+                    horizontalArrangement = Arrangement.spacedBy(Css.Space.S4),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    domain?.condition?.let { WeatherIconView(it, colors.colorTextSecondary, Modifier.size(BADGE_SIZE)) }
+                        ?: RowBadge(row)
+                    if (!namedControl) RowName(row.name, domain?.nameSecondary, textColor)
+                }
+                val twoLines = domain?.let { it.stateSecondary != null || it.weatherDetail != null } == true
+                if (row.control == null && domain != null && twoLines) {
+                    DomainRowState(row.state, domain, textColor)
+                } else {
+                    EntityRowControl(row, textColor, now, interactions, wide)
+                }
             }
-            val twoLines = domain?.let { it.stateSecondary != null || it.weatherDetail != null } == true
-            if (row.control == null && domain != null && twoLines) {
-                DomainRowState(row.state, domain, textColor)
-            } else {
-                EntityRowControl(row, textColor, now, interactions)
+            (row.control as? RowMedia)?.let { media ->
+                media.volume?.let { MediaVolumeLine(media, it, interactions.onAction) }
             }
-        }
-        (row.control as? RowMedia)?.let { media ->
-            media.volume?.let { MediaVolumeLine(media, it, interactions.onAction) }
         }
     }
 }
@@ -193,7 +220,8 @@ private fun RowScope.EntityRowControl(
     textColor: Color,
     now: Instant,
     interactions: CardInteractions,
-) = RowControlContent(row.control, row.state, textColor, now, interactions.onAction)
+    wide: Boolean,
+) = RowControlContent(row.control, row.state, textColor, now, interactions.onAction, wide)
 
 /**
  * A row's [control] (a switch, buttons or an input), or its [state] text without one.
@@ -207,6 +235,7 @@ internal fun RowScope.RowControlContent(
     textColor: Color,
     now: Instant,
     onAction: (CardAction) -> Unit,
+    wide: Boolean = true,
 ) {
     when (control) {
         is RowControl.Toggle -> EntityToggle(
@@ -221,7 +250,7 @@ internal fun RowScope.RowControlContent(
             modifier = Modifier.weight(1f),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
-        ) { RowSliderControl(control, onAction) }
+        ) { RowSliderControl(control, onAction, showState = wide) }
         is RowNumberBox -> RowNumberBoxControl(control, onAction)
         is RowSelect -> RowSelectControl(control, onAction)
         is RowTextInput -> RowTextControl(control, onAction)
@@ -308,3 +337,9 @@ private fun RowBadge(row: EntityRowModel) {
 
 /** `state-badge`'s 40 × 40. */
 private val BADGE_SIZE = 40.dp
+
+/** The width up to which `hui-input-number-entity-row` hides its state (`_measureCard`). */
+private val NARROW_ROW_WIDTH = 300.dp
+
+/** The header icon's `padding-right: 18px`. */
+private val HEADER_ICON_END = 18.dp

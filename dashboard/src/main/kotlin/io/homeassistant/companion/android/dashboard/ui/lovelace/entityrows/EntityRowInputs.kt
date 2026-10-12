@@ -7,16 +7,23 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.Slider
-import androidx.compose.material3.SliderDefaults
+import androidx.compose.material3.SliderColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -25,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
@@ -33,6 +41,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
@@ -41,8 +50,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import androidx.compose.ui.window.PopupProperties
-import io.homeassistant.companion.android.common.compose.composable.HADropdownItem
-import io.homeassistant.companion.android.common.compose.composable.HADropdownMenu
 import io.homeassistant.companion.android.common.compose.composable.HATextField
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
@@ -51,6 +58,7 @@ import io.homeassistant.companion.android.dashboard.derive.RowSelect
 import io.homeassistant.companion.android.dashboard.derive.RowSlider
 import io.homeassistant.companion.android.dashboard.derive.RowTextInput
 import io.homeassistant.companion.android.dashboard.derive.RowTimer
+import io.homeassistant.companion.android.dashboard.ui.components.HaSelect
 import io.homeassistant.companion.android.dashboard.ui.components.haSliderColors
 import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
@@ -62,7 +70,9 @@ import kotlinx.coroutines.delay
 // in EntityRowDateTime.kt.
 
 /**
- * A number's slider, at most 200dp wide and labelled with its value while dragged, and its state; set when let go.
+ * A number's slider, at most 200dp wide and labelled with its value while dragged, and its state unless [showState]
+ * is false (upstream hides it in rows at most 300px wide); set when let go. `ha-slider`'s size: a 4px track and a
+ * 20px thumb, taking no more room than they draw.
  *
  * Upstream: `ha-slider` in `hui-input-number-entity-row`, `hui-number-entity-row` (src/components/ha-slider.ts;
  * src/panels/lovelace/entity-rows/hui-input-number-entity-row.ts;
@@ -70,39 +80,79 @@ import kotlinx.coroutines.delay
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun RowScope.RowSliderControl(control: RowSlider, onAction: (CardAction) -> Unit) {
+internal fun RowScope.RowSliderControl(control: RowSlider, onAction: (CardAction) -> Unit, showState: Boolean = true) {
     var dragging by remember { mutableStateOf<Float?>(null) }
     val interactionSource = remember { MutableInteractionSource() }
     val colors = haSliderColors()
-    Slider(
-        value = dragging ?: (control.value ?: control.min).toFloat(),
-        onValueChange = { dragging = it },
-        onValueChangeFinished = {
-            dragging?.let { value -> onAction(control.service.withValue(control.stepped(value.toDouble()))) }
-            dragging = null
-        },
-        valueRange = control.min.toFloat()..control.max.toFloat(),
-        enabled = control.enabled,
-        colors = colors,
-        interactionSource = interactionSource,
-        thumb = {
-            Box(contentAlignment = Alignment.Center) {
-                SliderDefaults.Thumb(interactionSource, colors = colors, enabled = control.enabled)
-                dragging?.let { SliderTooltip(control.tooltip(it.toDouble())) }
-            }
-        },
-        modifier = Modifier
-            .weight(1f, fill = false)
-            .widthIn(min = SLIDER_MIN_WIDTH, max = SLIDER_MAX_WIDTH)
-            .padding(horizontal = Css.Space.S2),
-    )
-    Text(
-        control.state,
-        style = Css.Text.Body,
-        color = LocalHAColorScheme.current.colorTextPrimary,
-        textAlign = TextAlign.End,
-        modifier = Modifier.widthIn(min = STATE_MIN_WIDTH),
-    )
+    val range = control.min.toFloat()..control.max.toFloat()
+    CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
+        Slider(
+            value = dragging ?: (control.value ?: control.min).toFloat(),
+            onValueChange = { dragging = it },
+            onValueChangeFinished = {
+                dragging?.let { value -> onAction(control.service.withValue(control.stepped(value.toDouble()))) }
+                dragging = null
+            },
+            valueRange = range,
+            enabled = control.enabled,
+            colors = colors,
+            interactionSource = interactionSource,
+            thumb = {
+                Box(contentAlignment = Alignment.Center) {
+                    Box(
+                        Modifier
+                            .size(SLIDER_THUMB)
+                            .background(
+                                if (control.enabled) colors.thumbColor else colors.disabledThumbColor,
+                                CircleShape,
+                            ),
+                    )
+                    dragging?.let { SliderTooltip(control.tooltip(it.toDouble())) }
+                }
+            },
+            track = { state ->
+                val span = range.endInclusive - range.start
+                val fraction = if (span > 0f) ((state.value - range.start) / span).coerceIn(0f, 1f) else 0f
+                SliderTrack(fraction, colors, control.enabled)
+            },
+            modifier = Modifier
+                .weight(1f, fill = false)
+                .widthIn(min = SLIDER_MIN_WIDTH, max = SLIDER_MAX_WIDTH)
+                .padding(horizontal = Css.Space.S2),
+        )
+    }
+    if (showState) {
+        Text(
+            control.state,
+            style = Css.Text.Body,
+            color = LocalHAColorScheme.current.colorTextPrimary,
+            textAlign = TextAlign.End,
+            modifier = Modifier.widthIn(min = STATE_MIN_WIDTH),
+        )
+    }
+}
+
+/**
+ * `ha-slider`'s 4px track, filled up to [fraction] in the indicator colour.
+ *
+ * Upstream: part of `ha-slider` (src/components/ha-slider.ts)
+ */
+@Composable
+private fun SliderTrack(fraction: Float, colors: SliderColors, enabled: Boolean) {
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .height(SLIDER_TRACK)
+            .clip(CircleShape)
+            .background(if (enabled) colors.inactiveTrackColor else colors.disabledInactiveTrackColor),
+    ) {
+        Box(
+            Modifier
+                .fillMaxWidth(fraction)
+                .fillMaxHeight()
+                .background(if (enabled) colors.activeTrackColor else colors.disabledActiveTrackColor),
+        )
+    }
 }
 
 /**
@@ -168,11 +218,11 @@ internal fun RowNumberBoxControl(control: RowNumberBox, onAction: (CardAction) -
  */
 @Composable
 internal fun RowScope.RowSelectControl(control: RowSelect, onAction: (CardAction) -> Unit) {
-    HADropdownMenu(
-        items = control.options.map { (value, label) -> HADropdownItem(value, label) },
-        selectedKey = control.value?.takeIf { value -> control.options.any { it.first == value } },
-        onItemSelected = { option -> if (option != control.value) onAction(control.choose(option)) },
+    HaSelect(
+        options = control.options,
+        value = control.value,
         label = control.label,
+        onSelect = { option -> onAction(control.choose(option)) },
         enabled = control.enabled,
         modifier = Modifier.weight(1f),
     )
@@ -270,6 +320,10 @@ private val NUMBER_WIDTH = 140.dp
 private val SLIDER_MIN_WIDTH = 100.dp
 private val SLIDER_MAX_WIDTH = 200.dp
 private val STATE_MIN_WIDTH = 45.dp
+
+// `ha-slider`'s `--track-size` and size m `--thumb-width`
+private val SLIDER_TRACK = 4.dp
+private val SLIDER_THUMB = 20.dp
 private val TOOLTIP_GAP = Css.Space.S2
 private const val TOOLTIP_BACKGROUND = "secondary-background-color"
 

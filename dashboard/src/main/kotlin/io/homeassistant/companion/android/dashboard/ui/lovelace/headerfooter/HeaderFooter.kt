@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
@@ -91,34 +92,50 @@ private fun PictureHeaderFooter(model: HeaderFooterModel.Picture, interactions: 
 /**
  * A row of chips, one per entity, scrolling sideways on phones; a divider separates it from the rows.
  *
- * Upstream: `hui-buttons-header-footer`, `hui-buttons-base`
- * (src/panels/lovelace/header-footer/hui-buttons-header-footer.ts; src/panels/lovelace/components/hui-buttons-base.ts)
+ * Upstream: `hui-buttons-header-footer` (src/panels/lovelace/header-footer/hui-buttons-header-footer.ts)
  */
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun ButtonsHeaderFooter(model: HeaderFooterModel.Buttons, footer: Boolean, interactions: CardInteractions) {
     if (footer) HAHorizontalDivider(Modifier.padding(vertical = Css.Space.S4))
-    val padding = Modifier
-        .padding(horizontal = Css.Space.S3)
-        .padding(
-            top = if (!footer) Css.Space.S4 else Css.Space.S2,
-            bottom = if (footer) Css.Space.S4 else Css.Space.S2,
-        )
+    ButtonsBase(
+        model.buttons,
+        top = if (!footer) Css.Space.S4 else Css.Space.S2,
+        bottom = if (footer) Css.Space.S4 else Css.Space.S2,
+        interactions = interactions,
+    )
+    if (!footer) HAHorizontalDivider(Modifier.padding(bottom = Css.Space.S4))
+}
+
+/**
+ * The chips of [buttons], 12px in from the sides and [top] and [bottom] (`--padding-top`, `--padding-bottom`) from
+ * the edges: wrapping, but on one scrolling line on phones.
+ *
+ * Upstream: `hui-buttons-base` (src/panels/lovelace/components/hui-buttons-base.ts)
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+internal fun ButtonsBase(
+    buttons: List<HeaderFooterButton>,
+    top: Dp,
+    bottom: Dp,
+    interactions: CardInteractions,
+    modifier: Modifier = Modifier,
+) {
+    val padding = Modifier.padding(horizontal = Css.Space.S3).padding(top = top, bottom = bottom)
     val gap = Arrangement.spacedBy(Css.Space.S2)
     // Upstream wraps the chips, but keeps them on one scrolling line on phones (450px wide or less)
     if (LocalConfiguration.current.screenWidthDp > PHONE_MAX_WIDTH_DP) {
-        FlowRow(Modifier.fillMaxWidth().then(padding), horizontalArrangement = gap, verticalArrangement = gap) {
-            model.buttons.forEach { button -> EntityChip(button, interactions) }
+        FlowRow(modifier.fillMaxWidth().then(padding), horizontalArrangement = gap, verticalArrangement = gap) {
+            buttons.forEach { button -> EntityChip(button, interactions) }
         }
     } else {
         Row(
-            Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).then(padding),
+            modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).then(padding),
             horizontalArrangement = gap,
         ) {
-            model.buttons.forEach { button -> EntityChip(button, interactions) }
+            buttons.forEach { button -> EntityChip(button, interactions) }
         }
     }
-    if (!footer) HAHorizontalDivider(Modifier.padding(bottom = Css.Space.S4))
 }
 
 /**

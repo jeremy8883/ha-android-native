@@ -5,6 +5,7 @@ import io.homeassistant.companion.android.dashboard.action.CodeRequest
 import io.homeassistant.companion.android.dashboard.action.ElementActions
 import io.homeassistant.companion.android.dashboard.action.cardActions
 import io.homeassistant.companion.android.dashboard.action.toggleEntity
+import io.homeassistant.companion.android.dashboard.condition.ConditionContext
 import io.homeassistant.companion.android.dashboard.display.StateDisplayOptions
 import io.homeassistant.companion.android.dashboard.display.formatEntityState
 import io.homeassistant.companion.android.dashboard.display.stateDisplay
@@ -29,11 +30,14 @@ import kotlinx.serialization.json.put
 data class EntitiesModel(
     val title: String?,
     val icon: String?,
-    val rows: List<EntityRowModel>,
+    val rows: List<EntitiesRow>,
     val headerToggle: HeaderToggle? = null,
     val header: HeaderFooterModel? = null,
     val footer: HeaderFooterModel? = null,
-)
+) {
+    /** The rows that show an entity. */
+    val entityRows: List<EntityRowModel> get() = rows.filterIsInstance<EntitiesRow.Entity>().map { it.row }
+}
 
 /**
  * Port of `hui-entities-toggle`: on while any of its entities is, and [calls] turn the ones that aren't yet on
@@ -122,24 +126,28 @@ data class RowIconButton(
 data class RowButton(val label: String, val enabled: Boolean, val danger: Boolean, val action: CardAction.CallService)
 
 /**
- * Derive an entities card. Each entry is an entity id or a row config; non-entity rows (dividers, sections, ...)
- * are not ported yet and skipped. Ports of `hui-entities-card`, `DOMAIN_TO_ELEMENT_TYPE` and the toggle, button,
- * input button, scene, script and lock rows (frontend@20260624.6 src/panels/lovelace/cards/hui-entities-card.ts,
- * src/panels/lovelace/create-element/create-row-element.ts, src/panels/lovelace/entity-rows/). Other domains show
- * their state as text.
+ * Derive an entities card. Each entry is an entity id or a row config: an entity's row, or a special row by its
+ * `type` (dividers, sections, links, buttons...), hidden rows left out. Ports of `hui-entities-card`,
+ * `DOMAIN_TO_ELEMENT_TYPE` and the entity and special rows (frontend@20260624.6
+ * src/panels/lovelace/cards/hui-entities-card.ts, src/panels/lovelace/create-element/create-row-element.ts,
+ * src/panels/lovelace/entity-rows/, src/panels/lovelace/special-rows/). [context] decides conditional rows.
  */
-fun HassSnapshot.entitiesModel(card: CardConfig, now: Instant): EntitiesModel {
+fun HassSnapshot.entitiesModel(
+    card: CardConfig,
+    now: Instant,
+    context: ConditionContext = ConditionContext(),
+): EntitiesModel {
     val configs = (card.json["entities"] as? JsonArray).orEmpty().mapNotNull { entry ->
         when {
             entry is JsonObject -> entry
             entry is JsonPrimitive && entry.isString -> JsonObject(mapOf("entity" to entry))
             else -> null
-        }?.takeIf { it.string("entity") != null }
+        }?.takeIf { it.string("type") != null || it.string("entity") != null }
     }
     return EntitiesModel(
         title = card.json.string("title")?.ifEmpty { null },
         icon = card.json.string("icon")?.ifEmpty { null },
-        rows = configs.map { entityRow(it, now, cardStateColor(card)) },
+        rows = configs.mapNotNull { entitiesRow(it, now, cardStateColor(card), context) },
         headerToggle = headerToggle(card.json, configs.mapNotNull { it.string("entity") }),
         header = headerFooterModel(card.json.obj("header")),
         footer = headerFooterModel(card.json.obj("footer")),
@@ -161,25 +169,30 @@ private fun HassSnapshot.headerToggle(card: JsonObject, entityIds: List<String>)
 private fun cardStateColor(card: CardConfig): Boolean? =
     if ("state_color" in card.json) card.json.boolean("state_color") else null
 
-private fun HassSnapshot.entityRow(config: JsonObject, now: Instant, cardStateColor: Boolean?): EntityRowModel {
+/** The row of the entity [config], shown by its domain or as the [kind] of row its `type` asks for. */
+internal fun HassSnapshot.entityRow(config: JsonObject, now: Instant, kind: EntityRowKind): EntityRowModel {
     val entityId = config.string("entity").orEmpty()
     // Rows default to more-info on tap, like the tile card
     val actions = cardActions(CardConfig(JsonObject(config + ("type" to JsonPrimitive("tile"))))).card
     val state = states[entityId]
         ?: return EntityRowModel(entityId, entityId, "mdi:alert-circle", null, false, true, null, actions)
     val name = entityNameDisplay(state, config["name"])
-    val domain = domainRow(state, config, now)
-    val control = domain?.control ?: rowControl(state, config) ?: inputRowControl(state, name)
+    val domain = if (kind == EntityRowKind.DOMAIN) domainRow(state, config, now) else null
+    val control = if (kind == EntityRowKind.DOMAIN) {
+        domain?.control ?: rowControl(state, config) ?: inputRowControl(state, name)
+    } else {
+        null
+    }
     return EntityRowModel(
         entityId = entityId,
         name = name,
         icon = entityIcon(entityId, config.string("icon")),
-        state = if (control == null) domain?.state ?: rowStateText(state, config, now) else null,
+        state = if (control == null) domain?.state ?: rowStateText(state, config, now, kind) else null,
         available = state.state != STATE_UNAVAILABLE,
         missing = false,
         control = control,
         actions = actions,
-        badge = stateBadge(state, config.string("icon"), config.boolean("state_color") ?: cardStateColor),
+        badge = stateBadge(state, config.string("icon"), config.boolean("state_color")),
         domain = domain,
     )
 }
@@ -188,8 +201,8 @@ private fun HassSnapshot.entityRow(config: JsonObject, now: Instant, cardStateCo
  * The text of a row without a control: sensor rows show timestamps as relative times (`hui-sensor-entity-row`),
  * every other row its formatted state (`hui-simple-entity-row`).
  */
-private fun HassSnapshot.rowStateText(state: EntityState, config: JsonObject, now: Instant): String =
-    if (state.domain == "sensor") {
+private fun HassSnapshot.rowStateText(state: EntityState, config: JsonObject, now: Instant, kind: EntityRowKind) =
+    if (kind == EntityRowKind.SENSOR || (kind == EntityRowKind.DOMAIN && state.domain == "sensor")) {
         stateDisplay(state, JsonPrimitive("state"), now, StateDisplayOptions(timeFormat = config.string("time_format")))
     } else {
         formatEntityState(state)

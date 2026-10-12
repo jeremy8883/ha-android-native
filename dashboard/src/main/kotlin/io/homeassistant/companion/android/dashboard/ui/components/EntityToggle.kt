@@ -1,14 +1,12 @@
 package io.homeassistant.companion.android.dashboard.ui.components
 
-import androidx.compose.material3.Switch
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
+import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import kotlin.time.Duration.Companion.seconds
 import kotlinx.coroutines.delay
 
@@ -30,15 +28,22 @@ internal fun EntityToggle(checked: Boolean, updatedAt: Double, onToggle: () -> U
             tapped = null
         }
     }
-    Switch(
+    HaSwitch(
         checked = tapped ?: checked,
         onCheckedChange = {
             tapped = it
             onToggle()
         },
         enabled = enabled,
-        colors = SwitchDefaults.colors(checkedTrackColor = LocalHAColorScheme.current.colorFillPrimaryLoudResting),
+        width = SWITCH_WIDTH,
+        height = SWITCH_HEIGHT,
+        thumb = SWITCH_THUMB,
     )
 }
 
 private val TOGGLE_RESET_DELAY = 2.seconds
+
+// `ha-entity-toggle`'s smaller switch: 38px wide, 20px high, a 14px thumb
+private val SWITCH_WIDTH = 38.cssPx
+private val SWITCH_HEIGHT = 20.cssPx
+private val SWITCH_THUMB = 14.cssPx

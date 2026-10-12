@@ -54,7 +54,7 @@ class IconColorsGoldenTest {
             stateColor?.let { put("state_color", it) }
             put("entities", buildJsonArray { add(JsonPrimitive(id)) })
         }
-        val badge = hass.entitiesModel(CardConfig(card), Instant.EPOCH).rows.single().badge!!
+        val badge = hass.entitiesModel(CardConfig(card), Instant.EPOCH).entityRows.single().badge!!
         assertEquals(captured.boolean("picture"), badge.picture != null, "picture")
         if (badge.picture != null) return
         val tint = badge.color?.let { resolveDisplayColor(it, dark = false) }
