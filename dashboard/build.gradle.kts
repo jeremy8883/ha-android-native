@@ -10,6 +10,11 @@ android {
     namespace = "io.homeassistant.companion.android.dashboard"
 }
 
+// Sizes come from the frontend's CSS (ui/theme/Css.kt): forbid the companion app's presets here.
+detekt {
+    config.from(file("detekt.yml"))
+}
+
 dependencies {
     implementation(project(":common"))
     implementation(project(":dashboard-core"))

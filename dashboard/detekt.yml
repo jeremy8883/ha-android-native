@@ -1,0 +1,20 @@
+# :dashboard ports the Home Assistant frontend, so its sizes come from the frontend's CSS through
+# ui/theme/Css.kt (Css.Text, Css.FontSize, Css.Space, Css.Radius, Css.BorderWidth, cssPx, cssFontPx),
+# not from the companion app's design-system presets. Added on top of the root .detekt/detekt.yml;
+# a list here replaces the root's, so the root's forbidden imports are repeated.
+style:
+  ForbiddenImport:
+    active: true
+    forbiddenImports:
+      - value: 'org.json.*'
+        reason: 'Use kotlinx.serialization instead of org.json.'
+      - value: 'io.homeassistant.companion.android.common.compose.theme.HATextStyle*'
+        reason: 'Use the frontend-sized Css.Text styles (ui/theme/Css.kt) instead of the companion app presets.'
+      - value: 'io.homeassistant.companion.android.common.compose.theme.HAFontSize*'
+        reason: 'Use Css.FontSize (--ha-font-size-*) or n.cssFontPx (ui/theme/Css.kt).'
+      - value: 'io.homeassistant.companion.android.common.compose.theme.HADimens*'
+        reason: 'Use Css.Space (--ha-space-*) or n.cssPx (ui/theme/Css.kt).'
+      - value: 'io.homeassistant.companion.android.common.compose.theme.HARadius*'
+        reason: 'Use Css.Radius (--ha-border-radius-*) or n.cssPx (ui/theme/Css.kt).'
+      - value: 'io.homeassistant.companion.android.common.compose.theme.HABorderWidth*'
+        reason: 'Use Css.BorderWidth (--ha-border-width-*) or n.cssPx (ui/theme/Css.kt).'
