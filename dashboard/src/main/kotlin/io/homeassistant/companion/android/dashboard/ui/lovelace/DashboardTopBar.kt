@@ -2,37 +2,59 @@ package io.homeassistant.companion.android.dashboard.ui.lovelace
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.PrimaryScrollableTabRow
-import androidx.compose.material3.Tab
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.R as commonR
 import io.homeassistant.companion.android.common.compose.theme.HASize
@@ -56,6 +78,7 @@ import io.homeassistant.companion.android.dashboard.ui.panels.ToolbarIconButton 
 import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.cssPx
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
+import kotlinx.coroutines.launch
 
 /**
  * The toolbar: back to the page that opened it (else the menu, with a dot while there are notifications), then the
@@ -122,31 +145,123 @@ internal fun DashboardTopBar(
 }
 
 /**
- * The dashboard's top-level views as tabs, filling the toolbar's height.
+ * The dashboard's top-level views as tabs, filling the toolbar's height, each as wide as its label and 16px either
+ * side; the selected one underlined. When they don't fit they scroll, with an arrow at each end that has more tabs
+ * past it, scrolling a width of tabs that way.
  *
  * Upstream: part of `hui-root`, `ha-tab-group` (src/panels/lovelace/hui-root.ts; src/components/ha-tab-group.ts)
  */
 @Composable
 private fun ViewTabs(content: DashboardUiState.Content, localize: Localize, onSelectTab: (String) -> Unit) {
-    val colors = LocalHAColorScheme.current
-    PrimaryScrollableTabRow(
-        selectedTabIndex = content.selectedTab,
-        modifier = Modifier.height(TOOLBAR_HEIGHT),
-        containerColor = colors.colorSurfaceDefault,
-        contentColor = colors.colorOnPrimaryNormal,
-        edgePadding = 0.cssPx,
-        divider = {},
-    ) {
-        content.tabs.forEachIndexed { index, tab ->
-            Tab(
-                selected = index == content.selectedTab,
-                onClick = { onSelectTab(tab.path) },
-                text = { ViewTabContent(tab.label, localize) },
-                modifier = Modifier.height(TOOLBAR_HEIGHT),
-                selectedContentColor = colors.colorOnPrimaryNormal,
-                unselectedContentColor = colors.colorTextSecondary,
-            )
+    val scroll = rememberScrollState()
+    val scope = rememberCoroutineScope()
+    var navWidth by remember { mutableIntStateOf(0) }
+    // `hasScrollControls`: the tabs are wider than their space (`hui-root` takes `.nav-container`'s room for the
+    // arrows away, so they lie over the tabs)
+    val scrolls = scroll.maxValue > 0
+    val tabBounds = remember { mutableStateMapOf<Int, IntRange>() }
+    // `setActiveTab` scrolls the selected tab into view
+    LaunchedEffect(content.selectedTab, navWidth, tabBounds[content.selectedTab]) {
+        val bounds = tabBounds[content.selectedTab] ?: return@LaunchedEffect
+        val target = when {
+            bounds.first < scroll.value -> bounds.first
+            bounds.last > scroll.value + navWidth -> bounds.last - navWidth
+            else -> return@LaunchedEffect
         }
+        scroll.animateScrollTo(target)
+    }
+    // The tab group starts right after the menu button, where Material's title slot leaves a gap
+    Box(Modifier.fillMaxWidth().height(TOOLBAR_HEIGHT).widenStart(TITLE_GAP)) {
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .onSizeChanged { navWidth = it.width }
+                .horizontalScroll(scroll),
+        ) {
+            content.tabs.forEachIndexed { index, tab ->
+                ViewTab(
+                    selected = index == content.selectedTab,
+                    onClick = { onSelectTab(tab.path) },
+                    modifier = Modifier.onPlaced { coordinates ->
+                        val start = coordinates.positionInParent().x.toInt()
+                        tabBounds[index] = start..(start + coordinates.size.width)
+                    },
+                ) { ViewTabContent(tab.label, localize) }
+            }
+        }
+        // `scrollOffset`: an arrow shows while more than 1px is hidden on its side
+        if (scrolls && scroll.value > SCROLL_OFFSET_PX) {
+            TabScrollButton(TabIcons.START, Modifier.align(Alignment.CenterStart), start = true) {
+                scope.launch { scroll.animateScrollTo(scroll.value - navWidth) }
+            }
+        }
+        if (scrolls && scroll.value < scroll.maxValue - SCROLL_OFFSET_PX) {
+            TabScrollButton(TabIcons.END, Modifier.align(Alignment.CenterEnd), start = false) {
+                scope.launch { scroll.animateScrollTo(scroll.value + navWidth) }
+            }
+        }
+    }
+}
+
+/** Lays the element out [extra] wider on its start side, over its parent's start padding. */
+private fun Modifier.widenStart(extra: Dp): Modifier = layout { measurable, constraints ->
+    val shift = extra.roundToPx()
+    val width = constraints.maxWidth + shift
+    val placeable = measurable.measure(constraints.copy(minWidth = width, maxWidth = width))
+    layout(constraints.maxWidth, placeable.height) { placeable.placeRelative(-shift, 0) }
+}
+
+/**
+ * A view's tab: [content] in the tab's colour, 16px either side, the toolbar's height; the selected one in the
+ * accent and underlined, the others at 80 % opacity.
+ *
+ * Upstream: `ha-tab-group-tab`, part of `hui-root` (src/components/ha-tab-group-tab.ts;
+ * src/panels/lovelace/hui-root.ts)
+ */
+@Composable
+private fun ViewTab(selected: Boolean, onClick: () -> Unit, modifier: Modifier, content: @Composable () -> Unit) {
+    val colors = LocalHAColorScheme.current
+    val color = if (selected) colors.colorOnPrimaryNormal else colors.colorTextSecondary
+    Box(
+        modifier = modifier
+            .height(TOOLBAR_HEIGHT)
+            .alpha(if (selected) 1f else INACTIVE_TAB_ALPHA)
+            .selectable(selected = selected, role = Role.Tab, onClick = onClick)
+            .drawBehind {
+                if (selected) {
+                    val track = TAB_TRACK_WIDTH.toPx()
+                    drawRect(color, topLeft = Offset(0f, size.height - track), size = Size(size.width, track))
+                }
+            }
+            .padding(horizontal = Css.Space.S4),
+        contentAlignment = Alignment.Center,
+    ) {
+        CompositionLocalProvider(
+            LocalContentColor provides color,
+            LocalTextStyle provides Css.Text.Primary.copy(color = color, fontWeight = Css.FontWeight.Action),
+        ) { content() }
+    }
+}
+
+/**
+ * An arrow scrolling the tabs, over a fade from the toolbar's colour.
+ *
+ * Upstream: part of `ha-tab-group` (`.scroll-button`), `hui-root` (src/components/ha-tab-group.ts;
+ * src/panels/lovelace/hui-root.ts)
+ */
+@Composable
+private fun TabScrollButton(icon: String, modifier: Modifier, start: Boolean, onClick: () -> Unit) {
+    val colors = LocalHAColorScheme.current
+    val fade = listOf(colors.colorSurfaceDefault, colors.colorSurfaceDefault.copy(alpha = 0f))
+    Box(
+        modifier = modifier
+            .width(SCROLL_BUTTON_WIDTH)
+            .height(TOOLBAR_HEIGHT)
+            .background(Brush.horizontalGradient(if (start) fade else fade.reversed()))
+            .clickable(role = Role.Button, onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) {
+        DashboardIcon(icon, colors.colorTextPrimary, Modifier.size(SCROLL_ICON_SIZE))
     }
 }
 
@@ -270,6 +385,12 @@ private fun ToolbarIconButton(icon: String, label: String, onClick: () -> Unit) 
     }
 }
 
+/** The tab group's arrows. */
+private object TabIcons {
+    const val START = "mdi:chevron-left"
+    const val END = "mdi:chevron-right"
+}
+
 /** The toolbar's icons. */
 private object ToolbarIcons {
     const val BACK = "mdi:arrow-left"
@@ -280,6 +401,22 @@ private object ToolbarIcons {
 private const val UNNAMED_VIEW = "ui.panel.lovelace.views.unnamed_view"
 private const val OPEN_MENU = "ui.panel.lovelace.editor.menu.open"
 private const val ACCENT = "accent-color"
+
+/** `ha-tab-group`'s scroll buttons: `1.5em` of their 14px, with a 1em icon. */
+private val SCROLL_BUTTON_WIDTH = 21.cssPx
+private val SCROLL_ICON_SIZE = 14.cssPx
+
+/** The space Material's top app bar leaves between the navigation icon and the title. */
+private val TITLE_GAP = 4.dp
+
+/** `ha-tab-group`'s `--track-width`. */
+private val TAB_TRACK_WIDTH = 2.cssPx
+
+/** `ha-tab-group-tab`'s `opacity: 0.8` while not active. */
+private const val INACTIVE_TAB_ALPHA = 0.8f
+
+/** `wa-tab-group`'s `scrollOffset`. */
+private const val SCROLL_OFFSET_PX = 1
 
 /** The frontend's `--header-height`, which the tabs fill as upstream's fill its header. */
 private val TOOLBAR_HEIGHT = 56.dp
