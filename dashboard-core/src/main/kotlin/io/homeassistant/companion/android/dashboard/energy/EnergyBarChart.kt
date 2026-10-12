@@ -151,6 +151,28 @@ fun yAxisFractionDigits(min: Double, max: Double): Int {
     return max(0, ceil(-log10(range / TEN)).toInt())
 }
 
+/**
+ * The fraction digits of the y axis of a chart whose legend hides some series: [allDigits] (from every series) when
+ * none is hidden, else those the [shownValues] need.
+ */
+fun shownYAxisFractionDigits(allDigits: Int, anyHidden: Boolean, shownValues: () -> List<Double>): Int {
+    if (!anyHidden) return allDigits
+    // UPSTREAM-DIFF: the digits follow the series the legend shows. Upstream computes them once from all series, so
+    // hiding a large one (untracked consumption) leaves labels like "0 0 0 1 1" for the small ones.
+    val values = shownValues()
+    return yAxisFractionDigits(
+        values.minOrNull() ?: Double.POSITIVE_INFINITY,
+        values.maxOrNull() ?: Double.NEGATIVE_INFINITY,
+    )
+}
+
+/** [this] with the y axis's fraction digits of only the [shown] series (and the lines). */
+fun EnergyBarChart.showing(shown: List<EnergyBarSeries>): EnergyBarChart = copy(
+    yFractionDigits = shownYAxisFractionDigits(yFractionDigits, shown.size < series.size) {
+        shown.flatMap { s -> s.points.map { it.y } } + lines.flatMap { line -> line.points.map { it.y } }
+    },
+)
+
 /** Whether [min] and [max] differ by floating point noise at most, so values between them are one value. */
 fun isRoundingNoise(min: Double, max: Double): Boolean = max - min <= ROUNDING_NOISE * maxOf(abs(min), abs(max))
 

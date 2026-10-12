@@ -70,6 +70,7 @@ internal fun HistoryLineChartView(
             s.points.inZoomWindow(axis.shown.start, axis.shown.end) { it.x }.mapNotNull { it.y }
         }
     }
+    val axisDigits = remember(chart, hidden) { chart.showing(hidden).yFractionDigits }
     val times = remember(chart) { chart.series.flatMap { s -> s.points.map { it.x } }.distinct().sorted() }
     val frame = remember { arrayOfNulls<HistoryFrame>(1) }
     // Zooming hides the tooltip, as the frontend does on touch
@@ -83,10 +84,10 @@ internal fun HistoryLineChartView(
                     selected = if (at == selected) null else at
                 },
         ) {
-            val layout = historyFrame(values, axis.shown, chart.yFractionDigits, text, minLeft.toPx())
+            val layout = historyFrame(values, axis.shown, axisDigits, text, minLeft.toPx())
             frame[0] = layout
             val lineColor = colors.colorBorderNeutralQuiet
-            drawValueAxis(layout, unit, chart.yFractionDigits, text, lineColor)
+            drawValueAxis(layout, unit, axisDigits, text, lineColor)
             val axisTop = layout.bottom + LABEL_GAP.toPx()
             drawTimeAxis(
                 TimeAxisPlace(layout.left, layout.right, axisTop, layout.top..layout.bottom),

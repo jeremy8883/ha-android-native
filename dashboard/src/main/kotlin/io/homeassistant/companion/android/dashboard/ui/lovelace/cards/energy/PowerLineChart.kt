@@ -32,6 +32,7 @@ import io.homeassistant.companion.android.dashboard.energy.PowerSourcesGraphMode
 import io.homeassistant.companion.android.dashboard.energy.PowerStack
 import io.homeassistant.companion.android.dashboard.energy.PowerTooltip
 import io.homeassistant.companion.android.dashboard.energy.niceTicks
+import io.homeassistant.companion.android.dashboard.energy.showing
 import io.homeassistant.companion.android.dashboard.energy.timeTickLabel
 import io.homeassistant.companion.android.dashboard.energy.timeTicks
 import io.homeassistant.companion.android.dashboard.energy.valueLabel
@@ -61,6 +62,7 @@ internal fun PowerLineChart(
     val colors = LocalHAColorScheme.current
     val text = LineAxisText(measurer, TextStyle(color = colors.colorTextSecondary, fontSize = AXIS_FONT))
     val lines = remember(graph, hidden, dark) { stackedLines(graph, hidden, dark) }
+    val axisGraph = remember(graph, hidden) { graph.showing(hidden) }
     val times = remember(graph) { graph.series.firstOrNull()?.points.orEmpty().map { it.x } }
     // Drawing decides the geometry; taps read it
     val frame = remember { arrayOfNulls<LineFrame>(1) }
@@ -74,7 +76,7 @@ internal fun PowerLineChart(
                 }
             },
         ) {
-            val layout = LineFrame.of(this, graph, lines, formats, text)
+            val layout = LineFrame.of(this, axisGraph, lines, formats, text)
             frame[0] = layout
             drawLineAxes(layout, formats, text, colors.colorBorderNeutralQuiet)
             lines.sortedBy { it.z }.forEach { drawStackedLine(layout, it) }

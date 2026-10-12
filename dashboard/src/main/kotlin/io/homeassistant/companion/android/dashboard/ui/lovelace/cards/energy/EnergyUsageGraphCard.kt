@@ -2,6 +2,7 @@ package io.homeassistant.companion.android.dashboard.ui.lovelace.cards.energy
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -18,6 +19,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -37,6 +39,7 @@ import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
 import java.math.BigDecimal
 import java.time.ZonedDateTime
+import kotlinx.coroutines.launch
 
 /**
  * The energy usage graph: by period, where the home's energy came from and where the rest went, with the total in
@@ -96,8 +99,8 @@ internal fun EnergyUsageGraphCard(
 }
 
 /**
- * The chip next to the title (`hui-energy-graph-chip`): [text] in an outlined box, showing [tooltip] on a long press
- * (`ha-tooltip`, which shows on hover upstream).
+ * The chip next to the title (`hui-energy-graph-chip`): [text] in an outlined box, showing [tooltip] on a tap or a
+ * long press, as `ha-tooltip` does on a phone's touch.
  *
  * Upstream: `hui-energy-graph-chip`, with `ha-tooltip` (src/panels/lovelace/cards/energy/common/hui-energy-graph-chip.ts;
  * src/components/ha-tooltip.ts)
@@ -108,6 +111,9 @@ internal fun TotalChip(text: String, tooltip: String) {
     val colors = LocalHAColorScheme.current
     val dark = isSystemInDarkTheme()
     val shape = RoundedCornerShape(Css.Radius.Md)
+    // Like `ha-tooltip` on a touch, it stays until a tap elsewhere
+    val state = rememberTooltipState(isPersistent = true)
+    val scope = rememberCoroutineScope()
     TooltipBox(
         positionProvider = TooltipDefaults.rememberTooltipPositionProvider(TooltipAnchorPosition.Above),
         tooltip = {
@@ -120,13 +126,14 @@ internal fun TotalChip(text: String, tooltip: String) {
                 Text(tooltip, style = Css.Text.Body, modifier = Modifier.padding(Css.Space.S1))
             }
         },
-        state = rememberTooltipState(),
+        state = state,
     ) {
         Text(
             text,
             style = Css.Text.Body,
             color = colors.colorTextPrimary,
             modifier = Modifier
+                .clickable(interactionSource = null, indication = null) { scope.launch { state.show() } }
                 .border(1.dp, resolveVariable("divider-color", dark) ?: colors.colorBorderNeutralQuiet, shape)
                 .padding(horizontal = Css.Space.S2, vertical = Css.Space.S1),
         )

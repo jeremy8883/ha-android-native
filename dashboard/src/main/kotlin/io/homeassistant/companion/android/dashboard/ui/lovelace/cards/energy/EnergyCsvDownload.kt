@@ -53,6 +53,7 @@ internal fun rememberEnergyCsvDownload(currency: String?, errorText: String): (E
     }
     return { data ->
         pending = data
+        // UPSTREAM-DIFF: saves through Android's save-as picker; upstream starts a browser download of the file
         saveAs.launch(ENERGY_CSV_FILE)
     }
 }

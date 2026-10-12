@@ -12,6 +12,7 @@ import io.homeassistant.companion.android.dashboard.data.DashboardRepository
 import io.homeassistant.companion.android.dashboard.data.LiveDataRepository
 import io.homeassistant.companion.android.dashboard.data.LoadError
 import io.homeassistant.companion.android.dashboard.data.Loadable
+import io.homeassistant.companion.android.dashboard.data.PhoneClockSetting
 import io.homeassistant.companion.android.dashboard.data.ServerActionsRepository
 import io.homeassistant.companion.android.dashboard.data.ServerInfo
 import io.homeassistant.companion.android.dashboard.data.SidebarData
@@ -25,6 +26,7 @@ import io.homeassistant.companion.android.dashboard.derive.alarmPanelEntities
 import io.homeassistant.companion.android.dashboard.derive.cameraSnapshotEntities
 import io.homeassistant.companion.android.dashboard.derive.graphHistoryRequests
 import io.homeassistant.companion.android.dashboard.derive.templateRequests
+import io.homeassistant.companion.android.dashboard.display.DisplayFormats
 import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
 import io.homeassistant.companion.android.dashboard.display.TimeZoneOption
 import io.homeassistant.companion.android.dashboard.display.TimeZones
@@ -220,9 +222,11 @@ class DashboardViewModel @VisibleForTesting internal constructor(
     live: LiveDataRepository,
     serverActions: ServerActionsRepository,
     cardData: CardDataLoader,
-    clock: Clock,
+    time: DeviceTime,
     private val dispatchers: DashboardDispatchers,
 ) : ViewModel() {
+    private val clock = time.clock
+    private val use24Hour = time.use24Hour
 
     @Inject
     constructor(
@@ -231,12 +235,13 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         serverActions: ServerActionsRepository,
         cardData: CardDataLoader,
         clock: Clock,
+        phoneClock: PhoneClockSetting,
     ) : this(
         repository,
         live,
         serverActions,
         cardData,
-        clock,
+        DeviceTime(clock, phoneClock::is24Hour),
         DashboardDispatchers(default = Dispatchers.Default, io = Dispatchers.IO),
     )
 
@@ -339,7 +344,16 @@ class DashboardViewModel @VisibleForTesting internal constructor(
             combineLoadables(registries, info, strategy, ::ServerData),
             combineLoadables(home, states, display, ::Triple),
         ) { server, (homeSettings, currentStates, entityDisplay) ->
-            structureInputs(server, homeSettings, currentStates, entityDisplay, zones.display)
+            structureInputs(
+                server,
+                homeSettings,
+                currentStates,
+                entityDisplay,
+                // How every value is formatted: the one place the dashboards' dates and times come from.
+                // UPSTREAM-DIFF: 12/24-hour follows the phone's setting; the frontend uses the profile's time
+                // format, by default the language's.
+                JdkDisplayFormats(Locale.forLanguageTag(BUNDLED_LANGUAGE), zones.display, use24Hour()),
+            )
         }
     }.flowOn(dispatchers.default)
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), Loadable.Loading)
@@ -702,6 +716,9 @@ class DashboardViewModel @VisibleForTesting internal constructor(
     }
 }
 
+/** The device's time: the current time ([clock]) and whether its clock is set to 24 hours ([use24Hour]). */
+data class DeviceTime(val clock: Clock, val use24Hour: () -> Boolean?)
+
 /** The dispatchers derivations run on: [default] for computing, [io] for reading bundled resources. */
 data class DashboardDispatchers(val default: CoroutineDispatcher, val io: CoroutineDispatcher)
 
@@ -728,7 +745,7 @@ private fun structureInputs(
     homeSettings: JsonObject?,
     states: EntityStates,
     display: Pair<Localize, IconResources>,
-    zone: ZoneId,
+    formats: DisplayFormats,
 ) = StructureInputs(
     hass = HassSnapshot(
         states = states,
@@ -738,7 +755,7 @@ private fun structureInputs(
         panels = server.info.panels,
         localize = display.first,
         icons = display.second,
-        formats = JdkDisplayFormats(Locale.forLanguageTag(BUNDLED_LANGUAGE), zone),
+        formats = formats,
     ),
     strategyData = server.strategyData,
     homeSettings = homeSettings,

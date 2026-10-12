@@ -37,6 +37,7 @@ import io.homeassistant.companion.android.dashboard.energy.EnergyLineSeries
 import io.homeassistant.companion.android.dashboard.energy.EnergyTooltip
 import io.homeassistant.companion.android.dashboard.energy.StatisticPeriod
 import io.homeassistant.companion.android.dashboard.energy.niceTicks
+import io.homeassistant.companion.android.dashboard.energy.showing
 import io.homeassistant.companion.android.dashboard.energy.timeTickLabel
 import io.homeassistant.companion.android.dashboard.energy.timeTicks
 import io.homeassistant.companion.android.dashboard.energy.valueLabel
@@ -67,6 +68,7 @@ internal fun EnergyBarChartView(
     val colors = LocalHAColorScheme.current
     val axisText = AxisText(measurer, TextStyle(color = colors.colorTextSecondary, fontSize = AXIS_FONT))
     val shown = remember(chart, hidden) { chart.series.filter { it.id.removePrefix(COMPARE) !in hidden } }
+    val axisChart = remember(chart, shown) { chart.showing(shown) }
     // Drawing decides the geometry; taps read it
     val geometry = remember { arrayOfNulls<ChartGeometry>(1) }
     var selected by remember(chart) { mutableStateOf<Long?>(null) }
@@ -79,7 +81,7 @@ internal fun EnergyBarChartView(
                 }
             },
         ) {
-            val layout = ChartGeometry.of(this, chart, shown, formats, axisText)
+            val layout = ChartGeometry.of(this, axisChart, shown, formats, axisText)
             geometry[0] = layout
             drawAxes(layout, formats, axisText, colors.colorBorderNeutralQuiet)
             selected?.let { start ->

@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard.history
 
 import io.homeassistant.companion.android.dashboard.derive.jsParseFloat
+import io.homeassistant.companion.android.dashboard.energy.shownYAxisFractionDigits
 import io.homeassistant.companion.android.dashboard.energy.yAxisFractionDigits
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.model.jsTruthy
@@ -11,7 +12,15 @@ import kotlinx.serialization.json.JsonPrimitive
 // (frontend@20260624.6 src/components/chart/state-history-chart-line-data.ts).
 
 /** The lines of a history chart in its unit, with their y axis's fraction digits. */
-data class HistoryLineChart(val series: List<HistoryLineSeries>, val yFractionDigits: Int)
+data class HistoryLineChart(val series: List<HistoryLineSeries>, val yFractionDigits: Int) {
+    /** [this] with the y axis's fraction digits of only the series not in [hidden] (by id). */
+    fun showing(hidden: Set<String>): HistoryLineChart {
+        val digits = shownYAxisFractionDigits(yFractionDigits, series.any { it.id in hidden }) {
+            series.filterNot { it.id in hidden }.flatMap { s -> s.points.mapNotNull { it.y } }
+        }
+        return copy(yFractionDigits = digits)
+    }
+}
 
 /**
  * A stepped line (each value holds until the next), or with [fill] an area under it and no line (the climate's

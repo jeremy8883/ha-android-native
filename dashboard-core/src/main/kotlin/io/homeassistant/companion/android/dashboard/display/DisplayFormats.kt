@@ -7,7 +7,9 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.time.chrono.IsoChronology
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
 import java.time.format.FormatStyle
 import java.util.Currency
 import java.util.Locale
@@ -94,8 +96,12 @@ interface DisplayFormats {
 /**
  * [DisplayFormats] from the JDK (CLDR) for [locale]. Relative times are English only; the app can supply a
  * platform implementation for other languages.
+ *
+ * @param use24Hour whether times use a 24-hour clock (`hourCycle: "h23"`) or AM and PM (`"h12"`); `null` keeps
+ *   the language's own clock, as the frontend's default `time_format: language` does
  */
-class JdkDisplayFormats(private val locale: Locale, override val zone: ZoneId) : DisplayFormats {
+class JdkDisplayFormats(private val locale: Locale, override val zone: ZoneId, use24Hour: Boolean? = null) :
+    DisplayFormats {
     override val firstWeekday: Int = java.time.temporal.WeekFields.of(locale).firstDayOfWeek.value
 
     override fun number(value: BigDecimal, minFractionDigits: Int, maxFractionDigits: Int): String {
@@ -131,9 +137,12 @@ class JdkDisplayFormats(private val locale: Locale, override val zone: ZoneId) :
 
     private val dateTimeJoiner = if (locale.language == Locale.ENGLISH.language) " at " else ", "
 
-    override fun time(instant: Instant, zone: ZoneId): String = format(TIME, instant, zone)
+    private val timeFormat = DateTimeFormatter.ofPattern(timePattern(FormatStyle.SHORT, locale, use24Hour))
+    private val timeSecondsFormat = DateTimeFormatter.ofPattern(timePattern(FormatStyle.MEDIUM, locale, use24Hour))
 
-    override fun timeWithSeconds(instant: Instant, zone: ZoneId): String = format(TIME_SECONDS, instant, zone)
+    override fun time(instant: Instant, zone: ZoneId): String = format(timeFormat, instant, zone)
+
+    override fun timeWithSeconds(instant: Instant, zone: ZoneId): String = format(timeSecondsFormat, instant, zone)
 
     override fun datePart(date: LocalDate, part: DatePart): String =
         DATE_PARTS.getValue(part).withLocale(locale).format(date)
@@ -159,8 +168,6 @@ class JdkDisplayFormats(private val locale: Locale, override val zone: ZoneId) :
 
         private const val NARROW_NO_BREAK_SPACE = ' '
         private val DATE = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)
-        private val TIME_SECONDS = DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM)
-        private val TIME = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
 
         // English patterns of the frontend's `Intl` options; the month names follow the locale
         private val DATE_PARTS = mapOf(
@@ -187,6 +194,37 @@ class JdkDisplayFormats(private val locale: Locale, override val zone: ZoneId) :
         )
     }
 }
+
+/**
+ * The time pattern of [locale] at [style], switched to a 24-hour clock ("HH:mm", as `hourCycle: "h23"` gives) or to
+ * AM and PM ("h:mm a") by [use24Hour]; `null` keeps the language's own.
+ */
+fun timePattern(style: FormatStyle, locale: Locale, use24Hour: Boolean?): String {
+    val pattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(null, style, IsoChronology.INSTANCE, locale)
+    val has24Hour = pattern.unquoted().any { it == 'H' || it == 'k' }
+    return when {
+        use24Hour == null || use24Hour == has24Hour -> pattern
+        use24Hour -> pattern.mapUnquoted(TWELVE_HOUR_FIELD, "HH").mapUnquoted(DAY_PERIOD_FIELD, "").trim()
+        else -> pattern.mapUnquoted(TWENTY_FOUR_HOUR_FIELD, "h") + " a"
+    }
+}
+
+/** [this] without its quoted literals. */
+private fun String.unquoted(): String = split('\'').filterIndexed { index, _ -> index % 2 == 0 }.joinToString("")
+
+/** [this] with [field] replaced by [replacement] outside quoted literals. */
+private fun String.mapUnquoted(field: Regex, replacement: String): String = split('\'')
+    .mapIndexed { index, part -> if (index % 2 == 0) part.replace(field, replacement) else part }
+    .joinToString("'")
+
+/** A 12-hour field (`h`, `hh`, `K`). */
+private val TWELVE_HOUR_FIELD = Regex("[hK]+")
+
+/** A 24-hour field (`H`, `HH`, `k`). */
+private val TWENTY_FOUR_HOUR_FIELD = Regex("[Hk]+")
+
+/** The AM/PM field with the space around it, including CLDR's narrow no-break one. */
+private val DAY_PERIOD_FIELD = Regex("[\\s\u202F\u00A0]*[aB]+[\\s\u202F\u00A0]*")
 
 /** An afternoon time, to tell a 12-hour clock from a 24-hour one. */
 private val AFTERNOON: Instant = Instant.parse("2020-01-01T13:00:00Z")

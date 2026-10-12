@@ -29,6 +29,18 @@ data class PowerSourcesGraphModel(
 )
 
 /**
+ * [this] with the y axis's fraction digits of only the series not in [hidden] (source keys, as the legend hides
+ * them).
+ */
+fun PowerSourcesGraphModel.showing(hidden: Set<String>): PowerSourcesGraphModel {
+    val (hiddenSeries, shownSeries) = series.partition { it.id.removeSuffix(NEGATIVE_SUFFIX) in hidden }
+    val digits = shownYAxisFractionDigits(yFractionDigits, hiddenSeries.isNotEmpty()) {
+        shownSeries.filter { it.stack != null }.flatMap { s -> s.points.map { it.y } }
+    }
+    return copy(yFractionDigits = digits)
+}
+
+/**
  * A line of the power sources graph, with a point at every time of the graph.
  *
  * @property color the theme variable it's drawn in

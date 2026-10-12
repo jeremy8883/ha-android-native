@@ -129,6 +129,8 @@ internal fun EnergyDevicesGraphCard(
         when (type) {
             DevicesChartType.BAR -> DeviceBars(model, onOpen)
             DevicesChartType.PIE -> {
+                // UPSTREAM-DIFF: a legend list under the ring instead of labels outside the slices, and a tap on a
+                // slice opens its device (upstream opens it from the slice's outside label)
                 DeviceDonut(model, snapshot.localize("$DEVICES.total_energy_usage"), snapshot, onOpen)
                 DonutLegend(model, hidden, snapshot, opens, onHiddenChange = { hidden = it }, onOpen = onOpen)
             }
