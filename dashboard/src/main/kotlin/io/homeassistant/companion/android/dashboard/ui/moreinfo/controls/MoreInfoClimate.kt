@@ -2,8 +2,13 @@ package io.homeassistant.companion.android.dashboard.ui.moreinfo.controls
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.action.CardAction
 import io.homeassistant.companion.android.dashboard.entity.EntityState
@@ -39,21 +46,26 @@ import io.homeassistant.companion.android.dashboard.ui.theme.cssFontPx
  * Upstream: `more-info-climate` (src/dialogs/more-info/controls/more-info-climate.ts)
  */
 @Composable
-internal fun MoreInfoClimate(climate: ClimateMoreInfo, state: EntityState, onAction: (CardAction) -> Unit) {
+internal fun MoreInfoClimate(
+    climate: ClimateMoreInfo,
+    state: EntityState,
+    onAction: (CardAction) -> Unit,
+    minHeight: Dp = 0.dp,
+) {
     var showHumidity by rememberSaveable(state.entityId) { mutableStateOf(false) }
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
+    val humidity = climate.humidity
+    DialControlsLayout(
+        current = climate.current,
+        minHeight = minHeight,
+        menus = { ControlSelectMenus(climate.menus, onAction) },
     ) {
-        CurrentReadings(climate.current)
-        val humidity = climate.humidity
         if (showHumidity && humidity != null) {
             CircularStateControl(
                 control = humidity,
                 targets = CircularTargets(climateHumidityTarget(state), null, null),
                 onSet = { targets, _ -> targets.value?.let { onAction(climateHumidityCall(state, it)) } },
                 bottomUnit = true,
+                fixedWidth = true,
             )
         } else {
             CircularStateControl(
@@ -62,6 +74,7 @@ internal fun MoreInfoClimate(climate: ClimateMoreInfo, state: EntityState, onAct
                 onSet = { targets, target ->
                     onAction(climateTemperatureCall(state, targets, range = target != CircularTarget.Value))
                 },
+                fixedWidth = true,
             )
         }
         if (humidity != null) {
@@ -74,7 +87,38 @@ internal fun MoreInfoClimate(climate: ClimateMoreInfo, state: EntityState, onAct
                 onSelect = { showHumidity = it == 1 },
             )
         }
-        ControlSelectMenus(climate.menus, onAction)
+    }
+}
+
+/**
+ * The layout of a dial's details: the [current] readings 40px over the [controls] (24px apart, centred in the
+ * room left of [minHeight]), then 24px under them the [menus] at the bottom.
+ *
+ * Upstream: `.current` and `.controls` of `more-info-climate`, `moreInfoControlStyle`
+ * (src/dialogs/more-info/controls/more-info-climate.ts; src/dialogs/more-info/components/more-info-control-style.ts)
+ */
+@Composable
+internal fun DialControlsLayout(
+    current: List<Pair<String, String>>,
+    minHeight: Dp,
+    menus: @Composable () -> Unit,
+    controls: @Composable ColumnScope.() -> Unit,
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth().heightIn(min = minHeight),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        // `.current`'s 40px margin stays without readings, as its empty row does upstream
+        CurrentReadings(current)
+        Spacer(Modifier.height(Css.Space.S10))
+        Column(
+            modifier = Modifier.fillMaxWidth().weight(1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(Css.Space.S6, Alignment.CenterVertically),
+            content = controls,
+        )
+        Spacer(Modifier.height(Css.Space.S6))
+        menus()
     }
 }
 
@@ -89,9 +133,10 @@ internal fun MoreInfoClimate(climate: ClimateMoreInfo, state: EntityState, onAct
 internal fun CurrentReadings(readings: List<Pair<String, String>>) {
     if (readings.isEmpty()) return
     val colors = LocalHAColorScheme.current
-    Row(horizontalArrangement = Arrangement.spacedBy(Css.Space.S6)) {
+    // `.current div { flex: 1 }`: each reading takes an equal share of the row
+    Row(Modifier.fillMaxWidth()) {
         readings.forEach { (label, value) ->
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(Modifier.weight(1f), horizontalAlignment = Alignment.CenterHorizontally) {
                 // `.current .label`, `.current .value`
                 Text(
                     label,
@@ -101,6 +146,7 @@ internal fun CurrentReadings(readings: List<Pair<String, String>>) {
                         letterSpacing = LABEL_LETTER_SPACING.cssFontPx,
                     ),
                     color = colors.colorTextSecondary,
+                    modifier = Modifier.padding(bottom = Css.Space.S1),
                 )
                 Text(
                     value,

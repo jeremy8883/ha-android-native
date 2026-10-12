@@ -3,10 +3,12 @@ package io.homeassistant.companion.android.dashboard.ui.moreinfo
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -31,10 +33,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntRect
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupPositionProvider
 import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
@@ -185,12 +189,16 @@ private fun ColumnScope.MoreInfoMain(
         )
         return
     }
-    LazyColumn(
-        state = listState,
-        modifier = Modifier.fillMaxWidth().weight(1f),
-        // `ha-more-info-info`'s `.content`: 24px all round
-        contentPadding = PaddingValues(Css.Space.S6),
-    ) { mainItems(MainList(model, hass, now, interactions, logbook, onShowFull)) }
+    BoxWithConstraints(Modifier.fillMaxWidth().weight(1f)) {
+        // Full-height details (`more-info-content[full-height]`) fill the room inside `.content`'s padding
+        val controlsHeight = if (model.fullHeight) maxHeight - Css.Space.S6 * 2 - SECTION_GAP else 0.dp
+        LazyColumn(
+            state = listState,
+            modifier = Modifier.fillMaxSize(),
+            // `ha-more-info-info`'s `.content`: 24px all round
+            contentPadding = PaddingValues(Css.Space.S6),
+        ) { mainItems(MainList(model, hass, now, interactions, logbook, onShowFull), controlsHeight) }
+    }
     if (update != null && state != null) {
         HAHorizontalDivider()
         Box(Modifier.padding(horizontal = Css.Space.S6, vertical = Css.Space.S4)) {
@@ -209,10 +217,11 @@ private class MainList(
     val onShowFull: (() -> Unit)?,
 )
 
-private fun LazyListScope.mainItems(list: MainList) {
+/** The main view's items; the controls fill [controlsHeight] at least. */
+private fun LazyListScope.mainItems(list: MainList, controlsHeight: Dp) {
     val (model, hass, now) = Triple(list.model, list.hass, list.now)
     val interactions = list.interactions
-    val section = Modifier.padding(bottom = Css.Space.S4)
+    val section = Modifier.padding(bottom = SECTION_GAP)
     model.stateCard?.let { card ->
         item(key = "state-card") { Box(section) { StateCardRow(card, now, interactions.onAction) } }
     }
@@ -222,7 +231,7 @@ private fun LazyListScope.mainItems(list: MainList) {
     hass.states[model.entityId]?.let { state ->
         item(key = "controls") {
             Column(section, verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
-                DomainControls(model, state, hass, now, interactions.onAction, list.onShowFull)
+                DomainControls(model, state, hass, now, interactions.onAction, list.onShowFull, controlsHeight)
             }
         }
     }
@@ -267,7 +276,8 @@ private fun ColumnScope.MoreInfoHistoryView(
 
 /**
  * The controls of the entity's domain, as its `more-info-<domain>` leads with them; [onShowFull] opens the full
- * dialog for what they leave to it.
+ * dialog for what they leave to it. A thermostat's, water heater's and humidifier's fill [minHeight] at least,
+ * centring their dial in it, as `moreInfoControlStyle` does in a full-height dialog.
  *
  * Upstream: `more-info-content` (src/dialogs/more-info/more-info-content.ts)
  */
@@ -279,9 +289,10 @@ internal fun DomainControls(
     now: Instant,
     onAction: (CardAction) -> Unit,
     onShowFull: (() -> Unit)? = null,
+    minHeight: Dp = 0.dp,
 ) {
     model.light?.let { MoreInfoLight(it, state, hass, onAction) }
-    model.climate?.let { MoreInfoClimate(it, state, onAction) }
+    model.climate?.let { MoreInfoClimate(it, state, onAction, minHeight) }
     model.position?.let { MoreInfoPosition(it, state, hass, onAction) }
     model.fan?.let { MoreInfoFan(it, onAction) }
     model.lock?.let { MoreInfoLock(it, onAction) }
@@ -297,6 +308,7 @@ internal fun DomainControls(
             menus = heater.menus,
             onSet = { onAction(waterHeaterTemperatureCall(state, it)) },
             onAction = onAction,
+            minHeight = minHeight,
         )
     }
     model.humidifier?.let { humidifier ->
@@ -308,6 +320,7 @@ internal fun DomainControls(
             onSet = { onAction(humidifierHumidityCall(state, it)) },
             onAction = onAction,
             bottomUnit = true,
+            minHeight = minHeight,
         )
     }
     model.stateToggle?.let { toggle ->
@@ -419,3 +432,6 @@ private object WindowBottom : PopupPositionProvider {
         popupContentSize: IntSize,
     ) = IntOffset((windowSize.width - popupContentSize.width) / 2, windowSize.height - popupContentSize.height)
 }
+
+/** The space under each part of the main view (the state card, the controls, the history). */
+private val SECTION_GAP = Css.Space.S4

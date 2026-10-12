@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
@@ -74,6 +75,7 @@ internal fun CircularStateControl(
     modifier: Modifier = Modifier,
     bottomUnit: Boolean = false,
     secondary: CircularSecondary? = null,
+    fixedWidth: Boolean = false,
 ) {
     var local by remember(targets) { mutableStateOf(targets) }
     var selected by remember {
@@ -87,7 +89,10 @@ internal fun CircularStateControl(
         set(local, selected)
     }
     val slider = control.slider
-    Box(modifier = modifier.size(CONTROL_SIZE)) {
+    // `:host { width: 320px }`, past a narrower parent's edges as in the details; cards shrink it (`max-width`)
+    Box(
+        modifier = modifier.then(if (fixedWidth) Modifier.requiredSize(CONTROL_SIZE) else Modifier.size(CONTROL_SIZE)),
+    ) {
         CircularSliderView(
             slider = slider,
             targets = local,

@@ -83,7 +83,8 @@ import kotlinx.serialization.json.JsonPrimitive
  * @property remote a remote's activity menu
  * @property update an update's versions, notes and buttons
  * @property attributes the displayable attributes, as (name, formatted value)
- * @property fullHeight whether the content fills the dialog (`DOMAINS_FULL_HEIGHT_MORE_INFO`), so an update's
+ * @property fullHeight whether the content fills the dialog (`ha-more-info-info`'s `isFullHeight`: the newer
+ * details and `DOMAINS_FULL_HEIGHT_MORE_INFO`), so a thermostat's dial is centred in the room left and an update's
  * buttons sit at its bottom
  * @property stateCard the row the dialog leads with (`state-card-content`), for the domains without the newer
  * details (`DOMAINS_WITH_NEW_MORE_INFO`)
@@ -200,7 +201,7 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         remote = remoteActivity(state),
         update = updateMoreInfo(state),
         attributes = displayAttributes(state).map { attributeName(state, it) to attributeValueDisplay(state, it) },
-        fullHeight = domain in FULL_HEIGHT_DOMAINS,
+        fullHeight = domain in FULL_HEIGHT_DOMAINS || showsNewMoreInfo(state),
         stateCard = if (!showsNewMoreInfo(state) && domain !in NO_INFO_DOMAINS) stateCard(state, now) else null,
         inlineHistory = domain !in WITH_MORE_INFO_DOMAINS,
         inlineAttributes = domain !in WITH_MORE_INFO_DOMAINS && domain !in HIDE_DEFAULT_MORE_INFO_DOMAINS,
