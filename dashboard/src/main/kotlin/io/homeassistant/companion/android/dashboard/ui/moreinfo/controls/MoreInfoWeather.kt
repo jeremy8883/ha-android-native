@@ -30,19 +30,19 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.homeassistant.companion.android.common.compose.theme.HASize
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.data.ForecastRepository
-import io.homeassistant.companion.android.dashboard.data.Loadable
-import io.homeassistant.companion.android.dashboard.data.valueOrNull
+import io.homeassistant.companion.android.dashboard.data.toForecastResult
 import io.homeassistant.companion.android.dashboard.derive.SecondaryWeather
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
+import io.homeassistant.companion.android.dashboard.moreinfo.WeatherForecastView
 import io.homeassistant.companion.android.dashboard.moreinfo.WeatherMoreInfo
 import io.homeassistant.companion.android.dashboard.moreinfo.weatherForecastView
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.ForecastRow
 import io.homeassistant.companion.android.dashboard.ui.lovelace.cards.WeatherIconView
 import io.homeassistant.companion.android.dashboard.ui.theme.Css
-import io.homeassistant.companion.android.dashboard.weather.ForecastEvent
 import io.homeassistant.companion.android.dashboard.weather.ForecastKey
+import io.homeassistant.companion.android.dashboard.weather.ForecastResult
 import java.time.Instant
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -53,12 +53,11 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import timber.log.Timber
 
 /**
  * Port of `more-info-weather`: the condition's picture (else the icon), the state and when it changed, the
  * temperature over today's high and low, the readings, then "Forecast:" with a tab per type the entity offers and
- * the chosen type's forecast (a spinner until it comes).
+ * the chosen type's forecast (a spinner until it comes, why it failed when it did).
  *
  * Upstream: `more-info-weather` (src/dialogs/more-info/controls/more-info-weather.ts)
  */
@@ -68,8 +67,8 @@ internal fun MoreInfoWeather(weather: WeatherMoreInfo, state: EntityState, hass:
     var type by remember(state.entityId) { mutableStateOf(weather.defaultType) }
     val forecasts = hiltViewModel<MoreInfoForecastViewModel>(key = "forecast-${state.entityId}")
     LaunchedEffect(state.entityId, type) { type?.let { forecasts.show(ForecastKey(state.entityId, it)) } }
-    val event by forecasts.event.collectAsStateWithLifecycle()
-    val view = remember(state, event, now) { hass.weatherForecastView(state, event, now) }
+    val result by forecasts.result.collectAsStateWithLifecycle()
+    val view = remember(state, result, now) { hass.weatherForecastView(state, result, now) }
     Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
         WeatherConditions(weather, view.secondary)
         weather.rows.forEach { row ->
@@ -100,12 +99,7 @@ internal fun MoreInfoWeather(weather: WeatherMoreInfo, state: EntityState, hass:
                     }
                 }
             }
-            val columns = view.columns
-            if (columns == null) {
-                CircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally))
-            } else {
-                BoxWithConstraints(Modifier.fillMaxWidth()) { ForecastRow(columns, maxWidth, Modifier) }
-            }
+            WeatherForecast(view, Modifier.align(Alignment.CenterHorizontally))
         }
         weather.attribution?.let {
             Text(
@@ -115,6 +109,27 @@ internal fun MoreInfoWeather(weather: WeatherMoreInfo, state: EntityState, hass:
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
         }
+    }
+}
+
+/**
+ * The chosen type's forecast: its days, else why it failed, else a spinner until it comes.
+ *
+ * Upstream: part of `more-info-weather` (src/dialogs/more-info/controls/more-info-weather.ts)
+ */
+@Composable
+private fun WeatherForecast(view: WeatherForecastView, centered: Modifier) {
+    val columns = view.columns
+    val failedToLoad = view.failedToLoad
+    when {
+        columns != null -> BoxWithConstraints(Modifier.fillMaxWidth()) { ForecastRow(columns, maxWidth, Modifier) }
+        failedToLoad != null -> Text(
+            failedToLoad,
+            style = Css.Text.Body.copy(textAlign = TextAlign.Center),
+            color = LocalHAColorScheme.current.colorTextSecondary,
+            modifier = centered,
+        )
+        else -> CircularProgressIndicator(centered)
     }
 }
 
@@ -173,11 +188,10 @@ private fun WeatherConditions(weather: WeatherMoreInfo, secondary: SecondaryWeat
 internal class MoreInfoForecastViewModel @Inject constructor(repository: ForecastRepository) : ViewModel() {
     private val key = MutableStateFlow<ForecastKey?>(null)
 
-    /** The latest forecast, `null` until it comes (or while it can't be subscribed to, which is logged). */
+    /** The latest forecast, or why it can't be subscribed to (logged); `null` until the server answers. */
     @OptIn(ExperimentalCoroutinesApi::class)
-    val event: StateFlow<ForecastEvent?> = key.filterNotNull().flatMapLatest(repository::forecast).map { loadable ->
-        if (loadable is Loadable.Failed) Timber.w("Couldn't subscribe to the forecast: ${loadable.error}")
-        loadable.valueOrNull
+    val result: StateFlow<ForecastResult?> = key.filterNotNull().flatMapLatest { forecast ->
+        repository.forecast(forecast).map { it.toForecastResult(forecast) }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), null)
 
     /** Subscribe to [forecast]. */

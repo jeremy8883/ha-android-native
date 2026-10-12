@@ -13,6 +13,8 @@ import io.homeassistant.companion.android.dashboard.model.boolean
 import io.homeassistant.companion.android.dashboard.model.objects
 import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.weather.ForecastKey
+import io.homeassistant.companion.android.dashboard.weather.ForecastResult
+import io.homeassistant.companion.android.dashboard.weather.eventOrNull
 import java.time.ZoneId
 import java.time.ZoneOffset
 import kotlinx.serialization.json.JsonObject
@@ -34,7 +36,9 @@ sealed interface ForecastKind {
  * A forecast feature of a weather entity.
  *
  * @property resolution the forecast subscribed to: `daily`, `twice_daily` or `hourly`
- * @property entries the forecast's entries, `null` until it arrives (a spinner shows)
+ * @property entries the forecast's entries, `null` until it arrives (a spinner shows) or when it failed
+ * @property failedToLoad why the forecast couldn't be loaded ("Failed to load forecast: …"), shown in its place;
+ * `null` unless the subscription failed
  * @property color the configured colour, replacing the temperature gradient or the rainy colour
  * @property currentTemperature the entity's temperature, which starts an hourly temperature line
  * @property fahrenheit whether temperatures are in °F (the gradient works in °C)
@@ -55,6 +59,7 @@ data class ForecastFeature(
     val fahrenheit: Boolean,
     val imperial: Boolean,
     val noForecast: String,
+    val failedToLoad: String?,
     val nowMillis: Double?,
     val amPm: Boolean,
     val zone: ZoneId,
@@ -85,12 +90,13 @@ internal fun HassSnapshot.forecastFeature(
 ): TileFeature? {
     val resolution = forecastResolution(state, feature.string("forecast_type"))
     if (!state.supportsForecast() || resolution == null) return null
-    val event = forecasts[ForecastKey(state.entityId, resolution)]
+    val result = forecasts[ForecastKey(state.entityId, resolution)]
     val name = if (kind is ForecastKind.Temperature) "temperature-forecast" else "precipitation-forecast"
     return ForecastFeature(
         kind = kind,
         resolution = resolution,
-        entries = event?.let { it.forecast.orEmpty() },
+        // An event without a forecast is an empty one, as upstream's `forecastEvent.forecast ?? []`
+        entries = result?.eventOrNull?.let { it.forecast.orEmpty() },
         daysToShow = number(feature["days_to_show"])?.toInt() ?: DEFAULT_DAYS_TO_SHOW,
         hoursToShow = number(feature["hours_to_show"])?.toInt() ?: DEFAULT_HOURS_TO_SHOW,
         showLabels = feature.boolean("show_labels") != false,
@@ -99,6 +105,9 @@ internal fun HassSnapshot.forecastFeature(
         fahrenheit = weatherUnit(state, "temperature") == UNIT_F,
         imperial = weatherUnit(state, "precipitation") == UNIT_IN,
         noForecast = localize("ui.panel.lovelace.editor.features.types.$name.no_forecast"),
+        failedToLoad = (result as? ForecastResult.Failed)?.let {
+            localize("ui.panel.lovelace.editor.features.types.$name.failed_to_load", mapOf("error" to it.error))
+        },
         nowMillis = nowMillis,
         amPm = formats.amPm,
         zone = formats.zone,

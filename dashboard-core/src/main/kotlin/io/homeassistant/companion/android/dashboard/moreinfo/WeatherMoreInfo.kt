@@ -16,8 +16,9 @@ import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.feature.number
 import io.homeassistant.companion.android.dashboard.model.string
-import io.homeassistant.companion.android.dashboard.weather.ForecastEvent
+import io.homeassistant.companion.android.dashboard.weather.ForecastResult
 import io.homeassistant.companion.android.dashboard.weather.WeatherIcon
+import io.homeassistant.companion.android.dashboard.weather.eventOrNull
 import io.homeassistant.companion.android.dashboard.weather.forecastToShow
 import io.homeassistant.companion.android.dashboard.weather.weatherStateIcon
 import java.time.Instant
@@ -45,8 +46,18 @@ data class WeatherMoreInfo(
 /** A reading under the conditions: its [icon], [name] and [value]. */
 data class WeatherRow(val icon: String, val name: String, val value: String)
 
-/** The forecast part of a weather's details: the line under the temperature, and the forecast's days. */
-data class WeatherForecastView(val secondary: SecondaryWeather?, val columns: ForecastColumns?)
+/**
+ * The forecast part of a weather's details: the line under the temperature, and the forecast's days.
+ *
+ * @property columns the forecast's days, `null` while it hasn't come (a spinner shows) or when it failed
+ * @property failedToLoad why the forecast couldn't be loaded ("Failed to load forecast: …"), shown in place of the
+ * days; `null` unless the subscription failed and there is no legacy forecast to show instead
+ */
+data class WeatherForecastView(
+    val secondary: SecondaryWeather?,
+    val columns: ForecastColumns?,
+    val failedToLoad: String? = null,
+)
 
 internal fun HassSnapshot.weatherMoreInfo(state: EntityState, now: Instant): WeatherMoreInfo {
     val attributes = state.attributes
@@ -77,14 +88,22 @@ internal fun HassSnapshot.weatherMoreInfo(state: EntityState, now: Instant): Wea
     )
 }
 
-/** The forecast of [state] from the subscribed [event] at [now], `null` columns while it hasn't come. */
-fun HassSnapshot.weatherForecastView(state: EntityState, event: ForecastEvent?, now: Instant): WeatherForecastView {
-    val forecast = forecastToShow(state.attributes, event, type = null)
+/**
+ * The forecast of [state] from the subscription's [result] at [now], `null` columns while it hasn't come. Upstream
+ * keeps its spinner when the subscription fails; this says why instead, in the forecast features' words.
+ */
+fun HassSnapshot.weatherForecastView(state: EntityState, result: ForecastResult?, now: Instant): WeatherForecastView {
+    val forecast = forecastToShow(state.attributes, result?.eventOrNull, type = null)
     return WeatherForecastView(
         secondary = defaultSecondary(state, forecast?.entries.orEmpty(), digits = null, now),
         columns = forecast?.let { forecastColumns(it, digits = null, dashForMissingLow = false) },
+        failedToLoad = (result as? ForecastResult.Failed)?.takeIf { forecast == null }?.let {
+            localize(FAILED_TO_LOAD, mapOf("error" to it.error))
+        },
     )
 }
+
+private const val FAILED_TO_LOAD = "ui.panel.lovelace.editor.features.types.temperature-forecast.failed_to_load"
 
 private const val MILLIS = 1000.0
 

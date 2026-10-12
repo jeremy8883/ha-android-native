@@ -7,8 +7,8 @@ import io.homeassistant.companion.android.dashboard.display.JdkDisplayFormats
 import io.homeassistant.companion.android.dashboard.energy.EnergyCollection
 import io.homeassistant.companion.android.dashboard.history.GraphHistory
 import io.homeassistant.companion.android.dashboard.history.GraphHistoryKey
-import io.homeassistant.companion.android.dashboard.weather.ForecastEvent
 import io.homeassistant.companion.android.dashboard.weather.ForecastKey
+import io.homeassistant.companion.android.dashboard.weather.ForecastResult
 import kotlinx.serialization.json.JsonObject
 
 /** Looks up a frontend translation by key, for example `panel.light`. Returns "" when unknown. */
@@ -68,7 +68,8 @@ data class HassConfig(
  * @property graphHistories the histories the shown cards' graphs draw, absent while loading
  * @property alarmDefaultCodes whether the alarm panels the shown cards control store a default code, by entity id;
  * absent while not known
- * @property forecasts the weather forecasts the shown cards subscribed to, absent until the server sent them
+ * @property forecasts the weather forecasts the shown cards subscribed to, or why their subscription failed; absent
+ * until the server answered
  * @property services the server's actions (`get_services`): each domain's, by name, with their descriptions (a
  * script's fields); `null` while loading
  */
@@ -88,6 +89,6 @@ data class HassSnapshot(
     val energy: Map<String, EnergyCollection> = emptyMap(),
     val graphHistories: Map<GraphHistoryKey, GraphHistory> = emptyMap(),
     val alarmDefaultCodes: Map<String, Boolean> = emptyMap(),
-    val forecasts: Map<ForecastKey, ForecastEvent> = emptyMap(),
+    val forecasts: Map<ForecastKey, ForecastResult> = emptyMap(),
     val services: Map<String, Map<String, JsonObject>>? = null,
 )

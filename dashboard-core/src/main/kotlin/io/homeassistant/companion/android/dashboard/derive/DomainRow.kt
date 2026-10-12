@@ -12,6 +12,7 @@ import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.weather.ForecastKey
 import io.homeassistant.companion.android.dashboard.weather.WeatherIcon
 import io.homeassistant.companion.android.dashboard.weather.defaultForecastType
+import io.homeassistant.companion.android.dashboard.weather.eventOrNull
 import io.homeassistant.companion.android.dashboard.weather.forecastToShow
 import io.homeassistant.companion.android.dashboard.weather.weatherStateIcon
 import java.time.Instant
@@ -84,12 +85,13 @@ private fun HassSnapshot.eventRow(state: EntityState, config: JsonObject, now: I
 
 /**
  * `hui-weather-entity-row`: the condition's picture, the temperature (else the state), and under it today's high
- * and low from the default forecast type's subscription, else the precipitation or humidity.
+ * and low from the default forecast type's subscription, else (also when it failed, as upstream) the precipitation
+ * or humidity.
  */
 private fun HassSnapshot.weatherRow(state: EntityState, now: Instant): DomainRow {
     val noValue = state.state == STATE_UNAVAILABLE || state.state == STATE_UNKNOWN
     val temperature = state.attributes["temperature"].takeUnless { it == null || it is JsonNull }
-    val event = defaultForecastType(state)?.let { forecasts[ForecastKey(state.entityId, it)] }
+    val event = defaultForecastType(state)?.let { forecasts[ForecastKey(state.entityId, it)]?.eventOrNull }
     val forecast = forecastToShow(state.attributes, event, type = null)
     return DomainRow(
         state = if (noValue ||

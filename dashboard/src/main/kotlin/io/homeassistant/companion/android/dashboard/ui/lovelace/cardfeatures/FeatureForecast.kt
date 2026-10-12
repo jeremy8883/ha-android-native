@@ -61,8 +61,8 @@ import java.time.format.TextStyle as DateTextStyle
 import java.util.Locale
 
 /**
- * A forecast feature: a spinner until the forecast arrives, then its temperature bars or line, or its
- * precipitation bars, with the days or hours under them unless `show_labels` is off.
+ * A forecast feature: a spinner until the forecast arrives (why it failed instead, when it did), then its
+ * temperature bars or line, or its precipitation bars, with the days or hours under them unless `show_labels` is off.
  *
  * Upstream: `hui-temperature-forecast-card-feature`, `hui-precipitation-forecast-card-feature`
  * (src/panels/lovelace/card-features/hui-temperature-forecast-card-feature.ts;
@@ -78,7 +78,9 @@ internal fun FeatureForecast(feature: ForecastFeature, featureColor: Color) {
         RoundedCornerShape(0.dp)
     }
     Box(Modifier.fillMaxWidth().height(FEATURE_HEIGHT).clip(shape), contentAlignment = Alignment.Center) {
+        val failedToLoad = feature.failedToLoad
         when {
+            failedToLoad != null -> ForecastInfo(failedToLoad)
             feature.entries == null -> CircularProgressIndicator(Modifier.size(SPINNER_SIZE), strokeWidth = 2.dp)
             !feature.hasContent() -> ForecastInfo(feature.noForecast)
             else -> Column(Modifier.fillMaxSize()) {

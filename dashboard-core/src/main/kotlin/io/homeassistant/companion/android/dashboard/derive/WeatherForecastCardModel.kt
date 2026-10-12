@@ -12,6 +12,7 @@ import io.homeassistant.companion.android.dashboard.model.string
 import io.homeassistant.companion.android.dashboard.weather.Forecast
 import io.homeassistant.companion.android.dashboard.weather.ForecastKey
 import io.homeassistant.companion.android.dashboard.weather.WeatherIcon
+import io.homeassistant.companion.android.dashboard.weather.eventOrNull
 import io.homeassistant.companion.android.dashboard.weather.forecastToShow
 import io.homeassistant.companion.android.dashboard.weather.needsForecastSubscription
 import io.homeassistant.companion.android.dashboard.weather.weatherStateIcon
@@ -85,7 +86,10 @@ fun HassSnapshot.weatherForecastCardModel(card: CardConfig, now: Instant): Weath
             actions,
         )
         else -> {
-            val event = forecastType?.takeIf(::needsForecastSubscription)?.let { forecasts[ForecastKey(entityId, it)] }
+            // A failed subscription leaves the current weather alone, as upstream's card has no failure state
+            val event = forecastType?.takeIf(::needsForecastSubscription)?.let {
+                forecasts[ForecastKey(entityId, it)]?.eventOrNull
+            }
             val shown = forecastToShow(state.attributes, event, forecastType)
                 ?.takeIf { json.boolean("show_forecast") != false && it.entries.isNotEmpty() }
                 ?.let { it.copy(entries = it.entries.take(number(json["forecast_slots"])?.toInt() ?: DEFAULT_SLOTS)) }

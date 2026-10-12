@@ -25,6 +25,18 @@ data class ForecastKey(val entityId: String, val type: String)
 /** The forecast the server sent, its entries oldest first (`null` when the entity has none). */
 data class ForecastEvent(val type: String, val forecast: List<JsonObject>?)
 
+/** A forecast subscription's outcome: what the server last sent, or why the subscription failed. */
+sealed interface ForecastResult {
+    /** The server sent [event]. */
+    data class Received(val event: ForecastEvent) : ForecastResult
+
+    /** The subscription failed: [error] is why (upstream's `err.message || err.code`). */
+    data class Failed(val error: String) : ForecastResult
+}
+
+/** The forecast the server sent, `null` while it hasn't (or when the subscription failed). */
+val ForecastResult.eventOrNull: ForecastEvent? get() = (this as? ForecastResult.Received)?.event
+
 /** A forecast to show: its entries, and whether they are `daily`, `hourly` or `twice_daily`. */
 data class Forecast(val entries: List<JsonObject>, val type: String)
 

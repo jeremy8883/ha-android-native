@@ -73,8 +73,8 @@ import io.homeassistant.companion.android.dashboard.strategy.home.HomeDashboardC
 import io.homeassistant.companion.android.dashboard.strategy.home.homeDashboard
 import io.homeassistant.companion.android.dashboard.strategy.summary.SUMMARY_PANELS
 import io.homeassistant.companion.android.dashboard.strategy.summary.summaryPanelDashboard
-import io.homeassistant.companion.android.dashboard.weather.ForecastEvent
 import io.homeassistant.companion.android.dashboard.weather.ForecastKey
+import io.homeassistant.companion.android.dashboard.weather.ForecastResult
 import io.homeassistant.companion.android.dashboard.weather.forecastRequests
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -526,7 +526,7 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         .onStart { emit(emptyMap()) }
 
     /** The forecasts the shown view's weather forecast cards and weather rows subscribe to. */
-    private val forecasts: Flow<Map<ForecastKey, ForecastEvent>> = combine(
+    private val forecasts: Flow<Map<ForecastKey, ForecastResult>> = combine(
         uiState,
         structureInputs.mapNotNull { it.valueOrNull },
         entityStates.mapNotNull { it.valueOrNull },
@@ -836,7 +836,7 @@ private data class CardData(
     val energy: Map<String, EnergyCollection>,
     val graphHistories: Map<GraphHistoryKey, GraphHistory>,
     val alarmDefaultCodes: Map<String, Boolean>,
-    val forecasts: Map<ForecastKey, ForecastEvent>,
+    val forecasts: Map<ForecastKey, ForecastResult>,
 )
 
 /** Whether data is being loaded again, why it last failed to, and when it was kept, whatever the value. */

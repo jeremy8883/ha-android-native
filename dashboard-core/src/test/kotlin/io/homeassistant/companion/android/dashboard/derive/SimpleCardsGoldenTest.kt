@@ -20,6 +20,7 @@ import io.homeassistant.companion.android.dashboard.moreinfo.CircularSecondary
 import io.homeassistant.companion.android.dashboard.moreinfo.css
 import io.homeassistant.companion.android.dashboard.moreinfo.recordedCalls
 import io.homeassistant.companion.android.dashboard.weather.ForecastKey
+import io.homeassistant.companion.android.dashboard.weather.ForecastResult
 import io.homeassistant.companion.android.dashboard.weather.WeatherIcon
 import io.homeassistant.companion.android.dashboard.weather.parseForecastEvent
 import java.time.Instant
@@ -202,7 +203,7 @@ class SimpleCardsGoldenTest {
     fun `Given captured weather forecast cards when deriving them then they show as the frontend's`() = cards("weather-forecast") { config, shown ->
         val weather = shown.obj("weather")
         val event = weather?.obj("event")?.let(::parseForecastEvent)
-        val hass = if (event == null) this else copy(forecasts = mapOf(ForecastKey(config.entity!!, event.type) to event))
+        val hass = if (event == null) this else copy(forecasts = mapOf(ForecastKey(config.entity!!, event.type) to ForecastResult.Received(event)))
         val model = hass.weatherForecastCardModel(config, Instant.ofEpochMilli(weather?.number("now")?.toLong() ?: 0))
         if (weather == null) {
             assertEquals(shown.string("warning"), (model as? WeatherForecastCardModel.Warning)?.text)
