@@ -31,6 +31,8 @@ data class TileModel(
     val vertical: Boolean = false,
     /** The controls under the tile, see [tileFeatures]. */
     val features: List<TileFeature> = emptyList(),
+    /** The badge on the icon, see [tileBadge]. */
+    val badge: TileBadge? = null,
 )
 
 /**
@@ -67,7 +69,8 @@ fun HassSnapshot.tileModel(card: CardConfig, now: Instant): TileModel? {
         iconInteractive = (card.json.obj(ICON_TAP_ACTION)?.string("action") ?: defaultTileIconAction(entityId)) !=
             ACTION_NONE,
         vertical = card.json.boolean("vertical") == true,
-        features = tileFeatures(card),
+        features = tileFeatures(card, now),
+        badge = tileBadge(entity),
     )
 }
 

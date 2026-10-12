@@ -39,10 +39,10 @@ internal fun HassSnapshot.coverOpenClose(state: EntityState): TileFeature? {
 }
 
 /** Ports of `canOpen` and `canClose` (src/data/cover.ts). */
-private fun canOpenCover(state: EntityState): Boolean = state.available() &&
+internal fun canOpenCover(state: EntityState): Boolean = state.available() &&
     (state.assumedState() || (!coverAt(state, FULLY_OPEN, "open") && state.state != "opening"))
 
-private fun canCloseCover(state: EntityState): Boolean = state.available() &&
+internal fun canCloseCover(state: EntityState): Boolean = state.available() &&
     (state.assumedState() || (!coverAt(state, FULLY_CLOSED, "closed") && state.state != "closing"))
 
 /** Ports of `isFullyOpen`/`isFullyClosed`: the position when known, else the state. */

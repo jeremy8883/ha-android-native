@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard.ui.lovelace.components
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -77,7 +78,7 @@ internal fun SensorGraphView(
             }
             is GraphContent.Message -> Text(
                 shown.text,
-                style = Css.Text.Body,
+                style = Css.Text.Body.copy(textAlign = TextAlign.Center),
                 color = LocalHAColorScheme.current.colorTextSecondary,
                 modifier = Modifier.fillMaxWidth().padding(Css.Space.S2),
             )
@@ -104,7 +105,7 @@ private fun HassSnapshot.graphContent(graph: SensorGraph, width: Double, now: Zo
  * The line (with [fill] under it down to the zero line, none while loading) in a box the coordinates' width wide,
  * scaled to the canvas; a flat line in the middle when there's nothing to draw yet.
  */
-private fun DrawScope.drawGraph(coordinates: GraphCoordinates, fill: Color?, line: Color) {
+internal fun DrawScope.drawGraph(coordinates: GraphCoordinates, fill: Color?, line: Color) {
     val points = coordinates.points
     val width = points.lastOrNull()?.x?.takeIf { it > 0 }
     if (width == null) {

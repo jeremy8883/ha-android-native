@@ -9,6 +9,7 @@ import io.homeassistant.companion.android.dashboard.display.formatEntityStatePar
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.feature.number
+import io.homeassistant.companion.android.dashboard.feature.trendGraphs
 import io.homeassistant.companion.android.dashboard.history.GraphHistoryKey
 import io.homeassistant.companion.android.dashboard.history.SensorGraph
 import io.homeassistant.companion.android.dashboard.history.historyKey
@@ -126,12 +127,12 @@ private const val DEFAULT_HOURS_TO_SHOW = 24.0
 private val SENSOR_DOMAINS = setOf("counter", "input_number", "number", "sensor")
 
 /**
- * The histories the graphs of [cards] draw (sensor cards', entities cards' header and footer), when the server records history (`isComponentLoaded(history)`, as
- * the graph checks before it subscribes).
+ * The histories the graphs of [cards] draw (sensor cards', entities cards' header and footer, tiles' trend
+ * graphs), when the server records history (`isComponentLoaded(history)`, as the graph checks before it subscribes).
  */
 fun HassSnapshot.graphHistoryRequests(cards: List<CardConfig>): Set<GraphHistoryKey> {
     if (HISTORY_COMPONENT !in config.components) return emptySet()
-    return cards.flatMap { card -> listOfNotNull(sensorGraph(card)) + headerFooterGraphs(card) }
+    return cards.flatMap { card -> listOfNotNull(sensorGraph(card)) + headerFooterGraphs(card) + trendGraphs(card) }
         .map { it.historyKey }
         .toSet()
 }

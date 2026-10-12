@@ -57,8 +57,17 @@ fun sensorGraphCoordinates(
     current: EntityState?,
     width: Double,
     nowMillis: Double,
+): GraphCoordinates = sensorGraphCoordinates(graph, history, current, GraphBox(width, width / HEIGHT_RATIO), nowMillis)
+
+/** [sensorGraphCoordinates] in a [box] of any height (a card feature's). */
+fun sensorGraphCoordinates(
+    graph: SensorGraph,
+    history: List<HistoryState>?,
+    current: EntityState?,
+    box: GraphBox,
+    nowMillis: Double,
 ): GraphCoordinates {
-    val box = GraphBox(width, width / HEIGHT_RATIO)
+    val width = box.width
     // `limitedHistoryFromStateObj`
     val currentOnly = current?.let { listOf(HistoryState(it.state, null, null, it.lastUpdated)) }
     val states = if (history == null) currentOnly else history.ifEmpty { currentOnly }
@@ -81,7 +90,7 @@ fun sensorGraphCoordinates(
 }
 
 /** The box a graph draws in. */
-private data class GraphBox(val width: Double, val height: Double)
+data class GraphBox(val width: Double, val height: Double)
 
 /** How many points a graph keeps at most, and whether a period's mean stands for it (else its extremes). */
 private data class Sampling(val maxDetails: Double, val useMean: Boolean)

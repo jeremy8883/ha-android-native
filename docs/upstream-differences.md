@@ -15,8 +15,6 @@ on the right are the frontend's (20260624.6).
 
 40. Drawer: the Settings entry has no updates and repairs count (`ui/components/NavigationDrawer.kt`;
     src/components/ha-sidebar.ts)
-49. Card features (thermostat, area, tile) only draw the types already ported; climate HVAC modes, for one, don't
-    show (`ui/lovelace/cardfeatures/TileFeatureControl.kt`; src/panels/lovelace/card-features/)
 
 ## Decisions (2026-10-12)
 
