@@ -1,6 +1,6 @@
 package io.homeassistant.companion.android.dashboard.derive
 
-import io.homeassistant.companion.android.dashboard.display.formatEntityAttributeValue
+import io.homeassistant.companion.android.dashboard.display.attributeValueDisplay
 import io.homeassistant.companion.android.dashboard.display.formatEntityState
 import io.homeassistant.companion.android.dashboard.energy.isoString
 import io.homeassistant.companion.android.dashboard.entity.EntityState
@@ -28,7 +28,7 @@ internal fun HassSnapshot.detailAttributes(state: EntityState): List<Pair<String
         val value = if (attribute == SUPPORTED_FEATURES && features != null) {
             featureNames(state, features)
         } else {
-            formatEntityAttributeValue(state, attribute)
+            attributeValueDisplay(state, attribute)
         }
         attributeName(state, attribute) to value
     }

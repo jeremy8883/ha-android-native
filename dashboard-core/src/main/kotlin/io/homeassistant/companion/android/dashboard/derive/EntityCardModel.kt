@@ -3,6 +3,7 @@ package io.homeassistant.companion.android.dashboard.derive
 import io.homeassistant.companion.android.dashboard.action.ElementActions
 import io.homeassistant.companion.android.dashboard.action.elementActions
 import io.homeassistant.companion.android.dashboard.display.ValueParts
+import io.homeassistant.companion.android.dashboard.display.attributeValueDisplay
 import io.homeassistant.companion.android.dashboard.display.formatEntityAttributeValueParts
 import io.homeassistant.companion.android.dashboard.display.formatEntityStateParts
 import io.homeassistant.companion.android.dashboard.entity.EntityState
@@ -78,7 +79,7 @@ private fun HassSnapshot.entityCardValue(state: EntityState, json: JsonObject): 
     val attribute = json.string("attribute")?.takeIf { "attribute" in json }
     val customUnit = json.string("unit")?.ifEmpty { null }
     val parts = if (attribute != null) {
-        formatEntityAttributeValueParts(state, attribute)
+        ValueParts(attributeValueDisplay(state, attribute, hideUnit = true))
             .takeIf { attribute in state.attributes }
             ?: ValueParts(localize("state.default.unknown"))
     } else {

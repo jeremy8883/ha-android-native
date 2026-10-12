@@ -1,6 +1,6 @@
 package io.homeassistant.companion.android.dashboard.derive
 
-import io.homeassistant.companion.android.dashboard.display.formatEntityAttributeValue
+import io.homeassistant.companion.android.dashboard.display.attributeValueDisplay
 import io.homeassistant.companion.android.dashboard.display.formatEntityState
 import io.homeassistant.companion.android.dashboard.display.relativeTime
 import io.homeassistant.companion.android.dashboard.entity.EntityState
@@ -199,7 +199,7 @@ fun HassSnapshot.moreInfoModel(entityId: String, now: Instant): MoreInfoModel? {
         timer = timerMoreInfo(state),
         remote = remoteActivity(state),
         update = updateMoreInfo(state),
-        attributes = displayAttributes(state).map { attributeName(state, it) to formatEntityAttributeValue(state, it) },
+        attributes = displayAttributes(state).map { attributeName(state, it) to attributeValueDisplay(state, it) },
         fullHeight = domain in FULL_HEIGHT_DOMAINS,
         stateCard = if (!showsNewMoreInfo(state) && domain !in NO_INFO_DOMAINS) stateCard(state, now) else null,
         inlineHistory = domain !in WITH_MORE_INFO_DOMAINS,

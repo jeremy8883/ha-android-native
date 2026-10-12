@@ -13,12 +13,15 @@ import kotlinx.serialization.json.booleanOrNull
 /**
  * js-yaml's `dump(value, { quotingType: '"', noRefs: true })` as `ha-yaml-editor` shows a value: block mappings and
  * sequences indented by two, scalars plain when they can't be read as another type, else double-quoted, multi-line
- * strings as literal blocks and long ones folded at 80 columns. Ends with a line break.
+ * strings as literal blocks and long ones folded at 80 columns. Ends with a line break. With [singleQuotes], js-yaml's
+ * default quoting instead (`dump(value)`, as `ha-attribute-value` shows an object): single quotes where they can
+ * hold the text.
  */
-fun yamlDump(value: JsonElement): String = YamlNodes.node(value, 0, compact = true) + "\n"
+fun yamlDump(value: JsonElement, singleQuotes: Boolean = false): String =
+    YamlNodes(singleQuotes).node(value, 0, compact = true) + "\n"
 
 /** Port of `writeNode` and the block writers. */
-private object YamlNodes {
+private class YamlNodes(private val singleQuotes: Boolean) {
     fun node(value: JsonElement, level: Int, compact: Boolean, isKey: Boolean = false): String = when (value) {
         is JsonNull -> "null"
         is JsonPrimitive -> when {
@@ -63,25 +66,33 @@ private object YamlNodes {
         }
     }
 
+    private val quote = if (singleQuotes) "'" else "\""
+
     /** Port of `writeScalar`. */
     private fun scalar(text: String, level: Int, isKey: Boolean): String {
         val indent = YAML_INDENT * maxOf(1, level)
         val lineWidth = maxOf(minOf(LINE_WIDTH, MIN_LINE_WIDTH), LINE_WIDTH - indent)
         return when {
-            text.isEmpty() -> "\"\""
-            text in DEPRECATED_BOOLEANS || DEPRECATED_BASE60.matches(text) -> "\"$text\""
+            text.isEmpty() -> quote.repeat(2)
+            text in DEPRECATED_BOOLEANS || DEPRECATED_BASE60.matches(text) -> quote + text + quote
             else -> when (YamlStyles.choose(text, isKey, lineWidth)) {
                 ScalarStyle.PLAIN -> text
                 ScalarStyle.LITERAL -> "|" + YamlBlocks.header(text) + YamlBlocks.indent(text, indent)
                 ScalarStyle.FOLDED ->
                     ">" + YamlBlocks.header(text) + YamlBlocks.indent(YamlBlocks.fold(text, lineWidth), indent)
                 ScalarStyle.DOUBLE -> "\"" + YamlBlocks.escape(text) + "\""
+                ScalarStyle.QUOTED -> if (singleQuotes) {
+                    "'" + text.replace("'", "''") + "'"
+                } else {
+                    "\"" + YamlBlocks.escape(text) + "\""
+                }
             }
         }
     }
 }
 
-private enum class ScalarStyle { PLAIN, LITERAL, FOLDED, DOUBLE }
+/** [DOUBLE] for text only double quotes can hold, [QUOTED] in the dump's quoting type. */
+private enum class ScalarStyle { PLAIN, LITERAL, FOLDED, DOUBLE, QUOTED }
 
 /** What `chooseScalarStyle` finds going through a string. */
 private data class ScalarScan(
@@ -91,14 +102,14 @@ private data class ScalarScan(
     val printable: Boolean,
 )
 
-/** Port of `chooseScalarStyle` and the checks it makes, always in block context, quoting with double quotes. */
+/** Port of `chooseScalarStyle` and the checks it makes, always in block context. */
 private object YamlStyles {
     fun choose(text: String, singleLineOnly: Boolean, lineWidth: Int): ScalarStyle {
         val scan = scan(text, singleLineOnly, lineWidth)
         return when {
             !scan.printable -> ScalarStyle.DOUBLE
             !scan.hasLineBreak && !scan.hasFoldableLine ->
-                if (scan.plain && !isAmbiguous(text)) ScalarStyle.PLAIN else ScalarStyle.DOUBLE
+                if (scan.plain && !isAmbiguous(text)) ScalarStyle.PLAIN else ScalarStyle.QUOTED
             scan.hasFoldableLine -> ScalarStyle.FOLDED
             else -> ScalarStyle.LITERAL
         }
