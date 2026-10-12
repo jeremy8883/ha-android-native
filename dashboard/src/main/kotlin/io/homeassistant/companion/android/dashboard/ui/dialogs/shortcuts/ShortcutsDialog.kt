@@ -185,6 +185,8 @@ private fun HintFooter(localize: Localize, onOpenSettings: (() -> Unit)?) {
         buildAnnotatedString {
             append(before)
             val label = localize(SHORTCUTS_HINT_LINK)
+            // UPSTREAM-DIFF: upstream's "user profile" link opens the profile page, where shortcuts are turned on;
+            // here it opens the app's Settings, where that switch is.
             if (onOpenSettings == null) {
                 append(label)
             } else {

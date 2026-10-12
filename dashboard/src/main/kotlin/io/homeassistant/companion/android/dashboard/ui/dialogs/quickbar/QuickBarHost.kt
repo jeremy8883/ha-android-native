@@ -1,5 +1,6 @@
 package io.homeassistant.companion.android.dashboard.ui.dialogs.quickbar
 
+import android.content.res.Configuration
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -8,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.composable.HAModalBottomSheet
@@ -33,7 +35,8 @@ import io.homeassistant.companion.android.dashboard.ui.dialogs.shortcuts.Shortcu
  * What the dashboard's toolbar actions and keyboard shortcuts do: Search opens the quick bar, drawn here while open,
  * as do the shortcuts' sections; the others open the dashboard shown in the frontend, so only Search is offered when
  * other pages can't be opened ([onOpenWeb] is `null`), and the quick bar then offers only what is handled here. The
- * keyboard shortcuts dialog's hint leads to [onOpenSettings].
+ * keyboard shortcuts dialog's hint leads to [onOpenSettings]. Opened from the toolbar with shortcuts on, the quick
+ * bar tips that Ctrl+K opens it, while a hardware keyboard is connected.
  *
  * Upstream: part of `hui-root`, `quick-bar-mixin` (src/panels/lovelace/hui-root.ts; src/state/quick-bar-mixin.ts)
  */
@@ -48,12 +51,24 @@ internal fun dashboardMenuActions(
     // The quick bar's section when open ("" for all), as upstream's `mode`
     var quickBar by rememberSaveable { mutableStateOf<String?>(null) }
     var shortcuts by rememberSaveable { mutableStateOf(false) }
+    // Whether the quick bar shows its tip (`showHint`): opened from the toolbar
+    var quickBarHint by rememberSaveable { mutableStateOf(false) }
+    val shortcutsEnabled by hiltViewModel<KeyboardShortcutsViewModel>().enabled.collectAsStateWithLifecycle()
+    // UPSTREAM-DIFF: upstream tips about Ctrl+K whatever the keyboard (hiding the tip on screens under 450 × 690 CSS
+    // px); here only while a hardware keyboard is connected, the only way to press it.
+    val hardKeyboard = LocalConfiguration.current.hasHardKeyboard()
     val nativeOnly = onOpenWeb == null
     val offered = if (nativeOnly) setOf(DashboardMenuAction.Search) else ALL_ACTIONS
     val onShortcut = rememberShortcutHandler(viewModel, hass, offered) { command ->
         when (command) {
-            is ShortcutCommand.ShowQuickBar -> quickBar = command.section.key
-            ShortcutCommand.ToggleQuickBar -> quickBar = if (quickBar == null) ALL_SECTIONS else null
+            is ShortcutCommand.ShowQuickBar -> {
+                quickBar = command.section.key
+                quickBarHint = false
+            }
+            ShortcutCommand.ToggleQuickBar -> {
+                quickBar = if (quickBar == null) ALL_SECTIONS else null
+                quickBarHint = false
+            }
             ShortcutCommand.ShowShortcuts -> shortcuts = true
             else -> Unit
         }
@@ -70,6 +85,7 @@ internal fun dashboardMenuActions(
             onMoreInfo = onMoreInfo,
             onShowShortcuts = { shortcuts = true },
             onKey = { press -> onShortcut(press, true) },
+            onTipShortcuts = { shortcuts = true }.takeIf { quickBarHint && shortcutsEnabled && hardKeyboard },
         )
     }
     if (shortcuts) {
@@ -78,6 +94,7 @@ internal fun dashboardMenuActions(
     return DashboardMenuHandler(offered) { action ->
         if (action == DashboardMenuAction.Search) {
             quickBar = ALL_SECTIONS
+            quickBarHint = true
         } else {
             viewModel.onOpenShownInWeb(flag = action.webParam)
         }
@@ -100,6 +117,7 @@ private fun DashboardQuickBar(
     onMoreInfo: (String) -> Unit,
     onShowShortcuts: () -> Unit,
     onKey: (KeyPress) -> Boolean,
+    onTipShortcuts: (() -> Unit)?,
 ) {
     val sidebar by viewModel.sidebar.collectAsStateWithLifecycle()
     val panels = when (val loaded = sidebar) {
@@ -116,6 +134,7 @@ private fun DashboardQuickBar(
         onRun = { action, onDone -> viewModel.onAction(action.toCardAction()).invokeOnCompletion { onDone() } },
         initialSection = initialSection,
         onKey = onKey,
+        onTipShortcuts = onTipShortcuts,
     ) { action ->
         when (action) {
             is QuickBarAction.MoreInfo -> onMoreInfo(action.entityId)
@@ -144,6 +163,7 @@ internal fun QuickBarHost(
     onRun: (QuickBarAction.CallService, onDone: () -> Unit) -> Unit,
     initialSection: QuickBarSection? = null,
     onKey: (KeyPress) -> Boolean = { false },
+    onTipShortcuts: (() -> Unit)? = null,
     onChoose: (QuickBarAction) -> Unit,
 ) {
     val entries: TargetPickerViewModel = hiltViewModel()
@@ -156,7 +176,7 @@ internal fun QuickBarHost(
             val source = remember(snapshot, panels.value, configEntryDomains, nativeOnly) {
                 QuickBarSource(snapshot, panels.value, configEntryDomains, nativeOnly)
             }
-            QuickBarSheet(source, onDismiss, onChoose, onRun, initialSection, onKey)
+            QuickBarSheet(source, onDismiss, onChoose, onRun, initialSection, onKey, onTipShortcuts)
         }
     }
 }
@@ -173,6 +193,10 @@ private fun FailedSheet(error: LoadError, onRetry: () -> Unit, onDismiss: () -> 
         LoadErrorScreen(error, onRetry)
     }
 }
+
+/** Whether a hardware keyboard is connected and open. */
+private fun Configuration.hasHardKeyboard(): Boolean =
+    keyboard != Configuration.KEYBOARD_NOKEYS && hardKeyboardHidden == Configuration.HARDKEYBOARDHIDDEN_NO
 
 private fun QuickBarAction.CallService.toCardAction() =
     CardAction.CallService(domain, service, data = null, target = null)

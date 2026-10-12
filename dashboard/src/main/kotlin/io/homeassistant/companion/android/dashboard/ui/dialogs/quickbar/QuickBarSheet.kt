@@ -31,6 +31,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -47,9 +48,16 @@ import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextLinkStyles
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withLink
 import io.homeassistant.companion.android.common.compose.composable.HAModalBottomSheet
 import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.composable.HATextField
@@ -60,6 +68,7 @@ import io.homeassistant.companion.android.common.compose.theme.LocalHAColorSchem
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.entity.Localize
 import io.homeassistant.companion.android.dashboard.keyboard.KeyPress
+import io.homeassistant.companion.android.dashboard.keyboard.quickSearchTip
 import io.homeassistant.companion.android.dashboard.quickbar.QuickBarAction
 import io.homeassistant.companion.android.dashboard.quickbar.QuickBarIcon
 import io.homeassistant.companion.android.dashboard.quickbar.QuickBarItem
@@ -84,7 +93,8 @@ import io.homeassistant.companion.android.dashboard.ui.theme.resolveVariable
  * its title, or one section's, the best matches first when searching. Choosing an item hands its [QuickBarAction]
  * to [onChoose] and closes the sheet; restarting or stopping the server asks first; a reload is handed to [onRun]
  * with a spinner on its row, and the sheet closes once it is done. It opens on [initialSection] (all when `null` or
- * not offered, as `effectiveQuickBarMode`); [onKey] sees the hardware keys pressed in it (Ctrl+K closes it).
+ * not offered, as `effectiveQuickBarMode`); [onKey] sees the hardware keys pressed in it (Ctrl+K closes it). With
+ * [onTipShortcuts], its footer tips that Ctrl+K opens it, the tip's link closing it and leading there.
  *
  * Upstream: `ha-quick-bar`, `ha-picker-combo-box` (src/dialogs/quick-bar/ha-quick-bar.ts;
  * src/components/ha-picker-combo-box.ts)
@@ -98,6 +108,7 @@ internal fun QuickBarSheet(
     onRun: (QuickBarAction.CallService, onDone: () -> Unit) -> Unit,
     initialSection: QuickBarSection? = null,
     onKey: (KeyPress) -> Boolean = { false },
+    onTipShortcuts: (() -> Unit)? = null,
 ) {
     val localize = source.hass.localize
     val items = remember(source) { QuickBarItems(source) }
@@ -136,7 +147,7 @@ internal fun QuickBarSheet(
             },
         )
         SectionChips(items, section) { section = if (section == it) null else it }
-        LazyColumn(Modifier.fillMaxWidth().consumeSheetScrollFling()) {
+        LazyColumn(Modifier.weight(1f, fill = false).fillMaxWidth().consumeSheetScrollFling()) {
             items(rows, key = ::rowKey) { row ->
                 when (row) {
                     is QuickBarRow.Title -> SectionTitle(row.text)
@@ -145,6 +156,7 @@ internal fun QuickBarSheet(
                 }
             }
         }
+        onTipShortcuts?.let { open -> QuickSearchTipFooter(localize) { onDismiss().also { open() } } }
     }
     // Upstream focuses the search as the dialog opens
     LaunchedEffect(Unit) { focus.requestFocus() }
@@ -154,6 +166,41 @@ internal fun QuickBarSheet(
             onDismiss()
             onChoose(action)
         }
+    }
+}
+
+/**
+ * The footer's tip: a light bulb, "Tip!", then that Ctrl+K opens the quick bar, its "keyboard shortcut" a link to
+ * [onShortcuts]; all in the secondary text colour, centred.
+ *
+ * Upstream: `ha-tip` in `ha-quick-bar`'s footer (src/components/ha-tip.ts; src/dialogs/quick-bar/ha-quick-bar.ts)
+ */
+@Composable
+private fun QuickSearchTipFooter(localize: Localize, onShortcuts: () -> Unit) {
+    val color = LocalHAColorScheme.current.colorTextSecondary
+    val tip = remember(localize) { quickSearchTip(localize) }
+    val open by rememberUpdatedState(onShortcuts)
+    val text = remember(tip) {
+        buildAnnotatedString {
+            append(tip.before)
+            val style = TextLinkStyles(SpanStyle(textDecoration = TextDecoration.Underline))
+            withLink(LinkAnnotation.Clickable(TIP_LINK_TAG, style) { open() }) { append(tip.link) }
+            append(tip.after)
+        }
+    }
+    Row(
+        Modifier.fillMaxWidth().padding(horizontal = Css.Space.S4, vertical = Css.Space.S2),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S1, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        DashboardIcon("mdi:lightbulb-outline", color, Modifier.size(HASize.X2L))
+        Text(tip.prefix, style = Css.Text.Body, fontWeight = FontWeight.Medium, color = color)
+        Text(
+            text,
+            style = Css.Text.Body.copy(textAlign = TextAlign.Start),
+            color = color,
+            modifier = Modifier.padding(start = TIP_TEXT_MARGIN),
+        )
     }
 }
 
@@ -380,3 +427,7 @@ private val ICON_BOX = 32.cssPx
 
 /** `ha-spinner`'s small size. */
 private val SPINNER_SIZE = 28.cssPx
+
+/** `ha-tip`'s `.text` start margin. */
+private val TIP_TEXT_MARGIN = 2.cssPx
+private const val TIP_LINK_TAG = "keyboard_shortcut"

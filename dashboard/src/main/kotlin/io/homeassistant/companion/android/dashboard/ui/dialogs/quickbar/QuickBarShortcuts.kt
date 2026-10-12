@@ -18,7 +18,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.core.view.ViewCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -46,8 +45,8 @@ import timber.log.Timber
 
 /**
  * The keys pressed on a hardware keyboard that nothing on the screen took (a focused text field takes what is typed
- * into it), handed to [onKey], which tells whether it used the key. Dialogs and sheets are windows of their own, so
- * their keys don't come here.
+ * into it), handed to [onKey], which tells whether it used the key. The keys pressed in the dialogs and sheets
+ * opened over the screen, windows of their own, come here too (see [ShortcutWindows]).
  *
  * Upstream: part of `quick-bar-mixin` (src/state/quick-bar-mixin.ts)
  */
@@ -56,11 +55,9 @@ internal fun UnhandledKeys(onKey: (KeyPress) -> Boolean) {
     val view = LocalView.current
     val handler by rememberUpdatedState(onKey)
     DisposableEffect(view) {
-        val listener = ViewCompat.OnUnhandledKeyEventListenerCompat { _, event ->
-            event.toKeyPress()?.let(handler) == true
-        }
-        ViewCompat.addOnUnhandledKeyEventListener(view, listener)
-        onDispose { ViewCompat.removeOnUnhandledKeyEventListener(view, listener) }
+        val windows = ShortcutWindows(view.rootView) { event -> event.toKeyPress()?.let(handler) == true }
+        windows.start()
+        onDispose { windows.stop() }
     }
 }
 
@@ -211,6 +208,7 @@ private fun DashboardViewModel.shownPage(): Pair<String, Map<String, String>> {
 /** Opens the page creating a My link to [page] in the browser, or says there is none. */
 private fun openMyLink(context: Context, page: Pair<String, Map<String, String>>, localize: Localize) {
     when (val link = createMyLink(page.first, page.second)) {
+        // UPSTREAM-DIFF: upstream says so in the frontend's toast bar (`hass-notification`); here, an Android toast.
         is MyLink.NotFound -> Toast.makeText(
             context,
             localize(NO_MY_LINK, mapOf("path" to link.path)),

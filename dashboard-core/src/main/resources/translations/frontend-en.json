@@ -1110,6 +1110,9 @@
       "yaml_only": "You can add this integration by adding it to your ''configuration.yaml''. See the documentation for more information.",
       "yaml_only_title": "This integration cannot be added from the UI"
      }
+    },
+    "tips": {
+     "tip": "Tip!"
     }
    },
    "energy": {
@@ -1600,6 +1603,14 @@
     "information": "More info",
     "restart_confirm": "Restart Home Assistant to finish removing this to-do list"
    }
+  },
+  "tips": {
+   "key_a_tip": "Press {keyboard_shortcut} 'a' on any page to open the Assist dialog",
+   "key_c_tip": "Press {keyboard_shortcut} 'c' on any page to open the command dialog",
+   "key_e_tip": "Press {keyboard_shortcut} 'e' on any page to open the entity search dialog",
+   "key_m_tip": "Press {keyboard_shortcut} 'm' on any page to get the My Home Assistant link",
+   "key_shortcut_quick_search": "Press {keyboard_shortcut} ''{modifier}+k'' on any page to open quick search",
+   "keyboard_shortcut": "keyboard shortcut"
   }
  }
 }
