@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard.ui.moreinfo
 
 import android.content.ClipData
+import android.os.Build
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
@@ -115,7 +116,11 @@ private fun CodeEditorToolbar(yaml: String, background: Color, localize: Localiz
             onClick = {
                 scope.launch {
                     clipboard.setClipEntry(ClipEntry(ClipData.newPlainText(label, yaml)))
-                    Toast.makeText(context, localize("ui.common.copied_clipboard"), Toast.LENGTH_SHORT).show()
+                    // UPSTREAM-DIFF: the frontend always says "Copied to clipboard"; Android 13 and later show
+                    // their own confirmation of a copy, so it is only said below that.
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                        Toast.makeText(context, localize("ui.common.copied_clipboard"), Toast.LENGTH_SHORT).show()
+                    }
                 }
             },
             modifier = Modifier.size(TOOLBAR_BUTTON_SIZE).semantics { contentDescription = label },

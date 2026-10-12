@@ -97,6 +97,8 @@ fun HassSnapshot.weatherForecastView(state: EntityState, result: ForecastResult?
     return WeatherForecastView(
         secondary = defaultSecondary(state, forecast?.entries.orEmpty(), digits = null, now),
         columns = forecast?.let { forecastColumns(it, digits = null, dashForMissingLow = false) },
+        // UPSTREAM-DIFF: "Failed to load forecast: <error>" when the subscription fails; upstream's weather details
+        // keep their spinner forever.
         failedToLoad = (result as? ForecastResult.Failed)?.takeIf { forecast == null }?.let {
             localize(FAILED_TO_LOAD, mapOf("error" to it.error))
         },
