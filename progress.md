@@ -200,6 +200,7 @@ Drawer panels (shown only when the setting is on):
 - [x] History (`history` panel; see the 2026-10-11 drawer pages note)
 - [ ] Calendar, Media browser
 - [ ] Settings (`/config`), Profile, add-on and custom panels (such as Music Assistant): companion app
+- [ ] Possible: basic Settings pages natively, starting with Updates (`/config/updates`, the update entities' list; each update's details already open natively from tiles) and Repairs. Upstream's Settings entry carries an updates + repairs count; it only makes sense once those pages are native (decided 2026-10-12)
 
 ### Energy
 The energy panel (`/energy`) as frontend 20260624.6 builds it, in phases.

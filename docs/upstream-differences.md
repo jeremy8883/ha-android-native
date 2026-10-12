@@ -38,3 +38,13 @@ on the right are the frontend's (20260624.6).
 50. Media control card: a long title is cut short instead of scrolling (`ui/lovelace/cards/MediaControlCard.kt`;
     hui-media-control-card.ts)
 51. Area card: `camera_view: live` shows the snapshot (`ui/lovelace/cards/AreaCard.kt`; hui-area-card.ts)
+
+## Decisions (2026-10-12)
+
+- Keep, marked `UPSTREAM-DIFF`: 41 (configurator entities), 42 (donut list under the ring), 44 (save-as picker),
+  46 (grey detail cards).
+- Fix: 39, 43, 45 (colours and copy only), 47, 48, 49, 50, 51; 53 as a deliberate improvement (digits from the
+  visible series).
+- 40: not until Settings pages are native (progress.md, Pages outside the dashboards).
+- 52: keep as upstream (consistent with the web).
+- Clock: 12/24-hour follows the phone's setting (deliberate: the frontend uses the language's format).
