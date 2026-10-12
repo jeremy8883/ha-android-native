@@ -1,6 +1,7 @@
 package io.homeassistant.companion.android.dashboard.derive
 
 import io.homeassistant.companion.android.dashboard.display.formatEntityState
+import io.homeassistant.companion.android.dashboard.entity.EntityEntry
 import io.homeassistant.companion.android.dashboard.entity.EntityState
 import io.homeassistant.companion.android.dashboard.golden.GoldenFixture
 import io.homeassistant.companion.android.dashboard.json
@@ -38,6 +39,25 @@ class AreaCardModelTest {
         assertEquals(AreaHeader.Icon("mdi:stove", 16.0 / 9.0), model.header)
         // No tap action by default, so neither the tile nor the picture reacts
         assertTrue(!model.actions.tap && model.imageActions == null)
+    }
+
+    @Test
+    fun `Given a camera area card with a live view when deriving it then its header streams the area's camera`() {
+        val camera = EntityEntry(
+            "camera.demo_camera", null, "kitchen", emptyList(), null, "demo", null, false, null, null, false, null,
+        )
+        val withCamera = hass.copy(
+            registries = hass.registries.copy(entities = hass.registries.entities + (camera.entityId to camera)),
+        )
+        fun header(view: String) = (
+            withCamera.areaCardModel(
+                CardConfig(json("""{"type": "area", "area": "kitchen", "display_type": "camera"$view}""")),
+            ) as AreaCardModel.Shown
+            ).header
+        assertEquals(AreaHeader.LiveCamera("camera.demo_camera", 16.0 / 9.0), header(""", "camera_view": "live""""))
+        assertTrue(header("") is AreaHeader.Picture)
+        val live = CardConfig(json("""{"type": "area", "area": "kitchen", "display_type": "camera", "camera_view": "live"}"""))
+        assertTrue(withCamera.areaCameraEntities(listOf(live)).isEmpty())
     }
 
     @Test

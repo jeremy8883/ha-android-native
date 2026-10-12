@@ -60,6 +60,9 @@ sealed interface AreaHeader {
     /** A picture: the area's, or a camera's snapshot ([image] `null` until signed). */
     data class Picture(val image: String?, override val aspectRatio: Double) : AreaHeader
 
+    /** The live stream of the camera [entityId] (`camera_view: live`). */
+    data class LiveCamera(val entityId: String, override val aspectRatio: Double) : AreaHeader
+
     /** The area's [icon] (none without one) on the tile colour, without a picture. */
     data class Icon(val icon: String?, override val aspectRatio: Double) : AreaHeader
 }
@@ -132,7 +135,9 @@ private fun HassSnapshot.areaHeader(json: JsonObject, display: String, area: Are
     val picture = area.json.string("picture")?.ifEmpty { null }
     return when {
         display != PICTURE && display != CAMERA -> AreaHeader.Icon(area.icon?.ifEmpty { null }, ratio)
-        // `hui-image` shows the camera's latest signed snapshot over the area's picture
+        // `hui-image` shows the camera's stream (`camera_view: live`), else its latest signed snapshot, over the
+        // area's picture
+        camera != null && json.string("camera_view") == LIVE -> AreaHeader.LiveCamera(camera, ratio)
         camera != null -> AreaHeader.Picture(cameraImages[camera], ratio)
         picture != null -> AreaHeader.Picture(picture, ratio)
         else -> AreaHeader.Icon(area.icon?.ifEmpty { null }, ratio)
@@ -147,9 +152,9 @@ internal fun HassSnapshot.areaCamera(areaId: String): String? = registries.entit
     )
 }
 
-/** The cameras whose snapshots the area cards of [cards] show, for the data layer to keep signed. */
+/** The cameras whose snapshots the area cards of [cards] show (not live), for the data layer to keep signed. */
 internal fun HassSnapshot.areaCameraEntities(cards: List<CardConfig>): Set<String> = cards
-    .filter { it.type == AREA && areaDisplayType(it.json) == CAMERA }
+    .filter { it.type == AREA && areaDisplayType(it.json) == CAMERA && it.json.string("camera_view") != LIVE }
     .mapNotNull { card -> card.json.string("area")?.let(::areaCamera) }
     .toSet()
 
@@ -191,6 +196,7 @@ internal const val AREA = "area"
 private const val COMPACT = "compact"
 private const val CAMERA = "camera"
 private const val PICTURE = "picture"
+private const val LIVE = "live"
 private const val INLINE = "inline"
 private const val ENTITY = "entity"
 private const val TAP_ACTION = "tap_action"

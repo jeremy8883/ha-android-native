@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -33,7 +35,7 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.hls.HlsMediaSource
-import androidx.media3.ui.compose.PlayerSurface
+import androidx.media3.ui.compose.ContentFrame
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.homeassistant.companion.android.common.compose.composable.HAFilledButton
@@ -48,10 +50,14 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -70,7 +76,6 @@ internal fun MoreInfoCamera(camera: MoreInfoExtra.Camera, state: EntityState) {
     val viewModel = hiltViewModel<CameraViewModel>(key = "camera-${state.entityId}")
     val token = state.attributes.string("access_token")
     LaunchedEffect(state.entityId, token) { viewModel.show(state.entityId, token) }
-    val stream by viewModel.stream.collectAsStateWithLifecycle()
     val download by viewModel.download.collectAsStateWithLifecycle()
     val saveAs = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument(JPEG)) { uri ->
         uri?.let(viewModel::downloadSnapshot)
@@ -78,26 +83,7 @@ internal fun MoreInfoCamera(camera: MoreInfoExtra.Camera, state: EntityState) {
     Column(verticalArrangement = Arrangement.spacedBy(Css.Space.S4)) {
         // The picture fills the width at its own ratio, as upstream's `img`; a video at 16:9 until it plays
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-            when (val shown = stream) {
-                is CameraStream.Hls -> Box(Modifier.fillMaxWidth().aspectRatio(VIDEO_RATIO)) {
-                    HlsPlayer(shown.url, viewModel)
-                }
-                is CameraStream.Frame -> {
-                    val bitmap =
-                        remember(shown.jpeg) {
-                            BitmapFactory.decodeByteArray(shown.jpeg, 0, shown.jpeg.size)?.asImageBitmap()
-                        }
-                    bitmap?.let {
-                        Image(
-                            it,
-                            contentDescription = state.attributes.string("friendly_name"),
-                            contentScale = ContentScale.FillWidth,
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-                    }
-                }
-                CameraStream.None -> Unit
-            }
+            CameraStreamView(state, fill = false, muted = false, Modifier.fillMaxWidth())
         }
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
             HAFilledButton(
@@ -118,13 +104,47 @@ internal fun MoreInfoCamera(camera: MoreInfoExtra.Camera, state: EntityState) {
 }
 
 /**
- * The camera's HLS stream, played while shown.
+ * Port of `ha-camera-stream`: the live stream of the camera [state] while shown (HLS when the camera offers it, else
+ * its MJPEG stream), [muted] or not. With [fill] it covers the box it is given, cropped (`fit-mode="cover"`); else it fills
+ * the width at its own ratio, a video at 16:9.
+ *
+ * Upstream: `ha-camera-stream` (src/components/ha-camera-stream.ts)
+ */
+@Composable
+internal fun CameraStreamView(state: EntityState, fill: Boolean, muted: Boolean, modifier: Modifier = Modifier) {
+    val viewModel = hiltViewModel<CameraViewModel>(key = "camera-${state.entityId}")
+    val token = state.attributes.string("access_token")
+    val flow = remember(state.entityId, token) { viewModel.stream(state.entityId, token) }
+    val stream by flow.collectAsStateWithLifecycle(CameraStream.None)
+    when (val shown = stream) {
+        is CameraStream.Hls -> Box(if (fill) modifier.clipToBounds() else modifier.aspectRatio(VIDEO_RATIO)) {
+            HlsPlayer(shown.url, viewModel, if (fill) ContentScale.Crop else ContentScale.Fit, muted)
+        }
+        is CameraStream.Frame -> {
+            val bitmap = remember(shown.jpeg) {
+                BitmapFactory.decodeByteArray(shown.jpeg, 0, shown.jpeg.size)?.asImageBitmap()
+            }
+            bitmap?.let {
+                Image(
+                    it,
+                    contentDescription = state.attributes.string("friendly_name"),
+                    contentScale = if (fill) ContentScale.Crop else ContentScale.FillWidth,
+                    modifier = modifier,
+                )
+            }
+        }
+        CameraStream.None -> Unit
+    }
+}
+
+/**
+ * The camera's HLS stream, played while shown ([muted] or not), scaled by [scale].
  *
  * Upstream: `ha-hls-player` (src/components/ha-hls-player.ts)
  */
 @OptIn(UnstableApi::class)
 @Composable
-private fun HlsPlayer(url: String, viewModel: CameraViewModel) {
+private fun HlsPlayer(url: String, viewModel: CameraViewModel, scale: ContentScale, muted: Boolean) {
     val context = LocalContext.current
     val player = remember(url) {
         ExoPlayer.Builder(context).build().apply {
@@ -133,12 +153,13 @@ private fun HlsPlayer(url: String, viewModel: CameraViewModel) {
                     OkHttpDataSource.Factory(viewModel.client),
                 ).createMediaSource(MediaItem.fromUri(url)),
             )
+            if (muted) volume = 0f
             playWhenReady = true
             prepare()
         }
     }
     DisposableEffect(player) { onDispose { player.release() } }
-    PlayerSurface(player, Modifier.fillMaxWidth())
+    ContentFrame(player, Modifier.fillMaxSize(), contentScale = scale)
 }
 
 /** What a camera's details stream. */
@@ -161,7 +182,7 @@ internal sealed interface SnapshotDownload {
     data class Done(val failed: Boolean) : SnapshotDownload
 }
 
-/** A camera's stream while its details show, and its snapshot download. */
+/** A camera's stream while shown, and its snapshot download. */
 @HiltViewModel
 internal class CameraViewModel @VisibleForTesting constructor(
     private val repository: CameraRepository,
@@ -174,8 +195,6 @@ internal class CameraViewModel @VisibleForTesting constructor(
         @ApplicationContext context: Context,
     ) : this(repository, context, Dispatchers.IO)
 
-    private val _stream = MutableStateFlow<CameraStream>(CameraStream.None)
-    val stream: StateFlow<CameraStream> = _stream.asStateFlow()
     private val _download = MutableStateFlow<SnapshotDownload>(SnapshotDownload.Idle)
     val download: StateFlow<SnapshotDownload> = _download.asStateFlow()
 
@@ -186,35 +205,41 @@ internal class CameraViewModel @VisibleForTesting constructor(
     private var entityId: String? = null
     private var token: String? = null
 
-    /** Stream [camera], whose MJPEG stream and snapshots take [accessToken]. */
+    /** Download the snapshots of [camera], which take [accessToken]. */
     fun show(camera: String, accessToken: String?) {
-        token = accessToken
-        if (entityId == camera) return
         entityId = camera
-        viewModelScope.launch {
-            client = repository.streamClient()
-            val types = (repository.streamTypes(camera) as? Fetched.Success)?.value.orEmpty()
-            // A stream that can't start shows the MJPEG stream, as upstream's does when HLS has no video
-            val hls = if (HLS in types) {
-                when (val url = repository.hlsUrl(camera)) {
-                    is Fetched.Success -> url.value
-                    is Fetched.Failure -> null.also {
-                        Timber.w("Couldn't start the HLS stream of $camera: ${url.error}")
-                    }
+        token = accessToken
+    }
+
+    /**
+     * The live stream of [camera], whose MJPEG stream takes [accessToken], while collected: its HLS playlist when it
+     * offers one, else the frames of its MJPEG stream.
+     */
+    fun stream(camera: String, accessToken: String?): Flow<CameraStream> = flow {
+        client = repository.streamClient()
+        val types = (repository.streamTypes(camera) as? Fetched.Success)?.value.orEmpty()
+        // A stream that can't start shows the MJPEG stream, as upstream's does when HLS has no video
+        val hls = if (HLS in types) {
+            when (val url = repository.hlsUrl(camera)) {
+                is Fetched.Success -> url.value
+                is Fetched.Failure -> null.also {
+                    Timber.w("Couldn't start the HLS stream of $camera: ${url.error}")
                 }
-            } else {
-                null
             }
-            if (hls != null) {
-                _stream.value = CameraStream.Hls(hls)
-                return@launch
-            }
-            // UPSTREAM-DIFF: a camera offering only WebRTC shows its MJPEG stream; upstream plays WebRTC
-            val path = accessToken?.let { "/api/camera_proxy_stream/$camera?token=$it" } ?: return@launch
+        } else {
+            null
+        }
+        if (hls != null) {
+            emit(CameraStream.Hls(hls))
+            return@flow
+        }
+        // UPSTREAM-DIFF: a camera offering only WebRTC shows its MJPEG stream; upstream plays WebRTC
+        val path = accessToken?.let { "/api/camera_proxy_stream/$camera?token=$it" } ?: return@flow
+        emitAll(
             repository.mjpegFrames(path)
                 .catch { e -> Timber.w(e, "The MJPEG stream of $camera ended") }
-                .collect { _stream.value = CameraStream.Frame(it) }
-        }
+                .map { CameraStream.Frame(it) },
+        )
     }
 
     /** Save the camera's picture to [target], a document the user picked. */

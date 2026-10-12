@@ -49,13 +49,14 @@ import io.homeassistant.companion.android.dashboard.ui.components.ServerImage
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.elementGestures
 import io.homeassistant.companion.android.dashboard.ui.lovelace.components.CardWarning
+import io.homeassistant.companion.android.dashboard.ui.moreinfo.controls.CameraStreamView
 import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
- * An area card: a tile with the area's icon, name and sensors, under the area's picture (or a camera's snapshot,
- * or its icon on the tile colour) with the active alerts, and its area controls. Compact, it is the tile alone,
- * the first alert a badge on its icon. A section's fixed rows give the picture the height left by the tile.
+ * An area card: a tile with the area's icon, name and sensors, under the area's picture (or a camera's snapshot or
+ * stream, or its icon on the tile colour) with the active alerts, and its area controls. Compact, it is the tile
+ * alone, the first alert a badge on its icon. A section's fixed rows give the picture the height left by the tile.
  *
  * Upstream: `hui-area-card` (src/panels/lovelace/cards/hui-area-card.ts)
  */
@@ -85,12 +86,23 @@ internal fun AreaCard(
                     } else {
                         Modifier.aspectRatio(header.aspectRatio.toFloat())
                     }
-                    AreaPicture(header, model, color, interactions, Modifier.fillMaxWidth().then(sizing))
+                    AreaPicture(header, model, color, hass, interactions, Modifier.fillMaxWidth().then(sizing))
                 }
                 AreaTile(model, color, minHeight = fixedHeight?.takeIf { model.header == null }, interactions)
             }
         }
     }
+}
+
+/**
+ * The camera [entityId]'s stream, muted, covering the header.
+ *
+ * Upstream: part of `hui-image` (`camera_view: live`) (src/panels/lovelace/components/hui-image.ts)
+ */
+@Composable
+private fun LiveCamera(entityId: String, hass: State<HassSnapshot?>) {
+    val camera by remember(entityId) { derivedStateOf { hass.value?.states?.get(entityId) } }
+    camera?.let { CameraStreamView(it, fill = true, muted = true, modifier = Modifier.fillMaxSize()) }
 }
 
 /**
@@ -103,6 +115,7 @@ private fun AreaPicture(
     header: AreaHeader,
     model: AreaCardModel.Shown,
     color: Color,
+    hass: State<HassSnapshot?>,
     interactions: CardInteractions,
     modifier: Modifier,
 ) {
@@ -112,6 +125,7 @@ private fun AreaPicture(
             is AreaHeader.Picture -> header.image?.let {
                 ServerImage(it, contentDescription = model.name, modifier = Modifier.fillMaxSize())
             }
+            is AreaHeader.LiveCamera -> LiveCamera(header.entityId, hass)
             is AreaHeader.Icon -> Box(
                 Modifier.fillMaxSize().background(color.copy(alpha = HEADER_ICON_BACKGROUND_ALPHA)),
                 contentAlignment = Alignment.Center,
