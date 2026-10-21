@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -82,8 +83,8 @@ import kotlinx.coroutines.launch
 
 /**
  * The toolbar: back to the page that opened it (else the menu, with a dot while there are notifications), then the
- * dashboard's view tabs when it has several top-level views, else the title, then the dashboard's actions
- * ([onMenuAction], hidden when `null`) or the buttons a native panel put in it ([panelActions]).
+ * dashboard's view tabs when it has several top-level views, else the title with [subtitle] under it, then the
+ * dashboard's actions ([onMenuAction], hidden when `null`) or the buttons a native panel put in it ([panelActions]).
  *
  * Upstream: part of `hui-root`, `ha-top-app-bar-fixed` (src/panels/lovelace/hui-root.ts;
  * src/components/ha-top-app-bar-fixed.ts)
@@ -99,6 +100,7 @@ internal fun DashboardTopBar(
     onSelectTab: (String) -> Unit = {},
     onMenuAction: ((DashboardMenuAction) -> Unit)? = null,
     hasNotifications: Boolean = false,
+    subtitle: (@Composable () -> Unit)? = null,
 ) {
     val content = uiState as? DashboardUiState.Content
     val panel = uiState as? DashboardUiState.Panel
@@ -116,18 +118,21 @@ internal fun DashboardTopBar(
             actionIconContentColor = colors.colorOnNeutralQuiet,
         ),
         title = {
-            val tabs = content?.takeIf { !it.isSubview && it.tabs.size > 1 }
+            val tabs = content?.takeIf { it.showsTabs }
             val shownLocalize = localize
             if (tabs != null && shownLocalize != null) {
                 ViewTabs(tabs, shownLocalize, onSelectTab)
             } else {
-                Text(
-                    content?.title ?: panel?.title
-                        ?: (uiState as? DashboardUiState.UnsupportedStrategy)?.title.orEmpty(),
-                    fontSize = Css.FontSize.Xl,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                Column {
+                    Text(
+                        content?.title ?: panel?.title
+                            ?: (uiState as? DashboardUiState.UnsupportedStrategy)?.title.orEmpty(),
+                        fontSize = Css.FontSize.Xl,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    subtitle?.invoke()
+                }
             }
         },
         navigationIcon = {

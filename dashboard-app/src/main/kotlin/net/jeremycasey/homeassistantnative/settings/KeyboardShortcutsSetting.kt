@@ -1,5 +1,6 @@
 package net.jeremycasey.homeassistantnative.settings
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,7 +39,7 @@ internal fun KeyboardShortcutsSetting() {
             .padding(horizontal = HADimens.SPACE4, vertical = HADimens.SPACE2),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Column(Modifier.weight(1f)) {
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(HADimens.SPACE1)) {
             Text(
                 stringResource(R.string.settings_shortcuts),
                 style = HATextStyle.Body.copy(

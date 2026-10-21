@@ -127,24 +127,27 @@ private fun NotificationDrawer(
 }
 
 /**
- * The drawer's header: its title, then the button that closes it, over a divider.
+ * The drawer's header: the button that closes it, then its title, over a divider.
  *
  * Upstream: part of `notification-drawer`, `ha-header-bar` (src/dialogs/notifications/notification-drawer.ts;
  * src/components/ha-header-bar.ts)
  */
+// UPSTREAM-DIFF: the back arrow is at the start, where Android's back buttons are; upstream puts it at the end of
+// the header, after the title.
 @Composable
 private fun DrawerHeader(title: String, closeLabel: String, onClose: () -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth().height(HEADER_HEIGHT).padding(start = Css.Space.S4),
+        modifier = Modifier.fillMaxWidth().height(HEADER_HEIGHT).padding(start = Css.Space.S1, end = Css.Space.S4),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S1),
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        ToolbarIconButton(BACK_ICON, closeLabel, onClick = onClose)
         Text(
             title,
             style = Css.Text.Body.copy(fontSize = Css.FontSize.Xl, textAlign = TextAlign.Start),
             color = LocalHAColorScheme.current.colorTextPrimary,
             modifier = Modifier.weight(1f),
         )
-        ToolbarIconButton(BACK_ICON, closeLabel, onClick = onClose)
     }
     HorizontalDivider(color = LocalHAColorScheme.current.colorBorderNeutralQuiet)
 }

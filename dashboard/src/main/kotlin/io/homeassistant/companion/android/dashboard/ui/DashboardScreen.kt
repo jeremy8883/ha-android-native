@@ -55,6 +55,7 @@ import io.homeassistant.companion.android.dashboard.ui.panels.NativePanel
 import io.homeassistant.companion.android.dashboard.ui.panels.PanelToolbar
 import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.ZonedDateTime
+import kotlin.time.toKotlinInstant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -294,10 +295,18 @@ internal fun DashboardScreenContent(
     val panel = uiState as? DashboardUiState.Panel
     // A panel's refresh button asks it to load again
     val panelToolbar = remember(panel?.name) { PanelToolbar() }
+    // The age of the dashboard's data, while it may be out of date: under the title, or at the bottom with tabs
+    val shownAge by remember(status, content != null) {
+        derivedStateOf {
+            val time = now.value?.takeIf { content != null } ?: return@derivedStateOf null
+            status.shownAge(time.toInstant().toKotlinInstant())
+        }
+    }
+    val ageAtBottom = content?.showsTabs == true
     Scaffold(
         // Over the content, so they never move it
         snackbarHost = {
-            DashboardBottomBars(snackbar, status.offline, status.updatedAt.takeIf { content != null }, now)
+            DashboardBottomBars(snackbar, status.offline, shownAge?.takeIf { ageAtBottom }, now)
         },
         // A view's footer (the energy date selection) stays at the bottom, below the messages
         bottomBar = { content?.view?.let { ViewFooter(it, hass, now, interactions) } },
@@ -311,6 +320,7 @@ internal fun DashboardScreenContent(
                 onSelectTab,
                 onMenuAction,
                 hasNotifications,
+                subtitle = shownAge?.takeUnless { ageAtBottom }?.let { age -> { UpdatedSubtitle(age, now) } },
             )
         },
     ) { padding ->

@@ -1,16 +1,26 @@
 package io.homeassistant.companion.android.dashboard.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
@@ -25,9 +35,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.style.TextAlign
@@ -92,6 +105,44 @@ internal fun NavigationDrawerContent(
     fun Entry(path: String, title: String, icon: String) {
         SidebarItem(title, path == selected, { onOpen("/$path") }) { tint -> SidebarIcon(icon, tint) }
     }
+
+    /**
+     * The entries below the panels: Settings, the notifications, the profile and switching servers.
+     *
+     * Upstream: part of `ha-sidebar` (src/components/ha-sidebar.ts)
+     */
+    @Composable
+    fun FooterEntries() {
+        /**
+         * An entry that does something in the app instead of opening a panel.
+         *
+         * Upstream: none (native: the app's settings and server switching)
+         */
+        @Composable
+        fun Action(label: String, icon: String, onClick: () -> Unit) =
+            SidebarItem(label, selected = false, onClick = onClick) { tint -> SidebarIcon(icon, tint) }
+        if (onOpenSettings != null) {
+            Action(stringResource(R.string.native_dashboard_settings), SETTINGS_ICON, onOpenSettings)
+        } else if (sidebar.valueOrNull?.isAdmin == true) {
+            Entry(CONFIG_PANEL, stringResource(R.string.native_dashboard_settings), SETTINGS_ICON)
+        }
+        SidebarItem(
+            stringResource(R.string.native_dashboard_notifications),
+            selected = false,
+            onClick = onOpenNotifications,
+            badge = notificationCount?.takeIf { it > 0 }?.let { count -> { CountBadge(count) } },
+        ) { tint -> SidebarIcon(NOTIFICATIONS_ICON, tint) }
+        // The profile opens elsewhere, so it needs other pages
+        if (onOpenSettings == null || !onlyDashboards) {
+            SidebarItem(
+                user?.name ?: stringResource(R.string.native_dashboard_profile),
+                selected = selected == PROFILE_PANEL,
+                onClick = { onOpen("/$PROFILE_PANEL") },
+                user = true,
+            ) { tint -> user?.let { UserBadge(it) } ?: SidebarIcon(PROFILE_ICON, tint) }
+        }
+        onSwitchServer?.let { Action(stringResource(R.string.native_dashboard_switch_server), SERVER_ICON, it) }
+    }
     ModalDrawerSheet(
         drawerState = drawerState,
         // mwc-drawer's 256px
@@ -99,46 +150,45 @@ internal fun NavigationDrawerContent(
         // Square, as the frontend's sidebar, instead of Material's rounded open edge
         drawerShape = RectangleShape,
         drawerContainerColor = colors.colorSurfaceDefault,
+        // The header's banner reaches up behind the status bar; the bottom keeps clear of the navigation bar itself
+        windowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Start),
     ) {
-        SidebarHeader()
-        Column(
-            modifier = Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(vertical = Css.Space.S2),
-        ) {
-            PanelEntries(sidebar, onlyDashboards, onRetry) { Entry(it.urlPath, it.title, it.icon) }
-        }
-        HorizontalDivider()
-        Column(modifier = Modifier.padding(vertical = Css.Space.S2)) {
-            /**
-             * An entry that does something in the app instead of opening a panel.
-             *
-             * Upstream: none (native: the app's settings and server switching)
-             */
-            @Composable
-            fun Action(label: String, icon: String, onClick: () -> Unit) =
-                SidebarItem(label, selected = false, onClick = onClick) { tint -> SidebarIcon(icon, tint) }
-            if (onOpenSettings != null) {
-                Action(stringResource(R.string.native_dashboard_settings), SETTINGS_ICON, onOpenSettings)
-            } else if (sidebar.valueOrNull?.isAdmin == true) {
-                Entry(CONFIG_PANEL, stringResource(R.string.native_dashboard_settings), SETTINGS_ICON)
+        BoxWithConstraints(Modifier.fillMaxSize()) {
+            val navigationBar = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+            if (maxHeight < SHORT_HEIGHT) {
+                // Too short to keep the header and the footer in place: everything scrolls together
+                PeekColumn(
+                    viewportHeight = constraints.maxHeight,
+                    bottomPadding = Css.Space.S2 + navigationBar,
+                    modifier = Modifier.verticalScroll(rememberScrollState()),
+                ) {
+                    SidebarHeader(slim = true)
+                    Spacer(Modifier.height(Css.Space.S2))
+                    PanelEntries(sidebar, onlyDashboards, onRetry) { Entry(it.urlPath, it.title, it.icon) }
+                    HorizontalDivider()
+                    Spacer(Modifier.height(Css.Space.S2))
+                    FooterEntries()
+                }
+            } else {
+                Column(Modifier.fillMaxSize()) {
+                    SidebarHeader(slim = false)
+                    BoxWithConstraints(Modifier.weight(1f)) {
+                        PeekColumn(
+                            viewportHeight = constraints.maxHeight,
+                            topPadding = Css.Space.S2,
+                            bottomPadding = Css.Space.S2,
+                            modifier = Modifier.verticalScroll(rememberScrollState()),
+                        ) {
+                            PanelEntries(sidebar, onlyDashboards, onRetry) { Entry(it.urlPath, it.title, it.icon) }
+                        }
+                    }
+                    HorizontalDivider()
+                    Column(Modifier.padding(top = Css.Space.S2, bottom = Css.Space.S2 + navigationBar)) {
+                        FooterEntries()
+                    }
+                }
             }
-            SidebarItem(
-                stringResource(R.string.native_dashboard_notifications),
-                selected = false,
-                onClick = onOpenNotifications,
-                badge = notificationCount?.takeIf { it > 0 }?.let { count -> { CountBadge(count) } },
-            ) { tint -> SidebarIcon(NOTIFICATIONS_ICON, tint) }
-            // The profile opens elsewhere, so it needs other pages
-            if (onOpenSettings == null || !onlyDashboards) {
-                SidebarItem(
-                    user?.name ?: stringResource(R.string.native_dashboard_profile),
-                    selected = selected == PROFILE_PANEL,
-                    onClick = { onOpen("/$PROFILE_PANEL") },
-                    user = true,
-                ) { tint -> user?.let { UserBadge(it) } ?: SidebarIcon(PROFILE_ICON, tint) }
-            }
-            onSwitchServer?.let { Action(stringResource(R.string.native_dashboard_switch_server), SERVER_ICON, it) }
         }
-        Spacer(modifier = Modifier.padding(bottom = Css.Space.S2))
     }
 }
 
@@ -254,23 +304,42 @@ private fun PanelEntries(
 }
 
 /**
- * The sidebar's header on a phone (`ha-sidebar`'s `menu`): the app's name on a toolbar-high row, over a divider.
+ * The sidebar's header: the app's logo and name on a banner in the app icon's blue, reaching up behind the status bar;
+ * [slim] when the screen is short.
  *
  * Upstream: part of `ha-sidebar` (src/components/ha-sidebar.ts)
  */
-// UPSTREAM-DIFF: the header names this app (HADash), where upstream's says "Home Assistant".
+// UPSTREAM-DIFF: a banner with this app's logo and name (HADash), where upstream's header is a plain toolbar-high row
+// saying "Home Assistant".
 @Composable
-private fun SidebarHeader() {
-    Box(Modifier.fillMaxWidth().height(HEADER_HEIGHT), contentAlignment = Alignment.CenterStart) {
+private fun SidebarHeader(slim: Boolean) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Brush.linearGradient(listOf(BANNER_LIGHT, BANNER_DARK)))
+            .statusBarsPadding()
+            .height(if (slim) SLIM_BANNER_HEIGHT else BANNER_HEIGHT)
+            .padding(horizontal = HEADER_PADDING),
+        horizontalArrangement = Arrangement.spacedBy(Css.Space.S3),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Image(
+            painter = painterResource(R.drawable.hadash_logo),
+            contentDescription = null,
+            modifier = Modifier.height(if (slim) SLIM_LOGO_HEIGHT else LOGO_HEIGHT),
+            contentScale = ContentScale.FillHeight,
+        )
         Text(
             stringResource(R.string.native_dashboard_sidebar_title),
-            style = Css.Text.Body.copy(fontSize = Css.FontSize.Xl, textAlign = TextAlign.Start),
-            color = LocalHAColorScheme.current.colorTextPrimary,
+            style = Css.Text.Body.copy(
+                fontSize = if (slim) Css.FontSize.Xl else Css.FontSize.X2l,
+                fontWeight = Css.FontWeight.Medium,
+                textAlign = TextAlign.Start,
+            ),
+            color = Color.White,
             maxLines = 1,
-            modifier = Modifier.padding(horizontal = HEADER_PADDING),
         )
     }
-    HorizontalDivider()
 }
 
 /**
@@ -347,8 +416,20 @@ private val USER_BADGE_SIZE = 40.dp
 private val BADGE_PADDING_H = 6.dp
 private val BADGE_PADDING_V = 2.dp
 
-/** `--header-height`. */
-private val HEADER_HEIGHT = 56.dp
+/** The header banner's height below the status bar, and when the screen is short. */
+private val BANNER_HEIGHT = 80.dp
+private val SLIM_BANNER_HEIGHT = 48.dp
+
+/** The logo's height on the banner, and on the slim one. */
+private val LOGO_HEIGHT = 36.dp
+private val SLIM_LOGO_HEIGHT = 26.dp
+
+/** The app icon's background gradient, lighter at the top left. */
+private val BANNER_LIGHT = Color(0xFF35BAFC)
+private val BANNER_DARK = Color(0xFF0B6BF8)
+
+/** Below this height the header and footer scroll with the entries rather than staying in place. */
+private val SHORT_HEIGHT = 480.dp
 
 /** The menu's 4px padding and the narrow title's 16px. */
 private val HEADER_PADDING = 20.dp

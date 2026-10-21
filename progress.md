@@ -294,6 +294,14 @@ Not started; the user is deciding. The proposal:
 
 ## Handover notes
 
+### 2026-10-21: release polish (Opus)
+- Debug builds are named "HADash Dev" with a red "Dev" band on the launcher icon (`dashboard-app/src/debug/res`: adaptive icon layers, themed icon, and the pre-Android 8 webp icons).
+- The refresh bar is drawn by the frame clock (`IndeterminateBar` in `ui/DashboardStatusViews.kt`, Material 3's timings), so it still moves with the phone's animations off.
+- The data's age ("Updated 10 minutes ago") moved from the offline toast to a small grey line under the toolbar title (at the bottom when the toolbar shows tabs). It shows when the data is at least 5 minutes old or a refresh failed, never while a refresh of old data is still running (`DashboardStatus.shownAge`).
+- More room under the last card for the offline toast (96dp). An empty view header no longer takes a slot and a gap (Maintenance's large top margin).
+- The notification drawer's back arrow is at the start (`UPSTREAM-DIFF`).
+- The navigation drawer: a gradient banner with the logo and "HADash" (`res/drawable/hadash_logo.xml`), slimmer under 480dp of height, where everything scrolls together. The lists space their entries up to 2dp closer or 4dp further apart so the bottom entry is cut through its middle, a hint that they scroll (`ui/components/PeekColumn.kt`).
+
 ### 2026-10-11: drawer pages (Opus)
 - Panels drawn natively that aren't dashboards: `NATIVE_PANELS` (`panels/NativePanels.kt`), shown in the drawer and routed to `DashboardUiState.Panel` (`ui/panels/NativePanel.kt`).
 - To-do lists (`todo` panel, `ui/panels/todo/TodoPanel.kt`): the list picker, the list's details, "Add item", and the list as the to-do list card, which dashboards now draw natively too (`todo/`, `ui/lovelace/cards/TodoListCard.kt`): the add field, active / no status / completed sections, ticking, the item dialog (summary, description, due date and time, delete after confirming), removing completed items, sorting and the due date filter, reordering (with up and down buttons, `UPSTREAM-DIFF`), live from `todo/item/subscribe`. Creating and deleting lists, and Assist, stay in the frontend.

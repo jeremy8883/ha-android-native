@@ -81,6 +81,7 @@ import java.time.ZonedDateTime
 import java.util.Locale
 import javax.inject.Inject
 import kotlin.time.Clock
+import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
 import kotlin.time.toJavaInstant
@@ -179,6 +180,9 @@ sealed interface DashboardUiState {
 
         /** Whether the top bar shows a back button rather than the menu. */
         val showsBack: Boolean get() = isSubview || canGoBack
+
+        /** Whether the top bar shows the view tabs rather than the title. */
+        val showsTabs: Boolean get() = !isSubview && tabs.size > 1
     }
 }
 
@@ -191,15 +195,35 @@ sealed interface DashboardUiState {
  * before (the cache), otherwise when the connection was lost; `null` while connected and loaded
  * @property refreshError why loading shown data again failed, while the data loaded before stays; connection
  * problems are left to [offline]
+ * @property refreshFailed whether loading shown data again failed, for any reason, including not reaching the server
  */
 data class DashboardStatus(
     val refreshing: Boolean,
     val offline: Boolean,
     val updatedAt: Instant?,
     val refreshError: LoadError?,
+    val refreshFailed: Boolean = refreshError != null,
 ) {
+    /**
+     * When the shown data was last current, if its age is worth showing at [now]: it may be out of date, because it is
+     * at least [STALE_AFTER] old or couldn't be loaded again. `null` while it is live, or while it is being loaded again
+     * and that hasn't failed yet, so a quick refresh of old data doesn't flash its age.
+     */
+    fun shownAge(now: Instant): Instant? {
+        val since = updatedAt ?: return null
+        return when {
+            refreshFailed -> since
+            refreshing && !offline -> null
+            now - since >= STALE_AFTER -> since
+            else -> null
+        }
+    }
+
     companion object {
         val CURRENT = DashboardStatus(refreshing = false, offline = false, updatedAt = null, refreshError = null)
+
+        /** How old shown data may be before its age shows. */
+        val STALE_AFTER = 5.minutes
     }
 }
 
@@ -469,12 +493,13 @@ class DashboardViewModel @VisibleForTesting internal constructor(
         offlineSince,
     ) { dashboardProgress, statesProgress, offlineSince ->
         val keptAt = listOfNotNull(dashboardProgress.keptAt, statesProgress.keptAt).minOrNull()
+        val refreshError = dashboardProgress.refreshError ?: statesProgress.refreshError
         DashboardStatus(
             refreshing = dashboardProgress.refreshing || statesProgress.refreshing,
             offline = offlineSince != null,
             updatedAt = keptAt ?: offlineSince,
-            refreshError = (dashboardProgress.refreshError ?: statesProgress.refreshError)
-                ?.takeUnless { it == LoadError.NoResponse },
+            refreshError = refreshError?.takeUnless { it == LoadError.NoResponse },
+            refreshFailed = refreshError != null,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(STOP_TIMEOUT), DashboardStatus.CURRENT)
 

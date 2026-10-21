@@ -45,6 +45,7 @@ import io.homeassistant.companion.android.dashboard.layout.BadgesAlignment
 import io.homeassistant.companion.android.dashboard.layout.BadgesArrangement
 import io.homeassistant.companion.android.dashboard.layout.HeaderFlow
 import io.homeassistant.companion.android.dashboard.layout.ViewBadgeModel
+import io.homeassistant.companion.android.dashboard.layout.ViewHeaderModel
 import io.homeassistant.companion.android.dashboard.layout.viewHeader
 import io.homeassistant.companion.android.dashboard.model.ViewConfig
 import io.homeassistant.companion.android.dashboard.ui.components.DashboardIcon
@@ -62,6 +63,26 @@ import java.time.ZonedDateTime
 import kotlin.math.roundToInt
 
 /**
+ * The header [view] shows now, `null` while it has none (no card or badges shown), so it takes no space.
+ *
+ * Upstream: part of `hui-view-header` (src/panels/lovelace/views/hui-view-header.ts)
+ */
+@Composable
+internal fun rememberViewHeader(
+    view: ViewConfig?,
+    hass: State<HassSnapshot?>,
+    now: State<ZonedDateTime?>,
+): State<ViewHeaderModel?> {
+    val context = LocalConditionContext.current
+    return remember(view, context) {
+        derivedStateOf {
+            view ?: return@derivedStateOf null
+            hass.value?.viewHeader(view, context.copy(now = now.value), now.value?.toInstant() ?: Instant.EPOCH)
+        }
+    }
+}
+
+/**
  * The header of a sections view: its card and its badges, placed as its `layout`, `badges_position` and
  * `badges_wrap` say.
  *
@@ -69,18 +90,11 @@ import kotlin.math.roundToInt
  */
 @Composable
 internal fun ViewHeader(
-    view: ViewConfig,
+    header: ViewHeaderModel,
     hass: State<HassSnapshot?>,
     now: State<ZonedDateTime?>,
     interactions: CardInteractions,
 ) {
-    val context = LocalConditionContext.current
-    val model by remember(view, context) {
-        derivedStateOf {
-            hass.value?.viewHeader(view, context.copy(now = now.value), now.value?.toInstant() ?: Instant.EPOCH)
-        }
-    }
-    val header = model ?: return
     val arrangement = header.arrangement
     val card = header.card?.let { card ->
         @Composable { modifier: Modifier -> DashboardCard(card, hass, now, interactions, modifier) }

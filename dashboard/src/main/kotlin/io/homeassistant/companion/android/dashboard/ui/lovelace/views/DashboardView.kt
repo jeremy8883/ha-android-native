@@ -130,6 +130,8 @@ private fun ViewRows(
 ) {
     val columnGap = if (narrow) Css.Space.S2 else Css.Space.S8
     var showSidebar by rememberSaveable(view) { mutableStateOf(false) }
+    // Only a header that shows something gets a place, and the gap after it
+    val header by rememberViewHeader(view, hass, now)
     val sectionRow: @Composable (List<SectionLayout>) -> Unit = { sections ->
         DashboardGrid(
             cells = sections.map { it.cell.copy(row = 0, rowSpan = 1) },
@@ -150,7 +152,7 @@ private fun ViewRows(
         ),
         verticalArrangement = Arrangement.spacedBy(Css.Space.S6),
     ) {
-        if (view != null) item { ViewHeader(view, hass, now, interactions) }
+        header?.let { item { ViewHeader(it, hass, now, interactions) } }
         when (sidebar?.mode) {
             // Content and sidebar side by side, scrolling together like upstream's grid
             SidebarLayout.MODE_COLUMN -> item {
@@ -252,8 +254,8 @@ private fun SectionGrid(
 /** Screens up to this width use the narrow gaps between sections, like upstream's 600px breakpoint. */
 private const val NARROW_WIDTH_DP = 600
 
-/** About the offline bar's height with its margins. */
-private val BOTTOM_BAR_CLEARANCE = 80.dp
+/** The offline bar's height with its margins (72dp on one line), and the 24px gap between sections. */
+private val BOTTOM_BAR_CLEARANCE = 96.dp
 
 /**
  * The [view]'s footer card (`footer.card`), if it has one: the energy views' date selection.
