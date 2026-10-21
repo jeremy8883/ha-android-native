@@ -23,19 +23,21 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.homeassistant.companion.android.common.compose.composable.HAHorizontalDivider
 import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.composable.HAModalBottomSheet
+import io.homeassistant.companion.android.common.compose.composable.HAPlainButton
 import io.homeassistant.companion.android.common.compose.theme.HADimens
 import io.homeassistant.companion.android.common.compose.theme.HATextStyle
 import net.jeremycasey.homeassistantnative.R
 
 /**
- * The servers to switch to, as the companion app's `ServerChooser` sheet (app/src/main/kotlin/io/homeassistant/
- * companion/android/settings/server/ServerChooser.kt); [onSelected] gets the one chosen.
+ * The account, from the drawer: the servers to switch to, as the companion app's `ServerChooser` sheet
+ * (app/src/main/kotlin/io/homeassistant/companion/android/settings/server/ServerChooser.kt), then the user's profile
+ * ([onOpenProfile], in the companion app). [onSelected] gets the server chosen.
  *
  * Upstream: none (native: the app's server settings)
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun ServerSwitcherSheet(onSelected: (Int) -> Unit, onDismiss: () -> Unit) {
+internal fun AccountSheet(onSelected: (Int) -> Unit, onOpenProfile: () -> Unit, onDismiss: () -> Unit) {
     val viewModel: ServersViewModel = hiltViewModel()
     val servers by viewModel.items.collectAsStateWithLifecycle()
     HAModalBottomSheet(bottomSheetState = rememberModalBottomSheetState(), onDismissRequest = onDismiss) {
@@ -62,6 +64,12 @@ internal fun ServerSwitcherSheet(onSelected: (Int) -> Unit, onDismiss: () -> Uni
                 }
             }
         }
+        HAHorizontalDivider(Modifier.padding(vertical = HADimens.SPACE2))
+        HAPlainButton(
+            stringResource(R.string.account_profile),
+            onOpenProfile,
+            Modifier.padding(horizontal = HADimens.SPACE2),
+        )
         Spacer(
             modifier = Modifier
                 .height(HADimens.SPACE6)

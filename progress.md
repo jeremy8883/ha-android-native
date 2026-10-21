@@ -297,9 +297,10 @@ Not started; the user is deciding. The proposal:
 ### 2026-10-21: release polish (Opus)
 - Debug builds are named "HADash Dev" with a red "Dev" band on the launcher icon (`dashboard-app/src/debug/res`: adaptive icon layers, themed icon, and the pre-Android 8 webp icons).
 - The refresh bar is drawn by the frame clock (`IndeterminateBar` in `ui/DashboardStatusViews.kt`, Material 3's timings), so it still moves with the phone's animations off.
-- The data's age ("Updated 10 minutes ago") moved from the offline toast to a small grey line under the toolbar title (at the bottom when the toolbar shows tabs). It shows when the data is at least 5 minutes old or a refresh failed, never while a refresh of old data is still running (`DashboardStatus.shownAge`).
+- The data's age ("Updated 10 minutes ago") moved from the offline toast to a small grey italic line under the toolbar title (at the bottom when the toolbar shows tabs). It shows when the data is at least 5 minutes old or a refresh failed, 500ms after that becomes true, so a quick refresh doesn't flash it; a hanging refresh still shows it (`DashboardStatus.shownAge`, `rememberShownAge`).
 - More room under the last card for the offline toast (96dp). An empty view header no longer takes a slot and a gap (Maintenance's large top margin).
 - The notification drawer's back arrow is at the start (`UPSTREAM-DIFF`).
+- The drawer's footer: Settings and Notifications, then the account (the user's badge and name over the server's name) opening the app's account sheet: the servers, then "Open your profile in the Home Assistant app" (`AccountSheet`, was `ServerSwitcherSheet`). Settings has "Open settings in the Home Assistant app".
 - The navigation drawer: a gradient banner with the logo and "HADash" (`res/drawable/hadash_logo.xml`), slimmer under 480dp of height, where everything scrolls together. The lists space their entries up to 2dp closer or 4dp further apart so the bottom entry is cut through its middle, a hint that they scroll (`ui/components/PeekColumn.kt`).
 
 ### 2026-10-11: drawer pages (Opus)

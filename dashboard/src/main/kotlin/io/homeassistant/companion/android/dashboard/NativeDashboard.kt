@@ -22,8 +22,8 @@ import kotlinx.coroutines.launch
  * @param request what to show, applied once per request
  * @param onOpenWeb opens a path the native dashboards don't show (other panels, an entity's full more-info); `null`
  *   when they can't be opened, which leaves them out of the drawer and the more-info sheet
- * @param onShowServerSwitcher shows the app's server picker, which calls back with the chosen server; `null` hides
- *   the drawer's server entry
+ * @param onShowAccount shows the app's account sheet (the profile and the servers to switch to), which calls back
+ *   with the chosen server; `null` leaves the drawer's account entry opening the profile
  * @param onOpenSettings opens the app's own settings from the drawer, in place of the frontend's; `null` keeps those
  *
  * Upstream: none (native: the app's destination hosting the dashboards of the active server)
@@ -32,12 +32,12 @@ import kotlinx.coroutines.launch
 fun NativeDashboard(
     request: NativeDashboardRequest,
     onOpenWeb: ((String) -> Unit)?,
-    onShowServerSwitcher: ((onServerSelected: (Int) -> Unit) -> Unit)? = null,
+    onShowAccount: ((onServerSelected: (Int) -> Unit) -> Unit)? = null,
     onOpenSettings: (() -> Unit)? = null,
 ) {
     val host: NativeDashboardHostViewModel = hiltViewModel()
     val server by host.activeServer.collectAsStateWithLifecycle()
-    val (serverId, serverCount) = server ?: return
+    val (serverId, _, serverName) = server ?: return
     // A view model per server, so switching servers starts from that server's data
     val viewModel: DashboardViewModel = hiltViewModel(key = "native-dashboard-$serverId")
     DashboardScreen(
@@ -45,9 +45,8 @@ fun NativeDashboard(
         onOpenWeb = onOpenWeb,
         request = request,
         onOpenSettings = onOpenSettings,
-        onSwitchServer = onShowServerSwitcher?.takeIf { serverCount > 1 }?.let { show ->
-            { show { selected -> host.activate(selected) } }
-        },
+        serverName = serverName,
+        onOpenAccount = onShowAccount?.let { show -> { show { selected -> host.activate(selected) } } },
     )
 }
 

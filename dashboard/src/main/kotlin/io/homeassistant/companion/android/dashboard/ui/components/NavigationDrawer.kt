@@ -63,13 +63,16 @@ import io.homeassistant.companion.android.dashboard.ui.theme.toColor
 
 /**
  * The app's navigation drawer, in place of the frontend's sidebar: the panels shown natively in the user's order,
- * then under their own heading those that open in the companion app, then Settings (for admins), the notifications
- * and the profile (the user's name and badge), like `ha-sidebar`'s fixed entries.
+ * then under their own heading those that open in the companion app, then Settings (for admins) and the
+ * notifications, like `ha-sidebar`'s fixed entries, and last the account: the user's name and badge over the server's
+ * name.
  *
  * @param selected the url path of the panel shown now
  * @param drawerState the drawer's state, which back closes (with Material's predictive back animation)
  * @param sidebar the panels, or why they couldn't be loaded, with [onRetry] to try again
- * @param onSwitchServer shows the server picker; `null` hides the entry (a single server)
+ * @param serverName the server shown, under the user's name
+ * @param onOpenAccount opens the account sheet (the profile, switching servers); `null` makes the account entry open
+ *   the profile
  * @param onlyDashboards lists only the dashboards, when other pages can't be opened
  * @param onOpenSettings opens the app's own settings, in place of the frontend's Settings and profile; `null` keeps
  *   those
@@ -85,7 +88,8 @@ internal fun NavigationDrawerContent(
     drawerState: DrawerState,
     sidebar: Loadable<SidebarState>,
     selected: String?,
-    onSwitchServer: (() -> Unit)? = null,
+    serverName: String? = null,
+    onOpenAccount: (() -> Unit)? = null,
     onOpenSettings: (() -> Unit)? = null,
     onlyDashboards: Boolean = false,
     onRetry: () -> Unit = {},
@@ -107,22 +111,15 @@ internal fun NavigationDrawerContent(
     }
 
     /**
-     * The entries below the panels: Settings, the notifications, the profile and switching servers.
+     * The entries below the panels: Settings and the notifications.
      *
      * Upstream: part of `ha-sidebar` (src/components/ha-sidebar.ts)
      */
     @Composable
     fun FooterEntries() {
-        /**
-         * An entry that does something in the app instead of opening a panel.
-         *
-         * Upstream: none (native: the app's settings and server switching)
-         */
-        @Composable
-        fun Action(label: String, icon: String, onClick: () -> Unit) =
-            SidebarItem(label, selected = false, onClick = onClick) { tint -> SidebarIcon(icon, tint) }
         if (onOpenSettings != null) {
-            Action(stringResource(R.string.native_dashboard_settings), SETTINGS_ICON, onOpenSettings)
+            val label = stringResource(R.string.native_dashboard_settings)
+            SidebarItem(label, selected = false, onClick = onOpenSettings) { tint -> SidebarIcon(SETTINGS_ICON, tint) }
         } else if (sidebar.valueOrNull?.isAdmin == true) {
             Entry(CONFIG_PANEL, stringResource(R.string.native_dashboard_settings), SETTINGS_ICON)
         }
@@ -132,17 +129,8 @@ internal fun NavigationDrawerContent(
             onClick = onOpenNotifications,
             badge = notificationCount?.takeIf { it > 0 }?.let { count -> { CountBadge(count) } },
         ) { tint -> SidebarIcon(NOTIFICATIONS_ICON, tint) }
-        // The profile opens elsewhere, so it needs other pages
-        if (onOpenSettings == null || !onlyDashboards) {
-            SidebarItem(
-                user?.name ?: stringResource(R.string.native_dashboard_profile),
-                selected = selected == PROFILE_PANEL,
-                onClick = { onOpen("/$PROFILE_PANEL") },
-                user = true,
-            ) { tint -> user?.let { UserBadge(it) } ?: SidebarIcon(PROFILE_ICON, tint) }
-        }
-        onSwitchServer?.let { Action(stringResource(R.string.native_dashboard_switch_server), SERVER_ICON, it) }
     }
+
     ModalDrawerSheet(
         drawerState = drawerState,
         // mwc-drawer's 256px
@@ -168,6 +156,9 @@ internal fun NavigationDrawerContent(
                     HorizontalDivider()
                     Spacer(Modifier.height(Css.Space.S2))
                     FooterEntries()
+                    HorizontalDivider()
+                    Spacer(Modifier.height(Css.Space.S2))
+                    AccountEntry(user, serverName, selected == PROFILE_PANEL, onlyDashboards, onOpenAccount, onOpen)
                 }
             } else {
                 Column(Modifier.fillMaxSize()) {
@@ -183,8 +174,10 @@ internal fun NavigationDrawerContent(
                         }
                     }
                     HorizontalDivider()
+                    Column(Modifier.padding(vertical = Css.Space.S2)) { FooterEntries() }
+                    HorizontalDivider()
                     Column(Modifier.padding(top = Css.Space.S2, bottom = Css.Space.S2 + navigationBar)) {
-                        FooterEntries()
+                        AccountEntry(user, serverName, selected == PROFILE_PANEL, onlyDashboards, onOpenAccount, onOpen)
                     }
                 }
             }
@@ -193,7 +186,37 @@ internal fun NavigationDrawerContent(
 }
 
 /**
- * An entry of the sidebar: its icon, then its [label] in medium weight, and its [badge] at the end; 40px high with
+ * The account: the user's name and badge over the server's name, opening the account sheet ([onOpenAccount]), else
+ * the profile (which opens elsewhere, so it needs other pages: left out when [onlyDashboards]).
+ *
+ * Upstream: part of `ha-sidebar` (src/components/ha-sidebar.ts)
+ */
+// UPSTREAM-DIFF: the profile entry also names the server and opens the app's account sheet (profile and servers);
+// upstream's opens the profile.
+@Composable
+private fun AccountEntry(
+    user: UserBadgeModel?,
+    serverName: String?,
+    selected: Boolean,
+    onlyDashboards: Boolean,
+    onOpenAccount: (() -> Unit)?,
+    onOpen: (String) -> Unit,
+) {
+    if (onOpenAccount == null && onlyDashboards) return
+    SidebarItem(
+        user?.name ?: stringResource(R.string.native_dashboard_profile),
+        selected = selected,
+        onClick = onOpenAccount ?: { onOpen("/$PROFILE_PANEL") },
+        subtitle = serverName,
+        badge = onOpenAccount?.let {
+            { SidebarIcon(ACCOUNT_MENU_ICON, LocalHAColorScheme.current.colorTextSecondary) }
+        },
+        user = true,
+    ) { tint -> user?.let { UserBadge(it) } ?: SidebarIcon(PROFILE_ICON, tint) }
+}
+
+/**
+ * An entry of the sidebar: its icon, then its [label] in medium weight over its [subtitle], and its [badge] at the end; 40px high with
  * 4px under it, a slightly rounded highlight while [selected]. The profile ([user]) has its badge 4px in, the others
  * their icon 12px in.
  *
@@ -206,6 +229,7 @@ private fun SidebarItem(
     selected: Boolean,
     onClick: () -> Unit,
     badge: (@Composable () -> Unit)? = null,
+    subtitle: String? = null,
     user: Boolean = false,
     icon: @Composable (Color) -> Unit,
 ) {
@@ -225,14 +249,24 @@ private fun SidebarItem(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         icon(tint)
-        Text(
-            label,
-            style = Css.Text.Body.copy(fontWeight = Css.FontWeight.Medium),
-            color = if (selected) colors.colorOnPrimaryNormal else colors.colorTextPrimary,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier.weight(1f),
-        )
+        Column(Modifier.weight(1f)) {
+            Text(
+                label,
+                style = Css.Text.Body.copy(fontWeight = Css.FontWeight.Medium),
+                color = if (selected) colors.colorOnPrimaryNormal else colors.colorTextPrimary,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+            subtitle?.let {
+                Text(
+                    it,
+                    style = Css.Text.Body.copy(fontSize = Css.FontSize.S, textAlign = TextAlign.Start),
+                    color = colors.colorTextSecondary,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
+        }
         badge?.invoke()
     }
 }
@@ -402,7 +436,7 @@ private const val CONFIG_PANEL = "config"
 private const val PROFILE_PANEL = "profile"
 private const val SETTINGS_ICON = "mdi:cog"
 private const val PROFILE_ICON = "mdi:account"
-private const val SERVER_ICON = "mdi:home-switch"
+private const val ACCOUNT_MENU_ICON = "mdi:unfold-more-horizontal"
 private const val NOTIFICATIONS_ICON = "mdi:bell"
 private const val ACCENT = "accent-color"
 private const val TEXT_ACCENT = "text-primary-color"

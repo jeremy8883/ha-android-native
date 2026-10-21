@@ -17,6 +17,9 @@
     <string name="settings_servers">Servers</string>
     <string name="settings_active">Active</string>
     <string name="server_select">Select server</string>
+    <string name="account_profile">Open your profile in the Home Assistant app</string>
+    <string name="settings_home_assistant">Home Assistant</string>
+    <string name="settings_open_server_settings">Open settings in the Home Assistant app</string>
     <string name="settings_add_server">Add server</string>
     <string name="settings_log_out">Log out</string>
     <string name="settings_log_out_title">Log out of %1$s?</string>

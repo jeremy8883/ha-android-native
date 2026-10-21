@@ -28,7 +28,7 @@ import io.homeassistant.companion.android.dashboard.NativeDashboardRequest
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import net.jeremycasey.homeassistantnative.login.LoginScreen
-import net.jeremycasey.homeassistantnative.settings.ServerSwitcherSheet
+import net.jeremycasey.homeassistantnative.settings.AccountSheet
 import net.jeremycasey.homeassistantnative.settings.SettingsScreen
 import timber.log.Timber
 
@@ -71,14 +71,16 @@ internal fun AppRoot() {
 @Composable
 private fun LoggedIn(viewModel: AppViewModel) {
     val navController = rememberNavController()
+    val openWeb = rememberOpenWeb(viewModel)
     NavHost(navController = navController, startDestination = DashboardRoute) {
         composable<DashboardRoute> {
-            Dashboard(viewModel, onOpenSettings = { navController.navigate(SettingsRoute) })
+            Dashboard(openWeb, onOpenSettings = { navController.navigate(SettingsRoute) })
         }
         composable<SettingsRoute> {
             SettingsScreen(
                 onBack = { navController.popBackStack() },
                 onAddServer = { navController.navigate(AddServerRoute) },
+                onOpenServerSettings = { openWeb(CONFIG_PATH) },
             )
         }
         composable<AddServerRoute> {
@@ -91,30 +93,43 @@ private fun LoggedIn(viewModel: AppViewModel) {
 }
 
 /**
- * The native dashboard, with the server switcher and web pages it opens.
+ * Opens a page the native dashboards don't show, elsewhere (see [openWebPage]).
  *
- * Upstream: none (native: hosts the native dashboard and the server switcher)
+ * Upstream: none (native: pages opened in the companion app or the browser)
  */
 @Composable
-private fun Dashboard(viewModel: AppViewModel, onOpenSettings: () -> Unit) {
+private fun rememberOpenWeb(viewModel: AppViewModel): (String) -> Unit {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
+    return remember(viewModel, context, scope) {
+        { path -> scope.launch { openWebPage(context, path, viewModel.webUrl(path)) } }
+    }
+}
+
+/**
+ * The native dashboard, with the account sheet and web pages it opens.
+ *
+ * Upstream: none (native: hosts the native dashboard and the account sheet)
+ */
+@Composable
+private fun Dashboard(openWeb: (String) -> Unit, onOpenSettings: () -> Unit) {
     val request = remember { NativeDashboardRequest() }
     var chooseServer by remember { mutableStateOf<((Int) -> Unit)?>(null) }
-    val openWeb: (String) -> Unit = { path ->
-        scope.launch { openWebPage(context, path, viewModel.webUrl(path)) }
-    }
     NativeDashboard(
         request = request,
         onOpenWeb = openWeb,
-        onShowServerSwitcher = { onSelected -> chooseServer = onSelected },
+        onShowAccount = { onSelected -> chooseServer = onSelected },
         onOpenSettings = onOpenSettings,
     )
     chooseServer?.let { onSelected ->
-        ServerSwitcherSheet(
+        AccountSheet(
             onSelected = { serverId ->
                 chooseServer = null
                 onSelected(serverId)
+            },
+            onOpenProfile = {
+                chooseServer = null
+                openWeb(PROFILE_PATH)
             },
             onDismiss = { chooseServer = null },
         )
@@ -155,3 +170,5 @@ private fun toast(context: Context, message: Int) {
 }
 
 private const val COMPANION_NAVIGATE = "homeassistant://navigate"
+private const val PROFILE_PATH = "/profile"
+private const val CONFIG_PATH = "/config"

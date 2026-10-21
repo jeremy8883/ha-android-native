@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -18,10 +19,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +34,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -40,7 +45,10 @@ import io.homeassistant.companion.android.dashboard.data.LoadError
 import io.homeassistant.companion.android.dashboard.ui.components.loadErrorText
 import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.ZonedDateTime
+import kotlin.time.Duration.Companion.milliseconds
 import kotlin.time.Instant
+import kotlin.time.toKotlinInstant
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -131,6 +139,9 @@ private val BAR_LINES = listOf(
     ),
 )
 
+/** The subtitle's line height, relative to its font size. */
+private const val SUBTITLE_LINE_HEIGHT = 1.3f
+
 /** Material's linear indicator height. */
 private val BAR_HEIGHT = 4.dp
 
@@ -162,7 +173,7 @@ internal fun DashboardBottomBars(
 }
 
 /**
- * Under the toolbar's title, small and muted: when the data shown was last current, such as "Updated 5 minutes ago".
+ * Under the toolbar's title, small, italic and muted: when the data shown was last current, such as "Updated 5 minutes ago".
  *
  * Upstream: none (native: the age of cached data)
  */
@@ -170,11 +181,38 @@ internal fun DashboardBottomBars(
 internal fun UpdatedSubtitle(updatedAt: Instant, now: State<ZonedDateTime?>) {
     Text(
         updatedText(updatedAt, now.value),
-        fontSize = Css.FontSize.S,
+        // Its own line height, not the toolbar title's taller one
+        style = LocalTextStyle.current.copy(
+            fontSize = Css.FontSize.S,
+            lineHeight = Css.FontSize.S * SUBTITLE_LINE_HEIGHT,
+            fontStyle = FontStyle.Italic,
+        ),
         color = LocalHAColorScheme.current.colorTextSecondary,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
     )
+}
+
+/**
+ * When the dashboard's data was last current while that is worth showing ([DashboardStatus.shownAge]), after a
+ * moment's wait so a quick refresh of old data doesn't flash it.
+ *
+ * Upstream: none (native: the age of cached data)
+ */
+@Composable
+internal fun rememberShownAge(status: DashboardStatus, now: State<ZonedDateTime?>, hasContent: Boolean): Instant? {
+    val ageDue by remember(status, hasContent) {
+        derivedStateOf {
+            val time = now.value?.takeIf { hasContent } ?: return@derivedStateOf null
+            status.shownAge(time.toInstant().toKotlinInstant())
+        }
+    }
+    var shownAge by remember { mutableStateOf<Instant?>(null) }
+    LaunchedEffect(ageDue) {
+        if (ageDue != null && shownAge == null) delay(AGE_DELAY)
+        shownAge = ageDue
+    }
+    return shownAge
 }
 
 /**
@@ -213,3 +251,6 @@ private fun updatedText(time: Instant, now: ZonedDateTime?): String {
     val relative = DateUtils.getRelativeTimeSpanString(timeMillis, nowMillis, DateUtils.MINUTE_IN_MILLIS)
     return stringResource(R.string.native_dashboard_updated, relative)
 }
+
+/** How long the data's age waits before it shows. */
+private val AGE_DELAY = 500.milliseconds

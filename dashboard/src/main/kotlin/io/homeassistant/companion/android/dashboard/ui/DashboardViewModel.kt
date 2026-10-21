@@ -206,14 +206,14 @@ data class DashboardStatus(
 ) {
     /**
      * When the shown data was last current, if its age is worth showing at [now]: it may be out of date, because it is
-     * at least [STALE_AFTER] old or couldn't be loaded again. `null` while it is live, or while it is being loaded again
-     * and that hasn't failed yet, so a quick refresh of old data doesn't flash its age.
+     * at least [STALE_AFTER] old or couldn't be loaded again. `null` while it is live. Old data being loaded again
+     * counts too, as connecting can hang; the screen waits a moment before showing it, so a quick refresh doesn't
+     * flash it.
      */
     fun shownAge(now: Instant): Instant? {
         val since = updatedAt ?: return null
         return when {
             refreshFailed -> since
-            refreshing && !offline -> null
             now - since >= STALE_AFTER -> since
             else -> null
         }

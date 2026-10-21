@@ -18,14 +18,15 @@ class NativeDashboardServersTest {
         val repository = mockk<ActiveServerRepository> {
             every { activeServer() } returns flowOf(1 to 2)
             coEvery { activeServerId() } answers { active }
+            coEvery { activeServerName() } answers { "Home $active" }
             coEvery { activateServer(any()) } answers { active = firstArg() }
         }
         val servers = NativeDashboardServers(repository)
 
         servers.activeServer.test {
-            assertEquals(NativeDashboardServers.ActiveServer(serverId = 1, serverCount = 2), awaitItem())
+            assertEquals(NativeDashboardServers.ActiveServer(serverId = 1, serverCount = 2, serverName = "Home 1"), awaitItem())
             servers.activate(2)
-            assertEquals(NativeDashboardServers.ActiveServer(serverId = 2, serverCount = 2), awaitItem())
+            assertEquals(NativeDashboardServers.ActiveServer(serverId = 2, serverCount = 2, serverName = "Home 2"), awaitItem())
         }
     }
 }

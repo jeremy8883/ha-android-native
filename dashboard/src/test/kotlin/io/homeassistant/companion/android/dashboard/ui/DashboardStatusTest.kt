@@ -33,10 +33,10 @@ class DashboardStatusTest {
     }
 
     @Test
-    fun `Given old cached data being refreshed when showing its age then it waits for the refresh`() {
+    fun `Given old cached data being refreshed when showing its age then it is shown`() {
         val status = DashboardStatus(refreshing = true, offline = false, updatedAt = old, refreshError = null)
 
-        assertNull(status.shownAge(now))
+        assertEquals(old, status.shownAge(now))
     }
 
     @Test

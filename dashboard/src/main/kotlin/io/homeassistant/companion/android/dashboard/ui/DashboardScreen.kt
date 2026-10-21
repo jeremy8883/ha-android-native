@@ -55,7 +55,6 @@ import io.homeassistant.companion.android.dashboard.ui.panels.NativePanel
 import io.homeassistant.companion.android.dashboard.ui.panels.PanelToolbar
 import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.ZonedDateTime
-import kotlin.time.toKotlinInstant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -73,7 +72,8 @@ internal fun DashboardScreen(
     viewModel: DashboardViewModel,
     onOpenWeb: ((String) -> Unit)?,
     request: NativeDashboardRequest = NativeDashboardRequest(),
-    onSwitchServer: (() -> Unit)? = null,
+    serverName: String? = null,
+    onOpenAccount: (() -> Unit)? = null,
     onOpenSettings: (() -> Unit)? = null,
 ) {
     // Cards that only lead to other pages are left out when those can't be opened
@@ -88,11 +88,7 @@ internal fun DashboardScreen(
     // Startup ends when the page shows with its entities (from the cache when there is one), for Android's
     // startup measurements and the baseline profile
     ReportDrawnWhen { uiState !is DashboardUiState.Loading && hass.value != null }
-    DashboardBackHandlers(
-        showsBack = content?.showsBack == true,
-        isDefaultDashboard = selectedDashboard == null,
-        viewModel = viewModel,
-    )
+    DashboardBackHandlers(content?.showsBack == true, isDefaultDashboard = selectedDashboard == null, viewModel)
     val snackbar = remember { SnackbarHostState() }
     val interactions = rememberCardInteractions(viewModel)
     var moreInfo by rememberSaveable { mutableStateOf<String?>(null) }
@@ -111,7 +107,8 @@ internal fun DashboardScreen(
                     viewModel = viewModel,
                     selected = selectedDashboard,
                     onlyDashboards = onOpenWeb == null,
-                    onSwitchServer = onSwitchServer,
+                    serverName = serverName,
+                    onOpenAccount = onOpenAccount,
                     onOpenSettings = onOpenSettings,
                 )
             },
@@ -198,7 +195,8 @@ private fun DashboardDrawer(
     viewModel: DashboardViewModel,
     selected: String?,
     onlyDashboards: Boolean,
-    onSwitchServer: (() -> Unit)?,
+    serverName: String?,
+    onOpenAccount: (() -> Unit)?,
     onOpenSettings: (() -> Unit)?,
 ) {
     val sidebar by viewModel.sidebar.collectAsStateWithLifecycle()
@@ -214,7 +212,8 @@ private fun DashboardDrawer(
         selected = selected ?: sidebar.valueOrNull?.defaultPanel,
         onRetry = viewModel::onRetry,
         onlyDashboards = onlyDashboards,
-        onSwitchServer = onSwitchServer?.let { switch -> closingDrawer(drawerState, scope, switch) },
+        serverName = serverName,
+        onOpenAccount = onOpenAccount?.let { open -> closingDrawer(drawerState, scope, open) },
         onOpenSettings = onOpenSettings?.let { open -> closingDrawer(drawerState, scope, open) },
         notificationCount = notificationList.valueOrNull?.size,
         onOpenNotifications = closingDrawer(drawerState, scope, notifications::openDrawer),
@@ -296,12 +295,7 @@ internal fun DashboardScreenContent(
     // A panel's refresh button asks it to load again
     val panelToolbar = remember(panel?.name) { PanelToolbar() }
     // The age of the dashboard's data, while it may be out of date: under the title, or at the bottom with tabs
-    val shownAge by remember(status, content != null) {
-        derivedStateOf {
-            val time = now.value?.takeIf { content != null } ?: return@derivedStateOf null
-            status.shownAge(time.toInstant().toKotlinInstant())
-        }
-    }
+    val shownAge = rememberShownAge(status, now, hasContent = content != null)
     val ageAtBottom = content?.showsTabs == true
     Scaffold(
         // Over the content, so they never move it

@@ -17,9 +17,12 @@ class NativeDashboardServers @Inject constructor(private val repository: ActiveS
     // Activating a server doesn't change the servers, so the active one is read again on each activation
     private val activations = MutableStateFlow(0)
 
-    /** The active server's id and how many servers there are, updated as servers change or another is activated. */
+    /**
+     * The active server's id and name and how many servers there are, updated as servers change or another is
+     * activated.
+     */
     val activeServer: Flow<ActiveServer> = combine(repository.activeServer(), activations) { (_, count), _ ->
-        ActiveServer(repository.activeServerId(), count)
+        ActiveServer(repository.activeServerId(), count, repository.activeServerName())
     }
 
     /** Make [serverId] the active server, which the native dashboards then show. */
@@ -31,6 +34,7 @@ class NativeDashboardServers @Inject constructor(private val repository: ActiveS
     /**
      * @property serverId the active server, `null` when there is none
      * @property serverCount how many servers there are
+     * @property serverName the active server's name, `null` when there is none
      */
-    data class ActiveServer(val serverId: Int?, val serverCount: Int)
+    data class ActiveServer(val serverId: Int?, val serverCount: Int, val serverName: String? = null)
 }

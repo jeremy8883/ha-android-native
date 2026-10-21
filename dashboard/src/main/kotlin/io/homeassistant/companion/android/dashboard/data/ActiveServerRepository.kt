@@ -10,6 +10,9 @@ class ActiveServerRepository @Inject constructor(private val serverManager: Serv
     /** The id of the active server, for links into the rest of the app. */
     suspend fun activeServerId(): Int? = serverManager.getServer()?.id
 
+    /** The active server's name, as the user knows it. */
+    suspend fun activeServerName(): String? = serverManager.getServer()?.friendlyName
+
     /** The active server's id and how many servers there are, updated as servers change. */
     fun activeServer(): Flow<Pair<Int?, Int>> = serverManager.serversFlow.map { servers ->
         serverManager.getServer()?.id to servers.size

@@ -32,11 +32,12 @@ import net.jeremycasey.homeassistantnative.R
  * keyboard shortcuts are on.
  *
  * @param onAddServer opens the login for another server
+ * @param onOpenServerSettings opens Home Assistant's own settings, in the companion app (or the browser)
  *
  * Upstream: none (native: the app's server settings)
  */
 @Composable
-internal fun SettingsScreen(onBack: () -> Unit, onAddServer: () -> Unit) {
+internal fun SettingsScreen(onBack: () -> Unit, onAddServer: () -> Unit, onOpenServerSettings: () -> Unit) {
     val servers: ServersViewModel = hiltViewModel()
     val items by servers.items.collectAsStateWithLifecycle()
     var loggingOut by rememberSaveable { mutableStateOf<Int?>(null) }
@@ -63,6 +64,12 @@ internal fun SettingsScreen(onBack: () -> Unit, onAddServer: () -> Unit) {
             )
             SectionTitle(stringResource(R.string.settings_general))
             KeyboardShortcutsSetting()
+            SectionTitle(stringResource(R.string.settings_home_assistant))
+            HAPlainButton(
+                stringResource(R.string.settings_open_server_settings),
+                onOpenServerSettings,
+                Modifier.padding(horizontal = HADimens.SPACE2),
+            )
         }
     }
     loggingOut?.let { serverId ->
