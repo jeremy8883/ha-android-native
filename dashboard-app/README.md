@@ -4,6 +4,16 @@ An Android app that shows your Home Assistant dashboards natively (drawn by the 
 official Home Assistant companion app. It logs in to your server itself and draws the dashboards with the same rules
 as Home Assistant's own frontend (version 20260624.6).
 
+## Installing
+
+Name the module, so Gradle doesn't also build the companion app and Wear OS app (their release builds need a
+`google-services.json`):
+
+```
+./gradlew :dashboard-app:installRelease   # HADash
+./gradlew :dashboard-app:installDebug     # HADash Dev, installed alongside it
+```
+
 ## When something isn't supported yet
 
 Anything the app can't do yet opens in the official Home Assistant companion app (or the browser, when the companion
