@@ -5,6 +5,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -70,6 +71,26 @@ import kotlinx.coroutines.delay
 // in EntityRowDateTime.kt.
 
 /**
+ * A number's slider and state ([RowSliderControl]) at the end of [modifier]'s space. The state is left out when
+ * [showState] is false, or when it would leave the slider under its 100dp minimum, so the slider stays usable.
+ *
+ * Upstream: part of `hui-input-number-entity-row`, `hui-number-entity-row`
+ * (src/panels/lovelace/entity-rows/hui-input-number-entity-row.ts;
+ * src/panels/lovelace/entity-rows/hui-number-entity-row.ts)
+ */
+// UPSTREAM-DIFF: the state also hides when there isn't room for it beside the slider's minimum width; upstream only
+// hides it in rows at most 300px wide, and the slider shrinks instead.
+@Composable
+internal fun RowSliderArea(control: RowSlider, onAction: (CardAction) -> Unit, showState: Boolean, modifier: Modifier) {
+    BoxWithConstraints(modifier, contentAlignment = Alignment.CenterEnd) {
+        val roomForState = maxWidth >= SLIDER_MIN_WIDTH + Css.Space.S4 + STATE_MIN_WIDTH
+        Row(horizontalArrangement = Arrangement.End, verticalAlignment = Alignment.CenterVertically) {
+            RowSliderControl(control, onAction, showState = showState && roomForState)
+        }
+    }
+}
+
+/**
  * A number's slider, at most 200dp wide and labelled with its value while dragged, and its state unless [showState]
  * is false (upstream hides it in rows at most 300px wide); set when let go. `ha-slider`'s size: a 4px track and a
  * 20px thumb, taking no more room than they draw.
@@ -80,7 +101,7 @@ import kotlinx.coroutines.delay
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun RowScope.RowSliderControl(control: RowSlider, onAction: (CardAction) -> Unit, showState: Boolean = true) {
+private fun RowScope.RowSliderControl(control: RowSlider, onAction: (CardAction) -> Unit, showState: Boolean = true) {
     var dragging by remember { mutableStateOf<Float?>(null) }
     val interactionSource = remember { MutableInteractionSource() }
     val colors = haSliderColors()
@@ -115,9 +136,10 @@ internal fun RowScope.RowSliderControl(control: RowSlider, onAction: (CardAction
                 val fraction = if (span > 0f) ((state.value - range.start) / span).coerceIn(0f, 1f) else 0f
                 SliderTrack(fraction, colors, control.enabled)
             },
+            // Takes the room the state leaves, up to its maximum
             modifier = Modifier
-                .weight(1f, fill = false)
-                .widthIn(min = SLIDER_MIN_WIDTH, max = SLIDER_MAX_WIDTH)
+                .weight(1f)
+                .widthIn(max = SLIDER_MAX_WIDTH)
                 .padding(horizontal = Css.Space.S2),
         )
     }

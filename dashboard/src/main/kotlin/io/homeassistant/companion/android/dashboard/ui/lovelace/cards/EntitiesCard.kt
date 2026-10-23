@@ -62,7 +62,7 @@ import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowDa
 import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowName
 import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowNumberBoxControl
 import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowSelectControl
-import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowSliderControl
+import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowSliderArea
 import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowTextControl
 import io.homeassistant.companion.android.dashboard.ui.lovelace.entityrows.RowTimerText
 import io.homeassistant.companion.android.dashboard.ui.lovelace.headerfooter.HeaderFooter
@@ -246,11 +246,8 @@ internal fun RowScope.RowControlContent(
         )
         is RowControl.Buttons -> control.buttons.forEach { button -> RowTextButton(button, onAction) }
         is RowControl.IconButtons, is RowMedia -> rowIconButtons(control).forEach { RowIconButtonView(it, onAction) }
-        is RowSlider -> Row(
-            modifier = Modifier.weight(1f),
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically,
-        ) { RowSliderControl(control, onAction, showState = wide) }
+        // The slider's `.flex` grows twice as much as the name (`flex-grow: 2`)
+        is RowSlider -> RowSliderArea(control, onAction, showState = wide, Modifier.weight(SLIDER_AREA_WEIGHT))
         is RowNumberBox -> RowNumberBoxControl(control, onAction)
         is RowSelect -> RowSelectControl(control, onAction)
         is RowTextInput -> RowTextControl(control, onAction)
@@ -343,3 +340,6 @@ private val NARROW_ROW_WIDTH = 300.dp
 
 /** The header icon's `padding-right: 18px`. */
 private val HEADER_ICON_END = 18.dp
+
+/** A number row's slider and state grow twice as much as its name, as the frontend's `.flex { flex-grow: 2 }`. */
+private const val SLIDER_AREA_WEIGHT = 2f
