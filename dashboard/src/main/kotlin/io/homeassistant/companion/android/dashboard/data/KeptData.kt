@@ -174,8 +174,9 @@ class KeptData<T>(
                         break
                     }
                 }
-                // The snapshot of the new connection is on its way
-                SubscriptionInput.Reconnected -> shown.markRefreshing()
+                // The snapshot of the new connection is on its way, unless it already came ahead of this notice
+                SubscriptionInput.Reconnected ->
+                    if (snapshotOf != connection?.value?.connections) shown.markRefreshing()
             }
         }
         coroutineContext.cancelChildren()

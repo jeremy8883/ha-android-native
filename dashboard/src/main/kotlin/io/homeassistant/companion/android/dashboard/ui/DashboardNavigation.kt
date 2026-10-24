@@ -3,7 +3,16 @@ package io.homeassistant.companion.android.dashboard.ui
 // Where the dashboard screen is and where back leads, apart from the view model's flows
 
 /** A dashboard ([dashboard] `null` for the default one) with its opened views. */
-internal data class Location(val dashboard: String?, val stack: List<String>)
+data class Location(val dashboard: String?, val stack: List<String>) {
+    /** This location as a key for its saved screen state, such as its scroll position. */
+    val key: String get() = (listOf(dashboard.orEmpty()) + stack).joinToString("/")
+}
+
+/**
+ * Where the screen is ([current]) and the places back can still return to ([reachable]): their screen state (scroll
+ * positions) is kept for when back returns to them, and dropped once back can't.
+ */
+data class PageHistory(val current: Location, val reachable: Set<Location>)
 
 /**
  * The opened views, whether other pages can be opened, where back returns after the first view, and the query a
@@ -29,6 +38,29 @@ internal fun DashboardUiState.withReturn(canReturn: Boolean): DashboardUiState =
     !canReturn -> this
     this is DashboardUiState.Content && !isSubview -> copy(canGoBack = true)
     this is DashboardUiState.Panel -> copy(canGoBack = true)
+    else -> this
+}
+
+/**
+ * Where this is when shown at [dashboard], and where back can return to: the views under the shown one, the pages
+ * that opened it with their views, and the default dashboard, which back returns to from the others.
+ */
+internal fun Navigation.history(dashboard: String?): PageHistory {
+    val current = Location(dashboard, stack)
+    val reachable = buildSet {
+        (returnPoints + current).forEach { point ->
+            for (depth in 0..point.stack.size) add(Location(point.dashboard, point.stack.take(depth)))
+        }
+        add(Location(null, emptyList()))
+        remove(current)
+    }
+    return PageHistory(current, reachable)
+}
+
+/** This dashboard view or native panel, with where it is and where back returns ([history]). */
+internal fun DashboardUiState.withHistory(history: PageHistory): DashboardUiState = when (this) {
+    is DashboardUiState.Content -> copy(history = history)
+    is DashboardUiState.Panel -> copy(history = history)
     else -> this
 }
 

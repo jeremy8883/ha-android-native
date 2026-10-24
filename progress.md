@@ -301,6 +301,9 @@ Not started; the user is deciding. The proposal:
 - More room under the last card for the offline toast (96dp). An empty view header no longer takes a slot and a gap (Maintenance's large top margin).
 - The notification drawer's back arrow is at the start (`UPSTREAM-DIFF`).
 - The drawer's footer: Settings and Notifications, then the account (the user's badge and name over the server's name) opening the app's account sheet: the servers, then "Open your profile in the Home Assistant app" (`AccountSheet`, was `ServerSwitcherSheet`). Settings has "Open settings in the Home Assistant app".
+- Number rows: the slider area grows twice as much as the name, and the state hides when it would squeeze the slider under 100dp (`RowSliderArea`, `UPSTREAM-DIFF`).
+- Fixed a stuck loading bar: a subscription whose new snapshot was handled before the reconnection was noticed stayed "refreshing" (`KeptData.follow`).
+- Back restores each page's scroll position: a `SaveableStateHolder` keyed by location (`KeepPageStates`, `PageHistory` from `Navigation.history`), dropping the state of pages back can no longer reach.
 - The navigation drawer: a gradient banner with the logo and "HADash" (`res/drawable/hadash_logo.xml`), slimmer under 480dp of height, where everything scrolls together. The lists space their entries up to 2dp closer or 4dp further apart so the bottom entry is cut through its middle, a hint that they scroll (`ui/components/PeekColumn.kt`).
 
 ### 2026-10-11: drawer pages (Opus)

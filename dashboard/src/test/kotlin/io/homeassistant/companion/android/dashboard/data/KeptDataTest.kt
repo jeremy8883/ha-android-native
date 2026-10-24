@@ -5,10 +5,15 @@ import io.homeassistant.companion.android.common.data.websocket.WebSocketConnect
 import io.homeassistant.companion.android.common.data.websocket.WebSocketState
 import kotlin.time.Duration.Companion.seconds
 import kotlin.time.Instant
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Nested
@@ -128,6 +133,27 @@ class KeptDataTest {
                 events.emit(2)
                 assertEquals(Loadable.Ready(listOf(2)), awaitItem())
             }
+        }
+
+        @Test
+        fun `Given a new connection's snapshot ahead of the reconnection when both come then it isn't refreshing`() = runTest {
+            val events = Channel<Int>(Channel.UNLIMITED)
+            val shown = mutableListOf<Loadable<List<Int>>>()
+            // Not collected eagerly, so the snapshot and the reconnection both wait to be handled
+            backgroundScope.launch(StandardTestDispatcher(testScheduler)) {
+                KeptData<List<Int>>("test", FakeKeeper(), connection, retryDelays).subscribed(
+                    subscribe = { Fetched.Success(events.consumeAsFlow()) },
+                    reduce = { current, event -> current.orEmpty() + event },
+                ).collect { shown += it }
+            }
+            runCurrent()
+            events.send(1)
+            runCurrent()
+            events.send(2)
+            reconnect()
+            runCurrent()
+
+            assertEquals(Loadable.Ready(listOf(2)), shown.last())
         }
 
         @Test

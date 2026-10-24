@@ -138,6 +138,7 @@ sealed interface DashboardUiState {
         val title: String? = null,
         val query: String? = null,
         val canGoBack: Boolean = false,
+        val history: PageHistory? = null,
     ) : DashboardUiState
 
     /** Nothing could be loaded to show the dashboard; loading is retried. */
@@ -165,6 +166,8 @@ sealed interface DashboardUiState {
         val maxColumns: Int?,
         val groups: List<CardGroup>?,
         val view: ViewConfig? = null,
+        /** Where this is and where back returns, for keeping scroll positions. */
+        val history: PageHistory? = null,
     ) : DashboardUiState {
         /**
          * With the toolbar's title as the frontend's (hui-root): a subview's title, a single view's title, otherwise
@@ -457,6 +460,7 @@ class DashboardViewModel @VisibleForTesting internal constructor(
                     val state = config.toUiState(urlPath, inputs, navigation.stack)
                         .withPanelQuery(navigation.panelQuery)
                         .withReturn(navigation.returnPoints.isNotEmpty())
+                        .withHistory(navigation.history(urlPath))
                     if (navigation.canOpenOtherPages) state else state.withoutLinksOut(inputs.panelInfo)
                 }
             }

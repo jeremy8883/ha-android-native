@@ -25,22 +25,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.homeassistant.companion.android.common.compose.composable.HALoading
 import io.homeassistant.companion.android.common.compose.theme.HAThemeForPreview
 import io.homeassistant.companion.android.common.compose.theme.LocalHAColorScheme
 import io.homeassistant.companion.android.dashboard.NativeDashboardRequest
-import io.homeassistant.companion.android.dashboard.R
 import io.homeassistant.companion.android.dashboard.data.valueOrNull
 import io.homeassistant.companion.android.dashboard.entity.HassSnapshot
 import io.homeassistant.companion.android.dashboard.layout.DashboardMenuAction
 import io.homeassistant.companion.android.dashboard.navigation.userBadge
 import io.homeassistant.companion.android.dashboard.ui.components.NavigationDrawerContent
-import io.homeassistant.companion.android.dashboard.ui.components.UnsupportedMessage
 import io.homeassistant.companion.android.dashboard.ui.dialogs.notifications.NotificationDrawerHost
 import io.homeassistant.companion.android.dashboard.ui.dialogs.notifications.NotificationsViewModel
 import io.homeassistant.companion.android.dashboard.ui.dialogs.notifications.hasNotifications
@@ -48,10 +44,8 @@ import io.homeassistant.companion.android.dashboard.ui.dialogs.quickbar.dashboar
 import io.homeassistant.companion.android.dashboard.ui.lovelace.DashboardTopBar
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.CardInteractions
 import io.homeassistant.companion.android.dashboard.ui.lovelace.common.ProvideCardLocals
-import io.homeassistant.companion.android.dashboard.ui.lovelace.views.DashboardView
 import io.homeassistant.companion.android.dashboard.ui.lovelace.views.ViewFooter
 import io.homeassistant.companion.android.dashboard.ui.moreinfo.MoreInfoSheet
-import io.homeassistant.companion.android.dashboard.ui.panels.NativePanel
 import io.homeassistant.companion.android.dashboard.ui.panels.PanelToolbar
 import io.homeassistant.companion.android.dashboard.ui.theme.Css
 import java.time.ZonedDateTime
@@ -319,19 +313,10 @@ internal fun DashboardScreenContent(
         },
     ) { padding ->
         Box(Modifier.padding(padding).fillMaxSize()) {
-            when (uiState) {
-                DashboardUiState.Loading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    HALoading()
-                }
-                DashboardUiState.NotFound -> Message(stringResource(R.string.native_dashboard_not_found))
-                is DashboardUiState.Error -> LoadErrorScreen(uiState.error, onRetry)
-                is DashboardUiState.UnsupportedStrategy -> UnsupportedMessage(
-                    uiState.title?.let { stringResource(R.string.native_dashboard_unsupported_strategy, it) }
-                        ?: stringResource(R.string.native_dashboard_unsupported_untitled),
-                    onOpenElsewhere,
-                )
-                is DashboardUiState.Content -> DashboardView(uiState, hass, now, interactions)
-                is DashboardUiState.Panel -> NativePanel(uiState, panelToolbar, hass, now, interactions)
+            // Each page's scroll position is kept while back can return to it
+            val history = (uiState as? DashboardUiState.Content)?.history ?: panel?.history
+            KeepPageStates(history) {
+                DashboardPage(uiState, hass, now, interactions, panelToolbar, onRetry, onOpenElsewhere)
             }
             // Offline, the offline bar says it; retries would flicker the bar
             RefreshIndicator(
